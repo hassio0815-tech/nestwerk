@@ -16,3 +16,25 @@
 .aufgabe-kachel--vergeben { opacity: .75; border-style: dashed; }
 .aufgabe-karte__frist, .aufgabe-karte__bonus { display: inline-flex; gap: .25rem; align-items: center; font-size: .9em; }
 .aufgabe-karte__frage { font-style: italic; }
+/* Wochenplan (AP14) */
+.wochenplan__raster { display: grid; gap: .75rem; grid-template-columns: repeat(7, minmax(9rem, 1fr)); overflow-x: auto; padding-bottom: .5rem; }
+.wochenplan__tag { border: 1px solid var(--rand, #ccc); border-radius: 12px; padding: .5rem; min-width: 9rem; }
+.wochenplan__tag--heute { border-width: 2px; }
+.wochenplan__kopf { display: flex; justify-content: space-between; align-items: center; }
+.wochenplan__kopf h2 { font-size: 1rem; margin: 0; }
+.wochenplan__liste { display: flex; flex-direction: column; gap: .5rem; min-height: 5rem; }
+.wochenplan__karte { border: 1px solid var(--rand, #ccc); border-radius: 10px; padding: .5rem; display: flex; flex-direction: column; gap: .25rem; touch-action: pan-y; }
+.wochenplan__karte[data-beweglich] { cursor: grab; }
+.wochenplan__karte--gesperrt { opacity: .6; border-style: dashed; }
+.wochenplan__karte--geist { opacity: .4; }
+.wochenplan__karte[data-status="reserviert"] { border-left: 4px solid var(--akzent, #3b82f6); }
+.wochenplan__karte[data-status="konflikt"] { border-left: 4px solid #d97706; }
+.wochenplan__karte[data-status="gemeldet"], .wochenplan__karte[data-status="rueckfrage"] { border-left: 4px solid #8b5cf6; }
+.wochenplan__karte[data-status="bestaetigt"] { border-left: 4px solid #16a34a; }
+.wochenplan__karte[data-status="offen"] { border-left: 4px solid #94a3b8; }
+.wochenplan__zeit, .wochenplan__sperre { display: inline-flex; gap: .25rem; align-items: center; font-size: .85em; }
+.wochenplan__verschieben { gap: .25rem; align-items: flex-end; }
+.wochenplan__label { font-size: .8em; display: flex; flex-direction: column; }
+.wochenplan__ohne { margin-top: 1rem; }
+.wochenplan__liste--info { flex-direction: row; flex-wrap: wrap; }
+@media (max-width: 700px) { .wochenplan__raster { grid-template-columns: repeat(7, 14rem); } }

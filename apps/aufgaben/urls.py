@@ -1,8 +1,18 @@
 from django.urls import path
 
-from . import views, views_ablauf
+from . import views, views_ablauf, views_wochenplan
 
 app_name = "aufgaben"
+
+# Wochenplan (AP14)
+wochenplan_urls = [
+    path("eltern/wochenplan/", views_wochenplan.wochenplan_ansicht, name="wochenplan"),
+    path(
+        "eltern/wochenplan/<int:pk>/verschieben/",
+        views_wochenplan.instanz_verschieben,
+        name="wochenplan_verschieben",
+    ),
+]
 
 urlpatterns = [
     path("eltern/aufgaben/", views.aufgaben_liste, name="liste"),
@@ -69,3 +79,5 @@ urlpatterns += [
         name="korrigieren",
     ),
 ]
+
+urlpatterns += wochenplan_urls

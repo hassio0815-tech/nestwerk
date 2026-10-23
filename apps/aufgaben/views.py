@@ -1,5 +1,7 @@
 """Eltern-UI der Aufgaben-Stammdaten (HTMX). Alle Views: nur Eltern."""
 
+from datetime import date
+
 from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -58,10 +60,18 @@ def aufgaben_liste(request):
     return render(request, vorlage, kontext)
 
 
+def _start_vorgabe(request):
+    """Wochenplan (AP14): ``?datum=JJJJ-MM-TT`` füllt das Startdatum der neuen Aufgabe vor."""
+    try:
+        return {"start_datum": date.fromisoformat(request.GET.get("datum", ""))}
+    except ValueError:
+        return {}
+
+
 @nur_eltern
 @require_http_methods(["GET", "POST"])
 def aufgabe_neu(request):
-    form = AufgabeForm(request.POST or None)
+    form = AufgabeForm(request.POST or None, initial=_start_vorgabe(request))
     if request.method == "POST" and form.is_valid():
         services.aufgabe_speichern(form, von=aktueller_elternteil(request))
         return _weiter(request, "aufgaben:liste")
