@@ -3,7 +3,7 @@
 from apps.kern import zeit
 
 from . import sperre
-from .models import Benutzer, ElternProfil, Geraet, KindProfil, Rolle
+from .models import Benutzer, ElternProfil, ElternZugang, Geraet, KindProfil, Rolle
 
 
 def aktive_kinder():
@@ -34,3 +34,8 @@ def geraete(nur_aktive=True):
 def eltern_email(benutzer):
     """E-Mail-Adresse eines Elternteils oder ``""``."""
     return ElternProfil.objects.filter(pk=benutzer.pk).values_list("email", flat=True).first() or ""
+
+
+def eltern_passwort_gesetzt():
+    """Gibt es ein Eltern-Passwort? (Der Hash selbst verlässt konten nie.)"""
+    return ElternZugang.objects.filter(pk=1).exists()

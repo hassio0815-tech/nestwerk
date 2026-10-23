@@ -45,6 +45,28 @@ def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0
     return benutzer
 
 
+def eltern_aendern(benutzer, anzeigename, *, rolle_label, email):
+    """Ändert Name, Rolle (Mama/Papa/andere) und E-Mail eines Elternteils."""
+    with transaction.atomic():
+        benutzer.anzeigename = anzeigename
+        benutzer.full_clean(exclude=["password"])
+        benutzer.save(update_fields=["anzeigename"])
+        profil = benutzer.elternprofil
+        profil.rolle_label = rolle_label
+        profil.email = email
+        profil.full_clean()
+        profil.save(update_fields=["rolle_label", "email"])
+        audit.protokollieren("konten.eltern_geaendert", objekt=benutzer)
+
+
+def kind_umbenennen(kind, anzeigename):
+    with transaction.atomic():
+        kind.anzeigename = anzeigename
+        kind.full_clean(exclude=["password"])
+        kind.save(update_fields=["anzeigename"])
+        audit.protokollieren("konten.kind_umbenannt", objekt=kind, kind=kind)
+
+
 def kind_anlegen(anzeigename, pin, *, akzentfarben=None, reihenfolge=0):
     _pin_pruefen(pin)
     with transaction.atomic():

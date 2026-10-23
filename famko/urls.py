@@ -4,6 +4,7 @@ from famko.gesundheit import gesundheit
 
 urlpatterns = [
     path("gesundheit/", gesundheit, name="gesundheit"),
+    path("", include("apps.einrichtung.urls")),
     path("", include("apps.oberflaeche.urls")),
     path("", include("apps.konten.urls")),
     path("", include("apps.benachrichtigung.urls")),

@@ -20,3 +20,6 @@ STATIC_ROOT.mkdir()
 
 # Gleicher Algorithmus wie in Produktion (Argon2), nur mit minimalem Aufwand
 PASSWORD_HASHERS = ["apps.konten.tests.hasher.SchnellerArgon2"]
+
+# Einrichtungs-Assistent (AP16) wird nur in dessen eigenen Tests erzwungen
+EINRICHTUNG_ERZWINGEN = False
