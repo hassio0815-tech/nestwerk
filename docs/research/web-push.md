@@ -100,6 +100,34 @@ Hinweis: Die Apple-Developer-Doku-Seite war per Tool nicht lesbar (JS-Seite); Au
   - NPM: Weiterleitung nicht am Manifest/SW vorbeileiten, kein Auth-Redirect für `/sw.js`, `/manifest.json` (sonst fehlschlagender SW-Registrierung). Falls NPM Access-List nutzt: Pfade ausnehmen.
   - Ausgehende Firewall: `*.push.apple.com`, `fcm.googleapis.com` (+ ggf. `updates.push.services.mozilla.com`, nur falls Firefox).
 
+## Nachrecherche iOS 26 (Websuche, 23.10.2026)
+
+Hinweis: WebSearch lief in dieser Sitzung in einen Timeout (keine Freigabe), daher nur WebFetch auf Primärquellen. Alles Nicht-Gelesene bleibt **[ungeprüft]**.
+
+1. **Push im normalen Safari-Tab auf iOS 26: nicht belegt, Annahme bleibt "nein".**
+   - MDN/BCD `PushManager` (main, 23.10.2026): Safari iOS 16.4, Hinweis weiterhin "Notifications are supported in web apps saved to the home screen". Kein Eintrag für iOS 26 mit Änderung.
+     - https://github.com/mdn/browser-compat-data/blob/main/api/PushManager.json
+   - Safari-26.0-Blog (15.09.2025) erwähnt Push gar nicht. Änderung betrifft nur: jede Home-Bildschirm-Seite öffnet standardmäßig als Web-App, Nutzer kann "Open as Web App" abschalten, "zero requirements for installability", Manifest nicht mehr nötig [verifiziert].
+     - https://webkit.org/blog/17333/webkit-features-in-safari-26-0/
+   - Apple-Release-Notes-Seite (developer.apple.com) per Tool nicht lesbar [ungeprüft].
+   - Folge: Home-Bildschirm-Installation bleibt Voraussetzung. Neu: jede Seite wird beim "Zum Home-Bildschirm" automatisch Web-App, solange der Schalter an ist.
+2. **Declarative Web Push, Format** (Push-API-Spec-Entwurf, 23.10.2026: https://w3c.github.io/push-api/ ; WebKit-Blog https://webkit.org/blog/16535/meet-declarative-web-push/):
+   - Erkennung am **entschlüsselten** Payload: JSON-Objekt, `web_push` == 8030, `notification` ist Objekt. Sonst normaler Push an den Service Worker [verifiziert].
+   - Pflicht in `notification`: `title` (nicht leer) und `navigate` (String, muss zu gültiger URL werden; relative URL wird gegen Subscription-Scope aufgelöst). Fehlt/ungültig -> Parse schlägt fehl -> normaler Push-Event (auf iOS ohne SW = Problem) [verifiziert].
+   - Alle weiteren Felder optional (`body`, `lang`, `dir`, `silent`, `app_badge`, ...) [verifiziert].
+   - **Content-Type: Spec nennt keinen** (Parser arbeitet auf Bytes, nur `Content-Encoding: aes128gcm` wie bei normalem Push). Sendeweg laut WebKit "exactly as before" [verifiziert]. Ob APNs einen zusätzlichen Header verlangt: **[ungeprüft]**, auf dem Gerät testen.
+   - **navigate-Origin**: Spec-Auszug nennt keine explizite Same-Origin-Prüfung (delegiert an Notifications-Spec, nicht gelesen) [ungeprüft]. Planung: immer relative Pfade oder URL auf eigener Origin senden.
+   - Spec kennt auch `actions` (Einträge mit `action`, `title`, `navigate`); siehe Punkt 4.
+3. **pywebpush 2.5.x, Urgency/Topic** (Quellcode `pywebpush/__init__.py` main, 23.10.2026; README):
+   - Keine eigenen Parameter, aber `headers`-Dict wird durchgereicht (case-insensitive). Setzen: `webpush(..., headers={"Urgency": "high", "Topic": "chore-123"}, ttl=86400)` [Code gelesen; Ende-zu-Ende gegen APNs ungeprüft].
+   - VAPID-Header überschreiben gleichnamige Caller-Header. `ttl`-Argument setzt TTL-Header (Default 0!). Content-Type wird nie gesetzt, `Content-Encoding` automatisch.
+   - Achtung: `webpush()`-Signatur im README listet `headers` nicht in der One-Call-Doku; im Code wird `headers` kopiert, also vorhanden [Details beim Einbau prüfen].
+   - Urgency-Werte (very-low|low|normal|high) und Topic (max 32 Zeichen URL-safe) stammen aus RFC 8030 [Altwissen, ungeprüft]. Apple-Verhalten zu Urgency/Topic [ungeprüft].
+4. **Notification-Actions auf iOS 26: weiterhin nicht belegt/unterstützt.**
+   - BCD `Notification.actions`: Safari `false`, Safari iOS spiegelt (= false) (main, 23.10.2026). https://github.com/mdn/browser-compat-data/blob/main/api/Notification.json
+   - Neu: BCD `Notification.navigate` Safari/iOS **18.5** [verifiziert].
+   - Das Push-API-Spec kennt `actions` im Declarative-Format; ob iOS 26 sie anzeigt, ist **[ungeprüft]**. Nicht darauf bauen, auf iPhone testen.
+
 ## Empfehlung für FamKo
 
 1. **Push nur für iPhones** (Eltern + Kinder) als Home-Bildschirm-Web-App. Setup-Anleitung: Safari -> Teilen -> Zum Home-Bildschirm -> "Als Web-App öffnen" an -> App öffnen -> Button "Benachrichtigungen aktivieren" (Nutzergeste).
@@ -113,4 +141,6 @@ Hinweis: Die Apple-Developer-Doku-Seite war per Tool nicht lesbar (JS-Seite); Au
 9. Manifest trotz iOS 26 behalten (`display: standalone`, Icons 180/192/512, `start_url`, `scope`). `/sw.js` und `/manifest.json` ohne Cache und ohne Auth/Redirect ausliefern.
 10. Zugriff unterwegs klären: VPN/WireGuard auf Eltern-Handys, sonst Notification-Texte ohne nötigen App-Aufruf formulieren.
 11. Firewall ausgehend: `*.push.apple.com`, `fcm.googleapis.com`, 443.
-12. **Vor Start auf echtem iPhone (iOS 26) testen**: Push ohne Home-Bildschirm (erwartet: nein), `navigate`-Verhalten, Badge via `app_badge`, Content-Type für Declarative.
+12. **Vor Start auf echtem iPhone (iOS 26) testen**: Push ohne Home-Bildschirm (erwartet: nein), `navigate`-Verhalten (nur eigene Origin/relativ senden), Badge via `app_badge`, ob APNs für Declarative einen Extra-Header braucht (Spec: keiner), ob `actions` im Declarative-Format erscheinen (nicht verlassen).
+13. **Urgency/Topic** über `headers={"Urgency":..., "Topic":...}` in pywebpush setzen (z. B. `high` für Bestätigungsanfragen, `normal` für Erinnerungen; Topic = Objekt-ID, damit neuere Nachricht ältere ersetzt) und `ttl` explizit übergeben (Default 0). Wirkung bei Apple ungeprüft.
+14. Setup-Anleitung (Punkt 1) ergänzen: iOS 26 setzt "Als Web-App öffnen" standardmäßig an; Schalter im Auge behalten.
