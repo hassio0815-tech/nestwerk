@@ -160,8 +160,9 @@ def test_touchziele_und_schriftgroessen_im_css():
     assert re.search(r"details > summary\s*\{[^}]*min-height:\s*var\(--tap-min\)", css)
     assert re.search(r"label\.reihe\s*\{[^}]*min-height:\s*var\(--tap-min\)", css)
     assert re.search(r"\.chip\s*\{[^}]*font-size:\s*0\.875rem", css)
-    assert re.search(r"\.zeile > a\s*\{[^}]*min-height:\s*var\(--tap-min\)", _css("oberflaeche.css"))
+    zeile_css = _css("oberflaeche.css")
+    assert re.search(r"\.zeile > a\s*\{[^}]*min-height:\s*var\(--tap-min\)", zeile_css)
     for datei in ("famko.css", "aufgaben.css"):
         for wert in re.findall(r"font-size:\s*([0-9.]+)(rem|em)", _css(datei)):
             if wert[1] == "em":
-                assert False, "relative em-Schrift unterschreitet je nach Basis 14 px"
+                raise AssertionError("relative em-Schrift unterschreitet je nach Basis 14 px")
