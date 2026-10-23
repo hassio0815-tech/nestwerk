@@ -16,6 +16,7 @@ dev = [
     "pytest-django==4.14.0",
     "ruff==0.17.2",
     "import-linter==2.15",
+    "hypothesis==6.170.8",
 ]
 
 # Kein installierbares Paket, nur Abhängigkeitsliste (pip install -e ".[dev]")
