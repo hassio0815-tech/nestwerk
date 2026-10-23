@@ -70,6 +70,22 @@ class Benutzer(AbstractBaseUser):
     def is_active(self):
         return self.aktiv
 
+    def _get_session_auth_hash(self, secret=None):
+        """Eltern haben kein eigenes Passwort: In die Sitzungs-Prüfsumme geht zusätzlich der
+        Hash des gemeinsamen Eltern-Passworts ein. Ein Passwortwechsel beendet damit alle
+        bestehenden Eltern-Sitzungen (Review AP19, B-05); die eigene erneuert die View."""
+        if self.rolle != Rolle.ELTERN:
+            return super()._get_session_auth_hash(secret=secret)
+        from django.utils.crypto import salted_hmac
+
+        zugang = ElternZugang.objects.filter(pk=1).values_list("passwort_hash", flat=True).first()
+        return salted_hmac(
+            "famko.konten.Benutzer.get_session_auth_hash",
+            f"{self.password}|{zugang or ''}",
+            secret=secret,
+            algorithm="sha256",
+        ).hexdigest()
+
     @property
     def ist_eltern(self):
         return self.rolle == Rolle.ELTERN

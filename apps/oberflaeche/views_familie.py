@@ -1,5 +1,6 @@
 """Kinder- und Elternverwaltung nach der Einrichtung (Eltern)."""
 
+from django.contrib.auth import update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
@@ -135,4 +136,6 @@ def passwort(request):
         services.eltern_passwort_setzen(neu)
     except ValidationError as exc:
         return _seite(request, fehler={"passwort": _meldung(exc)}, status=422)
+    # Andere Eltern-Sitzungen enden (Prüfsumme enthält das Passwort), die eigene bleibt
+    update_session_auth_hash(request, request.user)
     return _fertig("passwort")

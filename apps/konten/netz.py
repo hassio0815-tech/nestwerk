@@ -1,9 +1,15 @@
 """Client-IP hinter dem Proxy und Heimnetz-Prüfung (ARCHITECTURE 4.3).
 
 ``X-Forwarded-For`` wird nur ausgewertet, wenn die direkte Gegenstelle (``REMOTE_ADDR``) in
-``konten.vertraute_proxys`` steht. Von rechts nach links wird der erste Eintrag genommen, der
-selbst kein vertrauter Proxy ist (ein Client kann links beliebig Adressen anhängen, die
-rechten Einträge stammen von unseren Proxys). Unlesbare Adressen -> ``None`` (fail closed).
+``konten.vertraute_proxys`` steht. Dann zählt genau der **rechteste** Eintrag: ihn hat unser
+einziger Proxy (Nginx Proxy Manager) angehängt, alles links davon kann der Client frei
+erfinden. Unlesbare Adressen -> ``None`` (fail closed).
+
+Bewusst kein "von rechts den ersten nicht vertrauten Eintrag nehmen" (Review AP19, B-02): Der
+Startwert der vertrauten Proxys sind alle privaten Netze, und Heimnetz-Clients sind selbst
+privat. Ein Kind im WLAN hätte mit ``X-Forwarded-For: <beliebig>`` sonst jede Adresse
+vortäuschen und so das Rate-Limit des Eltern-Logins (je IP) umgehen können. Topologie mit nur
+einem Proxy-Hop: ARCHITECTURE 3 (kein cloudflared, E20).
 """
 
 import ipaddress
@@ -41,14 +47,8 @@ def client_ip(request):
     kette = request.META.get("HTTP_X_FORWARDED_FOR", "")
     if not kette.strip():
         return direkt
-    for eintrag in reversed(kette.split(",")):
-        adresse = _adresse(eintrag)
-        if adresse is None:
-            return None
-        if not _enthalten(proxys, adresse):
-            return adresse
-    # Alle Einträge sind vertraute Proxys: ursprünglicher Client ist der linkeste
-    return _adresse(kette.split(",")[0])
+    # Nur der vom Proxy selbst angehängte (rechteste) Eintrag ist vertrauenswürdig
+    return _adresse(kette.split(",")[-1])
 
 
 def client_ip_text(request):

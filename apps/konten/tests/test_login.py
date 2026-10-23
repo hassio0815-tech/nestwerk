@@ -188,3 +188,24 @@ def test_seiten_ohne_externe_ressourcen(anna, mama, client):
         html = s.content.decode()
         assert s.status_code == 200
         assert "http://" not in html and "https://" not in html
+
+
+def test_passwortwechsel_beendet_andere_eltern_sitzungen(mama):
+    """Regression B-05: Eltern haben kein eigenes Passwort; ohne Anpassung blieben alle
+    Sitzungen (vertraute Geräte: 90 Tage) nach einem Wechsel des Familien-Passworts gültig."""
+    from django.test import Client
+
+    alt, neu = Client(), Client()
+    eltern_anmelden(alt, mama)
+    eltern_anmelden(neu, mama)
+    assert alt.get(reverse("konten:geraete")).status_code == 200
+    antwort = neu.post(
+        reverse("oberflaeche:familie_passwort"),
+        {"passwort": "ganz-neues-pw", "passwort2": "ganz-neues-pw"},
+    )
+    assert antwort.status_code == 302
+    # die eigene Sitzung bleibt, die andere ist beendet
+    assert neu.get(reverse("konten:geraete")).status_code == 200
+    assert alt.get(reverse("konten:geraete")).status_code == 302
+    assert "_auth_user_id" not in alt.session
+    assert PASSWORT != "ganz-neues-pw"

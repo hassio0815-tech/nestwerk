@@ -191,3 +191,28 @@ def test_ungueltiger_geraetetyp_wird_abgelehnt(mama):
 
 def test_passwort_nie_im_klartext_auf_dem_tablet_bekannt(mama, tablet):
     assert PASSWORT not in tablet.bezeichnung
+
+
+# --- Review AP19 ------------------------------------------------------------------------------
+
+
+def test_widerruf_des_geraets_beendet_dessen_sitzung(anna, tablet, uhr):
+    """Regression B-06: Widerruf wirkt sofort auf Sitzungen, die auf dem Gerät begannen
+    (vorher blieb nur das Kiosk-Flag in der Sitzung stehen)."""
+    c = client_fuer(tablet)
+    kind_anmelden(c, anna)
+    assert c.session["famko_geraet_id"] == str(tablet.pk)
+    services.geraet_widerrufen(tablet, von=None)
+    antwort = c.get(AKTIV)
+    assert antwort.status_code == 302 and antwort.url == reverse("konten:start")
+    assert not angemeldet_bei(c)
+    eintrag = AuditEintrag.objects.filter(aktion="konten.sitzung_abgelaufen", akteur=anna).get()
+    assert eintrag.details == {"grund": "geraet_widerrufen"}
+
+
+def test_sitzung_ohne_registriertes_geraet_bleibt_vom_widerruf_unberuehrt(anna, tablet):
+    c = client_fuer()
+    kind_anmelden(c, anna)
+    assert c.session["famko_geraet_id"] is None
+    services.geraet_widerrufen(tablet, von=None)
+    assert c.get(AKTIV).status_code == 200

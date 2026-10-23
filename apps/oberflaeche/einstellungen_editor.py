@@ -31,9 +31,15 @@ def modul_titel(modul):
     return MODUL_TITEL.get(modul, modul.capitalize())
 
 
+def definitionen(modul=None):
+    """Im Editor änderbare Definitionen: ohne interne (technischer Zustand, z. B. ob die
+    Einrichtung abgeschlossen ist; sonst ließe sich der Assistent versehentlich wieder öffnen)."""
+    return [d for d in einstellungen.definitionen(modul) if not d.intern]
+
+
 def module():
     """Module mit Einstellungen: ``allgemein`` zuerst, dann alphabetisch nach Titel."""
-    namen = {d.modul for d in einstellungen.definitionen()}
+    namen = {d.modul for d in definitionen()}
     return sorted(namen, key=lambda m: (m not in ZUERST, modul_titel(m).lower()))
 
 
@@ -80,7 +86,7 @@ def felder(modul, *, eingaben=None, fehler=None):
     eingaben = eingaben or {}
     fehler = fehler or {}
     ergebnis = []
-    for d in einstellungen.definitionen(modul):
+    for d in definitionen(modul):
         fehlt = d.schluessel not in gespeichert
         if d.schluessel in eingaben:
             text = eingaben[d.schluessel]
@@ -127,7 +133,7 @@ def parsen(definition, rohtext):
 def eingaben_aus_post(modul, post):
     """Rohtexte aller Felder des Moduls. Fehlende Checkbox = ausgeschaltet."""
     eingaben = {}
-    for d in einstellungen.definitionen(modul):
+    for d in definitionen(modul):
         if d.typ is Typ.BOOL:
             eingaben[d.schluessel] = "1" if post.getlist(d.schluessel)[-1:] == ["1"] else ""
         elif d.schluessel in post:
@@ -143,7 +149,7 @@ def speichern(modul, eingaben):
     """
     fehler = {}
     neue = {}
-    for d in einstellungen.definitionen(modul):
+    for d in definitionen(modul):
         if d.schluessel not in eingaben:
             continue
         try:

@@ -63,6 +63,9 @@ class Definition:
     auswahl: tuple | None = None  # erlaubte Werte (TEXT, GANZZAHL; bei LISTE je Element)
     element_typ: Typ | None = None  # nur LISTE
     validatoren: tuple[Callable[[Any], None], ...] = ()  # erhalten den gelesenen Wert
+    # Technischer Zustand (z. B. Fortschritt des Einrichtungs-Assistenten): kein Familienwert,
+    # erscheint nicht im Einstellungen-Editor (Review AP19, B-08)
+    intern: bool = False
 
     @property
     def modul(self):
@@ -292,4 +295,6 @@ def kern_einstellungen_definieren():
         beschreibung="Beginn des ersten App-Jahres.",
     )
     definieren("allgemein.sprache", Typ.TEXT, "Sprache", auswahl=("de",))
-    definieren("allgemein.einrichtung_abgeschlossen", Typ.BOOL, "Einrichtung abgeschlossen")
+    definieren(
+        "allgemein.einrichtung_abgeschlossen", Typ.BOOL, "Einrichtung abgeschlossen", intern=True
+    )

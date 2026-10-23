@@ -54,12 +54,38 @@ def test_gefaelschter_linker_xff_eintrag_hilft_nicht(npm):
     assert not netz.kind_login_erlaubt(r)
 
 
-def test_mehrere_vertraute_proxys_in_der_kette(npm):
-    einstellungen.setzen(
-        "konten.vertraute_proxys", ["192.168.1.5/32", "172.18.0.0/16"], akteur=None
-    )
-    r = anfrage("192.168.1.5", "192.168.1.40, 172.18.0.3")
+def test_nur_der_rechteste_eintrag_zaehlt_auch_bei_privaten_adressen(db):
+    """Regression B-02: Startwert (alle privaten Netze vertraut) + privater Heimnetz-Client.
+    Der Client kann links Adressen erfinden; zählen darf nur, was der Proxy angehängt hat."""
+    r = anfrage("192.168.1.5", "203.0.113.77, 192.168.1.40")
     assert str(netz.client_ip(r)) == "192.168.1.40"
+    r = anfrage("192.168.1.5", "10.0.0.1, 10.0.0.2, 192.168.1.41")
+    assert str(netz.client_ip(r)) == "192.168.1.41"
+
+
+def test_eltern_rate_limit_laesst_sich_nicht_per_xff_umgehen(db, client):
+    """Regression B-02: Ein Kind im WLAN probiert das Eltern-Passwort mit wechselnden
+    gefälschten X-Forwarded-For-Adressen; die Sperre greift trotzdem für seine echte IP."""
+    from apps.konten import services
+
+    services.eltern_passwort_setzen("richtig-geheim", von=None)
+    mama = services.eltern_anlegen("Mama")
+    limit = einstellungen.wert("konten.eltern_fehlversuche")
+    for i in range(limit):
+        client.post(
+            reverse("konten:eltern_login"),
+            {"eltern": str(mama.pk), "passwort": f"falsch{i}"},
+            REMOTE_ADDR="192.168.1.5",
+            HTTP_X_FORWARDED_FOR=f"10.66.0.{i}, 192.168.1.40",
+        )
+    antwort = client.post(
+        reverse("konten:eltern_login"),
+        {"eltern": str(mama.pk), "passwort": "richtig-geheim"},
+        REMOTE_ADDR="192.168.1.5",
+        HTTP_X_FORWARDED_FOR="10.66.1.1, 192.168.1.40",
+    )
+    assert antwort.status_code == 429
+    assert set(AnmeldeVersuch.objects.values_list("ip", flat=True)) == {"192.168.1.40"}
 
 
 def test_nur_vertraute_in_der_kette_nimmt_den_linkesten(npm):

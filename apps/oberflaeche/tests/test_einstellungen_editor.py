@@ -8,7 +8,8 @@ from apps.kern.einstellungen import Typ, UngueltigerWert
 from apps.kern.models import AuditEintrag, Einstellung
 from apps.oberflaeche import einstellungen_editor as editor
 
-DEFINITIONEN = einstellungen.definitionen()
+DEFINITIONEN = editor.definitionen()
+INTERN = [d for d in einstellungen.definitionen() if d.intern]
 
 
 def anderer_wert(d, aktuell):
@@ -146,3 +147,24 @@ def test_neue_einstellung_erscheint_ohne_codeaenderung(eltern_client):
         )
         assert antwort.status_code == 302
         assert einstellungen.wert("phase2.beispiel") == 4
+
+
+def test_interne_einstellungen_sind_nicht_editierbar(eltern_client):
+    """Regression B-08: ``allgemein.einrichtung_abgeschlossen`` war im Editor abschaltbar und
+    öffnete damit den Einrichtungs-Assistenten (inkl. Passwort-Neusetzen) wieder."""
+    assert {d.schluessel for d in INTERN} == {
+        "allgemein.einrichtung_abgeschlossen",
+        "einrichtung.schritt",
+        "einrichtung.smtp_uebersprungen",
+    }
+    html = eltern_client.get(reverse("oberflaeche:einstellungen")).content.decode()
+    for d in INTERN:
+        assert f'name="{d.schluessel}"' not in html
+    vorher = einstellungen.wert("allgemein.einrichtung_abgeschlossen")
+    daten = post_daten("allgemein")
+    daten["allgemein.einrichtung_abgeschlossen"] = ["0"]
+    antwort = eltern_client.post(
+        reverse("oberflaeche:einstellungen_speichern", args=["allgemein"]), daten
+    )
+    assert antwort.status_code == 302
+    assert einstellungen.wert("allgemein.einrichtung_abgeschlossen") == vorher

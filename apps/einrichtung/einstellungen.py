@@ -19,6 +19,7 @@ def einstellungen_definieren():
         beschreibung="Höchster Schritt, den der Assistent freigegeben hat (Zwischenstand).",
         minimum=1,
         maximum=LETZTER_SCHRITT,
+        intern=True,
     )
     definieren(
         "einrichtung.basis_url",
@@ -32,4 +33,5 @@ def einstellungen_definieren():
         "einrichtung.smtp_uebersprungen",
         Typ.BOOL,
         "Einrichtung: E-Mail-Versand übersprungen",
+        intern=True,
     )

@@ -35,6 +35,9 @@ class SitzungsRichtlinie:
         if not request.user.is_authenticated:
             return None
         jetzt = zeit.jetzt().timestamp()
+        if sitzung.geraet_widerrufen(request):
+            sitzung.wegen_leerlauf_abmelden(request, grund="geraet_widerrufen")
+            return self._abgelaufen(request)
         if sitzung.ist_kiosk_sitzung(request):
             if sitzung.leerlauf_abgelaufen(request, jetzt):
                 sitzung.wegen_leerlauf_abmelden(request)

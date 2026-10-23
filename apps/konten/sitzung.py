@@ -5,6 +5,9 @@ Session-Schlüssel (alle mit Präfix ``famko_``):
 - ``famko_aktivitaet``: Zeitpunkt (Unix-Sekunden) der letzten **aktiven** Anfrage
 - ``famko_gleitend``: Sekunden, auf die eine gleitende Sitzung bei Nutzung verlängert wird
 - ``famko_verlaengert``: wann zuletzt verlängert wurde (Schreibzugriffe begrenzen)
+- ``famko_geraet_id``: registriertes Gerät, auf dem die Sitzung begann (oder ``None``). Wird es
+  widerrufen (oder fehlt sein Cookie), endet die Sitzung beim nächsten Aufruf (Review AP19,
+  B-06): ein verlorenes/abgegebenes Gerät lässt sich so abmelden, auch das Flur-Tablet.
 """
 
 from django.contrib.auth import login, logout
@@ -17,6 +20,7 @@ KIOSK = "famko_kiosk"
 AKTIVITAET = "famko_aktivitaet"
 GLEITEND = "famko_gleitend"
 VERLAENGERT = "famko_verlaengert"
+GERAET = "famko_geraet_id"
 
 # Gleitende Sitzungen werden höchstens so oft neu geschrieben (Sekunden)
 VERLAENGERUNG_ABSTAND = 3600
@@ -51,6 +55,7 @@ def sitzung_beginnen(request, benutzer, *, vertraut=False):
     request.session[AKTIVITAET] = jetzt
     request.session[GLEITEND] = gleitend
     request.session[VERLAENGERT] = jetzt
+    request.session[GERAET] = str(geraet.pk) if geraet else None
     request.session.set_expiry(dauer)
     audit.protokollieren(
         "konten.angemeldet",
@@ -84,12 +89,21 @@ def aktivitaet_vermerken(request, jetzt):
         session[VERLAENGERT] = jetzt
 
 
-def wegen_leerlauf_abmelden(request):
+def geraet_widerrufen(request):
+    """Begann die Sitzung auf einem registrierten Gerät, das nicht mehr gültig ist?"""
+    erwartet = request.session.get(GERAET)
+    if not erwartet:
+        return False
+    geraet = getattr(request, "geraet", None)
+    return geraet is None or str(geraet.pk) != erwartet
+
+
+def wegen_leerlauf_abmelden(request, grund="leerlauf"):
     benutzer = request.user
     audit.protokollieren(
         "konten.sitzung_abgelaufen",
         akteur=benutzer,
         geraet=getattr(request, "geraet", None),
-        details={"grund": "leerlauf"},
+        details={"grund": grund},
     )
     logout(request)

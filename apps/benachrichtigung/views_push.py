@@ -91,9 +91,19 @@ def manifest(request):
     return _ohne_cache(antwort)
 
 
+# Die Offline-Seite muss ohne weitere Dateien auskommen (Service-Worker-Cache): eigene CSP mit
+# Inline-Style, aber ohne jedes Skript.
+OFFLINE_CSP = (
+    "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; "
+    "frame-ancestors 'none'"
+)
+
+
 @require_GET
 def offline(request):
-    return render(request, "benachrichtigung/offline.html", {"theme_farbe": THEME_FARBE})
+    antwort = render(request, "benachrichtigung/offline.html", {"theme_farbe": THEME_FARBE})
+    antwort["Content-Security-Policy"] = OFFLINE_CSP
+    return antwort
 
 
 # --- Abo-Flow --------------------------------------------------------------------------------
