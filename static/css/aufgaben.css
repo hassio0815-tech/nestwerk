@@ -1,0 +1,11 @@
+/* Aufgaben-Stammdaten (Eltern-UI). Nutzt nur Tokens/Komponenten des Designsystems. */
+.plan { border: 1px solid var(--rand, #ccc); border-radius: 12px; padding: 1rem; }
+.plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+.plan__wochen, .plan__intervall { display: none; }
+.plan:has(input[name="wiederholungsart"][value="woechentlich"]:checked) .plan__wochen,
+.plan:has(input[name="wiederholungsart"][value="intervall"]:checked) .plan__intervall { display: block; }
+@supports not selector(:has(*)) { .plan__wochen, .plan__intervall { display: block; } }
+.zeile { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
+.zeile__text { flex: 1 1 16rem; }
+.zeile__plan { font-size: .9em; opacity: .8; }
+.aufgaben-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
