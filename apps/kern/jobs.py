@@ -113,6 +113,11 @@ def ausfuehren(name, funktion, *, lease=LEASE_STANDARD):
     return lauf
 
 
+def letzter_lauf(name):
+    """Jüngster ``JobLauf`` eines Jobs oder ``None`` (Systemstatus im Dashboard)."""
+    return JobLauf.objects.filter(name=name).order_by("-gestartet_am", "-id").first()
+
+
 class JobBefehl(BaseCommand):
     """Basis für Scheduler-Commands. Unterklasse setzt ``job_name`` und implementiert ``job``."""
 

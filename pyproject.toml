@@ -64,3 +64,39 @@ layers = [
     "konten",
     "kern",
 ]
+
+# Öffentliche Schnittstelle je App (ARCHITECTURE 2.2): fremde models.py werden nicht importiert
+# (Review AP19, B-11). Indirekt über selectors/services ist erlaubt. Enums (z. B. konten.Rolle)
+# bleiben als bewusste Ausnahme erlaubt und sind deshalb nicht aufgeführt.
+[[tool.importlinter.contracts]]
+name = "Oberfläche liest nur über selectors/services"
+type = "forbidden"
+source_modules = ["apps.oberflaeche", "apps.einrichtung"]
+forbidden_modules = [
+    "apps.kern.models",
+    "apps.punkte.models",
+    "apps.ereignisse.models",
+    "apps.aufgaben.models",
+    "apps.belohnung.models",
+]
+allow_indirect_imports = "True"
+ignore_imports = ["apps.*.tests.** -> **"]
+
+[[tool.importlinter.contracts]]
+name = "Fach-Module nutzen keine fremden Modelle"
+type = "forbidden"
+source_modules = ["apps.aufgaben", "apps.belohnung"]
+forbidden_modules = [
+    "apps.kern.models",
+    "apps.punkte.models",
+    "apps.ereignisse.models",
+    "apps.benachrichtigung.models",
+]
+allow_indirect_imports = "True"
+ignore_imports = ["apps.*.tests.** -> **"]
+
+[[tool.importlinter.contracts]]
+name = "benachrichtigung haengt nur von ereignisse ab (nicht von punkte)"
+type = "forbidden"
+source_modules = ["apps.benachrichtigung"]
+forbidden_modules = ["apps.punkte"]

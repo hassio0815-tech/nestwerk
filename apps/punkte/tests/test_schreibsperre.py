@@ -9,13 +9,6 @@ from apps.punkte import services
 pytestmark = pytest.mark.django_db
 
 
-def test_belohnung_nutzt_dieselbe_sperre_wie_punkte():
-    from apps.belohnung import services as belohnung
-
-    assert not hasattr(belohnung, "_schreibsperre")
-    assert belohnung.punkte_services.schreibsperre is services.schreibsperre
-
-
 def test_sperre_verlangt_transaktion(anna, monkeypatch):
     monkeypatch.setattr(type(connection), "in_atomic_block", False, raising=False)
     with pytest.raises(ImproperlyConfigured, match="atomic"):

@@ -84,9 +84,9 @@ flowchart TD
 - **Verboten:** Imports zwischen Fach-Modulen (Schicht 3 untereinander). Kommunikation nur über:
   - **Domain-Events** (`ereignisse.veroeffentlichen(...)`, Handler im Ziel-Modul),
   - **Registry** in `kern` (Metrik-Provider, Fortschritts-Provider, Dashboard-Kacheln, Ereignistypen).
-- **Innerhalb Schicht 2:** `spielregeln -> punkte, ereignisse`; `benachrichtigung -> ereignisse`; `punkte` und `ereignisse` hängen nur von `kern`, `konten` ab.
+- **Innerhalb Schicht 2:** `spielregeln -> punkte, ereignisse`; `benachrichtigung -> ereignisse` (nie `punkte`); `punkte -> ereignisse` (Ereignis `punkte.gebucht`, AP04); `ereignisse` hängt nur von `kern`, `konten` ab.
 - **Öffentliche Schnittstelle je App:** nur `services.py` (schreibend), `selectors.py` (lesend), `events.py` (Ereignistypen), `registry.py`. Fremde `models.py` werden nie importiert. Ausnahme: `ForeignKey` per String-Referenz (`"konten.Benutzer"`) auf Schicht 0–2.
-- **Durchsetzung:** `import-linter` (Layers-Contract + "forbidden" zwischen Fach-Modulen) läuft in den Tests. [A]
+- **Durchsetzung:** `import-linter` (Layers-Contract + "forbidden" zwischen Fach-Modulen) läuft in den Tests. [A] Seit AP19 zusätzlich "forbidden"-Verträge: Oberfläche und Fach-Module importieren keine fremden `models.py` (Enums wie `konten.Rolle` ausgenommen), `benachrichtigung` nie `punkte`.
 - **Dashboards:** `oberflaeche` rendert **Kacheln** aus der Registry; jedes Modul registriert seine Kacheln in `AppConfig.ready()`. Neues Modul = neue Kacheln ohne Änderung an `oberflaeche`.
 
 ### 2.3 Wichtige Querbeziehungen ohne Direkt-Import

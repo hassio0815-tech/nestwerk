@@ -228,6 +228,11 @@ def werte(*schluessel):
     return {s: d.lesen(zeilen[s]) for s, d in defs.items()}
 
 
+def gespeicherte_werte():
+    """Alle gespeicherten Werte in JSON-Form ``{schluessel: wert}`` (Einstellungen-Editor)."""
+    return dict(Einstellung.objects.values_list("schluessel", "wert"))
+
+
 def fehlende():
     """Deklarierte Schlüssel ohne DB-Wert (Systemstatus, Einrichtungs-Assistent)."""
     vorhanden = set(Einstellung.objects.values_list("schluessel", flat=True))

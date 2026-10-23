@@ -2,7 +2,7 @@
 
 from datetime import date, timedelta
 
-from django.db.models import Prefetch, Q
+from django.db.models import Count, Prefetch, Q
 
 from apps.kern import einstellungen, zeit
 
@@ -17,6 +17,7 @@ from .models import (
     Meldung,
     MeldungStatus,
     Status,
+    Vorlage,
 )
 
 
@@ -197,3 +198,38 @@ def offene_entscheidungen_anzahl() -> int:
     return AufgabenInstanz.objects.filter(
         status__in=(InstanzStatus.KONFLIKT, InstanzStatus.GEMELDET)
     ).count()
+
+
+def vorlagen():
+    """Aufgabenbibliothek (Vorlagen) in Anzeige-Reihenfolge."""
+    return Vorlage.objects.select_related("kategorie")
+
+
+def zahlen_je_kind(kinder, von, bis) -> dict:
+    """Je Kind (Benutzer-PK): laufende Aufgaben (reserviert/gemeldet/Rückfrage) und im
+    Intervall ``[von, bis)`` bestätigte. Eine Abfrage, unabhängig von der Kinderzahl."""
+    zeilen = (
+        AufgabenInstanz.objects.filter(kind__in=kinder)
+        .values("kind")
+        .annotate(
+            laufend=Count(
+                "id",
+                filter=Q(
+                    status__in=(
+                        InstanzStatus.RESERVIERT,
+                        InstanzStatus.GEMELDET,
+                        InstanzStatus.RUECKFRAGE,
+                    )
+                ),
+            ),
+            heute=Count(
+                "id",
+                filter=Q(
+                    status=InstanzStatus.BESTAETIGT,
+                    abgeschlossen_am__gte=von,
+                    abgeschlossen_am__lt=bis,
+                ),
+            ),
+        )
+    )
+    return {z["kind"]: z for z in zeilen}

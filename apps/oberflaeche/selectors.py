@@ -1,14 +1,11 @@
 """Lesende Daten für die Dashboards. oberflaeche besitzt keine Tabellen: alles kommt aus den
-öffentlichen Schnittstellen und Modellen der darunterliegenden Apps."""
-
-from django.db.models import Count, Q
+öffentlichen Schnittstellen (selectors/services) der darunterliegenden Apps, nie aus deren
+Modellen (ARCHITECTURE 2.2; Vertrag in pyproject.toml)."""
 
 from apps.aufgaben import selectors as aufgaben
-from apps.aufgaben.models import AufgabenInstanz, InstanzStatus
 from apps.belohnung import selectors as belohnung
 from apps.ereignisse import selectors as ereignisse
-from apps.kern import zeit
-from apps.kern.models import JobLauf
+from apps.kern import jobs, zeit
 from apps.konten import selectors as konten
 from apps.punkte import selectors as punkte
 
@@ -58,31 +55,7 @@ def kinder_uebersicht(jetzt=None):
     jetzt = jetzt or zeit.jetzt()
     von, bis = zeit.tag_intervall(zeit.heute(jetzt))
     kinder = list(konten.aktive_kinder())
-    zahlen = {
-        z["kind"]: z
-        for z in AufgabenInstanz.objects.filter(kind__in=kinder)
-        .values("kind")
-        .annotate(
-            laufend=Count(
-                "id",
-                filter=Q(
-                    status__in=(
-                        InstanzStatus.RESERVIERT,
-                        InstanzStatus.GEMELDET,
-                        InstanzStatus.RUECKFRAGE,
-                    )
-                ),
-            ),
-            heute=Count(
-                "id",
-                filter=Q(
-                    status=InstanzStatus.BESTAETIGT,
-                    abgeschlossen_am__gte=von,
-                    abgeschlossen_am__lt=bis,
-                ),
-            ),
-        )
-    }
+    zahlen = aufgaben.zahlen_je_kind(kinder, von, bis)
     zeilen = []
     for kind in kinder:
         z = zahlen.get(kind.pk, {})
@@ -102,6 +75,6 @@ def system_status():
     status = ereignisse.systemstatus()
     laeufe = {}
     for name in SICHERUNGS_JOBS:
-        laeufe[name] = JobLauf.objects.filter(name=name).order_by("-gestartet_am", "-id").first()
+        laeufe[name] = jobs.letzter_lauf(name)
     status["jobs"] = laeufe
     return status

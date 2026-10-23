@@ -256,21 +256,20 @@ def _s6(request, post):
 
 
 def _listen():
-    """Katalog und Bibliothek nur zur Ansicht; fehlende Module werden übersprungen."""
-    from django.apps import apps
+    """Katalog und Bibliothek nur zur Ansicht (über die Selectors der Fach-Module)."""
+    from apps.aufgaben import selectors as aufgaben
+    from apps.belohnung import selectors as belohnung
 
-    ergebnis = []
-    for titel, app, modell, feld in (
-        ("Belohnungs-Katalog", "belohnung", "Belohnung", "preis_punkte"),
-        ("Aufgaben-Bibliothek", "aufgaben", "Vorlage", "punkte"),
-    ):
-        try:
-            klasse = apps.get_model(app, modell)
-            zeilen = [(o.titel, getattr(o, feld)) for o in klasse.objects.all()]
-        except (LookupError, AttributeError):
-            continue
-        ergebnis.append({"titel": titel, "zeilen": zeilen})
-    return ergebnis
+    return [
+        {
+            "titel": "Belohnungs-Katalog",
+            "zeilen": [(b.titel, b.preis_punkte) for b in belohnung.katalog(nur_aktive=False)],
+        },
+        {
+            "titel": "Aufgaben-Bibliothek",
+            "zeilen": [(v.titel, v.punkte) for v in aufgaben.vorlagen()],
+        },
+    ]
 
 
 def _s7(request, post):

@@ -20,7 +20,7 @@ from apps.kern import audit, einstellungen, zeit
 from apps.konten.models import Rolle
 from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte_services
-from apps.punkte.models import Art
+from apps.punkte.services import Art
 
 from . import selectors
 from .events import ABGELEHNT, ANTRAG, BESTAETIGT

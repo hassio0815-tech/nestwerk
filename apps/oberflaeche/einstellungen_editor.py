@@ -6,7 +6,6 @@ from django.db import transaction
 
 from apps.kern import einstellungen
 from apps.kern.einstellungen import Typ
-from apps.kern.models import Einstellung
 
 MODUL_TITEL = {
     "allgemein": "Allgemein",
@@ -76,7 +75,7 @@ def feldart(definition):
 
 
 def _gespeichert():
-    return dict(Einstellung.objects.values_list("schluessel", "wert"))
+    return einstellungen.gespeicherte_werte()
 
 
 def felder(modul, *, eingaben=None, fehler=None):
