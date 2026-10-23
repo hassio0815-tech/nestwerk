@@ -79,9 +79,10 @@ def kind_zurueckgeben(request, pk):
 @require_POST
 def kind_melden(request, pk):
     text = request.POST.get("text", "")
+    fotos = request.FILES.getlist("foto")
 
     def aktion(instanz, kind):
-        services.erledigt_melden(instanz, kind, text=text)
+        services.erledigt_melden(instanz, kind, text=text, fotos=fotos)
 
     instanz = get_object_or_404(AufgabenInstanz, pk=pk)
     erfolg = (
@@ -96,9 +97,10 @@ def kind_melden(request, pk):
 @require_POST
 def kind_antworten(request, pk):
     text = request.POST.get("text", "")
+    fotos = request.FILES.getlist("foto")
 
     def aktion(instanz, kind):
-        services.rueckfrage_beantworten(instanz, kind, text=text)
+        services.rueckfrage_beantworten(instanz, kind, text=text, fotos=fotos)
 
     return _kind_aktion(request, pk, aktion, "Antwort gesendet!")
 

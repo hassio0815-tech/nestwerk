@@ -129,6 +129,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").is_dir() else []
 MEDIA_ROOT = DATA_DIR / "media"
 
+# Nachweis-Fotos (AP13): privat, nie öffentlich ausgeliefert, nicht im Backup (ARCHITECTURE 9)
+NACHWEIS_DIR = Path(env("NACHWEIS_DIR", DATA_DIR / "media" / "nachweise"))
+NACHWEIS_MAX_BYTES = int(env("NACHWEIS_MAX_MB", "15")) * 1024 * 1024
+
 # Hinter Nginx Proxy Manager (TLS endet dort)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

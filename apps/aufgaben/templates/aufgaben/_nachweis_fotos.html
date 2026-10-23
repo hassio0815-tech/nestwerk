@@ -1,0 +1,1 @@
+{% load nachweis_tags %}{% for name in meldung|nachweis_fotos %}<a href="{% url 'aufgaben:nachweis_bild' meldung.pk name %}" target="_blank" rel="noopener"><img class="nachweis-foto" src="{% url 'aufgaben:nachweis_bild' meldung.pk name %}" alt="Foto zur Meldung" loading="lazy"></a>{% endfor %}

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, views_ablauf, views_wochenplan
+from . import views, views_ablauf, views_nachweis, views_wochenplan
 
 app_name = "aufgaben"
 
@@ -38,6 +38,15 @@ urlpatterns = [
         "eltern/kategorien/<int:pk>/bearbeiten/",
         views.kategorie_bearbeiten,
         name="kategorie_bearbeiten",
+    ),
+]
+
+# Nachweis-Fotos (AP13)
+urlpatterns += [
+    path(
+        "nachweis/<int:meldung_id>/<str:name>/",
+        views_nachweis.nachweis_bild,
+        name="nachweis_bild",
     ),
 ]
 

@@ -31,6 +31,7 @@
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
         </div>
         {% if i.meldung.text %}<p>„{{ i.meldung.text }}“</p>{% endif %}
+        {% include "aufgaben/_nachweis_fotos.html" with meldung=i.meldung %}
         {% if i.status == "rueckfrage" %}<p class="zeile__plan">Rückfrage: {{ i.meldung.rueckfrage_text }} – wartet auf Antwort.</p>{% endif %}
         {% if i.meldung.antwort_text %}<p>Antwort: „{{ i.meldung.antwort_text }}“</p>{% endif %}
         <form method="post" action="{% url 'aufgaben:bestaetigen' i.pk %}" class="stapel">{% csrf_token %}

@@ -17,6 +17,7 @@ FERNET_KEY = Fernet.generate_key().decode()
 BASIS_URL = "https://famko.test"
 STATIC_ROOT = _tmp / "static"
 STATIC_ROOT.mkdir()
+NACHWEIS_DIR = _tmp / "nachweise"
 
 # Gleicher Algorithmus wie in Produktion (Argon2), nur mit minimalem Aufwand
 PASSWORD_HASHERS = ["apps.konten.tests.hasher.SchnellerArgon2"]

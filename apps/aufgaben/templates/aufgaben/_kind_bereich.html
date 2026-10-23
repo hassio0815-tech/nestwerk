@@ -21,11 +21,12 @@
           {% elif i.anzeige_status == "vergeben" %}{% include "komponenten/chip.html" with text="Vergeben" %}{% endif %}
         </span>
         {% if i.anzeige_status == "reserviert" %}
-          <form method="post" action="{% url 'aufgaben:kind_melden' i.pk %}" hx-post="{% url 'aufgaben:kind_melden' i.pk %}" class="stapel">{% csrf_token %}
+          <form method="post" action="{% url 'aufgaben:kind_melden' i.pk %}" hx-post="{% url 'aufgaben:kind_melden' i.pk %}" enctype="multipart/form-data" hx-encoding="multipart/form-data" class="stapel">{% csrf_token %}
             {% if i.freigabeart_snapshot != "vertrauen" %}
               <label class="feld"><span class="feld__label">{% if i.freigabeart_snapshot == "nachweis" %}Was hast du gemacht? (Pflicht){% else %}Nachricht (optional){% endif %}</span>
                 <textarea class="feld__eingabe" name="text" rows="2" maxlength="1000"{% if i.freigabeart_snapshot == "nachweis" %} required{% endif %}></textarea></label>
             {% endif %}
+            {% if i.freigabeart_snapshot == "nachweis" %}{% include "aufgaben/_nachweis_feld.html" with label="Foto (optional)" %}{% endif %}
             {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text="Erledigt melden" %}
           </form>
           <form method="post" action="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-post="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-confirm="Aufgabe wirklich zurückgeben?">{% csrf_token %}
@@ -37,8 +38,9 @@
           </form>
         {% elif i.anzeige_status == "rueckfrage" %}
           <p class="aufgabe-karte__frage">{% include "komponenten/icon.html" with name="info" %} {{ i.rueckfrage_text }}</p>
-          <form method="post" action="{% url 'aufgaben:kind_antworten' i.pk %}" hx-post="{% url 'aufgaben:kind_antworten' i.pk %}" class="stapel">{% csrf_token %}
+          <form method="post" action="{% url 'aufgaben:kind_antworten' i.pk %}" hx-post="{% url 'aufgaben:kind_antworten' i.pk %}" enctype="multipart/form-data" hx-encoding="multipart/form-data" class="stapel">{% csrf_token %}
             <label class="feld"><span class="feld__label">Deine Antwort</span><textarea class="feld__eingabe" name="text" rows="2" maxlength="1000"></textarea></label>
+            {% include "aufgaben/_nachweis_feld.html" with label="Foto (optional)" %}
             {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text="Antworten" %}
           </form>
         {% endif %}

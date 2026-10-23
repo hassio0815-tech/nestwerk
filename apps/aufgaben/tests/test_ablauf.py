@@ -262,14 +262,17 @@ def test_nachweis_braucht_text_oder_foto(aufgabe, anna):
     i = reserviert(instanz_von(aufgabe(freigabeart="nachweis")), anna)
     with pytest.raises(services.AblaufFehler, match="Foto"):
         services.erledigt_melden(i, anna)
-    with pytest.raises(services.AblaufFehler, match="noch nicht"):
-        services.erledigt_melden(i, anna, fotos=["bild"])  # AP13 fehlt noch
     gespeichert = []
+    echte = list(ablauf._nachweis_speicher)  # AP13-Speicher für diesen Test beiseite
+    ablauf._nachweis_speicher.clear()
+    with pytest.raises(services.AblaufFehler, match="noch nicht"):
+        services.erledigt_melden(i, anna, fotos=["bild"])
     hook = services.nachweis_speicher_registrieren(lambda m, f: gespeichert.append((m.pk, f)))
     try:
         services.erledigt_melden(i, anna, fotos=["bild"])
     finally:
         ablauf._nachweis_speicher.remove(hook)
+        ablauf._nachweis_speicher.extend(echte)
     assert gespeichert == [(Meldung.objects.get().pk, ["bild"])]
 
 

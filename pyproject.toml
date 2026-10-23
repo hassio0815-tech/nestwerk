@@ -9,6 +9,8 @@ dependencies = [
     "Django==5.2.18",
     "gunicorn==26.2.0",
     "py-vapid==1.9.6",
+    "pillow==13.0.0",
+    "pillow-heif==1.8.1",
     "pywebpush==2.5.0",
     "whitenoise==6.12.0",
 ]
