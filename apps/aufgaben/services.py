@@ -1,8 +1,11 @@
-"""Schreibende Operationen von aufgaben. Jede Stammdaten-Änderung geht ins Audit-Log.
+"""Schreibende Operationen von aufgaben. Jede Änderung geht ins Audit-Log.
 
-Instanzen (AP11): ``instanzen_erzeugen``, ``verfall_pruefen``, ``instanz_verschieben`` (AP14),
-Reservierungs-Hooks für AP12 (``reservierung_frist``, ``reservierungen_pruefen``,
-``reservierungsablauf_hook_registrieren``).
+- Instanzen (AP11): ``instanzen_erzeugen``, ``verfall_pruefen``, ``instanz_verschieben`` (AP14),
+  ``reservierung_frist``, ``reservierungen_pruefen``, ``reservierungsablauf_hook_registrieren``.
+- Kinderablauf (AP12, ``ablauf``): Interesse, Zuteilung, Meldung, Bestätigung, Sonderpunkte,
+  Korrektur; Zustandsautomat in ``zustand``. Hooks für AP13 (Nachweis), Phase 2 (Aktivität)
+  und AP21 (Serienbonus): ``erledigung_hook_registrieren``, ``storno_hook_registrieren``,
+  ``nachweis_speicher_registrieren``, ``nachweis_loescher_registrieren``.
 """
 
 from django.core.exceptions import ValidationError
@@ -10,6 +13,29 @@ from django.db import transaction
 
 from apps.kern import audit
 
+from .ablauf import (
+    Erledigung,
+    LimitErreicht,
+    NichtErlaubt,
+    ablehnen,
+    bestaetigen,
+    erledigt_melden,
+    erledigung_hook_registrieren,
+    interesse_zeigen,
+    kind_darf_sehen,
+    korrigieren,
+    limit_stand,
+    nachweis_loescher_registrieren,
+    nachweis_speicher_registrieren,
+    reservierung_loesen,
+    rueckfrage_beantworten,
+    rueckfrage_stellen,
+    sonderpunkte_deckel,
+    sonderpunkte_vergeben,
+    storno_hook_registrieren,
+    zurueckgeben,
+    zuteilen,
+)
 from .instanzen import (
     instanz_verschieben,
     instanzen_erzeugen,
@@ -20,8 +46,32 @@ from .instanzen import (
     verfall_pruefen,
 )
 from .models import Aufgabe, Kategorie, Status, Vorlage
+from .zustand import AblaufFehler, UngueltigerUebergang
 
 __all__ = [
+    "AblaufFehler",
+    "Erledigung",
+    "LimitErreicht",
+    "NichtErlaubt",
+    "UngueltigerUebergang",
+    "ablehnen",
+    "bestaetigen",
+    "erledigt_melden",
+    "erledigung_hook_registrieren",
+    "interesse_zeigen",
+    "kind_darf_sehen",
+    "korrigieren",
+    "limit_stand",
+    "nachweis_loescher_registrieren",
+    "nachweis_speicher_registrieren",
+    "reservierung_loesen",
+    "rueckfrage_beantworten",
+    "rueckfrage_stellen",
+    "sonderpunkte_deckel",
+    "sonderpunkte_vergeben",
+    "storno_hook_registrieren",
+    "zurueckgeben",
+    "zuteilen",
     "aufgabe_speichern",
     "aufgabe_status_setzen",
     "instanz_verschieben",
@@ -36,9 +86,13 @@ __all__ = [
 ]
 
 
-def _instanzen_neu_planen(aufgabe):
-    """Unberührte Instanzen verwerfen und (falls aktiv) sofort nach aktuellem Plan neu anlegen."""
-    offene_entfernen(aufgabe)
+def _instanzen_neu_planen(aufgabe, *, verschobene_behalten=False):
+    """Freie Instanzen verwerfen und (falls aktiv) sofort nach aktuellem Plan neu anlegen.
+
+    Plan-Änderung: manuell verschobene bleiben (``offene_entfernen``). Pause/Ende: alle freien
+    gehen weg (die Eltern haben die Aufgabe bewusst gestoppt); Begonnenes bleibt immer.
+    """
+    offene_entfernen(aufgabe, verschobene_behalten=verschobene_behalten)
     instanzen_erzeugen(aufgaben=Aufgabe.objects.filter(pk=aufgabe.pk))
 
 
@@ -61,7 +115,7 @@ def aufgabe_speichern(form, *, von) -> Aufgabe:
     if neu:
         aufgabe.erstellt_von = von
     aufgabe.save()
-    _instanzen_neu_planen(aufgabe)
+    _instanzen_neu_planen(aufgabe, verschobene_behalten=not neu)
     audit.protokollieren(
         "aufgabe.angelegt" if neu else "aufgabe.geaendert",
         akteur=von,

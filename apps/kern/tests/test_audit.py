@@ -147,3 +147,39 @@ def test_transaktionaler_test_kann_audit_tabelle_leeren():
     """Teardown-Flush (DELETE) läuft im Wartungsmodus; ohne ihn würde der Trigger abbrechen."""
     audit.protokollieren("test.angelegt")
     assert AuditEintrag.objects.count() == 1
+
+
+def test_objekt_id_bis_100_zeichen_und_trigger_greifen_weiter():
+    """Migration 0004 (objekt_id 40 -> 100) baut die Tabelle neu auf; Trigger bleiben aktiv."""
+    lang = "x" * 100
+    e = audit.protokollieren("einstellung.geaendert", akteur=None, objekt_typ="t", objekt_id=lang)
+    e.refresh_from_db()
+    assert e.objekt_id == lang
+    with pytest.raises(ValueError, match="max. 100"):
+        audit.protokollieren("einstellung.geaendert", akteur=None, objekt_id="x" * 101)
+    with pytest.raises(DatabaseError, match="insert-only"):
+        with transaction.atomic(), connection.cursor() as cur:
+            cur.execute("UPDATE kern_auditeintrag SET objekt_id = 'y' WHERE id = %s", [e.pk])
+    with pytest.raises(DatabaseError, match="insert-only"):
+        with transaction.atomic(), connection.cursor() as cur:
+            cur.execute("DELETE FROM kern_auditeintrag WHERE id = %s", [e.pk])
+
+
+def test_migration_0004_rueckwaerts_und_vorwaerts_behaelt_trigger(transactional_db):
+    from django.core.management import call_command
+
+    def trigger():
+        with connection.cursor() as cur:
+            cur.execute(
+                "SELECT name FROM sqlite_master WHERE type = 'trigger' AND tbl_name = %s",
+                ["kern_auditeintrag"],
+            )
+            return {zeile[0] for zeile in cur.fetchall()}
+
+    erwartet = {"kern_auditeintrag_kein_update", "kern_auditeintrag_kein_delete"}
+    try:
+        call_command("migrate", "kern", "0003", verbosity=0)
+        assert trigger() == erwartet
+    finally:
+        call_command("migrate", verbosity=0)
+    assert trigger() == erwartet

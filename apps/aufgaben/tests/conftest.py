@@ -35,3 +35,13 @@ def zeitzone(db):
     Einstellung.objects.get_or_create(
         schluessel="allgemein.zeitzone", defaults={"wert": "Europe/Berlin", "modul": "allgemein"}
     )
+
+
+@pytest.fixture
+def papa(db, mama):
+    return services.eltern_anlegen("Papa", rolle_label="papa")
+
+
+@pytest.fixture
+def ben(db):
+    return services.kind_anlegen("Ben", PIN)

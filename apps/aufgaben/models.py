@@ -1,6 +1,5 @@
-"""Aufgaben: Kategorie, Vorlage (Bibliothek), Aufgabe (Definition + Plan), AufgabenInstanz.
-
-Interesse/Reservierung, Meldung, Nachweis gehören zu AP12/AP13.
+"""Aufgaben: Kategorie, Vorlage (Bibliothek), Aufgabe (Definition + Plan), AufgabenInstanz,
+Interesse (Reservierung/Konflikt) und Meldung (AP12). Nachweis-Fotos: AP13.
 """
 
 import re
@@ -272,6 +271,13 @@ class AufgabenInstanz(models.Model):
     abgeschlossen_am = models.DateTimeField(
         null=True, blank=True, help_text="Zeitpunkt des Endzustands (K9: nächster Termin danach)."
     )
+    gemeldet_am = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Erste Meldung 'erledigt' (K1: bestimmt Bezugsdatum/Woche der Aktivität).",
+    )
+    sonderpunkte = models.PositiveIntegerField(default=0)
+    sonderpunkte_begruendung = models.CharField(max_length=200, blank=True, default="")
     sortierung = models.IntegerField(default=0)
     erzeugt_am = models.DateTimeField(default=timezone.now)
 
@@ -309,3 +315,112 @@ class AufgabenInstanz(models.Model):
     @property
     def zeitgebunden(self) -> bool:
         return self.fenster_ende is not None
+
+    @property
+    def verschoben(self) -> bool:
+        """Manuell im Wochenplan verschoben (wirksames Datum ≠ Plan-Tag)."""
+        return self.faellig_am != self.plan_datum
+
+
+class InteresseStatus(models.TextChoices):
+    AKTIV = "aktiv", "Wartet auf Entscheidung"
+    ZUGETEILT = "zugeteilt", "Zugeteilt"
+    VERDRAENGT = "verdraengt", "Vergeben/gelöst"
+    ZURUECKGEZOGEN = "zurueckgezogen", "Zurückgegeben"
+    ABGELAUFEN = "abgelaufen", "Abgelaufen"
+
+
+# Interesse zählt noch (Eindeutigkeit je Instanz und Kind)
+INTERESSE_LAUFEND = (InteresseStatus.AKTIV, InteresseStatus.ZUGETEILT)
+
+
+class Interesse(models.Model):
+    """Ein Kind will eine Instanz übernehmen (DATA_MODEL 7.5).
+
+    ``zugeteilt`` = Inhaber (direkt bei einem Interessenten oder durch Eltern bei Konflikt),
+    ``aktiv`` = wartet im Konflikt auf die Eltern-Entscheidung.
+    """
+
+    instanz = models.ForeignKey(
+        AufgabenInstanz, on_delete=models.CASCADE, related_name="interessen"
+    )
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="aufgaben_interessen"
+    )
+    status = models.CharField(max_length=15, choices=InteresseStatus.choices)
+    erstellt_am = models.DateTimeField(default=timezone.now)
+    entschieden_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
+    geaendert_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["erstellt_am", "id"]
+        verbose_name = "Interesse"
+        verbose_name_plural = "Interessen"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["instanz", "kind"],
+                condition=Q(status__in=INTERESSE_LAUFEND),
+                name="aufgaben_interesse_laufend_uniq",
+            ),
+        ]
+        indexes = [models.Index(fields=["kind", "status"], name="aufgaben_int_kind_status")]
+
+    def __str__(self):
+        return f"{self.kind} -> {self.instanz} ({self.status})"
+
+
+class MeldungStatus(models.TextChoices):
+    OFFEN = "offen", "Wartet auf Bestätigung"
+    RUECKFRAGE = "rueckfrage", "Rückfrage"
+    BESTAETIGT = "bestaetigt", "Bestätigt"
+    ABGELEHNT = "abgelehnt", "Abgelehnt"
+
+
+MELDUNG_LAUFEND = (MeldungStatus.OFFEN, MeldungStatus.RUECKFRAGE)
+
+
+class Meldung(models.Model):
+    """Kind meldet "erledigt" (DATA_MODEL 7.6). Texte sind Nachweis-Inhalte: Sie werden beim
+    Abschluss (Bestätigung/Ablehnung) geleert, nur der Vermerk ``nachweis_geloescht_am`` bleibt.
+    Fotos (``Nachweis``) kommen mit AP13 und hängen an der Meldung.
+    """
+
+    instanz = models.ForeignKey(AufgabenInstanz, on_delete=models.CASCADE, related_name="meldungen")
+    kind = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+")
+    gemeldet_am = models.DateTimeField(default=timezone.now)
+    text = models.TextField(blank=True, default="")
+    status = models.CharField(
+        max_length=12, choices=MeldungStatus.choices, default=MeldungStatus.OFFEN
+    )
+    rueckfrage_text = models.CharField(max_length=300, blank=True, default="")
+    antwort_text = models.TextField(blank=True, default="")
+    entschieden_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
+    entschieden_am = models.DateTimeField(null=True, blank=True)
+    nachweis_geloescht_am = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["gemeldet_am", "id"]
+        verbose_name = "Meldung"
+        verbose_name_plural = "Meldungen"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["instanz"],
+                condition=Q(status__in=MELDUNG_LAUFEND),
+                name="aufgaben_meldung_eine_offene",
+            ),
+        ]
+
+    def __str__(self):
+        return f"Meldung {self.instanz} ({self.status})"

@@ -11,7 +11,7 @@ from contextvars import ContextVar
 
 from django.db import models
 
-from .models import AuditEintrag, Rolle
+from .models import OBJEKT_ID_MAX, AuditEintrag, Rolle
 
 AKTION_MUSTER = re.compile(r"^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+$")
 DETAILS_MAX_ZEICHEN = 4000
@@ -120,8 +120,8 @@ def protokollieren(
         objekt_typ = objekt._meta.label_lower
         objekt_id = str(objekt.pk)
     objekt_id = str(objekt_id)
-    if len(objekt_typ) > 60 or len(objekt_id) > 40:
-        raise ValueError("objekt_typ (max. 60) oder objekt_id (max. 40) zu lang")
+    if len(objekt_typ) > 60 or len(objekt_id) > OBJEKT_ID_MAX:
+        raise ValueError(f"objekt_typ (max. 60) oder objekt_id (max. {OBJEKT_ID_MAX}) zu lang")
 
     details = {} if details is None else details
     _details_pruefen(details)

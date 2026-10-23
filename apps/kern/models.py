@@ -42,6 +42,9 @@ class Rolle(models.TextChoices):
     SYSTEM = "system", "System"
 
 
+OBJEKT_ID_MAX = 100
+
+
 class AuditEintrag(NurEinfuegenModell):
     """Protokoll (insert-only). Nie sensible Inhalte (PIN, Passwort, Nachweis-Inhalte)."""
 
@@ -58,7 +61,8 @@ class AuditEintrag(NurEinfuegenModell):
     rolle = models.CharField(max_length=10, choices=Rolle.choices)
     aktion = models.CharField(max_length=80, db_index=True)
     objekt_typ = models.CharField(max_length=60, blank=True, default="")
-    objekt_id = models.CharField(max_length=40, blank=True, default="")
+    # 100 = Länge von ``Einstellung.schluessel`` (Audit-Objekt "kern.einstellung")
+    objekt_id = models.CharField(max_length=OBJEKT_ID_MAX, blank=True, default="")
     kind = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,

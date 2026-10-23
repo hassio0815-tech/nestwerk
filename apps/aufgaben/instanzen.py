@@ -19,8 +19,16 @@ from django.db import IntegrityError, transaction
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
 
-from . import events, faelligkeit, wiederholung
-from .models import LAUFENDE_STATUS, Aufgabe, AufgabenInstanz, InstanzStatus, Status
+from . import events, faelligkeit, wiederholung, zustand
+from .models import (
+    LAUFENDE_STATUS,
+    Aufgabe,
+    AufgabenInstanz,
+    InstanzStatus,
+    Interesse,
+    InteresseStatus,
+    Status,
+)
 
 # Rückblick für ungebundene Aufgaben (nur der jüngste fällige Termin zählt, kein Stapel)
 _RUECKBLICK_MIN_TAGE = 7
@@ -131,14 +139,41 @@ def instanzen_erzeugen(*, jetzt: datetime | None = None, aufgaben=None) -> dict:
     return zaehler
 
 
-def offene_entfernen(aufgabe) -> int:
-    """Entfernt unberührte (``offen``) Instanzen, z. B. nach Plan-Änderung, Pause oder Ende.
+def offene_entfernen(aufgabe, *, verschobene_behalten=False) -> int:
+    """Entfernt freie (``offen``) Instanzen, z. B. nach Plan-Änderung, Pause oder Ende.
 
-    Unberührt = kein Kind hat Interesse gezeigt; es geht keine Historie verloren. Der nächste
+    Frei = gerade kein Kind dran (reserviert/Konflikt/gemeldet bleiben immer). Der nächste
     Erzeugungslauf legt (falls aktiv) neue Instanzen mit aktuellem Plan und Snapshot an.
+
+    ``verschobene_behalten`` (Plan-Änderung, nicht Pause/Ende): im Wochenplan manuell
+    verschobene Instanzen (``faellig_am != plan_datum``) sind eine bewusste Eltern-Entscheidung
+    für einen bestimmten Tag und bleiben, solange die Aufgabe aktiv ist und die Art (mit/ohne
+    Zeitfenster) passt. Sie bekommen den neuen Snapshot (Titel, Punkte, Freigabeart) und das
+    Zeitfenster des neuen Plans an ihrem Tag. Ihr ``plan_datum`` blockiert über
+    ``unique(aufgabe, plan_datum)`` die Neuerzeugung dieses Plan-Tags (kein Doppel).
     """
-    anzahl, _ = AufgabenInstanz.objects.filter(aufgabe=aufgabe, status=InstanzStatus.OFFEN).delete()
+    offene = AufgabenInstanz.objects.filter(aufgabe=aufgabe, status=InstanzStatus.OFFEN)
+    if verschobene_behalten and aufgabe.status == Status.AKTIV:
+        for instanz in offene.exclude(plan_datum__isnull=True):
+            if instanz.verschoben and instanz.zeitgebunden == aufgabe.zeitgebunden:
+                _an_plan_anpassen(instanz, aufgabe)
+                offene = offene.exclude(pk=instanz.pk)
+    anzahl, _ = offene.delete()
     return anzahl
+
+
+def _an_plan_anpassen(instanz, aufgabe) -> None:
+    felder = {
+        "titel_snapshot": aufgabe.titel,
+        "punkte_snapshot": aufgabe.punkte,
+        "freigabeart_snapshot": aufgabe.freigabeart,
+    }
+    tag = instanz.faellig_am
+    if aufgabe.zeitgebunden and tag is not None:
+        beginn, ende = faelligkeit.fenster(aufgabe.plan, tag)
+        if (beginn, ende) != (instanz.fenster_start, instanz.fenster_ende):
+            felder.update(fenster_start=beginn, fenster_ende=ende, vorwarnung_am=None)
+    AufgabenInstanz.objects.filter(pk=instanz.pk, status=InstanzStatus.OFFEN).update(**felder)
 
 
 # --- Verschieben (Wochenplan, AP14) -----------------------------------------------------------
@@ -196,20 +231,31 @@ def _daten(instanz) -> dict:
     }
 
 
+# Noch niemandem gehörend: verfallen am Fensterende (Konflikt = Eltern haben nicht zugeteilt)
+NICHT_UEBERNOMMEN_AUS = (InstanzStatus.OFFEN, InstanzStatus.KONFLIKT)
+
+
 def verfall_pruefen(*, jetzt: datetime | None = None) -> dict:
-    """Zeitgebundene, nicht übernommene Instanzen verfallen nach Fensterende still
-    (``nicht_uebernommen``, Ereignis an Eltern). Vorwarnung an Eltern X h vorher, genau einmal.
+    """Zeitgebundene, nicht übernommene Instanzen (``offen`` oder ``konflikt``) verfallen nach
+    Fensterende still (``nicht_uebernommen``, Ereignis an Eltern); Konflikt-Interessen werden
+    ``abgelaufen``. Vorwarnung an Eltern X h vorher, genau einmal.
     """
     jetzt = jetzt or zeit.jetzt()
     zaehler = {"verfallen": 0, "vorgewarnt": 0}
 
-    faellige = AufgabenInstanz.objects.filter(status=InstanzStatus.OFFEN, fenster_ende__lte=jetzt)
-    for pk in list(faellige.values_list("pk", flat=True)):
+    faellige = AufgabenInstanz.objects.filter(
+        status__in=NICHT_UEBERNOMMEN_AUS, fenster_ende__lte=jetzt
+    )
+    for pk, status in list(faellige.values_list("pk", "status")):
         with transaction.atomic():
-            if not faellige.filter(pk=pk).update(
+            zustand.pruefen(status, InstanzStatus.NICHT_UEBERNOMMEN)
+            if not faellige.filter(pk=pk, status=status).update(
                 status=InstanzStatus.NICHT_UEBERNOMMEN, abgeschlossen_am=jetzt
             ):
                 continue
+            Interesse.objects.filter(instanz_id=pk, status=InteresseStatus.AKTIV).update(
+                status=InteresseStatus.ABGELAUFEN, geaendert_am=jetzt
+            )
             instanz = AufgabenInstanz.objects.get(pk=pk)
             ereignisse.veroeffentlichen(
                 events.NICHT_UEBERNOMMEN,
@@ -222,7 +268,7 @@ def verfall_pruefen(*, jetzt: datetime | None = None) -> dict:
     if stunden <= 0:
         return zaehler
     bald = AufgabenInstanz.objects.filter(
-        status=InstanzStatus.OFFEN,
+        status__in=NICHT_UEBERNOMMEN_AUS,
         vorwarnung_am__isnull=True,
         fenster_ende__gt=jetzt,
         fenster_ende__lte=jetzt + timedelta(hours=stunden),
@@ -241,14 +287,14 @@ def verfall_pruefen(*, jetzt: datetime | None = None) -> dict:
     return zaehler
 
 
-# --- Reservierung (Vorbereitung für AP12) -----------------------------------------------------
+# --- Reservierung -----------------------------------------------------------------------------
 
 _ablauf_hooks: list[Callable] = []
 
 
 def reservierungsablauf_hook_registrieren(funktion: Callable) -> Callable:
-    """AP12: ``funktion(instanz, kind)`` läuft in der Ablauf-Transaktion (z. B. Interesse ->
-    ``abgelaufen``). ``instanz`` ist bereits wieder ``offen``."""
+    """``funktion(instanz, kind)`` läuft in der Ablauf-Transaktion (z. B. Interesse ->
+    ``abgelaufen``). ``instanz`` ist bereits ``offen`` bzw. ``nicht_uebernommen``."""
     if funktion not in _ablauf_hooks:
         _ablauf_hooks.append(funktion)
     return funktion
@@ -267,17 +313,29 @@ def reservierung_frist(instanz, ab: datetime) -> datetime:
 
 def reservierungen_pruefen(*, jetzt: datetime | None = None) -> dict:
     """Erinnerung ans Kind X h vor Ablauf (genau einmal je Reservierung); nach Ablauf wird die
-    Instanz wieder ``offen`` (ohne Strafe) und die Eltern werden informiert."""
+    Instanz wieder ``offen`` (ohne Strafe) und die Eltern werden informiert.
+
+    Zeitgebunden (Frist = Fensterende): wieder frei wäre sinnlos, die Instanz wird direkt
+    ``nicht_uebernommen``. Die Eltern bekommen genau **eine** Meldung
+    (``reservierung.abgelaufen``), kein zusätzliches ``aufgabe.nicht_uebernommen``.
+    """
     jetzt = jetzt or zeit.jetzt()
     zaehler = {"abgelaufen": 0, "erinnert": 0}
 
     abgelaufen = AufgabenInstanz.objects.filter(
         status=InstanzStatus.RESERVIERT, reserviert_bis__lte=jetzt
     )
-    for pk, kind_id, bis in list(abgelaufen.values_list("pk", "kind_id", "reserviert_bis")):
+    zeilen = abgelaufen.values_list("pk", "kind_id", "reserviert_bis", "fenster_ende")
+    for pk, kind_id, bis, fenster_ende in list(zeilen):
+        fenster_vorbei = fenster_ende is not None and fenster_ende <= jetzt
+        if fenster_vorbei:
+            ziel = {"status": InstanzStatus.NICHT_UEBERNOMMEN, "abgeschlossen_am": jetzt}
+        else:
+            ziel = {"status": InstanzStatus.OFFEN, "kind": None}
+        zustand.pruefen(InstanzStatus.RESERVIERT, ziel["status"])
         with transaction.atomic():
             if not abgelaufen.filter(pk=pk, kind_id=kind_id, reserviert_bis=bis).update(
-                status=InstanzStatus.OFFEN, kind=None, reserviert_bis=None, erinnert_am=None
+                reserviert_bis=None, erinnert_am=None, **ziel
             ):
                 continue
             instanz = AufgabenInstanz.objects.get(pk=pk)
@@ -285,7 +343,8 @@ def reservierungen_pruefen(*, jetzt: datetime | None = None) -> dict:
             ereignisse.veroeffentlichen(
                 events.RESERVIERUNG_ABGELAUFEN,
                 kind=kind,
-                daten=_daten(instanz) | {"kind_id": str(kind_id)},
+                daten=_daten(instanz)
+                | {"kind_id": str(kind_id), "nicht_uebernommen": fenster_vorbei},
                 schluessel=f"{events.RESERVIERUNG_ABGELAUFEN}:{pk}:{bis.isoformat()}",
             )
             for hook in _ablauf_hooks:

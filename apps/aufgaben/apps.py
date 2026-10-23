@@ -7,8 +7,11 @@ class AufgabenConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self):
+        from . import ablauf, instanzen
         from .einstellungen import einstellungen_definieren
-        from .events import typen_deklarieren
+        from .events import texte_registrieren, typen_deklarieren
 
         einstellungen_definieren()
         typen_deklarieren()
+        texte_registrieren()
+        instanzen.reservierungsablauf_hook_registrieren(ablauf.interesse_abgelaufen)

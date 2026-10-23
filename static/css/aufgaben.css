@@ -9,3 +9,10 @@
 .zeile__text { flex: 1 1 16rem; }
 .zeile__plan { font-size: .9em; opacity: .8; }
 .aufgaben-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
+/* Kinderablauf (AP12) */
+.aufgaben-raster { grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); }
+.aufgabe-kachel { width: 100%; min-height: 9rem; cursor: pointer; font: inherit; color: inherit; }
+.aufgabe-kachel:disabled { opacity: .5; cursor: not-allowed; }
+.aufgabe-kachel--vergeben { opacity: .75; border-style: dashed; }
+.aufgabe-karte__frist, .aufgabe-karte__bonus { display: inline-flex; gap: .25rem; align-items: center; font-size: .9em; }
+.aufgabe-karte__frage { font-style: italic; }

@@ -9,6 +9,14 @@ STARTWERTE = {
     "aufgaben.erinnerung_kind_stunden_vorher": 6,
 }
 
+# Kinderablauf (AP12), Datenmigration 0006
+STARTWERTE_ABLAUF = {
+    "aufgaben.sonderpunkte_deckel_aktiv": True,
+    "aufgaben.sonderpunkte_deckel_prozent": 50,
+    "aufgaben.mitbewerben_erlaubt": True,
+    "aufgaben.kind_vorschau_tage": 1,
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -47,4 +55,37 @@ def einstellungen_definieren():
         einheit="Stunden",
         minimum=0,
         maximum=72,
+    )
+    definieren(
+        "aufgaben.sonderpunkte_deckel_aktiv",
+        Typ.BOOL,
+        "Obergrenze für Sonderpunkte",
+        beschreibung="Aus = keine Obergrenze (außer eine Aufgabe hat einen eigenen Wert).",
+    )
+    definieren(
+        "aufgaben.sonderpunkte_deckel_prozent",
+        Typ.GANZZAHL,
+        "Sonderpunkte höchstens",
+        beschreibung="Anteil am Punktwert der Aufgabe (aufgerundet). Eine Aufgabe kann einen "
+        "eigenen Wert haben.",
+        einheit="%",
+        minimum=0,
+        maximum=1000,
+    )
+    definieren(
+        "aufgaben.mitbewerben_erlaubt",
+        Typ.BOOL,
+        "Mehrere Kinder dürfen dieselbe Aufgabe wählen",
+        beschreibung="An: Ein weiteres Kind kann eine schon reservierte Aufgabe auch wählen, "
+        "dann entscheiden die Eltern (Konflikt). Aus: Wer zuerst wählt, bekommt sie.",
+    )
+    definieren(
+        "aufgaben.kind_vorschau_tage",
+        Typ.GANZZAHL,
+        "Kinder sehen Termine im Voraus",
+        beschreibung="0 = nur heute, 1 = heute und morgen usw. Aufgaben ohne Termin sind "
+        "immer sichtbar.",
+        einheit="Tage",
+        minimum=0,
+        maximum=14,
     )

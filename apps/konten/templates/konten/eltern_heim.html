@@ -4,6 +4,8 @@
 {% block kopf_rechts %}
   {% url "benachrichtigung:liste" as benachrichtigungen_url %}
   {% if benachrichtigungen_url %}{% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text="Benachrichtigungen" %}{% endif %}
+  {% url "aufgaben:entscheidungen" as meldungen_url %}
+  {% if meldungen_url %}{% include "komponenten/button.html" with href=meldungen_url variante="geist" klein=True icon="check" text="Meldungen" %}{% endif %}
   {% url "konten:geraete" as geraete_url %}
   {% include "komponenten/button.html" with href=geraete_url variante="geist" klein=True icon="einstellungen" text="Geräte" %}
   <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}

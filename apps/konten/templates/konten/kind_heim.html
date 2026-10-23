@@ -8,4 +8,6 @@
 {% endblock %}
 {% block inhalt %}
   <h1>Hallo {{ request.user.anzeigename }}!</h1>
+  {% url "aufgaben:kind" as aufgaben_url %}
+  {% if aufgaben_url %}<div class="raster">{% include "komponenten/kachel.html" with href=aufgaben_url icon="liste" titel="Aufgaben" text="Aussuchen und erledigt melden" %}</div>{% endif %}
 {% endblock %}

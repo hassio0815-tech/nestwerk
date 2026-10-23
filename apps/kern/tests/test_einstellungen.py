@@ -192,3 +192,13 @@ def test_startwerte_werden_validiert(e):
         e.startwerte_schreiben(Einstellung, {"test.stunden": 0})
     with pytest.raises(UnbekannteEinstellung):
         e.startwerte_schreiben(Einstellung, {"test.unbekannt": 1})
+
+
+@pytest.mark.django_db
+def test_langer_schluessel_wird_protokolliert(einstellungs_verzeichnis):
+    """Regression: AuditEintrag.objekt_id war auf 40 Zeichen begrenzt (Schlüssel bis 100)."""
+    schluessel = "test." + "s" * 95
+    einstellungs_verzeichnis.definieren(schluessel, Typ.GANZZAHL, "Lang", minimum=0)
+    einstellungs_verzeichnis.setzen(schluessel, 7, akteur=None)
+    eintrag = AuditEintrag.objects.get(aktion="einstellung.geaendert", objekt_id=schluessel)
+    assert len(eintrag.objekt_id) == 100

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, views_ablauf
 
 app_name = "aufgaben"
 
@@ -28,5 +28,44 @@ urlpatterns = [
         "eltern/kategorien/<int:pk>/bearbeiten/",
         views.kategorie_bearbeiten,
         name="kategorie_bearbeiten",
+    ),
+]
+
+# Kinderablauf (AP12)
+urlpatterns += [
+    path("kind/aufgaben/", views_ablauf.kind_aufgaben, name="kind"),
+    path("kind/aufgaben/<int:pk>/waehlen/", views_ablauf.kind_waehlen, name="kind_waehlen"),
+    path(
+        "kind/aufgaben/<int:pk>/zurueckgeben/",
+        views_ablauf.kind_zurueckgeben,
+        name="kind_zurueckgeben",
+    ),
+    path("kind/aufgaben/<int:pk>/melden/", views_ablauf.kind_melden, name="kind_melden"),
+    path("kind/aufgaben/<int:pk>/antworten/", views_ablauf.kind_antworten, name="kind_antworten"),
+    path("eltern/meldungen/", views_ablauf.entscheidungen, name="entscheidungen"),
+    path(
+        "eltern/meldungen/<int:pk>/zuteilen/<uuid:kind_id>/",
+        views_ablauf.eltern_zuteilen,
+        name="zuteilen",
+    ),
+    path("eltern/meldungen/<int:pk>/loesen/", views_ablauf.eltern_loesen, name="loesen"),
+    path(
+        "eltern/meldungen/<int:pk>/bestaetigen/",
+        views_ablauf.eltern_bestaetigen,
+        name="bestaetigen",
+    ),
+    path("eltern/meldungen/<int:pk>/ablehnen/", views_ablauf.eltern_ablehnen, name="ablehnen"),
+    path(
+        "eltern/meldungen/<int:pk>/rueckfrage/", views_ablauf.eltern_rueckfrage, name="rueckfrage"
+    ),
+    path(
+        "eltern/meldungen/<int:pk>/sonderpunkte/",
+        views_ablauf.eltern_sonderpunkte,
+        name="sonderpunkte",
+    ),
+    path(
+        "eltern/meldungen/<int:pk>/korrigieren/",
+        views_ablauf.eltern_korrigieren,
+        name="korrigieren",
     ),
 ]
