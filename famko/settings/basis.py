@@ -75,6 +75,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "apps.aufgaben.middleware.UploadGrenze",  # vor CSRF: die liest den Body schon
     "django.middleware.csrf.CsrfViewMiddleware",
     "apps.einrichtung.middleware.EinrichtungErzwingen",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -143,8 +144,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").is_dir() else 
 MEDIA_ROOT = DATA_DIR / "media"
 
 # Nachweis-Fotos (AP13): privat, nie öffentlich ausgeliefert, nicht im Backup (ARCHITECTURE 9)
+# Größe und Anzahl der Fotos sind Familienwerte (aufgaben.nachweis_max_mb/_max_fotos, Editor)
 NACHWEIS_DIR = Path(env("NACHWEIS_DIR", DATA_DIR / "media" / "nachweise"))
-NACHWEIS_MAX_BYTES = int(env("NACHWEIS_MAX_MB", "15")) * 1024 * 1024
 
 # Hinter Nginx Proxy Manager (TLS endet dort)
 USE_X_FORWARDED_HOST = True

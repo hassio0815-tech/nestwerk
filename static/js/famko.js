@@ -77,5 +77,29 @@
     }
   });
 
+  /* HTMX tauscht Fehlerantworten nicht: zu große Uploads (413, Text vom Server) als Toast zeigen. */
+  document.addEventListener("htmx:responseError", function (e) {
+    var xhr = e.detail && e.detail.xhr;
+    var bereich = document.getElementById("meldungen");
+    if (!xhr || xhr.status !== 413 || !bereich) {
+      return;
+    }
+    var toast = document.createElement("div");
+    toast.className = "toast toast--fehler";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("data-schliessbar", "");
+    var text = document.createElement("span");
+    text.className = "toast__text";
+    text.textContent = xhr.responseText || "Die Datei ist zu groß.";
+    var knopf = document.createElement("button");
+    knopf.type = "button";
+    knopf.className = "knopf knopf--geist knopf--klein";
+    knopf.setAttribute("data-schliessen", "");
+    knopf.textContent = "Schließen";
+    toast.appendChild(text);
+    toast.appendChild(knopf);
+    bereich.appendChild(toast);
+  });
+
   document.querySelectorAll("[data-pin]").forEach(pinAktualisieren);
 })();

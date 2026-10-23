@@ -267,7 +267,7 @@ def test_nachweis_braucht_text_oder_foto(aufgabe, anna):
     ablauf._nachweis_speicher.clear()
     with pytest.raises(services.AblaufFehler, match="noch nicht"):
         services.erledigt_melden(i, anna, fotos=["bild"])
-    hook = services.nachweis_speicher_registrieren(lambda m, f: gespeichert.append((m.pk, f)))
+    hook = services.nachweis_speicher_registrieren(lambda m, f, neu: gespeichert.append((m.pk, f)))
     try:
         services.erledigt_melden(i, anna, fotos=["bild"])
     finally:

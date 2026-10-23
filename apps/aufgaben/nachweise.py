@@ -21,14 +21,13 @@ from pathlib import Path
 from django.conf import settings
 from django.db import transaction
 
-from apps.kern import audit
+from apps.kern import audit, einstellungen
 
 from .models import MELDUNG_LAUFEND, Meldung
 from .zustand import AblaufFehler
 
 log = logging.getLogger(__name__)
 
-MAX_FOTOS = 3
 MAX_KANTE = 1600
 MAX_PIXEL = 40_000_000
 JPEG_QUALITAET = 85
@@ -52,7 +51,24 @@ def wurzel() -> Path:
 
 
 def max_bytes() -> int:
-    return int(settings.NACHWEIS_MAX_BYTES)
+    """Höchstgröße eines Uploads (Einstellung ``aufgaben.nachweis_max_mb``)."""
+    return einstellungen.wert("aufgaben.nachweis_max_mb") * 1024 * 1024
+
+
+def max_fotos() -> int:
+    """Höchstzahl Fotos je Meldung (Einstellung ``aufgaben.nachweis_max_fotos``)."""
+    return einstellungen.wert("aufgaben.nachweis_max_fotos")
+
+
+def anfrage_zu_gross(content_length) -> bool:
+    """Vorabprüfung des ``Content-Length`` einer Meldung, **bevor** Django die Dateien liest:
+    sonst landet ein beliebig großer Upload erst komplett auf der Platte (Review AP19, B-07).
+    Puffer 1 MB für Formularfelder und Multipart-Overhead."""
+    try:
+        laenge = int(content_length or 0)
+    except (TypeError, ValueError):
+        return True
+    return laenge > max_fotos() * max_bytes() + 1024 * 1024
 
 
 def ordner(meldung_id) -> Path:
@@ -143,13 +159,21 @@ def _ordner_anlegen(pfad: Path) -> None:
         os.chmod(teil, 0o700)
 
 
-def speichern(meldung, fotos) -> None:
-    """Speichert Uploads zur Meldung (alles oder nichts; max. ``MAX_FOTOS`` je Meldung)."""
+def speichern(meldung, fotos, *, neu=False) -> None:
+    """Speichert Uploads zur Meldung (alles oder nichts; höchstens ``max_fotos()`` je Meldung).
+
+    ``neu``: die Meldung entsteht gerade. Ein schon vorhandener Ordner mit ihrer ID stammt dann
+    aus einer zurückgerollten Transaktion (SQLite vergibt die ID danach erneut) und gehört
+    womöglich einem anderen Kind: er wird zuerst entfernt (Review AP19, B-04).
+    """
+    if neu:
+        _ordner_entfernen(meldung.pk)
     fotos = [f for f in fotos if f]
     if not fotos:
         return
-    if len(dateinamen(meldung.pk)) + len(fotos) > MAX_FOTOS:
-        raise AblaufFehler(f"Höchstens {MAX_FOTOS} Fotos je Meldung.")
+    grenze = max_fotos()
+    if len(dateinamen(meldung.pk)) + len(fotos) > grenze:
+        raise AblaufFehler(f"Höchstens {grenze} Fotos je Meldung.")
     bilder = [bild_verarbeiten(f) for f in fotos]  # erst alles prüfen, dann schreiben
     pfad = ordner(meldung.pk)
     _ordner_anlegen(pfad)

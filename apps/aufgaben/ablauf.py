@@ -18,7 +18,8 @@ Erweiterungspunkte (Hooks, laufen in der Transaktion des Vorgangs):
 - ``erledigung_hook_registrieren(f)``: ``f(erledigung: Erledigung)`` nach jeder Bestätigung
   (auch Vertrauen). Phase 2: Aktivität erfassen, AP21: Serienbonus buchen.
 - ``storno_hook_registrieren(f)``: ``f(instanz, kind, von)`` nach einer Korrektur.
-- ``nachweis_speicher_registrieren(f)``: ``f(meldung, fotos)`` beim Melden/Antworten (AP13).
+- ``nachweis_speicher_registrieren(f)``: ``f(meldung, fotos, neu=bool)`` beim Melden/Antworten
+  (AP13); ``neu`` = Meldung entsteht gerade (Reste gleicher ID entfernen).
 - ``nachweis_loescher_registrieren(f)``: ``f(meldung)`` beim Abschluss einer Meldung (AP13).
 """
 
@@ -423,13 +424,19 @@ def reservierung_loesen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
 # --- Kind: Melden, Antworten ------------------------------------------------------------------
 
 
-def _nachweise_speichern(meldung, fotos):
-    if not fotos:
+def _nachweise_speichern(meldung, fotos, *, neu=False):
+    """Fotos speichern. ``neu`` (Meldung entsteht gerade): Speicher entfernen zuerst Reste einer
+    zurückgerollten Meldung mit derselben ID (Review AP19, B-04), auch ganz ohne Fotos.
+
+    Aufrufer rufen das als **letzten** Schritt ihrer Transaktion auf: Was danach scheitern
+    könnte (Ereignis, Audit), läuft vorher; Dateien entstehen erst, wenn sonst alles steht.
+    """
+    if not fotos and not neu:
         return
-    if not _nachweis_speicher:
+    if fotos and not _nachweis_speicher:
         raise AblaufFehler("Fotos können noch nicht hochgeladen werden.")
     for speicher in _nachweis_speicher:
-        speicher(meldung, fotos)
+        speicher(meldung, fotos, neu=neu)
 
 
 @transaction.atomic
@@ -461,7 +468,7 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
             abgeschlossen_am=jetzt,
             reserviert_bis=None,
         )
-        Meldung.objects.create(
+        meldung = Meldung.objects.create(
             instanz=instanz,
             kind=kind,
             gemeldet_am=jetzt,
@@ -472,6 +479,7 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
         ereignisse.veroeffentlichen(events.VERTRAUEN, kind=kind, akteur=kind, daten=_daten(instanz))
         _erledigt(instanz, buchung, von=kind, vertrauen=True)
         _protokoll("aufgabe.vertrauen", instanz, akteur=kind, punkte=instanz.punkte_snapshot)
+        _nachweise_speichern(meldung, (), neu=True)  # Fotos bei Vertrauen nie speichern
         return instanz
 
     if instanz.freigabeart_snapshot == Freigabeart.NACHWEIS and not (text or fotos):
@@ -486,7 +494,6 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
     meldung = Meldung.objects.create(
         instanz=instanz, kind=kind, gemeldet_am=jetzt, text=text, status=MeldungStatus.OFFEN
     )
-    _nachweise_speichern(meldung, fotos)
     ereignisse.veroeffentlichen(
         events.GEMELDET,
         kind=kind,
@@ -494,6 +501,7 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
         daten=_daten(instanz, mit_text=bool(text), fotos=len(fotos)),
     )
     _protokoll("aufgabe.gemeldet", instanz, akteur=kind, mit_text=bool(text), fotos=len(fotos))
+    _nachweise_speichern(meldung, fotos, neu=True)
     return instanz
 
 
@@ -511,7 +519,6 @@ def rueckfrage_beantworten(instanz, kind, *, text="", fotos: Sequence = (), jetz
     meldung.status = MeldungStatus.OFFEN
     meldung.antwort_text = text
     meldung.save(update_fields=["status", "antwort_text"])
-    _nachweise_speichern(meldung, fotos)
     ereignisse.veroeffentlichen(
         events.ANTWORT,
         kind=kind,
@@ -519,6 +526,7 @@ def rueckfrage_beantworten(instanz, kind, *, text="", fotos: Sequence = (), jetz
         daten=_daten(instanz, mit_text=bool(text), fotos=len(fotos)),
     )
     _protokoll("aufgabe.antwort", instanz, akteur=kind, mit_text=bool(text), fotos=len(fotos))
+    _nachweise_speichern(meldung, fotos)
     return instanz
 
 

@@ -17,6 +17,12 @@ STARTWERTE_ABLAUF = {
     "aufgaben.kind_vorschau_tage": 1,
 }
 
+# Nachweis-Fotos (AP13), Datenmigration 0007 (Review AP19, B-09: vorher Django-Setting/Konstante)
+STARTWERTE_NACHWEIS = {
+    "aufgaben.nachweis_max_mb": 15,
+    "aufgaben.nachweis_max_fotos": 3,
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -88,4 +94,21 @@ def einstellungen_definieren():
         einheit="Tage",
         minimum=0,
         maximum=14,
+    )
+    definieren(
+        "aufgaben.nachweis_max_mb",
+        Typ.GANZZAHL,
+        "Nachweis-Foto höchstens",
+        beschreibung="Größe eines hochgeladenen Fotos. Gespeichert wird es verkleinert "
+        "(max. 1600 px, ohne Metadaten).",
+        einheit="MB",
+        minimum=1,
+        maximum=50,
+    )
+    definieren(
+        "aufgaben.nachweis_max_fotos",
+        Typ.GANZZAHL,
+        "Fotos je Meldung höchstens",
+        minimum=1,
+        maximum=10,
     )

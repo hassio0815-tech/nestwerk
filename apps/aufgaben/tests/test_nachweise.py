@@ -113,10 +113,25 @@ def test_umbenannte_pdf_und_polyglot_abgewiesen():
     assert b"<script>" not in daten
 
 
-def test_zu_gross_abgewiesen(settings):
-    settings.NACHWEIS_MAX_BYTES = 1000
+def test_zu_gross_abgewiesen(monkeypatch):
+    monkeypatch.setattr(nachweise, "max_bytes", lambda: 1000)
     with pytest.raises(services.AblaufFehler, match="zu groß"):
         nachweise.bild_verarbeiten(upload(jpeg((400, 400), gps=False)))
+
+
+@pytest.mark.django_db
+def test_groesse_und_anzahl_sind_familienwerte():
+    """Regression B-09: vorher Django-Setting bzw. Konstante (nicht im Dashboard änderbar)."""
+    from apps.kern import einstellungen
+
+    assert nachweise.max_bytes() == 15 * 1024 * 1024 and nachweise.max_fotos() == 3
+    einstellungen.setzen("aufgaben.nachweis_max_mb", 2, akteur=None)
+    einstellungen.setzen("aufgaben.nachweis_max_fotos", 1, akteur=None)
+    assert nachweise.max_bytes() == 2 * 1024 * 1024 and nachweise.max_fotos() == 1
+    assert not nachweise.anfrage_zu_gross(str(3 * 1024 * 1024 - 1))
+    assert nachweise.anfrage_zu_gross(str(3 * 1024 * 1024 + 1))
+    assert nachweise.anfrage_zu_gross("kaputt")
+    assert not nachweise.anfrage_zu_gross("")
 
 
 def test_zu_viele_pixel_abgewiesen(monkeypatch):
@@ -316,3 +331,72 @@ def test_umask_unabhaengig(gemeldet, nachweis_dir):
         assert stat.S_IMODE(nachweis_dir.stat().st_mode) == 0o700
     finally:
         os.umask(alt)
+
+
+# --- Review AP19 ------------------------------------------------------------------------------
+
+
+def _zweite_instanz(instanz):
+    aufgabe = Aufgabe.objects.create(
+        titel="Zimmer 2",
+        punkte=10,
+        erstellt_von=instanz.aufgabe.erstellt_von,
+        freigabeart="nachweis",
+        wiederholungsart=wiederholung.EINMALIG,
+    )
+    return AufgabenInstanz.objects.create(
+        aufgabe=aufgabe,
+        titel_snapshot="Zimmer 2",
+        punkte_snapshot=10,
+        freigabeart_snapshot="nachweis",
+    )
+
+
+def test_fotos_einer_zurueckgerollten_meldung_landen_nie_bei_einer_neuen(instanz, anna, ben):
+    """Regression B-04: SQLite vergibt die ID einer zurückgerollten Meldung erneut. Die Fotos
+    des ersten Versuchs (Anna) dürfen nicht an der neuen Meldung (Ben) hängen."""
+    from django.db import transaction
+
+    zweite = _zweite_instanz(instanz)
+    with pytest.raises(RuntimeError), transaction.atomic():
+        services.interesse_zeigen(instanz, anna)
+        services.erledigt_melden(instanz, anna, text="x", fotos=[upload(jpeg((60, 60)))])
+        alte_id = Meldung.objects.get(instanz=instanz).pk
+        raise RuntimeError("später scheitert etwas, alles wird zurückgerollt")
+    assert nachweise.dateinamen(alte_id)  # Datei ist verwaist zurückgeblieben
+
+    services.interesse_zeigen(zweite, ben)
+    services.erledigt_melden(zweite, ben, text="ohne Foto")
+    neue = Meldung.objects.get(instanz=zweite)
+    assert neue.pk == alte_id  # gleiche ID wie die zurückgerollte
+    assert nachweise.dateinamen(neue.pk) == []
+
+
+def test_fotos_entstehen_erst_wenn_ereignis_und_audit_stehen(instanz, anna, monkeypatch):
+    """B-04: Scheitert das Ereignis, wird gar keine Datei geschrieben."""
+    from apps.aufgaben import ablauf as ablauf_modul
+
+    services.interesse_zeigen(instanz, anna)
+
+    def kaputt(*args, **kwargs):
+        raise RuntimeError("Outbox nicht erreichbar")
+
+    monkeypatch.setattr(ablauf_modul.ereignisse, "veroeffentlichen", kaputt)
+    with pytest.raises(RuntimeError):
+        services.erledigt_melden(instanz, anna, text="x", fotos=[upload(jpeg((60, 60)))])
+    assert not nachweise.wurzel().exists() or not any(nachweise.wurzel().rglob("*.jpg"))
+
+
+def test_zu_grosse_upload_anfrage_wird_vor_dem_lesen_abgewiesen(instanz, anna, kind_client):
+    """Regression B-07: Django liest Uploads sonst komplett auf die Platte (auch die
+    CSRF-Prüfung liest den Body); die Grenze greift vorher anhand von Content-Length."""
+    services.interesse_zeigen(instanz, anna)
+    grenze = nachweise.max_fotos() * nachweise.max_bytes() + 1024 * 1024
+    antwort = kind_client.post(
+        reverse("aufgaben:kind_melden", args=[instanz.pk]),
+        {"text": "x"},
+        CONTENT_LENGTH=str(grenze + 1),
+    )
+    assert antwort.status_code == 413
+    instanz.refresh_from_db()
+    assert instanz.status == InstanzStatus.RESERVIERT
