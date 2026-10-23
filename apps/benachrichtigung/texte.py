@@ -156,9 +156,21 @@ def link_fuer(ereignis, muster):
     if ereignis.kind_id:
         werte["kind_id"] = str(ereignis.kind_id)
     link = _fuellen(muster, werte)
-    if not link or len(link) > LINK_MAX or not link.startswith("/"):
+    if not link or len(link) > LINK_MAX or not ist_interner_pfad(link):
         return ""
     return link
+
+
+def ist_interner_pfad(link):
+    """Nur Pfade der eigenen Origin: beginnt mit ``/``, aber nicht ``//`` oder ``/\\``
+    (Browser behandeln beides als fremden Host). Kein Steuerzeichen (Review AP19, B-12)."""
+    return (
+        isinstance(link, str)
+        and link.startswith("/")
+        and not link.startswith(("//", "/\\"))
+        and "\\" not in link
+        and not any(ord(z) < 32 for z in link)
+    )
 
 
 def _kuerzen(text, grenze):

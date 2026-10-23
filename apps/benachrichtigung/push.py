@@ -20,7 +20,7 @@ from apps.kern import adressen, einstellungen
 from apps.konten.models import Rolle
 
 from . import pushschluessel as vapid
-from . import registry, selectors
+from . import registry, selectors, texte
 from .kanaele import absolute_url
 from .models import PushAbo
 
@@ -108,7 +108,7 @@ def topic(schluessel):
 def _eigene_origin_url(pfad):
     if not adressen.basis_url():
         raise registry.NichtKonfiguriert("Basis-URL fehlt: Push braucht absolute Links")
-    if not pfad.startswith("/") or pfad.startswith("//"):
+    if not texte.ist_interner_pfad(pfad):
         pfad = "/"
     return absolute_url(pfad)
 

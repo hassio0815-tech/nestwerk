@@ -95,3 +95,23 @@ def test_wochentage_bitmaske():
     nur_mittwoch = fenster(time(9), time(17), tage=1 << 2)
     assert ruhezeit.fenster_aktiv(nur_mittwoch, datetime(2026, 10, 21, 12, tzinfo=BERLIN))
     assert not ruhezeit.fenster_aktiv(nur_mittwoch, datetime(2026, 10, 22, 12, tzinfo=BERLIN))
+
+
+@pytest.mark.parametrize(
+    "link,ok",
+    [
+        ("/eltern/meldungen/#instanz-3", True),
+        ("/", True),
+        ("//boese.example/x", False),
+        ("/\\boese.example", False),
+        ("/a\\b", False),
+        ("https://boese.example/", False),
+        ("/a\nb", False),
+        ("", False),
+    ],
+)
+def test_nur_interne_pfade(link, ok):
+    """Regression B-12: '/\\host' leitet Browser wie '//host' auf fremde Hosts."""
+    from apps.benachrichtigung import texte
+
+    assert texte.ist_interner_pfad(link) is ok

@@ -14,7 +14,7 @@ from django.views.decorators.http import require_GET, require_POST
 from apps.konten import selectors as konten_selectors
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
-from . import registry, ruhezeit, selectors, services
+from . import registry, ruhezeit, selectors, services, texte
 from .models import Benachrichtigung
 from .views_push import push_kontext
 
@@ -73,9 +73,7 @@ def oeffnen(request, pk):
     """Markiert als gelesen und folgt dem Deep-Link (nur interne Pfade)."""
     eintrag = get_object_or_404(Benachrichtigung, pk=pk, empfaenger=request.user)
     services.als_gelesen(request.user, eintrag.pk)
-    ziel = (
-        eintrag.link if eintrag.link.startswith("/") and not eintrag.link.startswith("//") else ""
-    )
+    ziel = eintrag.link if texte.ist_interner_pfad(eintrag.link) else ""
     return HttpResponseRedirect(ziel or "/eltern/benachrichtigungen/")
 
 
