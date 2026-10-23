@@ -2,11 +2,11 @@
 
 import logging
 
-from django.conf import settings
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 
+from apps.kern import adressen
 from apps.konten import selectors as konten_selectors
 
 from . import mail, registry
@@ -16,7 +16,7 @@ logger = logging.getLogger("famko.benachrichtigung")
 
 
 def absolute_url(pfad):
-    basis = (getattr(settings, "BASIS_URL", "") or "").rstrip("/")
+    basis = adressen.basis_url()
     return f"{basis}{pfad}" if pfad else ""
 
 

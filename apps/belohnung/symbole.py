@@ -2,6 +2,8 @@
 
 SYMBOLE = (
     ("geschenk", "Geschenk"),
+    ("tv", "Fernseher"),
+    ("controller", "Spielcontroller"),
     ("uhr", "Uhr"),
     ("funke", "Funke"),
     ("muenze", "Münze"),

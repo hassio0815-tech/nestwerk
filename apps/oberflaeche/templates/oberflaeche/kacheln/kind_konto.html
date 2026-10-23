@@ -1,0 +1,9 @@
+<article class="karte"><div class="karte__inhalt kind-konto">
+  <span class="avatar-platz" aria-hidden="true"><span class="avatar-platz__buchstabe">{{ request.user.anzeigename|slice:":1"|upper }}</span></span>
+  <div class="stapel">
+    <strong>{{ request.user.anzeigename }}</strong>
+    <span class="reihe">{% include "komponenten/punkte.html" with wert=k.guthaben %}
+      <span class="chip" data-selten="rare">{% include "komponenten/icon.html" with name="stern" %} {{ k.xp }} XP</span></span>
+    {% if k.reserviert %}<span class="kachel__text">{{ k.reserviert }} davon für Anträge reserviert</span>{% endif %}
+  </div>
+</div></article>

@@ -3,8 +3,8 @@
 # (Name, Symbol, Systemschlüssel)
 KATEGORIEN = [
     ("Süßes", "geschenk", ""),
-    ("Fernsehzeit", "uhr", ""),
-    ("Gaming/Computer", "funke", ""),
+    ("Fernsehzeit", "tv", ""),
+    ("Gaming/Computer", "controller", ""),
     ("Taschengeld", "muenze", "taschengeld"),
     ("Sonstiges", "stern", ""),
 ]

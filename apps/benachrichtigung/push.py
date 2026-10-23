@@ -3,7 +3,7 @@
 Nutzlast im Declarative-Web-Push-Format (RFC 8030-Versand, ``web_push: 8030``): iOS 18.4+
 zeigt sie ohne Service-Worker-Code an. Der Service Worker (``sw.js``) liest dasselbe JSON im
 ``push``-Ereignis und zeigt klassisch an (Android Chrome, Desktop). ``navigate`` ist immer eine
-absolute URL der eigenen Origin (``BASIS_URL``). Keine Aktions-Buttons (iOS unterstützt sie nicht).
+absolute URL der eigenen Origin (Basis-URL). Keine Aktions-Buttons (iOS unterstützt sie nicht).
 """
 
 import hashlib
@@ -11,13 +11,12 @@ import json
 import logging
 from urllib.parse import urlsplit
 
-from django.conf import settings
 from django.db.models import F
 from django.urls import reverse
 from django.utils import timezone
 from pywebpush import WebPushException, webpush
 
-from apps.kern import einstellungen
+from apps.kern import adressen, einstellungen
 from apps.konten.models import Rolle
 
 from . import pushschluessel as vapid
@@ -107,8 +106,8 @@ def topic(schluessel):
 
 
 def _eigene_origin_url(pfad):
-    if not (getattr(settings, "BASIS_URL", "") or "").strip():
-        raise registry.NichtKonfiguriert("BASIS_URL fehlt: Push braucht absolute Links")
+    if not adressen.basis_url():
+        raise registry.NichtKonfiguriert("Basis-URL fehlt: Push braucht absolute Links")
     if not pfad.startswith("/") or pfad.startswith("//"):
         pfad = "/"
     return absolute_url(pfad)

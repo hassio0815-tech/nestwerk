@@ -1,0 +1,16 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Kinder</h2>
+  {% for z in k.zeilen %}
+    <div class="zeile">
+      <strong>{{ z.kind.anzeigename }}</strong>
+      <span class="reihe">
+        {% include "komponenten/punkte.html" with wert=z.guthaben %}
+        <span class="chip" data-selten="rare">{{ z.xp }} XP</span>
+        <span>{{ z.laufend }} laufend</span>
+        <span>{{ z.heute }} heute erledigt</span>
+      </span>
+    </div>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+  {% endfor %}
+</div></article>

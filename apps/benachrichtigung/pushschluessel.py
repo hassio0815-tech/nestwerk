@@ -14,6 +14,8 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from django.conf import settings
 from py_vapid import Vapid02
 
+from apps.kern import adressen
+
 SCHLUESSEL_DATEI = "vapid_private.pem"
 
 
@@ -56,5 +58,5 @@ def kontakt():
     eigener = getattr(settings, "VAPID_KONTAKT", "") or ""
     if eigener:
         return eigener
-    basis = (getattr(settings, "BASIS_URL", "") or "").rstrip("/")
+    basis = adressen.basis_url()
     return basis if basis.startswith("https://") else "mailto:famko@localhost.invalid"

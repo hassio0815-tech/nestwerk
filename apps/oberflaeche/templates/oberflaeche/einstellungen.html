@@ -1,0 +1,47 @@
+{% extends "oberflaeche/eltern_basis.html" %}
+{% comment %}Generischer Einstellungen-Editor: ein Formular je Modul, Felder aus den Definitionen.{% endcomment %}
+{% block titel %}Einstellungen{% endblock %}
+{% block seite %}
+  <h1>Einstellungen</h1>
+  <nav class="reihe" aria-label="Module">
+    {% for g in gruppen %}<a class="chip" data-selten="common" href="#modul-{{ g.modul }}">{{ g.titel }}</a>{% endfor %}
+  </nav>
+  {% for g in gruppen %}
+    <section class="karte" id="modul-{{ g.modul }}"><div class="karte__inhalt stapel">
+      <h2>{{ g.titel }}</h2>
+      {% if gespeichert == g.modul %}<p class="feld__hinweis" role="status">Gespeichert.</p>{% endif %}
+      <form method="post" action="{% url 'oberflaeche:einstellungen_speichern' g.modul %}" class="stapel">
+        {% csrf_token %}
+        {% for f in g.felder %}
+          <div class="feld{% if f.fehler %} feld--fehler{% endif %}">
+            {% if f.art == "bool" %}
+              <input type="hidden" name="{{ f.name }}" value="0">
+              <label class="feld__label"><input type="checkbox" name="{{ f.name }}" value="1"{% if f.text %} checked{% endif %}> {{ f.definition.bezeichnung }}</label>
+            {% else %}
+              <label class="feld__label" for="f-{{ f.name }}">{{ f.definition.bezeichnung }}{% if f.definition.einheit %} ({{ f.definition.einheit }}){% endif %}</label>
+              {% if f.art == "auswahl" %}
+                <select class="feld__eingabe" id="f-{{ f.name }}" name="{{ f.name }}">
+                  {% for a in f.auswahl %}<option value="{{ a }}"{% if a|stringformat:"s" == f.text %} selected{% endif %}>{{ a }}</option>{% endfor %}
+                </select>
+              {% elif f.art == "liste" %}
+                <textarea class="feld__eingabe" id="f-{{ f.name }}" name="{{ f.name }}" rows="3">{{ f.text }}</textarea>
+              {% elif f.art == "zahl" %}
+                <input class="feld__eingabe" id="f-{{ f.name }}" name="{{ f.name }}" type="number" inputmode="numeric" value="{{ f.text }}"{% if f.definition.minimum is not None %} min="{{ f.definition.minimum }}"{% endif %}{% if f.definition.maximum is not None %} max="{{ f.definition.maximum }}"{% endif %}>
+              {% elif f.art == "datum" %}
+                <input class="feld__eingabe" id="f-{{ f.name }}" name="{{ f.name }}" type="date" value="{{ f.text }}">
+              {% elif f.art == "uhrzeit" %}
+                <input class="feld__eingabe" id="f-{{ f.name }}" name="{{ f.name }}" type="time" value="{{ f.text }}">
+              {% else %}
+                <input class="feld__eingabe" id="f-{{ f.name }}" name="{{ f.name }}" type="text" value="{{ f.text }}" maxlength="{{ f.definition.max_laenge }}">
+              {% endif %}
+            {% endif %}
+            {% if f.fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ f.fehler }}</p>
+            {% elif f.definition.beschreibung %}<p class="feld__hinweis">{{ f.definition.beschreibung }}{% if f.art == "liste" %} Ein Eintrag pro Zeile.{% endif %}</p>{% endif %}
+            {% if f.fehlt and not f.fehler %}<p class="feld__hinweis">Noch kein Wert gesetzt.</p>{% endif %}
+          </div>
+        {% endfor %}
+        {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
+      </form>
+    </div></section>
+  {% endfor %}
+{% endblock %}
