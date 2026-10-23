@@ -1,4 +1,4 @@
-"""Eingebaute Kanäle: E-Mail, Pop-up und der Platzhalter für Web-Push."""
+"""Eingebaute Kanäle: E-Mail, Pop-up (Web-Push: ``push.PushKanal``)."""
 
 import logging
 
@@ -70,23 +70,9 @@ class PopupKanal(registry.ZustellKanal):
         )
 
 
-class PushPlatzhalter(registry.ZustellKanal):
-    """Schnittstelle für Web-Push. Die echte Umsetzung (VAPID, ``PushAbo`` verwalten, Versand)
-    ersetzt diesen Kanal in AP08: ``kanal_registrieren(PushKanal(), ersetzen=True)``."""
-
-    slug = "push"
-    bezeichnung = "Push"
-
-    def senden(self, zustellung):
-        logger.warning(
-            "Web-Push nicht konfiguriert: Zustellung %s (Benachrichtigung %s) nicht gesendet",
-            zustellung.pk,
-            zustellung.benachrichtigung_id,
-        )
-        raise registry.NichtKonfiguriert("Web-Push ist noch nicht eingerichtet")
-
-
 def eingebaute_registrieren():
+    from .push import PushKanal  # push importiert absolute_url aus diesem Modul
+
     registry.kanal_registrieren(EmailKanal())
     registry.kanal_registrieren(PopupKanal())
-    registry.kanal_registrieren(PushPlatzhalter())
+    registry.kanal_registrieren(PushKanal())

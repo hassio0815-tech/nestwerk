@@ -23,6 +23,7 @@ SECRETS_DIR = DATA_DIR / "secrets"
 FERNET_KEY = env("FERNET_KEY")
 # Öffentliche Adresse für Links in E-Mails (z. B. https://famko.example.org)
 BASIS_URL = env("BASIS_URL", "")
+VAPID_KONTAKT = env("VAPID_KONTAKT", "")  # optional: mailto:/https-Kontakt für Push (sub-Claim)
 
 SECRET_KEY = env("SECRET_KEY")  # Pflicht in Produktion; Entwicklung/Test setzen Ersatzwert
 DEBUG = False

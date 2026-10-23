@@ -25,6 +25,8 @@
     {% if not smtp_da %}<p class="feld__hinweis">Der E-Mail-Postausgang ist noch nicht eingerichtet.</p>{% endif %}
   </div></section>
 
+  {% include "benachrichtigung/_push_karte.html" %}
+
   <section class="karte"><div class="karte__inhalt stapel">
     <h2>Ruhezeit</h2>
     <p>In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste.</p>

@@ -145,7 +145,8 @@ class Benachrichtigung(models.Model):
 
 
 class PushAbo(models.Model):
-    """Push-Abonnement eines Geräts. Nur das Modell; Anmeldung und Versand folgen mit AP08."""
+    """Push-Abonnement eines Geräts (Anmeldung und Versand: ``push``). 404/410 vom Push-Dienst
+    setzen ``aktiv`` auf False."""
 
     benutzer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
@@ -159,6 +160,9 @@ class PushAbo(models.Model):
     auth = models.CharField(max_length=100)
     bezeichnung = models.CharField(max_length=60, blank=True, default="")
     user_agent = models.CharField(max_length=300, blank=True, default="")
+    erstellt_am = models.DateTimeField(default=timezone.now)
+    zuletzt_ok = models.DateTimeField(null=True, blank=True)
+    fehlerzaehler = models.PositiveSmallIntegerField(default=0)
     aktiv = models.BooleanField(default=True)
 
     class Meta:

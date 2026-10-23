@@ -16,6 +16,7 @@ from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
 from . import registry, ruhezeit, selectors, services
 from .models import Benachrichtigung
+from .views_push import push_kontext
 
 logger = logging.getLogger("famko.benachrichtigung")
 
@@ -111,6 +112,7 @@ def _einstellungen_kontext(request, ziel, fehler=""):
         "nur_entscheidungen": selectors.mail_nur_entscheidungen(ziel) if eigene else False,
         "smtp_da": selectors.smtp_konto() is not None,
         "fehler": fehler,
+        **(push_kontext(request) if eigene else {}),
     }
 
 

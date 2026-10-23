@@ -90,15 +90,13 @@ def test_ohne_adresse_wird_aufgegeben(katalog, smtp):
     assert opa_z.status == ZustellStatus.AUFGEGEBEN and "Adresse" in opa_z.fehler
 
 
-def test_push_platzhalter_wird_als_nicht_konfiguriert_protokolliert(katalog, mama, caplog):
+def test_push_ohne_geraet_ist_nicht_konfiguriert(katalog, mama):
     e = veroeffentlichen(TYP_INFO)
     router.router(e)
-    with caplog.at_level(logging.WARNING, logger="famko.benachrichtigung"):
-        senden_alle()
+    senden_alle()
     z = zustellung(mama, e, "push")
     assert z.status == ZustellStatus.NICHT_KONFIGURIERT
-    assert "Web-Push" in z.fehler
-    assert any("Web-Push nicht konfiguriert" in r.message for r in caplog.records)
+    assert "Kein Gerät" in z.fehler
 
 
 def test_smtp_fehler_wiederholt_mit_backoff_und_gibt_auf(katalog, mama, smtp, uhr, monkeypatch):
