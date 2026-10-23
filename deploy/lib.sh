@@ -5,6 +5,12 @@
 log() { printf '[famko %s] %s\n' "$(date +%H:%M:%S)" "$*"; }
 fehler() { printf '[famko FEHLER] %s\n' "$*" >&2; }
 
+# Das Repo gehört dem Benutzer famko; als root würde git sonst mit "dubious ownership" abbrechen.
+GIT_CONFIG_COUNT=1
+GIT_CONFIG_KEY_0=safe.directory
+GIT_CONFIG_VALUE_0=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+export GIT_CONFIG_COUNT GIT_CONFIG_KEY_0 GIT_CONFIG_VALUE_0
+
 ENV_DATEI=".env"
 ZUSTAND_DATEI=".deploy-zustand"
 
