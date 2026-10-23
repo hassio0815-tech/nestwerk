@@ -9,6 +9,8 @@
 #   --bind-ip IP       LAN-IP der VM für Port 8000 (Standard: automatisch erkannt)
 #   --heimnetz CIDR    Heimnetz, z. B. 192.168.0.0/24 (nur Hinweis in .env)
 #   --ziel PFAD        Installationsverzeichnis (Standard /opt/famko)
+#   --egress-erlaubt X Komma-Liste privater Ziele (IP/CIDR), die Container erreichen dürfen
+#                      (z. B. ein SMTP-Relay im LAN); DNS-Resolver der VM sind automatisch erlaubt
 #   --ohne-start       nur vorbereiten, nicht bauen/starten
 set -euo pipefail
 
@@ -16,6 +18,7 @@ npm_ip=""
 domain=""
 bind_ip=""
 heimnetz=""
+egress=""
 ziel="/opt/famko"
 start=1
 BACKUP_HOST=/srv/famko/backup
@@ -30,9 +33,10 @@ while [ $# -gt 0 ]; do
     --domain) domain="${2:?--domain braucht einen Wert}"; shift ;;
     --bind-ip) bind_ip="${2:?--bind-ip braucht einen Wert}"; shift ;;
     --heimnetz) heimnetz="${2:?--heimnetz braucht einen Wert}"; shift ;;
+    --egress-erlaubt) egress="${2:?--egress-erlaubt braucht einen Wert}"; shift ;;
     --ziel) ziel="${2:?--ziel braucht einen Wert}"; shift ;;
     --ohne-start) start=0 ;;
-    -h | --help) sed -n '2,15p' "$0"; exit 0 ;;
+    -h | --help) sed -n '2,17p' "$0"; exit 0 ;;
     *) fehler "Unbekannte Option: $1"; exit 2 ;;
     esac
     shift
@@ -124,7 +128,20 @@ chown famko: .env
 # --- Firewall: Port 8000 nur vom NPM -----------------------------------------------------------
 log "Firewall (nftables): Port 8000 nur von $npm_ip"
 install -d -m 0755 /etc/famko
-sed "s/@NPM_IP@/$npm_ip/g" "$ziel/deploy/famko-firewall.nft.in" >/etc/famko/firewall.nft
+# DNS-Resolver der VM (IPv4) bleiben für Container erreichbar, sonst blockt die Egress-Regel sie
+dns=$(sed -n 's/^nameserver[[:space:]]\+\([0-9.]\+\).*/\1/p' /etc/resolv.conf | paste -sd, - | sed 's/,/, /g')
+if [ -z "$dns" ] || [ "$dns" = "127.0.0.53" ]; then
+    log "WARNUNG: keine direkten IPv4-DNS-Resolver in /etc/resolv.conf gefunden – Container-DNS prüfen"
+    dns="127.0.0.53"
+fi
+# Die Liste wird in .env gemerkt, damit ein erneuter Lauf sie nicht verliert
+[ -n "$egress" ] && env_setzen FAMKO_EGRESS_ERLAUBT "$egress"
+egress=$(env_wert FAMKO_EGRESS_ERLAUBT)
+egress_elemente=""
+[ -n "$egress" ] && egress_elemente="        elements = { ${egress//,/, } }"
+sed -e "s|@NPM_IP@|$npm_ip|g" -e "s|@DNS_ERLAUBT@|$dns|" \
+    -e "s|^@EGRESS_ELEMENTE@\$|$egress_elemente|" \
+    "$ziel/deploy/famko-firewall.nft.in" >/etc/famko/firewall.nft
 cat >/etc/systemd/system/famko-firewall.service <<'EOT'
 [Unit]
 Description=FamKo Firewall (Port 8000 nur vom Nginx Proxy Manager)
