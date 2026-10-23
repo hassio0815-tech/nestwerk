@@ -34,6 +34,7 @@ __all__ = [
     "WIRKUNG",
     "buchen",
     "gegenbuchen",
+    "schreibsperre",
 ]
 
 # Art -> (Faktor Guthaben, Faktor XP) für einen positiven Betrag
@@ -109,7 +110,7 @@ def buchen(
     g_faktor, x_faktor = WIRKUNG[art]
 
     with transaction.atomic():
-        _schreibsperre(kind)
+        schreibsperre(kind)
         bestehend = _bestehende(schluessel, kind=kind, art=art)
         if bestehend is not None:
             return bestehend
@@ -154,7 +155,7 @@ def gegenbuchen(original, *, begruendung="", von=audit.AKTUELL, bezugsdatum=None
         schluessel = _text_pruefen(
             "schluessel", schluessel or f"storno:{original.pk}", 120, pflicht=True
         )
-        _schreibsperre(original.kind)
+        schreibsperre(original.kind)
         bestehend = Buchung.objects.filter(storno_von=original).first()
         if bestehend is not None:
             return bestehend
@@ -229,8 +230,17 @@ def _bestehende(schluessel, *, kind, art):
     return bestehend
 
 
-def _schreibsperre(kind):
-    """Serialisiert Buchungen: SQLite über ``BEGIN IMMEDIATE``, andere DBs über Zeilensperre."""
+def schreibsperre(kind):
+    """Serialisiert schreibende Vorgänge eines Kindes (Buchungen, Einlöseanträge).
+
+    Muss innerhalb von ``transaction.atomic()`` laufen. SQLite: Die Sperre hält schon das
+    ``BEGIN IMMEDIATE`` der **äußersten** Transaktion (``transaction_mode`` gilt für jede
+    äußerste ``atomic()``-Ebene, auch wenn ein Aufrufer sie öffnet); hier wird nur die
+    Konfiguration geprüft. Andere DBs: Zeilensperre auf das Kind. Öffentlich, damit Fach-Module
+    (belohnung) dieselbe Regel nutzen statt sie zu kopieren (Review AP19, B-10).
+    """
+    if not connection.in_atomic_block:
+        raise ImproperlyConfigured("schreibsperre nur innerhalb transaction.atomic()")
     if connection.vendor == "sqlite":
         modus = connection.settings_dict.get("OPTIONS", {}).get("transaction_mode")
         if str(modus).upper() != "IMMEDIATE":

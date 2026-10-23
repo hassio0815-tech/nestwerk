@@ -9,11 +9,11 @@
 
 Prüfung und Schreiben laufen in einer Transaktion. SQLite startet sie mit ``BEGIN IMMEDIATE``
 (Schreibsperre ab Beginn), parallele Anträge und Entscheidungen werden dadurch serialisiert.
+Die Sperrregel selbst kommt aus ``punkte.services.schreibsperre`` (eine Stelle für beide).
 """
 
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-from django.db import connection, transaction
+from django.core.exceptions import PermissionDenied
+from django.db import transaction
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
@@ -68,7 +68,7 @@ def antrag_stellen(kind, belohnung):
     if getattr(kind, "rolle", None) != Rolle.KIND:
         raise PermissionDenied("Nur Kinder stellen Anträge")
     with transaction.atomic():
-        _schreibsperre(kind)
+        punkte_services.schreibsperre(kind)
         belohnung = Belohnung.objects.select_related("kategorie").get(pk=belohnung.pk)
         if not belohnung.aktiv:
             raise BelohnungInaktiv("Diese Belohnung gibt es gerade nicht.")
@@ -174,7 +174,7 @@ def ablehnen(antrag, *, von, grund=""):
 def zurueckziehen(antrag, *, kind):
     """Das Kind zieht seinen eigenen offenen Antrag zurück."""
     with transaction.atomic():
-        _schreibsperre(kind)
+        punkte_services.schreibsperre(kind)
         antrag = Einloeseantrag.objects.select_related("kind").get(pk=_pk(antrag))
         if antrag.kind_id != kind.pk:
             raise PermissionDenied("Das ist nicht dein Antrag")
@@ -224,7 +224,7 @@ def _pk(antrag):
 def _sperren_und_laden(antrag):
     """Schreibsperre für das Kind des Antrags, dann den Antrag frisch lesen."""
     kind = Einloeseantrag.objects.select_related("kind").get(pk=_pk(antrag)).kind
-    _schreibsperre(kind)
+    punkte_services.schreibsperre(kind)
     return Einloeseantrag.objects.select_related("kind", "belohnung").get(pk=_pk(antrag))
 
 
@@ -265,16 +265,6 @@ def _eltern_pruefen(von):
 
 def _euro(cent):
     return f"{cent // 100},{cent % 100:02d} €"
-
-
-def _schreibsperre(kind):
-    """Serialisiert Anträge/Entscheidungen: SQLite über ``BEGIN IMMEDIATE``, sonst Zeilensperre."""
-    if connection.vendor == "sqlite":
-        modus = connection.settings_dict.get("OPTIONS", {}).get("transaction_mode")
-        if str(modus).upper() != "IMMEDIATE":
-            raise ImproperlyConfigured("belohnung braucht SQLite transaction_mode IMMEDIATE")
-    else:  # pragma: no cover - Produktion ist SQLite
-        get_user_model().objects.select_for_update().filter(pk=kind.pk).first()
 
 
 # --- Katalogpflege (Eltern) --------------------------------------------------------------------
