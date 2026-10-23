@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+/* Das hidden-Attribut muss gegen display:flex/grid der Komponenten (.stapel, .reihe, ...) gewinnen. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
 }

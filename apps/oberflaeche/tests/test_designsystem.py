@@ -99,3 +99,19 @@ def test_css_hat_keine_externen_quellen_und_lokale_schriften_existieren(datei):
 @pytest.mark.parametrize("lizenz", LIZENZEN)
 def test_schriften_und_bibliotheken_haben_lizenzdatei(lizenz):
     assert finders.find(lizenz) is not None
+
+
+def _css(name):
+    return Path(finders.find(f"css/{name}")).read_text(encoding="utf-8")
+
+
+def test_hidden_attribut_gewinnt_gegen_komponenten_display():
+    """Regression (Screenshot-Prüfung): .stapel/.reihe (display:flex) überschrieben ``hidden``."""
+    assert re.search(r"\[hidden\]\s*\{[^}]*display:\s*none\s*!important", _css("famko.css"))
+
+
+@pytest.mark.parametrize("datei", ["aufgaben.css", "oberflaeche.css"])
+def test_zeile_ist_eine_reihe(datei):
+    """Regression: ``.karte__inhalt.zeile`` erbte flex-direction:column (riesige Karten)."""
+    block = re.search(r"\.zeile\s*\{([^}]*)\}", _css(datei)).group(1)
+    assert "flex-direction: row" in block

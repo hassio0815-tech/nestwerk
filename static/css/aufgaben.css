@@ -5,7 +5,7 @@
 .plan:has(input[name="wiederholungsart"][value="woechentlich"]:checked) .plan__wochen,
 .plan:has(input[name="wiederholungsart"][value="intervall"]:checked) .plan__intervall { display: block; }
 @supports not selector(:has(*)) { .plan__wochen, .plan__intervall { display: block; } }
-.zeile { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
+.zeile { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
 .zeile__text { flex: 1 1 16rem; }
 .zeile__plan { font-size: .9em; opacity: .8; }
 .aufgaben-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -33,7 +33,10 @@
 .wochenplan__karte[data-status="bestaetigt"] { border-left: 4px solid #16a34a; }
 .wochenplan__karte[data-status="offen"] { border-left: 4px solid #94a3b8; }
 .wochenplan__zeit, .wochenplan__sperre { display: inline-flex; gap: .25rem; align-items: center; font-size: .85em; }
-.wochenplan__verschieben { gap: .25rem; align-items: flex-end; }
+.wochenplan__verschieben { gap: .25rem; align-items: flex-end; min-width: 0; }
+.wochenplan__verschieben .wochenplan__label { min-width: 0; max-width: 100%; }
+.wochenplan__verschieben .feld__eingabe { width: 100%; min-width: 0; box-sizing: border-box; padding: .4rem .3rem; font-size: .8rem; }
+.wochenplan__verschieben .knopf { max-width: 100%; }
 .wochenplan__label { font-size: .8em; display: flex; flex-direction: column; }
 .wochenplan__ohne { margin-top: 1rem; }
 .wochenplan__liste--info { flex-direction: row; flex-wrap: wrap; }
