@@ -28,8 +28,8 @@ services:
 
   worker:
     <<: *famko
-    # Platzhalter bis AP05 (manage.py ereignisse_worker)
-    command: ["sh", "-c", "echo 'worker: Platzhalter (AP05)'; while true; do sleep 3600; done"]
+    # Outbox-Worker (AP05): Endlosschleife, 2 s Takt, beendet sich sauber bei SIGTERM
+    command: ["python", "manage.py", "ereignisse_worker"]
 
   scheduler:
     <<: *famko

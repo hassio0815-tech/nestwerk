@@ -51,7 +51,9 @@ layers = [
     "oberflaeche | einrichtung",
     "aufgaben | belohnung | (avatar) | (sondertag) | (familienziel) | (lernen) | (forschen) | (hausautomation)",
     "spielregeln | benachrichtigung",
-    "punkte | ereignisse",
+    # punkte publiziert "punkte.gebucht" (ARCHITECTURE 2.3/5.2, AP04) -> punkte über ereignisse
+    "punkte",
+    "ereignisse",
     "konten",
     "kern",
 ]
