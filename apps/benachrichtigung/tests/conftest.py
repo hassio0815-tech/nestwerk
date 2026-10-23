@@ -46,6 +46,16 @@ def zeitzone(db):
     )
 
 
+@pytest.fixture(autouse=True)
+def dns_oeffentlich(monkeypatch):
+    """Keine echte Namensauflösung: jeder Host löst auf eine öffentliche Adresse auf."""
+    from apps.benachrichtigung import push
+
+    monkeypatch.setattr(
+        push.socket, "getaddrinfo", lambda host, *a, **k: [(2, 1, 6, "", ("93.184.216.34", 443))]
+    )
+
+
 @pytest.fixture
 def uhr(monkeypatch):
     u = Uhr()

@@ -7,8 +7,10 @@ absolute URL der eigenen Origin (Basis-URL). Keine Aktions-Buttons (iOS unterst�
 """
 
 import hashlib
+import ipaddress
 import json
 import logging
+import socket
 from urllib.parse import urlsplit
 
 from django.db.models import F
@@ -16,7 +18,7 @@ from django.urls import reverse
 from django.utils import timezone
 from pywebpush import WebPushException, webpush
 
-from apps.kern import adressen, einstellungen
+from apps.kern import adressen, audit, einstellungen
 from apps.konten.models import Rolle
 
 from . import pushschluessel as vapid
@@ -38,6 +40,55 @@ class UngueltigesAbo(ValueError):
     """Das vom Browser gesendete Abo ist unvollständig oder unzulässig."""
 
 
+class NichtAufloesbar(UngueltigesAbo):
+    """Der Host des Endpoints lässt sich gerade nicht auflösen (kann vorübergehend sein)."""
+
+
+ERLAUBTE_HOSTS_SCHLUESSEL = "benachrichtigung.push_erlaubte_hosts"
+
+
+def _host_erlaubt(host, suffixe):
+    return any(host == s or host.endswith("." + s) for s in suffixe)
+
+
+def endpoint_pruefen(endpoint):
+    """Prüft den Push-Endpoint (SSRF-Schutz, B-14): nur https, Port 443, Host per Suffix in der
+    Einstellung ``benachrichtigung.push_erlaubte_hosts`` (Label-Grenze). IP-Literale und Hosts,
+    die auf nicht öffentliche Adressen auflösen, sind immer gesperrt."""
+    try:
+        teile = urlsplit(endpoint)
+        port = teile.port
+        host = (teile.hostname or "").lower().rstrip(".")
+    except ValueError:
+        raise UngueltigesAbo("Endpoint ungültig") from None
+    if teile.scheme != "https" or not host or len(endpoint) > 2000:
+        raise UngueltigesAbo("Endpoint ungültig")
+    if teile.username is not None or teile.password is not None or port not in (None, 443):
+        raise UngueltigesAbo("Endpoint nicht erlaubt (nur https, Port 443)")
+    try:
+        ipaddress.ip_address(host)
+    except ValueError:
+        pass
+    else:
+        raise UngueltigesAbo("Endpoint nicht erlaubt (IP-Adressen sind gesperrt)")
+    suffixe = [str(x).lower().strip(".") for x in einstellungen.wert(ERLAUBTE_HOSTS_SCHLUESSEL)]
+    if not _host_erlaubt(host, suffixe):
+        raise UngueltigesAbo("Dieser Push-Dienst ist nicht erlaubt")
+    try:
+        adressen_ = {info[4][0] for info in socket.getaddrinfo(host, 443, type=socket.SOCK_STREAM)}
+    except OSError:
+        raise NichtAufloesbar("Push-Dienst nicht erreichbar (Namensauflösung)") from None
+    for adresse in adressen_:
+        try:
+            ip = ipaddress.ip_address(adresse.split("%")[0])
+        except ValueError:
+            raise UngueltigesAbo("Endpoint nicht erlaubt") from None
+        if getattr(ip, "ipv4_mapped", None):
+            ip = ip.ipv4_mapped
+        if not ip.is_global:
+            raise UngueltigesAbo("Endpoint nicht erlaubt (nicht öffentliche Adresse)")
+
+
 # --- Abos ------------------------------------------------------------------------------------
 
 
@@ -54,9 +105,7 @@ def abo_speichern(benutzer, daten, *, geraet=None, user_agent="", bezeichnung=""
         auth = str(daten["keys"]["auth"])
     except (KeyError, TypeError):
         raise UngueltigesAbo("Abo unvollständig") from None
-    teile = urlsplit(endpoint)
-    if teile.scheme != "https" or not teile.netloc or len(endpoint) > 2000:
-        raise UngueltigesAbo("Endpoint ungültig")
+    endpoint_pruefen(endpoint)
     if not p256dh or len(p256dh) > 200 or not auth or len(auth) > 100:
         raise UngueltigesAbo("Schlüssel ungültig")
     abo, _ = PushAbo.objects.update_or_create(
@@ -114,8 +163,22 @@ def _eigene_origin_url(pfad):
 
 
 def abo_senden(abo, payload, *, ttl, urgency=URGENCY_STANDARD, topic_wert=None):
-    """Sendet an ein Abo. 404/410 -> Abo deaktiviert und ``DauerhafterFehler``; jeder andere
-    Fehler wird weitergereicht (Retry über die Zustell-Logik)."""
+    """Sendet an ein Abo (prüft den Endpoint vorher erneut). 404/410 -> Abo deaktiviert und
+    ``DauerhafterFehler``; jeder andere Fehler wird weitergereicht (Retry der Zustell-Logik)."""
+    try:
+        endpoint_pruefen(abo.endpoint)
+    except NichtAufloesbar:
+        _fehler_zaehlen(abo)
+        raise RuntimeError("Push-Endpoint nicht auflösbar") from None
+    except UngueltigesAbo as exc:
+        PushAbo.objects.filter(pk=abo.pk).update(aktiv=False)
+        audit.protokollieren(
+            "benachrichtigung.push_endpoint_abgewiesen",
+            akteur=None,
+            objekt=abo,
+            details={"grund": str(exc)},
+        )
+        raise registry.DauerhafterFehler("Push-Endpoint nicht zulässig, Abo deaktiviert") from None
     headers = {"Urgency": urgency}
     if topic_wert:
         headers["Topic"] = topic_wert

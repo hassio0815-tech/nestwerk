@@ -35,7 +35,7 @@ def anderer_wert(d, aktuell):
                 kandidaten = {
                     Typ.GANZZAHL: [[1], [2, 3]],
                     Typ.UHRZEIT: [["07:00"], ["08:30", "20:00"]],
-                    Typ.TEXT: [["10.0.0.0/8"], ["192.168.0.0/16"]],
+                    Typ.TEXT: [["10.0.0.0/8"], ["192.168.0.0/16"], ["push.beispiel.example"]],
                 }.get(d.element_typ, [[]])
     for kandidat in kandidaten:
         if kandidat is None or kandidat == aktuell:

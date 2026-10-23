@@ -356,3 +356,144 @@ def test_test_push_ohne_geraet_und_mit_fehler(client, mama, webpush):
 def test_test_push_nur_eltern(client, anna):
     angemeldet(client, anna)
     assert client.post(reverse("benachrichtigung:push_test")).status_code == 403
+
+
+# --- Endpoint-Allowlist (B-14) ---------------------------------------------------------------
+
+
+def _abo_daten(endpoint):
+    return {"endpoint": endpoint, "keys": {"p256dh": "k", "auth": "a"}}
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [
+        "https://web.push.apple.com/abc",
+        "https://push.apple.com/abc",
+        "https://fcm.googleapis.com/fcm/send/abc",
+        "https://updates.push.services.mozilla.com/wpush/v2/abc",
+        "https://eu.notify.windows.com/?token=abc",
+        "https://WEB.PUSH.APPLE.COM:443/abc",
+    ],
+)
+def test_erlaubte_hosts_werden_akzeptiert(mama, endpoint):
+    assert push.abo_speichern(mama, _abo_daten(endpoint)).aktiv
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [
+        "https://evilpush.apple.com.attacker.tld/x",  # Suffix-Trick
+        "https://evilpush.apple.com/x",  # keine Label-Grenze
+        "https://push.apple.com.evil.example/x",
+        "https://attacker.tld/web.push.apple.com",
+        "https://web.push.apple.com@attacker.tld/x",  # Benutzerinfo-Trick
+        "http://web.push.apple.com/x",
+        "https://web.push.apple.com:8443/x",
+        "https://127.0.0.1/x",
+        "https://10.0.0.5/x",
+        "https://[::1]/x",
+        "https://[2606:4700::1111]/x",
+        "https://8.8.8.8/x",
+    ],
+)
+def test_unzulaessige_endpoints_werden_abgelehnt(mama, endpoint):
+    with pytest.raises(push.UngueltigesAbo):
+        push.abo_speichern(mama, _abo_daten(endpoint))
+    assert PushAbo.objects.count() == 0
+
+
+@pytest.mark.parametrize(
+    "adresse",
+    [
+        "10.1.2.3",
+        "127.0.0.1",
+        "169.254.169.254",
+        "192.168.1.10",
+        "::1",
+        "fe80::1",
+        "::ffff:192.168.1.1",
+        "100.64.0.1",
+    ],
+)
+def test_private_aufloesung_wird_abgelehnt(mama, monkeypatch, adresse):
+    monkeypatch.setattr(push.socket, "getaddrinfo", lambda *a, **k: [(2, 1, 6, "", (adresse, 443))])
+    with pytest.raises(push.UngueltigesAbo):
+        push.abo_speichern(mama, _abo_daten(ENDPOINT))
+
+
+def test_eine_private_adresse_unter_mehreren_genuegt(mama, monkeypatch):
+    monkeypatch.setattr(
+        push.socket,
+        "getaddrinfo",
+        lambda *a, **k: [(2, 1, 6, "", ("93.184.216.34", 443)), (2, 1, 6, "", ("10.0.0.1", 443))],
+    )
+    with pytest.raises(push.UngueltigesAbo):
+        push.abo_speichern(mama, _abo_daten(ENDPOINT))
+
+
+def test_abo_endpunkt_antwortet_400_auf_deutsch(client, mama):
+    angemeldet(client, mama)
+    antwort = post_json(client, "push_abo", _abo_daten("https://127.0.0.1/x"))
+    assert antwort.status_code == 400
+    assert "nicht erlaubt" in antwort.json()["fehler"]
+    antwort = post_json(client, "push_abo", _abo_daten("https://evilpush.apple.com.attacker.tld/x"))
+    assert antwort.status_code == 400
+    assert antwort.json()["fehler"] == "Dieser Push-Dienst ist nicht erlaubt"
+
+
+def test_aenderung_der_liste_wirkt_sofort(mama):
+    from apps.kern import einstellungen
+
+    endpoint = "https://push.beispiel-dienst.example/abc"
+    with pytest.raises(push.UngueltigesAbo):
+        push.abo_speichern(mama, _abo_daten(endpoint))
+    einstellungen.setzen("benachrichtigung.push_erlaubte_hosts", ["beispiel-dienst.example"])
+    assert push.abo_speichern(mama, _abo_daten(endpoint)).aktiv
+    with pytest.raises(push.UngueltigesAbo):
+        push.abo_speichern(mama, _abo_daten(ENDPOINT))  # Apple jetzt nicht mehr in der Liste
+
+
+def test_ungueltige_host_endung_in_der_liste_wird_abgelehnt():
+    from apps.kern import einstellungen
+
+    for falsch in ("localhost", "10.0.0.1", "https://x.de", "-a.de", "a b.de"):
+        with pytest.raises(einstellungen.UngueltigerWert):
+            einstellungen.setzen("benachrichtigung.push_erlaubte_hosts", [falsch])
+
+
+def test_versand_prueft_erneut_und_deaktiviert_abo(katalog, mama, abo, webpush):
+    from apps.kern import einstellungen
+    from apps.kern.models import AuditEintrag
+
+    einstellungen.setzen("benachrichtigung.push_erlaubte_hosts", ["fcm.googleapis.com"])
+    e = veroeffentlichen(TYP_INFO)
+    router.router(e)
+    assert versand.zustellung_senden(zustellung(mama).pk) == ZustellStatus.AUFGEGEBEN
+    webpush.assert_not_called()
+    abo.refresh_from_db()
+    assert abo.aktiv is False
+    eintrag = AuditEintrag.objects.get(aktion="benachrichtigung.push_endpoint_abgewiesen")
+    assert "apple" not in json.dumps(eintrag.details) and "http" not in json.dumps(eintrag.details)
+
+
+def test_versand_private_aufloesung_deaktiviert_abo(mama, abo, webpush, monkeypatch):
+    monkeypatch.setattr(
+        push.socket, "getaddrinfo", lambda *a, **k: [(2, 1, 6, "", ("192.168.0.9", 443))]
+    )
+    with pytest.raises(registry.DauerhafterFehler):
+        push.abo_senden(abo, {}, ttl=60)
+    webpush.assert_not_called()
+    abo.refresh_from_db()
+    assert not abo.aktiv
+
+
+def test_versand_dns_ausfall_ist_vorlaeufig(mama, abo, webpush, monkeypatch):
+    def kaputt(*a, **k):
+        raise OSError("dns")
+
+    monkeypatch.setattr(push.socket, "getaddrinfo", kaputt)
+    with pytest.raises(RuntimeError):
+        push.abo_senden(abo, {}, ttl=60)
+    abo.refresh_from_db()
+    assert abo.aktiv and abo.fehlerzaehler == 1

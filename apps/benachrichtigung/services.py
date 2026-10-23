@@ -1,5 +1,6 @@
 """Schreibende Schnittstelle von benachrichtigung."""
 
+import re
 from dataclasses import dataclass
 from datetime import timedelta
 
@@ -22,6 +23,16 @@ from .models import (
 )
 
 # --- Einstellungen ---------------------------------------------------------------------------
+
+
+_HOST_MUSTER = re.compile(r"^(?!-)[a-z0-9-]{1,63}(?<!-)(\.(?!-)[a-z0-9-]{1,63}(?<!-))+$")
+
+
+def _hosts_pruefen(hosts):
+    for host in hosts:
+        h = str(host).strip().lower()
+        if not _HOST_MUSTER.match(h) or h.replace(".", "").isdigit():
+            raise ValidationError(f"'{host}' ist keine gültige Host-Endung (z. B. push.apple.com)")
 
 
 def einstellungen_definieren():
@@ -49,6 +60,16 @@ def einstellungen_definieren():
         einheit="Tage",
         minimum=7,
         maximum=3650,
+    )
+    einstellungen.definieren(
+        "benachrichtigung.push_erlaubte_hosts",
+        Typ.LISTE,
+        "Erlaubte Push-Dienste (Host-Endungen)",
+        beschreibung="Web-Push-Endpunkte werden nur an diese Hosts gesendet (Endung auf "
+        "Label-Grenze, z. B. push.apple.com). IP-Adressen und nicht öffentliche Ziele sind "
+        "immer gesperrt.",
+        element_typ=Typ.TEXT,
+        validatoren=(_hosts_pruefen,),
     )
 
 
