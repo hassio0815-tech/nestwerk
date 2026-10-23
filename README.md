@@ -2,7 +2,7 @@
 
 Modulares Familien-Dashboard (Aufgaben, Belohnungen, Spielebene). Django 5.2 LTS, SQLite (WAL), Docker Compose.
 Konzept: `docs/SPEC.md`, Architektur: `docs/ARCHITECTURE.md`, Datenmodell: `docs/DATA_MODEL.md`.
-Das Betriebs-Runbook (Backup, Update, Rollback) folgt mit AP18.
+**Betrieb (Installation, NPM, Backup/Restore, Update, Rollback, Fehlersuche): `docs/RUNBOOK.md`.**
 
 ## Entwickler-Schnellstart
 

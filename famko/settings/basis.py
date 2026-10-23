@@ -25,6 +25,15 @@ FERNET_KEY = env("FERNET_KEY")
 BASIS_URL = env("BASIS_URL", "")
 VAPID_KONTAKT = env("VAPID_KONTAKT", "")  # optional: mailto:/https-Kontakt für Push (sub-Claim)
 
+# Backups (AP18): Zielordner im Container (compose mountet ihn als /backup) und Aufbewahrung.
+# Nicht FAMKO_BACKUP_DIR: das ist der Host-Pfad in .env.
+BACKUP_DIR = Path(env("BACKUP_ZIEL", DATA_DIR / "backup"))
+BACKUP_TAEGLICH = int(env("BACKUP_TAEGLICH", "14"))
+BACKUP_WOECHENTLICH = int(env("BACKUP_WOECHENTLICH", "8"))
+BACKUP_MONATLICH = int(env("BACKUP_MONATLICH", "12"))
+BACKUP_UPDATE_BEHALTEN = int(env("BACKUP_UPDATE_BEHALTEN", "5"))
+BACKUP_MAX_ALTER_STUNDEN = int(env("BACKUP_MAX_ALTER_STUNDEN", "36"))
+
 SECRET_KEY = env("SECRET_KEY")  # Pflicht in Produktion; Entwicklung/Test setzen Ersatzwert
 DEBUG = False
 ALLOWED_HOSTS = env_liste("ALLOWED_HOSTS", "localhost,127.0.0.1")

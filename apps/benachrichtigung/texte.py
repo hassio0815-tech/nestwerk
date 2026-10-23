@@ -34,6 +34,9 @@ class TypText:
 _registriert = {}
 
 _STANDARD = {
+    "system.backup_fehler": TypText(
+        "Datensicherung fehlgeschlagen", "Bitte Job-Läufe und Backup-Ordner prüfen (Runbook)."
+    ),
     "aufgabe.interesse": TypText("{kind} möchte eine Aufgabe machen", "„{aufgabe}“"),
     "aufgabe.konflikt": TypText(
         "Mehrere möchten dieselbe Aufgabe", "„{aufgabe}“ braucht eine Zuteilung."

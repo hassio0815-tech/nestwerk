@@ -10,6 +10,8 @@ x-famko: &famko
     TZ: Europe/Berlin
   volumes:
     - famko_data:/data
+    # Host-Ordner muss UID 1000 gehören (deploy/install.sh); enthält nur DB-Dumps, keine Fotos
+    - ${FAMKO_BACKUP_DIR:-./backup}:/backup
   logging:
     driver: json-file
     options: {max-size: 10m, max-file: "3"}
@@ -33,11 +35,9 @@ services:
 
   scheduler:
     <<: *famko
-    # Platzhalter bis AP18 (supercronic /app/deploy/crontab)
-    command: ["sh", "-c", "echo 'scheduler: Platzhalter (AP18)'; while true; do sleep 3600; done"]
-    volumes:
-      - famko_data:/data
-      - ${FAMKO_BACKUP_DIR:-./backup}:/backup
+    # supercronic führt deploy/crontab aus (TZ Europe/Berlin), Logs gehen nach stdout
+    init: true  # Zombie-Prozesse der Cron-Kinder einsammeln
+    command: ["supercronic", "/app/deploy/crontab"]
 
 volumes:
   famko_data:
