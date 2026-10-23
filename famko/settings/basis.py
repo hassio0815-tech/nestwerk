@@ -1,0 +1,92 @@
+"""Gemeinsame Einstellungen. Konfiguration per Umgebungsvariablen (Präfix FAMKO_)."""
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+
+def env(name, default=None):
+    return os.environ.get(f"FAMKO_{name}", default)
+
+
+def env_liste(name, default=""):
+    return [x.strip() for x in env(name, default).split(",") if x.strip()]
+
+
+# Datenverzeichnis (Volume): db/, media/, secrets/
+DATA_DIR = Path(env("DATA_DIR", BASE_DIR / "data"))
+
+SECRET_KEY = env("SECRET_KEY")  # Pflicht in Produktion; Entwicklung/Test setzen Ersatzwert
+DEBUG = False
+ALLOWED_HOSTS = env_liste("ALLOWED_HOSTS", "localhost,127.0.0.1")
+CSRF_TRUSTED_ORIGINS = env_liste("CSRF_TRUSTED_ORIGINS")
+
+# Phase-1-Apps (Schichten siehe ARCHITECTURE 2.1). Auth/Sessions folgen mit AP03 (konten.Benutzer).
+INSTALLED_APPS = [
+    "django.contrib.staticfiles",
+    "apps.kern",
+    "apps.konten",
+    "apps.punkte",
+    "apps.ereignisse",
+    "apps.benachrichtigung",
+    "apps.spielregeln",
+    "apps.aufgaben",
+    "apps.belohnung",
+    "apps.einrichtung",
+    "apps.oberflaeche",
+]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "famko.urls"
+WSGI_APPLICATION = "famko.wsgi.application"
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {"context_processors": ["django.template.context_processors.request"]},
+    }
+]
+
+# SQLite mit WAL für drei Prozesse (ARCHITECTURE 3.2).
+# Die PRAGMAs laufen bei jedem Verbindungsaufbau; journal_mode=WAL ist dauerhaft in der Datei.
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": DATA_DIR / "db" / "famko.sqlite3",
+        "OPTIONS": {
+            "transaction_mode": "IMMEDIATE",
+            "timeout": 5,
+            "init_command": (
+                "PRAGMA journal_mode=WAL;"
+                "PRAGMA synchronous=NORMAL;"
+                "PRAGMA busy_timeout=5000;"
+                "PRAGMA foreign_keys=ON;"
+                "PRAGMA secure_delete=ON;"
+            ),
+        },
+    }
+}
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LANGUAGE_CODE = "de"
+TIME_ZONE = "Europe/Berlin"  # nur Anzeige; intern UTC
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").is_dir() else []
+MEDIA_ROOT = DATA_DIR / "media"
+
+# Hinter Nginx Proxy Manager (TLS endet dort)
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

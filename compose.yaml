@@ -1,0 +1,43 @@
+# Ein Image, drei Rollen (ARCHITECTURE 3.1)
+x-famko: &famko
+  image: famko:${FAMKO_TAG:-dev}
+  build: .
+  restart: unless-stopped
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    TZ: Europe/Berlin
+  volumes:
+    - famko_data:/data
+  logging:
+    driver: json-file
+    options: {max-size: 10m, max-file: "3"}
+
+services:
+  web:
+    <<: *famko
+    ports:
+      - "${FAMKO_BIND_IP:-127.0.0.1}:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/gesundheit/', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  worker:
+    <<: *famko
+    # Platzhalter bis AP05 (manage.py ereignisse_worker)
+    command: ["sh", "-c", "echo 'worker: Platzhalter (AP05)'; while true; do sleep 3600; done"]
+
+  scheduler:
+    <<: *famko
+    # Platzhalter bis AP18 (supercronic /app/deploy/crontab)
+    command: ["sh", "-c", "echo 'scheduler: Platzhalter (AP18)'; while true; do sleep 3600; done"]
+    volumes:
+      - famko_data:/data
+      - ${FAMKO_BACKUP_DIR:-./backup}:/backup
+
+volumes:
+  famko_data:

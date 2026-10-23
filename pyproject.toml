@@ -1,0 +1,57 @@
+[project]
+name = "famko"
+version = "0.1.0"
+description = "FamKo: modulares Familien-Dashboard (Aufgaben, Belohnungen, Spielebene)"
+requires-python = ">=3.13"
+dependencies = [
+    "Django==5.2.18",
+    "gunicorn==26.2.0",
+    "whitenoise==6.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "pytest-django==4.14.0",
+    "ruff==0.17.2",
+    "import-linter==2.15",
+]
+
+# Kein installierbares Paket, nur Abhängigkeitsliste (pip install -e ".[dev]")
+[tool.setuptools]
+py-modules = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "famko.settings.test"
+python_files = ["test_*.py"]
+testpaths = ["apps", "tests"]
+
+[tool.importlinter]
+root_packages = ["apps", "famko"]
+
+# Schichten (ARCHITECTURE 2.1/2.2): Import nur nach unten. "|" = voneinander unabhängig.
+# Fach-Module (Schicht 3) importieren sich nie gegenseitig. Phase-2/3-Apps sind optional (Klammern).
+[[tool.importlinter.contracts]]
+name = "Schichten der FamKo-Apps"
+type = "layers"
+containers = ["apps"]
+layers = [
+    "oberflaeche | einrichtung",
+    "aufgaben | belohnung | (avatar) | (sondertag) | (familienziel) | (lernen) | (forschen) | (hausautomation)",
+    "spielregeln | benachrichtigung",
+    "punkte | ereignisse",
+    "konten",
+    "kern",
+]
