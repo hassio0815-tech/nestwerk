@@ -254,6 +254,7 @@ def test_ereignis_punkte_gebucht(anna, mama):
         "storno_von": None,
     }
     assert ereignisse[1].daten["storno_von"] == b.pk
+    assert [e.kind_id for e in ereignisse] == [anna.pk, anna.pk]
     assert AuditEintrag.objects.filter(aktion="punkte.storniert").count() == 1
 
 

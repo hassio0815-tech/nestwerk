@@ -215,6 +215,7 @@ def _speichern(buchung, akteur, aktion):
             "storno_von": buchung.storno_von_id,
         },
         schluessel=f"{GEBUCHT}:{buchung.pk}",
+        kind=buchung.kind,
     )
     return buchung
 

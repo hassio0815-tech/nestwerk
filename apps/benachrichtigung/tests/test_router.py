@@ -132,8 +132,8 @@ def test_katalogtyp_ohne_flag_zaehlt_als_entscheidung(katalog, mama):
     from apps.ereignisse import registry as ereignisse
 
     ereignisse.typ_deklarieren(
-        "belohnung.antrag",
-        modul="belohnung",
+        "sondertag.wunsch",
+        modul="sondertag",
         bezeichnung="Antrag",
         zielgruppe="eltern",
         standard_kanaele=["email"],
@@ -142,7 +142,7 @@ def test_katalogtyp_ohne_flag_zaehlt_als_entscheidung(katalog, mama):
 
     ereignis_services.typen_synchronisieren()
     services.mail_profil_setzen(mama, True)
-    e = veroeffentlichen("belohnung.antrag")
+    e = veroeffentlichen("sondertag.wunsch")
     router.router(e)
     assert status_von(mama, e, "email") == OFFEN
 

@@ -1,0 +1,30 @@
+{% extends "belohnung/basis.html" %}
+{% block titel %}Belohnungskatalog{% endblock %}
+{% block seite %}
+  <div class="zeile">
+    <h1>Katalog</h1>
+    {% url "belohnung:neu" as neu_url %}
+    <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>Neue Belohnung</span></a>
+  </div>
+  <div id="formular"></div>
+  <div class="stapel">
+    {% for b in belohnungen %}{% include "belohnung/_zeile.html" %}{% endfor %}
+  </div>
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>Taschengeld-Limit</h2>
+    <form method="post" action="{% url 'belohnung:limit' %}" class="reihe">
+      {% csrf_token %}
+      {% include "belohnung/_feld.html" with f=limit_form.betrag %}
+      {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
+    </form>
+    {% for k in kinder %}
+      <form method="post" action="{% url 'belohnung:kind_limit' k.pk %}" class="reihe">
+        {% csrf_token %}
+        <strong>{{ k.anzeigename }}</strong> <span>aktuell {{ k.limit_text }}</span>
+        {% include "belohnung/_feld.html" with f=k.limit_form.betrag %}
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text="Speichern" %}
+      </form>
+    {% endfor %}
+    <p class="feld__hinweis">Eigenes Limit leer lassen = Standard. Bestätigte und offene Anträge des Kalendermonats zählen.</p>
+  </div></section>
+{% endblock %}
