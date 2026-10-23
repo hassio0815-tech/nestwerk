@@ -1,6 +1,6 @@
-"""Stammdaten der Aufgaben: Kategorie, Vorlage (Bibliothek), Aufgabe (Definition + Plan).
+"""Aufgaben: Kategorie, Vorlage (Bibliothek), Aufgabe (Definition + Plan), AufgabenInstanz.
 
-Instanzen, Reservierung, Meldung gehören zu AP11/AP12.
+Interesse/Reservierung, Meldung, Nachweis gehören zu AP12/AP13.
 """
 
 import re
@@ -204,3 +204,108 @@ class Aufgabe(models.Model):
             fehler["sonderpunkte_deckel_prozent"] = "Wert zu hoch."
         if fehler:
             raise ValidationError(fehler)
+
+
+class InstanzStatus(models.TextChoices):
+    OFFEN = "offen", "Offen"
+    KONFLIKT = "konflikt", "Mehrere Interessenten"
+    RESERVIERT = "reserviert", "Reserviert"
+    GEMELDET = "gemeldet", "Gemeldet"
+    RUECKFRAGE = "rueckfrage", "Rückfrage"
+    BESTAETIGT = "bestaetigt", "Bestätigt"
+    ABGELEHNT = "abgelehnt", "Abgelehnt"
+    NICHT_UEBERNOMMEN = "nicht_uebernommen", "Nicht übernommen"
+    STORNIERT = "storniert", "Storniert"
+
+
+# Nicht abgeschlossene Zustände ("offen" im Sinne von K9: kein Stapel)
+LAUFENDE_STATUS = (
+    InstanzStatus.OFFEN,
+    InstanzStatus.KONFLIKT,
+    InstanzStatus.RESERVIERT,
+    InstanzStatus.GEMELDET,
+    InstanzStatus.RUECKFRAGE,
+)
+
+
+class AufgabenInstanz(models.Model):
+    """Konkretes Vorkommen einer Aufgabe (DATA_MODEL 7.4).
+
+    - ``plan_datum``: Plan-Tag, aus dem die Instanz erzeugt wurde. Unveränderlich, fachlicher
+      Idempotenz-Schlüssel ``unique(aufgabe, plan_datum)``.
+    - ``faellig_am``: wirksames Datum (Wochenplan/AP14 darf es verschieben).
+    - Zeitgebunden = ``fenster_ende`` gesetzt. Ungebunden: höchstens eine laufende Instanz je
+      Aufgabe (Teil-Unique, K9 "kein Stapel").
+    - Statusübergänge nur per bedingtem Update in den Services.
+    """
+
+    aufgabe = models.ForeignKey(Aufgabe, on_delete=models.PROTECT, related_name="instanzen")
+    plan_datum = models.DateField(null=True, blank=True)
+    faellig_am = models.DateField(null=True, blank=True)
+    fenster_start = models.DateTimeField(null=True, blank=True)
+    fenster_ende = models.DateTimeField(null=True, blank=True)
+    titel_snapshot = models.CharField(max_length=80)
+    punkte_snapshot = models.PositiveIntegerField()
+    freigabeart_snapshot = models.CharField(max_length=10, choices=Freigabeart.choices)
+    status = models.CharField(
+        max_length=20, choices=InstanzStatus.choices, default=InstanzStatus.OFFEN
+    )
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="aufgaben_instanzen",
+        help_text="Aktueller Inhaber (ab Reservierung).",
+    )
+    reserviert_bis = models.DateTimeField(null=True, blank=True, db_index=True)
+    erinnert_am = models.DateTimeField(null=True, blank=True)
+    vorwarnung_am = models.DateTimeField(null=True, blank=True)
+    bestaetigt_am = models.DateTimeField(null=True, blank=True)
+    bestaetigt_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
+    abgeschlossen_am = models.DateTimeField(
+        null=True, blank=True, help_text="Zeitpunkt des Endzustands (K9: nächster Termin danach)."
+    )
+    sortierung = models.IntegerField(default=0)
+    erzeugt_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["faellig_am", "sortierung", "id"]
+        verbose_name = "Aufgaben-Instanz"
+        verbose_name_plural = "Aufgaben-Instanzen"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["aufgabe", "plan_datum"],
+                condition=Q(plan_datum__isnull=False),
+                name="aufgaben_instanz_plan_uniq",
+            ),
+            models.UniqueConstraint(
+                fields=["aufgabe"],
+                condition=Q(fenster_ende__isnull=True, status__in=LAUFENDE_STATUS),
+                name="aufgaben_instanz_ungebunden_ein_laufend",
+            ),
+            models.CheckConstraint(
+                condition=Q(fenster_ende__isnull=True)
+                | Q(fenster_start__isnull=True)
+                | Q(fenster_ende__gt=models.F("fenster_start")),
+                name="aufgaben_instanz_fenster_gueltig",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["status", "fenster_ende"], name="aufgaben_inst_status_ende"),
+            models.Index(fields=["kind", "status"], name="aufgaben_inst_kind_status"),
+            models.Index(fields=["faellig_am"], name="aufgaben_inst_faellig"),
+        ]
+
+    def __str__(self):
+        return f"{self.titel_snapshot} ({self.faellig_am or 'ohne Termin'})"
+
+    @property
+    def zeitgebunden(self) -> bool:
+        return self.fenster_ende is not None

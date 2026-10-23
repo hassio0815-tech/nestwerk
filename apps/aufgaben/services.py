@@ -1,11 +1,45 @@
-"""Schreibende Operationen der Aufgaben-Stammdaten. Jede Änderung geht ins Audit-Log."""
+"""Schreibende Operationen von aufgaben. Jede Stammdaten-Änderung geht ins Audit-Log.
+
+Instanzen (AP11): ``instanzen_erzeugen``, ``verfall_pruefen``, ``instanz_verschieben`` (AP14),
+Reservierungs-Hooks für AP12 (``reservierung_frist``, ``reservierungen_pruefen``,
+``reservierungsablauf_hook_registrieren``).
+"""
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
 from apps.kern import audit
 
+from .instanzen import (
+    instanz_verschieben,
+    instanzen_erzeugen,
+    offene_entfernen,
+    reservierung_frist,
+    reservierungen_pruefen,
+    reservierungsablauf_hook_registrieren,
+    verfall_pruefen,
+)
 from .models import Aufgabe, Kategorie, Status, Vorlage
+
+__all__ = [
+    "aufgabe_speichern",
+    "aufgabe_status_setzen",
+    "instanz_verschieben",
+    "instanzen_erzeugen",
+    "kategorie_speichern",
+    "reservierung_frist",
+    "reservierungen_pruefen",
+    "reservierungsablauf_hook_registrieren",
+    "verfall_pruefen",
+    "vorlage_loeschen",
+    "vorlage_speichern",
+]
+
+
+def _instanzen_neu_planen(aufgabe):
+    """Unberührte Instanzen verwerfen und (falls aktiv) sofort nach aktuellem Plan neu anlegen."""
+    offene_entfernen(aufgabe)
+    instanzen_erzeugen(aufgaben=Aufgabe.objects.filter(pk=aufgabe.pk))
 
 
 def _diff(form):
@@ -27,6 +61,7 @@ def aufgabe_speichern(form, *, von) -> Aufgabe:
     if neu:
         aufgabe.erstellt_von = von
     aufgabe.save()
+    _instanzen_neu_planen(aufgabe)
     audit.protokollieren(
         "aufgabe.angelegt" if neu else "aufgabe.geaendert",
         akteur=von,
@@ -49,6 +84,7 @@ def aufgabe_status_setzen(aufgabe, status, *, von) -> Aufgabe:
         return aufgabe
     aufgabe.status = status
     aufgabe.save(update_fields=["status", "geaendert_am"])
+    _instanzen_neu_planen(aufgabe)  # Pause/Ende: offene weg; Fortsetzen: sofort neu
     audit.protokollieren(
         "aufgabe.status_geaendert",
         akteur=von,
