@@ -174,6 +174,9 @@ def geraete(request):
         else:
             antwort = redirect("konten:geraete")
             cookie_setzen(request, antwort, geraet)
+            if request.session.get(sitzung.GERAET):
+                # Diese Sitzung gehört jetzt zum neu registrierten Gerät (sonst endete sie)
+                request.session[sitzung.GERAET] = str(geraet.pk)
             return antwort
     kontext["geraete"] = selectors.geraete()
     kontext["dieses"] = getattr(request, "geraet", None)

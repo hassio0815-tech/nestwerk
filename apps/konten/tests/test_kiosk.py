@@ -216,3 +216,14 @@ def test_sitzung_ohne_registriertes_geraet_bleibt_vom_widerruf_unberuehrt(anna, 
     assert c.session["famko_geraet_id"] is None
     services.geraet_widerrufen(tablet, von=None)
     assert c.get(AKTIV).status_code == 200
+
+
+def test_neu_registrieren_auf_registriertem_geraet_beendet_die_sitzung_nicht(mama, iphone):
+    c = client_fuer(iphone)
+    eltern_anmelden(c, mama)
+    assert c.session["famko_geraet_id"] == str(iphone.pk)
+    antwort = c.post(reverse("konten:geraete"), {"bezeichnung": "Flur", "typ": "kiosk"})
+    assert antwort.status_code == 302
+    neu = Geraet.objects.get(bezeichnung="Flur")
+    assert c.session["famko_geraet_id"] == str(neu.pk)
+    assert c.get(AKTIV).status_code == 200
