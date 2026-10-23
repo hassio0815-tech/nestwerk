@@ -407,7 +407,7 @@ a.kachel:hover {
   align-items: center;
   gap: 0.35rem;
   padding: 0.2rem 0.6rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0.04em;
@@ -500,7 +500,7 @@ a.kachel:hover {
 }
 
 .punkte__einheit {
-  font-size: 0.6rem;
+  font-size: 0.875rem;
   color: var(--text-leise);
 }
 
@@ -524,7 +524,7 @@ a.kachel:hover {
 [data-layout="eltern"] .punkte__einheit,
 [data-layout="einrichtung"] .punkte__einheit {
   font-family: var(--schrift-text);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 400;
 }
 
@@ -802,6 +802,45 @@ a.kachel:hover {
   width: 100%;
   max-width: 36rem;
   margin: 0 auto;
+}
+
+/* Eltern-Ansichten: Schrift mindestens 14 px, tippbare Ziele mindestens 44 px. */
+[data-layout="eltern"] {
+  --schrift-klein: 0.875rem;
+}
+
+[data-layout="eltern"] .feld__hinweis,
+[data-layout="eltern"] .kachel__text,
+[data-layout="eltern"] .fortschritt-block__kopf,
+[data-layout="eltern"] small,
+[data-layout="eltern"] .sr-hinweis {
+  font-size: var(--schrift-klein);
+}
+
+a.chip,
+.kopf__marke {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  text-decoration: none;
+}
+
+details > summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+
+label.reihe {
+  min-height: var(--tap-min);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
 }
 
 /* Bewegung reduzieren */

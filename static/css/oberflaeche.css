@@ -18,8 +18,18 @@
 
 .kind-konto {
   display: flex;
+  flex-direction: column;
+  text-align: center;
   align-items: center;
   gap: var(--abstand);
+}
+
+.kind-konto .stapel {
+  align-items: center;
+}
+
+.kind-konto .reihe {
+  justify-content: center;
 }
 
 .zeile {
@@ -29,6 +39,18 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--abstand-klein);
+}
+
+/* Zahlenlinks (Dashboard): große Tippfläche statt Browser-Standardlink. */
+.zeile > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  font-weight: 700;
+  color: var(--akzent-hell, var(--text));
+  text-decoration: underline;
 }
 
 .zeile--neu {
@@ -74,4 +96,29 @@
   width: 1.5rem;
   height: 1.5rem;
   vertical-align: middle;
+}
+
+/* Einstellungen-Editor: je Modul ein aufklappbarer Abschnitt. */
+.einstellungen-gruppe > summary {
+  gap: var(--abstand-klein);
+  list-style: none;
+}
+
+.einstellungen-gruppe > summary::-webkit-details-marker {
+  display: none;
+}
+
+.einstellungen-gruppe > summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1.5rem;
+  font-weight: 700;
+}
+
+.einstellungen-gruppe[open] > summary::before {
+  content: "\2212";
+}
+
+.einstellungen-gruppe > summary h2 {
+  margin: 0;
 }

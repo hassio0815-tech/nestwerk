@@ -10,10 +10,10 @@
   </div>
   {% if fehler %}<div class="toast toast--fehler" role="alert">{% include "komponenten/icon.html" with name="warnung" %}<span class="toast__text">{{ fehler }}</span></div>{% endif %}
   {% if meldung %}<div class="toast toast--erfolg" role="status">{% include "komponenten/icon.html" with name="check" %}<span class="toast__text">{{ meldung }}</span></div>{% endif %}
-  <p class="wochenplan__hinweis">Karten per Ziehen auf einen anderen Tag legen oder mit „Verschieben“ ein Datum wählen.</p>
+  <p class="wochenplan__hinweis">Karten per Ziehen (Handy: gedrückt halten) auf einen anderen Tag legen oder mit „Verschieben“ ein Datum wählen.</p>
   <div class="wochenplan__raster">
     {% for tag in tage %}
-      <section class="wochenplan__tag{% if tag.heute %} wochenplan__tag--heute{% endif %}" aria-labelledby="tag-{{ tag.datum|date:'Y-m-d' }}">
+      <section class="wochenplan__tag{% if tag.heute %} wochenplan__tag--heute{% endif %}{% if not tag.instanzen %} wochenplan__tag--leer{% endif %}" aria-labelledby="tag-{{ tag.datum|date:'Y-m-d' }}">
         <header class="wochenplan__kopf">
           <h2 id="tag-{{ tag.datum|date:'Y-m-d' }}">{{ tag.datum|date:"D j.n." }}</h2>
           {% url "aufgaben:neu" as neu_url %}

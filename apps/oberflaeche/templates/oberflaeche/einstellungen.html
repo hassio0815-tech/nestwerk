@@ -3,12 +3,10 @@
 {% block titel %}Einstellungen{% endblock %}
 {% block seite %}
   <h1>Einstellungen</h1>
-  <nav class="reihe" aria-label="Module">
-    {% for g in gruppen %}<a class="chip" data-selten="common" href="#modul-{{ g.modul }}">{{ g.titel }}</a>{% endfor %}
-  </nav>
+  <p class="feld__hinweis">Abschnitt antippen, um ihn auf- oder zuzuklappen.</p>
   {% for g in gruppen %}
-    <section class="karte" id="modul-{{ g.modul }}"><div class="karte__inhalt stapel">
-      <h2>{{ g.titel }}</h2>
+    <section class="karte" id="modul-{{ g.modul }}"><details class="einstellungen-gruppe karte__inhalt stapel"{% if gespeichert == g.modul or offen == g.modul %} open{% endif %}>
+      <summary><h2>{{ g.titel }}</h2></summary>
       {% if gespeichert == g.modul %}<p class="feld__hinweis" role="status">Gespeichert.</p>{% endif %}
       <form method="post" action="{% url 'oberflaeche:einstellungen_speichern' g.modul %}" class="stapel">
         {% csrf_token %}
@@ -42,6 +40,6 @@
         {% endfor %}
         {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
       </form>
-    </div></section>
+    </details></section>
   {% endfor %}
 {% endblock %}

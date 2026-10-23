@@ -115,3 +115,53 @@ def test_zeile_ist_eine_reihe(datei):
     """Regression: ``.karte__inhalt.zeile`` erbte flex-direction:column (riesige Karten)."""
     block = re.search(r"\.zeile\s*\{([^}]*)\}", _css(datei)).group(1)
     assert "flex-direction: row" in block
+
+
+# --- Phase-1-Politur (Screenshot-Nachbesserung) ---------------------------------------------
+
+
+def _roh(pfad):
+    return (Path(__file__).resolve().parents[3] / pfad).read_text(encoding="utf-8")
+
+
+def test_wochenplan_handy_tage_untereinander():
+    css = _css("aufgaben.css")
+    handy = re.search(r"@media \(max-width: 700px\) \{(.*?)\n\}", css, re.S).group(1)
+    assert re.search(r"\.wochenplan__raster\s*\{[^}]*grid-template-columns:\s*1fr", handy)
+    assert "repeat(7, 14rem)" not in css
+    assert "wochenplan__tag--leer" in handy
+
+
+def test_wochenplan_leerer_tag_hat_kompakte_klasse():
+    html = _roh("apps/aufgaben/templates/aufgaben/_wochenplan.html")
+    assert "wochenplan__tag--leer" in html
+
+
+def test_tablet_basis_zeigt_keinen_fake_familienzielwert():
+    html = render_to_string("basis/tablet.html", {})
+    assert "Familienziel" not in html
+    assert "0 / 100" not in html
+
+
+def test_aufgabenformular_blendet_serienfelder_per_css_aus():
+    css = _css("aufgaben.css")
+    assert re.search(r"\.plan \.plan__serie\s*\{\s*display:\s*none", css.replace(",\n", ", "))
+    assert "plan__serie" in _roh("apps/aufgaben/templates/aufgaben/_formular.html")
+    assert "@supports not selector(:has(*))" in css
+
+
+def test_einstellungen_gruppen_sind_aufklappbar():
+    html = _roh("apps/oberflaeche/templates/oberflaeche/einstellungen.html")
+    assert '<details class="einstellungen-gruppe' in html
+
+
+def test_touchziele_und_schriftgroessen_im_css():
+    css = _css("famko.css")
+    assert re.search(r"details > summary\s*\{[^}]*min-height:\s*var\(--tap-min\)", css)
+    assert re.search(r"label\.reihe\s*\{[^}]*min-height:\s*var\(--tap-min\)", css)
+    assert re.search(r"\.chip\s*\{[^}]*font-size:\s*0\.875rem", css)
+    assert re.search(r"\.zeile > a\s*\{[^}]*min-height:\s*var\(--tap-min\)", _css("oberflaeche.css"))
+    for datei in ("famko.css", "aufgaben.css"):
+        for wert in re.findall(r"font-size:\s*([0-9.]+)(rem|em)", _css(datei)):
+            if wert[1] == "em":
+                assert False, "relative em-Schrift unterschreitet je nach Basis 14 px"

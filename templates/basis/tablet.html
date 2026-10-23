@@ -1,6 +1,6 @@
 {% extends "basis/basis.html" %}
 {% comment %}Tablet-Startseite (Flur-Tablet, Kiosk): dunkel, Avatar-Kacheln als Platzhalter.
-  Ohne Anmeldung nur Lesen. Blöcke familienziel, avatare, ranking werden später gefüllt.{% endcomment %}
+  Ohne Anmeldung nur Lesen. Blöcke familienziel_abschnitt, avatare, ranking werden später gefüllt.{% endcomment %}
 {% block layout %}tablet{% endblock %}
 {% block kopf %}
   <div class="kopf__zeile">
@@ -11,12 +11,8 @@
   </div>
 {% endblock %}
 {% block inhalt %}
-  <section class="tablet-abschnitt" aria-labelledby="tablet-ziel">
-    <h2 id="tablet-ziel" class="tablet-abschnitt__titel">Familienziel</h2>
-    {% block familienziel %}
-      {% include "komponenten/fortschritt.html" with label="Familienwoche" wert=0 max=100 %}
-    {% endblock %}
-  </section>
+  {# Familienziel-Slot: bleibt leer, bis das Modul familienziel (Phase 2) ihn füllt. Kein Fake-Wert. #}
+  {% block familienziel_abschnitt %}{% endblock %}
 
   <section class="tablet-abschnitt" aria-labelledby="tablet-avatare">
     <h2 id="tablet-avatare" class="tablet-abschnitt__titel">Wer bist du?</h2>
