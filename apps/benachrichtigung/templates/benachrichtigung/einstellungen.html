@@ -1,0 +1,9 @@
+{% extends "basis/eltern.html" %}
+{% block titel %}Benachrichtigungen einstellen{% endblock %}
+{% block kopf_rechts %}
+  {% url "benachrichtigung:liste" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
+{% endblock %}
+{% block inhalt %}
+  {% include "benachrichtigung/_einstellungen.html" %}
+{% endblock %}

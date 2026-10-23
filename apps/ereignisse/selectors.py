@@ -5,7 +5,7 @@ from datetime import timedelta
 from django.db.models import Count, Max, Min
 from django.utils import timezone
 
-from .models import Ereignis, EreignisVerarbeitung, Status, WorkerHerzschlag
+from .models import Ereignis, EreignisTyp, EreignisVerarbeitung, Status, WorkerHerzschlag
 from .worker import WORKER_NAME
 
 HERZSCHLAG_MAX_ALTER = timedelta(seconds=60)
@@ -14,6 +14,17 @@ HERZSCHLAG_MAX_ALTER = timedelta(seconds=60)
 def aktuelle_version():
     """Höchste Ereignis-ID (Live-Polling, ARCHITECTURE 5.4). 0 = noch keine Ereignisse."""
     return Ereignis.objects.aggregate(v=Max("id"))["v"] or 0
+
+
+def ereignistyp(slug):
+    """DB-Zeile eines Ereignistyps. Unbekannt -> ``EreignisTyp.DoesNotExist``."""
+    return EreignisTyp.objects.get(pk=slug)
+
+
+def ereignistypen(*, nur_aktive=True):
+    """Ereignistypen (ohne interne) sortiert nach Modul und Bezeichnung, für Einstellungsseiten."""
+    qs = EreignisTyp.objects.exclude(zielgruppe="intern").order_by("modul", "bezeichnung")
+    return list(qs.filter(aktiv=True) if nur_aktive else qs)
 
 
 def worker_herzschlag():

@@ -3,7 +3,7 @@
 from apps.kern import zeit
 
 from . import sperre
-from .models import Benutzer, Geraet, KindProfil, Rolle
+from .models import Benutzer, ElternProfil, Geraet, KindProfil, Rolle
 
 
 def aktive_kinder():
@@ -29,3 +29,8 @@ def gesperrte_kinder():
 def geraete(nur_aktive=True):
     qs = Geraet.objects.select_related("registriert_von")
     return qs.filter(aktiv=True) if nur_aktive else qs
+
+
+def eltern_email(benutzer):
+    """E-Mail-Adresse eines Elternteils oder ``""``."""
+    return ElternProfil.objects.filter(pk=benutzer.pk).values_list("email", flat=True).first() or ""

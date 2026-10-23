@@ -6,5 +6,6 @@ urlpatterns = [
     path("gesundheit/", gesundheit, name="gesundheit"),
     path("", include("apps.oberflaeche.urls")),
     path("", include("apps.konten.urls")),
+    path("", include("apps.benachrichtigung.urls")),
     path("", include("apps.aufgaben.urls")),
 ]

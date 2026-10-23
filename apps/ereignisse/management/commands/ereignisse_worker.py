@@ -16,6 +16,10 @@ from apps.ereignisse import worker
 logger = logging.getLogger("famko.ereignisse")
 
 
+def _arbeit(ergebnis):
+    return any(ergebnis.get(k) for k in ("verteilt", "ok", "fehler", "nachlauf"))
+
+
 class Command(BaseCommand):
     help = "Outbox-Worker: verteilt Ereignisse und führt Handler mit Retries aus."
 
@@ -45,10 +49,10 @@ class Command(BaseCommand):
                     raise
                 ergebnis = None
             if einmal:
-                if not (ergebnis["verteilt"] or ergebnis["ok"] or ergebnis["fehler"]):
+                if not _arbeit(ergebnis):
                     break
                 continue
-            if ergebnis and (ergebnis["verteilt"] or ergebnis["ok"] or ergebnis["fehler"]):
+            if ergebnis and _arbeit(ergebnis):
                 logger.info("ereignisse_worker: %s", ergebnis)
                 continue  # Rückstand sofort weiter abarbeiten
             self._schlafen(takt)

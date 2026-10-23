@@ -53,7 +53,7 @@ def test_ungueltige_eingaben(katalog):
         services.veroeffentlichen(TYP, daten={"objekt": object()})
     with pytest.raises(ValueError):
         services.veroeffentlichen(TYP, schluessel="")
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(ValueError):
         services.veroeffentlichen(TYP, kind=object())
 
 
@@ -142,3 +142,44 @@ def test_seed_der_worker_einstellungen(db):
 @pytest.mark.django_db
 def test_status_choices_vollstaendig():
     assert set(Status.values) == {"offen", "ok", "fehler", "aufgegeben"}
+
+
+@pytest.mark.django_db
+def test_kind_und_akteur_werden_gespeichert_und_geprueft(katalog):
+    from apps.konten import services as konten
+
+    mama = konten.eltern_anlegen("Mama", rolle_label="mama")
+    anna = konten.kind_anlegen("Anna", "4817")
+    e = services.veroeffentlichen(TYP, kind=anna, akteur=mama)
+    e.refresh_from_db()
+    assert e.kind_id == anna.pk and e.akteur_id == mama.pk
+    with pytest.raises(ValueError):
+        services.veroeffentlichen(TYP, kind=mama)  # Eltern sind kein "betroffenes Kind"
+    services.veroeffentlichen(TYP, akteur=anna)  # Kinder dürfen Akteur sein
+    assert Ereignis.objects.count() == 2
+
+
+@pytest.mark.django_db
+def test_handler_fuer_alle_typen_und_nachlauf(katalog):
+    gesehen = []
+    registry.alle_typen_handler_registrieren(
+        lambda ereignis: gesehen.append(ereignis.typ_id), name="test.alle"
+    )
+    registry.nachlauf_registrieren("test.nachlauf", lambda: 3)
+    services.veroeffentlichen(TYP)
+    services.veroeffentlichen(TYP_OHNE_HANDLER)
+    ergebnis = worker.runde()
+    assert sorted(gesehen) == [TYP, TYP_OHNE_HANDLER]
+    assert ergebnis["nachlauf"] == 3
+    with pytest.raises(ImproperlyConfigured):
+        registry.alle_typen_handler_registrieren(lambda e: None, name="test.alle")
+
+
+@pytest.mark.django_db
+def test_nachlauf_fehler_stoppt_die_runde_nicht(katalog):
+    def kaputt():
+        raise RuntimeError("boom")
+
+    registry.nachlauf_registrieren("test.kaputt", kaputt)
+    registry.nachlauf_registrieren("test.gut", lambda: 1)
+    assert worker.runde()["nachlauf"] == 1

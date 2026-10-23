@@ -9,4 +9,5 @@
       {% include "komponenten/umschalter.html" %}
     </div>
   </div>
+  {% if request.user.is_authenticated and request.user.rolle == "kind" %}{% include "benachrichtigung/_popup_abruf.html" %}{% endif %}
 {% endblock %}

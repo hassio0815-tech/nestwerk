@@ -1,10 +1,8 @@
 """Modelle von ereignisse (DATA_MODEL 4). Zugriff von außen nur über ``services``,
 ``selectors`` und ``registry``.
-
-FKs ``Ereignis.akteur``/``Ereignis.kind`` auf ``konten.Benutzer`` folgen mit AP03 als
-additive Migration (nullable), wie bei ``kern``.
 """
 
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -44,6 +42,22 @@ class Ereignis(models.Model):
 
     typ = models.ForeignKey(EreignisTyp, on_delete=models.PROTECT, related_name="+")
     zeit = models.DateTimeField(default=timezone.now)
+    akteur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+        help_text="Wer das Ereignis ausgelöst hat; leer = System/Job",
+    )
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+        help_text="Betroffenes Kind",
+    )
     daten = models.JSONField(default=dict)
     # NULL statt "": Teil-Unique gilt nur für gesetzte Schlüssel
     schluessel = models.CharField(max_length=150, null=True, blank=True)  # noqa: DJ001
@@ -54,6 +68,7 @@ class Ereignis(models.Model):
         verbose_name_plural = "Ereignisse"
         indexes = [
             models.Index(fields=["typ", "zeit"], name="ereignisse_typ_zeit_idx"),
+            models.Index(fields=["kind"], name="ereignisse_kind_idx"),
             models.Index(
                 fields=["id"], condition=Q(verteilt=False), name="ereignisse_unverteilt_idx"
             ),

@@ -160,7 +160,14 @@ def fortschritt(schluessel, *args, **kwargs):
 
 @contextmanager
 def isoliert():
-    """Für Tests: alle Verzeichnisse dieses Moduls werden danach zurückgesetzt."""
-    with kachel_verzeichnis.isoliert(), metrik_verzeichnis.isoliert():
-        with provider_verzeichnis.isoliert():
-            yield
+    """Für Tests: Kacheln, Metriken und Provider sind darin zunächst leer (ohne die von Apps
+    in ``ready()`` registrierten) und werden danach wiederhergestellt."""
+    verzeichnisse = (kachel_verzeichnis, metrik_verzeichnis, provider_verzeichnis)
+    staende = [dict(v._eintraege) for v in verzeichnisse]
+    for v in verzeichnisse:
+        v._eintraege = {}
+    try:
+        yield
+    finally:
+        for v, stand in zip(verzeichnisse, staende, strict=True):
+            v._eintraege = stand

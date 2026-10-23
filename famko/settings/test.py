@@ -1,6 +1,8 @@
 import tempfile
 from pathlib import Path
 
+from cryptography.fernet import Fernet
+
 from .basis import *  # noqa: F403
 from .basis import DATABASES
 
@@ -10,6 +12,9 @@ ALLOWED_HOSTS = ["testserver", "localhost"]
 # Datei-DB statt In-Memory, damit WAL und PRAGMAs wie in Produktion testbar sind
 _tmp = Path(tempfile.mkdtemp(prefix="famko-test-"))
 DATABASES["default"]["TEST"] = {"NAME": str(_tmp / "test.sqlite3")}
+SECRETS_DIR = _tmp / "secrets"
+FERNET_KEY = Fernet.generate_key().decode()
+BASIS_URL = "https://famko.test"
 STATIC_ROOT = _tmp / "static"
 STATIC_ROOT.mkdir()
 

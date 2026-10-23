@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from apps.kern import audit, einstellungen
 from apps.kern.einstellungen import Typ
+from apps.konten.models import Benutzer, Rolle
 
 from . import registry
 from .models import Ereignis, EreignisTyp, EreignisVerarbeitung, Status
@@ -25,13 +26,13 @@ def veroeffentlichen(typ, *, kind=None, akteur=None, daten=None, schluessel=None
     - ``schluessel`` (optional, eindeutig): gibt es ihn schon, wird kein zweites Ereignis
       erzeugt; zurück kommt das bestehende.
     - Synchrone Handler laufen sofort (gleiche Transaktion); asynchrone im Worker.
+    - ``kind``: betroffenes Kind (Benutzer mit Rolle Kind), ``akteur``: Auslöser (None = System).
     - ``daten``: JSON-dict mit IDs und Anzeigetexten, nie Nachweis-Inhalte.
     """
     if not connection.in_atomic_block:
         raise KeineTransaktion("ereignisse.veroeffentlichen nur innerhalb transaction.atomic()")
-    if kind is not None or akteur is not None:
-        # Spalten folgen mit konten.Benutzer (AP03, additive Migration)
-        raise NotImplementedError("kind/akteur werden ab AP03 (konten.Benutzer) gespeichert")
+    _benutzer_pruefen("kind", kind, rolle=Rolle.KIND)
+    _benutzer_pruefen("akteur", akteur)
     definition = registry.typ(typ)
     daten = {} if daten is None else daten
     _daten_pruefen(daten)
@@ -42,15 +43,26 @@ def veroeffentlichen(typ, *, kind=None, akteur=None, daten=None, schluessel=None
     if schluessel is not None:
         try:
             with transaction.atomic():
-                ereignis = Ereignis.objects.create(typ_id=typ, daten=daten, schluessel=schluessel)
+                ereignis = Ereignis.objects.create(
+                    typ_id=typ, daten=daten, schluessel=schluessel, kind=kind, akteur=akteur
+                )
         except IntegrityError:
             return Ereignis.objects.get(schluessel=schluessel)
     else:
-        ereignis = Ereignis.objects.create(typ_id=typ, daten=daten)
+        ereignis = Ereignis.objects.create(typ_id=typ, daten=daten, kind=kind, akteur=akteur)
 
     for h in registry.handler_fuer(typ, synchron=True):
         h.funktion(ereignis)
     return ereignis
+
+
+def _benutzer_pruefen(name, benutzer, *, rolle=None):
+    if benutzer is None:
+        return
+    if not isinstance(benutzer, Benutzer) or benutzer.pk is None:
+        raise ValueError(f"{name}: gespeicherter Benutzer erwartet")
+    if rolle is not None and benutzer.rolle != rolle:
+        raise ValueError(f"{name}: Benutzer mit Rolle '{rolle}' erwartet")
 
 
 def _daten_pruefen(daten):

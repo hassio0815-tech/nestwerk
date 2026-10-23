@@ -2,6 +2,8 @@
 {% comment %}Platzhalter, bis das Eltern-Dashboard (oberflaeche) ihn ersetzt.{% endcomment %}
 {% block titel %}Eltern{% endblock %}
 {% block kopf_rechts %}
+  {% url "benachrichtigung:liste" as benachrichtigungen_url %}
+  {% if benachrichtigungen_url %}{% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text="Benachrichtigungen" %}{% endif %}
   {% url "konten:geraete" as geraete_url %}
   {% include "komponenten/button.html" with href=geraete_url variante="geist" klein=True icon="einstellungen" text="Geräte" %}
   <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}

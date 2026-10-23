@@ -17,6 +17,13 @@ def env_liste(name, default=""):
 # Datenverzeichnis (Volume): db/, media/, secrets/
 DATA_DIR = Path(env("DATA_DIR", BASE_DIR / "data"))
 
+# Geheimnisse im Volume; der Fernet-Schlüssel (SMTP-Passwort) kommt aus FAMKO_FERNET_KEY oder
+# wird einmalig als secrets/fernet.key angelegt
+SECRETS_DIR = DATA_DIR / "secrets"
+FERNET_KEY = env("FERNET_KEY")
+# Öffentliche Adresse für Links in E-Mails (z. B. https://famko.example.org)
+BASIS_URL = env("BASIS_URL", "")
+
 SECRET_KEY = env("SECRET_KEY")  # Pflicht in Produktion; Entwicklung/Test setzen Ersatzwert
 DEBUG = False
 ALLOWED_HOSTS = env_liste("ALLOWED_HOSTS", "localhost,127.0.0.1")

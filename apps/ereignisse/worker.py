@@ -140,9 +140,20 @@ def _fehler_vermerken(vid, text):
         )
 
 
+def nachlaeufe_ausfuehren():
+    """Ruft die registrierten Nachläufe auf; gibt die Summe ihrer Rückgaben zurück."""
+    summe = 0
+    for name, funktion in registry.nachlaeufe():
+        try:
+            summe += int(funktion() or 0)
+        except Exception:
+            logger.exception("Worker-Nachlauf '%s' fehlgeschlagen", name)
+    return summe
+
+
 def runde(stapel=50):
-    """Eine Worker-Runde: Herzschlag, verteilen, verarbeiten."""
+    """Eine Worker-Runde: Herzschlag, verteilen, verarbeiten, Nachläufe."""
     herzschlag()
     verteilt = verteilen(stapel=stapel * 2)
     zaehler = verarbeiten(stapel=stapel)
-    return {"verteilt": verteilt, **zaehler}
+    return {"verteilt": verteilt, **zaehler, "nachlauf": nachlaeufe_ausfuehren()}
