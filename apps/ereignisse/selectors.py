@@ -27,6 +27,11 @@ def ereignistypen(*, nur_aktive=True):
     return list(qs.filter(aktiv=True) if nur_aktive else qs)
 
 
+def ereignisse_vom_typ(typ):
+    """Ereignisse eines Typs in Reihenfolge (z. B. Fakten nachtragen, spielregeln AP20)."""
+    return Ereignis.objects.filter(typ_id=typ).order_by("id").iterator()
+
+
 def worker_herzschlag():
     """Zeitpunkt des letzten Worker-Herzschlags oder ``None``."""
     return (

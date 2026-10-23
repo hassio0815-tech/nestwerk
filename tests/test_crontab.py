@@ -18,6 +18,7 @@ PFLICHT_JOBS = {
     "benachrichtigungen_aufraeumen",
     "db_sichern",
     "backup_pruefen",
+    "wochen_sicherstellen",
 }
 
 
@@ -81,6 +82,12 @@ def test_alle_commands_existieren():
     assert not unerwartet, f"Commands fehlen: {sorted(unerwartet)}"
     for name in sorted(fehlend):
         warnings.warn(f"{name} fehlt noch (erwartet von AP12)", stacklevel=1)
+
+
+def test_wochen_sicherstellen_stuendlich_inkl_dienstag_0010():
+    """Wochenabschluss nach 24 h Puffer: Di 00:10 muss enthalten sein (stündlicher Takt)."""
+    takte = [w for _, w, b in _eintraege() if _job(b) == "wochen_sicherstellen"]
+    assert any(len(w[1]) == 24 and 10 in w[0] and 2 in w[4] for w in takte)
 
 
 def test_feste_tagesjobs_nicht_zwischen_2_und_3_uhr():

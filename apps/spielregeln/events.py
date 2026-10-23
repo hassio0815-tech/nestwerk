@@ -1,0 +1,33 @@
+"""Ereignistypen von spielregeln (AP20). Deutsche Texte liefert ``benachrichtigung.texte``
+(Standardtexte; spielregeln und benachrichtigung sind unabhängige Schwestern, kein Import)."""
+
+from apps.ereignisse import registry
+
+AKTIVITAET_ERFASST = "aktivitaet.erfasst"  # intern: Abzeichen (AP23), Familienziel (AP29)
+WOCHE_AUSGEWERTET = "woche.ausgewertet"  # intern: Rang (AP22), Abzeichen (AP23), AP29/30
+SERIE_GESTIEGEN = "serie.gestiegen"
+SERIE_GERISSEN = "serie.gerissen"
+PAUSE_GESTARTET = "pause.gestartet"
+PAUSE_BEENDET = "pause.beendet"
+
+LINK_KIND = "/kind/"
+
+
+def typen_deklarieren():
+    def typ(slug, bezeichnung, zielgruppe, kanaele=(), **extra):
+        registry.typ_deklarieren(
+            slug,
+            modul="spielregeln",
+            bezeichnung=bezeichnung,
+            zielgruppe=zielgruppe,
+            standard_kanaele=list(kanaele),
+            **extra,
+        )
+
+    typ(AKTIVITAET_ERFASST, "Aktivität erfasst", "intern")
+    typ(WOCHE_AUSGEWERTET, "Woche ausgewertet", "intern")
+    kind = {"deep_link_muster": LINK_KIND}
+    typ(SERIE_GESTIEGEN, "Wochenserie gestiegen", "kind", ("push", "popup"), **kind)
+    typ(SERIE_GERISSEN, "Wochenserie beendet", "kind", ("push",), **kind)
+    typ(PAUSE_GESTARTET, "Pause eingetragen", "kind", ("push", "popup"), **kind)
+    typ(PAUSE_BEENDET, "Pause beendet", "kind", ("push",), **kind)

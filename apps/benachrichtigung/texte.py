@@ -66,6 +66,17 @@ _STANDARD = {
         "Entscheidung zu deiner Belohnung", "„{belohnung}“: {ergebnis}"
     ),
     "avatar.mod_fertig": TypText("Dein Mod ist fertig!", "„{mod}“ kann jetzt eingebaut werden."),
+    "serie.gestiegen": TypText(
+        "Serie: {wochenserie} Wochen!", "Woche {woche} geschafft. Weiter so!"
+    ),
+    "serie.gerissen": TypText(
+        "Neue Woche, neue Serie",
+        "Letzte Woche gab es keine Aufgabe. Schon eine Aufgabe startet deine Serie neu.",
+    ),
+    "pause.gestartet": TypText(
+        "Pause – deine Serie ist sicher", "Pause {zeitraum}. Aufgaben zählen trotzdem."
+    ),
+    "pause.beendet": TypText("Pause vorbei", "{hinweis}"),
     "spielregeln.rang_aufstieg": TypText("Neuer Rang: {rang}!", "{kind} ist aufgestiegen."),
     "spielregeln.abzeichen": TypText(
         "Neues Abzeichen: {abzeichen}", "{kind} hat ein Abzeichen verdient."

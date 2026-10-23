@@ -62,6 +62,18 @@ def xp_zeitraum(von, bis, *, kind=None):
     return _summen(qs)["xp"]
 
 
+def xp_je_tag(kind, von, bis):
+    """``{bezugsdatum: xp}`` eines Kindes in ``[von, bis]`` (inklusiv), nur Tage mit Buchungen
+    (Wochenauswertung, spielregeln)."""
+    zeilen = (
+        Buchung.objects.filter(kind=kind, bezugsdatum__range=(von, bis))
+        .values("bezugsdatum")
+        .annotate(xp=Sum("xp_delta"))
+        .order_by()
+    )
+    return {z["bezugsdatum"]: z["xp"] for z in zeilen}
+
+
 def buchungen(kind):
     """Buchungen eines Kindes, neueste zuerst."""
     return Buchung.objects.filter(kind=kind).order_by("-gebucht_am", "-id")

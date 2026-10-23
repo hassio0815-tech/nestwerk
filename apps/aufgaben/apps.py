@@ -7,7 +7,7 @@ class AufgabenConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self):
-        from . import ablauf, instanzen, nachweise
+        from . import ablauf, aktivitaet, instanzen, nachweise
         from .einstellungen import einstellungen_definieren
         from .events import texte_registrieren, typen_deklarieren
 
@@ -16,3 +16,4 @@ class AufgabenConfig(AppConfig):
         typen_deklarieren()
         texte_registrieren()
         instanzen.reservierungsablauf_hook_registrieren(ablauf.interesse_abgelaufen)
+        aktivitaet.registrieren()  # spielregeln: Aktivität/Storno (AP20)

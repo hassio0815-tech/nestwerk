@@ -1,0 +1,154 @@
+"""Lesende Schnittstelle von spielregeln (AP20). Für AP21–AP23, AP29/30 und Oberflächen.
+
+Alle Werte werden live aus der Historie berechnet (gleiche Rechnung wie Job und Neuberechnung,
+``auswertung``); gespeicherte Stände sind nur Zwischenspeicher.
+
+- ``stand(kind)``: Serie, aktive Wochen, Tagesserie, Rekorde, Pause heute.
+- ``wochenserie_nach(kind, woche)``: Serie nach einer Woche (auch vor deren Abschluss).
+  AP21 (Serienbonus, O5): ``wochenserie_nach(kind, woche.vorherige()) + 1``.
+- ``woche_aktiv(kind, woche)``, ``pausentage(kind, woche)``, ``woche_pausiert(kind, woche)``
+  (AP29: Kind gilt als pausiert ab N Pausentagen).
+- ``wochenauswertung(kind, woche)``: gespeicherte Zeile (oder ``None``).
+- ``quartal_voll_aktiv(kind, jahr, quartal)`` (AP23).
+- ``aktuelle_pause(kind)``, ``pausen_uebersicht()`` (Eltern-UI).
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from datetime import date
+
+from django.db.models import Q
+
+from apps.kern import zeit
+from apps.kern.zeit import IsoWoche
+
+from . import auswertung
+from . import kontinuitaet as k
+from .models import Aktivitaet, KindStand, Pause, Wochenauswertung
+
+Stand = auswertung.Stand
+
+
+def stand(kind, jetzt=None) -> Stand:
+    return auswertung.auswerten(kind, jetzt).stand
+
+
+def gespeicherter_stand(kind) -> KindStand | None:
+    return KindStand.objects.filter(kind=kind).first()
+
+
+def wochenauswertung(kind, woche: IsoWoche) -> Wochenauswertung | None:
+    return Wochenauswertung.objects.filter(
+        kind=kind, iso_jahr=woche.jahr, iso_woche=woche.woche
+    ).first()
+
+
+def wochenauswertungen(kind):
+    return Wochenauswertung.objects.filter(kind=kind).order_by("iso_jahr", "iso_woche")
+
+
+def _ergebnisse_bis(kind, woche: IsoWoche) -> list[k.WochenErgebnis]:
+    r = auswertung.regeln()
+    if r.start is None or woche < IsoWoche.von(r.start):
+        return []
+    return k.wochen_auswerten(
+        auswertung.aktive_tage(kind),
+        auswertung.pausen(kind),
+        IsoWoche.von(r.start),
+        woche,
+        r.neutral_ab,
+    )
+
+
+def wochenserie_nach(kind, woche: IsoWoche) -> int:
+    """Wochenserie nach ``woche`` (pausenbereinigt), 0 vor Go-live. Ist ``woche`` die laufende
+    Woche und noch nicht aktiv, gilt sie als neutral (laufende Woche bricht nie)."""
+    ergebnisse = _ergebnisse_bis(kind, woche)
+    if not ergebnisse:
+        return 0
+    letzte = ergebnisse[-1]
+    if letzte.woche >= IsoWoche.von(zeit.heute()) and not letzte.aktiv:
+        return ergebnisse[-2].wochenserie_danach if len(ergebnisse) > 1 else 0
+    return letzte.wochenserie_danach
+
+
+def woche_aktiv(kind, woche: IsoWoche) -> bool:
+    return Aktivitaet.objects.filter(
+        kind=kind, storniert=False, datum__range=(woche.montag, woche.sonntag)
+    ).exists()
+
+
+def aktive_tage(kind, von: date, bis: date) -> list[date]:
+    return sorted(
+        Aktivitaet.objects.filter(kind=kind, storniert=False, datum__range=(von, bis))
+        .values_list("datum", flat=True)
+        .distinct()
+    )
+
+
+def pausentage(kind, woche: IsoWoche) -> int:
+    return k.pausentage(woche, auswertung.pausen(kind))
+
+
+def woche_pausiert(kind, woche: IsoWoche) -> bool:
+    """Kind gilt in ``woche`` als pausiert (ab N Pausentagen, K5) – z. B. Familienziel."""
+    return pausentage(kind, woche) >= auswertung.regeln().neutral_ab
+
+
+def ist_pausiert(kind, tag: date | None = None) -> bool:
+    return k.pausiert(tag or zeit.heute(), auswertung.pausen(kind))
+
+
+def quartal_voll_aktiv(kind, jahr: int, quartal: int) -> bool:
+    """Alle Wochen des Quartals aktiv oder neutral, mindestens eine aktiv (ARCHITECTURE 7.5).
+    Nur abgeschlossene Quartale sind aussagekräftig."""
+    wochen = k.quartal_wochen(jahr, quartal)
+    ergebnisse = {e.woche: e for e in _ergebnisse_bis(kind, wochen[-1])}
+    if any(w not in ergebnisse for w in wochen):
+        return False
+    auswahl = [ergebnisse[w] for w in wochen]
+    return all(e.aktiv or e.neutral for e in auswahl) and any(e.aktiv for e in auswahl)
+
+
+# --- Pausen ---------------------------------------------------------------------------------
+
+
+def _laufend_q(heute):
+    return Q(von__lte=heute) & (Q(bis__isnull=True) | Q(bis__gte=heute))
+
+
+def aktuelle_pause(kind, heute: date | None = None) -> Pause | None:
+    """Laufende Pause des Kindes oder der Familie (die mit dem spätesten Ende, offen zuerst)."""
+    heute = heute or zeit.heute()
+    pausen = list(
+        Pause.objects.filter(Q(kind=kind) | Q(kind__isnull=True)).filter(_laufend_q(heute))
+    )
+    if not pausen:
+        return None
+    return max(pausen, key=lambda p: (p.bis is None, p.bis or date.min))
+
+
+@dataclass(frozen=True)
+class PausenUebersicht:
+    laufend: list
+    geplant: list
+    vergangen: list
+
+
+def pausen_uebersicht(heute: date | None = None, vergangen_limit=10) -> PausenUebersicht:
+    heute = heute or zeit.heute()
+    qs = Pause.objects.select_related("kind", "erstellt_von")
+    return PausenUebersicht(
+        laufend=list(qs.filter(_laufend_q(heute)).order_by("von", "id")),
+        geplant=list(qs.filter(von__gt=heute).order_by("von", "id")),
+        vergangen=list(qs.filter(bis__lt=heute).order_by("-bis", "-id")[:vergangen_limit]),
+    )
+
+
+def laufende_pause_von(ziel_kind, heute: date | None = None) -> Pause | None:
+    """Laufende Pause genau dieses Ziels (Kind; ``None`` = Familie)."""
+    heute = heute or zeit.heute()
+    qs = Pause.objects.filter(_laufend_q(heute))
+    qs = qs.filter(kind=ziel_kind) if ziel_kind is not None else qs.filter(kind__isnull=True)
+    return qs.order_by("von", "id").first()
