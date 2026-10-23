@@ -1,0 +1,210 @@
+"""Modelle von konten (DATA_MODEL 2). Zugriff von anderen Apps nur über ``services`` und
+``selectors`` bzw. die öffentliche API (``zugriff``, ``geraet``); Passwort- und PIN-Hashes
+verlassen die App nie.
+"""
+
+import re
+import uuid
+
+from django.conf import settings
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models.functions import Lower
+from django.utils import timezone
+
+HEX_FARBE = re.compile(r"^#[0-9a-fA-F]{6}$")
+
+
+class Rolle(models.TextChoices):
+    ELTERN = "eltern", "Eltern"
+    KIND = "kind", "Kind"
+
+
+def akzentfarben_pruefen(wert):
+    if not isinstance(wert, list) or len(wert) > 3:
+        raise ValidationError("Liste mit höchstens 3 Hex-Farben erwartet")
+    for farbe in wert:
+        if not isinstance(farbe, str) or not HEX_FARBE.match(farbe):
+            raise ValidationError(f"Ungültige Farbe {farbe!r} (Format #rrggbb)")
+
+
+class BenutzerManager(BaseUserManager):
+    use_in_migrations = True
+
+    def get_by_natural_key(self, anzeigename):
+        return self.get(anzeigename__iexact=anzeigename)
+
+
+class Benutzer(AbstractBaseUser):
+    """Eltern und Kinder. Kein eigenes Passwort: Eltern nutzen ``ElternZugang``, Kinder die PIN.
+
+    Benutzer werden deaktiviert (``aktiv=False``), nie gelöscht.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    rolle = models.CharField(max_length=10, choices=Rolle.choices, db_index=True)
+    anzeigename = models.CharField(max_length=40, unique=True)
+    reihenfolge = models.SmallIntegerField(default=0)
+    akzentfarben = models.JSONField(default=list, blank=True, validators=[akzentfarben_pruefen])
+    aktiv = models.BooleanField(default=True)
+    erstellt_am = models.DateTimeField(default=timezone.now)
+
+    objects = BenutzerManager()
+
+    USERNAME_FIELD = "anzeigename"
+    REQUIRED_FIELDS = ["rolle"]
+
+    class Meta:
+        verbose_name = "Benutzer"
+        verbose_name_plural = "Benutzer"
+        ordering = ["reihenfolge", "anzeigename"]
+        constraints = [
+            models.UniqueConstraint(Lower("anzeigename"), name="konten_benutzer_name_ci_uniq"),
+        ]
+
+    def __str__(self):
+        return self.anzeigename
+
+    @property
+    def is_active(self):
+        return self.aktiv
+
+    @property
+    def ist_eltern(self):
+        return self.rolle == Rolle.ELTERN
+
+    @property
+    def ist_kind(self):
+        return self.rolle == Rolle.KIND
+
+
+class ElternLabel(models.TextChoices):
+    MAMA = "mama", "Mama"
+    PAPA = "papa", "Papa"
+    ANDERE = "andere", "Andere"
+
+
+class ElternProfil(models.Model):
+    benutzer = models.OneToOneField(
+        Benutzer, primary_key=True, on_delete=models.CASCADE, related_name="elternprofil"
+    )
+    rolle_label = models.CharField(
+        max_length=10, choices=ElternLabel.choices, default=ElternLabel.ANDERE
+    )
+    email = models.EmailField(blank=True)
+
+    class Meta:
+        verbose_name = "Eltern-Profil"
+        verbose_name_plural = "Eltern-Profile"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["rolle_label"],
+                condition=~models.Q(rolle_label="andere"),
+                name="konten_elternprofil_label_uniq",
+            )
+        ]
+
+    def __str__(self):
+        return f"Eltern: {self.benutzer}"
+
+
+class KindProfil(models.Model):
+    benutzer = models.OneToOneField(
+        Benutzer, primary_key=True, on_delete=models.CASCADE, related_name="kindprofil"
+    )
+    pin_hash = models.CharField(max_length=255)
+    pin_gesperrt_bis = models.DateTimeField(null=True, blank=True)
+    pin_sperrstufe = models.SmallIntegerField(default=0)
+    pin_fehlversuche = models.SmallIntegerField(default=0)
+
+    class Meta:
+        verbose_name = "Kind-Profil"
+        verbose_name_plural = "Kind-Profile"
+
+    def __str__(self):
+        return f"Kind: {self.benutzer}"
+
+
+class ElternZugang(models.Model):
+    """Singleton (id = 1): das gemeinsame Eltern-Passwort als Argon2-Hash."""
+
+    id = models.SmallIntegerField(primary_key=True, default=1)
+    passwort_hash = models.CharField(max_length=255)
+    geaendert_am = models.DateTimeField(default=timezone.now)
+    geaendert_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
+
+    class Meta:
+        verbose_name = "Eltern-Zugang"
+        verbose_name_plural = "Eltern-Zugang"
+        constraints = [models.CheckConstraint(condition=models.Q(id=1), name="konten_zugang_id1")]
+
+    def __str__(self):
+        return "Eltern-Zugang"
+
+
+class GeraeteTyp(models.TextChoices):
+    KIOSK = "kiosk", "Kiosk (Flur-Tablet)"
+    PERSOENLICH = "persoenlich", "Persönlich"
+
+
+class Geraet(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    bezeichnung = models.CharField(max_length=60)
+    typ = models.CharField(max_length=15, choices=GeraeteTyp.choices)
+    registriert_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+"
+    )
+    registriert_am = models.DateTimeField(default=timezone.now)
+    zuletzt_gesehen = models.DateTimeField(null=True, blank=True)
+    aktiv = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Gerät"
+        verbose_name_plural = "Geräte"
+        ordering = ["bezeichnung"]
+
+    def __str__(self):
+        return f"{self.bezeichnung} ({self.get_typ_display()})"
+
+    @property
+    def ist_kiosk(self):
+        return self.typ == GeraeteTyp.KIOSK
+
+
+class AnmeldeArt(models.TextChoices):
+    ELTERN = "eltern", "Eltern"
+    KIND = "kind", "Kind"
+
+
+class AnmeldeVersuch(models.Model):
+    """Anmeldeversuch (Grundlage des Eltern-Rate-Limits je IP). Aufbewahrung 30 Tage.
+    Enthält nie das eingegebene Passwort oder die PIN."""
+
+    zeit = models.DateTimeField(default=timezone.now, db_index=True)
+    art = models.CharField(max_length=10, choices=AnmeldeArt.choices)
+    benutzer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE, related_name="+"
+    )
+    ip = models.GenericIPAddressField(null=True, blank=True)
+    geraet = models.ForeignKey(
+        Geraet, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    erfolgreich = models.BooleanField()
+
+    class Meta:
+        verbose_name = "Anmeldeversuch"
+        verbose_name_plural = "Anmeldeversuche"
+        indexes = [
+            models.Index(fields=["benutzer", "zeit"], name="konten_versuch_benutzer_idx"),
+            models.Index(fields=["ip", "zeit"], name="konten_versuch_ip_idx"),
+        ]
+
+    def __str__(self):
+        return f"{self.zeit:%Y-%m-%d %H:%M} {self.art} {'ok' if self.erfolgreich else 'Fehler'}"

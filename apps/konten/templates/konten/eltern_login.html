@@ -1,0 +1,30 @@
+{% extends "basis/eltern.html" %}
+{% comment %}Eltern-Login: Name wählen + gemeinsames Familien-Passwort.{% endcomment %}
+{% block titel %}Eltern-Anmeldung{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:start" as start_url %}
+  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
+{% endblock %}
+{% block inhalt %}
+  <div class="einrichtung-karte stapel">
+    <section class="karte">
+      <div class="karte__inhalt">
+        <form method="post" class="stapel">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+          <h1>Eltern-Anmeldung</h1>
+          {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+          <div class="feld">
+            <label class="feld__label" for="eltern">Wer bist du?</label>
+            <select class="feld__eingabe" id="eltern" name="eltern" required>
+              {% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}
+            </select>
+          </div>
+          {% include "komponenten/feld.html" with name="passwort" label="Familien-Passwort" typ="password" autocomplete="current-password" pflicht=True %}
+          <label class="reihe"><input type="checkbox" name="vertraut"> <span>Dieses Gerät ist vertraut (angemeldet bleiben)</span></label>
+          {% include "komponenten/button.html" with typ="submit" text="Anmelden" icon="check" voll=True %}
+        </form>
+      </div>
+    </section>
+  </div>
+{% endblock %}

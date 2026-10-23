@@ -1,10 +1,11 @@
 """Modelle von kern (DATA_MODEL 1). Zugriff von außen nur über die Module von kern,
 nie direkt über diese Modelle.
 
-FKs auf ``konten.Benutzer``/``konten.Geraet`` (Einstellung.geaendert_von, AuditEintrag.akteur,
-.kind, .geraet) folgen mit AP03 als additive Migration (nullable, Trigger bleiben erhalten).
+Die FKs auf ``konten.Benutzer``/``konten.Geraet`` sind per String-Referenz gesetzt (kern
+importiert konten nicht, Schichtenregel).
 """
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
@@ -18,6 +19,13 @@ class Einstellung(models.Model):
     schluessel = models.CharField(max_length=100, primary_key=True)
     wert = models.JSONField()
     modul = models.CharField(max_length=40, db_index=True)
+    geaendert_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
     geaendert_am = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -38,12 +46,31 @@ class AuditEintrag(NurEinfuegenModell):
     """Protokoll (insert-only). Nie sensible Inhalte (PIN, Passwort, Nachweis-Inhalte)."""
 
     zeit = models.DateTimeField(default=timezone.now, db_index=True)
+    akteur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+        help_text="Leer = System/Job",
+    )
     akteur_name = models.CharField(max_length=80)
     rolle = models.CharField(max_length=10, choices=Rolle.choices)
     aktion = models.CharField(max_length=80, db_index=True)
     objekt_typ = models.CharField(max_length=60, blank=True, default="")
     objekt_id = models.CharField(max_length=40, blank=True, default="")
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+        help_text="Betroffenes Kind",
+    )
     details = models.JSONField(default=dict)
+    geraet = models.ForeignKey(
+        "konten.Geraet", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
 
     class Meta:
         verbose_name = "Audit-Eintrag"

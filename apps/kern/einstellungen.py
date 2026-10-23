@@ -231,18 +231,27 @@ def fehlende():
     return sorted(d.schluessel for d in verzeichnis.alle() if d.schluessel not in vorhanden)
 
 
-def setzen(schluessel, neuer_wert, *, akteur=None):
+def setzen(schluessel, neuer_wert, *, akteur=audit.AKTUELL):
     """Validiert und speichert einen Wert; Änderung wird im Audit-Log protokolliert.
+
+    ``akteur``: Standard = angemeldeter Benutzer der Anfrage, ``None`` = System.
 
     Gibt den gespeicherten Wert in Python-Form zurück.
     """
     d = definition(schluessel)
     json_wert = d.pruefen(neuer_wert)
+    if akteur is audit.AKTUELL:
+        akteur = audit.aktueller_akteur()
     with transaction.atomic():
         zeile = Einstellung.objects.filter(schluessel=schluessel).first()
         if zeile is None or zeile.wert != json_wert:
             Einstellung.objects.update_or_create(
-                schluessel=schluessel, defaults={"wert": json_wert, "modul": d.modul}
+                schluessel=schluessel,
+                defaults={
+                    "wert": json_wert,
+                    "modul": d.modul,
+                    "geaendert_von": akteur if getattr(akteur, "pk", None) else None,
+                },
             )
             audit.protokollieren(
                 "einstellung.geaendert",

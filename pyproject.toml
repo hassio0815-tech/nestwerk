@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "FamKo: modulares Familien-Dashboard (Aufgaben, Belohnungen, Spielebene)"
 requires-python = ">=3.13"
 dependencies = [
+    "argon2-cffi==25.1.0",
     "Django==5.2.18",
     "gunicorn==26.2.0",
     "whitenoise==6.12.0",

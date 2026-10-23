@@ -1,0 +1,18 @@
+{% extends "basis/kind.html" %}
+{% comment %}PIN-Eingabe für ein Kind. Akzentfarbe des Kindes über data-akzent am <body>.{% endcomment %}
+{% block titel %}PIN{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:start" as start_url %}
+  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
+{% endblock %}
+{% block inhalt %}
+  <div class="einrichtung-karte stapel">
+    <form method="post" class="stapel" autocomplete="off">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <h1>Hallo {{ kind.anzeigename }}!</h1>
+      {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+      {% include "komponenten/pin_pad.html" with feld="pin" %}
+    </form>
+  </div>
+{% endblock %}

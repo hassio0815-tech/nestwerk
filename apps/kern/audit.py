@@ -6,6 +6,8 @@ verbotene Schlüssel und Größe geprüft.
 
 import json
 import re
+from contextlib import contextmanager
+from contextvars import ContextVar
 
 from django.db import models
 
@@ -31,7 +33,41 @@ VERBOTENE_SCHLUESSEL = frozenset(
 )
 VERBOTENE_ENDUNGEN = ("_pin", "_passwort", "_password", "_kennwort", "_secret", "_token", "_hash")
 
-__all__ = ["Rolle", "protokollieren", "SensiblerInhalt"]
+__all__ = [
+    "AKTUELL",
+    "Rolle",
+    "SensiblerInhalt",
+    "kontext",
+    "protokollieren",
+]
+
+# Marker für "angemeldeten Akteur aus dem Kontext nehmen" (Standard von ``akteur``).
+# ``akteur=None`` bleibt ausdrücklich System/Job.
+AKTUELL = object()
+
+# Anbieter für (akteur, geraet) der laufenden Anfrage; ihn setzt die Middleware von konten.
+# kern kennt konten nicht: Es wird nur ein Aufruf hinterlegt (Schichtenregel).
+_kontext: ContextVar = ContextVar("famko_audit_kontext", default=None)
+
+
+@contextmanager
+def kontext(anbieter):
+    """Hinterlegt ``anbieter() -> (akteur | None, geraet | None)`` für Audit-Einträge."""
+    token = _kontext.set(anbieter)
+    try:
+        yield
+    finally:
+        _kontext.reset(token)
+
+
+def aktueller_kontext():
+    """(akteur, geraet) der laufenden Anfrage; außerhalb einer Anfrage (None, None)."""
+    anbieter = _kontext.get()
+    return anbieter() if anbieter else (None, None)
+
+
+def aktueller_akteur():
+    return aktueller_kontext()[0]
 
 
 class SensiblerInhalt(ValueError):
@@ -41,23 +77,34 @@ class SensiblerInhalt(ValueError):
 def protokollieren(
     aktion,
     *,
-    akteur=None,
+    akteur=AKTUELL,
     objekt=None,
     objekt_typ="",
     objekt_id="",
     details=None,
     akteur_name=None,
     rolle=None,
+    kind=None,
+    geraet=AKTUELL,
 ):
     """Schreibt einen Audit-Eintrag und gibt ihn zurück.
 
-    - ``akteur``: Benutzer-Objekt (``anzeigename``, ``rolle``) oder ``None`` = System/Job.
+    - ``akteur``: Benutzer-Objekt (``anzeigename``, ``rolle``), ``None`` = System/Job. Ohne
+      Angabe gilt der angemeldete Benutzer der laufenden Anfrage (sonst System).
+    - ``kind``: betroffenes Kind (Benutzer); ``geraet``: Standard = Gerät der Anfrage.
     - ``objekt``: Modell-Instanz; setzt ``objekt_typ`` (``app.modell``) und ``objekt_id``.
     - Läuft in der Transaktion des Aufrufers (Rollback = kein Eintrag).
     """
     if not AKTION_MUSTER.match(aktion) or len(aktion) > 80:
         raise ValueError(f"Ungültige Audit-Aktion '{aktion}' (Format 'bereich.ereignis')")
 
+    kontext_akteur, kontext_geraet = (
+        aktueller_kontext() if AKTUELL in (akteur, geraet) else (None, None)
+    )
+    if akteur is AKTUELL:
+        akteur = kontext_akteur
+    if geraet is AKTUELL:
+        geraet = kontext_geraet
     if akteur is None:
         rolle = rolle or Rolle.SYSTEM
         akteur_name = akteur_name or "System"
@@ -80,6 +127,9 @@ def protokollieren(
     _details_pruefen(details)
 
     return AuditEintrag.objects.create(
+        akteur=akteur if isinstance(akteur, models.Model) else None,
+        kind=kind,
+        geraet=geraet,
         akteur_name=akteur_name[:80],
         rolle=rolle,
         aktion=aktion,

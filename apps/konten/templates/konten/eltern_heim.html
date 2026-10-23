@@ -1,0 +1,24 @@
+{% extends "basis/eltern.html" %}
+{% comment %}Platzhalter, bis das Eltern-Dashboard (oberflaeche) ihn ersetzt.{% endcomment %}
+{% block titel %}Eltern{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:geraete" as geraete_url %}
+  {% include "komponenten/button.html" with href=geraete_url variante="geist" klein=True icon="einstellungen" text="Geräte" %}
+  <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
+    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Abmelden" %}
+  </form>
+{% endblock %}
+{% block inhalt %}
+  <h1>Hallo {{ request.user.anzeigename }}!</h1>
+  {% if gesperrte_kinder %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>Gesperrte PINs</h2>
+      {% for k in gesperrte_kinder %}
+        <form method="post" action="{% url 'konten:kind_entsperren' k.pk %}" class="reihe">{% csrf_token %}
+          <span>{{ k.anzeigename }}</span>
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="schloss" text="Entsperren" %}
+        </form>
+      {% endfor %}
+    </div></section>
+  {% endif %}
+{% endblock %}

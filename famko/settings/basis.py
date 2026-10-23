@@ -22,8 +22,11 @@ DEBUG = False
 ALLOWED_HOSTS = env_liste("ALLOWED_HOSTS", "localhost,127.0.0.1")
 CSRF_TRUSTED_ORIGINS = env_liste("CSRF_TRUSTED_ORIGINS")
 
-# Phase-1-Apps (Schichten siehe ARCHITECTURE 2.1). Auth/Sessions folgen mit AP03 (konten.Benutzer).
+# Phase-1-Apps (Schichten siehe ARCHITECTURE 2.1). Auth/Sessions gehören zu konten.Benutzer (AP03).
 INSTALLED_APPS = [
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
+    "django.contrib.sessions",
     "django.contrib.staticfiles",
     "apps.kern",
     "apps.konten",
@@ -40,8 +43,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.konten.middleware.GeraetMiddleware",
+    "apps.konten.middleware.SitzungsRichtlinie",
+    "apps.konten.middleware.AuditKontextMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -52,7 +60,12 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
-        "OPTIONS": {"context_processors": ["django.template.context_processors.request"]},
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "apps.konten.context.konten",
+            ]
+        },
     }
 ]
 
@@ -75,6 +88,17 @@ DATABASES = {
         },
     }
 }
+# Konten (ARCHITECTURE 4): eigenes Benutzermodell, zwei Anmelde-Backends, Argon2
+AUTH_USER_MODEL = "konten.Benutzer"
+AUTHENTICATION_BACKENDS = [
+    "apps.konten.backends.ElternBackend",
+    "apps.konten.backends.KindBackend",
+]
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.Argon2PasswordHasher"]
+LOGIN_URL = "konten:start"
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_AGE = 12 * 3600  # Rückfall; die Dauer setzt konten beim Login aus den Einstellungen
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LANGUAGE_CODE = "de"
