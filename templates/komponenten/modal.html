@@ -1,0 +1,18 @@
+{% comment %}
+  Pop-up/Modal (Slot-Komponente). Verwendung über eine Kind-Vorlage:
+  {% extends "komponenten/modal.html" %}
+  {% block titel %}Rangaufstieg{% endblock %}
+  {% block inhalt %}...{% endblock %}
+  {% block aktionen %}...{% endblock %}
+  Optional: Kontextvariable modal_id (eindeutige ID, wenn mehrfach auf einer Seite).
+{% endcomment %}
+<div class="modal-hintergrund {% block modal_klasse %}{% endblock %}" data-schliessbar>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="{{ modal_id|default:'modal' }}-titel">
+    <div class="modal__kopf">
+      <h2 id="{{ modal_id|default:'modal' }}-titel">{% block titel %}{% endblock %}</h2>
+      <button type="button" class="knopf knopf--geist knopf--klein" data-schliessen>{% include "komponenten/icon.html" with name="x" %}<span>Schließen</span></button>
+    </div>
+    <div class="stapel">{% block inhalt %}{% endblock %}</div>
+    <div class="modal__aktionen">{% block aktionen %}{% endblock %}</div>
+  </div>
+</div>

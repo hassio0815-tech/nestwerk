@@ -1,0 +1,12 @@
+{% extends "basis/basis.html" %}
+{% comment %}Kind-Layout: dunkel (Standard), hell per Umschalter. Große Ziele, Symbol + Text.{% endcomment %}
+{% block layout %}kind{% endblock %}
+{% block kopf %}
+  <div class="kopf__zeile">
+    <a class="kopf__marke" href="/">FamKo</a>
+    <div class="reihe">
+      {% block kopf_rechts %}{% endblock %}
+      {% include "komponenten/umschalter.html" %}
+    </div>
+  </div>
+{% endblock %}

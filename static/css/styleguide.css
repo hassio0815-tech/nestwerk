@@ -1,0 +1,66 @@
+/* Styleguide-Seite (nur Entwicklung). Abschnitte tragen data-layout, data-modus, data-akzent. */
+
+.sg-abschnitt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  color: var(--text);
+  background: var(--hintergrund);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.sg-abschnitt > h1 {
+  margin-bottom: 0.25rem;
+}
+
+.sg-gruppe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sg-raster {
+  display: grid;
+  gap: var(--abstand);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.sg-probe {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  background: var(--akzent);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.sg-symbole {
+  display: grid;
+  gap: var(--abstand-klein);
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+}
+
+.sg-symbol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-leise);
+  background: var(--flaeche);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.sg-symbol .icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--akzent-hell);
+}
+
+.sg-abschnitt code {
+  font-size: 0.9em;
+}

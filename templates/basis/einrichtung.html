@@ -1,0 +1,23 @@
+{% extends "basis/basis.html" %}
+{% comment %}Einrichtungs-Assistent: hell, eine Karte pro Schritt. Schritt-Anzeige per Kontext (schritt, schritte, schritt_titel).{% endcomment %}
+{% block layout %}einrichtung{% endblock %}
+{% block titel %}Einrichtung{% endblock %}
+{% block kopf %}
+  <div class="kopf__zeile">
+    <span class="kopf__marke">FamKo · Einrichtung</span>
+  </div>
+{% endblock %}
+{% block inhalt %}
+  <div class="einrichtung-karte stapel">
+    {% block schritt %}
+      {% if schritte %}
+        {% include "komponenten/fortschritt.html" with label=schritt_titel|default:"Fortschritt" wert=schritt|default:0 max=schritte %}
+      {% endif %}
+    {% endblock %}
+    <section class="karte">
+      <div class="karte__inhalt">
+        {% block einrichtung_inhalt %}{% endblock %}
+      </div>
+    </section>
+  </div>
+{% endblock %}

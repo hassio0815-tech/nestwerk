@@ -1,0 +1,11 @@
+{% extends "basis/basis.html" %}
+{% comment %}Eltern-Layout: hell, ruhig, Fokus Übersicht. Gleiches Designsystem.{% endcomment %}
+{% block layout %}eltern{% endblock %}
+{% block kopf %}
+  <div class="kopf__zeile">
+    <a class="kopf__marke" href="/">FamKo</a>
+    <div class="reihe">
+      {% block kopf_rechts %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% comment %}Platzhalter für Avatar-Kacheln (echte Figur kommt mit AP24).{% endcomment %}
+{% if href %}<a class="kachel kachel--avatar{% if gesperrt %} kachel--gesperrt{% endif %}"{% if selten %} data-selten="{{ selten }}"{% endif %} href="{{ href }}">{% else %}<div class="kachel kachel--avatar{% if gesperrt %} kachel--gesperrt{% endif %}"{% if selten %} data-selten="{{ selten }}"{% endif %}>{% endif %}
+  <span class="avatar-platz" aria-hidden="true"><span class="avatar-platz__buchstabe">{{ initial|default:"?" }}</span></span>
+  <span class="kachel__titel">{{ name }}</span>
+  {% if gesperrt %}<span class="kachel__text">{% include "komponenten/icon.html" with name="schloss" %} <span>gesperrt</span></span>{% endif %}
+{% if href %}</a>{% else %}</div>{% endif %}

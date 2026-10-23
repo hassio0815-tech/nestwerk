@@ -1,0 +1,135 @@
+/* FamKo Designsystem: Schriften und Tokens (Farben, Maße, Schatten).
+   Alles selbst gehostet, keine externen Quellen. Layouts setzen data-layout,
+   Kinder setzen data-akzent, Kind-Umschalter setzt data-modus="hell|dunkel". */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("../fonts/press-start-2p/PressStart2P-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --schrift-text: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --schrift-pixel: "Press Start 2P", ui-monospace, "Courier New", monospace;
+
+  --tap-min: 48px;
+  --tap-gross: 64px;
+  --abstand-klein: 0.5rem;
+  --abstand: 1rem;
+  --abstand-gross: 1.5rem;
+
+  /* Seltenheit wie in Spielen. God Mode ist ein Regenbogen-Verlauf. */
+  --selten-common: #9ca3af;
+  --selten-uncommon: #34d670;
+  --selten-rare: #3b82f6;
+  --selten-epic: #a855f7;
+  --selten-legendary: #facc15;
+  --selten-god: linear-gradient(90deg, #ff5577, #ff9f40, #ffe14d, #4ddf8a, #40c4ff, #8b6cff, #ff6bd6);
+
+  /* Akzent-Standard. Je Kind überschreibt data-akzent diese Werte. */
+  --akzent: #2563eb;
+  --akzent-hell: #7db4ff;
+  --akzent-text: #ffffff;
+}
+
+/* Kind (dunkel, Standard) und Tablet-Startseite. */
+[data-layout="kind"],
+[data-layout="tablet"] {
+  --hintergrund: #120f20;
+  --flaeche: #1e1a33;
+  --flaeche-hoch: #2b2548;
+  --rahmen: #443b70;
+  --kante: #05040c;
+  --text: #f6f4ff;
+  --text-leise: #bdb6e0;
+  --gefahr: #ff5c6e;
+  --erfolg: #34d670;
+  --warnung: #ffb84d;
+  --rahmen-breite: 3px;
+  --block-tiefe: 5px;
+  --radius: 4px;
+  --schatten-karte: 0 var(--block-tiefe) 0 var(--kante);
+  --schrift-grund: 1.125rem;
+  color-scheme: dark;
+}
+
+/* Kind, hell (Umschalter). */
+[data-layout="kind"][data-modus="hell"],
+[data-layout="tablet"][data-modus="hell"] {
+  --hintergrund: #f2effc;
+  --flaeche: #ffffff;
+  --flaeche-hoch: #e8e3fb;
+  --rahmen: #c4bae9;
+  --kante: #a698dc;
+  --text: #1b1633;
+  --text-leise: #5b5283;
+  --gefahr: #d6283f;
+  --erfolg: #148f47;
+  --warnung: #b96d00;
+  color-scheme: light;
+}
+
+/* Eltern und Einrichtung: hell, ruhig, flach. */
+[data-layout="eltern"],
+[data-layout="einrichtung"] {
+  --hintergrund: #f5f7fa;
+  --flaeche: #ffffff;
+  --flaeche-hoch: #eef2f7;
+  --rahmen: #d9e0ea;
+  --kante: transparent;
+  --text: #1c2433;
+  --text-leise: #5a6476;
+  --gefahr: #c42b3b;
+  --erfolg: #1a8a4c;
+  --warnung: #a86200;
+  --rahmen-breite: 1px;
+  --block-tiefe: 0px;
+  --radius: 12px;
+  --schatten-karte: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 1px rgba(16, 24, 40, 0.04);
+  --schrift-grund: 1rem;
+  color-scheme: light;
+}
+
+/* Seltenheit: ein Attribut setzt die Farbe für Karten, Chips und Fortschritt. */
+[data-selten="common"] { --selten-farbe: var(--selten-common); }
+[data-selten="uncommon"] { --selten-farbe: var(--selten-uncommon); }
+[data-selten="rare"] { --selten-farbe: var(--selten-rare); }
+[data-selten="epic"] { --selten-farbe: var(--selten-epic); }
+[data-selten="legendary"] { --selten-farbe: var(--selten-legendary); }
+[data-selten="god"] { --selten-farbe: #ff6bd6; }
+
+/* Kinder-Akzente. Jedes Kind wählt eine Farbe (Attribut am body oder Abschnitt). */
+[data-akzent="blau"] { --akzent: #2563eb; --akzent-hell: #7db4ff; --akzent-text: #ffffff; }
+[data-akzent="rot"] { --akzent: #e5364a; --akzent-hell: #ff9aa4; --akzent-text: #ffffff; }
+[data-akzent="orange"] { --akzent: #ff8a2b; --akzent-hell: #ffb47a; --akzent-text: #1d1206; }
+[data-akzent="gelb"] { --akzent: #ffd23f; --akzent-hell: #fff0a3; --akzent-text: #1d1700; }
+[data-akzent="gruen"] { --akzent: #22c55e; --akzent-hell: #86efac; --akzent-text: #06210f; }
+[data-akzent="tuerkis"] { --akzent: #20d1c4; --akzent-hell: #8ff3ec; --akzent-text: #03201e; }
+[data-akzent="lila"] { --akzent: #8b4dff; --akzent-hell: #c7a4ff; --akzent-text: #ffffff; }
+[data-akzent="pink"] { --akzent: #ff4fa0; --akzent-hell: #ff9cc8; --akzent-text: #1d0a14; }

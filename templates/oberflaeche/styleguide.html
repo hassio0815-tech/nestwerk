@@ -1,0 +1,29 @@
+{% extends "basis/basis.html" %}
+{% load static %}
+{% comment %}Styleguide (nur mit DEBUG erreichbar). Zeigt alle Komponenten in Kind-dunkel, Kind-hell und Eltern-Optik.{% endcomment %}
+{% block titel %}Styleguide{% endblock %}
+{% block layout %}eltern{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/styleguide.css' %}">{% endblock %}
+{% block kopf %}
+  <div class="kopf__zeile">
+    <span class="kopf__marke">Styleguide</span>
+  </div>
+{% endblock %}
+{% block inhalt %}
+  <p>Entwicklungsansicht. Nur mit DEBUG=True erreichbar. Alle Komponenten stehen unter <code>templates/komponenten/</code>.</p>
+
+  <section class="sg-abschnitt" data-layout="kind" data-modus="dunkel" data-akzent="blau" aria-labelledby="sg-kind-dunkel">
+    <h1 id="sg-kind-dunkel">Kind, dunkel</h1>
+    {% include "oberflaeche/_styleguide_komponenten.html" with sg_praefix="kind-dunkel" %}
+  </section>
+
+  <section class="sg-abschnitt" data-layout="kind" data-modus="hell" data-akzent="orange" aria-labelledby="sg-kind-hell">
+    <h1 id="sg-kind-hell">Kind, hell (Umschalter), Akzent orange</h1>
+    {% include "oberflaeche/_styleguide_komponenten.html" with sg_praefix="kind-hell" %}
+  </section>
+
+  <section class="sg-abschnitt" data-layout="eltern" aria-labelledby="sg-eltern">
+    <h1 id="sg-eltern">Eltern, hell</h1>
+    {% include "oberflaeche/_styleguide_komponenten.html" with sg_praefix="eltern" %}
+  </section>
+{% endblock %}

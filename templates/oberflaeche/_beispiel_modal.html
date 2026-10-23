@@ -1,0 +1,10 @@
+{% extends "komponenten/modal.html" %}
+{% block modal_klasse %}modal-hintergrund--statisch{% endblock %}
+{% block titel %}Rangaufstieg!{% endblock %}
+{% block inhalt %}
+  <p>Du hast Rang 3 erreicht. Dafür gibt es einen neuen Mod.</p>
+{% endblock %}
+{% block aktionen %}
+  {% include "komponenten/button.html" with text="Später" variante="geist" %}
+  {% include "komponenten/button.html" with text="Mod ansehen" icon="funke" variante="primaer" %}
+{% endblock %}
