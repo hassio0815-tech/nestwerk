@@ -4,8 +4,8 @@ Django begrenzt hochgeladene Dateien nicht: Ein beliebig großer Upload landet k
 temporären Datei, bevor eine View (oder schon die CSRF-Prüfung, die ``request.POST`` liest) ihn
 abweisen kann. Diese Middleware steht deshalb **vor** ``CsrfViewMiddleware`` und lehnt Anfragen
 ab, deren ``Content-Length`` größer ist als die größte zulässige Meldung
-(``aufgaben.nachweis_max_fotos`` × ``aufgaben.nachweis_max_mb`` + 1 MB Puffer). Die App kennt
-keine anderen Uploads; normale Formulare sind um Größenordnungen kleiner.
+(``aufgaben.nachweis_max_anzahl`` × ``aufgaben.nachweis_max_upload_mb`` + 1 MB Puffer). Die
+App kennt keine anderen Uploads; normale Formulare sind um Größenordnungen kleiner.
 """
 
 from django.http import HttpResponse

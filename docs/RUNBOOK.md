@@ -27,6 +27,8 @@ Prüfen: `curl http://<VM-IP>:8000/gesundheit/` (nur vom NPM-Host aus erreichbar
 - **Websockets: aus.** Block Common Exploits: an. Cache Assets: **aus**.
 - SSL: neues Zertifikat, **Let's Encrypt mit DNS-Challenge** (Cloudflare-API-Token), Force SSL + HTTP/2 an, HSTS an.
 - **Keine Access-List** auf dem Host. `/sw.js` und `/manifest.json` müssen ohne Login und ohne Cache ausgeliefert werden (kein Custom-Cache, keine Auth-Regel).
+- Upload-Größe: Im Tab **Advanced** `client_max_body_size 50m;` eintragen (Nachweis-Fotos; die App selbst begrenzt über die Einstellungen `aufgaben.nachweis_max_upload_mb`/`_max_anzahl`).
+- **Nur ein Proxy-Hop:** FamKo wertet von `X-Forwarded-For` nur den rechtesten Eintrag aus (den der NPM anhängt). Kein weiterer Proxy vor dem NPM. Im Assistenten (Schritt 5) bei „Vertraute Proxys“ nur die NPM-IP eintragen (Review AP19, B-02).
 - Prüfen: `https://famko.<domain>/gesundheit/` liefert 200.
 
 ## 4. AdGuard-DNS

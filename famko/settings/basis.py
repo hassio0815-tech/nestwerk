@@ -144,7 +144,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").is_dir() else 
 MEDIA_ROOT = DATA_DIR / "media"
 
 # Nachweis-Fotos (AP13): privat, nie öffentlich ausgeliefert, nicht im Backup (ARCHITECTURE 9)
-# Größe und Anzahl der Fotos sind Familienwerte (aufgaben.nachweis_max_mb/_max_fotos, Editor)
+# Größe, Anzahl, Kantenlänge der Fotos: Einstellungen aufgaben.nachweis_* (Eltern-Editor)
 NACHWEIS_DIR = Path(env("NACHWEIS_DIR", DATA_DIR / "media" / "nachweise"))
 
 # Hinter Nginx Proxy Manager (TLS endet dort)

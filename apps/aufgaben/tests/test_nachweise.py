@@ -125,8 +125,8 @@ def test_groesse_und_anzahl_sind_familienwerte():
     from apps.kern import einstellungen
 
     assert nachweise.max_bytes() == 15 * 1024 * 1024 and nachweise.max_fotos() == 3
-    einstellungen.setzen("aufgaben.nachweis_max_mb", 2, akteur=None)
-    einstellungen.setzen("aufgaben.nachweis_max_fotos", 1, akteur=None)
+    einstellungen.setzen("aufgaben.nachweis_max_upload_mb", 2, akteur=None)
+    einstellungen.setzen("aufgaben.nachweis_max_anzahl", 1, akteur=None)
     assert nachweise.max_bytes() == 2 * 1024 * 1024 and nachweise.max_fotos() == 1
     assert not nachweise.anfrage_zu_gross(str(3 * 1024 * 1024 - 1))
     assert nachweise.anfrage_zu_gross(str(3 * 1024 * 1024 + 1))
@@ -400,3 +400,13 @@ def test_zu_grosse_upload_anfrage_wird_vor_dem_lesen_abgewiesen(instanz, anna, k
     assert antwort.status_code == 413
     instanz.refresh_from_db()
     assert instanz.status == InstanzStatus.RESERVIERT
+
+
+@pytest.mark.django_db
+def test_kantenlaenge_ist_einstellung():
+    from apps.kern import einstellungen
+
+    assert nachweise.max_kante() == 1600
+    einstellungen.setzen("aufgaben.nachweis_max_kante_px", 800, akteur=None)
+    daten = nachweise.bild_verarbeiten(upload(jpeg((2000, 1000), gps=False)))
+    assert Image.open(io.BytesIO(daten)).size == (800, 400)

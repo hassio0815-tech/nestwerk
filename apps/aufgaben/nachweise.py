@@ -28,7 +28,6 @@ from .zustand import AblaufFehler
 
 log = logging.getLogger(__name__)
 
-MAX_KANTE = 1600
 MAX_PIXEL = 40_000_000
 JPEG_QUALITAET = 85
 WAISEN_KARENZ_SEKUNDEN = 3600  # laufende Transaktionen nicht stören
@@ -51,13 +50,18 @@ def wurzel() -> Path:
 
 
 def max_bytes() -> int:
-    """Höchstgröße eines Uploads (Einstellung ``aufgaben.nachweis_max_mb``)."""
-    return einstellungen.wert("aufgaben.nachweis_max_mb") * 1024 * 1024
+    """Höchstgröße eines Uploads (Einstellung ``aufgaben.nachweis_max_upload_mb``)."""
+    return einstellungen.wert("aufgaben.nachweis_max_upload_mb") * 1024 * 1024
 
 
 def max_fotos() -> int:
-    """Höchstzahl Fotos je Meldung (Einstellung ``aufgaben.nachweis_max_fotos``)."""
-    return einstellungen.wert("aufgaben.nachweis_max_fotos")
+    """Höchstzahl Fotos je Meldung (Einstellung ``aufgaben.nachweis_max_anzahl``)."""
+    return einstellungen.wert("aufgaben.nachweis_max_anzahl")
+
+
+def max_kante() -> int:
+    """Längste Kante des gespeicherten Fotos (Einstellung ``aufgaben.nachweis_max_kante_px``)."""
+    return einstellungen.wert("aufgaben.nachweis_max_kante_px")
 
 
 def anfrage_zu_gross(content_length) -> bool:
@@ -138,7 +142,8 @@ def bild_verarbeiten(datei) -> bytes:
                     bild = grund
                 else:
                     bild = bild.convert("RGB")
-                bild.thumbnail((MAX_KANTE, MAX_KANTE), Image.Resampling.LANCZOS)
+                kante = max_kante()
+                bild.thumbnail((kante, kante), Image.Resampling.LANCZOS)
                 ziel = io.BytesIO()
                 bild.save(ziel, "JPEG", quality=JPEG_QUALITAET, optimize=True)  # ohne exif=
     except AblaufFehler:

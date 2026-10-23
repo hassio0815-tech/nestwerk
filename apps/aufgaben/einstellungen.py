@@ -19,8 +19,9 @@ STARTWERTE_ABLAUF = {
 
 # Nachweis-Fotos (AP13), Datenmigration 0007 (Review AP19, B-09: vorher Django-Setting/Konstante)
 STARTWERTE_NACHWEIS = {
-    "aufgaben.nachweis_max_mb": 15,
-    "aufgaben.nachweis_max_fotos": 3,
+    "aufgaben.nachweis_max_upload_mb": 15,
+    "aufgaben.nachweis_max_anzahl": 3,
+    "aufgaben.nachweis_max_kante_px": 1600,
 }
 
 
@@ -96,19 +97,28 @@ def einstellungen_definieren():
         maximum=14,
     )
     definieren(
-        "aufgaben.nachweis_max_mb",
+        "aufgaben.nachweis_max_upload_mb",
         Typ.GANZZAHL,
         "Nachweis-Foto höchstens",
-        beschreibung="Größe eines hochgeladenen Fotos. Gespeichert wird es verkleinert "
-        "(max. 1600 px, ohne Metadaten).",
+        beschreibung="Größe eines hochgeladenen Fotos. Gespeichert wird es verkleinert und "
+        "ohne Metadaten (GPS).",
         einheit="MB",
         minimum=1,
         maximum=50,
     )
     definieren(
-        "aufgaben.nachweis_max_fotos",
+        "aufgaben.nachweis_max_anzahl",
         Typ.GANZZAHL,
         "Fotos je Meldung höchstens",
         minimum=1,
         maximum=10,
+    )
+    definieren(
+        "aufgaben.nachweis_max_kante_px",
+        Typ.GANZZAHL,
+        "Nachweis-Foto wird verkleinert auf",
+        beschreibung="Längste Kante des gespeicherten Fotos.",
+        einheit="Pixel",
+        minimum=400,
+        maximum=4000,
     )
