@@ -36,7 +36,19 @@ BACKUP_MAX_ALTER_STUNDEN = int(env("BACKUP_MAX_ALTER_STUNDEN", "36"))
 
 SECRET_KEY = env("SECRET_KEY")  # Pflicht in Produktion; Entwicklung/Test setzen Ersatzwert
 DEBUG = False
-ALLOWED_HOSTS = env_liste("ALLOWED_HOSTS", "localhost,127.0.0.1")
+# Der Container-Healthcheck (compose.yaml) ruft http://127.0.0.1:8000/gesundheit/ auf. Ohne
+# diese beiden Namen lehnt Django ihn mit 400 ab (DisallowedHost), der Container wird nie
+# "healthy" und update.sh/install.sh brechen ab (Review AP19, B-01). Port 8000 erreicht von
+# außen nur der Proxy (nftables), daher ist das unbedenklich.
+LOKALE_HOSTS = ["localhost", "127.0.0.1"]
+
+
+def allowed_hosts(text):
+    hosts = [h.strip() for h in text.split(",") if h.strip()]
+    return hosts + [h for h in LOKALE_HOSTS if h not in hosts]
+
+
+ALLOWED_HOSTS = allowed_hosts(env("ALLOWED_HOSTS", ""))
 CSRF_TRUSTED_ORIGINS = env_liste("CSRF_TRUSTED_ORIGINS")
 
 # Phase-1-Apps (Schichten siehe ARCHITECTURE 2.1). Auth/Sessions gehören zu konten.Benutzer (AP03).
