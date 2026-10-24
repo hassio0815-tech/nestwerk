@@ -395,8 +395,51 @@ def avatar_ablauf(browser, aufn):
     ctx.close()
 
 
+def familienziel_zustand(modus):
+    subprocess.run(
+        [sys.executable, str(ROOT / "tools/oberflaeche/familienziel_demo.py"), modus],
+        cwd=ROOT,
+        env=_env(),
+        check=True,
+    )
+
+
+def familienziel_ablauf(browser, aufn):
+    """AP29: Tablet-Leiste (Fortschritt, Abstimmung, Erfolg), Kinder-Abstimmung, Eltern-Seite."""
+    ctx = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    tablet = ctx.new_page()
+    aufn.s.anbinden(tablet)
+    familienziel_zustand("fortschritt")
+    aufn.seite(tablet, "tablet-familienziel", "/tablet/")
+    familienziel_zustand("abstimmung")
+    aufn.seite(tablet, "tablet-familienziel-abstimmung", "/tablet/")
+    ctx.close()
+
+    ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
+    kind = ctx.new_page()
+    aufn.s.anbinden(kind)
+    kind_login(kind, aufn, "Kind A", "1111", fotos=False)
+    aufn.seite(kind, "kind-familienziel-abstimmung", "/kind/")
+    kind.locator("input[name=belohnung]").nth(2).check()
+    kind.get_by_role("button", name="Abstimmen").click()
+    kind.wait_for_load_state("networkidle")
+    aufn.s.neu("kind-familienziel-abgestimmt")
+    aufn.foto(kind, "kind-familienziel-abgestimmt")
+    ctx.close()
+
+    familienziel_zustand("erreicht")
+    ctx = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    seite = ctx.new_page()
+    aufn.s.anbinden(seite)
+    aufn.seite(seite, "tablet-familienziel-erreicht", "/tablet/")
+    eltern_login(seite, aufn)
+    aufn.seite(seite, "eltern-familienziel", "/eltern/familienziel/")
+    ctx.close()
+
+
 def seiten_ablauf(browser, aufn):
     avatar_ablauf(browser, aufn)
+    familienziel_ablauf(browser, aufn)
     ctx_kind = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
     kind = ctx_kind.new_page()
     aufn.s.anbinden(kind)

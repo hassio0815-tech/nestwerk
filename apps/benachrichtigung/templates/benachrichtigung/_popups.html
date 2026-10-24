@@ -6,5 +6,5 @@
   {% include "komponenten/icon.html" with name="stern" %}
   <span class="toast__text"><strong>{{ p.titel }}</strong>{% if p.text %}<br>{{ p.text }}{% endif %}</span>
   <button type="button" class="knopf knopf--geist knopf--klein" data-schliessen>{% include "komponenten/icon.html" with name="x" %}<span>Schließen</span></button>
-</div>{% else %}{% include "komponenten/toast.html" with text=p.titel icon="stern" art="erfolg" %}{% endif %}
+</div>{% elif p.art == "familienziel.erreicht_kind" or p.art == "familienziel.grossziel_kind" %}{% include "familienziel/_konfetti.html" %}{% else %}{% include "komponenten/toast.html" with text=p.titel icon="stern" art="erfolg" %}{% endif %}
 {% endfor %}

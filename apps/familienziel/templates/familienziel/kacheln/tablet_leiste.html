@@ -1,0 +1,39 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
+{% comment %}Tablet-Leiste (Registry "tablet"): großer Balken, Belohnung, Beiträge ohne Wertung, Abstimmung.{% endcomment %}
+{% with a=k.a %}
+<article class="fz-leiste{% if a.erreicht %} fz-leiste--erreicht{% endif %}" data-fz-status="{{ a.status }}">
+  {% if a.erreicht %}<span class="konfetti konfetti--gross" aria-hidden="true">{% for i in "123456789012345678" %}<i></i>{% endfor %}</span>{% endif %}
+  <header class="fz-leiste__kopf">
+    <h2 class="tablet-abschnitt__titel">Familienziel</h2>
+    <p class="fz-leiste__ziel">{% include "familienziel/_belohnung.html" with b=a.belohnung titel="Wochenziel" %}</p>
+  </header>
+  {% include "familienziel/kacheln/_balken.html" with a=a gross=True %}
+  {% if a.erreicht %}
+    <p class="fz-leiste__feier">{% include "komponenten/icon.html" with name="pokal" %} Geschafft! {% if a.belohnung %}{{ a.belohnung.titel }} ist freigeschaltet.{% else %}Das Wochenziel ist erreicht.{% endif %}</p>
+  {% elif a.stand.punkte_ok and a.namen_offen %}
+    <p class="fz-leiste__hinweis">Fast! Noch eine Aufgabe von: {{ a.namen_offen|join:", " }}.</p>
+  {% else %}
+    <p class="fz-leiste__hinweis">Noch {{ a.fehlt }} Punkte{% if a.namen_offen %}, und eine Aufgabe von: {{ a.namen_offen|join:", " }}{% endif %}.</p>
+  {% endif %}
+  {% if a.stand.beitraege %}
+  <ul class="fz-beitraege" aria-label="Beiträge der Kinder">
+    {% for b in a.stand.beitraege %}
+      <li class="fz-beitrag{% if b.pausiert %} fz-beitrag--pause{% endif %}"><span>{{ b.kind.anzeigename }}</span><strong>{% if b.pausiert %}Pause{% else %}{{ b.xp }}{% endif %}</strong></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <p class="fz-serie" data-fz-serie="{{ a.serie }}">
+    {% if a.grossziel %}{% include "komponenten/icon.html" with name="stern" %} Großes Ziel freigeschaltet: <strong>{{ a.grossziel.name|default:"Ausflug" }}</strong>!
+    {% else %}Großes Ziel: {{ a.serie }} von {{ a.serie_ziel }} Wochen in Folge.{% endif %}
+  </p>
+  {% if a.abstimmung %}
+    <div class="fz-abstimmung" data-fz-abstimmung>
+      <h3>Abstimmung für nächste Woche</h3>
+      <p>Kinder: Wählt eure Belohnung auf eurem Dashboard. {{ a.abstimmung.abgegeben }} von {{ a.abstimmung.kinder }} haben abgestimmt.</p>
+      <ul class="fz-optionen">
+        {% for o in a.abstimmung.optionen %}<li>{% include "familienziel/_belohnung.html" with b=o %}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</article>
+{% endwith %}

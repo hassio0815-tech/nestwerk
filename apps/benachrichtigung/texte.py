@@ -91,8 +91,22 @@ _STANDARD = {
     ),
     "sondertag.wunsch": TypText("Sondertag-Wunsch von {kind}", "{wunsch}"),
     "sondertag.angenommen": TypText("Dein Wunsch wurde angenommen", "{wunsch}"),
-    "familienziel.erreicht": TypText("Familienziel erreicht!", "{ziel}"),
-    "familienziel.abstimmung_gleichstand": TypText("Gleichstand bei der Abstimmung", "{ziel}"),
+    "familienziel.erreicht": TypText(
+        "{belohnung} freigeschaltet!", "Die Familie hat {ziel} Punkte geschafft."
+    ),
+    "familienziel.erreicht_kind": TypText(
+        "Geschafft! {belohnung}", "Ihr habt das Familienziel erreicht. Super gemacht!"
+    ),
+    "familienziel.abstimmung_offen": TypText(
+        "Abstimmung läuft", "Wähle jetzt die Belohnung für nächste Woche."
+    ),
+    "familienziel.abstimmung_gleichstand": TypText("Familienziel: Eltern entscheiden", "{hinweis}"),
+    "familienziel.grossziel": TypText(
+        "Großes Ziel freigeschaltet: {grossziel}!", "Mehrere Wochenziele in Folge geschafft."
+    ),
+    "familienziel.grossziel_kind": TypText(
+        "Großes Ziel: {grossziel}!", "Ihr habt mehrere Wochenziele in Folge geschafft!"
+    ),
 }
 
 

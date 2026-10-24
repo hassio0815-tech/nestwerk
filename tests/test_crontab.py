@@ -19,6 +19,7 @@ PFLICHT_JOBS = {
     "db_sichern",
     "backup_pruefen",
     "wochen_sicherstellen",
+    "familienwoche_sicherstellen",
 }
 
 
