@@ -10,8 +10,8 @@ from django.views.decorators.http import require_GET, require_http_methods, requ
 
 from apps.konten.zugriff import nur_eltern, nur_kind
 from apps.punkte import selectors as punkte_selectors
-from apps.spielregeln import raenge
-from apps.spielregeln.raenge import RangFehler
+from apps.spielregeln import selectors as raenge
+from apps.spielregeln.services import RangFehler
 
 from . import selectors, services
 

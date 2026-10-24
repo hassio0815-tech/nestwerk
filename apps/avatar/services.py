@@ -18,7 +18,10 @@ from django.db import IntegrityError, transaction
 from django.urls import reverse
 
 from apps.kern import zeit
-from apps.spielregeln.raenge import mod_faktoren_setzen, mod_standard_aendern  # noqa: F401
+from apps.spielregeln.services import (  # noqa: F401 (Mod-Standards, AP26)
+    mod_faktoren_setzen,
+    mod_standard_aendern,
+)
 
 from .generator import bibliothek, renderer
 from .models import Avatar, ModDefinition, RenderCache, Thema

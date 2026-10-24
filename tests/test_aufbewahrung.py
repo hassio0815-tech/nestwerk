@@ -1,4 +1,8 @@
-"""Aufbewahrung (B-15, Review AP31): Fristen als Einstellungen, Ledger und Audit bleiben."""
+# ruff: noqa: F811  (Fixtures aus apps.benachrichtigung.tests.conftest)
+"""Aufbewahrung (B-15, Review AP31): Fristen als Einstellungen, Ledger und Audit bleiben.
+
+Unter tests/ (Querschnitt benachrichtigung/ereignisse/punkte/kern; lint-imports erfasst tests/
+nicht)."""
 
 from datetime import timedelta
 
@@ -8,13 +12,19 @@ from django.utils import timezone
 
 from apps.benachrichtigung import services
 from apps.benachrichtigung.models import Benachrichtigung, ZustellStatus, Zustellung
+from apps.benachrichtigung.tests.conftest import (  # noqa: F401 (Fixtures)
+    TYP_INFO,
+    anna,
+    katalog,
+    mama,
+    veroeffentlichen,
+    zeitzone,
+)
 from apps.ereignisse import worker
 from apps.ereignisse.models import Ereignis, EreignisVerarbeitung, Status
 from apps.kern import audit, einstellungen
 from apps.kern.models import AuditEintrag, JobLauf, JobStatus
 from apps.punkte import services as punkte
-
-from .conftest import TYP_INFO, veroeffentlichen
 
 pytestmark = pytest.mark.django_db
 TAG = timedelta(days=1)

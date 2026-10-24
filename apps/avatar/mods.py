@@ -4,7 +4,7 @@
 
 - **Preis/Bauzeit:** Grundwert = Bauplan (``ModDefinition.preis``/``bauzeit_stunden``) oder
   Rang-Standard der Seltenheit; wirksam = Grundwert x Kalibrierungsfaktor (global x Kind),
-  gerundet (``spielregeln.raenge.mod_preis``/``mod_bauzeit_stunden``).
+  gerundet (``spielregeln.selectors.mod_preis``/``mod_bauzeit_stunden``).
 - **Kauf:** Seltenheit <= aktueller Rang; genau eine Ledger-Buchung ``modkauf`` mit Schlüssel
   ``modkauf:<kind>:<mod>:<n>`` (n = wievielter Kauf dieses Mods, z. B. nach Themenwechsel
   zurück); Prüfung gegen verfügbares Guthaben (offene Einlöse-Anträge sind reserviert); alles in
@@ -38,7 +38,6 @@ from apps.kern.zeit import IsoWoche
 from apps.konten import selectors as konten
 from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte_services
-from apps.spielregeln import raenge
 from apps.spielregeln import selectors as spielregeln
 
 from . import events
@@ -130,8 +129,8 @@ def konditionen(mod: ModDefinition, kind=None, *, raenge_map=None) -> Konditione
     grund_preis = mod.preis if mod.preis is not None else rang.mod_preis
     grund_bauzeit = mod.bauzeit_stunden if mod.bauzeit_stunden is not None else rang.bauzeit_stunden
     return Konditionen(
-        preis=raenge.mod_preis(grund_preis, kind),
-        bauzeit_stunden=raenge.mod_bauzeit_stunden(grund_bauzeit, kind),
+        preis=spielregeln.mod_preis(grund_preis, kind),
+        bauzeit_stunden=spielregeln.mod_bauzeit_stunden(grund_bauzeit, kind),
         rang_name=rang.name,
         rang_selten=rang.selten,
     )
@@ -767,8 +766,8 @@ def standards() -> list[dict]:
     return [
         {
             "rang": r,
-            "preis_wirksam": raenge.mod_preis(r.mod_preis),
-            "bauzeit_wirksam": dauer_text(raenge.mod_bauzeit_stunden(r.bauzeit_stunden)),
+            "preis_wirksam": spielregeln.mod_preis(r.mod_preis),
+            "bauzeit_wirksam": dauer_text(spielregeln.mod_bauzeit_stunden(r.bauzeit_stunden)),
             "bauzeit_tage": _tage_text(r.bauzeit_stunden),
         }
         for r in spielregeln.raenge()

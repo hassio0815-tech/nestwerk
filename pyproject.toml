@@ -107,6 +107,31 @@ allow_indirect_imports = "True"
 ignore_imports = ["apps.*.tests.** -> **"]
 
 [[tool.importlinter.contracts]]
+# Review AP31: Interna von spielregeln (raenge, abzeichen, held, auswertung ...) nur über
+# selectors/services/registry/events; avatar importierte spielregeln.raenge direkt.
+name = "spielregeln nur ueber seine oeffentliche Schnittstelle"
+type = "forbidden"
+source_modules = [
+    "apps.aufgaben",
+    "apps.belohnung",
+    "apps.avatar",
+    "apps.sondertag",
+    "apps.familienziel",
+    "apps.oberflaeche",
+    "apps.einrichtung",
+]
+forbidden_modules = [
+    "apps.spielregeln.raenge",
+    "apps.spielregeln.abzeichen",
+    "apps.spielregeln.held",
+    "apps.spielregeln.auswertung",
+    "apps.spielregeln.kontinuitaet",
+    "apps.spielregeln.serienbonus",
+]
+allow_indirect_imports = "True"
+ignore_imports = ["apps.*.tests.** -> **"]
+
+[[tool.importlinter.contracts]]
 name = "benachrichtigung haengt nur von ereignisse ab (nicht von punkte)"
 type = "forbidden"
 source_modules = ["apps.benachrichtigung"]

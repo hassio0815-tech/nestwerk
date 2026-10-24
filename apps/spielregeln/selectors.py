@@ -16,6 +16,8 @@ Alle Werte werden live aus der Historie berechnet (gleiche Rechnung wie Job und 
   Seltenheit 1–6, ``selten`` für ``data-selten``, ``mod_preis``, ``bauzeit_stunden``),
   ``rang_aufstiege(kind)`` (Fakten), ``rang_erreicht(kind, stufe)``, ``rang_fortschritt(kind)``,
   ``wirksamer_faktor(kind)``, ``globaler_faktor()``, ``kind_faktor(kind)``.
+- Mod-Konditionen (AP26, für avatar): ``mod_preis(grund, kind)``, ``mod_bauzeit_stunden(grund,
+  kind)``, ``preis_faktor(kind)``, ``bauzeit_faktor(kind)``, ``rang_zur_stufe(stufe)``.
 - Abzeichen/Meilensteine (AP23): ``vitrine(kind)`` (verdient, nächste mit Fortschritt,
   Rekorde), ``verleihungen(kind)``, ``definitionen()``, ``symbol(definition, bereich)``,
   ``meilenstein_regeln()``, ``meilensteine_erreicht(kind, regel)``,
@@ -50,15 +52,20 @@ from .abzeichen import (  # noqa: F401 (öffentliche Abzeichen-/Meilenstein-API,
     vitrine,
 )
 from .models import Aktivitaet, KindStand, Pause, Wochenauswertung
-from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22)
+from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22; Mod-Konditionen AP26)
     RangFortschritt,
     aktueller_rang,
+    bauzeit_faktor,
     globaler_faktor,
     kind_faktor,
+    mod_bauzeit_stunden,
+    mod_preis,
+    preis_faktor,
     raenge,
     rang_aufstiege,
     rang_erreicht,
     rang_fortschritt,
+    rang_zur_stufe,
     startrang,
     wirksame_schwelle,
     wirksamer_faktor,

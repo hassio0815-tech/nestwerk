@@ -50,9 +50,11 @@ from .abzeichen import (  # noqa: F401 (öffentliche Abzeichen-/Meilenstein-API,
 from .abzeichen import alle_pruefen as abzeichen_alle_pruefen  # noqa: F401
 from .abzeichen import pruefen as abzeichen_pruefen  # noqa: F401
 from .models import Aktivitaet, KindStand, Pause, PauseQuelle, Wochenauswertung
-from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22)
+from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22; Mod-Standards AP26)
     RangFehler,
     kalibrierung_setzen,
+    mod_faktoren_setzen,
+    mod_standard_aendern,
     raenge_pruefen,
     rang_aendern,
 )
