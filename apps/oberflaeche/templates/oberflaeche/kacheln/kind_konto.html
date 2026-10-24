@@ -1,5 +1,5 @@
-<article class="karte"><div class="karte__inhalt kind-konto">
-  <span class="avatar-platz" aria-hidden="true"><span class="avatar-platz__buchstabe">{{ request.user.anzeigename|slice:":1"|upper }}</span></span>
+{% load avatar_tags %}<article class="karte"><div class="karte__inhalt kind-konto">
+  {% avatar_bild request.user "gross" %}
   <div class="stapel">
     <strong>{{ request.user.anzeigename }}</strong>
     <span class="reihe">{% include "komponenten/punkte.html" with wert=k.guthaben %}

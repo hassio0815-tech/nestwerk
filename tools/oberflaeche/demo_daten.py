@@ -18,6 +18,7 @@ django.setup()
 
 from apps.aufgaben import ablauf, instanzen, selectors  # noqa: E402
 from apps.aufgaben.models import Aufgabe, AufgabenInstanz, Freigabeart  # noqa: E402
+from apps.avatar import services as avatar  # noqa: E402
 from apps.belohnung import services as belohnung  # noqa: E402
 from apps.belohnung.models import Belohnung  # noqa: E402
 from apps.konten.models import Benutzer  # noqa: E402
@@ -29,6 +30,11 @@ def main():
     eltern = Benutzer.objects.filter(rolle="eltern").order_by("pk").first()
     kinder = {k.anzeigename: k for k in Benutzer.objects.filter(rolle="kind")}
     a, b = kinder["Kind A"], kinder["Kind B"]
+    # Avatare (AP24): A Ritter mit allen Common-Mods, B Weltraum-Forscher, C wählt im Browser
+    avatar.avatar_waehlen(a, "ritter", {"haut": "haut3", "haar": "haar2", "frisur": "struppig"})
+    for slot in ("kopf", "koerper", "ruecken", "hand", "begleiter", "hintergrund"):
+        avatar.slot_belegen(a, slot, f"ritter-{slot}-1")
+    avatar.avatar_waehlen(b, "weltraum", {"haut": "haut5", "haar": "haar7", "frisur": "lang"})
 
     arten = [Freigabeart.ELTERN, Freigabeart.VERTRAUEN, Freigabeart.ELTERN, Freigabeart.NACHWEIS]
     for nr, vorlage in enumerate(list(selectors.vorlagen())[:6]):

@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "apps.spielregeln",
     "apps.aufgaben",
     "apps.belohnung",
+    "apps.avatar",
     "apps.einrichtung",
     "apps.oberflaeche",
 ]

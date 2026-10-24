@@ -1,0 +1,131 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "ritter-kopf-1",
+   "name": "Eisenhelm",
+   "beschreibung": "Solider Helm mit Nasenschutz.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-1",
+   "name": "Wappenrock",
+   "beschreibung": "Roter Rock über dem Hemd, mit goldenem Kragen.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p6",
+      "b": "p1",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-1",
+   "name": "Roter Umhang",
+   "beschreibung": "Flattert hinter jedem Helden her.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p6",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-1",
+   "name": "Übungsschwert",
+   "beschreibung": "Stumpf, aber gut für den Anfang.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-1",
+   "name": "Treuer Hund",
+   "beschreibung": "Folgt dir auf Schritt und Tritt.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "#c68a4e",
+      "b": "#8a5a2b",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hintergrund-1",
+   "name": "Burgwiese",
+   "beschreibung": "Blauer Himmel und frisches Gras.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#8ecae6",
+      "b": "#ffffff",
+      "c": "#5fa052"
+     }
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

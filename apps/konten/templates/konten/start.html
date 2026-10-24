@@ -9,7 +9,7 @@
   {% for eintrag in kinder %}
     <div data-akzent="{{ eintrag.akzent }}">
       {% url "konten:kind_pin" eintrag.benutzer.pk as pin_url %}
-      {% include "komponenten/avatar_kachel.html" with name=eintrag.benutzer.anzeigename initial=eintrag.benutzer.anzeigename|slice:":1"|upper href=pin_url gesperrt=eintrag.gesperrt %}
+      {% include "komponenten/avatar_kachel.html" with benutzer=eintrag.benutzer name=eintrag.benutzer.anzeigename initial=eintrag.benutzer.anzeigename|slice:":1"|upper href=pin_url gesperrt=eintrag.gesperrt %}
     </div>
   {% empty %}
     {% include "komponenten/leer.html" with titel="Noch keine Kinder" text="Die Eltern legen die Kinder in der Einrichtung an." icon="person" %}

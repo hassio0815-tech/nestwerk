@@ -333,14 +333,16 @@ SEITEN_ELTERN = [
 ]
 
 
-def kind_login(page, aufn, name, pin):
+def kind_login(page, aufn, name, pin, fotos=True):
     aufn.s.neu("tablet-startseite")
     page.goto(BASIS + "/", wait_until="networkidle")
-    aufn.foto(page, "tablet-startseite")
+    if fotos:
+        aufn.foto(page, "tablet-startseite")
     page.get_by_text(name, exact=False).first.click()
     page.wait_for_load_state("networkidle")
     aufn.s.neu("pin-eingabe")
-    aufn.foto(page, "pin-eingabe")
+    if fotos:
+        aufn.foto(page, "pin-eingabe")
     for ziffer in pin:
         page.get_by_role("button", name=ziffer, exact=True).click()
     page.wait_for_timeout(300)
@@ -360,7 +362,33 @@ def eltern_login(page, aufn):
     page.wait_for_load_state("networkidle")
 
 
+def avatar_ablauf(browser, aufn):
+    """AP24: Kind C hat noch keinen Avatar. Aufruf-Kachel, Erstwahl mit Vorschau, danach das
+    Dashboard mit Figur; dazu die Entwickler-Galerie."""
+    ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
+    page = ctx.new_page()
+    aufn.s.anbinden(page)
+    kind_login(page, aufn, "Kind C", "3333", fotos=False)
+    aufn.seite(page, "avatar-aufruf-dashboard", "/kind/")
+    aufn.seite(page, "avatar-wahl", "/kind/avatar/")
+    page.locator("input[name=haut][value=haut4]").check()
+    page.locator("input[name=haar][value=haar5]").check()
+    page.locator("input[name=frisur][value=struppig]").check()
+    page.locator("input[name=thema][value=dschungel]").check()
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(400)
+    aufn.s.neu("avatar-wahl-getroffen")
+    aufn.foto(page, "avatar-wahl-getroffen")
+    page.get_by_role("button", name="Das bin ich!").click()
+    page.wait_for_load_state("networkidle")
+    aufn.s.neu("avatar-dashboard-neu")
+    aufn.foto(page, "avatar-dashboard-neu")
+    aufn.seite(page, "avatar-galerie", "/avatar/galerie/")
+    ctx.close()
+
+
 def seiten_ablauf(browser, aufn):
+    avatar_ablauf(browser, aufn)
     ctx_kind = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
     kind = ctx_kind.new_page()
     aufn.s.anbinden(kind)

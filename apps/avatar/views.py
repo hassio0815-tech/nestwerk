@@ -1,0 +1,116 @@
+"""Auslieferung der SVG-Bilder, Erstwahl für Kinder und die Entwickler-Galerie (nur DEBUG)."""
+
+from django.conf import settings
+from django.http import Http404, HttpResponse, HttpResponseNotModified
+from django.shortcuts import redirect, render
+from django.views.decorators.http import require_GET, require_http_methods
+
+from apps.konten.zugriff import nur_kind, passiv
+
+from . import selectors, services
+from .generator import bibliothek
+
+SVG_CSP = "default-src 'none'; style-src 'none'; sandbox"
+
+
+@passiv
+@require_GET
+def svg(request, hash):
+    """``GET /avatar/<hash>.svg``: unveränderliches Bild (Hash steckt in der URL)."""
+    etag = f'"{hash}"'
+    if request.headers.get("If-None-Match") == etag:
+        antwort = HttpResponseNotModified()
+    else:
+        inhalt = services.svg_nach_hash(hash)
+        if inhalt is None:
+            raise Http404("Unbekanntes Bild")
+        antwort = HttpResponse(inhalt, content_type="image/svg+xml")
+    antwort["ETag"] = etag
+    antwort["Cache-Control"] = "public, max-age=31536000, immutable"
+    antwort["Content-Security-Policy"] = SVG_CSP
+    return antwort
+
+
+def _auswahl(daten):
+    """Auswahl aus Formular/Abfrage, ungültige Werte werden durch Standardwerte ersetzt."""
+    optionen = selectors.figur_optionen()
+    standard = bibliothek.STANDARD_FIGUR
+    figur = {}
+    for schluessel in ("haut", "haar", "frisur"):
+        gueltig = {eintrag[0] for eintrag in optionen[schluessel]}
+        wert = daten.get(schluessel, "")
+        figur[schluessel] = wert if wert in gueltig else standard[schluessel]
+    return figur
+
+
+def _vorschau_kontext(request, quelle):
+    figur = _auswahl(quelle)
+    themen = selectors.waehlbare_themen()
+    gewaehlt = quelle.get("thema", "")
+    if gewaehlt not in {t.schluessel for t in themen}:
+        gewaehlt = ""
+    karten = [
+        {
+            "thema": t,
+            "svg": services.vorschau_svg(t.schluessel, figur),
+            "gewaehlt": t.schluessel == gewaehlt,
+        }
+        for t in themen
+    ]
+    haupt = services.vorschau_svg(gewaehlt or bibliothek.ELTERN_THEMA, figur)
+    return {"figur": figur, "karten": karten, "gewaehlt": gewaehlt, "haupt": haupt}
+
+
+@nur_kind
+@require_http_methods(["GET", "POST"])
+def kind_wahl(request):
+    """Erstwahl: Figur (Hautton, Haare, Frisur) und Thema. Themenwechsel: AP26."""
+    if selectors.hat_avatar(request.user):
+        return redirect("oberflaeche:kind_heim")
+    fehler = ""
+    if request.method == "POST":
+        try:
+            services.avatar_waehlen(
+                request.user, request.POST.get("thema", ""), _auswahl(request.POST)
+            )
+        except services.AvatarFehler as exc:
+            fehler = str(exc)
+        else:
+            return redirect("oberflaeche:kind_heim")
+    quelle = request.POST if request.method == "POST" else request.GET
+    kontext = {"optionen": selectors.figur_optionen(), "fehler": fehler}
+    kontext.update(_vorschau_kontext(request, quelle))
+    if request.headers.get("HX-Request") == "true":
+        return render(request, "avatar/_vorschau.html", kontext)
+    return render(request, "avatar/wahl.html", kontext)
+
+
+@require_GET
+def galerie(request):
+    """Alle Themen-Grundfiguren auf dunklem und hellem Grund (nur im Entwicklungsmodus)."""
+    if not settings.DEBUG:
+        raise Http404
+    figuren = [
+        {
+            "haut": f"haut{1 + i % 6}",
+            "haar": f"haar{1 + (i * 3) % 8}",
+            "frisur": ("kurz", "struppig", "lang")[i % 3],
+        }
+        for i in range(len(bibliothek.themen()))
+    ]
+    themen = [
+        {"thema": t, "svg": services.vorschau_svg(t["schluessel"], figuren[i])}
+        for i, t in enumerate(bibliothek.themen().values())
+    ]
+    from .models import ModDefinition
+
+    mods = [
+        {
+            "mod": m,
+            "svg": services.vorschau_svg(
+                m.thema.schluessel, mods={m.slot.schluessel: m.render_mod()}
+            ),
+        }
+        for m in ModDefinition.objects.select_related("thema", "slot")
+    ]
+    return render(request, "avatar/galerie.html", {"themen": themen, "mods": mods})

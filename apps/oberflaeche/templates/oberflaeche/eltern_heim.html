@@ -1,8 +1,9 @@
 {% extends "oberflaeche/eltern_basis.html" %}
 {% comment %}Eltern-Dashboard: alles, was die Registry für "eltern" liefert.{% endcomment %}
 {% block titel %}Eltern{% endblock %}
+{% load avatar_tags %}
 {% block seite %}
-  <h1>Hallo {{ request.user.anzeigename }}!</h1>
+  <h1 class="zeile__name">{% avatar_bild request.user "klein" %}Hallo {{ request.user.anzeigename }}!</h1>
   {% if gesperrte_kinder %}
     <section class="karte"><div class="karte__inhalt stapel">
       <h2>Gesperrte PINs</h2>

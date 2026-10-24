@@ -79,6 +79,7 @@ forbidden_modules = [
     "apps.ereignisse.models",
     "apps.aufgaben.models",
     "apps.belohnung.models",
+    "apps.avatar.models",
 ]
 allow_indirect_imports = "True"
 ignore_imports = ["apps.*.tests.** -> **"]
@@ -86,7 +87,7 @@ ignore_imports = ["apps.*.tests.** -> **"]
 [[tool.importlinter.contracts]]
 name = "Fach-Module nutzen keine fremden Modelle"
 type = "forbidden"
-source_modules = ["apps.aufgaben", "apps.belohnung"]
+source_modules = ["apps.aufgaben", "apps.belohnung", "apps.avatar"]
 forbidden_modules = [
     "apps.kern.models",
     "apps.punkte.models",
