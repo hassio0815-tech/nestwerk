@@ -322,3 +322,13 @@ def test_datum_feld_ist_lokal(anna, uhr):
     uhr.stellen(datetime(2026, 10, 25, 22, 30, tzinfo=UTC))
     a = erfassen(anna, date(2026, 10, 25), lok(2026, 10, 25, 23, 30))
     assert a.datum == date(2026, 10, 25)
+
+
+def test_pausenformular_datum_im_iso_format(uhr):
+    """Review AP31: <input type=date> verlangt JJJJ-MM-TT; das deutsche Format erzeugte eine
+    Browser-Warnung und ein leeres Feld."""
+    from apps.spielregeln.forms import PauseForm
+
+    uhr.stellen(lok(2026, 10, 24, 12))
+    html = str(PauseForm()["von"])
+    assert 'value="2026-10-24"' in html

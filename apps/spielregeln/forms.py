@@ -8,11 +8,13 @@ FAMILIE = "familie"
 
 class PauseForm(forms.Form):
     ziel = forms.ChoiceField(label="Für wen?")
-    von = forms.DateField(label="Ab", widget=forms.DateInput(attrs={"type": "date"}))
+    von = forms.DateField(
+        label="Ab", widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d")
+    )
     bis = forms.DateField(
         label="Bis (einschließlich)",
         required=False,
-        widget=forms.DateInput(attrs={"type": "date"}),
+        widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
         help_text="Leer lassen = offen, bis ihr die Pause ausschaltet.",
     )
     grund = forms.CharField(label="Grund (optional)", max_length=120, required=False)
