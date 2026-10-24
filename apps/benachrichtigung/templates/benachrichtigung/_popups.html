@@ -1,2 +1,6 @@
-{% for p in popups %}{% include "komponenten/toast.html" with text=p.titel icon="stern" art="erfolg" %}
+{% for p in popups %}{% if p.art == "rang.aufgestiegen" %}<div class="toast toast--rang" role="status" data-schliessbar data-popup-art="rang">
+  {% include "komponenten/icon.html" with name="pokal" %}
+  <span class="toast__text"><strong>{{ p.titel }}</strong>{% if p.text %}<br>{{ p.text }}{% endif %}</span>
+  <button type="button" class="knopf knopf--geist knopf--klein" data-schliessen>{% include "komponenten/icon.html" with name="x" %}<span>Schließen</span></button>
+</div>{% else %}{% include "komponenten/toast.html" with text=p.titel icon="stern" art="erfolg" %}{% endif %}
 {% endfor %}

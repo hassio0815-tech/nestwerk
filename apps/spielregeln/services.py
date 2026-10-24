@@ -12,6 +12,9 @@
 - ``serienbonus_buchen(kind, basispunkte=, meldedatum=, erfasst_am=, schluessel=, ...)``
   (AP21): eigene Ledger-Buchung "Serienbonus" in der Transaktion des Aufrufers, idempotent je
   Schlüssel. Storno macht der Aufrufer per ``punkte.gegenbuchen`` (Schlüssel gehört ihm).
+- Ränge (AP22, ``raenge``): ``raenge_pruefen(kind)``, ``rang_aendern(rang, von=, ...)``,
+  ``kalibrierung_setzen(kind_oder_None, faktor, von=)``; Prüfung läuft automatisch bei
+  XP-Zuwachs (``punkte.gebucht``) und in ``kind_auswerten``.
 
 Gespeicherte Stände (``Wochenauswertung``, ``KindStand``) sind Zwischenspeicher: jede Auswertung
 rechnet die vergangenen Wochen eines Kindes komplett aus der Historie und schreibt nur
@@ -32,9 +35,15 @@ from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.konten import selectors as konten
 
-from . import auswertung, events, serienbonus
+from . import auswertung, events, raenge, serienbonus
 from . import kontinuitaet as k
 from .models import Aktivitaet, KindStand, Pause, PauseQuelle, Wochenauswertung
+from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22)
+    RangFehler,
+    kalibrierung_setzen,
+    raenge_pruefen,
+    rang_aendern,
+)
 
 logger = logging.getLogger("famko.spielregeln")
 
@@ -458,6 +467,11 @@ def kind_auswerten(kind, jetzt=None, *, zaehler: Zaehler | None = None, melden=T
 
     if melden and neu_final:
         _abschluss_melden(kind, a, neu_final)
+    # AP22: neue aktive Wochen können einen Aufstieg freischalten; Stand-Rang = höchster Fakt
+    raenge.raenge_pruefen(
+        kind, jetzt=jetzt, aktive_wochen=a.stand.aktive_wochen_gesamt, melden=melden
+    )
+    raenge._stand_rang_setzen(kind, raenge.aktueller_rang(kind))
     return a.stand
 
 
@@ -587,6 +601,15 @@ def abweichungen(kind) -> list[Abweichung]:
             )
     for (jahr, woche), _ in sorted(zeilen.items()):
         ergebnis.append(Abweichung(name, f"{jahr}-W{woche:02d}", "vorhanden", True, False))
+    # AP22: Stand-Rang = höchster Fakt; fehlende Fakten (Bedingungen erfüllt, nie geprüft)
+    rang = raenge.aktueller_rang(kind)
+    if stand_zeile.rang_id != (rang.pk if rang else None):
+        ergebnis.append(
+            Abweichung(name, "stand", "rang", stand_zeile.rang_id, rang.pk if rang else None)
+        )
+    ziel = raenge.berechneter_rang(kind, aktive_wochen=a.stand.aktive_wochen_gesamt)
+    if ziel is not None and rang is not None and ziel.stufe > rang.stufe:
+        ergebnis.append(Abweichung(name, "stand", "rang_aufstieg_fehlt", rang.stufe, ziel.stufe))
     return ergebnis
 
 

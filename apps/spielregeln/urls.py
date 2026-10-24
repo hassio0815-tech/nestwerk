@@ -10,4 +10,7 @@ urlpatterns = [
     path("eltern/pausen/schalter/", views.schalter, name="schalter"),
     path("eltern/pausen/<int:pk>/beenden/", views.pause_beenden, name="pause_beenden"),
     path("eltern/pausen/<int:pk>/loeschen/", views.pause_loeschen, name="pause_loeschen"),
+    path("eltern/raenge/", views.raenge, name="raenge"),
+    path("eltern/raenge/<int:pk>/", views.rang_aendern, name="rang_aendern"),
+    path("eltern/raenge/kalibrierung/", views.kalibrierung, name="kalibrierung"),
 ]

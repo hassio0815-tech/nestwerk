@@ -1,5 +1,5 @@
 """Registrierungen von spielregeln in ``kern.registry``: Metriken (für die Abzeichen-Engine,
-AP23) und Dashboard-Kacheln (Kind: Serie; Eltern: Pausen).
+AP23) und Dashboard-Kacheln (Kind: Serie, Rang; Eltern: Pausen, Ränge).
 
 Metrik-Werte: Zu jeder Metrik ``<schluessel>`` gibt es einen Provider ``metrik.<schluessel>``
 mit ``funktion(kind) -> int``; Abfrage über ``metrik_wert(schluessel, kind)``.
@@ -41,6 +41,13 @@ _FELD = {
 }
 
 
+def _rang_stufe(kind):
+    from . import selectors
+
+    rang = selectors.aktueller_rang(kind)
+    return rang.stufe if rang else 0
+
+
 def metriken_registrieren():
     for schluessel, bezeichnung, beschreibung, einheit in METRIKEN:
         registry.metrik_registrieren(
@@ -49,6 +56,17 @@ def metriken_registrieren():
         registry.provider_registrieren(
             Provider(f"metrik.{schluessel}", MODUL, bezeichnung, _stand_feld(_FELD[schluessel]))
         )
+    # AP22: Stufe des höchsten erreichten Rangs (Fakt, sinkt nie) – Abzeichen je Rang (AP23)
+    registry.metrik_registrieren(
+        Metrik(
+            "rang",
+            MODUL,
+            "Rang",
+            beschreibung="Stufe des höchsten erreichten Rangs (1 = Startrang)",
+            einheit="Stufe",
+        )
+    )
+    registry.provider_registrieren(Provider("metrik.rang", MODUL, "Rang", _rang_stufe))
 
 
 def _kind_serie(request):
@@ -58,6 +76,18 @@ def _kind_serie(request):
     return {"stand": selectors.stand(kind), "pause": selectors.aktuelle_pause(kind)}
 
 
+def _kind_rang(request):
+    from . import selectors
+
+    return {"f": selectors.rang_fortschritt(request.user)}
+
+
+def _eltern_raenge(request):
+    from . import views
+
+    return views.raenge_kachel_kontext()
+
+
 def _eltern_pausen(request):
     from . import views
 
@@ -65,6 +95,28 @@ def _eltern_pausen(request):
 
 
 def kacheln_registrieren():
+    registry.kachel_registrieren(
+        Kachel(
+            "spielregeln.kind_rang",
+            MODUL,
+            "Mein Rang",
+            "spielregeln/kacheln/kind_rang.html",
+            {KIND},
+            _kind_rang,
+            reihenfolge=14,
+        )
+    )
+    registry.kachel_registrieren(
+        Kachel(
+            "spielregeln.eltern_raenge",
+            MODUL,
+            "Ränge",
+            "spielregeln/kacheln/eltern_raenge.html",
+            {ELTERN},
+            _eltern_raenge,
+            reihenfolge=26,
+        )
+    )
     registry.kachel_registrieren(
         Kachel(
             "spielregeln.kind_serie",

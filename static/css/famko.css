@@ -623,6 +623,21 @@ a.kachel:hover {
 .toast--warnung .icon { color: var(--warnung); }
 .toast--fehler { border-left-color: var(--gefahr); }
 .toast--fehler .icon { color: var(--gefahr); }
+/* Rangaufstieg (AP22): festliches Pop-up; Animation nur ohne prefers-reduced-motion */
+.toast--rang {
+  border-left-color: var(--selten-legendary);
+  box-shadow: 0 0 0 2px var(--selten-legendary), var(--schatten-karte);
+  font-size: 1.125rem;
+}
+.toast--rang .icon { color: var(--selten-legendary); width: 2rem; height: 2rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .toast--rang { animation: rang-feier 1.2s ease-out 2; }
+}
+@keyframes rang-feier {
+  0% { transform: scale(0.9); }
+  40% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
 /* PIN-Pad: 4 Ziffern, große Tasten */
 .pin {

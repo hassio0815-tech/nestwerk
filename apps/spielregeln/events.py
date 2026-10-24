@@ -10,6 +10,7 @@ SERIE_GERISSEN = "serie.gerissen"
 PAUSE_GESTARTET = "pause.gestartet"
 PAUSE_BEENDET = "pause.beendet"
 SERIENBONUS_GEBUCHT = "serienbonus.gebucht"  # Kind: Pop-up "Serienbonus +5 %" (AP21)
+RANG_AUFGESTIEGEN = "rang.aufgestiegen"  # Kind (festliches Pop-up) + Eltern (AP22)
 
 LINK_KIND = "/kind/"
 
@@ -33,3 +34,4 @@ def typen_deklarieren():
     typ(PAUSE_GESTARTET, "Pause eingetragen", "kind", ("push", "popup"), **kind)
     typ(PAUSE_BEENDET, "Pause beendet", "kind", ("push",), **kind)
     typ(SERIENBONUS_GEBUCHT, "Serienbonus gebucht", "kind", ("popup",), **kind)
+    typ(RANG_AUFGESTIEGEN, "Rangaufstieg", "beide", ("push", "popup", "email"))

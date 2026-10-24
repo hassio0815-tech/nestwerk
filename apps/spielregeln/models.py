@@ -1,14 +1,117 @@
-"""Modelle von spielregeln (DATA_MODEL 6.3–6.6, AP20).
+"""Modelle von spielregeln (DATA_MODEL 6.1–6.7, AP20/AP22).
 
 - ``Aktivitaet`` und ``Pause`` sind die **Historie** (Fakten).
+- ``RangAufstieg`` ist ein **dauerhafter Fakt** (nie zurückgenommen, ARCHITECTURE 7.1/7.4).
+- ``Rang`` und ``Kalibrierung`` sind Konfiguration (Eltern, Audit).
 - ``Wochenauswertung`` und ``KindStand`` sind **Zwischenspeicher**: jederzeit aus der Historie
   neu berechenbar (``manage.py spielregeln_neuberechnen``, ARCHITECTURE 7.1).
 """
 
 from django.conf import settings
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import F, Q, Value
+from django.db.models.functions import Coalesce
 from django.utils import timezone
+
+
+class Rang(models.Model):
+    """Rangstufe = Seltenheit (SPEC 6.2/18.1, Entscheidung 14). Name umbenennbar; Schwellen und
+    Mindestwochen steigen mit der Stufe (Service prüft). Die niedrigste Stufe ist der Startrang."""
+
+    stufe = models.PositiveSmallIntegerField(unique=True)
+    schluessel = models.SlugField(max_length=20, unique=True)
+    name = models.CharField(max_length=40)
+    xp_schwelle = models.PositiveIntegerField()
+    min_aktive_wochen = models.PositiveSmallIntegerField()
+    mod_preis = models.PositiveIntegerField()
+    bauzeit_stunden = models.PositiveIntegerField()
+    farbe = models.CharField(max_length=7)
+    ist_endstufe = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Rang"
+        verbose_name_plural = "Ränge"
+        ordering = ["stufe"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["ist_endstufe"],
+                condition=Q(ist_endstufe=True),
+                name="spielregeln_rang_eine_endstufe",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.stufe} {self.name}"
+
+    @property
+    def selten(self):
+        """Wert für ``data-selten`` (Designsystem: common … legendary, god)."""
+        return "god" if self.schluessel == "godmode" else self.schluessel
+
+
+class Kalibrierung(models.Model):
+    """Kalibrierungsfaktoren (K3, DATA_MODEL 6.2): ``kind = NULL`` = global (genau eine Zeile).
+    Wirksamer Faktor = global x Kind. AP22 nutzt ``faktor_schwelle`` (XP-Schwellen), Preis und
+    Bauzeit folgen mit AP26."""
+
+    kind = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="kalibrierung",
+    )
+    faktor_schwelle = models.DecimalField(max_digits=4, decimal_places=2, default=1)
+    faktor_preis = models.DecimalField(max_digits=4, decimal_places=2, default=1)
+    faktor_bauzeit = models.DecimalField(max_digits=4, decimal_places=2, default=1)
+    notiz = models.CharField(max_length=200, blank=True, default="")
+    geaendert_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    geaendert_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Kalibrierung"
+        verbose_name_plural = "Kalibrierungen"
+        constraints = [
+            models.UniqueConstraint(
+                Coalesce("kind", Value("global"), output_field=models.CharField()),
+                name="spielregeln_kalibrierung_eine_globale",
+            ),
+            models.CheckConstraint(
+                condition=Q(faktor_schwelle__gte=0.25, faktor_schwelle__lte=4)
+                & Q(faktor_preis__gte=0.25, faktor_preis__lte=4)
+                & Q(faktor_bauzeit__gte=0.25, faktor_bauzeit__lte=4),
+                name="spielregeln_kalibrierung_bereich",
+            ),
+        ]
+
+    def __str__(self):
+        return f"Kalibrierung {self.kind_id or 'global'}: {self.faktor_schwelle}"
+
+
+class RangAufstieg(models.Model):
+    """Fakt "Kind hat Rang erreicht" (unique je Kind+Rang). Bleibt, auch wenn Schwellen später
+    steigen oder XP durch Korrektur sinken (K2). Mehrfachsprung = je Stufe ein Eintrag."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="rangaufstiege"
+    )
+    rang = models.ForeignKey(Rang, on_delete=models.PROTECT, related_name="aufstiege")
+    erreicht_am = models.DateTimeField(default=timezone.now)
+    xp_bei_aufstieg = models.IntegerField()
+    aktive_wochen_bei_aufstieg = models.PositiveIntegerField()
+    schwelle_bei_aufstieg = models.PositiveIntegerField(help_text="wirksame XP-Schwelle")
+
+    class Meta:
+        verbose_name = "Rangaufstieg"
+        verbose_name_plural = "Rangaufstiege"
+        constraints = [
+            models.UniqueConstraint(fields=["kind", "rang"], name="spielregeln_rangaufstieg_idem")
+        ]
+
+    def __str__(self):
+        return f"{self.kind_id} -> {self.rang_id}"
 
 
 class PauseQuelle(models.TextChoices):
@@ -126,7 +229,8 @@ class Wochenauswertung(models.Model):
 
 
 class KindStand(models.Model):
-    """Zwischenspeicher je Kind (DATA_MODEL 6.6). Rang-Felder ergänzt AP22.
+    """Zwischenspeicher je Kind (DATA_MODEL 6.6). ``rang`` = höchster erreichter Rang (aus den
+    ``RangAufstieg``-Fakten, sonst Startrang).
 
     ``wochenserie``/``aktive_wochen_gesamt``/``rekord_wochenserie``: Stand nach der letzten
     finalisierten Woche. ``tagesserie``/``rekord_tagesserie``: Stand am ``stand_datum``.
@@ -137,6 +241,9 @@ class KindStand(models.Model):
         primary_key=True,
         on_delete=models.CASCADE,
         related_name="spielstand",
+    )
+    rang = models.ForeignKey(
+        Rang, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
     )
     wochenserie = models.PositiveSmallIntegerField(default=0)
     rekord_wochenserie = models.PositiveSmallIntegerField(default=0)

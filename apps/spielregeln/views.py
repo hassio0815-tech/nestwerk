@@ -1,5 +1,6 @@
 """Eltern-UI für Pausen (SPEC 7): Seite mit Formular (Kind/Familie, Zeitraum) und Schnell-Schalter
-aus der Dashboard-Kachel. Nur Eltern."""
+aus der Dashboard-Kachel. Ränge-Verwaltung (AP22): Namen, Schwellen, Mindestwochen,
+Kalibrierungsfaktor global/je Kind (K3). Nur Eltern."""
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -11,7 +12,7 @@ from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import selectors, services
 from .forms import FAMILIE, PauseForm
-from .models import Pause
+from .models import Pause, Rang
 
 ZIELE = {"heim": "konten:eltern_heim", "pausen": "spielregeln:pausen"}
 
@@ -123,3 +124,77 @@ def pause_loeschen(request, pk):
     except services.SpielregelnFehler as fehler:
         return _seite(request, PauseForm(), status=400, fehler=str(fehler))
     return _zurueck(request)
+
+
+# --- Ränge (AP22) ---------------------------------------------------------------------------
+
+
+def raenge_kachel_kontext():
+    return {
+        "zeilen": [
+            {
+                "kind": kind,
+                "f": selectors.rang_fortschritt(kind),
+                "faktor": selectors.kind_faktor(kind),
+            }
+            for kind in konten.aktive_kinder()
+        ]
+    }
+
+
+def _raenge_seite(request, status=200, fehler=""):
+    faktor = selectors.globaler_faktor()
+    kontext = {
+        "fehler": fehler,
+        "raenge": [
+            {"rang": r, "schwelle": selectors.wirksame_schwelle(r, faktor)}
+            for r in selectors.raenge()
+        ],
+        "globaler_faktor": faktor,
+        "raenge_kachel": raenge_kachel_kontext(),
+    }
+    return render(request, "spielregeln/raenge.html", kontext, status=status)
+
+
+@nur_eltern
+def raenge(request):
+    return _raenge_seite(request)
+
+
+@nur_eltern
+@require_POST
+def rang_aendern(request, pk):
+    rang = get_object_or_404(Rang, pk=pk)
+    try:
+        services.rang_aendern(
+            rang,
+            von=aktueller_elternteil(request),
+            name=request.POST.get("name", ""),
+            xp_schwelle=request.POST.get("xp_schwelle", ""),
+            min_aktive_wochen=request.POST.get("min_aktive_wochen", ""),
+        )
+    except services.RangFehler as fehler:
+        return _raenge_seite(request, status=400, fehler=f"{rang.name}: {fehler}")
+    return redirect("spielregeln:raenge")
+
+
+@nur_eltern
+@require_POST
+def kalibrierung(request):
+    ziel = request.POST.get("ziel", "")
+    kind = None
+    if ziel != "global":
+        kind = next((k for k in konten.aktive_kinder() if str(k.pk) == ziel), None)
+        if kind is None:
+            raise Http404
+    faktor = request.POST.get("faktor", "").strip()
+    try:
+        services.kalibrierung_setzen(
+            kind,
+            faktor or None,
+            von=aktueller_elternteil(request),
+            notiz=request.POST.get("notiz", ""),
+        )
+    except services.RangFehler as fehler:
+        return _raenge_seite(request, status=400, fehler=str(fehler))
+    return redirect("spielregeln:raenge")

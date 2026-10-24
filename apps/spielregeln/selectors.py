@@ -11,6 +11,10 @@ Alle Werte werden live aus der Historie berechnet (gleiche Rechnung wie Job und 
 - ``wochenauswertung(kind, woche)``: gespeicherte Zeile (oder ``None``).
 - ``quartal_voll_aktiv(kind, jahr, quartal)`` (AP23).
 - ``aktuelle_pause(kind)``, ``pausen_uebersicht()`` (Eltern-UI).
+- Ränge (AP22): ``raenge()``, ``startrang()``, ``aktueller_rang(kind)`` (Rang mit ``stufe`` =
+  Seltenheit 1–6, ``selten`` für ``data-selten``, ``mod_preis``, ``bauzeit_stunden``),
+  ``rang_aufstiege(kind)`` (Fakten), ``rang_erreicht(kind, stufe)``, ``rang_fortschritt(kind)``,
+  ``wirksamer_faktor(kind)``, ``globaler_faktor()``, ``kind_faktor(kind)``.
 """
 
 from __future__ import annotations
@@ -26,6 +30,19 @@ from apps.kern.zeit import IsoWoche
 from . import auswertung
 from . import kontinuitaet as k
 from .models import Aktivitaet, KindStand, Pause, Wochenauswertung
+from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22)
+    RangFortschritt,
+    aktueller_rang,
+    globaler_faktor,
+    kind_faktor,
+    raenge,
+    rang_aufstiege,
+    rang_erreicht,
+    rang_fortschritt,
+    startrang,
+    wirksame_schwelle,
+    wirksamer_faktor,
+)
 
 Stand = auswertung.Stand
 
