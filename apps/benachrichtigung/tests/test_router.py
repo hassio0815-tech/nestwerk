@@ -131,6 +131,9 @@ def test_profil_mail_nur_bei_entscheidungen(katalog, mama, papa):
 def test_katalogtyp_ohne_flag_zaehlt_als_entscheidung(katalog, mama):
     from apps.ereignisse import registry as ereignisse
 
+    # Seit AP27 deklariert sondertag den Typ selbst (mit Flag); hier ohne Flag neu (``katalog``
+    # stellt die Registry danach wieder her)
+    ereignisse.typ_verzeichnis._eintraege.pop("sondertag.wunsch", None)
     ereignisse.typ_deklarieren(
         "sondertag.wunsch",
         modul="sondertag",

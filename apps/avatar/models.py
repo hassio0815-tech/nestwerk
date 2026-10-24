@@ -1,4 +1,4 @@
-"""Datenmodell von avatar (DATA_MODEL 9): Thema, Slot, ModDefinition, Avatar, ModBesitz,
+"""Datenmodell von avatar (DATA_MODEL 9): Thema, Slot, ModSet, ModDefinition, Avatar, ModBesitz,
 RenderCache.
 
 ``ModDefinition.seltenheit`` ist eine Zahl 1-6 = ``spielregeln.Rang.stufe`` (Preis und Bauzeit
@@ -56,11 +56,40 @@ class Slot(models.Model):
         return self.name
 
 
+class ModSet(models.Model):
+    """God-Mode-Set je 26-Wochen-Zyklus (DATA_MODEL 9.3, O3): ``nummer`` 1, 2, … = Zyklus.
+    Die 6 Mods (1 je Slot) entstehen aus den Seltenheit-6-Bauplänen des Themas (AP27)."""
+
+    thema = models.ForeignKey(Thema, on_delete=models.PROTECT, related_name="modsets")
+    nummer = models.PositiveSmallIntegerField()
+    name = models.CharField(max_length=60)
+
+    class Meta:
+        verbose_name = "Mod-Set"
+        verbose_name_plural = "Mod-Sets"
+        ordering = ["thema__reihenfolge", "nummer"]
+        constraints = [
+            models.UniqueConstraint(fields=["thema", "nummer"], name="avatar_modset_thema_nummer"),
+            models.CheckConstraint(condition=Q(nummer__gte=1), name="avatar_modset_nummer_ab_1"),
+        ]
+
+    def __str__(self):
+        return self.name
+
+
 class ModDefinition(models.Model):
     schluessel = models.SlugField(max_length=60, unique=True)
     thema = models.ForeignKey(Thema, on_delete=models.PROTECT, related_name="mods")
     slot = models.ForeignKey(Slot, on_delete=models.PROTECT, related_name="mods")
     seltenheit = models.SmallIntegerField()
+    modset = models.ForeignKey(
+        ModSet,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="mods",
+        help_text="Nur God-Mode-Zyklus-Sets (AP27)",
+    )
     name = models.CharField(max_length=60)
     beschreibung = models.CharField(max_length=200, blank=True)
     preis = models.IntegerField(null=True, blank=True, help_text="Leer = Standardpreis des Rangs")
@@ -75,7 +104,14 @@ class ModDefinition(models.Model):
         ordering = ["thema__reihenfolge", "seltenheit", "slot__ebene"]
         constraints = [
             models.UniqueConstraint(
-                fields=["thema", "slot", "seltenheit"], name="avatar_mod_thema_slot_seltenheit"
+                fields=["thema", "slot", "seltenheit"],
+                condition=Q(modset__isnull=True),
+                name="avatar_mod_thema_slot_seltenheit",
+            ),
+            models.UniqueConstraint(
+                fields=["thema", "slot", "modset"],
+                condition=Q(modset__isnull=False),
+                name="avatar_mod_thema_slot_modset",
             ),
             models.CheckConstraint(
                 condition=Q(seltenheit__gte=1, seltenheit__lte=6), name="avatar_mod_seltenheit_1_6"

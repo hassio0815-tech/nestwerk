@@ -8,12 +8,14 @@ Mods, Zeitbremse beachtet):
   Bereiche ``seltenheit-<n>`` -> (zählende Slots der Seltenheit n, Rangname).
 - ``ausbaustufe_seltenheit_<n>`` (n = 1..6): zählende Slots der Seltenheit n, unabhängig vom
   aktuellen Rang (K4). Für "Ausbaustufe 6 in Rang N" eine einmalige Regel je Seltenheit.
+- ``godmode_aktivwochen``, ``godmode_zyklus`` und ``godmode_set_vollstaendig`` (AP27, Bereiche
+  ``zyklus-K``), siehe ``godmode``.
 """
 
 from apps.kern import registry
 from apps.kern.registry import ELTERN, KIND, Kachel, Metrik, Provider
 
-from . import kacheln, mods
+from . import godmode, kacheln, mods
 
 MODUL = "avatar"
 SELTENHEITEN = range(1, 7)
@@ -55,6 +57,47 @@ def metriken_registrieren():
         registry.provider_registrieren(
             Provider(f"metrik.{schluessel}", MODUL, schluessel, mods.metrik_seltenheit(n))
         )
+    godmode_metriken_registrieren()
+
+
+def godmode_metriken_registrieren():
+    """AP27: God-Mode-Zyklen und Mod-Sets (Bereiche ``zyklus-K``)."""
+    eintraege = (
+        (
+            "godmode_aktivwochen",
+            "Aktive Wochen in God Mode",
+            "Aktive Wochen nach der Woche des Aufstiegs in God Mode",
+            "Wochen",
+            godmode.metrik_aktivwochen,
+            None,
+        ),
+        (
+            "godmode_zyklus",
+            "God-Mode-Zyklen",
+            "Geschaffte God-Mode-Zyklen (je Zyklus die eingestellten aktiven Wochen); "
+            "je Bereich zyklus-K: 1 = geschafft",
+            "Zyklen",
+            godmode.metrik_zyklus,
+            godmode.metrik_zyklus_bereiche,
+        ),
+        (
+            "godmode_set_vollstaendig",
+            "God-Mode-Sets",
+            "Vollständig gebaute God-Mode-Sets; je Bereich zyklus-K: gebaute Slots des Sets K",
+            "Slots",
+            godmode.metrik_set_vollstaendig,
+            godmode.metrik_set_bereiche,
+        ),
+    )
+    for schluessel, bezeichnung, beschreibung, einheit, wert, bereiche in eintraege:
+        registry.metrik_registrieren(
+            Metrik(schluessel, MODUL, bezeichnung, beschreibung=beschreibung, einheit=einheit)
+        )
+        registry.provider_registrieren(Provider(f"metrik.{schluessel}", MODUL, bezeichnung, wert))
+        if bereiche is not None:
+            registry.provider_registrieren(
+                Provider(f"metrik.{schluessel}.bereiche", MODUL, bezeichnung, bereiche)
+            )
 
 
 def kacheln_registrieren():

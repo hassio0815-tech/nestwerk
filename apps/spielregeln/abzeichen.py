@@ -621,6 +621,88 @@ def abzeichen_aktiv_setzen(definition, aktiv: bool, *, von):
     return definition
 
 
+def meilenstein_uebersicht() -> list[dict]:
+    """Eltern-Verwaltung (AP27): je Regel Bedingungen mit Metrik-Namen und Anzahl Fakten."""
+    zeilen = []
+    for regel in MeilensteinRegel.objects.order_by("reihenfolge", "id"):
+        bedingungen = []
+        for b in regel.bedingungen or []:
+            metrik = b.get("metrik", "")
+            try:
+                bezeichnung = kern_registry.metrik(metrik).bezeichnung
+            except kern_registry.UnbekannterEintrag:
+                bezeichnung = f"{metrik} (Modul fehlt)"
+            bedingungen.append({**b, "bezeichnung": bezeichnung})
+        zeilen.append(
+            {"regel": regel, "bedingungen": bedingungen, "anzahl": regel.erreicht.count()}
+        )
+    return zeilen
+
+
+@transaction.atomic
+def meilenstein_speichern(regel, *, von, name, bedingungen, beschreibung=""):
+    """Eltern passen Name, Beschreibung und Bedingungen an (Audit). Erreichte Meilensteine bleiben
+    (Fakten); gelockerte Bedingungen können sofort neue Fakten auslösen."""
+    _eltern_pruefen(von)
+    name = (name or "").strip()
+    beschreibung = (beschreibung or "").strip()
+    if not name or len(name) > 80:
+        raise AbzeichenFehler("Name: 1 bis 80 Zeichen.")
+    if len(beschreibung) > BESCHREIBUNG_MAX:
+        raise AbzeichenFehler(f"Beschreibung: höchstens {BESCHREIBUNG_MAX} Zeichen.")
+    if not isinstance(bedingungen, list | tuple) or not bedingungen:
+        raise AbzeichenFehler("Mindestens eine Bedingung.")
+    gelesen = [
+        bedingung_lesen({**b, "wert": _ganzzahl(b.get("wert"), "Wert")}) for b in bedingungen
+    ]
+    if regel.wiederholbar == Wiederholbar.BEREICH and not any(
+        hat_bereiche(b.metrik) for b in gelesen
+    ):
+        raise AbzeichenFehler("„Je Bereich“ braucht mindestens eine Metrik mit Bereichen.")
+    regel = MeilensteinRegel.objects.select_for_update().get(pk=regel.pk)
+    neu = {
+        "name": name,
+        "beschreibung": beschreibung,
+        "bedingungen": [
+            {"metrik": b.metrik, "vergleich": b.vergleich, "wert": b.wert} for b in gelesen
+        ],
+    }
+    alt = {f: getattr(regel, f) for f in neu}
+    geaendert = {f: v for f, v in neu.items() if alt[f] != v}
+    if not geaendert:
+        return regel
+    MeilensteinRegel.objects.filter(pk=regel.pk).update(**geaendert)
+    regel.refresh_from_db()
+    audit.protokollieren(
+        "meilenstein.geaendert",
+        akteur=von,
+        objekt=regel,
+        details={"alt": {f: alt[f] for f in geaendert}, "neu": geaendert},
+    )
+    if regel.aktiv:
+        for kind in konten.aktive_kinder():
+            pruefen_sicher(kind)
+    return regel
+
+
+@transaction.atomic
+def meilenstein_aktiv_setzen(regel, aktiv: bool, *, von):
+    """Meilenstein ein-/ausschalten (keine Löschung: erreichte Fakten und Ansprüche bleiben)."""
+    _eltern_pruefen(von)
+    if MeilensteinRegel.objects.filter(pk=regel.pk).exclude(aktiv=aktiv).update(aktiv=aktiv):
+        regel.refresh_from_db()
+        audit.protokollieren(
+            "meilenstein.geaendert",
+            akteur=von,
+            objekt=regel,
+            details={"alt": {"aktiv": not aktiv}, "neu": {"aktiv": aktiv}},
+        )
+        if aktiv:
+            for kind in konten.aktive_kinder():
+                pruefen_sicher(kind)
+    return regel
+
+
 @transaction.atomic
 def meilenstein_anlegen(
     schluessel,

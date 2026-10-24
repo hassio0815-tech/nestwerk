@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, views_meilensteine
 
 app_name = "spielregeln"
 
@@ -18,4 +18,15 @@ urlpatterns = [
     path("eltern/abzeichen/<int:pk>/", views.abzeichen_aendern, name="abzeichen_aendern"),
     path("eltern/abzeichen/<int:pk>/aktiv/", views.abzeichen_aktiv, name="abzeichen_aktiv"),
     path("abzeichen/galerie/", views.abzeichen_galerie, name="abzeichen_galerie"),
+    path("eltern/meilensteine/", views_meilensteine.meilensteine, name="meilensteine"),
+    path(
+        "eltern/meilensteine/<int:pk>/",
+        views_meilensteine.meilenstein_aendern,
+        name="meilenstein_aendern",
+    ),
+    path(
+        "eltern/meilensteine/<int:pk>/aktiv/",
+        views_meilensteine.meilenstein_aktiv,
+        name="meilenstein_aktiv",
+    ),
 ]

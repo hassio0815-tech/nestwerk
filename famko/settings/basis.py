@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "apps.aufgaben",
     "apps.belohnung",
     "apps.avatar",
+    "apps.sondertag",
     "apps.familienziel",
     "apps.einrichtung",
     "apps.oberflaeche",

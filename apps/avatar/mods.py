@@ -162,6 +162,7 @@ class Ausbaustufe:
     slots: int
     je_seltenheit: dict[int, int] = field(default_factory=dict)
     wartend: list = field(default_factory=list)  # fertig, zählt erst ab späterer Woche
+    je_set: dict[int, int] = field(default_factory=dict)  # God-Mode-Set-Nummer -> Slots (AP27)
 
     @property
     def aktuell(self) -> int:
@@ -173,7 +174,9 @@ class Ausbaustufe:
 
 
 def _aktive_besitze(kind, thema_id=None):
-    qs = ModBesitz.objects.filter(kind=kind, status__in=AKTIV).select_related("mod", "mod__slot")
+    qs = ModBesitz.objects.filter(kind=kind, status__in=AKTIV).select_related(
+        "mod", "mod__slot", "mod__modset"
+    )
     if thema_id is not None:
         qs = qs.filter(mod__thema_id=thema_id)
     return qs
@@ -196,15 +199,18 @@ def ausbaustufe(kind, jetzt=None) -> Ausbaustufe:
     if avatar is None:
         return ergebnis
     woche = zeit.aktuelle_woche(jetzt)
-    gezaehlt = {}
+    gezaehlt, je_set = {}, {}
     for b in _aktive_besitze(kind, avatar.thema_id).filter(status=BesitzStatus.FERTIG):
         ab = _woche_von(b)
-        if ab is not None and ab <= woche:
-            gezaehlt.setdefault(b.mod.seltenheit, set()).add(b.mod.slot_id)
-        else:
+        if ab is None or ab > woche:
             ergebnis.wartend.append(b)
+        elif b.mod.modset_id is not None:  # God-Mode-Set zählt getrennt (AP27)
+            je_set.setdefault(b.mod.modset.nummer, set()).add(b.mod.slot_id)
+        else:
+            gezaehlt.setdefault(b.mod.seltenheit, set()).add(b.mod.slot_id)
     for seltenheit, slots in gezaehlt.items():
         ergebnis.je_seltenheit[seltenheit] = len(slots)
+    ergebnis.je_set = {nummer: len(slots) for nummer, slots in je_set.items()}
     ergebnis.wartend.sort(key=lambda b: (b.zaehlt_ab_iso_jahr or 0, b.zaehlt_ab_iso_woche or 0))
     return ergebnis
 
@@ -251,6 +257,8 @@ class ShopGruppe:
     gesperrt: bool
     karten: list[ShopKarte]
     zaehlend: int = 0
+    set_nummer: int | None = None  # God-Mode-Set (AP27)
+    titel: str = ""
 
 
 def shop(kind) -> list[ShopGruppe]:
@@ -265,7 +273,7 @@ def shop(kind) -> list[ShopGruppe]:
     stand = ausbaustufe(kind)
     gruppen = {}
     for mod in (
-        ModDefinition.objects.filter(thema=avatar.thema, aktiv=True)
+        ModDefinition.objects.filter(thema=avatar.thema, aktiv=True, modset__isnull=True)
         .select_related("slot", "thema")
         .order_by("seltenheit", "slot__ebene")
     ):
@@ -294,7 +302,44 @@ def shop(kind) -> list[ShopGruppe]:
             ),
         )
         gruppe.karten.append(ShopKarte(mod, k, zustand, b, max(0, k.preis - verfuegbar)))
-    return [gruppen[n] for n in sorted(gruppen)]
+    return [gruppen[n] for n in sorted(gruppen)] + _set_gruppen(
+        kind, avatar, raenge_map, besitz, verfuegbar, stand
+    )
+
+
+def _set_gruppen(kind, avatar, raenge_map, besitz, verfuegbar, stand) -> list[ShopGruppe]:
+    """God-Mode-Sets der freigeschalteten Zyklen (AP27), neuestes zuerst."""
+    from . import godmode
+
+    gruppen = []
+    for modset in reversed(godmode.sets_sicherstellen(kind, avatar.thema)):
+        karten = []
+        for mod in modset.mods.filter(aktiv=True).select_related("slot", "thema"):
+            rang = raenge_map.get(mod.seltenheit)
+            if rang is None:
+                continue
+            k = konditionen(mod, kind, raenge_map=raenge_map)
+            b = besitz.get(mod.pk)
+            if b is not None:
+                zustand = "im_bau" if b.status == BesitzStatus.IM_BAU else "besitzt"
+            else:
+                zustand = "zu_teuer" if k.preis > verfuegbar else "kaufbar"
+            karten.append(ShopKarte(mod, k, zustand, b, max(0, k.preis - verfuegbar)))
+        karten.sort(key=lambda c: c.mod.slot.ebene)
+        rang = raenge_map.get(6)
+        gruppen.append(
+            ShopGruppe(
+                6,
+                rang.name if rang else "God Mode",
+                rang.selten if rang else "godmode",
+                False,
+                karten,
+                stand.je_set.get(modset.nummer, 0),
+                set_nummer=modset.nummer,
+                titel=modset.name,
+            )
+        )
+    return gruppen
 
 
 def bauauftraege(kind, jetzt=None) -> list[dict]:
@@ -341,7 +386,11 @@ def eigene_fertige(kind) -> list[ModBesitz]:
 def _mod_laden(mod) -> ModDefinition:
     if isinstance(mod, ModDefinition):
         mod = mod.schluessel
-    gefunden = ModDefinition.objects.select_related("slot", "thema").filter(schluessel=mod).first()
+    gefunden = (
+        ModDefinition.objects.select_related("slot", "thema", "modset")
+        .filter(schluessel=mod)
+        .first()
+    )
     if gefunden is None:
         raise ModFehler("Diesen Mod gibt es nicht.")
     return gefunden
@@ -368,6 +417,11 @@ def kaufen(kind, mod, *, jetzt=None) -> ModBesitz:
         stufe = rang_stufe(kind)
         if mod.seltenheit > stufe:
             raise ModFehler(f"Diesen Mod gibt es ab Rang {k.rang_name}.")
+        if mod.modset_id is not None:
+            from . import godmode
+
+            if not godmode.zyklus(kind, jetzt).freigeschaltet(mod.modset.nummer):
+                raise ModFehler("Dieses God-Mode-Set ist noch nicht freigeschaltet.")
         verfuegbar = punkte_selectors.verfuegbar(kind)
         if k.preis > verfuegbar:
             raise ModFehler(f"Dafür fehlen dir noch {k.preis - verfuegbar} Punkte.")
@@ -606,7 +660,9 @@ def themenwechsel_vorschau(kind, thema_schluessel) -> Themenwechsel:
     besitz = ModBesitz.objects.filter(kind=kind, status__in=AKTIV, mod__thema=avatar.thema)
     stand = ausbaustufe(kind)
     benoetigt = (
-        ModDefinition.objects.filter(thema=neu, aktiv=True, seltenheit=stand.rang_stufe)
+        ModDefinition.objects.filter(
+            thema=neu, aktiv=True, seltenheit=stand.rang_stufe, modset__isnull=True
+        )
         .values("slot")
         .distinct()
         .count()

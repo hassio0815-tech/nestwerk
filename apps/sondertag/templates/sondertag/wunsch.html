@@ -1,0 +1,16 @@
+{% extends "basis/kind.html" %}
+{% load static %}
+{% block titel %}Sondertag{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/sondertag.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:kind_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Start" %}
+{% endblock %}
+{% block inhalt %}
+  <section class="karte st-karte st-karte--fest"><div class="karte__inhalt stapel">
+    <span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>
+    <h1 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} Dein Sondertag</h1>
+    {% if eintrag %}<p class="kachel__text">{{ eintrag.anspruch.titel }}</p>{% endif %}
+    {% include "sondertag/_wunsch_form.html" %}
+  </div></section>
+{% endblock %}

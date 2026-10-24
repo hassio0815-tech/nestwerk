@@ -1,10 +1,13 @@
-"""Einstellungen von avatar (AP26). Definition hier, Startwerte per Datenmigration 0003."""
+"""Einstellungen von avatar (AP26, AP27). Definition hier, Startwerte per Datenmigration
+0003/0004."""
 
 from apps.kern.einstellungen import Typ, definieren
 
 STARTWERTE = {
     # SPEC 11.4 Zeitbremse: höchstens ein neu fertiger Mod je Woche zählt für die Ausbaustufe
     "avatar.max_zaehlende_mods_woche": 1,
+    # O3/E1: nach God Mode alle 26 aktiven Wochen ein neues Mod-Set (und Sondertag, AP27)
+    "avatar.godmode_zyklus_aktivwochen": 26,
 }
 
 
@@ -18,4 +21,14 @@ def einstellungen_definieren():
         einheit="Mods",
         minimum=1,
         maximum=6,
+    )
+    definieren(
+        "avatar.godmode_zyklus_aktivwochen",
+        Typ.GANZZAHL,
+        "God-Mode-Zyklus",
+        beschreibung="Nach dem Aufstieg in God Mode gibt es alle so viele aktiven Wochen ein "
+        "neues Mod-Set. Wer das Set des Zyklus fertig baut, verdient einen Sondertag.",
+        einheit="aktive Wochen",
+        minimum=4,
+        maximum=104,
     )
