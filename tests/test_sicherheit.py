@@ -49,3 +49,35 @@ def test_templates_ohne_inline_skripte_und_handler():
         if pfad.name not in STYLE_AUSNAHMEN and INLINE_STYLE.search(text):
             verstoesse.append(f"{pfad.relative_to(WURZEL)} (style)")
     assert verstoesse == []
+
+
+# htmx wertet diese Formen per eval/Function aus: Trigger-Filter "[...]", hx-on*, "js:"/
+# "javascript:" in hx-vals/hx-vars/hx-headers. Mit CSP ohne 'unsafe-eval' scheitern sie (Review
+# AP31: Tablet-Polling mit Sichtbarkeitsfilter erzeugte EvalError auf jeder Tablet-Seite).
+HTMX_EVAL = re.compile(
+    r"""hx-trigger\s*=\s*["'][^"']*\[|\shx-on[:\-]|\shx-vars\s*=|["']\s*(?:js|javascript):""",
+    re.IGNORECASE,
+)
+
+
+def test_templates_ohne_htmx_eval():
+    verstoesse = [
+        str(pfad.relative_to(WURZEL))
+        for pfad in _templates()
+        if HTMX_EVAL.search(pfad.read_text(encoding="utf-8"))
+    ]
+    assert verstoesse == []
+
+
+def test_htmx_eval_ist_abgeschaltet_und_csp_ohne_unsafe_eval():
+    basis = (WURZEL / "templates/basis/basis.html").read_text(encoding="utf-8")
+    assert '"allowEval": false' in basis
+    assert "unsafe-eval" not in CSP
+
+
+def test_polling_pausiert_per_skript_statt_filter():
+    """Die Sichtbarkeitspause liegt in famko.js (``data-nur-sichtbar``), nicht im Trigger."""
+    tablet = (WURZEL / "apps/oberflaeche/templates/oberflaeche/tablet.html").read_text("utf-8")
+    assert "data-nur-sichtbar" in tablet
+    js = (WURZEL / "static/js/famko.js").read_text(encoding="utf-8")
+    assert "data-nur-sichtbar" in js and "htmx:beforeRequest" in js

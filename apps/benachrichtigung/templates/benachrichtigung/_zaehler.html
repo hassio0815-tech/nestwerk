@@ -1,1 +1,1 @@
-<span class="chip" id="benachrichtigung-zaehler" data-ungelesen="{{ ungelesen }}" hx-get="{% url 'benachrichtigung:zaehler' %}" hx-trigger="every 30s, famko-aktualisiert from:body" hx-swap="outerHTML">{{ ungelesen }} neu</span>
+<span class="chip" id="benachrichtigung-zaehler" data-ungelesen="{{ ungelesen }}" hx-get="{% url 'benachrichtigung:zaehler' %}" data-nur-sichtbar hx-trigger="every 30s, famko-aktualisiert from:body" hx-swap="outerHTML">{{ ungelesen }} neu</span>

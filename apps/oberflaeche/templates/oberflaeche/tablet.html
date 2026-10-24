@@ -10,7 +10,7 @@
   {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="person" text="Eltern" %}
 {% endblock %}
 {% block inhalt %}
-  <div id="tablet-live" hx-get="{% url 'oberflaeche:tablet_teil' %}" hx-trigger="every {{ intervall }}s [document.visibilityState === 'visible']" hx-swap="innerHTML">
+  <div id="tablet-live" hx-get="{% url 'oberflaeche:tablet_teil' %}" hx-trigger="every {{ intervall }}s" data-nur-sichtbar hx-swap="innerHTML">
     {% include "oberflaeche/_tablet_teil.html" %}
   </div>
 {% endblock %}

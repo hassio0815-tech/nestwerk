@@ -77,6 +77,16 @@
     }
   });
 
+  /* Polling pausiert bei verstecktem Tab (Elemente mit data-nur-sichtbar). Ersetzt Trigger-Filter
+     wie "every 10s [document.visibilityState === 'visible']": die braeuchten eval und damit
+     'unsafe-eval' in der CSP (htmx.config.allowEval ist aus). */
+  document.addEventListener("htmx:beforeRequest", function (e) {
+    var el = e.detail && e.detail.elt;
+    if (document.hidden && el instanceof Element && el.hasAttribute("data-nur-sichtbar")) {
+      e.preventDefault();
+    }
+  });
+
   /* HTMX tauscht Fehlerantworten nicht: zu große Uploads (413, Text vom Server) als Toast zeigen. */
   document.addEventListener("htmx:responseError", function (e) {
     var xhr = e.detail && e.detail.xhr;

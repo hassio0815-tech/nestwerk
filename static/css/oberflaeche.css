@@ -80,8 +80,14 @@
   outline-offset: 2px;
 }
 
+.tablet-kind {
+  min-width: 0; /* Raster-Spalte darf schmaler werden als ihr Inhalt (Handy 390 px) */
+}
+
 .tablet-kind__zeile {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem var(--abstand-klein);
   justify-content: space-between;
   align-items: center;
   margin: var(--abstand-klein) 0 0;

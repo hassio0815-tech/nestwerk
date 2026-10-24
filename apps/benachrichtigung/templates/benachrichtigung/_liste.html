@@ -1,4 +1,4 @@
-<div id="benachrichtigungen" class="stapel" hx-get="{% url 'benachrichtigung:liste_teil' %}" hx-trigger="every 30s, famko-aktualisiert from:body" hx-swap="outerHTML">
+<div id="benachrichtigungen" class="stapel" hx-get="{% url 'benachrichtigung:liste_teil' %}" data-nur-sichtbar hx-trigger="every 30s, famko-aktualisiert from:body" hx-swap="outerHTML">
   <div class="reihe">
     <strong class="benachrichtigung-zaehler" data-ungelesen="{{ ungelesen }}">{% if ungelesen %}{{ ungelesen }} ungelesen{% else %}Alles gelesen{% endif %}</strong>
     {% if ungelesen %}

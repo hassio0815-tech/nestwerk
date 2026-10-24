@@ -166,3 +166,23 @@ def test_touchziele_und_schriftgroessen_im_css():
         for wert in re.findall(r"font-size:\s*([0-9.]+)(rem|em)", _css(datei)):
             if wert[1] == "em":
                 raise AssertionError("relative em-Schrift unterschreitet je nach Basis 14 px")
+
+
+def test_keine_schrift_unter_14px_im_css():
+    """Review AP31: Ranking-Kacheln hatten 0,85rem (13,6 px) auf Kinder- und Tablet-Seiten.
+    Mindestgröße 0,875rem = 14 px (Styleguide-Seite ausgenommen, nur Entwicklung)."""
+    import re
+    from pathlib import Path
+
+    from django.conf import settings
+
+    muster = re.compile(r"font-size:\s*(\d*\.?\d+)(rem|px)")
+    zu_klein = []
+    for datei in sorted((Path(settings.BASE_DIR) / "static/css").glob("*.css")):
+        if datei.name == "styleguide.css":
+            continue
+        for wert, einheit in muster.findall(datei.read_text(encoding="utf-8")):
+            px = float(wert) * (16 if einheit == "rem" else 1)
+            if px < 14:
+                zu_klein.append(f"{datei.name}: {wert}{einheit}")
+    assert zu_klein == []

@@ -318,6 +318,7 @@ SEITEN_KIND = [
     ("kinder-dashboard", "/kind/"),
     ("kinder-aufgaben", "/kind/aufgaben/"),
     ("kinder-belohnungen", "/kind/belohnungen/"),
+    ("kinder-sondertag-wunsch", "/kind/sondertag/wunsch/"),  # AP27 (ohne offenen Anspruch)
 ]
 SEITEN_ELTERN = [
     ("eltern-dashboard", "/eltern/"),
@@ -333,6 +334,12 @@ SEITEN_ELTERN = [
     ("push-seite", "/push/"),
     ("styleguide", "/styleguide/"),
     ("abzeichen-galerie", "/abzeichen/galerie/"),  # AP28: alle Abzeichen-Grafiken (nur DEBUG)
+    # Phase 2 (Review AP31: alle Eltern-Seiten der Spielebene auf CSP/Konsole prüfen)
+    ("eltern-pausen", "/eltern/pausen/"),
+    ("eltern-raenge", "/eltern/raenge/"),
+    ("eltern-abzeichen", "/eltern/abzeichen/"),
+    ("eltern-meilensteine", "/eltern/meilensteine/"),
+    ("eltern-sondertage", "/eltern/sondertage/"),
 ]
 
 
@@ -496,6 +503,7 @@ def seiten_ablauf(browser, aufn):
         aufn.seite(eltern, label, pfad)
     ctx_e.close()
     shop_ablauf(browser, aufn)
+    ranking_ablauf(browser, aufn)  # Review AP31: Ranking gehört zum Gesamtlauf
 
 
 def shop_ablauf(browser, aufn):
