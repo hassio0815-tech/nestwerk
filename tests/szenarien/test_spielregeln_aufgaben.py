@@ -70,3 +70,21 @@ def test_fehler_im_nachfuehren_kippt_bestaetigung_nicht(anna, mama, uhr, monkeyp
     aufgaben.interesse_zeigen(instanz, anna, jetzt=jetzt)
     aufgaben.erledigt_melden(instanz, anna, jetzt=jetzt)
     assert Aktivitaet.objects.count() == 1
+
+
+def test_spaete_bestaetigung_punkte_und_aktivitaet_in_derselben_woche(anna, mama, uhr):
+    """Review AP31 (AP21 Bezugswoche nach Puffer): Meldung So, Bestätigung erst Mi (Woche schon
+    abgeschlossen) -> Aktivität UND Punkte (Basis, Serienbonus, Sonderpunkte) zählen für den
+    Tag der Bestätigung, nicht für die abgeschlossene Woche."""
+    from apps.punkte import selectors as punkte
+
+    instanz = _instanz(mama)
+    gemeldet = uhr.stellen(lok(2026, 10, 25, 19))  # Sonntag KW 43
+    aufgaben.interesse_zeigen(instanz, anna, jetzt=gemeldet)
+    aufgaben.erledigt_melden(instanz, anna, jetzt=gemeldet)
+    bestaetigt = uhr.stellen(lok(2026, 10, 28, 18))  # Mittwoch KW 44, Puffer vorbei
+    aufgaben.bestaetigen(instanz, von=mama, sonderpunkte=2, begruendung="super", jetzt=bestaetigt)
+    assert Aktivitaet.objects.get().datum == date(2026, 10, 28)
+    daten = {b.art: b.bezugsdatum for b in punkte.buchungen(anna)}
+    assert set(daten.values()) == {date(2026, 10, 28)}
+    assert punkte.xp_zeitraum(date(2026, 10, 19), date(2026, 10, 25), kind=anna) == 0

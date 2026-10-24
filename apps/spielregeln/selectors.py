@@ -117,6 +117,13 @@ def wochenserie_nach(kind, woche: IsoWoche) -> int:
     return letzte.wochenserie_danach
 
 
+def wirksames_datum(meldedatum: date, erfasst_am) -> date:
+    """K1 mit Puffer: Meldedatum, solange dessen Woche nicht abgeschlossen ist, sonst der Tag der
+    Erfassung (Bestätigung). Gleiche Regel für Aktivität, Serienbonus und Punkte (Review AP31)."""
+    r = auswertung.regeln()
+    return k.wirksames_datum(meldedatum, erfasst_am, r.puffer_stunden, r.tz)
+
+
 def woche_aktiv(kind, woche: IsoWoche) -> bool:
     return Aktivitaet.objects.filter(
         kind=kind, storniert=False, datum__range=(woche.montag, woche.sonntag)

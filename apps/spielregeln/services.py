@@ -185,7 +185,9 @@ def serienbonus_buchen(
     bestehend = punkte_selectors.buchung_zu_schluessel(schluessel)
     if bestehend is not None:
         return bestehend
-    woche = serienbonus.wirksame_woche(meldedatum, erfasst_am or zeit.jetzt())
+    r = auswertung.regeln()
+    wirksam = k.wirksames_datum(meldedatum, erfasst_am or zeit.jetzt(), r.puffer_stunden, r.tz)
+    woche = zeit.IsoWoche.von(wirksam)
     serie = serienbonus.serie_fuer(kind, woche)
     satz = serienbonus.prozent(serie)
     bonus = serienbonus.bonus_punkte(basispunkte, satz)
@@ -197,7 +199,7 @@ def serienbonus_buchen(
         bonus,
         schluessel=schluessel,
         quelle_modul=quelle_modul,
-        bezugsdatum=meldedatum,
+        bezugsdatum=wirksam,  # wie Aktivität und Grundpunkte (Review AP31)
         referenz=referenz,
         begruendung=f"Serienbonus +{satz} % (Serie {serie})",
         von=von,

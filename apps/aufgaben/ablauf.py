@@ -38,6 +38,7 @@ from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
 from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte
+from apps.spielregeln import selectors as spielregeln
 
 from . import events
 from .instanzen import reservierung_frist
@@ -534,15 +535,24 @@ def rueckfrage_beantworten(instanz, kind, *, text="", fotos: Sequence = (), jetz
 # --- Eltern: Bestätigen, Ablehnen, Rückfrage --------------------------------------------------
 
 
+def _xp_bezugsdatum(instanz) -> date:
+    """Bezugsdatum der Punkte (K1, ARCHITECTURE 7.2): Meldedatum; wird erst nach dem
+    Wochenabschluss (Puffer) bestätigt, der Tag der Bestätigung – wie die Aktivität. So landen
+    XP (Familienziel, Held der Woche, Wochen-XP) und Aktivität in derselben Woche (Review AP31)."""
+    return spielregeln.wirksames_datum(
+        zeit.heute(instanz.gemeldet_am), instanz.bestaetigt_am or zeit.jetzt()
+    )
+
+
 def _basis_buchen(instanz, *, von):
-    """Basis-Punkte, genau einmal je Instanz; Bezugsdatum = Meldedatum (K1)."""
+    """Basis-Punkte, genau einmal je Instanz; Bezugsdatum siehe ``_xp_bezugsdatum``."""
     return punkte.buchen(
         instanz.kind,
         punkte.Art.AUFGABE,
         instanz.punkte_snapshot,
         schluessel=f"aufgabe:{instanz.pk}:basis",
         quelle_modul=QUELLE,
-        bezugsdatum=zeit.heute(instanz.gemeldet_am),
+        bezugsdatum=_xp_bezugsdatum(instanz),
         referenz=instanz,
         von=von,
     )
@@ -727,7 +737,7 @@ def _sonderpunkte_buchen(instanz, punktzahl, begruendung, *, von):
         punktzahl,
         schluessel=f"aufgabe:{instanz.pk}:sonderpunkte",
         quelle_modul=QUELLE,
-        bezugsdatum=zeit.heute(instanz.gemeldet_am),
+        bezugsdatum=_xp_bezugsdatum(instanz),
         referenz=instanz,
         begruendung=begruendung,
         von=von,
