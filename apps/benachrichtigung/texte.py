@@ -77,6 +77,9 @@ _STANDARD = {
         "Pause – deine Serie ist sicher", "Pause {zeitraum}. Aufgaben zählen trotzdem."
     ),
     "pause.beendet": TypText("Pause vorbei", "{hinweis}"),
+    "serienbonus.gebucht": TypText(
+        "Serienbonus +{prozent} %", "+{punkte} Punkte für {serie} Wochen in Folge."
+    ),
     "spielregeln.rang_aufstieg": TypText("Neuer Rang: {rang}!", "{kind} ist aufgestiegen."),
     "spielregeln.abzeichen": TypText(
         "Neues Abzeichen: {abzeichen}", "{kind} hat ein Abzeichen verdient."

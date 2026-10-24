@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from django.db.models import Count, Prefetch, Q
 
 from apps.kern import einstellungen, zeit
+from apps.punkte import selectors as punkte_selectors
 
 from .models import (
     INTERESSE_LAUFEND,
@@ -94,8 +95,8 @@ def kind_offene(kind, *, jetzt=None):
 def kind_eigene(kind, *, jetzt=None):
     """Eigene Aufgaben: laufend (reserviert, Konflikt mit eigenem Interesse, gemeldet,
     Rückfrage) und kürzlich abgeschlossene (bestätigt inkl. Bonus, abgelehnt, korrigiert) sowie
-    "vergeben" (Konflikt an ein anderes Kind). Jede Instanz trägt ``anzeige_status`` und bei
-    Rückfrage ``rueckfrage_text``.
+    "vergeben" (Konflikt an ein anderes Kind). Jede Instanz trägt ``anzeige_status``, bei
+    Rückfrage ``rueckfrage_text`` und ``serienbonus`` (Buchung oder ``None``, AP21).
     """
     jetzt = jetzt or zeit.jetzt()
     seit = jetzt - timedelta(days=ABGESCHLOSSEN_ZEIGEN_TAGE)
@@ -131,7 +132,11 @@ def kind_eigene(kind, *, jetzt=None):
             "instanz_id", "rueckfrage_text"
         )
     )
+    boni = punkte_selectors.buchungen_zu_schluesseln(
+        f"aufgabe:{i.pk}:serienbonus" for i in instanzen if i.status == InstanzStatus.BESTAETIGT
+    )
     for instanz in instanzen:
+        instanz.serienbonus = boni.get(f"aufgabe:{instanz.pk}:serienbonus")
         if instanz.kind_id != kind.pk and instanz.status != InstanzStatus.KONFLIKT:
             instanz.anzeige_status = "vergeben"
         else:

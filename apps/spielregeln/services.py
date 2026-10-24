@@ -9,6 +9,9 @@
 - ``wochen_sicherstellen(kind=None, jetzt=None)``: bringt Wochenauswertungen und Spielstand auf
   den Soll-Stand (idempotent, Catch-up über beliebig viele Wochen). Job und Lazy-Aufruf.
 - ``neu_berechnen(schreiben=False)``: Abgleich gespeicherter Stände mit der Historie.
+- ``serienbonus_buchen(kind, basispunkte=, meldedatum=, erfasst_am=, schluessel=, ...)``
+  (AP21): eigene Ledger-Buchung "Serienbonus" in der Transaktion des Aufrufers, idempotent je
+  Schlüssel. Storno macht der Aufrufer per ``punkte.gegenbuchen`` (Schlüssel gehört ihm).
 
 Gespeicherte Stände (``Wochenauswertung``, ``KindStand``) sind Zwischenspeicher: jede Auswertung
 rechnet die vergangenen Wochen eines Kindes komplett aus der Historie und schreibt nur
@@ -29,7 +32,7 @@ from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.konten import selectors as konten
 
-from . import auswertung, events
+from . import auswertung, events, serienbonus
 from . import kontinuitaet as k
 from .models import Aktivitaet, KindStand, Pause, PauseQuelle, Wochenauswertung
 
@@ -132,6 +135,64 @@ def _nachfuehren(kind, jetzt=None):
     except Exception:
         logger.exception("Spielstand von %s konnte nicht nachgeführt werden", kind.pk)
         return None
+
+
+# --- Serienbonus (AP21) ---------------------------------------------------------------------
+
+
+@transaction.atomic
+def serienbonus_buchen(
+    kind,
+    *,
+    basispunkte: int,
+    meldedatum: date,
+    erfasst_am=None,
+    schluessel: str,
+    quelle_modul: str,
+    referenz=None,
+    von=None,
+):
+    """Bucht den Serienbonus auf ``basispunkte`` (nur Aufgabenpunkte, nie Sonderpunkte) und gibt
+    die Buchung zurück; ``None`` bei 0 % / 0 Punkten. Bezugsdatum = Meldedatum (K1). Gibt es den
+    Schlüssel schon, bleibt es bei der bestehenden Buchung (kein zweites Pop-up)."""
+    from apps.punkte import selectors as punkte_selectors
+    from apps.punkte import services as punkte
+
+    _kind_pruefen(kind)
+    bestehend = punkte_selectors.buchung_zu_schluessel(schluessel)
+    if bestehend is not None:
+        return bestehend
+    woche = serienbonus.wirksame_woche(meldedatum, erfasst_am or zeit.jetzt())
+    serie = serienbonus.serie_fuer(kind, woche)
+    satz = serienbonus.prozent(serie)
+    bonus = serienbonus.bonus_punkte(basispunkte, satz)
+    if not bonus:
+        return None
+    buchung = punkte.buchen(
+        kind,
+        punkte.Art.SERIENBONUS,
+        bonus,
+        schluessel=schluessel,
+        quelle_modul=quelle_modul,
+        bezugsdatum=meldedatum,
+        referenz=referenz,
+        begruendung=f"Serienbonus +{satz} % (Serie {serie})",
+        von=von,
+    )
+    ereignisse.veroeffentlichen(
+        events.SERIENBONUS_GEBUCHT,
+        kind=kind,
+        daten={
+            "buchung": buchung.pk,
+            "punkte": bonus,
+            "prozent": satz,
+            "serie": serie,
+            "woche": str(woche),
+            "basispunkte": basispunkte,
+        },
+        schluessel=f"{events.SERIENBONUS_GEBUCHT}:{buchung.pk}",
+    )
+    return buchung
 
 
 # --- Pausen ---------------------------------------------------------------------------------

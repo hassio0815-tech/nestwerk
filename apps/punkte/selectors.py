@@ -85,3 +85,11 @@ def buchung_zu_schluessel(schluessel):
 
 def buchungen_zu(referenz_typ, referenz_id):
     return Buchung.objects.filter(referenz_typ=referenz_typ, referenz_id=str(referenz_id))
+
+
+def buchungen_zu_schluesseln(schluessel):
+    """``{schluessel: Buchung}`` für die vorhandenen Schlüssel (z. B. Serienbonus je Instanz)."""
+    return {
+        b.idempotenz_schluessel: b
+        for b in Buchung.objects.filter(idempotenz_schluessel__in=list(schluessel))
+    }

@@ -7,6 +7,10 @@ STARTWERTE = {
     "spielregeln.puffer_stunden": 24,
     # K5: Woche ohne Aktivität ist neutral ab so vielen Pausentagen
     "spielregeln.neutral_ab_pausentagen": 1,
+    # AP21, Entscheidung 4 / SPEC 18.2: Serie 1 = 0 %, ab Serie 2 +5 % je Woche, Deckel 25 %
+    "spielregeln.serienbonus_start": 2,
+    "spielregeln.serienbonus_schritt_prozent": 5,
+    "spielregeln.serienbonus_deckel_prozent": 25,
 }
 
 
@@ -31,4 +35,32 @@ def einstellungen_definieren():
         einheit="Pausentage",
         minimum=1,
         maximum=7,
+    )
+    definieren(
+        "spielregeln.serienbonus_start",
+        Typ.GANZZAHL,
+        "Serienbonus ab Serie",
+        beschreibung="Ab so vielen aktiven Wochen in Folge gibt es Bonus auf Aufgabenpunkte "
+        "(Sonderpunkte bekommen keinen Bonus).",
+        einheit="Wochen",
+        minimum=1,
+        maximum=52,
+    )
+    definieren(
+        "spielregeln.serienbonus_schritt_prozent",
+        Typ.GANZZAHL,
+        "Serienbonus je Serienwoche",
+        beschreibung="So viel Prozent mehr gibt es mit jeder weiteren Woche der Serie.",
+        einheit="%",
+        minimum=0,
+        maximum=100,
+    )
+    definieren(
+        "spielregeln.serienbonus_deckel_prozent",
+        Typ.GANZZAHL,
+        "Serienbonus höchstens",
+        beschreibung="Obergrenze des Serienbonus. Der Bonus wird auf ganze Punkte aufgerundet.",
+        einheit="%",
+        minimum=0,
+        maximum=100,
     )

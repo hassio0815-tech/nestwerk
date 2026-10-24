@@ -7,7 +7,8 @@ Regeln:
 - Jede Funktion ist eine Transaktion (SQLite ``BEGIN IMMEDIATE``): parallele Klicks laufen
   nacheinander, der zweite scheitert am bedingten Update (``UngueltigerUebergang``).
 - Punkte genau einmal: Idempotenz-Schlüssel je Instanz (``aufgabe:<id>:basis``,
-  ``aufgabe:<id>:sonderpunkte``); Korrektur = Gegenbuchung (K2).
+  ``aufgabe:<id>:serienbonus`` (AP21, über Hook), ``aufgabe:<id>:sonderpunkte``); Korrektur =
+  Gegenbuchung aller drei (K2).
 - K1: Bezugsdatum der Buchungen und der Aktivität = Meldedatum (``gemeldet_am``, lokal).
 - K10: Limit pro Zeitraum je Kind und Aufgabe, geprüft beim Interesse.
 - K11: Bei Konflikt läuft keine Frist; sie startet mit der Zuteilung durch die Eltern.
@@ -760,7 +761,8 @@ def sonderpunkte_vergeben(instanz, punktzahl, begruendung, *, von):
 @transaction.atomic
 def korrigieren(instanz, *, von, begruendung, jetzt=None):
     """Nachträgliche Korrektur (v. a. Vertrauen): ``bestaetigt`` -> ``storniert``, alle Punkte
-    der Instanz (Basis + Sonderpunkte) per Gegenbuchung zurück. Mindert Guthaben und XP (K2)."""
+    der Instanz (Basis + Serienbonus + Sonderpunkte) per Gegenbuchung zurück. Mindert Guthaben
+    und XP (K2)."""
     jetzt = jetzt or zeit.jetzt()
     _ist_eltern(von)
     begruendung = _text(begruendung, BEGRUENDUNG_MAX, "Begründung")
@@ -769,7 +771,7 @@ def korrigieren(instanz, *, von, begruendung, jetzt=None):
     instanz = _laden(instanz)
     uebergang(instanz, S.STORNIERT, von=S.BESTAETIGT)
     abgezogen = 0
-    for art in ("basis", "sonderpunkte"):
+    for art in ("basis", "serienbonus", "sonderpunkte"):
         buchung = punkte_selectors.buchung_zu_schluessel(f"aufgabe:{instanz.pk}:{art}")
         if buchung is not None:
             storno = punkte.gegenbuchen(buchung, begruendung=begruendung, von=von)
