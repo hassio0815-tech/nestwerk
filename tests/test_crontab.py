@@ -20,6 +20,7 @@ PFLICHT_JOBS = {
     "backup_pruefen",
     "wochen_sicherstellen",
     "familienwoche_sicherstellen",
+    "mods_fertigstellen",
 }
 
 

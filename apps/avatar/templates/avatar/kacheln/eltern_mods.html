@@ -1,0 +1,13 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Mods und Bauaufträge</h2>
+  {% for z in k.zeilen %}
+    <div class="zeile">
+      <strong>{{ z.kind.anzeigename }}</strong>
+      <span class="kachel__text">Ausbaustufe {{ z.stufe.aktuell }}/{{ z.stufe.slots }} ({{ z.stufe.rang_name }}){% if z.bau %} · {{ z.bau|length }} im Bau{% endif %}</span>
+    </div>
+  {% empty %}
+    <p class="kachel__text">Noch keine Kinder.</p>
+  {% endfor %}
+  {% url "avatar:eltern" as mods_url %}
+  {% include "komponenten/button.html" with href=mods_url variante="sekundaer" klein=True icon="funke" text="Bauaufträge und Preise" %}
+</div></article>

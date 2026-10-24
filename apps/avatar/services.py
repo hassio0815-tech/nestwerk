@@ -1,9 +1,13 @@
 """Schreibende und rendernde Schnittstelle von avatar.
 
-API für AP26 (Mod-Shop): ``slot_belegen(kind, slot, mod)``, ``slot_leeren(kind, slot)``,
-``svg_fuer(benutzer)``/``bild_url(benutzer)``. Der Besitz-/Fertig-Status eines Mods wird hier
-NICHT geprüft (``ModBesitz`` gibt es erst mit AP26): der Aufrufer darf nur fertige, eigene Mods
-übergeben.
+- Bild: ``svg_fuer(benutzer)``/``bild_url(benutzer)``, ``vorschau_mit_mod(kind, mod)``.
+- Slots: ``slot_belegen(kind, slot, mod)`` (prüft den Besitz NICHT, Kinder-Oberfläche nutzt
+  ``mod_anlegen``), ``slot_leeren(kind, slot)``.
+- Mods (AP26, Logik in ``mods``): ``mod_kaufen(kind, mod)``, ``mod_anlegen(kind, mod)``,
+  ``mods_fertigstellen()`` (Job), ``bau_sofort_fertigstellen(besitz, von=)``,
+  ``themenwechsel_vorschau(kind, thema)``, ``thema_wechseln(kind, thema, pruefwert=)``,
+  ``mod_standard_aendern(rang, von=, mod_preis=, bauzeit_stunden=)``,
+  ``mod_faktoren_setzen(von=, faktor_preis=, faktor_bauzeit=)``. Fehler: ``ModFehler``.
 """
 
 import hashlib
@@ -14,9 +18,19 @@ from django.db import IntegrityError, transaction
 from django.urls import reverse
 
 from apps.kern import zeit
+from apps.spielregeln.raenge import mod_faktoren_setzen, mod_standard_aendern  # noqa: F401
 
 from .generator import bibliothek, renderer
 from .models import Avatar, ModDefinition, RenderCache, Thema
+from .mods import (  # noqa: F401 (öffentliche Mod-API, AP26)
+    ModFehler,
+    thema_wechseln,
+    themenwechsel_vorschau,
+)
+from .mods import anlegen as mod_anlegen  # noqa: F401
+from .mods import fertigstellen as mods_fertigstellen  # noqa: F401
+from .mods import kaufen as mod_kaufen  # noqa: F401
+from .mods import sofort_fertigstellen as bau_sofort_fertigstellen  # noqa: F401
 
 logger = logging.getLogger(__name__)
 
@@ -187,12 +201,31 @@ def vorschau_svg(thema_schluessel, figur=None, mods=None):
     return renderer.rendern(zustand)
 
 
+def vorschau_basis(kind):
+    """Render-Eingabe des eigenen Avatars (für mehrere ``vorschau_mit_mod``) oder ``None``."""
+    avatar = Avatar.objects.select_related("thema").filter(pk=kind.pk).first()
+    return zustand_von(avatar) if avatar else None
+
+
+def vorschau_mit_mod(kind, mod, basis=None):
+    """SVG des eigenen Avatars mit ``mod`` im Slot (Shop-Vorschau, ohne Speicherung)."""
+    basis = basis or vorschau_basis(kind)
+    if basis is None:
+        return vorschau_svg(mod.thema.schluessel, mods={mod.slot.schluessel: mod.render_mod()})
+    zustand = {**basis, "mods": {**basis["mods"], mod.slot.schluessel: mod.render_mod()}}
+    try:
+        return renderer.rendern(zustand)
+    except renderer.RenderFehler:
+        logger.warning("Vorschau für Mod %s nicht renderbar", mod.schluessel)
+        return renderer.rendern(basis)
+
+
 # --- Auswahl und Slots -------------------------------------------------------------------------
 
 
 @transaction.atomic
 def avatar_waehlen(kind, thema_schluessel, figur):
-    """Erstwahl von Figur und Thema. Ein späterer Themenwechsel kommt mit AP26."""
+    """Erstwahl von Figur und Thema. Späterer Wechsel: ``thema_wechseln`` (mit Warnung)."""
     if not kind.ist_kind:
         raise AvatarFehler("Nur Kinder wählen einen Avatar")
     thema = Thema.objects.filter(schluessel=thema_schluessel, aktiv=True, nur_eltern=False).first()

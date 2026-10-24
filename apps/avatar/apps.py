@@ -21,20 +21,13 @@ class AvatarConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self):
-        from apps.kern.registry import KIND, Kachel, kachel_registrieren
-
-        from . import kacheln
+        from . import registry
+        from .einstellungen import einstellungen_definieren
+        from .events import texte_registrieren, typen_deklarieren
 
         post_migrate.connect(_bibliothek_laden, sender=self, dispatch_uid="avatar.bibliothek_laden")
-        kachel_registrieren(
-            Kachel(
-                "avatar.kind_avatar",
-                "avatar",
-                "Mein Avatar",
-                "avatar/kachel_kind.html",
-                {KIND},
-                kacheln.kind_kontext,
-                sichtbar=kacheln.kind_sichtbar,
-                reihenfolge=5,
-            )
-        )
+        einstellungen_definieren()
+        typen_deklarieren()
+        texte_registrieren()
+        registry.metriken_registrieren()
+        registry.kacheln_registrieren()

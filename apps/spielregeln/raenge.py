@@ -73,6 +73,45 @@ def wirksame_schwelle(rang: Rang, faktor: Decimal) -> int:
     return math.ceil(Decimal(rang.xp_schwelle) * faktor)
 
 
+def rang_zur_stufe(stufe: int) -> Rang | None:
+    """Rang einer Stufe (= Mod-Seltenheit, AP26)."""
+    return Rang.objects.filter(stufe=stufe).first()
+
+
+def _mod_faktor(kind, feld) -> Decimal:
+    """AP26: wirksamer Preis-/Bauzeit-Faktor = global x Kind (Kind optional, K3)."""
+    faktor = Decimal("1")
+    for zeile in Kalibrierung.objects.filter(kind__isnull=True):
+        faktor *= getattr(zeile, feld)
+    if kind is not None:
+        for zeile in Kalibrierung.objects.filter(kind=kind):
+            faktor *= getattr(zeile, feld)
+    return faktor
+
+
+def preis_faktor(kind=None) -> Decimal:
+    return _mod_faktor(kind, "faktor_preis")
+
+
+def bauzeit_faktor(kind=None) -> Decimal:
+    return _mod_faktor(kind, "faktor_bauzeit")
+
+
+def _skaliert(wert: int, faktor: Decimal) -> int:
+    return int((Decimal(wert) * faktor).quantize(Decimal("1"), ROUND_HALF_UP))
+
+
+def mod_preis(grundwert: int, kind=None) -> int:
+    """AP26: Mod-Preis = Grundwert (Bauplan oder Rang-Standard) x Preis-Faktor, kaufmännisch
+    gerundet, mindestens 1 Punkt."""
+    return max(1, _skaliert(grundwert, preis_faktor(kind)))
+
+
+def mod_bauzeit_stunden(grundwert: int, kind=None) -> int:
+    """AP26: Bauzeit = Grundwert x Bauzeit-Faktor, gerundet auf ganze Stunden (0 = sofort)."""
+    return max(0, _skaliert(grundwert, bauzeit_faktor(kind)))
+
+
 def rang_aufstiege(kind):
     """Rang-Fakten eines Kindes, aufsteigend nach Stufe (AP23/AP26/AP27)."""
     return RangAufstieg.objects.filter(kind=kind).select_related("rang").order_by("rang__stufe")
@@ -306,6 +345,64 @@ def rang_aendern(rang, *, von, name, xp_schwelle, min_aktive_wochen, jetzt=None)
     if {"xp_schwelle", "min_aktive_wochen"} & geaendert.keys():
         alle_pruefen(jetzt)
     return rang
+
+
+@transaction.atomic
+def mod_standard_aendern(rang, *, von, mod_preis, bauzeit_stunden):
+    """AP26: Eltern ändern Standard-Mod-Preis und Bauzeit einer Seltenheit (Audit). Gilt für
+    künftige Käufe; bezahlte Preise und laufende Bauaufträge bleiben."""
+    _eltern_pruefen(von)
+    rang = Rang.objects.select_for_update().get(pk=rang.pk)
+    neu = {
+        "mod_preis": _ganzzahl(mod_preis, "Mod-Preis"),
+        "bauzeit_stunden": _ganzzahl(bauzeit_stunden, "Bauzeit"),
+    }
+    if neu["mod_preis"] < 1:
+        raise RangFehler("Mod-Preis: mindestens 1 Punkt.")
+    if neu["bauzeit_stunden"] > 24 * 365:
+        raise RangFehler("Bauzeit: höchstens ein Jahr.")
+    alt = {f: getattr(rang, f) for f in neu}
+    geaendert = {f: v for f, v in neu.items() if alt[f] != v}
+    if geaendert:
+        Rang.objects.filter(pk=rang.pk).update(**geaendert)
+        rang.refresh_from_db()
+        audit.protokollieren(
+            "rang.mod_standard_geaendert",
+            akteur=von,
+            objekt=rang,
+            details={"alt": {f: alt[f] for f in geaendert}, "neu": geaendert},
+        )
+    return rang
+
+
+@transaction.atomic
+def mod_faktoren_setzen(*, von, faktor_preis, faktor_bauzeit, jetzt=None):
+    """AP26: globale Kalibrierung von Mod-Preisen und Bauzeiten (Audit, K3)."""
+    _eltern_pruefen(von)
+    neu = {
+        "faktor_preis": faktor_lesen(faktor_preis),
+        "faktor_bauzeit": faktor_lesen(faktor_bauzeit),
+    }
+    zeile = Kalibrierung.objects.filter(kind__isnull=True).first() or Kalibrierung(kind=None)
+    alt = {f: getattr(zeile, f) for f in neu}
+    if zeile.pk and alt == neu:
+        return zeile
+    for feld, wert in neu.items():
+        setattr(zeile, feld, wert)
+    zeile.geaendert_von = von
+    zeile.geaendert_am = jetzt or zeit.jetzt()
+    zeile.save()
+    audit.protokollieren(
+        "kalibrierung.mod_geaendert",
+        akteur=von,
+        objekt_typ="spielregeln.kalibrierung",
+        objekt_id="global",
+        details={
+            "alt": {f: str(v) for f, v in alt.items()},
+            "neu": {f: str(v) for f, v in neu.items()},
+        },
+    )
+    return zeile
 
 
 def faktor_lesen(wert) -> Decimal:

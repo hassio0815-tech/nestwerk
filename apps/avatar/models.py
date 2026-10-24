@@ -1,7 +1,8 @@
-"""Datenmodell von avatar (DATA_MODEL 9): Thema, Slot, ModDefinition, Avatar, RenderCache.
+"""Datenmodell von avatar (DATA_MODEL 9): Thema, Slot, ModDefinition, Avatar, ModBesitz,
+RenderCache.
 
-ModSet und ModBesitz (Kauf, Bauzeit) folgen mit AP26. ``ModDefinition.seltenheit`` ist hier eine
-Zahl 1-6; die Kopplung an ``spielregeln.Rang`` (Preis und Bauzeit je Rang) macht AP26.
+``ModDefinition.seltenheit`` ist eine Zahl 1-6 = ``spielregeln.Rang.stufe`` (Preis und Bauzeit
+je Rang, AP26). ``ModBesitz`` ist Kauf + Bauauftrag + Besitz in einem (DATA_MODEL 9.6).
 """
 
 from django.conf import settings
@@ -112,13 +113,75 @@ class Avatar(models.Model):
     thema = models.ForeignKey(Thema, on_delete=models.PROTECT, related_name="avatare")
     figur = models.JSONField(default=dict, help_text="haut, haar, frisur")
     angelegt = models.JSONField(
-        default=dict, help_text="{slot: mod-schluessel}; nur fertige Mods (AP26 prüft den Besitz)"
+        default=dict, help_text="{slot: mod-schluessel}; nur fertige, eigene Mods (AP26)"
     )
     render_hash = models.CharField(max_length=64, blank=True)
     thema_gewaehlt_am = models.DateTimeField(default=zeit.jetzt)
 
     def __str__(self):
         return f"Avatar von {self.benutzer_id}"
+
+
+class BesitzStatus(models.TextChoices):
+    IM_BAU = "im_bau", "im Bau"
+    FERTIG = "fertig", "fertig"
+    VERLOREN = "verloren", "verloren"
+
+
+AKTIV = (BesitzStatus.IM_BAU, BesitzStatus.FERTIG)
+
+
+class ModBesitz(models.Model):
+    """Gekaufter Mod eines Kindes (DATA_MODEL 9.6): ``im_bau`` bis ``fertig_geplant_am``, dann
+    ``fertig`` (Job ``mods_fertigstellen``); Themenwechsel -> ``verloren`` (keine Erstattung).
+
+    ``zaehlt_ab_iso_*``: Woche, ab der der Mod für die Ausbaustufe zählt (Zeitbremse, höchstens
+    ``avatar.max_zaehlende_mods_woche`` neue zählende Mods je ISO-Woche, Warteschlange)."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="mod_besitz"
+    )
+    mod = models.ForeignKey(ModDefinition, on_delete=models.PROTECT, related_name="besitz")
+    preis_bezahlt = models.PositiveIntegerField()
+    bauzeit_stunden = models.PositiveIntegerField(help_text="Snapshot beim Kauf")
+    buchung = models.OneToOneField(
+        "punkte.Buchung", on_delete=models.PROTECT, related_name="+", help_text="Mod-Kauf"
+    )
+    gekauft_am = models.DateTimeField(default=zeit.jetzt)
+    fertig_geplant_am = models.DateTimeField(db_index=True)
+    fertig_am = models.DateTimeField(null=True, blank=True)
+    zaehlt_ab_iso_jahr = models.SmallIntegerField(null=True, blank=True)
+    zaehlt_ab_iso_woche = models.SmallIntegerField(null=True, blank=True)
+    status = models.CharField(
+        max_length=10, choices=BesitzStatus.choices, default=BesitzStatus.IM_BAU
+    )
+    verloren_am = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Mod-Besitz"
+        verbose_name_plural = "Mod-Besitz"
+        ordering = ["gekauft_am", "id"]
+        indexes = [
+            models.Index(fields=["kind", "status"], name="avatar_besitz_kind_status"),
+            models.Index(
+                fields=["kind", "zaehlt_ab_iso_jahr", "zaehlt_ab_iso_woche"],
+                name="avatar_besitz_zaehlwoche",
+            ),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["kind", "mod"],
+                condition=Q(status__in=["im_bau", "fertig"]),
+                name="avatar_besitz_kein_doppelkauf",
+            ),
+            models.CheckConstraint(
+                condition=Q(status="im_bau") | Q(fertig_am__isnull=False) | Q(status="verloren"),
+                name="avatar_besitz_fertig_mit_zeit",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.kind_id} {self.mod_id} {self.status}"
 
 
 class RenderCache(models.Model):

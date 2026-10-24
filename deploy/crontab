@@ -18,6 +18,9 @@
 # Familienziel (AP29): Woche anlegen, Abstimmung schließen/auswerten, Großziel; idempotent.
 3,18,33,48 * * * * python manage.py familienwoche_sicherstellen
 
+# Avatar (AP26): fällige Mod-Bauaufträge fertigstellen, idempotent mit Catch-up
+*/5 * * * * python manage.py mods_fertigstellen
+
 # Datensicherung: 03:30 regulär; 13:30 Nachholtermin (überspringt, wenn heute schon gesichert)
 30 3 * * * python manage.py db_sichern
 30 13 * * * python manage.py db_sichern

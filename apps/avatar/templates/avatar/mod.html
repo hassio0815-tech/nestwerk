@@ -1,0 +1,40 @@
+{% extends "basis/kind.html" %}
+{% load static avatar_tags %}
+{% block titel %}{{ mod.name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "avatar:shop" as shop_url %}
+  {% include "komponenten/button.html" with href=shop_url variante="geist" klein=True icon="pfeil-links" text="Shop" %}
+{% endblock %}
+{% block inhalt %}
+  {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
+  <section class="karte mod-detail" data-selten="{{ karte.konditionen.rang_selten }}"><div class="karte__inhalt mod-detail__inhalt">
+    <div class="mod-detail__bild">{% svg_roh svg "riesig" "Vorschau: dein Avatar mit dem Mod" %}</div>
+    <div class="stapel">
+      <h1 class="mod-detail__titel">{{ mod.name }}</h1>
+      <p class="reihe"><span class="chip" data-selten="{{ karte.konditionen.rang_selten }}">{{ karte.konditionen.rang_name }}</span><span class="kachel__text">{{ mod.slot.name }}</span></p>
+      {% if mod.beschreibung %}<p>{{ mod.beschreibung }}</p>{% endif %}
+      <dl class="mod-werte">
+        <div><dt>Preis</dt><dd>{% include "komponenten/punkte.html" with wert=karte.konditionen.preis %}</dd></div>
+        <div><dt>Bauzeit</dt><dd>{% include "komponenten/icon.html" with name="uhr" %} {{ karte.konditionen.bauzeit_text }} in der {{ ort }}</dd></div>
+        <div><dt>Du hast</dt><dd>{% include "komponenten/punkte.html" with wert=verfuegbar %}</dd></div>
+      </dl>
+      {% if karte.zustand == "kaufbar" %}
+        <form method="post" action="{% url 'avatar:kaufen' mod.schluessel %}" class="stapel">{% csrf_token %}
+          <p class="kachel__text">Nach dem Kauf {{ taetigkeit }} der Mod {{ karte.konditionen.bauzeit_text }} lang. Punkte gibt es nicht zurück.</p>
+          {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="muenze" text=kauf_text %}
+        </form>
+      {% elif karte.zustand == "zu_teuer" %}
+        {% include "komponenten/button.html" with gross=True voll=True icon="muenze" text=fehlt_text disabled=True %}
+      {% elif karte.zustand == "gesperrt" %}
+        {% include "komponenten/button.html" with gross=True voll=True icon="schloss" text=gesperrt_text disabled=True %}
+      {% elif karte.zustand == "im_bau" %}
+        <p class="reihe"><strong>{% include "komponenten/icon.html" with name="funke" %} Ist gerade in der {{ ort }}.</strong></p>
+      {% else %}
+        <form method="post" action="{% url 'avatar:anlegen' mod.schluessel %}">{% csrf_token %}
+          {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text="Anlegen" %}
+        </form>
+      {% endif %}
+    </div>
+  </div></section>
+{% endblock %}

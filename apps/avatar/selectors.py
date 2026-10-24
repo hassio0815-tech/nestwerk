@@ -1,7 +1,29 @@
-"""Lesende Schnittstelle von avatar (andere Apps importieren nur selectors/services/tags)."""
+"""Lesende Schnittstelle von avatar (andere Apps importieren nur selectors/services/tags).
+
+AP26 (Logik in ``mods``): ``ausbaustufe(kind)`` (``.aktuell``, ``.je_seltenheit``,
+``.wartend``), ``shop(kind)``, ``bauauftraege(kind)``, ``eigene_fertige(kind)``,
+``mod_konditionen(mod, kind)``, ``eltern_uebersicht()``, ``mod_standards()``,
+``inszenierung(thema)``, ``mod(schluessel)``.
+"""
 
 from .generator import bibliothek
 from .models import Avatar, ModDefinition, Thema
+from .mods import (  # noqa: F401 (öffentliche Mod-API, AP26)
+    ausbaustufe,
+    bauauftraege,
+    eigene_fertige,
+    eltern_uebersicht,
+    inszenierung,
+    shop,
+)
+from .mods import konditionen as mod_konditionen  # noqa: F401
+from .mods import standards as mod_standards  # noqa: F401
+
+
+def mod(schluessel):
+    return (
+        ModDefinition.objects.select_related("slot", "thema").filter(schluessel=schluessel).first()
+    )
 
 
 def avatar_von(benutzer):

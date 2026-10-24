@@ -456,6 +456,33 @@ def seiten_ablauf(browser, aufn):
     for label, pfad in SEITEN_ELTERN:
         aufn.seite(eltern, label, pfad)
     ctx_e.close()
+    shop_ablauf(browser, aufn)
+
+
+def shop_ablauf(browser, aufn):
+    """AP26: Mod-Shop (Kind A: 4 fertige Mods, 1 im Bau), Detail mit Vorschau, Kauf, Werkstatt,
+    Themenwechsel-Warnung mit Zahlen; Eltern-Bauaufträge."""
+    ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
+    page = ctx.new_page()
+    aufn.s.anbinden(page)
+    kind_login(page, aufn, "Kind A", "1111", fotos=False)
+    aufn.seite(page, "shop", "/kind/mods/")
+    aufn.seite(page, "shop-mod-detail", "/kind/mods/ritter-hintergrund-1/")
+    page.get_by_role("button", name="Kaufen für").click()
+    page.wait_for_load_state("networkidle")
+    aufn.s.neu("shop-nach-kauf")
+    aufn.foto(page, "shop-nach-kauf")
+    aufn.seite(page, "shop-gesperrt-detail", "/kind/mods/ritter-kopf-3/")
+    aufn.seite(page, "shop-werkstatt-dashboard", "/kind/")
+    aufn.seite(page, "themenwechsel-auswahl", "/kind/avatar/thema/")
+    aufn.seite(page, "themenwechsel-warnung", "/kind/avatar/thema/?thema=pirat")
+    ctx.close()
+    ctx_e = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    eltern = ctx_e.new_page()
+    aufn.s.anbinden(eltern)
+    eltern_login(eltern, aufn)
+    aufn.seite(eltern, "eltern-mods", "/eltern/mods/")
+    ctx_e.close()
 
 
 # --- Ausgabe ------------------------------------------------------------------------------

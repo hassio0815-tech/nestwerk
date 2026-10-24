@@ -30,10 +30,8 @@ def main():
     eltern = Benutzer.objects.filter(rolle="eltern").order_by("pk").first()
     kinder = {k.anzeigename: k for k in Benutzer.objects.filter(rolle="kind")}
     a, b = kinder["Kind A"], kinder["Kind B"]
-    # Avatare (AP24): A Ritter mit allen Common-Mods, B Weltraum-Forscher, C wählt im Browser
+    # Avatare (AP24): A Ritter (Mods kauft A unten, AP26), B Weltraum-Forscher, C wählt im Browser
     avatar.avatar_waehlen(a, "ritter", {"haut": "haut3", "haar": "haar2", "frisur": "struppig"})
-    for slot in ("kopf", "koerper", "ruecken", "hand", "begleiter", "hintergrund"):
-        avatar.slot_belegen(a, slot, f"ritter-{slot}-1")
     avatar.avatar_waehlen(b, "weltraum", {"haut": "haut5", "haar": "haar7", "frisur": "lang"})
 
     arten = [Freigabeart.ELTERN, Freigabeart.VERTRAUEN, Freigabeart.ELTERN, Freigabeart.NACHWEIS]
@@ -67,6 +65,13 @@ def main():
     wunsch = Belohnung.objects.filter(aktiv=True).order_by("preis_punkte").first()
     if wunsch:
         belohnung.antrag_stellen(b, wunsch)
+    # Mod-Shop (AP26): A kauft 4 Common-Mods (Eltern stellen sie sofort fertig, Zeitbremse
+    # -> einer zählt diese Woche, drei warten) und hat einen Mod im Bau
+    punkte.buchen(a, Art.AUFGABE, 260, schluessel="demo:a-mods", quelle_modul="aufgaben")
+    for slot in ("kopf", "koerper", "hand", "begleiter"):
+        besitz = avatar.mod_kaufen(a, f"ritter-{slot}-1")
+        avatar.bau_sofort_fertigstellen(besitz, von=eltern)
+    avatar.mod_kaufen(a, "ritter-ruecken-1")
     print("Demo-Daten erzeugt.")
 
 
