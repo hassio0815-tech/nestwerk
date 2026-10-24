@@ -138,6 +138,8 @@ def anspruch_anlegen(kind, meilenstein_id: int, *, titel="", jetzt: datetime | N
         ab = eingeplant.get(anspruch.pk, heute)
         anspruch.einloesbar_ab = ab
         erster = next(iter(eingeplant), None) == anspruch.pk
+        if erster and ab <= heute:  # sofort einlösbar: die Freischaltung ist die Meldung
+            SondertagAnspruch.objects.filter(pk=anspruch.pk).update(einloesbar_gemeldet_am=jetzt)
         audit.protokollieren(
             "sondertag.verdient",
             akteur=None,
@@ -189,6 +191,54 @@ def nachholen() -> int:
             anspruch_anlegen(kind, fakt.pk, titel=fakt.regel.name, jetzt=fakt.erreicht_am)
             neu += 1
     return neu
+
+
+def einloesbar_melden(jetzt: datetime | None = None) -> int:
+    """Job (``sondertag_sicherstellen``): Wird der erste offene Anspruch eines Kindes einlösbar
+    (Grenzen erlauben ihn ab heute), bekommen Kind und Eltern genau eine Meldung. Bedingtes Update
+    auf ``einloesbar_gemeldet_am`` + Ereignis-Schlüssel: Doppellauf meldet nichts erneut."""
+    jetzt = jetzt or zeit.jetzt()
+    heute = zeit.heute(jetzt)
+    gemeldet = 0
+    for kind in konten.aktive_kinder():
+        with transaction.atomic():
+            geplant = plan(kind, heute)
+            if not geplant:
+                continue
+            anspruch, ab = geplant[0]
+            if ab > heute or anspruch.einloesbar_gemeldet_am is not None:
+                continue
+            if not SondertagAnspruch.objects.filter(
+                pk=anspruch.pk, einloesbar_gemeldet_am__isnull=True, status__in=OFFEN
+            ).update(einloesbar_gemeldet_am=jetzt):
+                continue
+            wunsch_da = anspruch.status == Status.WUNSCH_OFFEN
+            ereignisse.veroeffentlichen(
+                events.EINLOESBAR,
+                kind=kind,
+                daten={
+                    "anspruch": anspruch.pk,
+                    "titel": anspruch.titel,
+                    "hinweis": "Deine Eltern können deinen Wunsch jetzt annehmen."
+                    if wunsch_da
+                    else "Du darfst dir jetzt etwas wünschen!",
+                },
+                schluessel=f"{events.EINLOESBAR}:{anspruch.pk}",
+            )
+            ereignisse.veroeffentlichen(
+                events.EINLOESBAR_ELTERN,
+                kind=kind,
+                daten={
+                    "anspruch": anspruch.pk,
+                    "titel": anspruch.titel,
+                    "hinweis": f"Wunsch: „{anspruch.wunsch[:120]}“. Ihr könnt ihn jetzt annehmen."
+                    if wunsch_da
+                    else "Noch kein Wunsch gesendet.",
+                },
+                schluessel=f"{events.EINLOESBAR_ELTERN}:{anspruch.pk}",
+            )
+            gemeldet += 1
+    return gemeldet
 
 
 # --- Wunsch (Kind) ----------------------------------------------------------------------------

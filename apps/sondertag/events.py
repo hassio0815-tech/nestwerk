@@ -8,6 +8,9 @@ VERDIENT_ELTERN = "sondertag.verdient"  # Eltern: Info "Anna hat einen Sondertag
 WUNSCH = "sondertag.wunsch"  # Eltern (beide): Wunsch annehmen (Entscheidung)
 ANGENOMMEN = "sondertag.angenommen"  # Kind: Bestätigung mit Begleitung
 UEBERGEBEN = "sondertag.uebergeben"  # Eltern: Begleitung übergeben
+# Review AP31: ein wartender Anspruch wird einlösbar (genau einmal je Anspruch, Job)
+EINLOESBAR = "sondertag.einloesbar"  # Kind: "Jetzt darfst du dir etwas wünschen"
+EINLOESBAR_ELTERN = "sondertag.einloesbar_eltern"  # Eltern: Wunsch kann angenommen werden
 
 LINK_ELTERN = "/eltern/sondertage/"
 LINK_KIND = "/kind/"
@@ -34,6 +37,8 @@ def typen_deklarieren():
     typ(WUNSCH, "Sondertag-Wunsch", "eltern", ("push", "email"), entscheidung=True, **eltern)
     typ(ANGENOMMEN, "Sondertag-Wunsch angenommen", "kind", ("popup", "push"), **kind)
     typ(UEBERGEBEN, "Sondertag-Begleitung übergeben", "eltern", ("push",), **eltern)
+    typ(EINLOESBAR, "Sondertag jetzt einlösbar", "kind", ("popup", "push"), **kind)
+    typ(EINLOESBAR_ELTERN, "Sondertag jetzt einlösbar (Eltern)", "eltern", ("push",), **eltern)
 
 
 TEXTE = {
@@ -42,6 +47,8 @@ TEXTE = {
     WUNSCH: ("Sondertag-Wunsch von {kind}", "„{wunsch}“ · Begleitung: {begleitung}. {hinweis}"),
     ANGENOMMEN: ("Dein Wunsch wurde angenommen!", "{begleitung} plant deinen Sondertag mit dir."),
     UEBERGEBEN: ("Sondertag von {kind}: {begleitung} übernimmt", "Übergeben von {akteur}."),
+    EINLOESBAR: ("Dein Sondertag ist jetzt einlösbar!", "{hinweis}"),
+    EINLOESBAR_ELTERN: ("Sondertag von {kind} ist jetzt einlösbar", "{hinweis}"),
 }
 
 

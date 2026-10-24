@@ -21,6 +21,7 @@ PFLICHT_JOBS = {
     "wochen_sicherstellen",
     "familienwoche_sicherstellen",
     "mods_fertigstellen",
+    "sondertag_sicherstellen",
 }
 
 

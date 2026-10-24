@@ -76,6 +76,11 @@ class SondertagAnspruch(models.Model):
         null=True, blank=True, help_text="Bezugsdatum für Abstand und App-Jahr (korrigierbar)"
     )
     stattgefunden_am = models.DateField(null=True, blank=True)
+    einloesbar_gemeldet_am = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Meldung 'jetzt einlösbar' verschickt (genau einmal, auch bei Freischaltung)",
+    )
     notiz = models.CharField(max_length=200, blank=True, default="")
 
     class Meta:

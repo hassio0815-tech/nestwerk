@@ -1,17 +1,18 @@
-"""Catch-up (AP27): Sondertag-Ansprüche zu erreichten Meilensteinen ohne Anspruch anlegen und
-Einlösedaten aller Kinder neu berechnen. Idempotent."""
+"""Catch-up (AP27, Review AP31): Sondertag-Ansprüche zu erreichten Meilensteinen ohne Anspruch
+anlegen, Einlösedaten aller Kinder neu berechnen und "jetzt einlösbar" genau einmal melden.
+Idempotent; läuft stündlich (deploy/crontab)."""
 
-from django.core.management.base import BaseCommand
-
+from apps.kern.jobs import JobBefehl
 from apps.konten import selectors as konten
 from apps.sondertag import services
 
 
-class Command(BaseCommand):
-    help = "Sondertag-Ansprüche nachholen und Einlösedaten neu berechnen (idempotent)."
+class Command(JobBefehl):
+    help = "Sondertag-Ansprüche nachholen, Einlösedaten neu berechnen, einlösbar melden."
+    job_name = "sondertag_sicherstellen"
 
-    def handle(self, *args, **options):
+    def job(self, sperre, **optionen):
         neu = services.nachholen()
         for kind in konten.aktive_kinder():
             services.neu_berechnen(kind)
-        self.stdout.write(f"sondertag: {neu} Ansprüche nachgeholt")
+        return {"nachgeholt": neu, "einloesbar_gemeldet": services.einloesbar_melden()}

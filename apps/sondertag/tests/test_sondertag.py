@@ -511,3 +511,55 @@ def test_meilenstein_bereich_braucht_bereichsmetrik(mama):
         meilenstein_speichern(
             regel, von=mama, name="x", bedingungen=[{"metrik": "aktive_wochen", "wert": 1}]
         )
+
+
+# --- Review AP31: "jetzt einlösbar" genau einmal ---------------------------------------------
+
+
+def test_wartender_anspruch_meldet_einloesbar_genau_einmal(anna, mama, metriken, uhr):
+    services.manuell_erfassen(anna, von=mama, datum=tag(-100))  # letzter Sondertag vor 100 Tagen
+    a = _anspruch(anna, metriken, uhr, t=0)
+    assert a.einloesbar_ab == tag(50) and a.einloesbar_gemeldet_am is None
+    assert services.einloesbar_melden() == 0  # noch nicht einlösbar
+    services.wunsch_senden(anna, a, wunsch="Zoo", begleitung="egal")
+    uhr.stellen(tag(50))
+    assert services.einloesbar_melden() == 1
+    assert services.einloesbar_melden() == 0  # Doppellauf
+    uhr.stellen(tag(51))
+    assert services.einloesbar_melden() == 0
+    assert Ereignis.objects.filter(typ_id=events.EINLOESBAR, kind=anna).count() == 1
+    eltern = Ereignis.objects.get(typ_id=events.EINLOESBAR_ELTERN)
+    assert "Zoo" in eltern.daten["hinweis"]
+    a.refresh_from_db()
+    assert a.einloesbar_gemeldet_am is not None
+
+
+def test_sofort_einloesbar_meldet_nur_die_freischaltung(anna, metriken, uhr):
+    a = _anspruch(anna, metriken, uhr, t=5)
+    assert a.einloesbar_gemeldet_am is not None
+    assert services.einloesbar_melden() == 0
+    assert not Ereignis.objects.filter(typ_id=events.EINLOESBAR).exists()
+
+
+def test_zweiter_in_der_warteschlange_meldet_erst_nach_annahme_des_ersten(
+    anna, mama, metriken, uhr
+):
+    erster = _anspruch(anna, metriken, uhr, t=0, stufe=2)
+    zweiter = _anspruch(anna, metriken, uhr, t=10, stufe=3)
+    services.wunsch_senden(anna, erster, wunsch="Kino", begleitung="egal")
+    services.annehmen(erster, von=mama, heute=tag(10))
+    uhr.stellen(tag(159))
+    assert services.einloesbar_melden() == 0
+    uhr.stellen(tag(160))
+    assert services.einloesbar_melden() == 1
+    assert Ereignis.objects.get(typ_id=events.EINLOESBAR).daten["anspruch"] == zweiter.pk
+
+
+def test_job_sondertag_sicherstellen_mit_joblauf(anna, metriken, uhr):
+    from django.core.management import call_command
+
+    from apps.kern.models import JobLauf
+
+    call_command("sondertag_sicherstellen")
+    call_command("sondertag_sicherstellen")
+    assert JobLauf.objects.filter(name="sondertag_sicherstellen", status="ok").count() == 2
