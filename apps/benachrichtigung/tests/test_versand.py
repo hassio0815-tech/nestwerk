@@ -197,3 +197,33 @@ def test_passwort_nie_im_klartext_in_db_und_audit(smtp):
             assert SMTP_PASSWORT not in repr(cur.fetchall()), tabelle
     assert AuditEintrag.objects.filter(aktion="benachrichtigung.smtp_gespeichert").exists()
     assert SMTP_PASSWORT not in repr(konto) and SMTP_PASSWORT not in str(konto)
+
+
+def test_wiederholung_in_der_ruhezeit_bleibt_stumm(katalog, mama, smtp, uhr, monkeypatch):
+    """B-19: Die Ruhezeit wird vor jedem Versand erneut geprüft (nicht nur beim Routing)."""
+    from datetime import UTC, datetime, time
+
+    from apps.benachrichtigung import services
+
+    uhr.jetzt = datetime(2026, 10, 23, 19, 50, tzinfo=UTC)  # 21:50 Berlin
+    services.ruhezeit_setzen(mama, von=time(22, 0), bis=time(6, 0), gilt_fuer_email=True)
+    aufrufe = []
+
+    def einmal_kaputt(*args, **kwargs):
+        aufrufe.append(1)
+        raise ConnectionRefusedError("kurz weg")
+
+    monkeypatch.setattr(mail, "senden", einmal_kaputt)
+    e = veroeffentlichen(TYP_INFO)
+    router.router(e)
+    assert zustellung(mama, e, "email").status == ZustellStatus.OFFEN  # vor der Ruhezeit
+    senden_alle()
+    z = zustellung(mama, e, "email")
+    assert z.status == ZustellStatus.FEHLER
+    uhr.jetzt = datetime(2026, 10, 23, 21, 0, tzinfo=UTC)  # 23:00 Berlin: Ruhezeit
+    senden_alle()
+    z.refresh_from_db()
+    assert z.status == ZustellStatus.UNTERDRUECKT_RUHEZEIT
+    assert len(aufrufe) == 1  # kein zweiter Sendeversuch
+    senden_alle()
+    assert len(aufrufe) == 1

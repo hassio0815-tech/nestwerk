@@ -13,8 +13,8 @@ from django.db.models import F
 
 from apps.kern import einstellungen, zeit
 
-from . import registry
-from .models import ZustellStatus, Zustellung
+from . import registry, ruhezeit
+from .models import Ruhezeit, ZustellStatus, Zustellung
 
 logger = logging.getLogger("famko.benachrichtigung")
 
@@ -54,6 +54,12 @@ def zustellung_senden(zid):
 
     max_versuche = einstellungen.wert("benachrichtigung.zustellung_max_versuche")
     felder = {"fehler": "", "naechster_versuch": None}
+    if _jetzt_ruhezeit(zustellung):
+        # B-19: Wiederholung (oder verspäteter Versand) fällt in die Ruhezeit des Empfängers ->
+        # stumm wie beim Routing, nicht nachholen (ARCHITECTURE 5.3)
+        felder.update(status=ZustellStatus.UNTERDRUECKT_RUHEZEIT)
+        Zustellung.objects.filter(pk=zid).update(**felder)
+        return felder["status"]
     try:
         registry.kanal(zustellung.kanal_id).senden(zustellung)
     except registry.NichtKonfiguriert as exc:
@@ -78,3 +84,15 @@ def zustellung_senden(zid):
         felder.update(status=ZustellStatus.GESENDET, gesendet_am=zeit.jetzt())
     Zustellung.objects.filter(pk=zid).update(**felder)
     return felder["status"]
+
+
+def _jetzt_ruhezeit(zustellung) -> bool:
+    empfaenger = zustellung.benachrichtigung.empfaenger
+    if empfaenger.rolle != "eltern":
+        return False
+    try:
+        return ruhezeit.unterdrueckt(
+            list(Ruhezeit.objects.filter(benutzer=empfaenger)), zustellung.kanal_id, zeit.jetzt()
+        )
+    except registry.UnbekannterEintrag:
+        return False
