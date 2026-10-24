@@ -134,7 +134,11 @@ def erfolg_nach_ereignis(ereignis):
 
 def grossziel_pruefen(jetzt=None, *, melden=True):
     """Schaltet das Großziel frei, wenn seit dem letzten Großziel genug Wochen in Folge erreicht
-    wurden (neutrale Wochen zählen nicht, brechen nicht). Idempotent (unique je Woche)."""
+    wurden (neutrale Wochen zählen nicht, brechen nicht). Idempotent (unique je Woche).
+
+    Review AP31: Auslösende Woche ist die **jüngste** erreichte Woche der laufenden Folge, und je
+    Aufruf entsteht höchstens ein Großziel. Senken Eltern ``familienziel.grossziel_serie`` unter
+    die schon erreichte Folge, gibt es genau ein Großziel (nicht rückwirkend eines je Teilfolge)."""
     jetzt = jetzt or zeit.jetzt()
     noetig = einstellungen.wert("familienziel.grossziel_serie")
     letzte = (
@@ -145,19 +149,21 @@ def grossziel_pruefen(jetzt=None, *, melden=True):
     qs = Familienwoche.objects.order_by("montag")
     if letzte:
         qs = qs.filter(montag__gt=letzte.ausloesende_woche.montag)
-    zaehler, vorher = 0, None
+    zaehler, vorher, anker = 0, None, None
     for zeile in qs:
-        if vorher is not None and zeile.montag != vorher + timedelta(days=7):
-            zaehler = 0
+        luecke = vorher is not None and zeile.montag != vorher + timedelta(days=7)
+        if luecke or zeile.status in (WochenStatus.VERFEHLT, WochenStatus.LAUFEND):
+            if anker is not None and zaehler >= noetig:  # Folge endet: geschafft?
+                break
+            zaehler, anker = 0, None
+            if zeile.status == WochenStatus.LAUFEND:
+                break
         vorher = zeile.montag
         if zeile.status == WochenStatus.ERREICHT:
             zaehler += 1
-        elif zeile.status == WochenStatus.VERFEHLT:
-            zaehler = 0
-        elif zeile.status == WochenStatus.LAUFEND:
-            break
-        if zaehler >= noetig:
-            return _grossziel_anlegen(zeile, jetzt, melden)
+            anker = zeile
+    if anker is not None and zaehler >= noetig:
+        return _grossziel_anlegen(anker, jetzt, melden)
     return None
 
 

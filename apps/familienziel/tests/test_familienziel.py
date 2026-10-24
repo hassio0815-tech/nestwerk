@@ -306,6 +306,32 @@ def test_verfehlte_woche_bricht_die_folge(anna, uhr):
     assert selectors.serie() == 2
 
 
+def test_gesenkte_serie_gibt_genau_ein_grossziel_an_der_juengsten_woche(anna, uhr):
+    """Review AP31 (AP29-Prüfpunkt): Großziel wird aus der Historie abgeleitet. Senken die Eltern
+    die nötige Folge unter die schon erreichte, entsteht genau ein Großziel (jüngste Woche),
+    nicht rückwirkend eines je Teilfolge."""
+    uhr.stellen(lok(2026, 11, 12, 12))
+    for iso in (IsoWoche(2026, 42), W43, W44):
+        erreicht(iso)
+    assert services.grossziel_pruefen() is None
+    einstellungen.setzen("familienziel.grossziel_serie", 1, akteur=None)
+    for _ in range(3):
+        services.grossziel_pruefen()
+    g = Grossziel.objects.get()
+    assert g.ausloesende_woche.iso_woche == 44
+    assert selectors.serie() == 0
+
+
+def test_catch_up_nach_ausfall_verliert_geschaffte_folge_nicht(anna, uhr):
+    """Folge 4 geschafft, danach verfehlt, Prüfung erst danach (Catch-up): Großziel trotzdem."""
+    uhr.stellen(lok(2026, 11, 26, 12))
+    for iso in (IsoWoche(2026, 42), W43, W44, W45):
+        erreicht(iso)
+    erreicht(IsoWoche(2026, 46), WochenStatus.VERFEHLT)
+    g = services.grossziel_pruefen()
+    assert g is not None and g.ausloesende_woche.iso_woche == 45
+
+
 # --- Wochenwechsel / Catch-up -----------------------------------------------------------------
 
 
