@@ -124,6 +124,13 @@ def wirksames_datum(meldedatum: date, erfasst_am) -> date:
     return k.wirksames_datum(meldedatum, erfasst_am, r.puffer_stunden, r.tz)
 
 
+def woche_abgeschlossen_ab(woche: IsoWoche):
+    """Zeitpunkt (UTC), ab dem ``woche`` abgeschlossen ist (Montag danach + Puffer, lokale
+    Wanduhr). Einzige Quelle auch für familienziel (Review AP31)."""
+    r = auswertung.regeln()
+    return k.finalisiert_ab(woche, r.puffer_stunden, r.tz)
+
+
 def woche_aktiv(kind, woche: IsoWoche) -> bool:
     return Aktivitaet.objects.filter(
         kind=kind, storniert=False, datum__range=(woche.montag, woche.sonntag)

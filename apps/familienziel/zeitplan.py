@@ -31,6 +31,9 @@ def abstimmung_offen_zeitlich(zielwoche, jetzt):
 
 
 def abschluss_zeitpunkt(woche):
-    """Ab hier ist ``woche`` endgültig: Wochenende plus Puffer von spielregeln (K1)."""
-    puffer = einstellungen.wert("spielregeln.puffer_stunden")
-    return zeit.tag_beginn(woche.montag + timedelta(days=7)) + timedelta(hours=puffer)
+    """Ab hier ist ``woche`` endgültig: Wochenende plus Puffer von spielregeln (K1). Gleiche
+    Rechnung wie der Wochenabschluss der Kinder (lokale Wanduhr, auch über Zeitumstellungen bei
+    großem Puffer; Review AP31)."""
+    from apps.spielregeln import selectors as spielregeln
+
+    return spielregeln.woche_abgeschlossen_ab(woche)

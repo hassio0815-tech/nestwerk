@@ -424,3 +424,15 @@ def test_konfetti_popup_wird_gerendert(client, anna):
     html = render_to_string("benachrichtigung/_popups.html", {"popups": [p]})
     assert "toast--familienziel" in html and "konfetti" in html and "Geschafft! Pizza" in html
     assert "<script" not in html
+
+
+def test_abschluss_wie_spielregeln_auch_ueber_zeitumstellung():
+    """Review AP31: gleicher Abschlusszeitpunkt wie die Wochenauswertung der Kinder (lokale
+    Wanduhr). Puffer 168 h über das Sommerzeit-Ende (25.10.2026) -> Mo 26.10. 00:00 lokal."""
+    from apps.familienziel import zeitplan
+    from apps.kern import zeit
+
+    einstellungen.setzen("spielregeln.puffer_stunden", 168, akteur=None)
+    ab = zeitplan.abschluss_zeitpunkt(IsoWoche(2026, 42))
+    lokal = zeit.lokal(ab)
+    assert (lokal.date().isoformat(), lokal.hour) == ("2026-10-26", 0)
