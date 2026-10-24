@@ -330,6 +330,7 @@ SEITEN_ELTERN = [
     ("benachrichtigungen", "/eltern/benachrichtigungen/"),
     ("push-seite", "/push/"),
     ("styleguide", "/styleguide/"),
+    ("abzeichen-galerie", "/abzeichen/galerie/"),  # AP28: alle Abzeichen-Grafiken (nur DEBUG)
 ]
 
 

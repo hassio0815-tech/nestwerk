@@ -3,9 +3,10 @@ aus der Dashboard-Kachel. Ränge-Verwaltung (AP22): Namen, Schwellen, Mindestwoc
 Kalibrierungsfaktor global/je Kind (K3). Abzeichen (AP23): anlegen, ändern, (de)aktivieren,
 Übersicht je Kind. Nur Eltern."""
 
+from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from apps.kern import registry as kern_registry
 from apps.kern import zeit
@@ -16,6 +17,7 @@ from . import abzeichen as engine
 from . import selectors, services
 from .forms import FAMILIE, PauseForm
 from .models import AbzeichenDefinition, Pause, Rang, Vergleich, Wiederholbar
+from .raenge_start import RAENGE
 from .registry import hat_bereiche
 
 ZIELE = {"heim": "konten:eltern_heim", "pausen": "spielregeln:pausen"}
@@ -278,3 +280,19 @@ def abzeichen_aktiv(request, pk):
         definition, request.POST.get("aktiv") == "1", von=aktueller_elternteil(request)
     )
     return redirect("spielregeln:abzeichen")
+
+
+@require_GET
+def abzeichen_galerie(request):
+    """Entwickler-Galerie (AP28, nur DEBUG): alle Abzeichen-Grafiken, je Rang ab 2 eine Variante.
+    Zeigt keine Kinderdaten, daher ohne Anmeldung wie ``avatar/galerie``."""
+    if not settings.DEBUG:
+        raise Http404
+    stufen = [stufe for stufe, *_ in RAENGE if stufe >= 2]
+    zeilen = []
+    for d in selectors.definitionen():
+        varianten = [("", selectors.symbol(d))]  # Grundgrafik (auch Vorschau "Als Nächstes")
+        if d.gruppe == "rang":
+            varianten += [(f"Rang {n}", selectors.symbol(d, f"rang-{n}")) for n in stufen]
+        zeilen.append({"d": d, "varianten": varianten})
+    return render(request, "spielregeln/abzeichen_galerie.html", {"zeilen": zeilen})

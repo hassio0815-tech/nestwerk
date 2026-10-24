@@ -17,4 +17,5 @@ urlpatterns = [
     path("eltern/abzeichen/neu/", views.abzeichen_neu, name="abzeichen_neu"),
     path("eltern/abzeichen/<int:pk>/", views.abzeichen_aendern, name="abzeichen_aendern"),
     path("eltern/abzeichen/<int:pk>/aktiv/", views.abzeichen_aktiv, name="abzeichen_aktiv"),
+    path("abzeichen/galerie/", views.abzeichen_galerie, name="abzeichen_galerie"),
 ]
