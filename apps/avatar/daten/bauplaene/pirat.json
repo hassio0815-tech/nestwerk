@@ -1,0 +1,872 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "pirat-hintergrund-1",
+   "name": "Meerblick",
+   "beschreibung": "Wellen unter blauem Himmel.",
+   "thema": "pirat",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#7ec8e3",
+      "b": "#2a7fb0",
+      "c": "#e5c78a"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-ruecken-1",
+   "name": "Piratenumhang",
+   "beschreibung": "Ein Umhang für stürmische Tage.",
+   "thema": "pirat",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-koerper-1",
+   "name": "Piratenweste",
+   "beschreibung": "Dunkle Weste mit Goldknöpfen.",
+   "thema": "pirat",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-kopf-1",
+   "name": "Piratentuch",
+   "beschreibung": "Ein weißes Tuch auf dem Kopf.",
+   "thema": "pirat",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "tuch",
+     "farben": {
+      "a": "p6",
+      "b": "p1",
+      "c": "p1"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hand-1",
+   "name": "Holzschwert",
+   "beschreibung": "Ein Holzschwert für Abenteuer.",
+   "thema": "pirat",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#c68a4e",
+      "b": "#8a5a2b",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-begleiter-1",
+   "name": "Papagei",
+   "beschreibung": "Ein bunter Papagei auf der Schulter.",
+   "thema": "pirat",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hintergrund-2",
+   "name": "Schiffswellen",
+   "beschreibung": "Wellen mit Rand.",
+   "thema": "pirat",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#7ec8e3",
+      "b": "#2a7fb0",
+      "c": "#e5c78a"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-ruecken-2",
+   "name": "Schatzrucksack",
+   "beschreibung": "Rucksack mit Rand.",
+   "thema": "pirat",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-koerper-2",
+   "name": "Mantel mit Kante",
+   "beschreibung": "Mantel mit hellem Rand.",
+   "thema": "pirat",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-kopf-2",
+   "name": "Tuch mit Kante",
+   "beschreibung": "Tuch mit dunklem Rand.",
+   "thema": "pirat",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "tuch",
+     "farben": {
+      "a": "p6",
+      "b": "p1",
+      "c": "p1"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hand-2",
+   "name": "Fackel",
+   "beschreibung": "Eine Fackel mit Rand.",
+   "thema": "pirat",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fackel",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-begleiter-2",
+   "name": "Schiffskatze",
+   "beschreibung": "Katze mit hellem Rand.",
+   "thema": "pirat",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hintergrund-3",
+   "name": "Inselhimmel",
+   "beschreibung": "Himmel über blauen Wellen.",
+   "thema": "pirat",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#7ec8e3",
+      "b": "#ffffff",
+      "c": "#e5c78a"
+     }
+    },
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "#2a7fb0",
+      "c": "#e5c78a"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-ruecken-3",
+   "name": "Blauer Umhang",
+   "beschreibung": "Umhang mit blauen Streifen.",
+   "thema": "pirat",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-koerper-3",
+   "name": "Blauer Kapitänsmantel",
+   "beschreibung": "Mantel mit blauen Streifen.",
+   "thema": "pirat",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-kopf-3",
+   "name": "Blaue Piratenkappe",
+   "beschreibung": "Kappe mit blauen Streifen.",
+   "thema": "pirat",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hand-3",
+   "name": "Schatzkarte",
+   "beschreibung": "Eine Karte mit blauen Linien.",
+   "thema": "pirat",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "karte",
+     "farben": {
+      "a": "p4",
+      "b": "#3b82f6",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-begleiter-3",
+   "name": "Blaue Schildkröte",
+   "beschreibung": "Schildkröte mit blauen Streifen.",
+   "thema": "pirat",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schildkroete",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p4",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hintergrund-4",
+   "name": "Sternenmeer",
+   "beschreibung": "Sterne über lila Wellen.",
+   "thema": "pirat",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    },
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#a855f7",
+      "b": "#2a7fb0",
+      "c": "#e5c78a"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-ruecken-4",
+   "name": "Schatzsack mit Punkten",
+   "beschreibung": "Rucksack mit lila Punkten.",
+   "thema": "pirat",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-koerper-4",
+   "name": "Schatzweste",
+   "beschreibung": "Weste mit lila Punkten.",
+   "thema": "pirat",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-kopf-4",
+   "name": "Dreispitz",
+   "beschreibung": "Ein Hut mit drei Ecken.",
+   "thema": "pirat",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "dreispitz",
+     "farben": {
+      "a": "p5",
+      "b": "p1",
+      "c": "p3"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hand-4",
+   "name": "Schatzpokal",
+   "beschreibung": "Pokal mit lila Punkten.",
+   "thema": "pirat",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-begleiter-4",
+   "name": "Papagei mit Punkten",
+   "beschreibung": "Papagei mit lila Punkten.",
+   "thema": "pirat",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p3",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hintergrund-5",
+   "name": "Goldmeer",
+   "beschreibung": "Goldene Wellen mit Karo.",
+   "thema": "pirat",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#facc15",
+      "b": "#2a7fb0",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-ruecken-5",
+   "name": "Goldsack",
+   "beschreibung": "Goldener Sack mit Umhang.",
+   "thema": "pirat",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-koerper-5",
+   "name": "Goldmantel",
+   "beschreibung": "Mantel mit goldenem Karo.",
+   "thema": "pirat",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-kopf-5",
+   "name": "Goldener Dreispitz",
+   "beschreibung": "Goldener Hut mit Feder.",
+   "thema": "pirat",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "dreispitz",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "p6",
+      "b": "p6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hand-5",
+   "name": "Goldlupe",
+   "beschreibung": "Goldene Lupe mit Karo.",
+   "thema": "pirat",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lupe",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-begleiter-5",
+   "name": "Goldkatze",
+   "beschreibung": "Goldene Katze mit Karo.",
+   "thema": "pirat",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hintergrund-6",
+   "name": "Schatzinsel",
+   "beschreibung": "Goldene Wellen unter Lichtkranz.",
+   "thema": "pirat",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    },
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#facc15",
+      "b": "#2a7fb0",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-ruecken-6",
+   "name": "Aura des Kapitäns",
+   "beschreibung": "Ein Leuchten über dem Schatz.",
+   "thema": "pirat",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-koerper-6",
+   "name": "Sternenmantel",
+   "beschreibung": "Glänzender Mantel mit pinker Weste.",
+   "thema": "pirat",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-kopf-6",
+   "name": "Kapitänskrone",
+   "beschreibung": "Dreispitz mit Glanz und pinker Feder.",
+   "thema": "pirat",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "dreispitz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-hand-6",
+   "name": "Goldene Schatzkarte",
+   "beschreibung": "Karte mit Glanz und Pokal.",
+   "thema": "pirat",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "karte",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "pirat-begleiter-6",
+   "name": "Goldschildkröte",
+   "beschreibung": "Schildkröte mit Glanz.",
+   "thema": "pirat",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schildkroete",
+     "farben": {
+      "a": "#facc15",
+      "b": "p4",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

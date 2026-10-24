@@ -87,7 +87,8 @@ def kind_wahl(request):
 
 @require_GET
 def galerie(request):
-    """Alle Themen-Grundfiguren auf dunklem und hellem Grund (nur im Entwicklungsmodus)."""
+    """Grundfiguren aller Themen (dunkel und hell); mit ``?thema=`` die 36 Mods dieses Themas als
+    Raster. Nur im Entwicklungsmodus."""
     if not settings.DEBUG:
         raise Http404
     figuren = [
@@ -102,15 +103,32 @@ def galerie(request):
         {"thema": t, "svg": services.vorschau_svg(t["schluessel"], figuren[i])}
         for i, t in enumerate(bibliothek.themen().values())
     ]
-    from .models import ModDefinition
+    mod_themen = bibliothek.kind_themen()
+    gewaehlt = request.GET.get("thema", "")
+    gewaehlt_name = ""
+    mods = []
+    if gewaehlt:
+        if gewaehlt not in {t["schluessel"] for t in mod_themen}:
+            raise Http404
+        gewaehlt_name = bibliothek.thema(gewaehlt)["name"]
+        from .models import ModDefinition
 
-    mods = [
-        {
-            "mod": m,
-            "svg": services.vorschau_svg(
-                m.thema.schluessel, mods={m.slot.schluessel: m.render_mod()}
-            ),
-        }
-        for m in ModDefinition.objects.select_related("thema", "slot")
-    ]
-    return render(request, "avatar/galerie.html", {"themen": themen, "mods": mods})
+        mods = [
+            {
+                "mod": m,
+                "svg": services.vorschau_svg(
+                    m.thema.schluessel, mods={m.slot.schluessel: m.render_mod()}
+                ),
+            }
+            for m in ModDefinition.objects.select_related("thema", "slot")
+            .filter(thema__schluessel=gewaehlt)
+            .order_by("seltenheit", "slot__ebene")
+        ]
+    kontext = {
+        "themen": themen,
+        "mod_themen": mod_themen,
+        "gewaehlt": gewaehlt,
+        "gewaehlt_name": gewaehlt_name,
+        "mods": mods,
+    }
+    return render(request, "avatar/galerie.html", kontext)

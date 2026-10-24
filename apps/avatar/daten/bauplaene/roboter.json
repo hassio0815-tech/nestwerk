@@ -1,0 +1,865 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "roboter-hintergrund-1",
+   "name": "Werkstatt",
+   "beschreibung": "Eine Werkstatt mit Gitternetz.",
+   "thema": "roboter",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#223040",
+      "b": "p3",
+      "c": "#3a4a5c"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-ruecken-1",
+   "name": "Werkzeugrucksack",
+   "beschreibung": "Rucksack voller Werkzeug.",
+   "thema": "roboter",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-koerper-1",
+   "name": "Metallweste",
+   "beschreibung": "Weste aus Metall.",
+   "thema": "roboter",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-kopf-1",
+   "name": "Antennenkopf",
+   "beschreibung": "Ein Kopf mit Antenne.",
+   "thema": "roboter",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hand-1",
+   "name": "Werkzeughammer",
+   "beschreibung": "Ein Hammer für jede Reparatur.",
+   "thema": "roboter",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hammer",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-begleiter-1",
+   "name": "Späh-Drohne",
+   "beschreibung": "Eine Drohne mit Lampe.",
+   "thema": "roboter",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "p2",
+      "b": "p4",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hintergrund-2",
+   "name": "Nachtbaustelle",
+   "beschreibung": "Nacht mit Rand.",
+   "thema": "roboter",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-ruecken-2",
+   "name": "Schildrücken",
+   "beschreibung": "Schild mit Rand am Rücken.",
+   "thema": "roboter",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-koerper-2",
+   "name": "Panzerplatten",
+   "beschreibung": "Panzer mit Rand.",
+   "thema": "roboter",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-kopf-2",
+   "name": "Stahlhelm mit Kante",
+   "beschreibung": "Runder Helm mit Rand.",
+   "thema": "roboter",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hand-2",
+   "name": "Schweißbrenner",
+   "beschreibung": "Fackel mit Rand.",
+   "thema": "roboter",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fackel",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-begleiter-2",
+   "name": "Roboter-Hund",
+   "beschreibung": "Hund mit Rand.",
+   "thema": "roboter",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "p2",
+      "b": "p4",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hintergrund-3",
+   "name": "Teal-Raster",
+   "beschreibung": "Gitternetz mit Streifen.",
+   "thema": "roboter",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#223040",
+      "b": "p3",
+      "c": "#3a4a5c"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-ruecken-3",
+   "name": "Teal-Düsen",
+   "beschreibung": "Düsen mit teal Streifen.",
+   "thema": "roboter",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-koerper-3",
+   "name": "Teal-Anzug",
+   "beschreibung": "Anzug mit teal Streifen.",
+   "thema": "roboter",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-kopf-3",
+   "name": "Teal-Funkkopf",
+   "beschreibung": "Antenne mit Streifen.",
+   "thema": "roboter",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hand-3",
+   "name": "Teal-Schild",
+   "beschreibung": "Schild mit teal Streifen.",
+   "thema": "roboter",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-begleiter-3",
+   "name": "Funkdrohne",
+   "beschreibung": "Drohne mit blauen Streifen.",
+   "thema": "roboter",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "p2",
+      "b": "p4",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hintergrund-4",
+   "name": "Lichterhalle",
+   "beschreibung": "Halle mit lila Lichtkranz.",
+   "thema": "roboter",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#223040",
+      "b": "p3",
+      "c": "#3a4a5c"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#a855f7",
+      "b": "#a855f7",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-ruecken-4",
+   "name": "Doppel-Düse",
+   "beschreibung": "Düse mit lila Punkten und Rucksack.",
+   "thema": "roboter",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#a855f7"
+     }
+    },
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-koerper-4",
+   "name": "Zahnrad-Panzer",
+   "beschreibung": "Panzer mit lila Punkten.",
+   "thema": "roboter",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-kopf-4",
+   "name": "Glaskopf mit Antenne",
+   "beschreibung": "Glaskopf mit lila Punkten.",
+   "thema": "roboter",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "blase",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hand-4",
+   "name": "Zahnrad-Stab",
+   "beschreibung": "Stab mit lila Punkten.",
+   "thema": "roboter",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-begleiter-4",
+   "name": "Robo-Vogel",
+   "beschreibung": "Vogel mit lila Punkten.",
+   "thema": "roboter",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hintergrund-5",
+   "name": "Goldfabrik",
+   "beschreibung": "Fabrik mit goldenem Karo.",
+   "thema": "roboter",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-ruecken-5",
+   "name": "Goldene Düse",
+   "beschreibung": "Goldene Düse mit Schild.",
+   "thema": "roboter",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p2",
+      "b": "#facc15",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-koerper-5",
+   "name": "Goldrüstung",
+   "beschreibung": "Goldene Rüstung mit Karo.",
+   "thema": "roboter",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-kopf-5",
+   "name": "Goldhelm mit Antenne",
+   "beschreibung": "Goldener Helm mit Karo.",
+   "thema": "roboter",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hand-5",
+   "name": "Goldhammer",
+   "beschreibung": "Goldener Hammer mit Karo.",
+   "thema": "roboter",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hammer",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-begleiter-5",
+   "name": "Goldhund",
+   "beschreibung": "Goldener Hund mit Karo.",
+   "thema": "roboter",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hintergrund-6",
+   "name": "Funkenhimmel",
+   "beschreibung": "Nacht mit goldenem Lichtkranz.",
+   "thema": "roboter",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-ruecken-6",
+   "name": "Sternen-Aura",
+   "beschreibung": "Ein Leuchten aus Licht und Gold.",
+   "thema": "roboter",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-koerper-6",
+   "name": "Sonnen-Panzer",
+   "beschreibung": "Glänzender Panzer mit pinker Weste.",
+   "thema": "roboter",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-kopf-6",
+   "name": "Robo-Krone",
+   "beschreibung": "Eine Krone mit Glanz und Antenne.",
+   "thema": "roboter",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p2",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-hand-6",
+   "name": "Funkenhammer",
+   "beschreibung": "Hammer mit Glanz und Fackel.",
+   "thema": "roboter",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hammer",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "fackel",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "roboter-begleiter-6",
+   "name": "Funken-Drohne",
+   "beschreibung": "Drohne mit goldenem Glanz.",
+   "thema": "roboter",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

@@ -362,9 +362,15 @@ def eltern_login(page, aufn):
     page.wait_for_load_state("networkidle")
 
 
+MOD_THEMEN = (
+    "ritter", "weltraum", "ninja", "roboter", "pirat",
+    "wikinger", "fussballer", "basketballer", "rennfahrer", "dschungel",
+)  # AP25: je Thema die 36 Mods in der Entwickler-Galerie
+
+
 def avatar_ablauf(browser, aufn):
     """AP24: Kind C hat noch keinen Avatar. Aufruf-Kachel, Erstwahl mit Vorschau, danach das
-    Dashboard mit Figur; dazu die Entwickler-Galerie."""
+    Dashboard mit Figur; dazu die Entwickler-Galerie (AP25: je Thema ein Raster mit 36 Mods)."""
     ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
     page = ctx.new_page()
     aufn.s.anbinden(page)
@@ -384,6 +390,8 @@ def avatar_ablauf(browser, aufn):
     aufn.s.neu("avatar-dashboard-neu")
     aufn.foto(page, "avatar-dashboard-neu")
     aufn.seite(page, "avatar-galerie", "/avatar/galerie/")
+    for thema in MOD_THEMEN:
+        aufn.seite(page, f"mods-{thema}", f"/avatar/galerie/?thema={thema}")
     ctx.close()
 
 

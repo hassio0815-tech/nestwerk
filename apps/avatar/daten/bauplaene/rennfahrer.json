@@ -1,0 +1,818 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "rennfahrer-hintergrund-1",
+   "name": "Rennstrecke",
+   "beschreibung": "Eine Strecke unter blauem Himmel.",
+   "thema": "rennfahrer",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "strecke",
+     "farben": {
+      "a": "#7fb8e6",
+      "b": "#555b66",
+      "c": "#3b3f47"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-ruecken-1",
+   "name": "Rucksack",
+   "beschreibung": "Ein Rucksack für die Boxengasse.",
+   "thema": "rennfahrer",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-koerper-1",
+   "name": "Rennanzug",
+   "beschreibung": "Ein Anzug für die Rennstrecke.",
+   "thema": "rennfahrer",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-kopf-1",
+   "name": "Rennkappe",
+   "beschreibung": "Eine Kappe für den Start.",
+   "thema": "rennfahrer",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "p3",
+      "b": "p5",
+      "c": "p1"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hand-1",
+   "name": "Zielflagge",
+   "beschreibung": "Die Flagge für das Ziel.",
+   "thema": "rennfahrer",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-begleiter-1",
+   "name": "Fuchs-Co-Pilot",
+   "beschreibung": "Ein Fuchs als Beifahrer.",
+   "thema": "rennfahrer",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "p3",
+      "b": "p2",
+      "c": "p1"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hintergrund-2",
+   "name": "Himmel mit Kante",
+   "beschreibung": "Himmel mit hellem Rand.",
+   "thema": "rennfahrer",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#7fb8e6",
+      "b": "#ffffff",
+      "c": "#9ca3af"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-ruecken-2",
+   "name": "Turbo-Rucksack",
+   "beschreibung": "Turbo mit Rand.",
+   "thema": "rennfahrer",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-koerper-2",
+   "name": "Anzug mit Kante",
+   "beschreibung": "Anzug mit rotem Rand.",
+   "thema": "rennfahrer",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-kopf-2",
+   "name": "Rennhelm",
+   "beschreibung": "Runder Helm mit Rand.",
+   "thema": "rennfahrer",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hand-2",
+   "name": "Werkzeughammer",
+   "beschreibung": "Ein Hammer mit Rand.",
+   "thema": "rennfahrer",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hammer",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-begleiter-2",
+   "name": "Drohnen-Kamera",
+   "beschreibung": "Drohne mit Rand.",
+   "thema": "rennfahrer",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hintergrund-3",
+   "name": "Boxengasse",
+   "beschreibung": "Boxengasse mit Streifen.",
+   "thema": "rennfahrer",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#555b66",
+      "b": "#9ca3af",
+      "c": "#2b3340"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-ruecken-3",
+   "name": "Blauer Turbo",
+   "beschreibung": "Turbo mit blauen Streifen.",
+   "thema": "rennfahrer",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-koerper-3",
+   "name": "Blauer Rennanzug",
+   "beschreibung": "Anzug mit blauen Streifen.",
+   "thema": "rennfahrer",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-kopf-3",
+   "name": "Blauer Rennhelm",
+   "beschreibung": "Helm mit blauen Streifen.",
+   "thema": "rennfahrer",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hand-3",
+   "name": "Blaue Flagge",
+   "beschreibung": "Flagge mit blauen Streifen.",
+   "thema": "rennfahrer",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p5",
+      "c": "p1"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-begleiter-3",
+   "name": "Blaue Katze",
+   "beschreibung": "Katze mit blauen Streifen.",
+   "thema": "rennfahrer",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hintergrund-4",
+   "name": "Abendrennen",
+   "beschreibung": "Strecke im lila Abendlicht.",
+   "thema": "rennfahrer",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "strecke",
+     "farben": {
+      "a": "#a855f7",
+      "b": "#555b66",
+      "c": "#3b3f47"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-ruecken-4",
+   "name": "Turbo mit Punkten",
+   "beschreibung": "Turbo mit lila Punkten.",
+   "thema": "rennfahrer",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-koerper-4",
+   "name": "Trikot mit Punkten",
+   "beschreibung": "Trikot mit lila Punkten.",
+   "thema": "rennfahrer",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-kopf-4",
+   "name": "Glas-Visier",
+   "beschreibung": "Glashelm mit lila Punkten.",
+   "thema": "rennfahrer",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "blase",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hand-4",
+   "name": "Pokal mit Punkten",
+   "beschreibung": "Pokal mit lila Punkten.",
+   "thema": "rennfahrer",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-begleiter-4",
+   "name": "Fuchs mit Punkten",
+   "beschreibung": "Fuchs mit lila Punkten.",
+   "thema": "rennfahrer",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hintergrund-5",
+   "name": "Goldpodest",
+   "beschreibung": "Podest mit goldenem Karo.",
+   "thema": "rennfahrer",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "streifen",
+     "farben": {
+      "a": "#facc15",
+      "b": "#f5f5f5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-ruecken-5",
+   "name": "Goldturbo",
+   "beschreibung": "Goldener Turbo mit Karo.",
+   "thema": "rennfahrer",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-koerper-5",
+   "name": "Goldanzug",
+   "beschreibung": "Goldener Anzug mit Karo.",
+   "thema": "rennfahrer",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-kopf-5",
+   "name": "Goldhelm",
+   "beschreibung": "Goldener Helm mit Karo.",
+   "thema": "rennfahrer",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hand-5",
+   "name": "Goldflagge",
+   "beschreibung": "Goldene Flagge mit Karo.",
+   "thema": "rennfahrer",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-begleiter-5",
+   "name": "Goldfuchs",
+   "beschreibung": "Goldener Fuchs mit Karo.",
+   "thema": "rennfahrer",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hintergrund-6",
+   "name": "Regenbogen-Ziel",
+   "beschreibung": "Strecke mit pinkem Lichtkranz.",
+   "thema": "rennfahrer",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "strecke",
+     "farben": {
+      "a": "#7fb8e6",
+      "b": "#555b66",
+      "c": "#3b3f47"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-ruecken-6",
+   "name": "Aura der Rennlegende",
+   "beschreibung": "Ein Leuchten für den Sieg.",
+   "thema": "rennfahrer",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-koerper-6",
+   "name": "Sonnen-Anzug",
+   "beschreibung": "Glänzender Anzug mit pinker Weste.",
+   "thema": "rennfahrer",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-kopf-6",
+   "name": "Champion-Krone",
+   "beschreibung": "Eine Krone mit Glanz.",
+   "thema": "rennfahrer",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-hand-6",
+   "name": "Goldpokal",
+   "beschreibung": "Glänzender Pokal mit Zielflagge.",
+   "thema": "rennfahrer",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "rennfahrer-begleiter-6",
+   "name": "Glanz-Drohne",
+   "beschreibung": "Drohne mit goldenem Glanz.",
+   "thema": "rennfahrer",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}
