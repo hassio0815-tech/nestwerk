@@ -35,6 +35,7 @@ from django.utils.text import slugify
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.kern import registry as kern_registry
+from apps.kern import svg as kern_svg
 from apps.konten import selectors as konten
 
 from . import events
@@ -351,6 +352,16 @@ class Symbol:
     schluessel: str
     bild: str
     icon: str
+
+
+# Abzeichen-Grafiken (AP28): eigene Fläche 64 x 64, Verläufe erlaubt; geprüft mit dem gemeinsamen
+# SVG-Sanitizer aus kern (Review AP31; vorher mit viewBox-Trick gegen die Avatar-Whitelist).
+GRAFIK_VIEWBOX = (0, 0, 64, 64)
+
+
+def grafik_pruefen(text: str) -> str | None:
+    """``None``, wenn eine Abzeichen-Grafik die Whitelist besteht, sonst die Fehlermeldung."""
+    return kern_svg.svg_pruefen(text, viewbox=GRAFIK_VIEWBOX, verlaeufe=True)
 
 
 @lru_cache(maxsize=512)

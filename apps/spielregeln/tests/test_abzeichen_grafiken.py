@@ -1,5 +1,5 @@
 """AP28: Abzeichen-Grafiken. Jedes Symbol der Startwerte und jedes aktive Abzeichen in der DB hat
-eine Datei unter static/abzeichen/. Die SVG-Whitelist prüft tests/test_abzeichen_svg.py."""
+eine Datei unter static/abzeichen/. Die SVG-Whitelist prüft test_abzeichen_svg.py (kern.svg)."""
 
 from pathlib import Path
 
