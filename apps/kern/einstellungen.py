@@ -301,5 +301,14 @@ def kern_einstellungen_definieren():
     )
     definieren("allgemein.sprache", Typ.TEXT, "Sprache", auswahl=("de",))
     definieren(
+        "allgemein.joblauf_aufbewahrung_tage",
+        Typ.GANZZAHL,
+        "Aufbewahrung der Job-Läufe",
+        beschreibung="Protokoll der geplanten Jobs (Systemstatus) wird danach gelöscht.",
+        einheit="Tage",
+        minimum=7,
+        maximum=3650,
+    )
+    definieren(
         "allgemein.einrichtung_abgeschlossen", Typ.BOOL, "Einrichtung abgeschlossen", intern=True
     )

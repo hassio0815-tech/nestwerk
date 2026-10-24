@@ -20,6 +20,7 @@ from .models import (
     Ruhezeit,
     SmtpKonto,
     SmtpSicherheit,
+    Zustellung,
 )
 
 # --- Einstellungen ---------------------------------------------------------------------------
@@ -57,6 +58,25 @@ def einstellungen_definieren():
         "benachrichtigung.aufbewahrung_tage",
         Typ.GANZZAHL,
         "Aufbewahrung gelesener Benachrichtigungen",
+        einheit="Tage",
+        minimum=7,
+        maximum=3650,
+    )
+    einstellungen.definieren(
+        "benachrichtigung.aufbewahrung_ungelesen_tage",
+        Typ.GANZZAHL,
+        "Aufbewahrung ungelesener Benachrichtigungen",
+        beschreibung="Auch ungelesene Benachrichtigungen werden danach gelöscht.",
+        einheit="Tage",
+        minimum=30,
+        maximum=3650,
+    )
+    einstellungen.definieren(
+        "benachrichtigung.zustellung_aufbewahrung_tage",
+        Typ.GANZZAHL,
+        "Aufbewahrung der Zustell-Protokolle",
+        beschreibung="Protokoll je Kanal (gesendet, stumm, Fehler) wird danach gelöscht; die "
+        "Benachrichtigung selbst bleibt nach ihrer eigenen Frist.",
         einheit="Tage",
         minimum=7,
         maximum=3650,
@@ -209,13 +229,58 @@ def popups_als_gesehen(popups):
     )
 
 
-def aufraeumen():
+def aufraeumen(jetzt=None):
     """Löscht gelesene Benachrichtigungen (samt Zustellungen/Pop-ups) nach der Aufbewahrungszeit."""
-    grenze = zeit.jetzt() - timedelta(days=einstellungen.wert("benachrichtigung.aufbewahrung_tage"))
-    anzahl, _ = Benachrichtigung.objects.filter(
-        gelesen_am__isnull=False, erstellt_am__lt=grenze
+    return aufbewahrung(jetzt)["benachrichtigungen"]
+
+
+def aufbewahrung(jetzt=None) -> dict:
+    """Job ``benachrichtigungen_aufraeumen`` (B-15, Review AP31), idempotent, alle Fristen sind
+    Einstellungen:
+
+    - gelesene Benachrichtigungen nach ``benachrichtigung.aufbewahrung_tage``,
+      ungelesene nach ``benachrichtigung.aufbewahrung_ungelesen_tage`` (samt Pop-ups/Zustellungen),
+    - Zustellungen nach ``benachrichtigung.zustellung_aufbewahrung_tage``,
+    - Ereignisse nach ``ereignisse.aufbewahrung_tage`` (nur verarbeitet/ok und nicht mehr von einer
+      Benachrichtigung referenziert),
+    - Job-Läufe nach ``allgemein.joblauf_aufbewahrung_tage``.
+
+    Ledger (``punkte``) und Audit-Log werden nie gelöscht."""
+    from apps.ereignisse import services as ereignisse
+    from apps.kern import jobs
+
+    jetzt = jetzt or zeit.jetzt()
+    w = einstellungen.werte(
+        "benachrichtigung.aufbewahrung_tage",
+        "benachrichtigung.aufbewahrung_ungelesen_tage",
+        "benachrichtigung.zustellung_aufbewahrung_tage",
+        "allgemein.joblauf_aufbewahrung_tage",
+    )
+
+    def vor(schluessel):
+        return jetzt - timedelta(days=w[schluessel])
+
+    gelesen, _ = Benachrichtigung.objects.filter(
+        gelesen_am__isnull=False, erstellt_am__lt=vor("benachrichtigung.aufbewahrung_tage")
     ).delete()
-    return anzahl
+    ungelesen, _ = Benachrichtigung.objects.filter(
+        gelesen_am__isnull=True,
+        erstellt_am__lt=vor("benachrichtigung.aufbewahrung_ungelesen_tage"),
+    ).delete()
+    # Nach der Frist (mind. 7 Tage) sind alle Wiederholungen längst vorbei (Backoff max. 1 h)
+    zustellungen, _ = Zustellung.objects.filter(
+        benachrichtigung__erstellt_am__lt=vor("benachrichtigung.zustellung_aufbewahrung_tage")
+    ).delete()
+    ereignis_anzahl = ereignisse.aufraeumen(
+        behalten=Benachrichtigung.objects.values("ereignis_id"), jetzt=jetzt
+    )
+    laeufe = jobs.laeufe_aufraeumen(w["allgemein.joblauf_aufbewahrung_tage"], jetzt=jetzt)
+    return {
+        "benachrichtigungen": gelesen + ungelesen,
+        "zustellungen": zustellungen,
+        "ereignisse": ereignis_anzahl,
+        "job_laeufe": laeufe,
+    }
 
 
 # --- SMTP und Testmail -----------------------------------------------------------------------

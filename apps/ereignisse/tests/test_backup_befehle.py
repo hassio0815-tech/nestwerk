@@ -93,4 +93,9 @@ def test_backup_pruefen_erkennt_veraltetes_backup(live, tmp_path):
 def test_benachrichtigungen_aufraeumen_laeuft():
     call_command("benachrichtigungen_aufraeumen")
     lauf = JobLauf.objects.get(name="benachrichtigungen_aufraeumen")
-    assert lauf.status == JobStatus.OK and lauf.info == {"geloescht": 0}
+    assert lauf.status == JobStatus.OK and lauf.info == {
+        "benachrichtigungen": 0,
+        "zustellungen": 0,
+        "ereignisse": 0,
+        "job_laeufe": 0,
+    }

@@ -130,3 +130,12 @@ class JobBefehl(BaseCommand):
     def handle(self, *args, **optionen):
         lauf = ausfuehren(self.job_name, lambda s: self.job(s, **optionen), lease=self.lease)
         self.stdout.write(f"{self.job_name}: {lauf.status} {lauf.info}")
+
+
+def laeufe_aufraeumen(tage, *, jetzt=None) -> int:
+    """Aufbewahrung (B-15): beendete Job-Läufe älter als ``tage`` löschen (laufende bleiben)."""
+    grenze = (jetzt or timezone.now()) - timedelta(days=tage)
+    anzahl, _ = (
+        JobLauf.objects.filter(gestartet_am__lt=grenze).exclude(status=JobStatus.LAEUFT).delete()
+    )
+    return anzahl

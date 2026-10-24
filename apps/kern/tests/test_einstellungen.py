@@ -170,6 +170,7 @@ def test_kern_deklariert_allgemein(e):
         "allgemein.anzeigename",
         "allgemein.einrichtung_abgeschlossen",
         "allgemein.go_live_datum",
+        "allgemein.joblauf_aufbewahrung_tage",
         "allgemein.sprache",
         "allgemein.zeitzone",
     ]

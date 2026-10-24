@@ -1,6 +1,7 @@
 """Schreibende Schnittstelle von ereignisse (ARCHITECTURE 5.1)."""
 
 import json
+from datetime import timedelta
 
 from django.db import IntegrityError, connection, transaction
 from django.utils import timezone
@@ -137,8 +138,48 @@ def neu_einplanen(*, akteur=None, ids=None):
     return anzahl
 
 
+def aufraeumen(*, behalten=None, jetzt=None) -> int:
+    """Aufbewahrung (B-15, Review AP31): löscht Ereignisse älter als
+    ``ereignisse.aufbewahrung_tage``,
+    die verteilt sind und deren Verarbeitungen alle ``ok`` sind (Verarbeitungen per CASCADE).
+    Offene, fehlerhafte oder aufgegebene bleiben (Systemstatus). ``behalten``: Ereignis-IDs
+    (Queryset/Liste), die noch referenziert werden (z. B. Benachrichtigungen, PROTECT).
+    Fachliche Fakten hängen nie an Ereignissen (Ledger, Audit, Aktivitäten, Ansprüche)."""
+    tage = einstellungen.wert("ereignisse.aufbewahrung_tage")
+    grenze = (jetzt or timezone.now()) - timedelta(days=tage)
+    offen = EreignisVerarbeitung.objects.exclude(status=Status.OK).values("ereignis_id")
+    qs = Ereignis.objects.filter(zeit__lt=grenze, verteilt=True).exclude(pk__in=offen)
+    if behalten is not None:
+        qs = qs.exclude(pk__in=behalten)
+    anzahl = 0
+    for ids in _stapel(qs.values_list("pk", flat=True)):
+        anzahl += Ereignis.objects.filter(pk__in=ids).delete()[1].get("ereignisse.Ereignis", 0)
+    return anzahl
+
+
+def _stapel(werte, groesse=500):
+    stapel = []
+    for wert in werte.iterator():
+        stapel.append(wert)
+        if len(stapel) >= groesse:
+            yield stapel
+            stapel = []
+    if stapel:
+        yield stapel
+
+
 def einstellungen_definieren():
-    """Einstellungen des Workers (Startwerte per Datenmigration 0002)."""
+    """Einstellungen des Workers (Startwerte per Datenmigration 0002/0004)."""
+    einstellungen.definieren(
+        "ereignisse.aufbewahrung_tage",
+        Typ.GANZZAHL,
+        "Aufbewahrung verarbeiteter Ereignisse",
+        beschreibung="Erfolgreich verarbeitete Ereignisse (internes Protokoll) werden danach "
+        "gelöscht. Punkte, Protokoll (Audit) und Spielstände bleiben immer.",
+        einheit="Tage",
+        minimum=30,
+        maximum=3650,
+    )
     einstellungen.definieren(
         "ereignisse.max_versuche",
         Typ.GANZZAHL,

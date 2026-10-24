@@ -3,8 +3,11 @@ from apps.kern.jobs import JobBefehl
 
 
 class Command(JobBefehl):
-    help = "Löscht gelesene Benachrichtigungen nach der Aufbewahrungszeit (Einstellung)."
+    help = (
+        "Aufbewahrung (B-15): alte Benachrichtigungen, Zustellungen, verarbeitete Ereignisse und "
+        "Job-Läufe löschen (Fristen sind Einstellungen; Ledger und Audit bleiben)."
+    )
     job_name = "benachrichtigungen_aufraeumen"
 
     def job(self, sperre, **optionen):
-        return {"geloescht": services.aufraeumen()}
+        return services.aufbewahrung()
