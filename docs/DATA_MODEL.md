@@ -1,8 +1,8 @@
 # FamKo: Datenmodell
 
-- **Stand:** 23.10.2026
+- **Stand:** 24.10.2026 (Review AP31: Abschnitte 5.8, 6, 9–12, 14, 15.2 an den Code angeglichen)
 - **Bezug:** `docs/ARCHITECTURE.md` (Abschnitte und [K]-Punkte), `docs/SPEC.md`
-- **Umfang:** 57 Modelle in 11 Apps (Phase 1–3). `oberflaeche` und `einrichtung` haben keine eigenen Modelle.
+- **Umfang:** siehe Abschnitt 12 (Stand Code nach Phase 2). `oberflaeche` und `einrichtung` haben keine eigenen Modelle.
 
 ## 0. Konventionen
 
@@ -308,189 +308,214 @@ Typisierter Schlüssel-Wert-Speicher. Definition (Schlüssel, Typ, Validierung, 
 
 | Feld | Typ | Pflicht | Constraints / Index |
 |---|---|---|---|
-| benutzer | FK Benutzer | ja | CASCADE; Index (benutzer, gesehen_am) |
-| art | enum rang/abzeichen/sondertag/familienziel/mod_fertig/info | ja | |
-| ereignis | FK Ereignis | ja | PROTECT |
-| daten | JSON | ja | Grafik-Referenz, Texte |
+| empfaenger | FK Benutzer | ja | CASCADE; Index (empfaenger, gesehen_am) |
+| benachrichtigung | 1:1 Benachrichtigung | ja | CASCADE (IDEM: ein Pop-up je Benachrichtigung) |
+| art | varchar(80) | ja | Ereignistyp, steuert die Darstellung |
+| titel | varchar(120) | ja | |
+| text | varchar(400) | nein | |
 | erstellt_am | datetime | ja | |
 | gesehen_am | datetime | nein | |
-
-- **unique(benutzer, ereignis, art)** (IDEM).
 
 ---
 
 ## 6. `spielregeln`
 
-### 6.1 Rang (Konfigurationstabelle)
+> **Stand Review AP31 (24.10.2026):** Tabellen dieses Abschnitts sind aus den Django-Modellen erzeugt (Code ist maßgeblich, B-22). Fachliche Erläuterungen stehen in ARCHITECTURE 7.
 
-| Feld | Typ | Pflicht | Constraints / Index |
+- `Prognose` (früher 6.12) entsteht erst mit AP32 (Phase 3).
+- `KindStand.godmode_seit_aktivwochen` entfällt: der God-Mode-Zyklus wird live aus Aktivitäten nach dem Rang-Fakt berechnet (`avatar.godmode`).
+
+
+### 6.1 Rang
+
+Rangstufe = Seltenheit (SPEC 6.2/18.1, Entscheidung 14). Name umbenennbar; Schwellen und Mindestwochen steigen mit der Stufe (Service prüft). Die niedrigste Stufe ist der Startrang.
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| stufe | smallint | ja | **unique**, 1–6 (weitere möglich) |
-| schluessel | slug | ja | unique: `common` … `godmode` |
-| name | varchar(40) | ja | umbenennbar |
-| xp_schwelle | int | ja | CHECK ≥ 0 |
-| min_aktive_wochen | smallint | ja | CHECK ≥ 0 |
-| mod_preis | int | ja | Standardpreis je Mod dieser Seltenheit |
-| bauzeit_stunden | int | ja | Standard-Bauzeit |
-| farbe | varchar(7) | ja | Seltenheitsfarbe |
-| ist_endstufe | bool | ja | God Mode; genau eine (Teil-Unique) |
+| stufe | smallint ≥ 0 | ja | unique |
+| schluessel | slug(20) | ja | unique |
+| name | varchar(40) | ja |  |
+| xp_schwelle | int ≥ 0 | ja |  |
+| min_aktive_wochen | smallint ≥ 0 | ja |  |
+| mod_preis | int ≥ 0 | ja |  |
+| bauzeit_stunden | int ≥ 0 | ja |  |
+| farbe | varchar(7) | ja |  |
+| ist_endstufe | bool | ja |  |
 
-- CHECK über Service: Schwellen und Mindestwochen monoton steigend mit der Stufe.
+- **unique(ist_endstufe) WHERE ist_endstufe = True** (`spielregeln_rang_eine_endstufe`)
 
 ### 6.2 Kalibrierung
 
-| Feld | Typ | Pflicht | Constraints / Index |
+Kalibrierungsfaktoren (K3, DATA_MODEL 6.2): ``kind = NULL`` = global (genau eine Zeile). Wirksamer Faktor = global x Kind. AP22 nutzt ``faktor_schwelle`` (XP-Schwellen), Preis und Bauzeit folgen mit AP26.
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| kind | 1:1 Benutzer | nein | **NULL = global** (unique, eine globale Zeile) |
-| faktor_schwelle | decimal(4,2) | ja | Default 1.00, CHECK 0.25–4.00 |
-| faktor_preis | decimal(4,2) | ja | Default 1.00 |
-| faktor_bauzeit | decimal(4,2) | ja | Default 1.00 |
-| notiz | varchar(200) | nein | |
-| geaendert_von | FK Benutzer | nein | |
-| geaendert_am | datetime | ja | |
+| kind | 1:1 Benutzer | nein | unique; CASCADE |
+| faktor_schwelle | decimal(4,2) | ja |  |
+| faktor_preis | decimal(4,2) | ja |  |
+| faktor_bauzeit | decimal(4,2) | ja |  |
+| notiz | varchar(200) | nein |  |
+| geaendert_von | FK Benutzer | nein | SET_NULL |
+| geaendert_am | datetime | ja |  |
 
-- Wirksamer Faktor = global x Kind ([K3]).
+- **unique(Ausdruck)** (`spielregeln_kalibrierung_eine_globale`)
 
-### 6.3 Pause
+- CHECK `spielregeln_kalibrierung_bereich`
 
-| Feld | Typ | Pflicht | Constraints / Index |
-|---|---|---|---|
-| kind | FK Benutzer | nein | NULL = ganze Familie; Index (kind, von, bis) |
-| von | date | ja | |
-| bis | date | nein | NULL = offen; CHECK `bis >= von` |
-| grund | varchar(120) | nein | |
-| quelle | enum eltern/hausautomation | ja | |
-| erstellt_von | FK Benutzer | nein | PROTECT |
-| erstellt_am | datetime | ja | |
+### 6.3 RangAufstieg
 
-- Überlappende Pausen desselben Kindes erlaubt (Vereinigung zählt). Jede Änderung -> Audit.
+Fakt "Kind hat Rang erreicht" (unique je Kind+Rang). Bleibt, auch wenn Schwellen später steigen oder XP durch Korrektur sinken (K2). Mehrfachsprung = je Stufe ein Eintrag.
 
-### 6.4 Aktivitaet
-
-| Feld | Typ | Pflicht | Constraints / Index |
-|---|---|---|---|
-| kind | FK Benutzer | ja | PROTECT; Index (kind, datum) |
-| datum | date | ja | Bezugsdatum (Meldedatum, Berlin) |
-| modul | varchar(40) | ja | `aufgaben`, später `lernen` |
-| referenz | varchar(60) | ja | z. B. Instanz-ID |
-| storniert | bool | ja | Default false |
-| erstellt_am | datetime | ja | |
-
-- **unique(modul, referenz)** (IDEM).
-
-### 6.5 Wochenauswertung
-
-| Feld | Typ | Pflicht | Constraints / Index |
-|---|---|---|---|
-| kind | FK Benutzer | ja | PROTECT |
-| iso_jahr | smallint | ja | |
-| iso_woche | smallint | ja | CHECK 1–53 |
-| montag | date | ja | Index |
-| aktiv | bool | ja | |
-| neutral | bool | ja | Pause-bedingt |
-| pausentage | smallint | ja | |
-| xp_woche | int | ja | |
-| wochenserie_danach | smallint | ja | |
-| aktive_wochen_gesamt | int | ja | |
-| zuwachs_relativ | decimal(6,3) | nein | Held der Woche |
-| held_der_woche | bool | ja | |
-| finalisiert_am | datetime | nein | NULL = vorläufig (vor Puffer) |
-
-- **unique(kind, iso_jahr, iso_woche)** (IDEM).
-
-### 6.6 KindStand (Cache, neu berechenbar)
-
-| Feld | Typ | Pflicht | Constraints / Index |
-|---|---|---|---|
-| kind | 1:1 Benutzer | ja | PK |
-| rang | FK Rang | ja | PROTECT; höchster erreichter |
-| wochenserie | smallint | ja | Stand letzte finalisierte Woche |
-| tagesserie | smallint | ja | |
-| rekord_tagesserie | smallint | ja | |
-| rekord_wochenserie | smallint | ja | |
-| aktive_wochen_gesamt | int | ja | |
-| godmode_seit_aktivwochen | int | nein | Zähler für 26-Wochen-Zyklus |
-| aktualisiert_am | datetime | ja | |
-
-### 6.7 RangAufstieg
-
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
 | kind | FK Benutzer | ja | PROTECT |
 | rang | FK Rang | ja | PROTECT |
-| erreicht_am | datetime | ja | |
-| xp_bei_aufstieg | int | ja | Snapshot |
-| aktive_wochen_bei_aufstieg | int | ja | Snapshot |
+| erreicht_am | datetime | ja |  |
+| xp_bei_aufstieg | int | ja |  |
+| aktive_wochen_bei_aufstieg | int ≥ 0 | ja |  |
+| schwelle_bei_aufstieg | int ≥ 0 | ja | wirksame XP-Schwelle |
 
-- **unique(kind, rang)** (IDEM).
+- **unique(kind, rang)** (`spielregeln_rangaufstieg_idem`)
+
+### 6.4 Pause
+
+Pause eines Kindes oder der ganzen Familie (``kind = NULL``). ``von``/``bis`` sind lokale Daten, inklusiv; ``bis = NULL`` = offen. Überlappungen sind erlaubt (Vereinigung zählt).
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | nein | PROTECT |
+| von | date | ja |  |
+| bis | date | nein |  |
+| grund | varchar(120) | nein |  |
+| quelle | varchar(20) | ja | eltern/hausautomation |
+| erstellt_von | FK Benutzer | nein | PROTECT |
+| erstellt_am | datetime | ja |  |
+
+- CHECK `spielregeln_pause_bis_nach_von`
+- Index (kind, von, bis)
+
+### 6.5 Aktivitaet
+
+Fakt "Kind war an ``datum`` aktiv" (bestätigte Aufgabe, später z. B. Lernen).
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | PROTECT |
+| datum | date | ja |  |
+| modul | varchar(40) | ja |  |
+| referenz | varchar(60) | ja |  |
+| storniert | bool | ja |  |
+| erstellt_am | datetime | ja |  |
+
+- **unique(modul, referenz)** (`spielregeln_akt_idem`)
+- Index (kind, datum)
+
+### 6.6 Wochenauswertung
+
+Auswertung einer ISO-Woche je Kind (Zwischenspeicher). ``finalisiert_am = NULL`` = vorläufig (Woche vorbei, Puffer läuft noch).
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | PROTECT |
+| iso_jahr | smallint ≥ 0 | ja |  |
+| iso_woche | smallint ≥ 0 | ja |  |
+| montag | date | ja | Index |
+| aktiv | bool | ja |  |
+| neutral | bool | ja | nicht aktiv, aber pausiert (Serie bleibt) |
+| pausentage | smallint ≥ 0 | ja |  |
+| xp_woche | int | ja |  |
+| wochenserie_danach | smallint ≥ 0 | ja |  |
+| aktive_wochen_gesamt | int ≥ 0 | ja |  |
+| zuwachs_relativ | decimal(6,3) | nein |  |
+| held_der_woche | bool | ja |  |
+| finalisiert_am | datetime | nein |  |
+
+- **unique(kind, iso_jahr, iso_woche)** (`spielregeln_woche_idem`)
+
+- CHECK `spielregeln_woche_1_53`
+
+### 6.7 KindStand
+
+Zwischenspeicher je Kind (DATA_MODEL 6.6). ``rang`` = höchster erreichter Rang (aus den ``RangAufstieg``-Fakten, sonst Startrang).
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | 1:1 Benutzer | ja | PK; CASCADE |
+| rang | FK Rang | nein | PROTECT |
+| wochenserie | smallint ≥ 0 | ja |  |
+| rekord_wochenserie | smallint ≥ 0 | ja |  |
+| aktive_wochen_gesamt | int ≥ 0 | ja |  |
+| tagesserie | smallint ≥ 0 | ja |  |
+| rekord_tagesserie | smallint ≥ 0 | ja |  |
+| letzte_woche | varchar(10) | nein |  |
+| stand_datum | date | nein |  |
+| aktualisiert_am | datetime | ja |  |
 
 ### 6.8 AbzeichenDefinition
 
-| Feld | Typ | Pflicht | Constraints / Index |
+Abzeichen-Regel als Daten (DATA_MODEL 6.8): verliehen, wenn ``metrik`` (Schlüssel aus ``kern.registry``) ``vergleich`` ``schwelle`` erfüllt. Eltern legen an, ändern, deaktivieren; Module können eigene Zeilen ergänzen. ``symbol`` = Grafik-Schlüssel (AP28 liefert ``static/abzeichen/<symbol>.svg``; bis dahin Platzhalter-Icon je ``gruppe``).
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| schluessel | slug | ja | **unique**, z. B. `tagesserie-7` |
-| name | varchar(60) | ja | |
-| beschreibung | varchar(200) | ja | |
-| symbol | varchar(100) | ja | Asset-Referenz oder SVG-Key |
-| metrik | varchar(60) | ja | Registry-Schlüssel: `tagesserie`, `wochenserie`, `quartal_voll_aktiv`, `rang_erreicht`, später Modul-Metriken |
-| schwelle | int | nein | z. B. 7 |
-| wiederholbar_je | enum einmalig/quartal/rang | ja | |
-| modul | varchar(40) | ja | |
-| reihenfolge | smallint | ja | |
-| aktiv | bool | ja | |
+| schluessel | slug(60) | ja | unique |
+| name | varchar(60) | ja |  |
+| beschreibung | varchar(200) | nein |  |
+| symbol | slug(100) | ja | Index |
+| gruppe | slug(30) | ja | Index |
+| metrik | varchar(60) | ja |  |
+| vergleich | varchar(2) | ja | >=/>/== |
+| schwelle | int ≥ 0 | ja |  |
+| wiederholbar | varchar(10) | ja | einmalig/bereich |
+| modul | varchar(40) | ja |  |
+| reihenfolge | smallint ≥ 0 | ja |  |
+| aktiv | bool | ja |  |
 
 ### 6.9 AbzeichenVerleihung
 
-| Feld | Typ | Pflicht | Constraints / Index |
+Fakt "Kind hat Abzeichen verdient" (DATA_MODEL 6.9). Unveränderlich: bleibt, auch wenn Eltern die Schwelle später erhöhen oder das Abzeichen deaktivieren. ``unique(kind, abzeichen, bereich)`` verhindert Doppelverleihung (auch bei parallelen Prüfungen).
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
 | kind | FK Benutzer | ja | PROTECT |
 | abzeichen | FK AbzeichenDefinition | ja | PROTECT |
-| bereich | varchar(30) | ja | `""`, `2027-Q1`, `rang-3` |
-| verliehen_am | datetime | ja | |
+| bereich | varchar(30) | nein |  |
+| bereich_bezeichnung | varchar(60) | nein |  |
+| wert | int | ja | Metrik-Wert bei Verleihung (Snapshot) |
+| schwelle | int ≥ 0 | ja | Schwelle bei Verleihung (Snapshot) |
+| verliehen_am | datetime | ja |  |
 
-- **unique(kind, abzeichen, bereich)** (IDEM).
+- **unique(kind, abzeichen, bereich)** (`spielregeln_abzeichen_idem`)
 
 ### 6.10 MeilensteinRegel
 
-| Feld | Typ | Pflicht | Constraints / Index |
+Benannte Bedingung (DATA_MODEL 6.10, generisch): alle ``bedingungen`` müssen gelten (UND), je Eintrag ``{"metrik": "rang", "vergleich": ">=", "wert": 2}``. ``belohnungsart`` wertet das Modul aus, das ``meilenstein.erreicht`` abonniert (z. B. ``sondertag``, AP27).
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| schluessel | slug | ja | **unique**: `sondertag-ausbaustufe`, `sondertag-godmode-zyklus` |
-| name | varchar(80) | ja | |
-| metrik | varchar(60) | ja | `ausbaustufe_voll`, `godmode_aktivwochen` |
-| bedingung | JSON | ja | z. B. `{"seltenheit_in":[2,3,4,5]}`, `{"alle_n_aktivwochen":26}` |
-| belohnungsart | varchar(40) | ja | `sondertag`, `modset`; Module registrieren Handler |
-| wiederholbar_je | enum einmalig/bereich | ja | |
-| modul | varchar(40) | ja | |
-| aktiv | bool | ja | |
+| schluessel | slug(60) | ja | unique |
+| name | varchar(80) | ja |  |
+| beschreibung | varchar(200) | nein |  |
+| bedingungen | JSON | ja |  |
+| belohnungsart | varchar(40) | nein |  |
+| wiederholbar | varchar(10) | ja | einmalig/bereich |
+| modul | varchar(40) | ja |  |
+| reihenfolge | smallint ≥ 0 | ja |  |
+| aktiv | bool | ja |  |
 
 ### 6.11 MeilensteinErreicht
 
-| Feld | Typ | Pflicht | Constraints / Index |
+Fakt "Kind hat Meilenstein erreicht" (DATA_MODEL 6.11), nie zurückgenommen. ``werte`` = Metrik-Werte bei Erfüllung (Snapshot).
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
 | kind | FK Benutzer | ja | PROTECT |
 | regel | FK MeilensteinRegel | ja | PROTECT |
-| bereich | varchar(30) | ja | `seltenheit-3`, `zyklus-2` |
-| erreicht_am | datetime | ja | |
-| ereignis | FK ereignisse.Ereignis | nein | SET_NULL |
+| bereich | varchar(30) | nein |  |
+| werte | JSON | ja |  |
+| erreicht_am | datetime | ja |  |
+| ereignis | FK Ereignis | nein | SET_NULL |
 
-- **unique(kind, regel, bereich)** (IDEM). Garantiert "je Rang einmal", auch nach Themenwechsel.
-
-### 6.12 Prognose
-
-| Feld | Typ | Pflicht | Constraints / Index |
-|---|---|---|---|
-| kind | FK Benutzer | ja | CASCADE |
-| iso_jahr | smallint | ja | |
-| iso_woche | smallint | ja | |
-| berechnet_am | datetime | ja | |
-| xp_schnitt | decimal(7,1) | ja | |
-| aktivquote | decimal(4,3) | ja | |
-| eta_naechster_rang | date | nein | |
-| eta_naechster_sondertag | date | nein | |
-| sondertage_appjahr_prognose | decimal(3,1) | ja | |
-| vorschlag_faktor | decimal(4,2) | nein | |
-
-- **unique(kind, iso_jahr, iso_woche)** (IDEM, Upsert).
+- **unique(kind, regel, bereich)** (`spielregeln_meilenstein_idem`)
 
 ---
 
@@ -682,174 +707,212 @@ stateDiagram-v2
 
 ## 9. `avatar`
 
+> **Stand Review AP31 (24.10.2026):** Tabellen dieses Abschnitts sind aus den Django-Modellen erzeugt (Code ist maßgeblich, B-22). Fachliche Erläuterungen stehen in ARCHITECTURE 7.
+
+- `ModDefinition.seltenheit` ist eine Zahl (= `Rang.stufe`), kein FK; `Avatar.angelegt` = `{slot: mod_schluessel}`.
+- Zeitbremse (`avatar.max_zaehlende_mods_woche`) ist eine Warteschlange im Service (`zaehlt_ab_iso_*`), kein Constraint.
+
+
 ### 9.1 Thema
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| schluessel | slug | ja | unique: `ritter`, …, `eltern` |
-| name | varchar(40) | ja | |
-| palette | JSON | ja | Farbtoken `p1…pn` |
-| figur_varianten | JSON | ja | wählbare Basis-Figuren |
-| bau_inszenierung | varchar(40) | ja | `schmiede`, `werkstatt`, … |
-| nur_eltern | bool | ja | |
-| aktiv | bool | ja | |
-| reihenfolge | smallint | ja | |
+| schluessel | slug(40) | ja | unique |
+| name | varchar(40) | ja |  |
+| beschreibung | varchar(200) | nein |  |
+| palette | JSON | ja |  |
+| figur_varianten | JSON | ja | Wählbare Frisuren |
+| bau_inszenierung | varchar(40) | ja |  |
+| daten | JSON | ja | Kleidung, Grundausstattung, Formen |
+| nur_eltern | bool | ja |  |
+| aktiv | bool | ja |  |
+| reihenfolge | SmallIntegerField | ja |  |
 
 ### 9.2 Slot
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| schluessel | slug | ja | unique: `kopf`, `koerper`, `ruecken`, `hand`, `begleiter`, `hintergrund` |
-| name | varchar(40) | ja | |
-| ebene | smallint | ja | unique; Render-Reihenfolge |
+| schluessel | slug(20) | ja | unique |
+| name | varchar(40) | ja |  |
+| ebene | SmallIntegerField | ja | unique |
 
 ### 9.3 ModSet
 
-| Feld | Typ | Pflicht | Constraints / Index |
+God-Mode-Set je 26-Wochen-Zyklus (DATA_MODEL 9.3, O3): ``nummer`` 1, 2, … = Zyklus. Die 6 Mods (1 je Slot) entstehen aus den Seltenheit-6-Bauplänen des Themas (AP27).
+
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
 | thema | FK Thema | ja | PROTECT |
-| nummer | smallint | ja | 0 = Basis-God-Mode-Set, 1… = Zyklen |
-| name | varchar(60) | ja | |
+| nummer | smallint ≥ 0 | ja |  |
+| name | varchar(60) | ja |  |
 
-- **unique(thema, nummer)**.
+- **unique(thema, nummer)** (`avatar_modset_thema_nummer`)
+
+- CHECK `avatar_modset_nummer_ab_1`
 
 ### 9.4 ModDefinition
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
+| schluessel | slug(60) | ja | unique |
 | thema | FK Thema | ja | PROTECT |
 | slot | FK Slot | ja | PROTECT |
-| seltenheit | FK spielregeln.Rang | ja | PROTECT |
-| modset | FK ModSet | nein | nur God-Mode-Zyklen |
-| name | varchar(60) | ja | |
-| beschreibung | varchar(200) | nein | |
-| preis | int | nein | NULL = `Rang.mod_preis` |
-| bauzeit_stunden | int | nein | NULL = `Rang.bauzeit_stunden` |
-| bauplan | JSON | ja | Teile + Palette + Transformationen |
+| seltenheit | SmallIntegerField | ja |  |
+| modset | FK ModSet | nein | PROTECT; Nur God-Mode-Zyklus-Sets (AP27) |
+| name | varchar(60) | ja |  |
+| beschreibung | varchar(200) | nein |  |
+| preis | int | nein | Leer = Standardpreis des Rangs |
+| bauzeit_stunden | int | nein | Leer = Standard des Rangs |
+| bauplan | JSON | ja | {"teile": [...]} |
 | svg_override | text | nein | Whitelist-geprüft |
-| aktiv | bool | ja | |
+| aktiv | bool | ja |  |
 
-- **unique(thema, slot, seltenheit) WHERE modset IS NULL**; **unique(thema, slot, modset) WHERE modset IS NOT NULL**.
+- **unique(thema, slot, seltenheit) WHERE modset IS NULL** (`avatar_mod_thema_slot_seltenheit`)
+
+- **unique(thema, slot, modset) WHERE modset IS NOT NULL** (`avatar_mod_thema_slot_modset`)
+
+- CHECK `avatar_mod_seltenheit_1_6`
 
 ### 9.5 Avatar
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| benutzer | 1:1 Benutzer | ja | PK |
+| benutzer | 1:1 Benutzer | ja | PK; CASCADE |
 | thema | FK Thema | ja | PROTECT |
-| figur | JSON | ja | gewählte Variante, Hautton, Haar |
-| angelegt | JSON | ja | `{slot: modbesitz_id}`; nur fertige Mods |
-| render_hash | char(64) | nein | aktueller Cache-Schlüssel |
-| thema_gewaehlt_am | datetime | ja | |
+| figur | JSON | ja | haut, haar, frisur |
+| angelegt | JSON | ja | {slot: mod-schluessel}; nur fertige, eigene Mods (AP26) |
+| render_hash | varchar(64) | nein |  |
+| thema_gewaehlt_am | datetime | ja |  |
 
 ### 9.6 ModBesitz
 
-| Feld | Typ | Pflicht | Constraints / Index |
-|---|---|---|---|
-| kind | FK Benutzer | ja | PROTECT; Index (kind, status) |
-| mod | FK ModDefinition | ja | PROTECT |
-| preis_bezahlt | int | ja | Snapshot |
-| buchung | 1:1 punkte.Buchung | ja | Schlüssel `modkauf:<id>` |
-| gekauft_am | datetime | ja | |
-| fertig_geplant_am | datetime | ja | Kauf + Bauzeit x Faktor; Index für Job |
-| fertig_am | datetime | nein | |
-| zaehlt_ab_iso_jahr | smallint | nein | 1 zählender Mod je Woche |
-| zaehlt_ab_iso_woche | smallint | nein | |
-| status | enum im_bau/fertig/verloren | ja | |
-| verloren_am | datetime | nein | Themenwechsel |
+Gekaufter Mod eines Kindes (DATA_MODEL 9.6): ``im_bau`` bis ``fertig_geplant_am``, dann ``fertig`` (Job ``mods_fertigstellen``); Themenwechsel -> ``verloren`` (keine Erstattung).
 
-- **unique(kind, mod) WHERE status IN (im_bau, fertig)** (kein Doppelkauf).
-- "Max. N zählende Mods je Woche" (`avatar.max_zaehlende_mods_woche`, Startwert 1) prüft der **Service**, nicht ein DB-Constraint: ein Constraint würde den Wert 1 hart codieren (Grundregel 0). Index (kind, zaehlt_ab_iso_jahr, zaehlt_ab_iso_woche).
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | PROTECT |
+| mod | FK ModDefinition | ja | PROTECT |
+| preis_bezahlt | int ≥ 0 | ja |  |
+| bauzeit_stunden | int ≥ 0 | ja | Snapshot beim Kauf |
+| buchung | 1:1 Buchung | ja | unique; PROTECT; Mod-Kauf |
+| gekauft_am | datetime | ja |  |
+| fertig_geplant_am | datetime | ja | Index |
+| fertig_am | datetime | nein |  |
+| zaehlt_ab_iso_jahr | SmallIntegerField | nein |  |
+| zaehlt_ab_iso_woche | SmallIntegerField | nein |  |
+| status | varchar(10) | ja | im_bau/fertig/verloren |
+| verloren_am | datetime | nein |  |
+
+- **unique(kind, mod) WHERE status IN ['im_bau', 'fertig']** (`avatar_besitz_kein_doppelkauf`)
+
+- CHECK `avatar_besitz_fertig_mit_zeit`
+- Index (kind, status)
+- Index (kind, zaehlt_ab_iso_jahr, zaehlt_ab_iso_woche)
 
 ### 9.7 RenderCache
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| hash | char(64) | ja | **PK** |
-| svg | text | ja | |
-| erstellt_am | datetime | ja | |
-| zuletzt_genutzt | datetime | ja | Aufräumen |
+| hash | varchar(64) | ja | PK |
+| svg | text | ja |  |
+| erstellt_am | datetime | ja |  |
+| zuletzt_genutzt | datetime | ja | Index |
 
 ---
 
 ## 10. `sondertag`
 
+> **Stand Review AP31 (24.10.2026):** Tabellen dieses Abschnitts sind aus den Django-Modellen erzeugt (Code ist maßgeblich, B-22). Fachliche Erläuterungen stehen in ARCHITECTURE 7.
+
+- Status gespeichert: verdient/wunsch_offen/angenommen/stattgefunden; "einlösbar" wird berechnet (erster offener Anspruch und `einloesbar_ab <= heute`).
+- `einloesbar_gemeldet_am` (Review AP31): Meldung "jetzt einlösbar" genau einmal.
+
+
 ### 10.1 SondertagAnspruch
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| kind | FK Benutzer | ja | PROTECT; Index (kind, status) |
-| meilenstein | 1:1 spielregeln.MeilensteinErreicht | nein | **unique** (IDEM); NULL nur bei manueller Historie |
-| quelle | enum meilenstein/manuell | ja | |
-| verdient_am | datetime | ja | |
-| einloesbar_ab | date | nein | berechnet; neu bei jeder Annahme/Korrektur |
-| status | enum verdient/einloesbar/wunsch_offen/angenommen/stattgefunden | ja | |
-| wunsch | text | nein | |
-| begleitung_wunsch | enum mama/papa/egal | nein | |
-| wunsch_am | datetime | nein | |
-| angenommen_von | FK Benutzer (Eltern) | nein | |
-| begleitung | FK Benutzer (Eltern) | nein | Übergabe ändert nur dieses Feld (Audit) |
-| annahme_datum | date | nein | **Bezugsdatum** für 150 Tage und App-Jahr; korrigierbar; Index (kind, annahme_datum) |
-| stattgefunden_am | date | nein | optional |
-| notiz | varchar(200) | nein | |
+| kind | FK Benutzer | ja | PROTECT |
+| meilenstein | 1:1 MeilensteinErreicht | nein | unique; PROTECT; NULL nur bei manueller Historie |
+| quelle | varchar(12) | ja | meilenstein/manuell |
+| titel | varchar(80) | nein | z. B. Meilenstein |
+| verdient_am | datetime | ja |  |
+| einloesbar_ab | date | nein | berechnet (Grenzen) |
+| status | varchar(14) | ja | verdient/wunsch_offen/angenommen/stattgefunden |
+| wunsch | text | nein |  |
+| begleitung_wunsch | varchar(5) | nein | mama/papa/egal |
+| wunsch_am | datetime | nein |  |
+| angenommen_von | FK Benutzer | nein | PROTECT |
+| begleitung | FK Benutzer | nein | PROTECT; Übergabe ändert nur dieses Feld (Audit) |
+| annahme_datum | date | nein | Bezugsdatum für Abstand und App-Jahr (korrigierbar) |
+| stattgefunden_am | date | nein |  |
+| einloesbar_gemeldet_am | datetime | nein | Meldung 'jetzt einlösbar' verschickt (genau einmal, auch bei Freischaltung) |
+| notiz | varchar(200) | nein |  |
 
-- Grenzen (Einstellungen): `sondertag.max_pro_appjahr` (2), `sondertag.mindestabstand_tage` (150). Service prüft bei Annahme: Anzahl `annahme_datum` im App-Jahr < max und Abstand zum vorherigen/nächsten ≥ Mindestabstand.
-- Manuelle Historie (vor Go-live) = Anspruch mit `quelle = manuell`, `status = stattgefunden`; zählt für Abstand.
-- **[A]** Ein Modell statt Anspruch/Wunsch/Sondertag getrennt: 1:1-Lebenszyklus, weniger Joins.
+- CHECK `sondertag_meilenstein_oder_manuell`
+
+- CHECK `sondertag_angenommen_mit_datum`
+- Index (kind, status)
+- Index (kind, annahme_datum)
 
 ---
 
 ## 11. `familienziel`
 
+> **Stand Review AP31 (24.10.2026):** Tabellen dieses Abschnitts sind aus den Django-Modellen erzeugt (Code ist maßgeblich, B-22). Fachliche Erläuterungen stehen in ARCHITECTURE 7.
+
+
 ### 11.1 Familienbelohnung
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| titel | varchar(60) | ja | |
-| symbol | varchar(60) | nein | |
-| ist_grossziel | bool | ja | |
-| aktiv | bool | ja | |
-| reihenfolge | smallint | ja | |
+| titel | varchar(60) | ja |  |
+| symbol | varchar(60) | nein |  |
+| ist_grossziel | bool | ja |  |
+| aktiv | bool | ja |  |
+| reihenfolge | smallint ≥ 0 | ja |  |
 
 ### 11.2 Familienwoche
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| iso_jahr | smallint | ja | |
-| iso_woche | smallint | ja | |
-| montag | date | ja | |
-| ziel_punkte | int | ja | Snapshot aus Einstellung bei Wochenbeginn |
-| belohnung | FK Familienbelohnung | nein | Ergebnis der Abstimmung |
-| abstimmung_status | enum offen/geschlossen/gleichstand/eltern_entschieden | ja | betrifft Abstimmung **für** diese Woche |
-| status | enum laufend/erreicht/verfehlt/neutral | ja | |
-| erreicht_am | datetime | nein | bedingtes Update laufend -> erreicht |
-| eingeloest_am | datetime | nein | Eltern haken Belohnung ab |
-| finalisiert_am | datetime | nein | |
+| iso_jahr | smallint ≥ 0 | ja |  |
+| iso_woche | smallint ≥ 0 | ja |  |
+| montag | date | ja |  |
+| ziel_punkte | int ≥ 0 | ja | Snapshot aus der Einstellung |
+| belohnung | FK Familienbelohnung | nein | PROTECT |
+| abstimmung_status | varchar(20) | ja | offen/geschlossen/gleichstand/eltern_entschieden |
+| status | varchar(10) | ja | laufend/erreicht/verfehlt/neutral |
+| erreicht_am | datetime | nein |  |
+| eingeloest_am | datetime | nein |  |
+| finalisiert_am | datetime | nein |  |
 
-- **unique(iso_jahr, iso_woche)** (IDEM).
+- **unique(iso_jahr, iso_woche)** (`familienziel_woche_idem`)
+
+- CHECK `familienziel_erreicht_hat_zeit`
 
 ### 11.3 Stimme
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| woche | FK Familienwoche | ja | CASCADE; Zielwoche |
+| woche | FK Familienwoche | ja | CASCADE |
 | kind | FK Benutzer | ja | PROTECT |
 | belohnung | FK Familienbelohnung | ja | PROTECT |
-| abgegeben_am | datetime | ja | |
+| abgegeben_am | datetime | ja |  |
 
-- **unique(woche, kind)** (änderbar bis Fensterende).
+- **unique(woche, kind)** (`familienziel_stimme_je_kind`)
 
 ### 11.4 Grossziel
 
-| Feld | Typ | Pflicht | Constraints / Index |
+| Feld | Typ | Pflicht | Hinweis |
 |---|---|---|---|
-| ausloesende_woche | 1:1 Familienwoche | ja | **unique** (IDEM); letzte der 4 Wochen |
-| belohnung | FK Familienbelohnung | nein | |
-| freigeschaltet_am | datetime | ja | |
-| eingeloest_am | datetime | nein | |
+| ausloesende_woche | 1:1 Familienwoche | ja | unique; PROTECT |
+| belohnung | FK Familienbelohnung | nein | PROTECT |
+| name | varchar(60) | nein |  |
+| freigeschaltet_am | datetime | ja |  |
+| eingeloest_am | datetime | nein |  |
 
 ---
-
 ## 12. Modell-Übersicht
 
 | App | Modelle | Anzahl |
@@ -857,15 +920,16 @@ stateDiagram-v2
 | kern | Einstellung, AuditEintrag, JobSperre, JobLauf | 4 |
 | konten | Benutzer, ElternProfil, KindProfil, ElternZugang, Geraet, AnmeldeVersuch | 6 |
 | punkte | Buchung | 1 |
-| ereignisse | EreignisTyp, Ereignis, EreignisVerarbeitung | 3 |
-| benachrichtigung | SmtpKonto, Kanal, Praeferenz, Ruhezeit, Benachrichtigung, Zustellung, PushAbo, Popup | 8 |
-| spielregeln | Rang, Kalibrierung, Pause, Aktivitaet, Wochenauswertung, KindStand, RangAufstieg, AbzeichenDefinition, AbzeichenVerleihung, MeilensteinRegel, MeilensteinErreicht, Prognose | 12 |
-| aufgaben | Kategorie, Vorlage, Aufgabe, AufgabenInstanz, Interesse, Meldung, Nachweis | 7 |
+| ereignisse | EreignisTyp, Ereignis, EreignisVerarbeitung, WorkerHerzschlag | 4 |
+| benachrichtigung | SmtpKonto, Kanal, Praeferenz, Ruhezeit, BenachrichtigungsProfil, Benachrichtigung, PushAbo, Zustellung, Popup | 9 |
+| spielregeln | Rang, Kalibrierung, RangAufstieg, Pause, Aktivitaet, Wochenauswertung, KindStand, AbzeichenDefinition, AbzeichenVerleihung, MeilensteinRegel, MeilensteinErreicht | 11 |
+| aufgaben | Kategorie, Vorlage, Aufgabe, AufgabenInstanz, Interesse, Meldung | 6 |
 | belohnung | Belohnungskategorie, Belohnung, Einloeseantrag, TaschengeldLimit | 4 |
 | avatar | Thema, Slot, ModSet, ModDefinition, Avatar, ModBesitz, RenderCache | 7 |
 | sondertag | SondertagAnspruch | 1 |
 | familienziel | Familienbelohnung, Familienwoche, Stimme, Grossziel | 4 |
 | **Summe** | | **57** |
+
 
 ---
 
@@ -974,12 +1038,16 @@ erDiagram
 | Abzeichen | `unique(kind, abzeichen, bereich)` |
 | Meilenstein | `unique(kind, regel, bereich)` |
 | Sondertag-Anspruch | `unique(meilenstein)` |
-| Prognose | `unique(kind, iso_jahr, iso_woche)` |
+| Prognose (AP32) | `unique(kind, iso_jahr, iso_woche)` |
+| God-Mode-Set | `unique(thema, nummer)` |
+| Held der Woche | Woche bewertet, sobald `zuwachs_relativ` gesetzt (Fakt) + Ereignis-Schlüssel |
+| Sondertag "jetzt einlösbar" | bedingtes Update `einloesbar_gemeldet_am IS NULL` + Ereignis-Schlüssel |
+| Wochenabschluss-Ereignisse | `finalisiert_am IS NULL -> gesetzt` + Ereignis-Schlüssel |
 | Ereignis aus Job | `unique(schluessel)` |
 | Handler-Ausführung | `unique(ereignis, handler)` |
 | Benachrichtigung | `unique(empfaenger, ereignis)` |
 | Zustellung | `unique(benachrichtigung, kanal, push_abo)` |
-| Pop-up | `unique(benutzer, ereignis, art)` |
+| Pop-up | `unique(benachrichtigung)` (1:1) |
 | Mod-Kauf | `unique(kind, mod)` solange im Bau/fertig |
 | Push-Abo | `unique(endpoint_hash)` |
 | Erinnerungen/Vorwarnungen | `erinnert_am`/`vorwarnung_am IS NULL` + Ereignis-Schlüssel |
@@ -1009,87 +1077,96 @@ erDiagram
 
 ### 15.2 Einstellungen (`kern.Einstellung`, Schlüssel = Startwert)
 
-**allgemein**
-- `allgemein.anzeigename` = "FamKo"
-- `allgemein.zeitzone` = "Europe/Berlin"
-- `allgemein.go_live_datum` = (Assistent)
-- `allgemein.sprache` = "de"
-- `allgemein.einrichtung_abgeschlossen` = false
+Aus der Registry und den Datenmigrationen erzeugt (Review AP31, B-22). "(Assistent)" = setzt der Einrichtungs-Assistent. Backup-Aufbewahrung bleibt bewusst Umgebungsvariable (B-20).
 
-**konten**
-- `konten.kind_pin_fehlversuche` = 5
-- `konten.kind_pin_sperre_minuten` = 5
-- `konten.kind_pin_sperre_max_minuten` = 60
-- `konten.eltern_fehlversuche` = 10
-- `konten.eltern_sperre_minuten` = 15
-- `konten.sitzung_eltern_vertraut_tage` = 90
-- `konten.sitzung_eltern_stunden` = 12
-- `konten.sitzung_kind_persoenlich_tage` = 365
-- `konten.kiosk_leerlauf_sekunden` = 300
-- `konten.kiosk_warnung_sekunden` = 30
-- `konten.kind_netze_cidr` = [] (leer = aus)
+**allgemein**
+- `allgemein.anzeigename` = (Assistent) – Name der Installation
+- `allgemein.einrichtung_abgeschlossen` = true (intern, nicht im Editor) – Einrichtung abgeschlossen
+- `allgemein.go_live_datum` = "2026-10-03" – Go-live-Datum
+- `allgemein.joblauf_aufbewahrung_tage` = 90 – Aufbewahrung der Job-Läufe
+- `allgemein.sprache` = (Assistent) – Sprache
+- `allgemein.zeitzone` = "Europe/Berlin" – Zeitzone
 
 **aufgaben**
-- `aufgaben.reservierung_stunden` = 48
-- `aufgaben.erinnerung_kind_stunden_vorher` = 6
-- `aufgaben.vorwarnung_eltern_stunden_vorher` = 3
-- `aufgaben.instanz_horizont_tage` = 14
-- `aufgaben.sonderpunkte_deckel_aktiv` = true
-- `aufgaben.sonderpunkte_deckel_prozent` = 50
-- `aufgaben.nachweis_max_upload_mb` = 15
-- `aufgaben.nachweis_max_kante_px` = 1600
-- `aufgaben.nachweis_max_anzahl` = 3
-- `aufgaben.nachweis_sicherheitsnetz_tage` = 14
-
-**spielregeln**
-- `spielregeln.serienbonus_start` = 2
-- `spielregeln.serienbonus_schritt_prozent` = 5
-- `spielregeln.serienbonus_deckel_prozent` = 25
-- `spielregeln.serienbonus_auf_sonderpunkte` = false
-- `spielregeln.bezugsdatum` = "meldung" (oder "bestaetigung", [K1])
-- `spielregeln.wochen_puffer_stunden` = 24
-- `spielregeln.pause_neutral_ab_tagen` = 1
-- `spielregeln.held_basis_wochen` = 4
-- `spielregeln.held_mindestbasis_punkte` = 50
-- `spielregeln.prognose_basis_wochen` = 6
-- `spielregeln.prognose_annahme_punkte_woche` = 175
-- `spielregeln.ziel_sondertage_jahr` = 2
+- `aufgaben.erinnerung_kind_stunden_vorher` = 6 – Erinnerung an das Kind vor Reservierungsablauf
+- `aufgaben.instanz_horizont_tage` = 14 – Vorlauf für Aufgaben mit Zeitfenster
+- `aufgaben.kind_vorschau_tage` = 1 – Kinder sehen Termine im Voraus
+- `aufgaben.mitbewerben_erlaubt` = true – Mehrere Kinder dürfen dieselbe Aufgabe wählen
+- `aufgaben.nachweis_max_anzahl` = 3 – Fotos je Meldung höchstens
+- `aufgaben.nachweis_max_kante_px` = 1600 – Nachweis-Foto wird verkleinert auf
+- `aufgaben.nachweis_max_upload_mb` = 15 – Nachweis-Foto höchstens
+- `aufgaben.reservierung_stunden` = 48 – Reservierung ohne Frist läuft ab nach
+- `aufgaben.sonderpunkte_deckel_aktiv` = true – Obergrenze für Sonderpunkte
+- `aufgaben.sonderpunkte_deckel_prozent` = 50 – Sonderpunkte höchstens
+- `aufgaben.vorwarnung_stunden_vorher` = 3 – Vorwarnung an Eltern vor 'nicht übernommen'
 
 **avatar**
-- `avatar.max_zaehlende_mods_woche` = 1
-- `avatar.godmode_zyklus_aktivwochen` = 26
-
-**sondertag**
-- `sondertag.max_pro_appjahr` = 2
-- `sondertag.mindestabstand_tage` = 150
-- `sondertag.wunsch_vor_einloesbar_erlaubt` = true
+- `avatar.godmode_zyklus_aktivwochen` = 26 – God-Mode-Zyklus
+- `avatar.max_zaehlende_mods_woche` = 1 – Zählende Mods pro Woche
 
 **belohnung**
-- `belohnung.taschengeld_limit_cent` = 1000 (Standard für neue Kinder)
-
-**familienziel**
-- `familienziel.wochenziel_punkte` = 450
-- `familienziel.grossziel_nach_wochen` = 4
-- `familienziel.abstimmung_tag` = 7 (Sonntag)
-- `familienziel.abstimmung_von` = "00:00"
-- `familienziel.abstimmung_bis` = "23:59"
-- `familienziel.xp_arten` = ["aufgabe","serienbonus","sonderpunkte","korrektur","storno"]
-
-**oberflaeche**
-- `oberflaeche.ranking_modus` = "showcase" (showcase/held/rohpunkte)
-- `oberflaeche.poll_tablet_sekunden` = 10
-- `oberflaeche.poll_geraet_sekunden` = 30
-- `oberflaeche.tablet_reload_stunden` = 6
-- `oberflaeche.kind_design` = "dunkel"
+- `belohnung.taschengeld_limit_cent` = 1000 – Taschengeld-Limit pro Monat und Kind
 
 **benachrichtigung**
-- `benachrichtigung.push_ttl_standard_sekunden` = 86400
-- `benachrichtigung.zustellung_max_versuche` = 5
-- `benachrichtigung.aufbewahrung_tage` = 90
+- `benachrichtigung.aufbewahrung_tage` = 90 – Aufbewahrung gelesener Benachrichtigungen
+- `benachrichtigung.aufbewahrung_ungelesen_tage` = 180 – Aufbewahrung ungelesener Benachrichtigungen
+- `benachrichtigung.push_erlaubte_hosts` = ["push.apple.com", "fcm.googleapis.com", "push.services.mozilla.com", "notify.windows.com"] – Erlaubte Push-Dienste (Host-Endungen)
+- `benachrichtigung.push_ttl_standard_sekunden` = 86400 – Standard-Lebensdauer einer Push-Nachricht
+- `benachrichtigung.zustellung_aufbewahrung_tage` = 90 – Aufbewahrung der Zustell-Protokolle
+- `benachrichtigung.zustellung_max_versuche` = 5 – Max. Versuche je Zustellung
 
-**betrieb**
-- `betrieb.backup_taeglich_behalten` = 14
-- `betrieb.backup_woechentlich_behalten` = 8
-- `betrieb.backup_monatlich_behalten` = 12
+**einrichtung**
+- `einrichtung.basis_url` = "" – Öffentliche Adresse (Basis-URL)
+- `einrichtung.schritt` = 1 (intern, nicht im Editor) – Einrichtung: erreichter Schritt
+- `einrichtung.smtp_uebersprungen` = false (intern, nicht im Editor) – Einrichtung: E-Mail-Versand übersprungen
+
+**ereignisse**
+- `ereignisse.aufbewahrung_tage` = 180 – Aufbewahrung verarbeiteter Ereignisse
+- `ereignisse.backoff_basis_sekunden` = 30 – Wartezeit vor dem 1. Wiederholversuch
+- `ereignisse.backoff_max_sekunden` = 3600 – Max. Wartezeit zwischen Versuchen
+- `ereignisse.max_versuche` = 8 – Max. Versuche je Ereignis-Handler
+
+**familienziel**
+- `familienziel.abstimmung_beginn` = "00:00" – Abstimmung: Beginn
+- `familienziel.abstimmung_ende` = "23:59" – Abstimmung: Ende
+- `familienziel.abstimmung_tag` = 7 – Abstimmung: Wochentag
+- `familienziel.grossziel_name` = "Ausflug" – Name des großen Ziels
+- `familienziel.grossziel_serie` = 4 – Großziel nach Wochenzielen in Folge
+- `familienziel.wochenziel_punkte` = 450 – Wochenziel der Familie
+
+**konten**
+- `konten.eltern_fehlversuche` = 10 – Fehlversuche bis zur Sperre (Eltern-Login, je IP)
+- `konten.eltern_sperre_minuten` = 15 – Sperre und Zählfenster (Eltern-Login)
+- `konten.kind_netze_cidr` = ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "::1/128", "fc00::/7"] – Netze für den Kinder-Login
+- `konten.kind_pin_fehlversuche` = 5 – PIN-Fehlversuche bis zur Sperre (Kind)
+- `konten.kind_pin_sperre_max_minuten` = 60 – Höchstdauer der PIN-Sperre (Kind)
+- `konten.kind_pin_sperre_minuten` = 5 – Erste PIN-Sperre (Kind)
+- `konten.kiosk_leerlauf_sekunden` = 300 – Abmeldung des Kiosk-Tablets nach Leerlauf
+- `konten.kiosk_warnung_sekunden` = 30 – Warnhinweis vor der Abmeldung (Kiosk)
+- `konten.sitzung_eltern_stunden` = 12 – Eltern-Sitzung ohne vertrautes Gerät
+- `konten.sitzung_eltern_vertraut_tage` = 90 – Eltern-Sitzung auf vertrautem Gerät
+- `konten.sitzung_kind_persoenlich_tage` = 365 – Kinder-Sitzung auf persönlichem Gerät
+- `konten.vertraute_proxys` = ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "::1/128", "fc00::/7"] – Vertrauenswürdige Proxys (X-Forwarded-For)
+
+**oberflaeche**
+- `oberflaeche.ranking_modus` = "schaufenster" – Familien-Ranking: Ansicht
+- `oberflaeche.tablet_aktualisierung_sekunden` = 10 – Tablet: Aktualisierung
+- `oberflaeche.tablet_neuladen_stunden` = 6 – Tablet: vollständiges Neuladen
+
+**sondertag**
+- `sondertag.max_pro_appjahr` = 2 – Sondertage pro App-Jahr
+- `sondertag.mindestabstand_tage` = 150 – Mindestabstand zwischen Sondertagen
+- `sondertag.wunsch_max_zeichen` = 300 – Länge des Sondertag-Wunschs
+- `sondertag.wunsch_vor_einloesbar_erlaubt` = true – Wunsch schon vor dem Einlösedatum
+
+**spielregeln**
+- `spielregeln.held_basis_wochen` = 4 – Held der Woche: Vergleich mit den letzten Wochen
+- `spielregeln.held_min_wochen` = 2 – Held der Woche: Mindestwochen Historie
+- `spielregeln.held_mindestbasis_punkte` = 50 – Held der Woche: Mindestwert als Vergleich
+- `spielregeln.neutral_ab_pausentagen` = 1 – Woche ohne Aufgabe ist neutral ab
+- `spielregeln.puffer_stunden` = 24 – Wochenabschluss wartet nach Wochenende
+- `spielregeln.serienbonus_deckel_prozent` = 25 – Serienbonus höchstens
+- `spielregeln.serienbonus_schritt_prozent` = 5 – Serienbonus je Serienwoche
+- `spielregeln.serienbonus_start` = 2 – Serienbonus ab Serie
 
 - **Nicht in der DB (bewusst):** Secrets (`SECRET_KEY`, VAPID, Fernet) in `/data/secrets`; Domain/Proxy-Header in `.env`. Begründung: werden vor DB-Zugriff gebraucht bzw. sind Infrastruktur.

@@ -1,6 +1,6 @@
 # FamKo: Architektur
 
-- **Stand:** 23.10.2026
+- **Stand:** 24.10.2026 (Review AP31: 2.2, 5.2, 6, 7, 8 an den Code nach Phase 2 angeglichen)
 - **Grundlage:** `docs/SPEC.md`, Entscheidungen 1–28 (Vorrang), `docs/research/web-push.md`
 - **Datenmodell:** siehe `docs/DATA_MODEL.md`
 - **Kennzeichnung:** **[K]** = kritischer Hinweis (Widerspruch oder technisch heikel, braucht Nutzer-Entscheidung). **[A]** = Architektur-Entscheidung dieses Dokuments.
@@ -86,7 +86,7 @@ flowchart TD
   - **Registry** in `kern` (Metrik-Provider, Fortschritts-Provider, Dashboard-Kacheln, Ereignistypen).
 - **Innerhalb Schicht 2:** `spielregeln -> punkte, ereignisse`; `benachrichtigung -> ereignisse` (nie `punkte`); `punkte -> ereignisse` (Ereignis `punkte.gebucht`, AP04); `ereignisse` hängt nur von `kern`, `konten` ab.
 - **Öffentliche Schnittstelle je App:** nur `services.py` (schreibend), `selectors.py` (lesend), `events.py` (Ereignistypen), `registry.py`. Fremde `models.py` werden nie importiert. Ausnahme: `ForeignKey` per String-Referenz (`"konten.Benutzer"`) auf Schicht 0–2.
-- **Durchsetzung:** `import-linter` (Layers-Contract + "forbidden" zwischen Fach-Modulen) läuft in den Tests. [A] Seit AP19 zusätzlich "forbidden"-Verträge: Oberfläche und Fach-Module importieren keine fremden `models.py` (Enums wie `konten.Rolle` ausgenommen), `benachrichtigung` nie `punkte`.
+- **Durchsetzung:** `import-linter` (Layers-Contract + "forbidden" zwischen Fach-Modulen) läuft in den Tests. [A] Seit AP19 zusätzlich "forbidden"-Verträge: Oberfläche und Fach-Module importieren keine fremden `models.py` (Enums wie `konten.Rolle` ausgenommen), `benachrichtigung` nie `punkte`. Seit AP31: Fach-Module und Oberfläche importieren aus `spielregeln` nur `services`/`selectors`/`registry`/`events` (Interna wie `raenge`, `abzeichen`, `held` verboten). Bewusste Ausnahme: `<modul>/events.py` registriert Texte über `benachrichtigung.texte.text_registrieren` (Registry-Charakter).
 - **Dashboards:** `oberflaeche` rendert **Kacheln** aus der Registry; jedes Modul registriert seine Kacheln in `AppConfig.ready()`. Neues Modul = neue Kacheln ohne Änderung an `oberflaeche`.
 
 ### 2.3 Wichtige Querbeziehungen ohne Direkt-Import
@@ -247,26 +247,64 @@ flowchart LR
   - **asynchron** (Worker): alles andere. Je Handler eine `EreignisVerarbeitung` mit `unique(ereignis, handler)` -> genau einmal wirksam, Retries mit Backoff, Fehler sichtbar im Systemstatus.
 - Ereignistypen werden in `events.py` der Module definiert und beim `migrate` in die Tabelle `EreignisTyp` synchronisiert (Bezeichnung, Zielgruppe, Standardkanäle editierbar).
 
-### 5.2 Ereigniskatalog (Phase 1–2, Auszug)
+### 5.2 Ereigniskatalog (Stand Code nach Phase 2)
 
-| Typ | Quelle | Empfänger Standard |
-|---|---|---|
-| `aufgabe.interesse` (Kind wählt) | aufgaben | Eltern |
-| `aufgabe.konflikt` (mehrere Interessenten) | aufgaben | Eltern |
-| `aufgabe.gemeldet` (+ Nachweis) | aufgaben | Eltern |
-| `aufgabe.bestaetigt` / `.abgelehnt` / `.rueckfrage` | aufgaben | Kind |
-| `reservierung.erinnerung` (6 h vorher) | aufgaben (Job) | Kind |
-| `reservierung.abgelaufen` | aufgaben (Job) | Eltern |
-| `aufgabe.verfall_vorwarnung` (3 h vorher) | aufgaben (Job) | Eltern |
-| `aufgabe.nicht_uebernommen` | aufgaben (Job) | nur Liste |
-| `punkte.gebucht` | punkte | intern (Familienziel, Live) |
-| `belohnung.antrag` / `.entschieden` | belohnung | Eltern / Kind |
-| `avatar.mod_fertig` | avatar (Job) | Kind |
-| `spielregeln.rang_aufstieg`, `.abzeichen` | spielregeln | Kind (Pop-up), Eltern |
-| `meilenstein.erreicht` | spielregeln | intern (sondertag) |
-| `sondertag.freigeschaltet` / `.wunsch` / `.angenommen` | sondertag | Kind / Eltern / Kind |
-| `familienziel.erreicht` | familienziel | Kinder (Konfetti), Eltern (Push) |
-| `familienziel.abstimmung_gleichstand` | familienziel (Job) | Eltern |
+Aus der Ereignis-Registry erzeugt (Review AP31, B-22). Zielgruppe `intern` = kein Empfänger (nur Handler). Bezeichnung, Zielgruppe und Standardkanäle sind je Typ in der DB editierbar (`EreignisTyp`).
+
+| Typ | Modul | Zielgruppe | Standardkanäle |
+|---|---|---|---|
+| `aufgabe.abgelehnt` | aufgaben | kind | push |
+| `aufgabe.antwort` | aufgaben | eltern | push, email |
+| `aufgabe.bestaetigt` | aufgaben | kind | push |
+| `aufgabe.erledigt` | aufgaben | intern | – |
+| `aufgabe.gemeldet` | aufgaben | eltern | push, email |
+| `aufgabe.interesse` | aufgaben | eltern | push, email |
+| `aufgabe.konflikt` | aufgaben | eltern | push, email |
+| `aufgabe.korrigiert` | aufgaben | kind | push |
+| `aufgabe.nicht_uebernommen` | aufgaben | eltern | – |
+| `aufgabe.reservierung_geloest` | aufgaben | kind | push |
+| `aufgabe.rueckfrage` | aufgaben | kind | push |
+| `aufgabe.sonderpunkte` | aufgaben | kind | push |
+| `aufgabe.verfall_vorwarnung` | aufgaben | eltern | push, email |
+| `aufgabe.vergeben` | aufgaben | kind | push |
+| `aufgabe.vertrauen_gutgeschrieben` | aufgaben | eltern | push, email |
+| `aufgabe.zugeteilt` | aufgaben | kind | push |
+| `aufgabe.zurueckgegeben` | aufgaben | eltern | push, email |
+| `reservierung.abgelaufen` | aufgaben | eltern | push, email |
+| `reservierung.erinnerung` | aufgaben | kind | push |
+| `mod.fertig` | avatar | kind | push, popup |
+| `mod.gekauft` | avatar | eltern | push |
+| `thema.gewechselt` | avatar | eltern | push |
+| `belohnung.abgelehnt` | belohnung | kind | push |
+| `belohnung.antrag` | belohnung | eltern | push, email |
+| `belohnung.bestaetigt` | belohnung | kind | push |
+| `system.backup_fehler` | ereignisse | eltern | push, email |
+| `familienziel.abstimmung_gleichstand` | familienziel | eltern | push |
+| `familienziel.abstimmung_offen` | familienziel | kind | popup |
+| `familienziel.erreicht` | familienziel | eltern | push |
+| `familienziel.erreicht_kind` | familienziel | kind | popup |
+| `familienziel.grossziel` | familienziel | eltern | push |
+| `familienziel.grossziel_kind` | familienziel | kind | popup |
+| `punkte.gebucht` | punkte | intern | – |
+| `sondertag.angenommen` | sondertag | kind | popup, push |
+| `sondertag.einloesbar` | sondertag | kind | popup, push |
+| `sondertag.einloesbar_eltern` | sondertag | eltern | push |
+| `sondertag.freigeschaltet` | sondertag | kind | popup, push |
+| `sondertag.uebergeben` | sondertag | eltern | push |
+| `sondertag.verdient` | sondertag | eltern | push |
+| `sondertag.wunsch` | sondertag | eltern | push, email |
+| `abzeichen.verliehen` | spielregeln | beide | push, popup |
+| `aktivitaet.erfasst` | spielregeln | intern | – |
+| `meilenstein.erreicht` | spielregeln | intern | – |
+| `pause.beendet` | spielregeln | kind | push |
+| `pause.gestartet` | spielregeln | kind | push, popup |
+| `rang.aufgestiegen` | spielregeln | beide | push, popup, email |
+| `serie.gerissen` | spielregeln | kind | push |
+| `serie.gestiegen` | spielregeln | kind | push, popup |
+| `serienbonus.gebucht` | spielregeln | kind | popup |
+| `spielregeln.held` | spielregeln | eltern | push |
+| `spielregeln.held_kind` | spielregeln | kind | popup |
+| `woche.ausgewertet` | spielregeln | intern | – |
 
 ### 5.3 Benachrichtigungsfluss
 
@@ -331,20 +369,22 @@ sequenceDiagram
 - **Catch-up-Prinzip:** Jobs arbeiten den **Soll-Zustand bis jetzt** ab, nicht "nur das letzte Intervall". Ausgefallene Läufe holt der nächste Lauf nach.
 - **Zeitzone:** supercronic mit `TZ=Europe/Berlin`. Keine Jobs zwischen 02:00 und 03:00 (Sommerzeit-Umstellung).
 
-| Job | Takt | Was | Idempotenz |
+| Job | Takt (deploy/crontab) | Was | Idempotenz |
 |---|---|---|---|
-| `ereignisse_worker` | Dauerprozess (worker) | Outbox, Zustellungen, Retries | `unique(ereignis, handler)`, Zustellstatus |
+| `ereignisse_worker` | Dauerprozess (worker) | Outbox, Zustellungen, Retries; Ruhezeit vor jedem Versand erneut geprüft (B-19) | `unique(ereignis, handler)`, Zustellstatus |
 | `aufgaben_erzeugen` | alle 15 min + 00:05 | Instanzen bis Horizont (Startwert 14 Tage) | `unique(aufgabe, faellig_am)`; ungebunden: Teil-Unique "max. 1 offene Instanz je Aufgabe" |
-| `reservierungen_pruefen` | alle 5 min | Erinnerung 6 h vorher; Ablauf -> frei, Eltern informieren | Erinnerung: `erinnert_am IS NULL` + Ereignis-Schlüssel; Ablauf: bedingtes Update |
+| `reservierungen_pruefen` | alle 5 min | Erinnerung 6 h vorher; Ablauf -> frei, Eltern informieren | `erinnert_am IS NULL` + Ereignis-Schlüssel; bedingtes Update |
 | `verfall_pruefen` | alle 5 min | Vorwarnung Eltern 3 h vor Fensterende; Ablauf -> `nicht_uebernommen` | `vorwarnung_am IS NULL`; bedingtes Update |
-| `mods_fertigstellen` | alle 5 min | Bau fertig -> Status, Ausbaustufe, Metrik melden, Event | bedingtes Update `im_bau -> fertig` |
-| `wochen_abschliessen` | Mo 00:10, Di 00:10, stündlich Catch-up | Wochenauswertung je Kind (aktiv, neutral, Serie, Held der Woche, Quartals-Abzeichen, God-Mode-Zyklus), Familienwoche abschließen, Großziel | `unique(kind, iso_jahr, iso_woche)`; Familie `unique(iso_jahr, iso_woche)`; Finalisierung erst nach Puffer (Abschnitt 7.2) |
-| `familienziel_abstimmung` | stündlich | Abstimmung öffnen (So) und schließen (Mo); Gleichstand -> Eltern | Status-Übergang je Familienwoche |
-| `prognose_berechnen` | Mo 01:00 (nach Wochenabschluss) | Prognose je Kind | `unique(kind, iso_jahr, iso_woche)`, Upsert |
-| `nachweise_aufraeumen` | täglich 04:00 | Waisen-Dateien löschen; Nachweise abgeschlossener Meldungen löschen (Sicherheitsnetz) | Löschen ist idempotent |
-| `db_sichern` | täglich 03:30 | Backup + Rotation | Dateiname mit Datum; existiert -> überspringen |
+| `wochen_sicherstellen` | stündlich :10 (Di 00:10 = Abschluss nach 24 h Puffer) | Wochenauswertung je Kind (aktiv, neutral, Serie), Ränge, Abzeichen/Meilensteine (Catch-up), Held der Woche | `unique(kind, iso_jahr, iso_woche)`, `finalisiert_am`, Fakten unique, Held = `zuwachs_relativ` gesetzt |
+| `familienwoche_sicherstellen` | :03/:18/:33/:48 | Familienwoche anlegen, Abstimmung öffnen/schließen (Gleichstand -> Eltern), Woche abschließen (erreicht/verfehlt/neutral), Großziel | `unique(iso_jahr, iso_woche)`, bedingte Updates, Großziel `unique(ausloesende_woche)` |
+| `mods_fertigstellen` | alle 5 min | Bau fertig -> Status, Zeitbremse-Woche, Slot belegen, Abzeichen/Meilensteine prüfen | bedingtes Update `im_bau -> fertig` |
+| `sondertag_sicherstellen` | stündlich :25 | Ansprüche zu Meilenstein-Fakten nachholen, Einlösedaten neu, "jetzt einlösbar" melden | `unique(meilenstein)`, `einloesbar_gemeldet_am IS NULL` + Ereignis-Schlüssel |
+| `nachweise_aufraeumen` | stündlich :17 | Waisen-Dateien und Nachweise abgeschlossener Meldungen löschen | Löschen ist idempotent |
+| `db_sichern` | täglich 03:30 (+13:30 Nachholtermin) | Backup + Rotation | Dateiname mit Datum; existiert -> überspringen |
 | `backup_pruefen` | So 04:30 | Wiederherstellungstest | rein lesend |
-| `aufraeumen` | täglich 04:15 | `clearsessions`, alte Anmeldeversuche, alte Zustellungen (> 90 Tage), Avatar-Cache-Waisen | idempotent |
+| `konten_aufraeumen` | täglich 04:15 | `clearsessions`, alte Anmeldeversuche | idempotent |
+| `benachrichtigungen_aufraeumen` | täglich 04:20 | Aufbewahrung (B-15): gelesene Benachrichtigungen (`benachrichtigung.aufbewahrung_tage`, 90), ungelesene (`…_ungelesen_tage`, 180), Zustellungen (`…_zustellung_aufbewahrung_tage`, 90), verarbeitete Ereignisse (`ereignisse.aufbewahrung_tage`, 180; nur alle Handler ok und nicht mehr referenziert), Job-Läufe (`allgemein.joblauf_aufbewahrung_tage`, 90). Ledger und Audit nie. | Löschen ist idempotent |
+| `prognose_berechnen` | (AP32, Phase 3) | Prognose je Kind | Upsert |
 
 - **Kein Monats-Job** für das Taschengeld-Limit: Limit wird live je Kalendermonat berechnet.
 - **Kein Tages-Job** für die Tagesserie: live aus `Aktivitaet` berechnet (Abschnitt 7.2).
@@ -356,7 +396,7 @@ sequenceDiagram
 
 ### 7.1 Grundprinzip
 
-- Alle Zustände (Serie, aktive Wochen, Rang, Ausbaustufe) sind **aus der Historie berechenbar** (Aktivitäten, Pausen, Ledger, Mod-Besitz). Gespeicherte Werte (`KindStand`, `Wochenauswertung`) sind **Caches mit Eindeutigkeitsschlüssel** und jederzeit per `manage.py spielregeln_neu_berechnen` reproduzierbar.
+- Alle Zustände (Serie, aktive Wochen, Rang, Ausbaustufe) sind **aus der Historie berechenbar** (Aktivitäten, Pausen, Ledger, Mod-Besitz). Gespeicherte Werte (`KindStand`, `Wochenauswertung`) sind **Caches mit Eindeutigkeitsschlüssel** und jederzeit per `manage.py spielregeln_neuberechnen` reproduzierbar.
 - Ausnahme: **erreichte Ränge, verliehene Abzeichen, erreichte Meilensteine** sind dauerhafte Fakten (nie zurückgenommen).
 - **Aktivität:** `Aktivitaet(kind, datum, modul, referenz)` entsteht bei Bestätigung einer Aufgabe (bzw. sofort bei "Vertrauen"). Storno einer Aufgabe markiert die Aktivität als storniert.
 
@@ -364,6 +404,7 @@ sequenceDiagram
 
 - **Bezugsdatum einer Aufgabe:** **[K]** SPEC lässt offen, ob Meldezeit oder Bestätigungszeit zählt. Problem: Kind meldet So 19 Uhr, Eltern bestätigen Mo -> Woche verloren, Serie bricht.
   - **Empfehlung:** Es zählt das **Meldedatum** (`gemeldet_am`, Berlin). Wochenabschluss wird erst nach einem **Puffer** finalisiert (Startwert 24 h, also Di 00:10). Bestätigungen nach Finalisierung zählen für die Woche der Bestätigung.
+  - **Umsetzung (Review AP31):** Dieselbe Regel gilt für Aktivität **und** Punkte (Basis, Serienbonus, Sonderpunkte): `spielregeln.selectors.wirksames_datum`. Sonst landeten Punkte einer späten Bestätigung in der abgeschlossenen Woche (für Familienziel und Held der Woche verloren). Korrekturen (Gegenbuchung) zählen am Tag der Korrektur. Familienwoche und Kinder-Wochen schließen zum selben Zeitpunkt (`woche_abgeschlossen_ab`, lokale Wanduhr).
 - **Aktive Woche:** ≥ 1 nicht stornierte Aktivität in der ISO-Woche.
 - **Neutrale Woche:** nicht aktiv **und** überschneidet sich mit einer Pause (Kind oder Familie) an mindestens N Tagen (Startwert N = 1).
   - **[K]** "Pausierte Wochen und Tage sind neutral" ist bei Teil-Pausen unklar. Empfehlung: N = 1 (großzügig, Kindern gegenüber fair), einstellbar.
@@ -413,6 +454,7 @@ sequenceDiagram
   - `einloesbar_ab` = frühestes Datum, an dem beide Grenzen erfüllt sind, berechnet aus allen **angenommenen** Sondertagen des Kindes (inkl. manuell erfasster Historie). Wird bei jeder Annahme/Korrektur für alle offenen Ansprüche neu berechnet.
   - Mehrere offene Ansprüche bilden eine **Warteschlange** (FIFO). Je Kind ist nur der erste offene Anspruch einlösbar.
   - Durchsetzung: Button "Wunsch angenommen" erst ab `einloesbar_ab`; Service prüft serverseitig erneut in derselben Transaktion.
+  - Wird ein wartender (erster) Anspruch einlösbar, melden Job `sondertag_sicherstellen` an Kind (Pop-up/Push) und Eltern (Push) genau einmal (`sondertag.einloesbar`, `sondertag.einloesbar_eltern`). Sofort einlösbare Ansprüche melden nur die Freischaltung.
 - **Ablauf** siehe Zustandsdiagramm:
 
 ```mermaid
@@ -437,7 +479,7 @@ stateDiagram-v2
 - Bedingung: jedes **nicht pausierte** Kind hat ≥ 1 Aktivität. Kind gilt als pausiert, wenn es in der Woche an ≥ N Tagen pausiert ist (gleiche Regel wie 7.2).
 - Erfolg live bei `punkte.gebucht`: bedingtes Update `laufend -> erreicht` -> Event (Konfetti + Eltern-Push) genau einmal.
 - Abstimmung: Kinder stimmen im Fenster (Startwert So 00:00–23:59) für die Folgewoche; `unique(woche, kind)`; Gleichstand oder keine Stimme -> Eltern entscheiden (Benachrichtigung).
-- Großziel: nach 4 erreichten Wochen in Folge; **neutrale Wochen** (ganze Familie pausiert) brechen die Folge nicht. Zähler startet nach Freischaltung neu.
+- Großziel: nach 4 erreichten Wochen in Folge; **neutrale Wochen** (ganze Familie pausiert, d. h. alle aktiven Kinder an ≥ N Tagen) brechen die Folge nicht. Zähler startet nach Freischaltung neu. Abgeleitet aus der Historie; auslösende Woche = jüngste erreichte Woche der Folge, höchstens ein Großziel je Prüfung (Review AP31: gesenkte Serienlänge erzeugt keine rückwirkenden Mehrfach-Großziele).
 
 ### 7.8 Held der Woche
 
@@ -467,7 +509,7 @@ stateDiagram-v2
 - **Speicherung/Cache:** Hash über die Eingabe -> `RenderCache` (Hash, SVG). Datei zusätzlich in `/data/media/avatar-cache/<hash>.svg`.
 - **Auslieferung:** `GET /avatar/<hash>.svg` mit `Cache-Control: public, max-age=31536000, immutable` (URL ändert sich bei jeder Änderung). Kleine Ansichten inline.
 - **Varianten-Erzeugung:** `manage.py avatar_varianten_erzeugen --thema ritter` erzeugt die 36 Baupläne aus Teile-Bibliothek + Themenregeln als Seed-Daten (Fixture). Danach in DB editierbar.
-- **Sicherheit SVG-Override:** Whitelist-Parser (`defusedxml`): nur `svg, g, rect, path, polygon, circle`, Attribute `fill, x, y, width, height, d, points, transform, opacity`. Keine Scripts, keine externen Referenzen, keine `style`-Attribute mit URL.
+- **Sicherheit SVG (Overrides, Abzeichen):** gemeinsamer Whitelist-Parser `apps/kern/svg.py` (seit AP31; `xml.etree` mit Vorab-Sperre von DOCTYPE/ENTITY/PI, Größen-/Tiefen-/Elementgrenzen): nur `svg, g, rect, path, polygon, circle`, Attribute `fill, x, y, width, height, d, points, transform, opacity, cx, cy, r`; neu serialisiert. `viewBox` konfigurierbar (Avatar `0 0 32 48`, Abzeichen `0 0 64 64`), Verläufe optional (`defs`, `linearGradient`, `radialGradient`, `stop`; `fill="url(#id)"` nur auf im Dokument definierte ids). Keine Scripts, keine externen Referenzen, kein `style`.
 - **Eltern-Avatar:** gleicher Generator, Thema `eltern`, keine Mods.
 - **Rechtlich:** eigene Formen und Farben; keine Namen/Texturen aus Minecraft. Prüfpunkt im Review (AP28).
 
@@ -604,7 +646,7 @@ FamKo/
 | 28 | Abzeichen-Grafiken + rechtlicher Grafik-Check | 24 | haiku (+opus Review) | Ein Symbol je Abzeichen; keine fremden Marken |
 | 29 | `familienziel`: Woche, Live-Fortschritt, Bedingung, Erfolg, Abstimmung, Großziel, Tablet-Leiste | 20, 17 | sonnet (+opus Review) | Erfolg genau einmal; Gleichstand -> Eltern |
 | 30 | Familien-Ranking: Showcase, Held der Woche, Rohpunkte, Modus-Schalter, Tablet | 22, 24, 20 | sonnet | Modus im Eltern-Dashboard wirkt auf Tablet |
-| 31 | Review Phase 2 + Szenario-Tests 52 Wochen | 20–30 | opus | Sondertage ≤ 2/App-Jahr im Szenario |
+| 31 | Review Phase 2 + Szenario-Tests 52 Wochen (erledigt 24.10.2026, docs/reviews/REVIEW_PHASE2.md) | 20–30 | opus | Sondertage ≤ 2/App-Jahr im Szenario |
 
 ### Phase 3: Feinschliff
 
