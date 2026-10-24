@@ -11,6 +11,7 @@ Alle Werte werden live aus der Historie berechnet (gleiche Rechnung wie Job und 
 - ``wochenauswertung(kind, woche)``: gespeicherte Zeile (oder ``None``).
 - ``quartal_voll_aktiv(kind, jahr, quartal)`` (AP23).
 - ``aktuelle_pause(kind)``, ``pausen_uebersicht()`` (Eltern-UI).
+- Held der Woche (AP30): ``helden(woche)``, ``zuwaechse(woche)``, ``held_titel(kind)``.
 - Ränge (AP22): ``raenge()``, ``startrang()``, ``aktueller_rang(kind)`` (Rang mit ``stufe`` =
   Seltenheit 1–6, ``selten`` für ``data-selten``, ``mod_preis``, ``bauzeit_stunden``),
   ``rang_aufstiege(kind)`` (Fakten), ``rang_erreicht(kind, stufe)``, ``rang_fortschritt(kind)``,
@@ -213,3 +214,31 @@ def laufende_pause_von(ziel_kind, heute: date | None = None) -> Pause | None:
     qs = Pause.objects.filter(_laufend_q(heute))
     qs = qs.filter(kind=ziel_kind) if ziel_kind is not None else qs.filter(kind__isnull=True)
     return qs.order_by("von", "id").first()
+
+
+# --- Held der Woche (AP30) ------------------------------------------------------------------
+
+
+def helden(woche: IsoWoche) -> list[Wochenauswertung]:
+    """Helden der (bewerteten) Woche, Gleichstand = mehrere. Leer, wenn keiner oder unbewertet."""
+    return list(
+        Wochenauswertung.objects.filter(
+            iso_jahr=woche.jahr, iso_woche=woche.woche, held_der_woche=True
+        ).select_related("kind")
+    )
+
+
+def zuwaechse(woche: IsoWoche) -> list[Wochenauswertung]:
+    """Alle bewerteten (nicht pausierten) Kinder der Woche, größter Zuwachs zuerst (Eltern)."""
+    return list(
+        Wochenauswertung.objects.filter(
+            iso_jahr=woche.jahr, iso_woche=woche.woche, zuwachs_relativ__isnull=False
+        )
+        .select_related("kind")
+        .order_by("-zuwachs_relativ", "kind__anzeigename")
+    )
+
+
+def held_titel(kind) -> int:
+    """Wie oft das Kind Held der Woche war."""
+    return Wochenauswertung.objects.filter(kind=kind, held_der_woche=True).count()

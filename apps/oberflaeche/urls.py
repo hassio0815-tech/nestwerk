@@ -10,6 +10,7 @@ urlpatterns = [
     path("", views.startseite, name="startseite"),
     path("kind/", views.kind_heim, name="kind_heim"),
     path("kind/akzent/", views.akzent_setzen, name="akzent"),
+    path("eltern/ranking/modus/", views.ranking_modus, name="ranking_modus"),
     path("eltern/", views.eltern_heim, name="eltern_heim"),
     path("tablet/", views.tablet, name="tablet"),
     path("tablet/teil/", views.tablet_teil, name="tablet_teil"),

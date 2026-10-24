@@ -1,0 +1,5 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Familie</h2>
+  {% include "oberflaeche/ranking/_ansicht.html" with a=k.a %}
+</div></article>

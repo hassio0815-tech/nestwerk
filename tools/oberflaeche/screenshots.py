@@ -2,7 +2,7 @@
 """Screenshots und Browser-Prüfung der FamKo-Oberfläche (Python-Playwright, kein MCP).
 
 Startet eine Demo-Instanz (eigene DB unter /tmp/famko-demo, Entwicklungs-Settings,
-127.0.0.1:8765), durchläuft den Einrichtungs-Assistenten per Browser, erzeugt Demo-Daten,
+127.0.0.1:8765; änderbar über FAMKO_DEMO_DIR und FAMKO_DEMO_PORT), durchläuft den Einrichtungs-Assistenten per Browser, erzeugt Demo-Daten,
 macht Screenshots in zwei Viewports und sammelt je Seite Konsolenfehler, CSP-Verstöße,
 fehlgeschlagene Requests und externe Requests. Am Ende wird der Server gestoppt und die
 Demo-DB gelöscht.
@@ -26,8 +26,10 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
-DEMO_DIR = Path("/tmp/famko-demo")
-PORT = 8765
+# Parallele Läufe: eigener Port und eigenes Demo-Verzeichnis per Umgebungsvariable
+# (FAMKO_DEMO_PORT, FAMKO_DEMO_DIR); Standard unverändert.
+DEMO_DIR = Path(os.environ.get("FAMKO_DEMO_DIR", "/tmp/famko-demo"))
+PORT = int(os.environ.get("FAMKO_DEMO_PORT", "8765"))
 BASIS = f"http://127.0.0.1:{PORT}"
 PASSWORT = "Sonnenblume-4711-Demo"
 KINDER = [("Kind A", "1111"), ("Kind B", "2222"), ("Kind C", "3333")]
@@ -137,7 +139,7 @@ def server_starten():
         except Exception:
             time.sleep(0.5)
     proc.terminate()
-    raise RuntimeError("Demo-Server startet nicht, siehe /tmp/famko-demo/server.log")
+    raise RuntimeError(f"Demo-Server startet nicht, siehe {DEMO_DIR}/server.log")
 
 
 def server_stoppen(proc):
@@ -438,6 +440,43 @@ def familienziel_ablauf(browser, aufn):
     ctx.close()
 
 
+def ranking_ablauf(browser, aufn):
+    """AP30: Familien-Ranking in allen drei Modi. Eltern schalten über das Dashboard um; Tablet
+    (ohne Anmeldung), Kinder-Seite und Eltern-Dashboard zeigen den Modus."""
+    subprocess.run(
+        [sys.executable, str(ROOT / "tools/oberflaeche/ranking_demo.py")],
+        cwd=ROOT,
+        env=_env(),
+        check=True,
+    )
+    ctx_e = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    eltern = ctx_e.new_page()
+    aufn.s.anbinden(eltern)
+    eltern_login(eltern, aufn)
+    ctx_t = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    tablet = ctx_t.new_page()
+    aufn.s.anbinden(tablet)
+    ctx_k = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
+    kind = ctx_k.new_page()
+    aufn.s.anbinden(kind)
+    kind_login(kind, aufn, "Kind A", "1111", fotos=False)
+    for modus, text in (
+        ("schaufenster", "Schaufenster"),
+        ("held", "Held der Woche"),
+        ("rohpunkte", "Rohpunkte"),
+    ):
+        eltern.goto(BASIS + "/eltern/", wait_until="networkidle")
+        eltern.locator("[data-eltern-ranking]").get_by_role("button", name=text).click()
+        eltern.wait_for_load_state("networkidle")
+        aufn.s.neu(f"ranking-{modus}-eltern")
+        aufn.foto(eltern, f"ranking-{modus}-eltern")
+        aufn.seite(tablet, f"ranking-{modus}-tablet", "/tablet/")
+        aufn.seite(kind, f"ranking-{modus}-kind", "/kind/")
+    ctx_e.close()
+    ctx_t.close()
+    ctx_k.close()
+
+
 def seiten_ablauf(browser, aufn):
     avatar_ablauf(browser, aufn)
     familienziel_ablauf(browser, aufn)
@@ -525,6 +564,9 @@ def berichte(aufn, ziel):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ziel", default="docs/screenshots/phase1")
+    ap.add_argument(
+        "--nur", choices=["ranking"], help="Nur diesen Ablauf aufnehmen (Einrichtung ohne Fotos)"
+    )
     ap.add_argument("--sichtbar", action="store_true", help="Browser mit Fenster (Debug)")
     args = ap.parse_args()
     ziel = (ROOT / args.ziel).resolve()
@@ -541,10 +583,19 @@ def main():
             ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
             page = ctx.new_page()
             sammler.anbinden(page)
-            einrichtung(page, aufn)
+            if args.nur:  # Einrichtung ohne Fotos im Zielordner
+                import tempfile
+
+                with tempfile.TemporaryDirectory() as tmp:
+                    einrichtung(page, Aufnahme(Path(tmp), sammler))
+            else:
+                einrichtung(page, aufn)
             ctx.close()
             demo_daten()
-            seiten_ablauf(browser, aufn)
+            if args.nur == "ranking":
+                ranking_ablauf(browser, aufn)
+            else:
+                seiten_ablauf(browser, aufn)
             browser.close()
         berichte(aufn, ziel)
         print(f"{len(aufn.dateien)} Screenshots in {ziel}")

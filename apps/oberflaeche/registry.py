@@ -2,9 +2,9 @@
 registrieren ihre Kacheln selbst über ``kern.registry.kachel_registrieren``; die Dashboards
 zeigen alles, was die Registry alle die Zielgruppe liefert."""
 
-from apps.kern.registry import ELTERN, KIND, Kachel, kachel_registrieren
+from apps.kern.registry import ELTERN, KIND, TABLET, Kachel, kachel_registrieren
 
-from . import selectors
+from . import ranking, selectors
 
 T = "oberflaeche/kacheln/"
 
@@ -46,6 +46,14 @@ def _eltern_ereignisse(request):
 
 def _eltern_system(request):
     return {"status": selectors.system_status()}
+
+
+def _ranking(request):
+    return {"a": ranking.ansicht()}
+
+
+def _ranking_eltern(request):
+    return {"a": ranking.ansicht()} | ranking.eltern_zusatz()
 
 
 def kacheln_registrieren():
@@ -137,6 +145,33 @@ def kacheln_registrieren():
             T + "eltern_schnellzugriff.html",
             {ELTERN},
             reihenfolge=50,
+        ),
+        Kachel(
+            "oberflaeche.tablet_ranking",
+            "oberflaeche",
+            "Ranking",
+            T + "tablet_ranking.html",
+            {TABLET},
+            _ranking,
+            reihenfolge=50,
+        ),
+        Kachel(
+            "oberflaeche.kind_ranking",
+            "oberflaeche",
+            "Familie",
+            T + "kind_ranking.html",
+            {KIND},
+            _ranking,
+            reihenfolge=60,
+        ),
+        Kachel(
+            "oberflaeche.eltern_ranking",
+            "oberflaeche",
+            "Familien-Ranking",
+            T + "eltern_ranking.html",
+            {ELTERN},
+            _ranking_eltern,
+            reihenfolge=25,
         ),
     ]
     for kachel in alle:

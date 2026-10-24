@@ -39,7 +39,7 @@ from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.konten import selectors as konten
 
-from . import abzeichen, auswertung, events, raenge, serienbonus
+from . import abzeichen, auswertung, events, held, raenge, serienbonus
 from . import kontinuitaet as k
 from .abzeichen import (  # noqa: F401 (öffentliche Abzeichen-/Meilenstein-API, AP23)
     AbzeichenFehler,
@@ -533,7 +533,9 @@ def wochen_sicherstellen(kind=None, jetzt=None) -> dict:
     for kind in kinder:
         with transaction.atomic():
             kind_auswerten(kind, jetzt, zaehler=gesamt)
-    return {"kinder": len(kinder), **gesamt.__dict__}
+    with transaction.atomic():
+        gesamt_held = held.sicherstellen(jetzt)  # AP30: Held der Woche (idempotent)
+    return {"kinder": len(kinder), **gesamt.__dict__, **gesamt_held}
 
 
 # --- XP der Woche aktuell halten ------------------------------------------------------------

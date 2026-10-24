@@ -8,7 +8,19 @@ STARTWERTE = {
 }
 
 
+RANKING_STARTWERTE = {"oberflaeche.ranking_modus": "schaufenster"}  # AP30
+RANKING_MODI = ("schaufenster", "held", "rohpunkte")
+
+
 def einstellungen_definieren():
+    definieren(
+        "oberflaeche.ranking_modus",
+        Typ.TEXT,
+        "Familien-Ranking: Ansicht",
+        beschreibung="Schaufenster (Avatare mit Rang, Serie, Abzeichen), Held der Woche oder "
+        "Rohpunkte. Gilt für Tablet und Kinder-Seite.",
+        auswahl=RANKING_MODI,
+    )
     definieren(
         "oberflaeche.tablet_aktualisierung_sekunden",
         Typ.GANZZAHL,

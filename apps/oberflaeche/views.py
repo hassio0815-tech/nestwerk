@@ -18,7 +18,7 @@ from apps.konten.geraet import ist_kiosk
 from apps.konten.models import Rolle
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
-from . import kacheln, selectors
+from . import kacheln, ranking, selectors
 
 
 @require_GET
@@ -120,3 +120,16 @@ def tablet_teil(request):
     if not _tablet_erlaubt(request):
         return HttpResponseForbidden("Die Tablet-Ansicht gibt es nur im Heimnetz.")
     return render(request, "oberflaeche/_tablet_teil.html", _tablet_kontext(request))
+
+
+# --- Familien-Ranking (AP30) -----------------------------------------------------------------
+
+
+@nur_eltern
+@require_POST
+def ranking_modus(request):
+    """Eltern schalten die Ranking-Ansicht für Tablet und Kinder-Seite um."""
+    gewaehlt = request.POST.get("modus", "")
+    if gewaehlt in ranking.RANKING_MODI:
+        einstellungen.setzen("oberflaeche.ranking_modus", gewaehlt)
+    return redirect("oberflaeche:eltern_heim")

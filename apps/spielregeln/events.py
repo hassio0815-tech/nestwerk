@@ -14,6 +14,9 @@ RANG_AUFGESTIEGEN = "rang.aufgestiegen"  # Kind (festliches Pop-up) + Eltern (AP
 ABZEICHEN_VERLIEHEN = "abzeichen.verliehen"  # Kind (Pop-up) + Eltern (AP23)
 MEILENSTEIN_ERREICHT = "meilenstein.erreicht"  # intern: sondertag (AP27), weitere Module
 
+HELD = "spielregeln.held"  # Eltern-Info (AP30)
+HELD_KIND = "spielregeln.held_kind"  # Kind: Pop-up "Du bist Held der Woche!"
+
 LINK_KIND = "/kind/"
 
 
@@ -39,3 +42,5 @@ def typen_deklarieren():
     typ(RANG_AUFGESTIEGEN, "Rangaufstieg", "beide", ("push", "popup", "email"))
     typ(ABZEICHEN_VERLIEHEN, "Neues Abzeichen", "beide", ("push", "popup"))
     typ(MEILENSTEIN_ERREICHT, "Meilenstein erreicht", "intern")
+    typ(HELD, "Held der Woche", "eltern", ("push",), deep_link_muster="/eltern/")
+    typ(HELD_KIND, "Held der Woche (Kind)", "kind", ("popup",), **kind)

@@ -26,7 +26,7 @@ Die PNGs mit dem Read-Tool ansehen und die Befunde von Hand in `BEFUNDE.md` bewe
 - Neue Seite: Eintrag `(label, pfad)` in `SEITEN_KIND` bzw. `SEITEN_ELTERN` in `screenshots.py`.
 - Neue Demo-Daten (neue Fach-Apps): `demo_daten.py` ergänzen. Es läuft gegen die Demo-DB und nutzt nur Services/Selectors.
 - Neue Einrichtungs-Schritte: Funktion `einrichtung()` anpassen (Feldnamen aus den Templates).
-- Port/Pfade: Konstanten `PORT`, `DEMO_DIR` oben im Skript.
+- Port/Pfade: Umgebungsvariablen `FAMKO_DEMO_PORT` (Standard 8765) und `FAMKO_DEMO_DIR` (Standard `/tmp/famko-demo`) für parallele Läufe; `--nur ranking` nimmt nur das Familien-Ranking auf (AP30).
 
 ## Hinweise
 

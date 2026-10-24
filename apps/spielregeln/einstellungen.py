@@ -14,7 +14,45 @@ STARTWERTE = {
 }
 
 
+# AP30: Held der Woche (ARCHITECTURE 7.8)
+HELD_STARTWERTE = {
+    "spielregeln.held_basis_wochen": 4,
+    "spielregeln.held_min_wochen": 2,
+    "spielregeln.held_mindestbasis_punkte": 50,
+}
+
+
 def einstellungen_definieren():
+    definieren(
+        "spielregeln.held_basis_wochen",
+        Typ.GANZZAHL,
+        "Held der Woche: Vergleich mit den letzten Wochen",
+        beschreibung="Das eigene Wochen-Mittel aus so vielen letzten aktiven Wochen dient als "
+        "Vergleich. Wer in der Woche am meisten über seinem eigenen Mittel liegt, ist Held.",
+        einheit="Wochen",
+        minimum=1,
+        maximum=26,
+    )
+    definieren(
+        "spielregeln.held_min_wochen",
+        Typ.GANZZAHL,
+        "Held der Woche: Mindestwochen Historie",
+        beschreibung="Ab so vielen aktiven Wochen zählt das echte eigene Mittel. Davor gilt die "
+        "einfache Regel: Vergleich mit dem Mindestwert unten.",
+        einheit="Wochen",
+        minimum=1,
+        maximum=26,
+    )
+    definieren(
+        "spielregeln.held_mindestbasis_punkte",
+        Typ.GANZZAHL,
+        "Held der Woche: Mindestwert als Vergleich",
+        beschreibung="Das Mittel wird nach unten auf diesen Wert begrenzt, damit sehr kleine "
+        "Mittelwerte keine riesigen Zuwächse ergeben.",
+        einheit="Punkte",
+        minimum=1,
+        maximum=10000,
+    )
     definieren(
         "spielregeln.puffer_stunden",
         Typ.GANZZAHL,

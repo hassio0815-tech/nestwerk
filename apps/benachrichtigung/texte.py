@@ -86,6 +86,12 @@ _STANDARD = {
     "spielregeln.abzeichen": TypText(
         "Neues Abzeichen: {abzeichen}", "{kind} hat ein Abzeichen verdient."
     ),
+    "spielregeln.held": TypText(
+        "{kind} ist Held der Woche", "{xp} Punkte, deutlich mehr als sonst ({prozent} % darüber)."
+    ),
+    "spielregeln.held_kind": TypText(
+        "Du bist Held der Woche!", "{xp} Punkte: mehr als sonst. Stark gemacht!"
+    ),
     "sondertag.freigeschaltet": TypText(
         "Sondertag freigeschaltet", "Du darfst dir etwas wünschen!"
     ),
