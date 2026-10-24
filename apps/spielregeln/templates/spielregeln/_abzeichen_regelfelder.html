@@ -1,0 +1,10 @@
+<label class="feld"><span class="feld__label">Wert</span><select class="feld__eingabe" name="metrik" required>
+  {% for e in metriken %}<option value="{{ e.m.schluessel }}"{% if d.metrik == e.m.schluessel %} selected{% endif %}>{{ e.m.bezeichnung }}{% if e.m.einheit %} ({{ e.m.einheit }}){% endif %}</option>{% endfor %}
+</select></label>
+<label class="feld"><span class="feld__label">Vergleich</span><select class="feld__eingabe" name="vergleich">
+  {% for wert, text in vergleiche %}<option value="{{ wert }}"{% if d.vergleich == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
+</select></label>
+<label class="feld"><span class="feld__label">Schwelle</span><input class="feld__eingabe" type="number" min="0" name="schwelle" value="{{ d.schwelle|default_if_none:'' }}" required></label>
+<label class="feld"><span class="feld__label">Wiederholung</span><select class="feld__eingabe" name="wiederholbar">
+  {% for wert, text in wiederholungen %}<option value="{{ wert }}"{% if d.wiederholbar == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
+</select></label>

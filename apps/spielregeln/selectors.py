@@ -15,6 +15,11 @@ Alle Werte werden live aus der Historie berechnet (gleiche Rechnung wie Job und 
   Seltenheit 1–6, ``selten`` für ``data-selten``, ``mod_preis``, ``bauzeit_stunden``),
   ``rang_aufstiege(kind)`` (Fakten), ``rang_erreicht(kind, stufe)``, ``rang_fortschritt(kind)``,
   ``wirksamer_faktor(kind)``, ``globaler_faktor()``, ``kind_faktor(kind)``.
+- Abzeichen/Meilensteine (AP23): ``vitrine(kind)`` (verdient, nächste mit Fortschritt,
+  Rekorde), ``verleihungen(kind)``, ``definitionen()``, ``symbol(definition, bereich)``,
+  ``meilenstein_regeln()``, ``meilensteine_erreicht(kind, regel)``,
+  ``meilenstein_erreicht(kind, schluessel, bereich)``, ``meilenstein_stand(kind, schluessel)``,
+  ``abgeschlossene_quartale(kind)``.
 """
 
 from __future__ import annotations
@@ -29,6 +34,20 @@ from apps.kern.zeit import IsoWoche
 
 from . import auswertung
 from . import kontinuitaet as k
+from .abzeichen import (  # noqa: F401 (öffentliche Abzeichen-/Meilenstein-API, AP23)
+    BedingungsStand,
+    Symbol,
+    Vitrine,
+    definitionen,
+    meilenstein_erreicht,
+    meilenstein_regeln,
+    meilenstein_stand,
+    meilensteine_erreicht,
+    naechste,
+    symbol,
+    verleihungen,
+    vitrine,
+)
 from .models import Aktivitaet, KindStand, Pause, Wochenauswertung
 from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22)
     RangFortschritt,
@@ -126,6 +145,31 @@ def quartal_voll_aktiv(kind, jahr: int, quartal: int) -> bool:
         return False
     auswahl = [ergebnisse[w] for w in wochen]
     return all(e.aktiv or e.neutral for e in auswahl) and any(e.aktiv for e in auswahl)
+
+
+def abgeschlossene_quartale(kind, jetzt=None) -> list[tuple[int, int, bool]]:
+    """``(jahr, quartal, voll_aktiv)`` je Quartal ab Go-live, dessen letzte Woche finalisiert ist
+    (AP23: Metrik ``quartal_voll_aktiv``). Das Go-live-Quartal zählt nur, wenn es mit Go-live
+    beginnt (Wochen davor fehlen sonst, wie ``quartal_voll_aktiv``)."""
+    a = auswertung.auswerten(kind, jetzt)
+    final = {e.woche: e for e in a.wochen[: a.finalisiert]}
+    if not final:
+        return []
+    erste = min(final)
+    letzte = max(final)
+    jahr, nummer = k.quartal(erste)
+    ergebnis = []
+    while True:
+        wochen = k.quartal_wochen(jahr, nummer)
+        if wochen[-1] > letzte:
+            break
+        auswahl = [final.get(w) for w in wochen]
+        voll = all(e is not None and (e.aktiv or e.neutral) for e in auswahl) and any(
+            e.aktiv for e in auswahl if e is not None
+        )
+        ergebnis.append((jahr, nummer, voll))
+        jahr, nummer = (jahr + 1, 1) if nummer == 4 else (jahr, nummer + 1)
+    return ergebnis
 
 
 # --- Pausen ---------------------------------------------------------------------------------

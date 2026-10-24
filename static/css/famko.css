@@ -638,6 +638,36 @@ a.kachel:hover {
   40% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
+/* Abzeichen (AP23): Pop-up, Vitrine; Grafiken liefert AP28 (static/abzeichen/<symbol>.svg) */
+.toast--abzeichen { border-left-color: var(--selten-epic); }
+.toast--abzeichen .icon { color: var(--selten-epic); width: 1.75rem; height: 1.75rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .toast--abzeichen { animation: rang-feier 1s ease-out 1; }
+}
+.abzeichen-liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.abzeichen { display: flex; align-items: center; gap: 0.5rem; }
+.abzeichen--offen { opacity: 0.85; }
+.abzeichen--offen .fortschritt-block { flex: 1; }
+.abzeichen__symbol {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--flaeche-hoch);
+}
+.abzeichen__symbol .icon { width: 1.5rem; height: 1.5rem; color: var(--selten-epic); }
+.abzeichen--offen .abzeichen__symbol .icon { color: inherit; }
+.abzeichen__symbol img { width: 2.5rem; height: 2.5rem; image-rendering: pixelated; }
+.abzeichen__name { font-weight: 600; }
 
 /* PIN-Pad: 4 Ziffern, große Tasten */
 .pin {

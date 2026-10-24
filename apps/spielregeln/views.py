@@ -1,18 +1,22 @@
 """Eltern-UI für Pausen (SPEC 7): Seite mit Formular (Kind/Familie, Zeitraum) und Schnell-Schalter
 aus der Dashboard-Kachel. Ränge-Verwaltung (AP22): Namen, Schwellen, Mindestwochen,
-Kalibrierungsfaktor global/je Kind (K3). Nur Eltern."""
+Kalibrierungsfaktor global/je Kind (K3). Abzeichen (AP23): anlegen, ändern, (de)aktivieren,
+Übersicht je Kind. Nur Eltern."""
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.kern import registry as kern_registry
 from apps.kern import zeit
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
+from . import abzeichen as engine
 from . import selectors, services
 from .forms import FAMILIE, PauseForm
-from .models import Pause, Rang
+from .models import AbzeichenDefinition, Pause, Rang, Vergleich, Wiederholbar
+from .registry import hat_bereiche
 
 ZIELE = {"heim": "konten:eltern_heim", "pausen": "spielregeln:pausen"}
 
@@ -198,3 +202,79 @@ def kalibrierung(request):
     except services.RangFehler as fehler:
         return _raenge_seite(request, status=400, fehler=str(fehler))
     return redirect("spielregeln:raenge")
+
+
+# --- Abzeichen (AP23) -----------------------------------------------------------------------
+
+
+def _abzeichen_seite(request, status=200, fehler=""):
+    kontext = {
+        "fehler": fehler,
+        "zeilen": engine.eltern_uebersicht(),
+        "definitionen": [
+            {"d": d, "symbol": selectors.symbol(d), "anzahl": d.verleihungen.count()}
+            for d in selectors.definitionen()
+        ],
+        "metriken": [
+            {"m": m, "bereiche": hat_bereiche(m.schluessel)} for m in kern_registry.metriken()
+        ],
+        "vergleiche": Vergleich.choices,
+        "wiederholungen": Wiederholbar.choices,
+    }
+    return render(request, "spielregeln/abzeichen.html", kontext, status=status)
+
+
+@nur_eltern
+def abzeichen(request):
+    return _abzeichen_seite(request)
+
+
+def _abzeichen_daten(request):
+    p = request.POST
+    return {
+        "name": p.get("name", ""),
+        "beschreibung": p.get("beschreibung", ""),
+        "metrik": p.get("metrik", ""),
+        "vergleich": p.get("vergleich", ">="),
+        "schwelle": p.get("schwelle", ""),
+        "wiederholbar": p.get("wiederholbar", "einmalig"),
+        "reihenfolge": p.get("reihenfolge") or None,
+    }
+
+
+@nur_eltern
+@require_POST
+def abzeichen_neu(request):
+    try:
+        services.abzeichen_speichern(
+            None, von=aktueller_elternteil(request), **_abzeichen_daten(request)
+        )
+    except services.AbzeichenFehler as fehler:
+        return _abzeichen_seite(request, status=400, fehler=str(fehler))
+    return redirect("spielregeln:abzeichen")
+
+
+@nur_eltern
+@require_POST
+def abzeichen_aendern(request, pk):
+    definition = get_object_or_404(AbzeichenDefinition, pk=pk)
+    try:
+        services.abzeichen_speichern(
+            definition,
+            von=aktueller_elternteil(request),
+            aktiv=definition.aktiv,
+            **_abzeichen_daten(request),
+        )
+    except services.AbzeichenFehler as fehler:
+        return _abzeichen_seite(request, status=400, fehler=f"{definition.name}: {fehler}")
+    return redirect("spielregeln:abzeichen")
+
+
+@nur_eltern
+@require_POST
+def abzeichen_aktiv(request, pk):
+    definition = get_object_or_404(AbzeichenDefinition, pk=pk)
+    services.abzeichen_aktiv_setzen(
+        definition, request.POST.get("aktiv") == "1", von=aktueller_elternteil(request)
+    )
+    return redirect("spielregeln:abzeichen")

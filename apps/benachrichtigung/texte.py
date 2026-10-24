@@ -81,6 +81,7 @@ _STANDARD = {
         "Serienbonus +{prozent} %", "+{punkte} Punkte für {serie} Wochen in Folge."
     ),
     "rang.aufgestiegen": TypText("Neuer Rang: {rang}!", "{kind} ist aufgestiegen."),
+    "abzeichen.verliehen": TypText("Neues Abzeichen: {abzeichen}", "{kind}: {beschreibung}"),
     "spielregeln.rang_aufstieg": TypText("Neuer Rang: {rang}!", "{kind} ist aufgestiegen."),
     "spielregeln.abzeichen": TypText(
         "Neues Abzeichen: {abzeichen}", "{kind} hat ein Abzeichen verdient."

@@ -10,7 +10,7 @@ class SpielregelnConfig(AppConfig):
     def ready(self):
         from apps.ereignisse import registry as ereignis_registry
 
-        from . import raenge, registry, services
+        from . import abzeichen, raenge, registry, services
         from .einstellungen import einstellungen_definieren
         from .events import typen_deklarieren
 
@@ -30,5 +30,13 @@ class SpielregelnConfig(AppConfig):
             "punkte.gebucht",
             raenge.nach_buchung,
             name="spielregeln.rang_pruefen",
+            synchron=True,
+        )
+        # AP23: Abzeichen je Rangaufstieg auf dem XP-Pfad (Aktivität/Woche/Pause prüft
+        # ``kind_auswerten`` selbst, der Job holt alles nach)
+        ereignis_registry.handler_registrieren(
+            "rang.aufgestiegen",
+            abzeichen.nach_ereignis,
+            name="spielregeln.abzeichen_pruefen",
             synchron=True,
         )

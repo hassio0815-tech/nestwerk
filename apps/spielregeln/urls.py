@@ -13,4 +13,8 @@ urlpatterns = [
     path("eltern/raenge/", views.raenge, name="raenge"),
     path("eltern/raenge/<int:pk>/", views.rang_aendern, name="rang_aendern"),
     path("eltern/raenge/kalibrierung/", views.kalibrierung, name="kalibrierung"),
+    path("eltern/abzeichen/", views.abzeichen, name="abzeichen"),
+    path("eltern/abzeichen/neu/", views.abzeichen_neu, name="abzeichen_neu"),
+    path("eltern/abzeichen/<int:pk>/", views.abzeichen_aendern, name="abzeichen_aendern"),
+    path("eltern/abzeichen/<int:pk>/aktiv/", views.abzeichen_aktiv, name="abzeichen_aktiv"),
 ]

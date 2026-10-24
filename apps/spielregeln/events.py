@@ -11,6 +11,8 @@ PAUSE_GESTARTET = "pause.gestartet"
 PAUSE_BEENDET = "pause.beendet"
 SERIENBONUS_GEBUCHT = "serienbonus.gebucht"  # Kind: Pop-up "Serienbonus +5 %" (AP21)
 RANG_AUFGESTIEGEN = "rang.aufgestiegen"  # Kind (festliches Pop-up) + Eltern (AP22)
+ABZEICHEN_VERLIEHEN = "abzeichen.verliehen"  # Kind (Pop-up) + Eltern (AP23)
+MEILENSTEIN_ERREICHT = "meilenstein.erreicht"  # intern: sondertag (AP27), weitere Module
 
 LINK_KIND = "/kind/"
 
@@ -35,3 +37,5 @@ def typen_deklarieren():
     typ(PAUSE_BEENDET, "Pause beendet", "kind", ("push",), **kind)
     typ(SERIENBONUS_GEBUCHT, "Serienbonus gebucht", "kind", ("popup",), **kind)
     typ(RANG_AUFGESTIEGEN, "Rangaufstieg", "beide", ("push", "popup", "email"))
+    typ(ABZEICHEN_VERLIEHEN, "Neues Abzeichen", "beide", ("push", "popup"))
+    typ(MEILENSTEIN_ERREICHT, "Meilenstein erreicht", "intern")

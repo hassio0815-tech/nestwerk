@@ -260,3 +260,136 @@ class KindStand(models.Model):
 
     def __str__(self):
         return f"Stand {self.kind_id}"
+
+
+# --- Abzeichen und Meilensteine (AP23, ARCHITECTURE 7.5/7.6) --------------------------------
+
+
+class Vergleich(models.TextChoices):
+    MIN = ">=", "mindestens (≥)"
+    MEHR = ">", "mehr als (>)"
+    GLEICH = "==", "genau (=)"
+
+
+class Wiederholbar(models.TextChoices):
+    """``einmalig``: Bereich ``""``. ``bereich``: je Bereich der Metrik einmal (z. B. je Quartal
+    ``2027-Q1`` oder je Rang ``rang-3``); die Metrik liefert ihre Bereiche selbst."""
+
+    EINMALIG = "einmalig", "einmalig"
+    BEREICH = "bereich", "je Bereich (z. B. Quartal, Rang)"
+
+
+class AbzeichenDefinition(models.Model):
+    """Abzeichen-Regel als Daten (DATA_MODEL 6.8): verliehen, wenn ``metrik`` (Schlüssel aus
+    ``kern.registry``) ``vergleich`` ``schwelle`` erfüllt. Eltern legen an, ändern, deaktivieren;
+    Module können eigene Zeilen ergänzen. ``symbol`` = Grafik-Schlüssel (AP28 liefert
+    ``static/abzeichen/<symbol>.svg``; bis dahin Platzhalter-Icon je ``gruppe``)."""
+
+    schluessel = models.SlugField(max_length=60, unique=True)
+    name = models.CharField(max_length=60)
+    beschreibung = models.CharField(max_length=200, blank=True, default="")
+    symbol = models.SlugField(max_length=100)
+    gruppe = models.SlugField(max_length=30, default="sonstiges")
+    metrik = models.CharField(max_length=60)
+    vergleich = models.CharField(max_length=2, choices=Vergleich.choices, default=Vergleich.MIN)
+    schwelle = models.PositiveIntegerField()
+    wiederholbar = models.CharField(
+        max_length=10, choices=Wiederholbar.choices, default=Wiederholbar.EINMALIG
+    )
+    modul = models.CharField(max_length=40, default="spielregeln")
+    reihenfolge = models.PositiveSmallIntegerField(default=100)
+    aktiv = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Abzeichen"
+        verbose_name_plural = "Abzeichen"
+        ordering = ["reihenfolge", "schluessel"]
+
+    def __str__(self):
+        return self.name
+
+
+class AbzeichenVerleihung(models.Model):
+    """Fakt "Kind hat Abzeichen verdient" (DATA_MODEL 6.9). Unveränderlich: bleibt, auch wenn
+    Eltern die Schwelle später erhöhen oder das Abzeichen deaktivieren. ``unique(kind, abzeichen,
+    bereich)`` verhindert Doppelverleihung (auch bei parallelen Prüfungen)."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="abzeichen"
+    )
+    abzeichen = models.ForeignKey(
+        AbzeichenDefinition, on_delete=models.PROTECT, related_name="verleihungen"
+    )
+    bereich = models.CharField(max_length=30, blank=True, default="")
+    bereich_bezeichnung = models.CharField(max_length=60, blank=True, default="")
+    wert = models.IntegerField(help_text="Metrik-Wert bei Verleihung (Snapshot)")
+    schwelle = models.PositiveIntegerField(help_text="Schwelle bei Verleihung (Snapshot)")
+    verliehen_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Abzeichen-Verleihung"
+        verbose_name_plural = "Abzeichen-Verleihungen"
+        ordering = ["verliehen_am", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["kind", "abzeichen", "bereich"], name="spielregeln_abzeichen_idem"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.kind_id} {self.abzeichen_id} {self.bereich}".strip()
+
+
+class MeilensteinRegel(models.Model):
+    """Benannte Bedingung (DATA_MODEL 6.10, generisch): alle ``bedingungen`` müssen gelten
+    (UND), je Eintrag ``{"metrik": "rang", "vergleich": ">=", "wert": 2}``. ``belohnungsart``
+    wertet das Modul aus, das ``meilenstein.erreicht`` abonniert (z. B. ``sondertag``, AP27)."""
+
+    schluessel = models.SlugField(max_length=60, unique=True)
+    name = models.CharField(max_length=80)
+    beschreibung = models.CharField(max_length=200, blank=True, default="")
+    bedingungen = models.JSONField(default=list)
+    belohnungsart = models.CharField(max_length=40, blank=True, default="")
+    wiederholbar = models.CharField(
+        max_length=10, choices=Wiederholbar.choices, default=Wiederholbar.EINMALIG
+    )
+    modul = models.CharField(max_length=40, default="spielregeln")
+    reihenfolge = models.PositiveSmallIntegerField(default=100)
+    aktiv = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Meilenstein-Regel"
+        verbose_name_plural = "Meilenstein-Regeln"
+        ordering = ["reihenfolge", "schluessel"]
+
+    def __str__(self):
+        return self.name
+
+
+class MeilensteinErreicht(models.Model):
+    """Fakt "Kind hat Meilenstein erreicht" (DATA_MODEL 6.11), nie zurückgenommen.
+    ``werte`` = Metrik-Werte bei Erfüllung (Snapshot)."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="meilensteine"
+    )
+    regel = models.ForeignKey(MeilensteinRegel, on_delete=models.PROTECT, related_name="erreicht")
+    bereich = models.CharField(max_length=30, blank=True, default="")
+    werte = models.JSONField(default=dict)
+    erreicht_am = models.DateTimeField(default=timezone.now)
+    ereignis = models.ForeignKey(
+        "ereignisse.Ereignis", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        verbose_name = "Meilenstein erreicht"
+        verbose_name_plural = "Meilensteine erreicht"
+        ordering = ["erreicht_am", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["kind", "regel", "bereich"], name="spielregeln_meilenstein_idem"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.kind_id} {self.regel_id} {self.bereich}".strip()

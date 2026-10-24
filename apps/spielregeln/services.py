@@ -15,6 +15,10 @@
 - Ränge (AP22, ``raenge``): ``raenge_pruefen(kind)``, ``rang_aendern(rang, von=, ...)``,
   ``kalibrierung_setzen(kind_oder_None, faktor, von=)``; Prüfung läuft automatisch bei
   XP-Zuwachs (``punkte.gebucht``) und in ``kind_auswerten``.
+- Abzeichen/Meilensteine (AP23, ``abzeichen``): ``abzeichen_pruefen(kind)`` (Module nach
+  Änderung eigener Metriken), ``abzeichen_alle_pruefen()``, ``abzeichen_speichern(...)``,
+  ``abzeichen_aktiv_setzen(...)``, ``meilenstein_anlegen(schluessel, name, bedingungen, modul=)``.
+  Prüfung läuft automatisch am Ende von ``kind_auswerten`` und bei ``rang.aufgestiegen``.
 
 Gespeicherte Stände (``Wochenauswertung``, ``KindStand``) sind Zwischenspeicher: jede Auswertung
 rechnet die vergangenen Wochen eines Kindes komplett aus der Historie und schreibt nur
@@ -35,8 +39,16 @@ from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.konten import selectors as konten
 
-from . import auswertung, events, raenge, serienbonus
+from . import abzeichen, auswertung, events, raenge, serienbonus
 from . import kontinuitaet as k
+from .abzeichen import (  # noqa: F401 (öffentliche Abzeichen-/Meilenstein-API, AP23)
+    AbzeichenFehler,
+    abzeichen_aktiv_setzen,
+    abzeichen_speichern,
+    meilenstein_anlegen,
+)
+from .abzeichen import alle_pruefen as abzeichen_alle_pruefen  # noqa: F401
+from .abzeichen import pruefen as abzeichen_pruefen  # noqa: F401
 from .models import Aktivitaet, KindStand, Pause, PauseQuelle, Wochenauswertung
 from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22)
     RangFehler,
@@ -472,6 +484,8 @@ def kind_auswerten(kind, jetzt=None, *, zaehler: Zaehler | None = None, melden=T
         kind, jetzt=jetzt, aktive_wochen=a.stand.aktive_wochen_gesamt, melden=melden
     )
     raenge._stand_rang_setzen(kind, raenge.aktueller_rang(kind))
+    # AP23: Abzeichen/Meilensteine (Catch-up; Fakten bleiben, Savepoint)
+    abzeichen.pruefen_sicher(kind, jetzt=jetzt, melden=melden)
     return a.stand
 
 

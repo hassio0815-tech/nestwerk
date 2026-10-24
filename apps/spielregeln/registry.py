@@ -3,6 +3,20 @@ AP23) und Dashboard-Kacheln (Kind: Serie, Rang; Eltern: Pausen, Ränge).
 
 Metrik-Werte: Zu jeder Metrik ``<schluessel>`` gibt es einen Provider ``metrik.<schluessel>``
 mit ``funktion(kind) -> int``; Abfrage über ``metrik_wert(schluessel, kind)``.
+
+Bereiche (AP23, optional): Ein Provider ``metrik.<schluessel>.bereiche`` mit
+``funktion(kind) -> dict[str, int | tuple[int, str]]`` liefert den Wert je Bereich (z. B.
+``{"2027-Q1": (1, "Q1 2027")}`` oder ``{"rang-3": (3, "Rare")}``; Bereich max. 30 Zeichen,
+Bezeichnung optional). Regeln mit ``wiederholbar = bereich`` werden je Bereich verliehen/erreicht.
+
+Neue Metrik (z. B. AP26 ``ausbaustufe``, später ``lernen.*``) in ``AppConfig.ready()``::
+
+    registry.metrik_registrieren(Metrik("ausbaustufe", "avatar", "Ausbaustufe", einheit="Slots"))
+    registry.provider_registrieren(Provider("metrik.ausbaustufe", "avatar", "Ausbaustufe", fn))
+    # optional je Bereich:
+    registry.provider_registrieren(Provider("metrik.ausbaustufe.bereiche", "avatar", "…", fn2))
+
+Danach kennt die Abzeichen-/Meilenstein-Engine die Metrik ohne Code-Änderung.
 """
 
 from apps.kern import registry
@@ -14,6 +28,22 @@ MODUL = "spielregeln"
 def metrik_wert(schluessel, kind):
     """Wert einer Metrik für ein Kind (über den Provider ``metrik.<schluessel>``)."""
     return registry.fortschritt(f"metrik.{schluessel}", kind)
+
+
+def hat_bereiche(schluessel):
+    return registry.provider_vorhanden(f"metrik.{schluessel}.bereiche")
+
+
+def metrik_bereiche(schluessel, kind) -> dict[str, tuple[int, str]] | None:
+    """Werte je Bereich ``{bereich: (wert, bezeichnung)}``; ``None`` = Metrik ohne Bereiche."""
+    if not hat_bereiche(schluessel):
+        return None
+    roh = registry.fortschritt(f"metrik.{schluessel}.bereiche", kind) or {}
+    ergebnis = {}
+    for bereich, eintrag in roh.items():
+        wert, bezeichnung = eintrag if isinstance(eintrag, tuple) else (eintrag, "")
+        ergebnis[str(bereich)[:30]] = (int(wert), str(bezeichnung or bereich)[:60])
+    return ergebnis
 
 
 def _stand_feld(feld):
@@ -67,6 +97,48 @@ def metriken_registrieren():
         )
     )
     registry.provider_registrieren(Provider("metrik.rang", MODUL, "Rang", _rang_stufe))
+    # AP23: je erreichtem Rang ein Bereich ``rang-<stufe>`` (Abzeichen je Rangaufstieg)
+    registry.provider_registrieren(
+        Provider("metrik.rang.bereiche", MODUL, "Erreichte Ränge", _rang_bereiche)
+    )
+    registry.metrik_registrieren(
+        Metrik(
+            "quartal_voll_aktiv",
+            MODUL,
+            "Volle Quartale",
+            beschreibung="Abgeschlossene Quartale, in denen jede Woche aktiv oder pausiert war",
+            einheit="Quartale",
+        )
+    )
+    registry.provider_registrieren(
+        Provider("metrik.quartal_voll_aktiv", MODUL, "Volle Quartale", _volle_quartale)
+    )
+    registry.provider_registrieren(
+        Provider("metrik.quartal_voll_aktiv.bereiche", MODUL, "Quartale", _quartal_bereiche)
+    )
+
+
+def _rang_bereiche(kind):
+    from . import selectors
+
+    return {
+        f"rang-{f.rang.stufe}": (f.rang.stufe, f.rang.name) for f in selectors.rang_aufstiege(kind)
+    }
+
+
+def _volle_quartale(kind):
+    from . import selectors
+
+    return sum(1 for _, _, voll in selectors.abgeschlossene_quartale(kind) if voll)
+
+
+def _quartal_bereiche(kind):
+    from . import selectors
+
+    return {
+        f"{jahr}-Q{nummer}": (int(voll), f"Q{nummer} {jahr}")
+        for jahr, nummer, voll in selectors.abgeschlossene_quartale(kind)
+    }
 
 
 def _kind_serie(request):
@@ -94,7 +166,41 @@ def _eltern_pausen(request):
     return views.pausen_kachel_kontext()
 
 
+def _kind_abzeichen(request):
+    from . import selectors
+
+    return {"v": selectors.vitrine(request.user)}
+
+
+def _eltern_abzeichen(request):
+    from . import abzeichen
+
+    return {"zeilen": abzeichen.eltern_uebersicht()}
+
+
 def kacheln_registrieren():
+    registry.kachel_registrieren(
+        Kachel(
+            "spielregeln.kind_abzeichen",
+            MODUL,
+            "Meine Abzeichen",
+            "spielregeln/kacheln/kind_abzeichen.html",
+            {KIND},
+            _kind_abzeichen,
+            reihenfolge=16,
+        )
+    )
+    registry.kachel_registrieren(
+        Kachel(
+            "spielregeln.eltern_abzeichen",
+            MODUL,
+            "Abzeichen",
+            "spielregeln/kacheln/eltern_abzeichen.html",
+            {ELTERN},
+            _eltern_abzeichen,
+            reihenfolge=27,
+        )
+    )
     registry.kachel_registrieren(
         Kachel(
             "spielregeln.kind_rang",
