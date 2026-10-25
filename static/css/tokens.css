@@ -126,6 +126,9 @@
 
 /* Kinder-Akzente. Jedes Kind wählt eine Farbe (Attribut am body oder Abschnitt). */
 [data-akzent="blau"] { --akzent: #2563eb; --akzent-hell: #7db4ff; --akzent-text: #ffffff; }
+/* Eltern/Einrichtung ohne Kind-Akzent: Industrial Teal (Logo) statt Blau-Platzhalter. */
+[data-layout="eltern"][data-akzent="blau"],
+[data-layout="einrichtung"][data-akzent="blau"] { --akzent: #0e6a80; --akzent-hell: #3aafc6; --akzent-text: #ffffff; }
 [data-akzent="rot"] { --akzent: #e5364a; --akzent-hell: #ff9aa4; --akzent-text: #ffffff; }
 [data-akzent="orange"] { --akzent: #ff8a2b; --akzent-hell: #ffb47a; --akzent-text: #1d1206; }
 [data-akzent="gelb"] { --akzent: #ffd23f; --akzent-hell: #fff0a3; --akzent-text: #1d1700; }

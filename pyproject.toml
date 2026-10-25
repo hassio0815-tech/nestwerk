@@ -38,7 +38,7 @@ build-backend = "setuptools.build_meta"
 [tool.ruff]
 line-length = 100
 target-version = "py313"
-extend-exclude = ["migrations"]
+extend-exclude = ["migrations", "branding"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "DJ"]

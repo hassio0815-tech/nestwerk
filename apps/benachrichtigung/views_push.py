@@ -24,8 +24,9 @@ from . import pushschluessel as vapid
 
 logger = logging.getLogger("nestwerk.benachrichtigung")
 
-THEME_FARBE = "#120f20"  # --hintergrund (static/css/tokens.css)
-AKZENT_FARBE = "#2563eb"  # --akzent
+THEME_FARBE = "#0E6A80"  # Industrial Teal (branding/nestwerk/README.md)
+HINTERGRUND_FARBE = "#F4F8F9"  # Splash-Hintergrund, passt zum Logo
+AKZENT_FARBE = "#1B8DA6"  # Hauptton
 ICON_PFAD = "benachrichtigung/icons/"
 MAX_BODY = 4096
 
@@ -71,7 +72,7 @@ def manifest_daten():
         "id": "/",
         "display": "standalone",
         "orientation": "any",
-        "background_color": THEME_FARBE,
+        "background_color": HINTERGRUND_FARBE,
         "theme_color": THEME_FARBE,
         "icons": [
             icon("icon-180.png", 180),

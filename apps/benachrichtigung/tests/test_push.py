@@ -54,7 +54,7 @@ def test_manifest_ist_valide(client):
     m = json.loads(antwort.content)
     assert m["name"] == "Nestwerk" and m["display"] == "standalone"
     assert m["start_url"] == "/" and m["scope"] == "/"
-    assert m["theme_color"] == m["background_color"] == "#120f20"
+    assert m["theme_color"] == "#0E6A80" and m["background_color"] == "#F4F8F9"
     groessen = {i["sizes"] for i in m["icons"]}
     assert {"180x180", "192x192", "512x512"} <= groessen
     assert any(i["purpose"] == "maskable" for i in m["icons"])
@@ -497,3 +497,16 @@ def test_versand_dns_ausfall_ist_vorlaeufig(mama, abo, webpush, monkeypatch):
         push.abo_senden(abo, {}, ttl=60)
     abo.refresh_from_db()
     assert abo.aktiv and abo.fehlerzaehler == 1
+
+
+def test_manifest_icons_sind_die_offiziellen_logo_dateien():
+    """Die App-Icons stammen 1:1 aus branding/nestwerk (kein Platzhalter mehr)."""
+    ordner = Path(push.__file__).parent / "static/benachrichtigung/icons"
+    marke = Path(__file__).resolve().parents[3] / "branding/nestwerk"
+    for ziel, quelle in {
+        "icon-180.png": "apple-touch-icon-180.png",
+        "icon-192.png": "icon-192.png",
+        "icon-512.png": "icon-512.png",
+        "icon-maskable-512.png": "icon-maskable-512.png",
+    }.items():
+        assert (ordner / ziel).read_bytes() == (marke / quelle).read_bytes()
