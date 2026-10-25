@@ -172,5 +172,5 @@ if [ "$start" -eq 1 ]; then
     if warte_gesund 120; then log "Stack läuft"; else fehler "Stack nicht gesund: docker compose logs"; exit 1; fi
 fi
 
-log "Fertig. Nächste Schritte: docs/RUNBOOK.md (NPM, DNS, Einrichtungs-Assistent)."
+log "Fertig. Nächste Schritte: docs/INSTALLATION.md (Proxy, DNS, Einrichtungs-Assistent); Betrieb: docs/RUNBOOK.md."
 log "Setup-Token: $(env_wert FAMKO_SETUP_TOKEN)"
