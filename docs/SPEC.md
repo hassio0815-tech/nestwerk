@@ -28,7 +28,7 @@
 - **[E]** Familien-App, nutzbar im Webbrowser und auf dem iPhone über Safari. Gut lesbar und mobil bedienbar.
 - **[E]** Startpunkt: Belohnungssystem für freiwillige Hilfe im Haushalt. Beispiele: Putzen, Müll rausbringen, Leergut wegbringen, Rasen mähen, Einkaufsliste, Wäsche und weitere.
 - **[E]** Die App wird später schrittweise erweitert. Geplant sind Lernsystem, Anbindung an Home Assistant und weitere Familienfunktionen.
-- **[E]** Nutzer: zwei Elternteile und drei Söhne (8, 11 und 13 Jahre).
+- **[E]** Nutzer (Referenzfamilie): zwei Elternteile und drei Kinder.
 - **[E]** Pädagogisches Ziel: Die Kinder unterstützen aus eigenem Antrieb den Familienalltag. Die Eltern haben nach der Arbeit mehr Zeit für die Familie.
 - **[E]** Die Kinder lernen, selbst abzuwägen, wofür sie ihre Punkte einsetzen. Beispiel: Süßes und Gaming jetzt, oder Avatar und Sondertag langfristig.
 - **[E]** Betrieb: Debian-VM auf einem Proxmox-Server zu Hause, 24/7 (siehe 16). Die Kinder nutzen die App nur im Heimnetz. Die Eltern erreichen sie unterwegs über das bestehende VPN (siehe 14).
@@ -347,7 +347,7 @@
   - gut lesbare Fließtextschrift (Beispiel: Inter)
   - Schriften selbst gehostet
   - Seltenheitsfarben für die Ränge
-  - gleiche Basis für alle drei Jungen, ohne altersspezifische Varianten
+  - gleiche Basis für alle Kinder, ohne altersspezifische Varianten
   - jedes Kind wählt eigene Akzentfarbe(n)
 
 ### 12.2 Eltern-Dashboard
@@ -519,7 +519,7 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
   - Scheduler (Management-Commands, idempotent)
   - weitere Module als zusätzliche Container (E21)
 - **[E] Datenbank:** SQLite-Datei im Volume, WAL-Modus. (E6)
-- **[E] Code:** Git-Repository. Entwicklung in `/xxx`. (E21)
+- **[E] Code:** Git-Repository. Entwicklung in einem lokalen Repository. (E21)
 - **[E] Reverse Proxy:** Nginx Proxy Manager. Traefik entfällt. (E19)
 - **[E] DNS:** AdGuard-DNS-Eintrag `famko.<Domain>` zeigt im Heimnetz auf den Nginx Proxy Manager. (E19)
 - **[E] HTTPS:** Let's-Encrypt-Zertifikat über DNS-Challenge im Nginx Proxy Manager. DNS-Anbieter offen (siehe 19). (E19)

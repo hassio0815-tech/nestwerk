@@ -4,24 +4,24 @@ Zielsystem: Debian-13-VM (2 vCPU, 4 GB, 46 GB) mit Docker Compose. Davor Nginx P
 
 ## 1. VM vorbereiten
 
-1. Debian 13 minimal + SSH installieren, feste IP vergeben (z. B. xxx).
+1. Debian 13 minimal + SSH installieren, feste IP vergeben (z. B. `<VM-IP>`).
 2. Lokale Platte verwenden, **nie** NFS/SMB fuer `/var/lib/docker` (SQLite-WAL).
 3. Proxmox: tägliches VM-Backup einrichten (Ebene 1 der Datensicherung).
 4. Zeitzone: `timedatectl set-timezone Europe/Berlin`.
 
 ## 2. Installation
 
-Es gibt kein Git-Remote: der Code kommt als Git-Bundle vom Entwicklungsrechner (so wurde die VM xxx am 2026-10-23 eingerichtet).
+Es gibt kein Git-Remote: der Code kommt als Git-Bundle vom Entwicklungsrechner.
 
 ```bash
 # Entwicklungsrechner (im Repo, Branch main):
 git bundle create /tmp/famko.bundle main
-scp -i ~/.ssh/xxx /tmp/famko.bundle root@<VM-IP>:/root/famko.bundle
+scp -i ~/.ssh/<SSH-KEY> /tmp/famko.bundle root@<VM-IP>:/root/famko.bundle
 
 # VM (als root; sudo ist auf Debian minimal nicht installiert):
 apt-get install -y git
 git clone -b main /root/famko.bundle /opt/famko && cd /opt/famko
-deploy/install.sh --npm-ip <IP-des-NPM> --heimnetz xxx/24 --ohne-start
+deploy/install.sh --npm-ip <NPM-IP> --heimnetz <HEIMNETZ-CIDR> --ohne-start
 # .env anpassen (siehe unten), dann erneut ohne --ohne-start:
 deploy/install.sh --npm-ip <IP-des-NPM>
 ```
@@ -39,11 +39,11 @@ Prüfen: `curl http://<VM-IP>:8000/gesundheit/` **auf der VM** liefert 200 (`web
 
 ### 2a. Egress-Sperre der Container
 
-`/etc/famko/firewall.nft` verbietet Containern (Bridges `br-*`) neue Verbindungen in private Netze (10/8, 172.16/12, 192.168/16, 169.254/16, 100.64/10, 127/8) und zur VM selbst, als zweite Schicht gegen DNS-Rebinding bei Push-Endpunkten. Erlaubt bleiben Internet (auch SMTP), DNS-Resolver aus `/etc/resolv.conf` (beim Installieren eingetragen; ändern sich die Resolver, `deploy/install.sh --npm-ip ...` erneut ausführen) und Ziele aus `FAMKO_EGRESS_ERLAUBT` (Komma-Liste, z. B. ein SMTP-Relay im LAN: `deploy/install.sh --npm-ip <IP> --egress-erlaubt xxx`). Prüfen: `nft list table inet famko_fw`; im Container `docker compose exec worker python -c ...` mit `socket.connect` zu einer LAN-IP muss in den Timeout laufen.
+`/etc/famko/firewall.nft` verbietet Containern (Bridges `br-*`) neue Verbindungen in private Netze (10/8, 172.16/12, 192.168/16, 169.254/16, 100.64/10, 127/8) und zur VM selbst, als zweite Schicht gegen DNS-Rebinding bei Push-Endpunkten. Erlaubt bleiben Internet (auch SMTP), DNS-Resolver aus `/etc/resolv.conf` (beim Installieren eingetragen; ändern sich die Resolver, `deploy/install.sh --npm-ip ...` erneut ausführen) und Ziele aus `FAMKO_EGRESS_ERLAUBT` (Komma-Liste, z. B. ein SMTP-Relay im LAN: `deploy/install.sh --npm-ip <NPM-IP> --egress-erlaubt <SMTP-IP>`). Prüfen: `nft list table inet famko_fw`; im Container `docker compose exec worker python -c ...` mit `socket.connect` zu einer LAN-IP muss in den Timeout laufen.
 
 ## 3. NPM-Proxy-Host
 
-- Domain: `famko.<domain>` -> Scheme `http`, Forward Host `xxx`, Forward Port `8000`.
+- Domain: `famko.<domain>` -> Scheme `http`, Forward Host `<VM-IP>`, Forward Port `8000`.
 - **Websockets: aus.** Block Common Exploits: an. Cache Assets: **aus**.
 - SSL: neues Zertifikat, **Let's Encrypt mit DNS-Challenge** (Cloudflare-API-Token), Force SSL + HTTP/2 an, HSTS an.
 - **Keine Access-List** auf dem Host. `/sw.js` und `/manifest.json` müssen ohne Login und ohne Cache ausgeliefert werden (kein Custom-Cache, keine Auth-Regel).
@@ -53,7 +53,7 @@ Prüfen: `curl http://<VM-IP>:8000/gesundheit/` **auf der VM** liefert 200 (`web
 
 ## 4. AdGuard-DNS
 
-AdGuard Home -> Filter -> DNS-Umschreibungen: `famko.<domain>` -> `xxx` (IP des NPM, **nicht** der VM). Prüfen: `nslookup famko.<domain>` im Heimnetz.
+AdGuard Home -> Filter -> DNS-Umschreibungen: `famko.<domain>` -> `<NPM-IP>` (IP des NPM, **nicht** der VM). Prüfen: `nslookup famko.<domain>` im Heimnetz.
 
 ## 5. Einrichtungs-Assistent
 
@@ -77,8 +77,8 @@ Ohne Git-Remote per Bundle (Entwicklungsrechner -> VM):
 
 ```bash
 git bundle create /tmp/famko.bundle main
-scp -i ~/.ssh/xxx /tmp/famko.bundle root@<VM-IP>:/root/famko.bundle
-ssh -i ~/.ssh/xxx root@<VM-IP> 'cd /opt/famko && deploy/update.sh --bundle /root/famko.bundle'
+scp -i ~/.ssh/<SSH-KEY> /tmp/famko.bundle root@<VM-IP>:/root/famko.bundle
+ssh -i ~/.ssh/<SSH-KEY> root@<VM-IP> 'cd /opt/famko && deploy/update.sh --bundle /root/famko.bundle'
 ```
 
 `deploy/update.sh` allein (ohne `--bundle`) nutzt `git pull --ff-only` und braucht ein Remote. `--force` baut auch ohne neuen Commit neu. Das Bundle muss `main` als Fast-Forward des Stands auf der VM enthalten (keine umgeschriebene Historie).
