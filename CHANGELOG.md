@@ -7,10 +7,17 @@ Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppi
 ### Hinzugefügt
 - Prognose und Kalibrierungsansicht mit Übernahme per Klick (AP32)
 - Ruhmeshalle: Helden auf Sockeln, Widmungen und Abzeichen (P3-A)
+- Einheitliche, animierte Pop-ups (Konfetti, Rangaufstieg, Ruhmeshalle) mit Rücksicht auf „reduzierte Bewegung“ (AP33)
+- Dokumentation für die Weitergabe: Installation, Benutzerhandbuch, Module erweitern, neutralisierte Beispieldaten
+
+### Geändert
+- Ruhmeshalle erst, wenn alle Bauaufträge im aktuellen Thema fertig sind (AP36)
+- `deploy/install.sh` verweist zum Schluss auf `docs/INSTALLATION.md` (AP36)
+- Abschluss-Review Phase 3: `docs/reviews/REVIEW_PHASE3.md` (AP36)
 
 ### Noch offen
-- Pop-ups und Animationen (Konfetti, Rangaufstieg, Bau-Inszenierung), AP33
 - God-Mode-Mod-Sets und weitere Mods, AP34
+- Preis und Bauzeit je Mod, Themen an/aus im Eltern-Dashboard (P-15)
 
 ## Phase 2: Spielebene (23.10. bis 24.10.2026)
 

@@ -322,7 +322,7 @@ Typisierter Schlüssel-Wert-Speicher. Definition (Schlüssel, Typ, Validierung, 
 
 > **Stand Review AP31 (24.10.2026):** Tabellen dieses Abschnitts sind aus den Django-Modellen erzeugt (Code ist maßgeblich, B-22). Fachliche Erläuterungen stehen in ARCHITECTURE 7.
 
-- `Prognose` (früher 6.12) entsteht erst mit AP32 (Phase 3).
+- Kein Modell `Prognose` (früher 6.12): die Prognose (AP32) wird live berechnet (`sondertag.prognose`, `spielregeln.prognose`) und nicht gespeichert; Kalibrierung über `Kalibrierung.faktor_schwelle`/`faktor_wochen`.
 - `KindStand.godmode_seit_aktivwochen` entfällt: der God-Mode-Zyklus wird live aus Aktivitäten nach dem Rang-Fakt berechnet (`avatar.godmode`).
 
 
@@ -354,6 +354,7 @@ Kalibrierungsfaktoren (K3, DATA_MODEL 6.2): ``kind = NULL`` = global (genau eine
 | faktor_schwelle | decimal(4,2) | ja |  |
 | faktor_preis | decimal(4,2) | ja |  |
 | faktor_bauzeit | decimal(4,2) | ja |  |
+| faktor_wochen | decimal(4,2) | ja | AP32: Mindest-Aktivwochen (P-07) |
 | notiz | varchar(200) | nein |  |
 | geaendert_von | FK Benutzer | nein | SET_NULL |
 | geaendert_am | datetime | ja |  |
@@ -800,7 +801,7 @@ Gekaufter Mod eines Kindes (DATA_MODEL 9.6): ``im_bau`` bis ``fertig_geplant_am`
 | fertig_am | datetime | nein |  |
 | zaehlt_ab_iso_jahr | SmallIntegerField | nein |  |
 | zaehlt_ab_iso_woche | SmallIntegerField | nein |  |
-| status | varchar(10) | ja | im_bau/fertig/verloren |
+| status | varchar(12) | ja | im_bau/fertig/verloren/eingefroren (Ruhmeshalle) |
 | verloren_am | datetime | nein |  |
 
 - **unique(kind, mod) WHERE status IN ['im_bau', 'fertig']** (`avatar_besitz_kein_doppelkauf`)
@@ -817,6 +818,31 @@ Gekaufter Mod eines Kindes (DATA_MODEL 9.6): ``im_bau`` bis ``fertig_geplant_am`
 | svg | text | ja |  |
 | erstellt_am | datetime | ja |  |
 | zuletzt_genutzt | datetime | ja | Index |
+
+### 9.8 RuhmeshallenEintrag (P3-A)
+
+Held in der Ruhmeshalle: Snapshot des fertig ausgebauten Avatars. Unveränderlich außer Widmung, wird nie gelöscht (ARCHITECTURE 7).
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | PROTECT |
+| thema | FK Thema | ja | PROTECT |
+| thema_daten | json | ja | Snapshot |
+| mods | json | ja | Snapshot `{slot: mod}` |
+| figur | json | ja | Snapshot |
+| rang_stufe | int ≥ 0 | ja | Rang zum Zeitpunkt |
+| rang_name | varchar(40) | ja |  |
+| rang_selten | varchar(20) | ja |  |
+| themenstart | datetime | ja | Idempotenz-Schlüssel |
+| erstellt_am | datetime | ja |  |
+| bauzeit_wochen | int ≥ 0 | ja |  |
+| anzahl_mods | int ≥ 0 | ja |  |
+| aufgaben_anzahl | int ≥ 0 | ja |  |
+| widmung | varchar(140) | nein | nur Eltern, Audit |
+| widmung_von | FK Benutzer | nein | PROTECT |
+| widmung_am | datetime | nein |  |
+
+- **unique(kind, themenstart)** (`avatar_halle_einmalig`)
 
 ---
 
@@ -925,10 +951,10 @@ Gekaufter Mod eines Kindes (DATA_MODEL 9.6): ``im_bau`` bis ``fertig_geplant_am`
 | spielregeln | Rang, Kalibrierung, RangAufstieg, Pause, Aktivitaet, Wochenauswertung, KindStand, AbzeichenDefinition, AbzeichenVerleihung, MeilensteinRegel, MeilensteinErreicht | 11 |
 | aufgaben | Kategorie, Vorlage, Aufgabe, AufgabenInstanz, Interesse, Meldung | 6 |
 | belohnung | Belohnungskategorie, Belohnung, Einloeseantrag, TaschengeldLimit | 4 |
-| avatar | Thema, Slot, ModSet, ModDefinition, Avatar, ModBesitz, RenderCache | 7 |
+| avatar | Thema, Slot, ModSet, ModDefinition, Avatar, ModBesitz, RenderCache, RuhmeshallenEintrag | 8 |
 | sondertag | SondertagAnspruch | 1 |
 | familienziel | Familienbelohnung, Familienwoche, Stimme, Grossziel | 4 |
-| **Summe** | | **57** |
+| **Summe** | | **58** |
 
 
 ---
@@ -978,7 +1004,7 @@ erDiagram
   Benutzer ||--o{ AbzeichenVerleihung : kind
   MeilensteinRegel ||--o{ MeilensteinErreicht : regel
   Benutzer ||--o{ MeilensteinErreicht : kind
-  Benutzer ||--o{ Prognose : kind
+  Benutzer ||--o{ RuhmeshallenEintrag : kind
   Kategorie ||--o{ Vorlage : in
   Kategorie ||--o{ Aufgabe : in
   Vorlage |o--o{ Aufgabe : aus
@@ -1038,7 +1064,7 @@ erDiagram
 | Abzeichen | `unique(kind, abzeichen, bereich)` |
 | Meilenstein | `unique(kind, regel, bereich)` |
 | Sondertag-Anspruch | `unique(meilenstein)` |
-| Prognose (AP32) | `unique(kind, iso_jahr, iso_woche)` |
+| Ruhmeshalle (P3-A) | `unique(kind, themenstart)` (Doppelklick liefert bestehenden Eintrag) |
 | God-Mode-Set | `unique(thema, nummer)` |
 | Held der Woche | Woche bewertet, sobald `zuwachs_relativ` gesetzt (Fakt) + Ereignis-Schlüssel |
 | Sondertag "jetzt einlösbar" | bedingtes Update `einloesbar_gemeldet_am IS NULL` + Ereignis-Schlüssel |
