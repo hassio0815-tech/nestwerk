@@ -34,6 +34,10 @@ from .mods import anlegen as mod_anlegen  # noqa: F401
 from .mods import fertigstellen as mods_fertigstellen  # noqa: F401
 from .mods import kaufen as mod_kaufen  # noqa: F401
 from .mods import sofort_fertigstellen as bau_sofort_fertigstellen  # noqa: F401
+from .ruhmeshalle import (  # noqa: F401 (Ruhmeshalle, P3-A)
+    in_ruhmeshalle_stellen,
+    widmung_setzen,
+)
 
 logger = logging.getLogger(__name__)
 

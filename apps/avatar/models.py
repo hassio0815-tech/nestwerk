@@ -162,6 +162,7 @@ class BesitzStatus(models.TextChoices):
     IM_BAU = "im_bau", "im Bau"
     FERTIG = "fertig", "fertig"
     VERLOREN = "verloren", "verloren"
+    EINGEFROREN = "eingefroren", "in der Ruhmeshalle"
 
 
 AKTIV = (BesitzStatus.IM_BAU, BesitzStatus.FERTIG)
@@ -189,7 +190,7 @@ class ModBesitz(models.Model):
     zaehlt_ab_iso_jahr = models.SmallIntegerField(null=True, blank=True)
     zaehlt_ab_iso_woche = models.SmallIntegerField(null=True, blank=True)
     status = models.CharField(
-        max_length=10, choices=BesitzStatus.choices, default=BesitzStatus.IM_BAU
+        max_length=12, choices=BesitzStatus.choices, default=BesitzStatus.IM_BAU
     )
     verloren_am = models.DateTimeField(null=True, blank=True)
 
@@ -218,6 +219,74 @@ class ModBesitz(models.Model):
 
     def __str__(self):
         return f"{self.kind_id} {self.mod_id} {self.status}"
+
+
+WIDMUNG_MAX = 140
+
+
+class RuhmeshallenEintrag(models.Model):
+    """Ein Held in der Ruhmeshalle (Entscheidung 33): der fertig ausgebaute Avatar, eingefroren
+    mit allem, was zum Zeichnen nötig ist (Thema-Daten, angelegte Mods, Figur). Unveränderlich
+    bis auf die Widmung der Eltern; Löschen ist nicht möglich. ``themenstart`` (Start des Baus)
+    ist je Kind eindeutig: ein Doppelklick erzeugt keinen zweiten Eintrag."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="ruhmeshalle"
+    )
+    thema = models.ForeignKey(Thema, on_delete=models.PROTECT, related_name="ruhmeshalle")
+    thema_daten = models.JSONField(default=dict, help_text="Snapshot für den Renderer")
+    mods = models.JSONField(
+        default=dict, help_text="Snapshot {slot: {schluessel, name, seltenheit, teile, ...}}"
+    )
+    figur = models.JSONField(default=dict)
+    rang_stufe = models.PositiveSmallIntegerField()
+    rang_name = models.CharField(max_length=40)
+    rang_selten = models.CharField(max_length=20, help_text="Seltenheitsfarbe des Sockels")
+    themenstart = models.DateTimeField()
+    erstellt_am = models.DateTimeField(default=zeit.jetzt)
+    bauzeit_wochen = models.PositiveSmallIntegerField()
+    anzahl_mods = models.PositiveSmallIntegerField()
+    aufgaben_anzahl = models.PositiveIntegerField()
+    widmung = models.CharField(max_length=WIDMUNG_MAX, blank=True, default="")
+    widmung_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
+    )
+    widmung_am = models.DateTimeField(null=True, blank=True)
+
+    VERAENDERBAR = frozenset({"widmung", "widmung_von", "widmung_am"})
+
+    class Meta:
+        verbose_name = "Ruhmeshallen-Eintrag"
+        verbose_name_plural = "Ruhmeshallen-Einträge"
+        ordering = ["erstellt_am", "id"]
+        constraints = [
+            models.UniqueConstraint(fields=["kind", "themenstart"], name="avatar_halle_einmalig"),
+        ]
+
+    def __str__(self):
+        return f"{self.kind_id} {self.thema_id} {self.erstellt_am:%Y-%m-%d}"
+
+    def save(self, *args, **kwargs):
+        if not self._state.adding:
+            felder = kwargs.get("update_fields")
+            if felder is None or not set(felder) <= self.VERAENDERBAR:
+                raise ValueError("Ruhmeshallen-Einträge sind unveränderlich (nur die Widmung)")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValueError("Ruhmeshallen-Einträge werden nie gelöscht")
+
+    def render_zustand(self):
+        """Render-Eingabe aus dem Snapshot (unabhängig von späteren Änderungen am Thema)."""
+        return {
+            "thema": self.thema_daten.get("schluessel", self.thema.schluessel),
+            "thema_daten": self.thema_daten,
+            "figur": self.figur,
+            "mods": {
+                slot: {"teile": m.get("teile", []), "svg_override": m.get("svg_override")}
+                for slot, m in self.mods.items()
+            },
+        }
 
 
 class RenderCache(models.Model):

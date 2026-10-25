@@ -275,6 +275,8 @@ Aus der Ereignis-Registry erzeugt (Review AP31, B-22). Zielgruppe `intern` = kei
 | `mod.fertig` | avatar | kind | push, popup |
 | `mod.gekauft` | avatar | eltern | push |
 | `thema.gewechselt` | avatar | eltern | push |
+| `ruhmeshalle.eltern` | avatar | eltern | push |
+| `ruhmeshalle.held` | avatar | kind | popup |
 | `belohnung.abgelehnt` | belohnung | kind | push |
 | `belohnung.antrag` | belohnung | eltern | push, email |
 | `belohnung.bestaetigt` | belohnung | kind | push |
@@ -495,10 +497,10 @@ stateDiagram-v2
 - **Nächster Sondertag:** max(Rang erreicht + Bauzeit/1-Mod-pro-Woche für 6 Slots, `einloesbar_ab`-Grenzen).
 - **Abweichung:** prognostizierte Sondertage im laufenden App-Jahr vs. Ziel 2.
 - Kalibrierungsvorschlag: Faktor = beobachtete XP/Woche ÷ Annahme (Startwert 175). Eltern übernehmen per Klick (Audit).
-
----
 - **Umsetzung (AP32):** `spielregeln/prognose.py` (reine Rang-Rechnung `rang_ziele`, Basis aus `Wochenauswertung`, Engpass `xp`/`wochen`/`beides`) und `sondertag/prognose.py` (`rechnen(Eingabe, faktor_schwelle, faktor_wochen)` rein und reproduzierbar: je offene Sondertag-Regel frühester Termin, dann durch `grenzen.einloesbar_ab`; `empfehlen` rechnet Kandidatenfaktoren 0,40–2,00 durch, kleinster Fehlbetrag zum Ziel, bei Gleichstand kleinste Änderung). Seite `/eltern/prognose/` (Ampel je App-Jahr: grün ≥ Ziel, gelb = Ziel − 1, rot darunter). Zu wenig Historie (`spielregeln.prognose_min_wochen`): Hinweis statt Zahl. Einstellungen `spielregeln.prognose_wochen` (6), `prognose_min_wochen` (3), `prognose_ziel_sondertage` (2), `prognose_kind_zeigen` (Kind-Kachel "Nächster Rang voraussichtlich in ca. X Wochen", nur die Zahl).
 - **P-07:** Binden die XP-Schwellen nie, erklärt die Seite, dass nur die Mindestwochen wirken. `Kalibrierung.faktor_wochen` (Standard 1,0, global x Kind) skaliert `min_aktive_wochen` (aufgerundet) in `berechneter_rang`/`rang_fortschritt`; Service `wochen_faktor_setzen` (Audit `kalibrierung.wochen_geaendert`). Mod-Preis-/Bauzeitfaktoren gibt es auch je Kind (`mod_faktoren_setzen(kind=…)`).
+
+---
 
 ## 8. Avatar- und Mod-Grafik
 
@@ -513,6 +515,7 @@ stateDiagram-v2
 - **Varianten-Erzeugung:** `manage.py avatar_varianten_erzeugen --thema ritter` erzeugt die 36 Baupläne aus Teile-Bibliothek + Themenregeln als Seed-Daten (Fixture). Danach in DB editierbar.
 - **Sicherheit SVG (Overrides, Abzeichen):** gemeinsamer Whitelist-Parser `apps/kern/svg.py` (seit AP31; `xml.etree` mit Vorab-Sperre von DOCTYPE/ENTITY/PI, Größen-/Tiefen-/Elementgrenzen): nur `svg, g, rect, path, polygon, circle`, Attribute `fill, x, y, width, height, d, points, transform, opacity, cx, cy, r`; neu serialisiert. `viewBox` konfigurierbar (Avatar `0 0 32 48`, Abzeichen `0 0 64 64`), Verläufe optional (`defs`, `linearGradient`, `radialGradient`, `stop`; `fill="url(#id)"` nur auf im Dokument definierte ids). Keine Scripts, keine externen Referenzen, kein `style`.
 - **Eltern-Avatar:** gleicher Generator, Thema `eltern`, keine Mods.
+- **Ruhmeshalle (P3-A, `avatar.ruhmeshalle`):** Modell `RuhmeshallenEintrag` (Kind, Thema, Snapshot von Thema-Daten, angelegten Mods und Figur, Rang zum Zeitpunkt, Statistik, Widmung). Unveränderlich außer Widmung (`save` erlaubt nur `update_fields` der Widmung, `delete` verboten), je Kind eindeutig über `themenstart` (Idempotenz). Der Renderer zeichnet aus dem Snapshot (`render_zustand()`), nicht aus dem aktuellen Thema; Bild über denselben Cache. `in_ruhmeshalle_stellen` (Service, eine Transaktion unter der Schreibsperre): fertige Mods des Themas werden `eingefroren` (nicht `verloren`), Slots leer, neues Thema, Rang/XP/Sondertage unberührt; Audit `avatar.ruhmeshalle_eintrag`, Ereignisse `ruhmeshalle.held` (Kind) und `ruhmeshalle.eltern`, danach Abzeichen-Prüfung. Schwelle: Einstellung `avatar.ruhmeshalle_ausbaustufe` (6). Metriken `ruhmeshalle_eintraege`, `ruhmeshalle_themen`, `ruhmeshalle_hoechster_rang` (Abzeichen *Erster Held*, *Heldentrio*, *Sammler*, *Legende* per Datenmigration `spielregeln.0010`). Kacheln: Kind, Eltern, Tablet ("N Helden in der Ruhmeshalle"). Schichten: avatar liest `punkte` (Aufgabenzahl über `punkte.selectors.aufgaben_anzahl`), nie `aufgaben`.
 - **Rechtlich:** eigene Formen und Farben; keine Namen/Texturen aus Minecraft. Prüfpunkt im Review (AP28).
 
 ---

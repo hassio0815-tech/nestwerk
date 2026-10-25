@@ -71,7 +71,53 @@ def startwerte():
             "reihenfolge": 50,
         }
     )
+    zeilen.extend(_ruhmeshalle())
     return zeilen
+
+
+# P3-A: Ruhmeshalle (Metriken liefert das Modul avatar über kern.registry)
+RUHMESHALLE = (
+    (
+        "erster-held",
+        "Erster Held",
+        "Den ersten Helden in die Ruhmeshalle gestellt.",
+        "ruhmeshalle_eintraege",
+        1,
+    ),
+    ("heldentrio", "Heldentrio", "Drei Helden in der Ruhmeshalle.", "ruhmeshalle_eintraege", 3),
+    (
+        "sammler",
+        "Sammler",
+        "In jedem der 10 Themen einen Helden in der Ruhmeshalle.",
+        "ruhmeshalle_themen",
+        10,
+    ),
+    (
+        "legende",
+        "Legende",
+        "Einen Helden auf höchstem Rang in die Ruhmeshalle gestellt.",
+        "ruhmeshalle_hoechster_rang",
+        6,
+    ),
+)
+
+
+def _ruhmeshalle():
+    return [
+        {
+            "schluessel": schluessel,
+            "name": name,
+            "beschreibung": beschreibung,
+            "symbol": schluessel,
+            "gruppe": "ruhmeshalle",
+            "metrik": metrik,
+            "schwelle": schwelle,
+            "wiederholbar": "einmalig",
+            "modul": "avatar",
+            "reihenfolge": 60 + i,
+        }
+        for i, (schluessel, name, beschreibung, metrik, schwelle) in enumerate(RUHMESHALLE)
+    ]
 
 
 def anlegen(modell):
@@ -80,5 +126,5 @@ def anlegen(modell):
         werte = dict(zeile)
         schluessel = werte.pop("schluessel")
         modell.objects.get_or_create(
-            schluessel=schluessel, defaults={**werte, "modul": "spielregeln", "aktiv": True}
+            schluessel=schluessel, defaults={"modul": "spielregeln", "aktiv": True, **werte}
         )

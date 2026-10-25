@@ -10,6 +10,9 @@ STARTWERTE = {
     "avatar.godmode_zyklus_aktivwochen": 26,
 }
 
+# P3-A: Ruhmeshalle (Entscheidung 33), Startwert per Datenmigration 0006
+RUHMESHALLE_STARTWERTE = {"avatar.ruhmeshalle_ausbaustufe": 6}
+
 
 def einstellungen_definieren():
     definieren(
@@ -31,4 +34,14 @@ def einstellungen_definieren():
         einheit="aktive Wochen",
         minimum=4,
         maximum=104,
+    )
+    definieren(
+        "avatar.ruhmeshalle_ausbaustufe",
+        Typ.GANZZAHL,
+        "Ruhmeshalle ab Ausbaustufe",
+        beschreibung="Ab dieser Ausbaustufe im aktuellen Rang kann ein Kind seinen Helden in die "
+        "Ruhmeshalle stellen und mit einem neuen Thema von vorn beginnen.",
+        einheit="Slots",
+        minimum=1,
+        maximum=6,
     )

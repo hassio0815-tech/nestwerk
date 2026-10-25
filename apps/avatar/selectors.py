@@ -18,6 +18,13 @@ from .mods import (  # noqa: F401 (öffentliche Mod-API, AP26)
 )
 from .mods import konditionen as mod_konditionen  # noqa: F401
 from .mods import standards as mod_standards  # noqa: F401
+from .ruhmeshalle import (  # noqa: F401 (Ruhmeshalle, P3-A)
+    anzahl as ruhmeshalle_anzahl,
+)
+from .ruhmeshalle import bereitschaft as ruhmeshalle_bereitschaft  # noqa: F401
+from .ruhmeshalle import eintraege as ruhmeshalle_eintraege  # noqa: F401
+from .ruhmeshalle import je_kind as ruhmeshalle_je_kind  # noqa: F401
+from .ruhmeshalle import mit_bild as ruhmeshalle_mit_bild  # noqa: F401
 
 
 def mod(schluessel):

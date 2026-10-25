@@ -5,7 +5,7 @@
 - Eltern "Mods und Bauaufträge" (AP26): laufende Bauaufträge je Kind.
 """
 
-from . import selectors, services
+from . import ruhmeshalle, selectors, services
 
 BEISPIEL_THEMEN = ("ritter", "weltraum", "pirat")
 
@@ -44,3 +44,26 @@ def eltern_kontext(request):
         "zeilen": zeilen,
         "im_bau": sum(len(z["bau"]) for z in zeilen),
     }
+
+
+def ruhmeshalle_kind_sichtbar(request):
+    return selectors.hat_avatar(request.user)
+
+
+def ruhmeshalle_kind_kontext(request):
+    kind = request.user
+    return {
+        "eintraege": ruhmeshalle.mit_bild(ruhmeshalle.eintraege(kind)),
+        "bereit": ruhmeshalle.bereitschaft(kind).bereit,
+        "familie": ruhmeshalle.anzahl(),
+    }
+
+
+def ruhmeshalle_familie_sichtbar(request):
+    return ruhmeshalle.anzahl() > 0
+
+
+def ruhmeshalle_familie_kontext(request):
+    gruppen = ruhmeshalle.je_kind()
+    alle = [e for g in gruppen for e in g["eintraege"]]
+    return {"gruppen": gruppen, "eintraege": alle, "anzahl": len(alle)}

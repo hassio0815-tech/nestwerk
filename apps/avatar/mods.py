@@ -162,6 +162,11 @@ class Ausbaustufe:
     je_seltenheit: dict[int, int] = field(default_factory=dict)
     wartend: list = field(default_factory=list)  # fertig, zählt erst ab späterer Woche
     je_set: dict[int, int] = field(default_factory=dict)  # God-Mode-Set-Nummer -> Slots (AP27)
+    halle_ab: int = 6  # Einstellung avatar.ruhmeshalle_ausbaustufe (P3-A)
+
+    @property
+    def halle_bereit(self) -> bool:
+        return self.thema is not None and self.aktuell >= self.halle_ab
 
     @property
     def aktuell(self) -> int:
@@ -194,6 +199,7 @@ def ausbaustufe(kind, jetzt=None) -> Ausbaustufe:
         rang_selten=rang.selten if rang else "common",
         slots=Slot.objects.count(),
         je_seltenheit=dict.fromkeys(raenge_map, 0),
+        halle_ab=einstellungen.wert("avatar.ruhmeshalle_ausbaustufe"),
     )
     if avatar is None:
         return ergebnis

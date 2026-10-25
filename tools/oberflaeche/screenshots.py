@@ -484,6 +484,44 @@ def ranking_ablauf(browser, aufn):
     ctx_k.close()
 
 
+def ruhmeshalle_ablauf(browser, aufn):
+    """P3-A: Ruhmeshalle. Kind B hat zwei Helden, Kind A stellt seinen im Browser selbst hinein
+    (Dialog, Bestätigung); Tablet-Kachel, Eltern-Seite mit Widmungen."""
+    subprocess.run(
+        [sys.executable, str(ROOT / "tools/oberflaeche/ruhmeshalle_demo.py")],
+        cwd=ROOT,
+        env=_env(),
+        check=True,
+    )
+    ctx_t = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    tablet = ctx_t.new_page()
+    aufn.s.anbinden(tablet)
+    aufn.seite(tablet, "ruhmeshalle-tablet-vorher", "/tablet/")
+    ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="de-DE")
+    kind = ctx.new_page()
+    aufn.s.anbinden(kind)
+    kind_login(kind, aufn, "Kind A", "1111", fotos=False)
+    aufn.seite(kind, "ruhmeshalle-kind-dashboard", "/kind/")
+    aufn.seite(kind, "ruhmeshalle-kind-bereit", "/kind/ruhmeshalle/")
+    aufn.seite(kind, "ruhmeshalle-dialog", "/kind/ruhmeshalle/stellen/")
+    aufn.seite(kind, "ruhmeshalle-dialog-gewaehlt", "/kind/ruhmeshalle/stellen/?thema=pirat")
+    kind.get_by_role("button", name="Ja, in die Ruhmeshalle stellen").click()
+    kind.wait_for_load_state("networkidle")
+    aufn.s.neu("ruhmeshalle-kind-danach")
+    aufn.foto(kind, "ruhmeshalle-kind-danach")
+    aufn.seite(kind, "ruhmeshalle-shop-danach", "/kind/mods/")
+    ctx.close()
+    aufn.seite(tablet, "ruhmeshalle-tablet", "/tablet/")
+    ctx_e = browser.new_context(viewport={"width": 1280, "height": 800}, locale="de-DE")
+    eltern = ctx_e.new_page()
+    aufn.s.anbinden(eltern)
+    eltern_login(eltern, aufn)
+    aufn.seite(eltern, "ruhmeshalle-eltern-dashboard", "/eltern/")
+    aufn.seite(eltern, "ruhmeshalle-eltern", "/eltern/ruhmeshalle/")
+    ctx_e.close()
+    ctx_t.close()
+
+
 def seiten_ablauf(browser, aufn):
     avatar_ablauf(browser, aufn)
     familienziel_ablauf(browser, aufn)
@@ -573,7 +611,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ziel", default="docs/screenshots/phase1")
     ap.add_argument(
-        "--nur", choices=["ranking"], help="Nur diesen Ablauf aufnehmen (Einrichtung ohne Fotos)"
+        "--nur", choices=["ranking", "ruhmeshalle"], help="Nur diesen Ablauf aufnehmen (Einrichtung ohne Fotos)"
     )
     ap.add_argument("--sichtbar", action="store_true", help="Browser mit Fenster (Debug)")
     args = ap.parse_args()
@@ -602,6 +640,8 @@ def main():
             demo_daten()
             if args.nur == "ranking":
                 ranking_ablauf(browser, aufn)
+            elif args.nur == "ruhmeshalle":
+                ruhmeshalle_ablauf(browser, aufn)
             else:
                 seiten_ablauf(browser, aufn)
             browser.close()

@@ -52,7 +52,9 @@ def _abzeichen_ereignisse(kind):
 
 def test_startwerte_exakt_entscheidung_12(db):
     """E12: Tagesserie 7/14/30; Wochenserie 1/2/4/8/12/24/48; Quartal voll aktiv; je Rang."""
-    zeilen = list(AbzeichenDefinition.objects.order_by("reihenfolge"))
+    zeilen = list(
+        AbzeichenDefinition.objects.exclude(gruppe="ruhmeshalle").order_by("reihenfolge")
+    )  # Ruhmeshalle (P3-A, Modul avatar) hat eigene Tests
     assert all(z.aktiv and z.modul == "spielregeln" and z.vergleich == ">=" for z in zeilen)
 
     def gruppe(name):

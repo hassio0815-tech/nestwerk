@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from . import views, views_mods
+from . import views, views_halle, views_mods
 
 app_name = "avatar"
 
@@ -18,4 +18,9 @@ urlpatterns = [
     path("eltern/mods/", views_mods.eltern, name="eltern"),
     path("eltern/mods/standards/", views_mods.standards, name="standards"),
     path("eltern/mods/bau/<int:pk>/fertig/", views_mods.sofort, name="sofort"),
+    # P3-A: Ruhmeshalle
+    path("kind/ruhmeshalle/", views_halle.kind, name="halle_kind"),
+    path("kind/ruhmeshalle/stellen/", views_halle.stellen, name="halle_stellen"),
+    path("eltern/ruhmeshalle/", views_halle.eltern, name="halle_eltern"),
+    path("eltern/ruhmeshalle/<int:pk>/widmung/", views_halle.widmung, name="halle_widmung"),
 ]

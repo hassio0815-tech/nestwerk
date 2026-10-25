@@ -13,9 +13,9 @@ Mods, Zeitbremse beachtet):
 """
 
 from apps.kern import registry
-from apps.kern.registry import ELTERN, KIND, Kachel, Metrik, Provider
+from apps.kern.registry import ELTERN, KIND, TABLET, Kachel, Metrik, Provider
 
-from . import godmode, kacheln, mods
+from . import godmode, kacheln, mods, ruhmeshalle
 
 MODUL = "avatar"
 SELTENHEITEN = range(1, 7)
@@ -58,6 +58,40 @@ def metriken_registrieren():
             Provider(f"metrik.{schluessel}", MODUL, schluessel, mods.metrik_seltenheit(n))
         )
     godmode_metriken_registrieren()
+    ruhmeshalle_metriken_registrieren()
+
+
+def ruhmeshalle_metriken_registrieren():
+    """P3-A: Helden in der Ruhmeshalle (Abzeichen "Erster Held", "Heldentrio", "Sammler",
+    "Legende")."""
+    eintraege = (
+        (
+            "ruhmeshalle_eintraege",
+            "Helden in der Ruhmeshalle",
+            "Anzahl Einträge des Kindes in der Ruhmeshalle",
+            "Helden",
+            ruhmeshalle.metrik_eintraege,
+        ),
+        (
+            "ruhmeshalle_themen",
+            "Themen in der Ruhmeshalle",
+            "Anzahl verschiedener Themen, in denen das Kind einen Helden hat",
+            "Themen",
+            ruhmeshalle.metrik_themen,
+        ),
+        (
+            "ruhmeshalle_hoechster_rang",
+            "Höchster Helden-Rang",
+            "Höchste Rang-Stufe eines Helden in der Ruhmeshalle (0 = keiner)",
+            "Rang-Stufe",
+            ruhmeshalle.metrik_hoechster_rang,
+        ),
+    )
+    for schluessel, bezeichnung, beschreibung, einheit, wert in eintraege:
+        registry.metrik_registrieren(
+            Metrik(schluessel, MODUL, bezeichnung, beschreibung=beschreibung, einheit=einheit)
+        )
+        registry.provider_registrieren(Provider(f"metrik.{schluessel}", MODUL, bezeichnung, wert))
 
 
 def godmode_metriken_registrieren():
@@ -101,6 +135,42 @@ def godmode_metriken_registrieren():
 
 
 def kacheln_registrieren():
+    registry.kachel_registrieren(
+        Kachel(
+            "avatar.kind_ruhmeshalle",
+            MODUL,
+            "Ruhmeshalle",
+            "avatar/kacheln/kind_ruhmeshalle.html",
+            {KIND},
+            kacheln.ruhmeshalle_kind_kontext,
+            sichtbar=kacheln.ruhmeshalle_kind_sichtbar,
+            reihenfolge=14,
+        )
+    )
+    registry.kachel_registrieren(
+        Kachel(
+            "avatar.eltern_ruhmeshalle",
+            MODUL,
+            "Ruhmeshalle",
+            "avatar/kacheln/familie_ruhmeshalle.html",
+            {ELTERN},
+            kacheln.ruhmeshalle_familie_kontext,
+            sichtbar=kacheln.ruhmeshalle_familie_sichtbar,
+            reihenfolge=29,
+        )
+    )
+    registry.kachel_registrieren(
+        Kachel(
+            "avatar.tablet_ruhmeshalle",
+            MODUL,
+            "Ruhmeshalle",
+            "avatar/kacheln/tablet_ruhmeshalle.html",
+            {TABLET},
+            kacheln.ruhmeshalle_familie_kontext,
+            sichtbar=kacheln.ruhmeshalle_familie_sichtbar,
+            reihenfolge=55,
+        )
+    )
     registry.kachel_registrieren(
         Kachel(
             "avatar.kind_avatar",

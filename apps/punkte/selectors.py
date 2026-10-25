@@ -11,7 +11,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 
 from . import registry
-from .models import Buchung
+from .models import Art, Buchung
 
 
 @dataclass(frozen=True)
@@ -60,6 +60,15 @@ def xp_zeitraum(von, bis, *, kind=None):
     if kind is not None:
         qs = qs.filter(kind=kind)
     return _summen(qs)["xp"]
+
+
+def aufgaben_anzahl(kind, von, bis):
+    """Anzahl bestätigter Aufgaben-Buchungen (ohne stornierte) mit Bezugsdatum in ``[von, bis]``."""
+    return (
+        Buchung.objects.filter(kind=kind, art=Art.AUFGABE, bezugsdatum__range=(von, bis))
+        .exclude(storno__isnull=False)
+        .count()
+    )
 
 
 def xp_je_tag(kind, von, bis):
