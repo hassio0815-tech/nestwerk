@@ -315,7 +315,7 @@
 
 ### 11.5 Ruhmeshalle (Phase 3)
 
-- **Freischaltung:** Ausbaustufe im aktuellen Rang erreicht die Einstellung `avatar.ruhmeshalle_ausbaustufe` (Standard 6 = alle Slots). Dann kann das Kind seinen Helden **in die Ruhmeshalle stellen** (Bestätigungsdialog, danach neues Thema wählen).
+- **Freischaltung:** Ausbaustufe im aktuellen Rang erreicht die Einstellung `avatar.ruhmeshalle_ausbaustufe` (Standard 6 = alle Slots). Dann kann das Kind seinen Helden **in die Ruhmeshalle stellen** (Bestätigungsdialog, danach neues Thema wählen). Gesperrt, solange im aktuellen Thema noch Bauaufträge laufen (klare Meldung mit Anzahl), damit kein Mod nach dem Einfrieren im alten Thema fertig wird.
 - **Nichts geht verloren:** Der Held bleibt mit Thema, Mods, Figur, Rang und Datum für immer erhalten (unveränderlich). Der Avatar beginnt im neuen Thema mit leeren Slots und Ausbaustufe 0. Rang, Punkte, Abzeichen und verdiente Sondertage bleiben; es gibt keinen Verlust-Hinweis (anders als beim normalen Themenwechsel, bei dem Mods verfallen).
 - **Darstellung:** Seite "Meine Ruhmeshalle", Kachel für Kinder und Eltern, Tablet-Kachel "N Helden in der Ruhmeshalle". Die Figur steht auf einem Sockel in der Seltenheitsfarbe ihres Rangs; darunter Thema, Rang, Bauzeit in Wochen, Anzahl Mods, bestätigte Aufgaben im Zeitraum und die Widmung.
 - **Widmung:** Eltern können je Held einen Text (höchstens 140 Zeichen) schreiben oder ändern (Audit).

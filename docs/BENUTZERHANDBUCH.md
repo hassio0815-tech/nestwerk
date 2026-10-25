@@ -114,7 +114,8 @@ Es gibt sechs Ränge, wie Seltenheiten in einem Spiel:
 
 ## 9. Ruhmeshalle
 
-- **Freischaltung:** Du hast die Ausbaustufe 6 im aktuellen Rang erreicht (alle sechs Slots gebaut).
+- **Freischaltung:** Du hast die Ausbaustufe 6 im aktuellen Rang erreicht (alle sechs Slots gebaut; die Eltern können die Stufe ändern).
+- **Erst wenn alles fertig gebaut ist:** Solange noch ein Mod deines Themas im Bau ist, wartet die Ruhmeshalle. Die Seite zeigt dir, wie viele Bauaufträge noch laufen.
 - **Helden in die Halle stellen:** Dein fertiger Held bleibt dort für immer erhalten, mit Thema, Mods, Rang und Datum. Danach startest du mit einem neuen Thema.
 - **Nichts geht verloren:** Rang, Punkte, Abzeichen und Sondertage bleiben.
 - **Widmung:** Die Eltern können einen kurzen Text (höchstens 140 Zeichen) je Held schreiben.

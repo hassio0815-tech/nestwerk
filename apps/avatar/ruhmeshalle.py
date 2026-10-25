@@ -9,7 +9,9 @@ stellen und mit einem neuen Thema neu beginnen.
   wird nie gelöscht.
 - Nichts geht verloren: die fertigen Mods werden ``eingefroren`` (zählen im neuen Thema nicht
   mehr), Rang, XP, Abzeichen und verdiente Sondertage bleiben. Es gibt keine Verlust-Warnung
-  wie beim normalen Themenwechsel (``mods.thema_wechseln``). Laufende Bauaufträge laufen weiter.
+  wie beim normalen Themenwechsel (``mods.thema_wechseln``).
+- **Gesperrt, solange Bauaufträge im aktuellen Thema laufen** (AP36): sonst würden sie nach dem
+  Einfrieren im alten Thema fertig. Das Kind sieht, wie viele noch laufen.
 - **Idempotent:** ``bau_start`` (Start des Baus, wie der Dialog ihn sah) ist je Kind eindeutig.
   Ein Doppelklick liefert den bestehenden Eintrag, ohne zweite Ereignisse.
 """
@@ -42,25 +44,48 @@ from .mods import ModFehler, _abzeichen_pruefen, _neues_thema, ausbaustufe
 
 @dataclass(frozen=True)
 class Bereitschaft:
-    bereit: bool
+    bereit: bool  # ausgebaut und kein Bauauftrag im aktuellen Thema läuft
+    ausgebaut: bool
+    bau_laeuft: int  # laufende Bauaufträge im aktuellen Thema
     aktuell: int
     ab: int
     rang_name: str
     rang_selten: str
     bau_start: str  # Prüfwert für den Dialog (Start des laufenden Baus)
 
+    @property
+    def bau_hinweis(self) -> str:
+        return bau_meldung(self.bau_laeuft) if self.bau_laeuft else ""
+
 
 def bereitschaft(kind, jetzt=None) -> Bereitschaft:
     stufe = ausbaustufe(kind, jetzt)
     avatar = Avatar.objects.filter(pk=kind.pk).first()
+    laufend = _laufende_bauauftraege(kind, avatar.thema_id) if avatar else 0
     return Bereitschaft(
-        bereit=stufe.halle_bereit,
+        bereit=stufe.halle_bereit and not laufend,
+        ausgebaut=stufe.halle_bereit,
+        bau_laeuft=laufend,
         aktuell=stufe.aktuell,
         ab=stufe.halle_ab,
         rang_name=stufe.rang_name,
         rang_selten=stufe.rang_selten,
         bau_start=avatar.thema_gewaehlt_am.isoformat() if avatar else "",
     )
+
+
+def _laufende_bauauftraege(kind, thema_id) -> int:
+    return ModBesitz.objects.filter(
+        kind=kind, status=BesitzStatus.IM_BAU, mod__thema_id=thema_id
+    ).count()
+
+
+def bau_meldung(laufend: int) -> str:
+    if laufend == 1:
+        was = "dein Bauauftrag fertig ist"
+    else:
+        was = f"deine {laufend} Bauaufträge fertig sind"
+    return f"Warte, bis {was}. Dann darf dein Held in die Ruhmeshalle."
 
 
 def _mods_snapshot(avatar) -> dict:
@@ -108,6 +133,9 @@ def in_ruhmeshalle_stellen(
                 f"Die Ruhmeshalle gibt es ab Ausbaustufe {stand.halle_ab} "
                 f"(du hast {stand.aktuell})."
             )
+        laufend = _laufende_bauauftraege(kind, avatar.thema_id)
+        if laufend:
+            raise ModFehler(bau_meldung(laufend))
         neu = _neues_thema(thema_schluessel)
         alt: Thema = avatar.thema
         bauzeit = max(1, math.ceil((jetzt - avatar.thema_gewaehlt_am).total_seconds() / 604800))

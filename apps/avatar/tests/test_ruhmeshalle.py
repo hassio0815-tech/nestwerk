@@ -94,6 +94,29 @@ def test_schwelle_ist_einstellung(kind, uhr):
     assert neu and eintrag.anzahl_mods == 4
 
 
+def test_gesperrt_solange_bauauftrag_im_thema_laeuft(kind, uhr, kind_client):
+    """AP36: laufender Bau würde sonst im alten Thema fertig -> klar gesperrt."""
+    held = kind
+    ausbauen(held, uhr, SLOTS[:5])
+    einstellungen.setzen("avatar.ruhmeshalle_ausbaustufe", 5, akteur=None)
+    services.mod_kaufen(held, mod("ritter", "hintergrund"))
+    stand = ruhmeshalle.bereitschaft(held)
+    assert stand.ausgebaut and stand.bau_laeuft == 1 and not stand.bereit
+    with pytest.raises(services.ModFehler, match="Warte, bis dein Bauauftrag fertig ist"):
+        services.in_ruhmeshalle_stellen(held, "pirat", bau_start=stand.bau_start)
+    assert not Eintrag.objects.exists()
+    assert Avatar.objects.get(pk=held.pk).thema.schluessel == "ritter"
+    seite = kind_client.get(reverse("avatar:halle_kind")).content.decode()
+    assert "Warte, bis dein Bauauftrag fertig ist" in seite
+    assert reverse("avatar:halle_stellen") not in seite
+
+    uhr.weiter(days=8)
+    services.mods_fertigstellen()
+    assert ruhmeshalle.bereitschaft(held).bereit
+    _, neu = services.in_ruhmeshalle_stellen(held, "pirat", bau_start=bau_start(held))
+    assert neu
+
+
 def test_nur_kinder(held, mama):
     with pytest.raises(services.ModFehler):
         services.in_ruhmeshalle_stellen(mama, "pirat", bau_start="")
