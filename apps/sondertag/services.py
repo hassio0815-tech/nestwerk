@@ -29,7 +29,7 @@ from apps.konten import selectors as konten
 from . import events, grenzen
 from .models import ANGENOMMEN, OFFEN, BegleitungWunsch, Quelle, SondertagAnspruch, Status
 
-logger = logging.getLogger("famko.sondertag")
+logger = logging.getLogger("nestwerk.sondertag")
 
 NOTIZ_MAX = 200
 

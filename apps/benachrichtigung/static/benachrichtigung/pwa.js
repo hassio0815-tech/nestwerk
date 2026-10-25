@@ -1,4 +1,4 @@
-/* FamKo PWA (AP08): Service Worker registrieren, Badge zurücksetzen, Push-Karte steuern.
+/* Nestwerk PWA (AP08): Service Worker registrieren, Badge zurücksetzen, Push-Karte steuern.
    Die Berechtigungsabfrage kommt nur aus dem Klick auf "Benachrichtigungen aktivieren". */
 (function () {
   "use strict";

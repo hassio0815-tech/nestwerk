@@ -6,7 +6,7 @@ Insert-only (DATA_MODEL 0) wird dreifach durchgesetzt:
 - SQLite-Trigger: ``BEFORE UPDATE/DELETE -> RAISE(ABORT)`` (greift auch bei Roh-SQL).
 
 Ausnahme nur für DELETE im Wartungsmodus (``wartung()``), z. B. Test-Flush. Der Trigger fragt
-dazu die SQL-Funktion ``famko_wartung()`` ab, die nur Django-Verbindungen kennen. Fremde
+dazu die SQL-Funktion ``nestwerk_wartung()`` ab, die nur Django-Verbindungen kennen. Fremde
 Verbindungen (sqlite3-CLI) kennen sie nicht und scheitern damit ebenfalls (fail closed).
 """
 
@@ -15,7 +15,7 @@ from contextvars import ContextVar
 
 from django.db import migrations, models
 
-_wartung: ContextVar[bool] = ContextVar("famko_wartung", default=False)
+_wartung: ContextVar[bool] = ContextVar("nestwerk_wartung", default=False)
 
 
 class NurEinfuegenFehler(Exception):
@@ -37,9 +37,9 @@ def _wartung_aktiv():
 
 
 def sql_funktionen_registrieren(sender, connection, **kwargs):
-    """Signal-Handler für ``connection_created``: SQL-Funktion ``famko_wartung()``."""
+    """Signal-Handler für ``connection_created``: SQL-Funktion ``nestwerk_wartung()``."""
     if connection.vendor == "sqlite":
-        connection.connection.create_function("famko_wartung", 0, _wartung_aktiv)
+        connection.connection.create_function("nestwerk_wartung", 0, _wartung_aktiv)
 
 
 def nur_einfuegen_trigger(tabelle):
@@ -50,7 +50,7 @@ def nur_einfuegen_trigger(tabelle):
             f"CREATE TRIGGER {tabelle}_kein_update BEFORE UPDATE ON {tabelle} "
             f"BEGIN SELECT RAISE(ABORT, '{meldung}'); END;",
             f"CREATE TRIGGER {tabelle}_kein_delete BEFORE DELETE ON {tabelle} "
-            f"WHEN famko_wartung() = 0 "
+            f"WHEN nestwerk_wartung() = 0 "
             f"BEGIN SELECT RAISE(ABORT, '{meldung}'); END;",
         ],
         reverse_sql=[

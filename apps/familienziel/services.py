@@ -33,7 +33,7 @@ from .models import (
     WochenStatus,
 )
 
-logger = logging.getLogger("famko.familienziel")
+logger = logging.getLogger("nestwerk.familienziel")
 
 
 class FamilienzielFehler(ValueError):

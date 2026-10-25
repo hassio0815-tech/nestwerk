@@ -60,7 +60,7 @@ from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22; Mod-Standards 
     wochen_faktor_setzen,
 )
 
-logger = logging.getLogger("famko.spielregeln")
+logger = logging.getLogger("nestwerk.spielregeln")
 
 GRUND_MAX = 120
 WOCHEN_FELDER = (

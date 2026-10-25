@@ -10,8 +10,8 @@ import pytest
 from django.template.loader import render_to_string
 
 WURZEL = Path(__file__).resolve().parents[3]
-CSS = (WURZEL / "static/css/famko.css").read_text(encoding="utf-8")
-JS = (WURZEL / "static/js/famko.js").read_text(encoding="utf-8")
+CSS = (WURZEL / "static/css/nestwerk.css").read_text(encoding="utf-8")
+JS = (WURZEL / "static/js/nestwerk.js").read_text(encoding="utf-8")
 
 # art -> (Modifier-Klasse, Dauer in ms, Effekt-Klasse)
 ARTEN = {
@@ -133,7 +133,7 @@ def test_popup_css_ohne_layout_animation_und_ohne_inline_pfad():
     assert "@keyframes popup-" in CSS and "[data-popup-wartet]" in CSS
 
 
-def test_famko_js_queue_und_bewegungsfilter():
+def test_nestwerk_js_queue_und_bewegungsfilter():
     assert "prefers-reduced-motion: reduce" in JS
     assert "data-popup-aktiv" in JS and "data-popup-wartet" in JS
     assert "Escape" in JS and "MutationObserver" in JS

@@ -26,7 +26,7 @@ from . import registry, selectors, texte
 from .kanaele import absolute_url
 from .models import PushAbo
 
-logger = logging.getLogger("famko.benachrichtigung")
+logger = logging.getLogger("nestwerk.benachrichtigung")
 
 SENDE_TIMEOUT = 10
 TITEL_MAX = 120
@@ -254,7 +254,7 @@ def probe_senden(benutzer):
     """Test-Push an alle aktiven Geräte des Benutzers. Gibt ``(gesendet, fehlgeschlagen)``
     zurück. ``NichtKonfiguriert`` (BASIS_URL fehlt) wird weitergereicht."""
     payload = nutzlast(
-        "FamKo Test",
+        "Nestwerk Test",
         "Benachrichtigungen funktionieren auf diesem Gerät.",
         _eigene_origin_url(reverse("benachrichtigung:push_geraet")),
         badge=selectors.ungelesen(benutzer),

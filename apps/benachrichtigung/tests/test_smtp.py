@@ -19,8 +19,8 @@ ANGABEN = {
     "host": "smtp.example.org",
     "port": 587,
     "sicherheit": "starttls",
-    "benutzername": "famko@example.org",
-    "absender": "famko@example.org",
+    "benutzername": "nestwerk@example.org",
+    "absender": "nestwerk@example.org",
 }
 
 
@@ -70,7 +70,7 @@ def test_testmail_mit_gespeichertem_konto(smtp):
     assert ergebnis.ok and "eltern@example.org" in ergebnis.meldung
     assert len(django_mail.outbox) == 1
     nachricht = django_mail.outbox[0]
-    assert nachricht.to == ["eltern@example.org"] and nachricht.from_email == "famko@example.org"
+    assert nachricht.to == ["eltern@example.org"] and nachricht.from_email == "nestwerk@example.org"
     assert "Testnachricht" in nachricht.subject
     assert SmtpKonto.objects.get().zuletzt_getestet_am is not None
 

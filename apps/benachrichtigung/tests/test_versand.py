@@ -41,12 +41,12 @@ def test_email_wird_deutsch_mit_deep_link_gesendet(katalog, mama, papa, smtp):
     senden_alle()
     assert len(django_mail.outbox) == 2
     nachricht = next(m for m in django_mail.outbox if m.to == ["mama@example.org"])
-    assert nachricht.subject == "FamKo: Anna hat „Müll“ gemeldet"
-    assert nachricht.from_email == "famko@example.org"
-    assert "https://famko.test/eltern/meldung/12/" in nachricht.body
+    assert nachricht.subject == "Nestwerk: Anna hat „Müll“ gemeldet"
+    assert nachricht.from_email == "nestwerk@example.org"
+    assert "https://nestwerk.test/eltern/meldung/12/" in nachricht.body
     assert "Hallo Mama" in nachricht.body
     html, art = nachricht.alternatives[0]
-    assert art == "text/html" and "https://famko.test/eltern/meldung/12/" in html
+    assert art == "text/html" and "https://nestwerk.test/eltern/meldung/12/" in html
     assert zustellung(mama, e, "email").status == ZustellStatus.GESENDET
     assert zustellung(mama, e, "email").gesendet_am is not None
 

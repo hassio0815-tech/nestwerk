@@ -27,7 +27,7 @@ from apps.kern.registry import UnbekannterEintrag
 from . import registry
 from .models import Ereignis, EreignisVerarbeitung, Status, WorkerHerzschlag
 
-logger = logging.getLogger("famko.ereignisse")
+logger = logging.getLogger("nestwerk.ereignisse")
 
 WORKER_NAME = "ereignisse_worker"
 OFFENE_STATUS = (Status.OFFEN, Status.FEHLER)

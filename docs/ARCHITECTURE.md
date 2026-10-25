@@ -1,4 +1,4 @@
-# FamKo: Architektur
+# Nestwerk: Architektur
 
 - **Stand:** 24.10.2026 (Review AP31: 2.2, 5.2, 6, 7, 8 an den Code nach Phase 2 angeglichen)
 - **Grundlage:** `docs/SPEC.md`, Entscheidungen 1–28 (Vorrang), `docs/research/web-push.md`
@@ -116,8 +116,8 @@ flowchart LR
     web[web: Gunicorn + Django + WhiteNoise]
     worker[worker: Outbox + Zustellung]
     sched[scheduler: supercronic -> manage.py]
-    vol[(Volume famko_data: db/, media/, secrets/)]
-    bak[(Bind-Mount /srv/famko/backup)]
+    vol[(Volume nestwerk_data: db/, media/, secrets/)]
+    bak[(Bind-Mount /srv/nestwerk/backup)]
   end
   APNs[Apple Push *.push.apple.com]
   SMTP[eigenes SMTP-Postfach]
@@ -130,11 +130,11 @@ flowchart LR
   worker --> SMTP
 ```
 
-### 3.1 Container (ein Image `famko:<git-sha>`, drei Rollen)
+### 3.1 Container (ein Image `nestwerk:<git-sha>`, drei Rollen)
 
 | Container | Befehl | Aufgabe |
 |---|---|---|
-| `web` | `gunicorn famko.wsgi -k gthread -w 2 --threads 4` | HTTP, Templates, HTMX, Static (WhiteNoise), Nachweis-Bilder über geschützte View |
+| `web` | `gunicorn nestwerk.wsgi -k gthread -w 2 --threads 4` | HTTP, Templates, HTMX, Static (WhiteNoise), Nachweis-Bilder über geschützte View |
 | `worker` | `manage.py ereignisse_worker` (Endlosschleife, 2 s Takt) | Outbox abarbeiten, Push/E-Mail zustellen, Retries |
 | `scheduler` | `supercronic /app/deploy/crontab` | Zeitgesteuerte Management-Commands (Abschnitt 6) |
 
@@ -142,7 +142,7 @@ flowchart LR
 - **Kein Redis/Celery:** Queue = Outbox-Tabelle in SQLite. Reicht für 5 Nutzer. [A]
 - **RAM-Budget (2 GB VM):** web ~250 MB, worker ~100 MB, scheduler ~100 MB Spitze. Passt.
 - **Port:** `web` lauscht auf `8000` nur an der VM-LAN-IP; VM-Firewall (nftables) erlaubt nur die NPM-IP. Keine offenen Ports nach außen.
-- **Proxy:** `SECURE_PROXY_SSL_HEADER`, `CSRF_TRUSTED_ORIGINS=https://famko.<domain>`, `USE_X_FORWARDED_HOST`. In NPM: kein Caching und keine Access-List auf `/sw.js`, `/manifest.webmanifest`. Websockets nicht nötig.
+- **Proxy:** `SECURE_PROXY_SSL_HEADER`, `CSRF_TRUSTED_ORIGINS=https://nestwerk.<domain>`, `USE_X_FORWARDED_HOST`. In NPM: kein Caching und keine Access-List auf `/sw.js`, `/manifest.webmanifest`. Websockets nicht nötig.
 - **Ausgehend:** `*.push.apple.com:443`, `fcm.googleapis.com:443`, SMTP-Port des Postfachs.
 
 ### 3.2 SQLite-Betrieb mit drei Prozessen [K technisch heikel]
@@ -157,12 +157,12 @@ flowchart LR
 
 ### 3.3 Volumes und Secrets
 
-- `famko_data:/data`
-  - `/data/db/famko.sqlite3` (+ `-wal`, `-shm`)
+- `nestwerk_data:/data`
+  - `/data/db/nestwerk.sqlite3` (+ `-wal`, `-shm`)
   - `/data/media/nachweise/` (temporär, privat)
   - `/data/media/avatar-cache/` (regenerierbar)
   - `/data/secrets/` (`django_secret_key`, `vapid_private.pem`, `fernet.key`), beim ersten Start erzeugt, Rechte 600
-- `/srv/famko/backup` (Bind-Mount, im Proxmox-VM-Backup enthalten)
+- `/srv/nestwerk/backup` (Bind-Mount, im Proxmox-VM-Backup enthalten)
 - **VAPID-Schlüssel und Fernet-Schlüssel** gehören zwingend ins Backup (Verlust = alle Push-Abos neu, SMTP-Passwort neu).
 
 ### 3.4 Backup
@@ -174,18 +174,18 @@ flowchart LR
   - Secrets als separates Archiv
   - Aufbewahrung (Einstellung): 14 täglich, 8 wöchentlich, 12 monatlich
   - **Nachweis-Fotos werden nicht gesichert** (Datenschutz)
-- **Ebene 3 (empfohlen):** Kopie von `/srv/famko/backup` außerhalb des Proxmox-Hosts (z. B. NAS). Nicht Teil des Projekts.
+- **Ebene 3 (empfohlen):** Kopie von `/srv/nestwerk/backup` außerhalb des Proxmox-Hosts (z. B. NAS). Nicht Teil des Projekts.
 - **Wiederherstellungstest:** Job `backup_pruefen` wöchentlich: letztes Backup in Temp-DB entpacken, `integrity_check`, Zeilenzahl Ledger vergleichen, Ergebnis im Eltern-Dashboard (Systemstatus). Manuelle Vollwiederherstellung einmal vor Go-live üben (Runbook in README).
 
 ### 3.5 Update und Rollback
 
-- Image-Tag = Git-Commit (`famko:<sha>`), zusätzlich `famko:vorher` als Zeiger auf die letzte gute Version.
+- Image-Tag = Git-Commit (`nestwerk:<sha>`), zusätzlich `nestwerk:vorher` als Zeiger auf die letzte gute Version.
 - `deploy/update.sh`:
   1. `git pull`, `docker compose build`
   2. `docker compose run --rm web manage.py db_sichern --grund=update`
   3. `docker compose run --rm web manage.py migrate`
   4. `docker compose up -d`, Healthcheck `/gesundheit/` (DB lesbar, Migrationen vollständig, Worker-Herzschlag < 60 s)
-- `deploy/rollback.sh <sha>`: Stack stoppen, Pre-Update-Backup zurückspielen, `FAMKO_TAG=<sha> up -d`.
+- `deploy/rollback.sh <sha>`: Stack stoppen, Pre-Update-Backup zurückspielen, `NESTWERK_TAG=<sha> up -d`.
 - **Migrationsregel:** Additiv (expand/contract). Felder erst hinzufügen, später entfernen. Daten-Migrationen reversibel oder mit Backup-Pflicht.
 - Logs: Docker `json-file` mit Rotation (10 MB x 3).
 
@@ -218,7 +218,7 @@ flowchart LR
 
 ### 4.4 Geräte und Tablet-Auto-Logout
 
-- Eltern registrieren ein Gerät als **Kiosk** ("Dieses Gerät ist das Flur-Tablet"). Server setzt ein signiertes, httpOnly, langlebiges Cookie `famko_geraet` -> `Geraet`-Datensatz.
+- Eltern registrieren ein Gerät als **Kiosk** ("Dieses Gerät ist das Flur-Tablet"). Server setzt ein signiertes, httpOnly, langlebiges Cookie `nestwerk_geraet` -> `Geraet`-Datensatz.
 - **Sitzungsrichtlinie je Gerätetyp** (Middleware `SitzungsRichtlinie`):
   - Kiosk: Kind- und Eltern-Sitzung enden nach Leerlauf (Startwert 300 s).
   - Persönlich: lange Sitzung wie oben.
@@ -357,8 +357,8 @@ sequenceDiagram
   - Sekundengenaue Aktualität ist nicht nötig.
 - **Mechanik:**
   - `GET /live/stand?v=<version>` (passiv, verlängert keine Sitzung). `version` = höchste `Ereignis.id` (indizierte Abfrage, < 1 ms).
-  - Unverändert -> `204`. Geändert -> `200` mit Header `HX-Trigger: famko-aktualisiert` und neuer Version.
-  - Kacheln haben `hx-trigger="famko-aktualisiert from:body"` und laden sich selbst nach.
+  - Unverändert -> `204`. Geändert -> `200` mit Header `HX-Trigger: nestwerk-aktualisiert` und neuer Version.
+  - Kacheln haben `hx-trigger="nestwerk-aktualisiert from:body"` und laden sich selbst nach.
   - Intervalle in Einstellungen: Tablet 10 s, Handy/Desktop 30 s; pausiert bei `document.hidden`.
   - Tablet: kompletter Seiten-Reload alle 6 h (WebView-Speicherlecks).
 - **Optional (Phase 3):** Fully-Kiosk-REST (PLUS-Lizenz) als Kanal `kiosk` für `screenOn` + Overlay bei Familienziel/Rangaufstieg.
@@ -566,11 +566,11 @@ stateDiagram-v2
 ## 11. Verzeichnisstruktur
 
 ```
-FamKo/
+Nestwerk/
 ├── pyproject.toml            # Abhängigkeiten, ruff, pytest, import-linter
 ├── Dockerfile
 ├── compose.yaml
-├── .env.example              # FAMKO_TAG, Domain, Heimnetz-CIDR (keine Secrets)
+├── .env.example              # NESTWERK_TAG, Domain, Heimnetz-CIDR (keine Secrets)
 ├── manage.py
 ├── deploy/
 │   ├── crontab               # supercronic
@@ -578,7 +578,7 @@ FamKo/
 │   ├── update.sh
 │   ├── rollback.sh
 │   └── npm-hinweise.md       # Proxy-Einstellungen
-├── famko/                    # Django-Projekt
+├── nestwerk/                    # Django-Projekt
 │   ├── settings/{basis,entwicklung,produktion,test}.py
 │   ├── urls.py
 │   └── wsgi.py

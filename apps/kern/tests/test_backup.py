@@ -24,12 +24,12 @@ JETZT = datetime(2026, 11, 2, 3, 30)
 def test_sichern_und_wiederherstellen(tmp_path):
     quelle = _db(tmp_path / "live.sqlite3")
     datei = backup.sichern(quelle, tmp_path / "bak", jetzt=JETZT)
-    assert datei.name == "famko-20261102-033000-taeglich.sqlite3.gz"
+    assert datei.name == "nestwerk-20261102-033000-taeglich.sqlite3.gz"
     assert not list((tmp_path / "bak").glob(".tmp-*"))  # Temp-Ordner aufgeräumt
-    ziel = backup.wiederherstellen(datei, tmp_path / "neu" / "famko.sqlite3")
+    ziel = backup.wiederherstellen(datei, tmp_path / "neu" / "nestwerk.sqlite3")
     assert backup.zeilenzahlen(ziel) == {"punkte_buchung": 3}
     # Eine einzige Datei, kein WAL-Anhang
-    assert not (tmp_path / "neu" / "famko.sqlite3-wal").exists()
+    assert not (tmp_path / "neu" / "nestwerk.sqlite3-wal").exists()
 
 
 def test_sichern_waehrend_offener_schreibverbindung_ist_konsistent(tmp_path):
@@ -62,7 +62,7 @@ def test_fehlende_oder_defekte_db(tmp_path):
 
 
 def test_wiederherstellen_lehnt_defektes_backup_ab(tmp_path):
-    bak = tmp_path / "famko-20261102-033000-taeglich.sqlite3.gz"
+    bak = tmp_path / "nestwerk-20261102-033000-taeglich.sqlite3.gz"
     with gzip.open(bak, "wb") as f:
         f.write(b"Muell" * 1000)
     ziel = tmp_path / "r.sqlite3"
@@ -109,7 +109,7 @@ def test_rotation_update_backups_getrennt(tmp_path):
 
 def test_fremde_dateien_werden_ignoriert(tmp_path):
     (tmp_path / "notiz.txt").write_text("hi")
-    (tmp_path / "famko-kaputt.sqlite3.gz").write_text("hi")
+    (tmp_path / "nestwerk-kaputt.sqlite3.gz").write_text("hi")
     assert backup.auflisten(tmp_path) == []
     backup.rotieren(tmp_path)
     assert (tmp_path / "notiz.txt").exists()
@@ -163,3 +163,14 @@ def test_live_wiederherstellen_behaelt_alte_db(tmp_path):
     beiseite = backup.live_wiederherstellen(datei, live, jetzt=JETZT)
     assert beiseite.exists() and backup.zeilenzahlen(live) == {"punkte_buchung": 3}
     assert not (tmp_path / "live.sqlite3-wal").exists()
+
+
+def test_alte_famko_backups_werden_erkannt(tmp_path):
+    """Backups bestehender Installationen (frühere Bezeichnung FamKo) bleiben sichtbar."""
+    (tmp_path / "famko-20261102-033000-update.sqlite3.gz").write_text("x")
+    (tmp_path / "nestwerk-20261103-033000-taeglich.sqlite3.gz").write_text("x")
+    namen = [b.pfad.name for b in backup.auflisten(tmp_path)]
+    assert namen == [
+        "nestwerk-20261103-033000-taeglich.sqlite3.gz",
+        "famko-20261102-033000-update.sqlite3.gz",
+    ]

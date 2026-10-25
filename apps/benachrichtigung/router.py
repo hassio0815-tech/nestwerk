@@ -33,7 +33,7 @@ from .models import (
     Zustellung,
 )
 
-logger = logging.getLogger("famko.benachrichtigung")
+logger = logging.getLogger("nestwerk.benachrichtigung")
 
 ROUTER_NAME = "benachrichtigung.router"
 EMAIL = "email"

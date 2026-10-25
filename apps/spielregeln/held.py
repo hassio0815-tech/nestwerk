@@ -31,7 +31,7 @@ from apps.konten import selectors as konten
 from . import auswertung, events
 from .models import Wochenauswertung
 
-logger = logging.getLogger("famko.spielregeln")
+logger = logging.getLogger("nestwerk.spielregeln")
 
 GRENZE = Decimal("999.999")
 

@@ -56,7 +56,7 @@ def app_name():
     try:
         return einstellungen.wert("allgemein.anzeigename")
     except einstellungen.EinstellungFehlt:
-        return "FamKo"
+        return "Nestwerk"
 
 
 # --- Schritt 2: Eltern -------------------------------------------------------------------------

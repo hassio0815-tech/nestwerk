@@ -52,7 +52,7 @@ def test_manifest_ist_valide(client):
     assert antwort["Content-Type"].startswith("application/manifest+json")
     assert antwort["Cache-Control"] == "no-cache"
     m = json.loads(antwort.content)
-    assert m["name"] == "FamKo" and m["display"] == "standalone"
+    assert m["name"] == "Nestwerk" and m["display"] == "standalone"
     assert m["start_url"] == "/" and m["scope"] == "/"
     assert m["theme_color"] == m["background_color"] == "#120f20"
     groessen = {i["sizes"] for i in m["icons"]}
@@ -77,7 +77,7 @@ def test_service_worker_ohne_cache_im_root_scope(client):
     code = antwort.content.decode()
     assert "web_push" in code and "notificationclick" in code and "setAppBadge" in code
     assert 'OFFLINE_URL = "/offline/"' in code
-    assert "http://" not in code.replace("https://famko.test", "")  # keine externen Ressourcen
+    assert "http://" not in code.replace("https://nestwerk.test", "")  # keine externen Ressourcen
 
 
 def test_sw_und_manifest_sind_oeffentlich_ohne_redirect(client):
@@ -238,7 +238,7 @@ def test_nutzlast_declarative_und_klassisch_lesbar(katalog, mama, abo, webpush):
     kwargs, nachricht = gesendet(webpush)
     assert nachricht["web_push"] == 8030
     n = nachricht["notification"]
-    assert n["title"] and n["navigate"] == "https://famko.test/eltern/meldung/12/"
+    assert n["title"] and n["navigate"] == "https://nestwerk.test/eltern/meldung/12/"
     assert n["app_badge"] == 1
     assert kwargs["subscription_info"] == {
         "endpoint": ENDPOINT,
@@ -260,7 +260,7 @@ def test_header_ttl_urgency_topic_und_vapid(katalog, mama, abo, webpush, setting
     assert kwargs["headers"]["Urgency"] == "high"
     assert 1 <= len(kwargs["headers"]["Topic"]) <= 32
     assert kwargs["headers"]["Topic"].isalnum()
-    assert kwargs["vapid_claims"] == {"sub": "https://famko.test"}
+    assert kwargs["vapid_claims"] == {"sub": "https://nestwerk.test"}
     assert kwargs["vapid_private_key"] is not None
 
     router.router(veroeffentlichen(TYP_INFO))
@@ -339,8 +339,8 @@ def test_test_push_an_eigene_geraete(client, mama, abo, webpush):
     antwort = client.post(reverse("benachrichtigung:push_test"))
     assert antwort.status_code == 200 and "Test an 1 Gerät(e) gesendet" in antwort.content.decode()
     kwargs, nachricht = gesendet(webpush)
-    assert nachricht["notification"]["title"] == "FamKo Test"
-    assert nachricht["notification"]["navigate"] == "https://famko.test/push/"
+    assert nachricht["notification"]["title"] == "Nestwerk Test"
+    assert nachricht["notification"]["navigate"] == "https://nestwerk.test/push/"
     assert kwargs["ttl"] == 300
 
 

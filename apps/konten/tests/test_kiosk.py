@@ -29,7 +29,7 @@ def angemeldet_bei(client):
 def test_kind_auf_dem_tablet_wird_nach_leerlauf_abgemeldet(anna, tablet, uhr):
     c = client_fuer(tablet)
     kind_anmelden(c, anna)
-    assert c.session["famko_kiosk"] is True
+    assert c.session["nestwerk_kiosk"] is True
     uhr.weiter(seconds=299)
     assert c.get(AKTIV).status_code == 200
     uhr.weiter(seconds=301)
@@ -100,7 +100,7 @@ def test_aktiver_herzschlag_des_browsers_zaehlt_als_aktivitaet(anna, tablet, uhr
 def test_eltern_auf_dem_tablet_haben_denselben_leerlauf(mama, tablet, uhr):
     c = client_fuer(tablet)
     eltern_anmelden(c, mama, vertraut=True)
-    assert c.session["famko_kiosk"] is True
+    assert c.session["nestwerk_kiosk"] is True
     assert c.session.get_expiry_age() <= 12 * 3600  # "vertraut" gilt auf dem Kiosk nicht
     uhr.weiter(seconds=301)
     assert c.get(AKTIV).status_code == 302
@@ -140,7 +140,7 @@ def test_kiosk_sitzung_bleibt_auch_ohne_cookie_kiosk(anna, tablet, uhr):
 def test_gefaelschtes_geraete_cookie_wird_ignoriert(anna, tablet, uhr, client):
     client.cookies[COOKIE_NAME] = str(tablet.pk)  # unsigniert
     kind_anmelden(client, anna)
-    assert client.session["famko_kiosk"] is False
+    assert client.session["nestwerk_kiosk"] is False
     client.cookies[COOKIE_NAME] = "irgendwas:1abc:xyz"
     assert client.get(AKTIV).status_code == 200
 
@@ -149,7 +149,7 @@ def test_widerrufenes_geraet_gilt_als_unbekannt(anna, tablet, mama, uhr):
     services.geraet_widerrufen(tablet, von=mama)
     c = client_fuer(tablet)
     kind_anmelden(c, anna)
-    assert c.session["famko_kiosk"] is False
+    assert c.session["nestwerk_kiosk"] is False
 
 
 def test_geraet_registrieren_setzt_signiertes_httponly_cookie(mama, client):
@@ -201,7 +201,7 @@ def test_widerruf_des_geraets_beendet_dessen_sitzung(anna, tablet, uhr):
     (vorher blieb nur das Kiosk-Flag in der Sitzung stehen)."""
     c = client_fuer(tablet)
     kind_anmelden(c, anna)
-    assert c.session["famko_geraet_id"] == str(tablet.pk)
+    assert c.session["nestwerk_geraet_id"] == str(tablet.pk)
     services.geraet_widerrufen(tablet, von=None)
     antwort = c.get(AKTIV)
     assert antwort.status_code == 302 and antwort.url == reverse("konten:start")
@@ -213,7 +213,7 @@ def test_widerruf_des_geraets_beendet_dessen_sitzung(anna, tablet, uhr):
 def test_sitzung_ohne_registriertes_geraet_bleibt_vom_widerruf_unberuehrt(anna, tablet):
     c = client_fuer()
     kind_anmelden(c, anna)
-    assert c.session["famko_geraet_id"] is None
+    assert c.session["nestwerk_geraet_id"] is None
     services.geraet_widerrufen(tablet, von=None)
     assert c.get(AKTIV).status_code == 200
 
@@ -221,9 +221,9 @@ def test_sitzung_ohne_registriertes_geraet_bleibt_vom_widerruf_unberuehrt(anna, 
 def test_neu_registrieren_auf_registriertem_geraet_beendet_die_sitzung_nicht(mama, iphone):
     c = client_fuer(iphone)
     eltern_anmelden(c, mama)
-    assert c.session["famko_geraet_id"] == str(iphone.pk)
+    assert c.session["nestwerk_geraet_id"] == str(iphone.pk)
     antwort = c.post(reverse("konten:geraete"), {"bezeichnung": "Flur", "typ": "kiosk"})
     assert antwort.status_code == 302
     neu = Geraet.objects.get(bezeichnung="Flur")
-    assert c.session["famko_geraet_id"] == str(neu.pk)
+    assert c.session["nestwerk_geraet_id"] == str(neu.pk)
     assert c.get(AKTIV).status_code == 200

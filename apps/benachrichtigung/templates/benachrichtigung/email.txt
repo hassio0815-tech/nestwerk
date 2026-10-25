@@ -6,5 +6,5 @@
 Öffnen: {{ link }}
 {% endif %}
 --
-FamKo · Benachrichtigungen einstellen: {{ einstellungen }}
+Nestwerk · Benachrichtigungen einstellen: {{ einstellungen }}
 {% endautoescape %}

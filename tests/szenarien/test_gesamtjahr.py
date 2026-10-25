@@ -11,7 +11,7 @@ Rangaufstiege, Abzeichen, Familienziele, Held der Woche, Sondertage. Invarianten
 - Neuberechnung == gespeicherter Stand,
 - alle Jobs idempotent bei Doppellauf (je Woche geprüft).
 
-``FAMKO_KALIBRIERUNG=<datei>`` schreibt die Kalibrierungstabelle (Markdown) für das Review.
+``NESTWERK_KALIBRIERUNG=<datei>`` schreibt die Kalibrierungstabelle (Markdown) für das Review.
 """
 
 import os
@@ -88,7 +88,7 @@ def _keine_doppelten():
 
 
 def _kalibrierung_schreiben(prot, titel):
-    ziel = os.environ.get("FAMKO_KALIBRIERUNG")
+    ziel = os.environ.get("NESTWERK_KALIBRIERUNG")
     if not ziel:
         return
     zeilen = [

@@ -1,9 +1,9 @@
-/* FamKo Oberflaeche: Hell/Dunkel-Umschalter, PIN-Pad, Pop-up-Warteschlange (AP33), Schliessen.
+/* Nestwerk Oberflaeche: Hell/Dunkel-Umschalter, PIN-Pad, Pop-up-Warteschlange (AP33), Schliessen.
    Keine externen Quellen, keine Inline-Skripte (CSP). */
 (function () {
   "use strict";
 
-  var COOKIE_MODUS = "famko_modus";
+  var COOKIE_MODUS = "nestwerk_modus";
   var PIN_LAENGE = 4;
   var MELDUNGEN_ID = "meldungen";
   var AKTIVES_POPUP = "#meldungen > [data-popup-aktiv]";

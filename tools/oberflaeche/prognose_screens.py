@@ -1,6 +1,6 @@
 """AP32: Screenshots der Eltern-Seite "Prognose & Kalibrierung" (Demo-Server wie screenshots.py).
 
-    FAMKO_DEMO_PORT=8769 FAMKO_DEMO_DIR=/tmp/famko-demo-p3b \
+    NESTWERK_DEMO_PORT=8769 NESTWERK_DEMO_DIR=/tmp/nestwerk-demo-p3b \
       .venv/bin/python tools/oberflaeche/prognose_screens.py --ziel docs/screenshots/phase3/prognose
 
 Kind A: gleichmäßig fleißig, Kind B: jede 2. Woche aktiv (Mindestwochen bremsen),
@@ -63,7 +63,9 @@ def main():
             s.demo_daten()
             subprocess.run(
                 [sys.executable, "manage.py", "shell", "-c", SEED],
-                cwd=s.ROOT, env=s._env(), check=True,
+                cwd=s.ROOT,
+                env=s._env(),
+                check=True,
             )
             s.eltern_login(page, aufn)
             aufn.seite(page, "prognose-eltern", "/eltern/prognose/")

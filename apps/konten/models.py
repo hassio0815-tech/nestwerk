@@ -80,7 +80,7 @@ class Benutzer(AbstractBaseUser):
 
         zugang = ElternZugang.objects.filter(pk=1).values_list("passwort_hash", flat=True).first()
         return salted_hmac(
-            "famko.konten.Benutzer.get_session_auth_hash",
+            "nestwerk.konten.Benutzer.get_session_auth_hash",
             f"{self.password}|{zugang or ''}",
             secret=secret,
             algorithm="sha256",

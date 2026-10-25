@@ -372,8 +372,8 @@ def testmail_senden(empfaenger, *, daten=None, von=audit.AKTUELL):
         mail.senden(
             daten,
             empfaenger,
-            "FamKo: Testnachricht",
-            "Das ist eine Testnachricht von FamKo.\n\nWenn du sie liest, funktioniert der "
+            "Nestwerk: Testnachricht",
+            "Das ist eine Testnachricht von Nestwerk.\n\nWenn du sie liest, funktioniert der "
             "E-Mail-Versand.",
         )
     except Exception as exc:

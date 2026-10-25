@@ -47,7 +47,7 @@ AKTUELL = object()
 
 # Anbieter für (akteur, geraet) der laufenden Anfrage; ihn setzt die Middleware von konten.
 # kern kennt konten nicht: Es wird nur ein Aufruf hinterlegt (Schichtenregel).
-_kontext: ContextVar = ContextVar("famko_audit_kontext", default=None)
+_kontext: ContextVar = ContextVar("nestwerk_audit_kontext", default=None)
 
 
 @contextmanager

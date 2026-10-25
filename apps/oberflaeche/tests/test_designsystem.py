@@ -25,7 +25,7 @@ INLINE_SKRIPT = re.compile(r"<script(?![^>]*\ssrc\s*=)[^>]*>", re.IGNORECASE)
 STATISCHE_PFADE = re.compile(r"""\b(?:src|href)\s*=\s*["'](/static/[^"'?#]+)""")
 CSS_URL = re.compile(r"""url\(\s*["']?([^"')]+)["']?\s*\)""")
 
-STATIC_CSS = ["css/tokens.css", "css/famko.css", "css/styleguide.css"]
+STATIC_CSS = ["css/tokens.css", "css/nestwerk.css", "css/styleguide.css"]
 LIZENZEN = [
     "fonts/inter/OFL-Inter.txt",
     "fonts/press-start-2p/OFL-PressStart2P.txt",
@@ -107,7 +107,7 @@ def _css(name):
 
 def test_hidden_attribut_gewinnt_gegen_komponenten_display():
     """Regression (Screenshot-Prüfung): .stapel/.reihe (display:flex) überschrieben ``hidden``."""
-    assert re.search(r"\[hidden\]\s*\{[^}]*display:\s*none\s*!important", _css("famko.css"))
+    assert re.search(r"\[hidden\]\s*\{[^}]*display:\s*none\s*!important", _css("nestwerk.css"))
 
 
 @pytest.mark.parametrize("datei", ["aufgaben.css", "oberflaeche.css"])
@@ -156,13 +156,13 @@ def test_einstellungen_gruppen_sind_aufklappbar():
 
 
 def test_touchziele_und_schriftgroessen_im_css():
-    css = _css("famko.css")
+    css = _css("nestwerk.css")
     assert re.search(r"details > summary\s*\{[^}]*min-height:\s*var\(--tap-min\)", css)
     assert re.search(r"label\.reihe\s*\{[^}]*min-height:\s*var\(--tap-min\)", css)
     assert re.search(r"\.chip\s*\{[^}]*font-size:\s*0\.875rem", css)
     zeile_css = _css("oberflaeche.css")
     assert re.search(r"\.zeile > a\s*\{[^}]*min-height:\s*var\(--tap-min\)", zeile_css)
-    for datei in ("famko.css", "aufgaben.css"):
+    for datei in ("nestwerk.css", "aufgaben.css"):
         for wert in re.findall(r"font-size:\s*([0-9.]+)(rem|em)", _css(datei)):
             if wert[1] == "em":
                 raise AssertionError("relative em-Schrift unterschreitet je nach Basis 14 px")

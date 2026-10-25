@@ -1,8 +1,8 @@
 FROM python:3.13-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=famko.settings.produktion \
-    FAMKO_DATA_DIR=/data FAMKO_BACKUP_ZIEL=/backup TZ=Europe/Berlin
+    DJANGO_SETTINGS_MODULE=nestwerk.settings.produktion \
+    NESTWERK_DATA_DIR=/data NESTWERK_BACKUP_ZIEL=/backup TZ=Europe/Berlin
 
 # supercronic (Scheduler-Rolle): Version gepinnt, SHA-256 beim Build geprüft (nur linux/amd64;
 # Prüfsumme aus der GitHub-Release-API, Update: Version + Prüfsumme gemeinsam ändern).
@@ -17,13 +17,13 @@ COPY pyproject.toml .
 RUN pip install --no-cache-dir .
 
 COPY . .
-RUN useradd --uid 1000 --create-home famko \
-    && mkdir -p /data /backup && chown famko:famko /data /backup \
-    && FAMKO_SECRET_KEY=build python manage.py collectstatic --noinput
+RUN useradd --uid 1000 --create-home nestwerk \
+    && mkdir -p /data /backup && chown nestwerk:nestwerk /data /backup \
+    && NESTWERK_SECRET_KEY=build python manage.py collectstatic --noinput
 
-USER famko
+USER nestwerk
 VOLUME /data
 EXPOSE 8000
 ENTRYPOINT ["/app/deploy/entrypoint.sh"]
 # Rolle wird in compose.yaml gesetzt; Standard = web
-CMD ["gunicorn", "famko.wsgi", "-k", "gthread", "-w", "2", "--threads", "4", "-b", "0.0.0.0:8000"]
+CMD ["gunicorn", "nestwerk.wsgi", "-k", "gthread", "-w", "2", "--threads", "4", "-b", "0.0.0.0:8000"]

@@ -1,6 +1,8 @@
 # Ein Image, drei Rollen (ARCHITECTURE 3.1)
-x-famko: &famko
-  image: famko:${FAMKO_TAG:-dev}
+x-nestwerk: &nestwerk
+  # Image, Tag, Backup-Ordner, Bind-IP: bestehende Installationen (früher FamKo) behalten ihre
+  # Namen über .env (NESTWERK_IMAGE=famko, FAMKO_TAG usw.); siehe docs/RUNBOOK.md
+  image: ${NESTWERK_IMAGE:-nestwerk}:${NESTWERK_TAG:-${FAMKO_TAG:-dev}}
   build: .
   restart: unless-stopped
   env_file:
@@ -9,18 +11,18 @@ x-famko: &famko
   environment:
     TZ: Europe/Berlin
   volumes:
-    - famko_data:/data
+    - nestwerk_data:/data
     # Host-Ordner muss UID 1000 gehören (deploy/install.sh); enthält nur DB-Dumps, keine Fotos
-    - ${FAMKO_BACKUP_DIR:-./backup}:/backup
+    - ${NESTWERK_BACKUP_DIR:-${FAMKO_BACKUP_DIR:-./backup}}:/backup
   logging:
     driver: json-file
     options: {max-size: 10m, max-file: "3"}
 
 services:
   web:
-    <<: *famko
+    <<: *nestwerk
     ports:
-      - "${FAMKO_BIND_IP:-127.0.0.1}:8000:8000"
+      - "${NESTWERK_BIND_IP:-${FAMKO_BIND_IP:-127.0.0.1}}:8000:8000"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/gesundheit/', timeout=3)"]
       interval: 30s
@@ -29,15 +31,18 @@ services:
       start_period: 20s
 
   worker:
-    <<: *famko
+    <<: *nestwerk
     # Outbox-Worker (AP05): Endlosschleife, 2 s Takt, beendet sich sauber bei SIGTERM
     command: ["python", "manage.py", "ereignisse_worker"]
 
   scheduler:
-    <<: *famko
+    <<: *nestwerk
     # supercronic führt deploy/crontab aus (TZ Europe/Berlin), Logs gehen nach stdout
     init: true  # Zombie-Prozesse der Cron-Kinder einsammeln
     command: ["supercronic", "/app/deploy/crontab"]
 
 volumes:
-  famko_data:
+  nestwerk_data:
+    # Bestehende Installationen: update.sh trägt NESTWERK_DATA_VOLUME=famko_famko_data (bzw.
+    # famko_data) in .env ein, damit das vorhandene Volume weiterverwendet wird.
+    name: ${NESTWERK_DATA_VOLUME:-nestwerk_data}

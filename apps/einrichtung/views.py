@@ -42,7 +42,7 @@ def _zugang(view, *, mit_token):
 
 
 def zugang(view):
-    """Gesperrt nach Abschluss (404); mit gesetztem ``FAMKO_SETUP_TOKEN`` nur mit Token."""
+    """Gesperrt nach Abschluss (404); mit gesetztem ``NESTWERK_SETUP_TOKEN`` nur mit Token."""
     return _zugang(view, mit_token=True)
 
 

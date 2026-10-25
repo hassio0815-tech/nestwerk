@@ -16,7 +16,7 @@ from apps.kern import einstellungen, zeit
 from . import registry, ruhezeit
 from .models import Ruhezeit, ZustellStatus, Zustellung
 
-logger = logging.getLogger("famko.benachrichtigung")
+logger = logging.getLogger("nestwerk.benachrichtigung")
 
 OFFENE = (ZustellStatus.OFFEN, ZustellStatus.FEHLER)
 LEASE = timedelta(minutes=5)

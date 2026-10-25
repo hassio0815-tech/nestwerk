@@ -12,7 +12,7 @@ from apps.konten import selectors as konten_selectors
 from . import mail, registry
 from .models import Popup, SmtpKonto
 
-logger = logging.getLogger("famko.benachrichtigung")
+logger = logging.getLogger("nestwerk.benachrichtigung")
 
 
 def absolute_url(pfad):
@@ -45,7 +45,7 @@ class EmailKanal(registry.ZustellKanal):
         text = render_to_string("benachrichtigung/email.txt", kontext)
         html = render_to_string("benachrichtigung/email.html", kontext)
         try:
-            mail.senden(daten, adresse, f"FamKo: {b.titel}", text, html)
+            mail.senden(daten, adresse, f"Nestwerk: {b.titel}", text, html)
         except Exception as exc:
             raise mail.MailFehler(f"{type(exc).__name__}: {mail.bereinigen(exc, daten)}") from None
 

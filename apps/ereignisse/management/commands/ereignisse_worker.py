@@ -13,7 +13,7 @@ from django.db import close_old_connections, connection
 
 from apps.ereignisse import worker
 
-logger = logging.getLogger("famko.ereignisse")
+logger = logging.getLogger("nestwerk.ereignisse")
 
 
 def _arbeit(ergebnis):

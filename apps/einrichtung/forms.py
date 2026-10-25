@@ -147,9 +147,9 @@ class NetzwerkForm(forms.Form):
         url = self.cleaned_data["basis_url"].rstrip("/")
         teile = urlsplit(url)
         if teile.scheme not in ("http", "https") or not teile.hostname:
-            raise ValidationError("Bitte eine Adresse wie https://famko.example.org angeben.")
+            raise ValidationError("Bitte eine Adresse wie https://nestwerk.example.org angeben.")
         if teile.path or teile.query or teile.fragment:
-            raise ValidationError("Nur die Adresse ohne Pfad, z. B. https://famko.example.org.")
+            raise ValidationError("Nur die Adresse ohne Pfad, z. B. https://nestwerk.example.org.")
         return url
 
     def clean_kind_netze(self):

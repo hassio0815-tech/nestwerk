@@ -25,8 +25,8 @@ def einstellungen_definieren():
         "einrichtung.basis_url",
         Typ.TEXT,
         "Öffentliche Adresse (Basis-URL)",
-        beschreibung="Adresse der App, z. B. https://famko.example.org. Links in E-Mails und Push "
-        "nutzen diesen Wert (Rückfall: Umgebungsvariable BASIS_URL).",
+        beschreibung="Adresse der App, z. B. https://nestwerk.example.org. "
+        "Links in E-Mails und Push nutzen diesen Wert (Rückfall: Umgebungsvariable BASIS_URL).",
         max_laenge=200,
     )
     definieren(

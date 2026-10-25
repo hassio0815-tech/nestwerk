@@ -49,7 +49,7 @@ from .models import (
 )
 from .registry import hat_bereiche, metrik_bereiche, metrik_wert
 
-logger = logging.getLogger("famko.spielregeln")
+logger = logging.getLogger("nestwerk.spielregeln")
 
 VERGLEICHE = {">=": operator.ge, ">": operator.gt, "==": operator.eq}
 NAME_MAX = 60

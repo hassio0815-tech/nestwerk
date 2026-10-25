@@ -31,7 +31,7 @@ from apps.konten import selectors as konten
 from . import auswertung, events
 from .models import Kalibrierung, KindStand, Rang, RangAufstieg
 
-logger = logging.getLogger("famko.spielregeln")
+logger = logging.getLogger("nestwerk.spielregeln")
 
 FAKTOR_MIN = Decimal("0.25")
 FAKTOR_MAX = Decimal("4.00")

@@ -71,17 +71,17 @@ def test_sqlite_pragmas_aktiv():
 @pytest.mark.django_db
 def test_healthcheck_host_ist_auch_mit_domain_erlaubt(client, settings):
     """Regression B-01: compose-Healthcheck ruft 127.0.0.1:8000 auf, .env setzt nur die Domain."""
-    from famko.settings.basis import allowed_hosts
+    from nestwerk.settings.basis import allowed_hosts
 
-    settings.ALLOWED_HOSTS = allowed_hosts("famko.example.org")
-    assert settings.ALLOWED_HOSTS == ["famko.example.org", "localhost", "127.0.0.1"]
+    settings.ALLOWED_HOSTS = allowed_hosts("nestwerk.example.org")
+    assert settings.ALLOWED_HOSTS == ["nestwerk.example.org", "localhost", "127.0.0.1"]
     antwort = client.get("/gesundheit/", HTTP_HOST="127.0.0.1:8000")
     assert antwort.status_code == 200
     assert client.get("/gesundheit/", HTTP_HOST="boese.example").status_code == 400
 
 
 def test_allowed_hosts_ohne_doppelte():
-    from famko.settings.basis import allowed_hosts
+    from nestwerk.settings.basis import allowed_hosts
 
     assert allowed_hosts("") == ["localhost", "127.0.0.1"]
     assert allowed_hosts(" localhost , a.b ") == ["localhost", "a.b", "127.0.0.1"]

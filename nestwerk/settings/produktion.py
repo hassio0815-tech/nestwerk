@@ -10,7 +10,7 @@ if not SECRET_KEY:
     _datei = DATA_DIR / "secrets" / "django_secret_key"
     if not _datei.is_file():
         raise ImproperlyConfigured(
-            "FAMKO_SECRET_KEY fehlt und /data/secrets/django_secret_key existiert nicht"
+            "NESTWERK_SECRET_KEY fehlt und /data/secrets/django_secret_key existiert nicht"
         )
     SECRET_KEY = _datei.read_text().strip()
 

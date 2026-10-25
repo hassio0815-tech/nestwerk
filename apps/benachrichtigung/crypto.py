@@ -1,6 +1,6 @@
 """Fernet-Verschlüsselung für Geheimnisse in der DB (SMTP-Passwort).
 
-Schlüssel: Einstellung ``FERNET_KEY`` (Umgebungsvariable ``FAMKO_FERNET_KEY``), sonst die Datei
+Schlüssel: Einstellung ``FERNET_KEY`` (Umgebungsvariable ``NESTWERK_FERNET_KEY``), sonst die Datei
 ``<SECRETS_DIR>/fernet.key`` im Volume. Fehlt beides, wird die Datei einmalig mit Rechten 0600
 erzeugt. Geht der Schlüssel verloren, müssen die Geheimnisse neu eingegeben werden.
 """

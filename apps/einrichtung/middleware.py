@@ -2,7 +2,7 @@
 
 Solange ``allgemein.einrichtung_abgeschlossen`` nicht gesetzt ist, führt jede Anfrage zum
 Assistenten (außer Gesundheitscheck, Static, Service Worker und Manifest). Der Assistent
-selbst ist nur aus dem Heimnetz und, falls ``FAMKO_SETUP_TOKEN`` gesetzt ist, mit Token
+selbst ist nur aus dem Heimnetz und, falls ``NESTWERK_SETUP_TOKEN`` gesetzt ist, mit Token
 erreichbar. Nach Abschluss ist er gesperrt (404).
 """
 

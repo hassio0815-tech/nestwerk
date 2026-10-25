@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from famko.gesundheit import gesundheit
+from nestwerk.gesundheit import gesundheit
 
 urlpatterns = [
     path("gesundheit/", gesundheit, name="gesundheit"),

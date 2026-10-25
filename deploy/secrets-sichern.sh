@@ -11,7 +11,7 @@ cd "$HERE/.."
 ziel="${1:?Aufruf: $0 <zielordner>}"
 mkdir -p "$ziel"
 chmod 700 "$ziel"
-datei="$ziel/famko-secrets-$(date +%Y%m%d-%H%M%S).tar.gz.enc"
+datei="$ziel/nestwerk-secrets-$(date +%Y%m%d-%H%M%S).tar.gz.enc"
 
 umask 077
 docker compose run --rm --no-deps -T web tar -C /data -czf - secrets |

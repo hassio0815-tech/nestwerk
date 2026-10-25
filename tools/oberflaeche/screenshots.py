@@ -1,8 +1,8 @@
 # ruff: noqa: E501  (eingebettetes JavaScript in PRUEF_JS)
-"""Screenshots und Browser-Prüfung der FamKo-Oberfläche (Python-Playwright, kein MCP).
+"""Screenshots und Browser-Prüfung der Nestwerk-Oberfläche (Python-Playwright, kein MCP).
 
-Startet eine Demo-Instanz (eigene DB unter /tmp/famko-demo, Entwicklungs-Settings,
-127.0.0.1:8765; änderbar über FAMKO_DEMO_DIR und FAMKO_DEMO_PORT), durchläuft den Einrichtungs-Assistenten per Browser, erzeugt Demo-Daten,
+Startet eine Demo-Instanz (eigene DB unter /tmp/nestwerk-demo, Entwicklungs-Settings,
+127.0.0.1:8765; änderbar über NESTWERK_DEMO_DIR und NESTWERK_DEMO_PORT), durchläuft den Einrichtungs-Assistenten per Browser, erzeugt Demo-Daten,
 macht Screenshots in zwei Viewports und sammelt je Seite Konsolenfehler, CSP-Verstöße,
 fehlgeschlagene Requests und externe Requests. Am Ende wird der Server gestoppt und die
 Demo-DB gelöscht.
@@ -27,9 +27,9 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 # Parallele Läufe: eigener Port und eigenes Demo-Verzeichnis per Umgebungsvariable
-# (FAMKO_DEMO_PORT, FAMKO_DEMO_DIR); Standard unverändert.
-DEMO_DIR = Path(os.environ.get("FAMKO_DEMO_DIR", "/tmp/famko-demo"))
-PORT = int(os.environ.get("FAMKO_DEMO_PORT", "8765"))
+# (NESTWERK_DEMO_PORT, NESTWERK_DEMO_DIR); Standard unverändert.
+DEMO_DIR = Path(os.environ.get("NESTWERK_DEMO_DIR", "/tmp/nestwerk-demo"))
+PORT = int(os.environ.get("NESTWERK_DEMO_PORT", "8765"))
 BASIS = f"http://127.0.0.1:{PORT}"
 PASSWORT = "Sonnenblume-4711-Demo"
 KINDER = [("Kind A", "1111"), ("Kind B", "2222"), ("Kind C", "3333")]
@@ -102,12 +102,12 @@ class Sammler:
 def _env():
     env = dict(os.environ)
     env.update(
-        DJANGO_SETTINGS_MODULE="famko.settings.entwicklung",
-        FAMKO_DATA_DIR=str(DEMO_DIR),
-        FAMKO_ALLOWED_HOSTS="127.0.0.1,localhost",
-        FAMKO_BASIS_URL=BASIS,
+        DJANGO_SETTINGS_MODULE="nestwerk.settings.entwicklung",
+        NESTWERK_DATA_DIR=str(DEMO_DIR),
+        NESTWERK_ALLOWED_HOSTS="127.0.0.1,localhost",
+        NESTWERK_BASIS_URL=BASIS,
     )
-    env.pop("FAMKO_SETUP_TOKEN", None)
+    env.pop("NESTWERK_SETUP_TOKEN", None)
     return env
 
 
@@ -265,7 +265,7 @@ def einrichtung(page, aufn):
     s.neu("einrichtung-1")
     page.goto(BASIS + "/einrichtung/", wait_until="networkidle")
     aufn.foto(page, "einrichtung-1-name")
-    page.fill("[name=app_name]", "FamKo Demo")
+    page.fill("[name=app_name]", "Nestwerk Demo")
     weiter(page)
 
     s.neu("einrichtung-2")
@@ -373,8 +373,16 @@ def eltern_login(page, aufn):
 
 
 MOD_THEMEN = (
-    "ritter", "weltraum", "ninja", "roboter", "pirat",
-    "wikinger", "fussballer", "basketballer", "rennfahrer", "dschungel",
+    "ritter",
+    "weltraum",
+    "ninja",
+    "roboter",
+    "pirat",
+    "wikinger",
+    "fussballer",
+    "basketballer",
+    "rennfahrer",
+    "dschungel",
 )  # AP25: je Thema die 36 Mods in der Entwickler-Galerie
 
 
@@ -611,7 +619,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ziel", default="docs/screenshots/phase1")
     ap.add_argument(
-        "--nur", choices=["ranking", "ruhmeshalle"], help="Nur diesen Ablauf aufnehmen (Einrichtung ohne Fotos)"
+        "--nur",
+        choices=["ranking", "ruhmeshalle"],
+        help="Nur diesen Ablauf aufnehmen (Einrichtung ohne Fotos)",
     )
     ap.add_argument("--sichtbar", action="store_true", help="Browser mit Fenster (Debug)")
     args = ap.parse_args()

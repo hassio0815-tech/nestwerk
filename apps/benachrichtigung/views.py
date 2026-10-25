@@ -18,7 +18,7 @@ from . import registry, ruhezeit, selectors, services, texte
 from .models import Benachrichtigung
 from .views_push import push_kontext
 
-logger = logging.getLogger("famko.benachrichtigung")
+logger = logging.getLogger("nestwerk.benachrichtigung")
 
 
 # --- Liste -----------------------------------------------------------------------------------

@@ -59,4 +59,4 @@ def kontakt():
     if eigener:
         return eigener
     basis = adressen.basis_url()
-    return basis if basis.startswith("https://") else "mailto:famko@localhost.invalid"
+    return basis if basis.startswith("https://") else "mailto:nestwerk@localhost.invalid"

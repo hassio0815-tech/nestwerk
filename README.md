@@ -1,6 +1,8 @@
-# FamKo
+# Nestwerk
 
-**FamKo** ist ein Familien-Dashboard für den eigenen Server. Kinder übernehmen freiwillig Aufgaben im Haushalt, sammeln Punkte und steigen in Rängen auf. Eltern behalten den Überblick, bestätigen Aufgaben und pflegen Belohnungen. Alles läuft lokal im Heimnetz.
+**Nestwerk – the family hub for chores, rewards & learning**
+
+**Nestwerk** ist ein Familien-Dashboard für den eigenen Server. Kinder übernehmen freiwillig Aufgaben im Haushalt, sammeln Punkte und steigen in Rängen auf. Eltern behalten den Überblick, bestätigen Aufgaben und pflegen Belohnungen. Alles läuft lokal im Heimnetz.
 
 ![Kinder-Dashboard auf dem Handy](docs/screenshots/phase1/kinder-dashboard__handy.png)
 
@@ -27,7 +29,7 @@
 - **Alles lokal:** Daten, Fotos und Datenbank bleiben auf deinem Server. Es gibt keine Cloud.
 - **Kein Tracking:** Keine Analyse-Dienste, keine externen Skripte, selbst gehostete Schriften.
 - **Fotos sind kurzlebig:** Nachweis-Fotos werden nach der Bestätigung sofort gelöscht.
-- **Zugriff im Heimnetz:** Kinder nutzen FamKo nur zu Hause. Eltern erreichen es unterwegs über ihr eigenes VPN.
+- **Zugriff im Heimnetz:** Kinder nutzen Nestwerk nur zu Hause. Eltern erreichen es unterwegs über ihr eigenes VPN.
 
 ---
 
@@ -48,12 +50,12 @@
 3. Installer starten:
 
    ```bash
-   deploy/install.sh --npm-ip <NPM-IP> --domain famko.<DEINE-DOMAIN> --heimnetz <HEIMNETZ-CIDR>
+   deploy/install.sh --npm-ip <NPM-IP> --domain nestwerk.<DEINE-DOMAIN> --heimnetz <HEIMNETZ-CIDR>
    ```
 
 4. Reverse Proxy auf `<VM-IP>:8000` einrichten, mit HTTPS und `client_max_body_size 50m;`.
-5. Lokalen DNS-Eintrag `famko.<DEINE-DOMAIN>` auf die Proxy-IP setzen.
-6. Im Browser `https://famko.<DEINE-DOMAIN>/einrichtung/` öffnen und den Assistenten mit dem Setup-Token durchlaufen.
+5. Lokalen DNS-Eintrag `nestwerk.<DEINE-DOMAIN>` auf die Proxy-IP setzen.
+6. Im Browser `https://nestwerk.<DEINE-DOMAIN>/einrichtung/` öffnen und den Assistenten mit dem Setup-Token durchlaufen.
 
 **Die ausführliche Anleitung mit allen Schritten, Beispielen und Fehlersuche steht in [docs/INSTALLATION.md](docs/INSTALLATION.md).**
 
@@ -91,9 +93,18 @@ Alle Bilder liegen in `docs/screenshots/` (Phasen 1 bis 3, mit Prüfberichten).
 | [docs/MODULE-ERWEITERN.md](docs/MODULE-ERWEITERN.md) | Ein neues Modul anlegen, am Beispiel „lernen“ |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Mitwirken, Tests, Prüfungen, Schichtenregeln |
 | [CHANGELOG.md](CHANGELOG.md) | Änderungen nach Projektphasen |
-| [docs/LIZENZ-OFFEN.md](docs/LIZENZ-OFFEN.md) | Offene Lizenzentscheidung mit Empfehlung |
+| [LICENSE](LICENSE) | Volltext der GNU AGPL-3.0 |
 
-**Lizenz:** Noch nicht festgelegt. Siehe [docs/LIZENZ-OFFEN.md](docs/LIZENZ-OFFEN.md).
+## Lizenz: AGPL-3.0
+
+Nestwerk steht unter der **GNU Affero General Public License, Version 3 oder neuer** (AGPL-3.0-or-later). Der Volltext liegt in [LICENSE](LICENSE).
+
+- Nutzen, ändern und weitergeben ist erlaubt.
+- Wer eine geänderte Fassung als Dienst im Netz betreibt, muss den geänderten Quellcode den Nutzern dieses Dienstes anbieten. Das schützt selbst gehostete Installationen davor, als geschlossener Online-Dienst vereinnahmt zu werden.
+- Abhängigkeiten sind überwiegend permissiv (BSD, MIT, Apache-2.0); pywebpush (MPL-2.0) ist AGPL-kompatibel. Die Schriften Inter und Press Start 2P stehen unter der SIL OFL; ihre Lizenzhinweise in `static/fonts/` bleiben erhalten.
+- Vor einer Weitergabe die Abhängigkeitslizenzen mit einem Werkzeug wie `pip-licenses` prüfen.
+
+Nestwerk hieß früher *FamKo*. Bestehende Installationen laufen unverändert weiter (siehe [docs/RUNBOOK.md](docs/RUNBOOK.md)).
 
 ---
 
@@ -102,15 +113,15 @@ Alle Bilder liegen in `docs/screenshots/` (Phasen 1 bis 3, mit Prüfberichten).
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
-python manage.py migrate        # legt data/db/famko.sqlite3 an
+python manage.py migrate        # legt data/db/nestwerk.sqlite3 an
 python manage.py runserver      # http://127.0.0.1:8000/gesundheit/
 pytest                          # Tests
 ruff check . && ruff format --check .
 lint-imports                    # Schichtenregeln
 ```
 
-Konfiguration per Umgebungsvariablen mit Präfix `FAMKO_` (Vorlage: `.env.example`).
-Settings: `famko/settings/{basis,entwicklung,produktion,test}.py`.
+Konfiguration per Umgebungsvariablen mit Präfix `NESTWERK_` (Vorlage: `.env.example`).
+Settings: `nestwerk/settings/{basis,entwicklung,produktion,test}.py`.
 
 Docker lokal:
 

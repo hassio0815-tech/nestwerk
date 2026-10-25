@@ -8,7 +8,7 @@ from apps.kern.models import Einstellung
 def kern_werte(db):
     """Werte der kern-Einstellungen direkt in der DB (wie nach dem Seed)."""
     werte = {
-        "allgemein.anzeigename": "FamKo",
+        "allgemein.anzeigename": "Nestwerk",
         "allgemein.zeitzone": "Europe/Berlin",
         "allgemein.go_live_datum": "2026-11-01",
         "allgemein.sprache": "de",

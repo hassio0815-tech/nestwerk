@@ -3,7 +3,7 @@
 Nutzt die Bausteine aus ``screenshots.py`` mit eigenem Port/Verzeichnis (parallel zu anderen
 Läufen):
 
-    FAMKO_DEMO_PORT=8767 FAMKO_DEMO_DIR=/tmp/famko-demo-ap27 \\
+    NESTWERK_DEMO_PORT=8767 NESTWERK_DEMO_DIR=/tmp/nestwerk-demo-ap27 \\
         .venv/bin/python tools/oberflaeche/sondertag_screens.py
 """
 
@@ -13,8 +13,8 @@ import sys
 import tempfile
 from pathlib import Path
 
-os.environ.setdefault("FAMKO_DEMO_PORT", "8767")
-os.environ.setdefault("FAMKO_DEMO_DIR", "/tmp/famko-demo-ap27")
+os.environ.setdefault("NESTWERK_DEMO_PORT", "8767")
+os.environ.setdefault("NESTWERK_DEMO_DIR", "/tmp/nestwerk-demo-ap27")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import screenshots as s  # noqa: E402

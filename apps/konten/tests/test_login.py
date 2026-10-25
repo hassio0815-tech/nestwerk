@@ -132,7 +132,7 @@ def test_kind_auf_persoenlichem_geraet_bleibt_365_tage(anna, iphone, client):
     c = client_fuer(iphone)
     kind_anmelden(c, anna)
     assert abs(c.session.get_expiry_age() - 365 * TAG) < 5
-    assert c.session["famko_kiosk"] is False
+    assert c.session["nestwerk_kiosk"] is False
 
 
 def test_abmelden(anna, client):

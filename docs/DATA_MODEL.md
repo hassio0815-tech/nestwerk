@@ -1,4 +1,4 @@
-# FamKo: Datenmodell
+# Nestwerk: Datenmodell
 
 - **Stand:** 24.10.2026 (Review AP31: Abschnitte 5.8, 6, 9–12, 14, 15.2 an den Code angeglichen)
 - **Bezug:** `docs/ARCHITECTURE.md` (Abschnitte und [K]-Punkte), `docs/SPEC.md`

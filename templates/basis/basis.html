@@ -8,20 +8,20 @@
   <link rel="apple-touch-icon" href="{% static 'benachrichtigung/icons/icon-180.png' %}">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="FamKo">
+  <meta name="apple-mobile-web-app-title" content="Nestwerk">
   <meta name="htmx-config" content='{"includeIndicatorStyles": false, "allowEval": false, "allowScriptTags": false}'>
-  <title>{% block titel %}{% endblock %} · FamKo</title>
+  <title>{% block titel %}{% endblock %} · Nestwerk</title>
   <link rel="preload" href="{% static 'fonts/inter/Inter-Regular.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'fonts/press-start-2p/PressStart2P-Regular.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
-  <link rel="stylesheet" href="{% static 'css/famko.css' %}">
+  <link rel="stylesheet" href="{% static 'css/nestwerk.css' %}">
   <link rel="stylesheet" href="{% static 'css/avatar.css' %}">
   {% block css %}{% endblock %}
   <script src="{% static 'vendor/htmx.min.js' %}" defer></script>
-  <script src="{% static 'js/famko.js' %}" defer></script>
+  <script src="{% static 'js/nestwerk.js' %}" defer></script>
   <script src="{% static 'benachrichtigung/pwa.js' %}" defer></script>
 </head>
-<body data-layout="{% block layout %}kind{% endblock %}" data-modus="{{ request.COOKIES.famko_modus|default:'dunkel' }}" data-akzent="{{ akzent|default:'blau' }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body data-layout="{% block layout %}kind{% endblock %}" data-modus="{{ request.COOKIES.nestwerk_modus|default:'dunkel' }}" data-akzent="{{ akzent|default:'blau' }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   {% include "komponenten/_sprite.html" %}
   <a class="sprung-link" href="#inhalt">Zum Inhalt</a>
   <header class="kopf">

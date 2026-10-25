@@ -1,6 +1,6 @@
-# Mitwirken an FamKo
+# Mitwirken an Nestwerk
 
-Danke für dein Interesse. FamKo ist ein Familien-Dashboard für den eigenen Server. Beiträge sollen die Familien-Installation sicher und verständlich halten.
+Danke für dein Interesse. Nestwerk ist ein Familien-Dashboard für den eigenen Server. Beiträge sollen die Familien-Installation sicher und verständlich halten.
 
 ## Grundregeln
 
@@ -16,11 +16,11 @@ Voraussetzung: Python 3.13 oder neuer.
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
-python manage.py migrate          # legt data/db/famko.sqlite3 an
+python manage.py migrate          # legt data/db/nestwerk.sqlite3 an
 python manage.py runserver        # http://127.0.0.1:8000/gesundheit/
 ```
 
-Die Konfiguration erfolgt über Umgebungsvariablen mit dem Präfix `FAMKO_`. Eine Vorlage liegt in `.env.example`. Die Einstellungsmodule sind `famko/settings/{basis,entwicklung,produktion,test}.py`.
+Die Konfiguration erfolgt über Umgebungsvariablen mit dem Präfix `NESTWERK_`. Eine Vorlage liegt in `.env.example`. Die Einstellungsmodule sind `nestwerk/settings/{basis,entwicklung,produktion,test}.py`.
 
 ## Prüfungen vor jedem Commit
 
@@ -34,7 +34,7 @@ Alle drei Befehle müssen grün sein. Die Schichtenregeln sind in `pyproject.tom
 
 ## Modul-Schichten
 
-FamKo besteht aus Django-Apps mit festen Schichten. Imports dürfen nur **nach unten** gehen:
+Nestwerk besteht aus Django-Apps mit festen Schichten. Imports dürfen nur **nach unten** gehen:
 
 | Schicht | Apps |
 |---|---|
@@ -69,5 +69,5 @@ Die Demo-Daten sind fiktiv. Vor dem Commit die PNGs ansehen. Die Heuristiken ers
 
 ## Datenschutz
 
-- Keine echten Namen, E-Mail-Adressen, IP-Adressen oder Domains in Code, Tests, Screenshots oder Doku. Verwende Platzhalter wie `famko.example.org`, `<VM-IP>` oder `Mama`/`Papa` mit Demo-Daten.
+- Keine echten Namen, E-Mail-Adressen, IP-Adressen oder Domains in Code, Tests, Screenshots oder Doku. Verwende Platzhalter wie `nestwerk.example.org`, `<VM-IP>` oder `Mama`/`Papa` mit Demo-Daten.
 - Keine Zugangsdaten, Tokens oder Schlüssel ins Repository. Die `.env` gehört nie ins Git.

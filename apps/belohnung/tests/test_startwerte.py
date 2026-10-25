@@ -9,7 +9,7 @@ from apps.kern.models import Einstellung
 
 pytestmark = pytest.mark.django_db
 
-# Entscheidung 13 (docs / famko-decisions)
+# Entscheidung 13 (docs / nestwerk-decisions)
 KATEGORIEN = ["Süßes", "Fernsehzeit", "Gaming/Computer", "Taschengeld", "Sonstiges"]
 KATALOG = {
     ("Süßes klein", "Süßes", 15, None),

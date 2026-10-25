@@ -3,7 +3,7 @@
 - ``aktuelles_geraet(request)`` -> ``Geraet`` oder ``None``
 - ``ist_kiosk(request)`` -> ``True``, wenn die Anfrage vom registrierten Kiosk-Gerät kommt
 
-Das Gerät steckt als signiertes, httpOnly-Cookie ``famko_geraet`` (nur die UUID) beim Client.
+Das Gerät steckt als signiertes, httpOnly-Cookie ``nestwerk_geraet`` (nur die UUID) beim Client.
 Ein gefälschtes oder fremd signiertes Cookie wird ignoriert; ein widerrufenes Gerät (aktiv =
 False) gilt als unbekannt.
 """
@@ -15,7 +15,7 @@ from django.utils import timezone
 
 from .models import Geraet
 
-COOKIE_NAME = "famko_geraet"
+COOKIE_NAME = "nestwerk_geraet"
 COOKIE_SALT = "konten.geraet"
 COOKIE_MAX_AGE = 10 * 365 * 24 * 3600
 GESEHEN_ABSTAND = timedelta(hours=1)

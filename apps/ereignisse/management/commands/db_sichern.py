@@ -16,7 +16,7 @@ class Command(JobBefehl):
     def add_arguments(self, parser):
         parser.add_argument("--grund", choices=backup.GRUENDE, default="taeglich")
         parser.add_argument("--db-pfad", default=None, help="Standard: aktuelle Django-DB")
-        parser.add_argument("--ziel", default=None, help="Standard: FAMKO_BACKUP_ZIEL")
+        parser.add_argument("--ziel", default=None, help="Standard: NESTWERK_BACKUP_ZIEL")
 
     def job(self, sperre, **optionen):
         grund = optionen["grund"]

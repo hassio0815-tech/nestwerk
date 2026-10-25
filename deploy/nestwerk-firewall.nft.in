@@ -1,5 +1,5 @@
 #!/usr/sbin/nft -f
-# FamKo: Port 8000 (web) nur vom Nginx Proxy Manager. Platzhalter @NPM_IP@ setzt install.sh.
+# Nestwerk: Port 8000 (web) nur vom Nginx Proxy Manager. Platzhalter @NPM_IP@ setzt install.sh.
 # Eigene Tabelle (Priorität -10) greift VOR den Docker-Regeln; Docker-Port-Veröffentlichung
 # umgeht sonst ufw/INPUT-Regeln. Idempotent: Tabelle wird neu aufgebaut.
 #
@@ -9,9 +9,12 @@
 # (Set egress_erlaubt,
 # z. B. ein SMTP-Relay im LAN; install.sh --egress-erlaubt). Internet (auch SMTP) bleibt erlaubt.
 define privat = { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 100.64.0.0/10, 127.0.0.0/8 }
+# Altbestand (frühere Bezeichnung FamKo): alte Tabelle entfernen, damit nichts doppelt greift
 table inet famko_fw
 delete table inet famko_fw
-table inet famko_fw {
+table inet nestwerk_fw
+delete table inet nestwerk_fw
+table inet nestwerk_fw {
     set dns_erlaubt {
         type ipv4_addr
         elements = { @DNS_ERLAUBT@ }

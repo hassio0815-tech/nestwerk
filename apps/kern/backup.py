@@ -5,7 +5,7 @@ Reine Standardbibliothek, keine Django-Modelle (Schicht 0). Die Commands ``db_si
 
 - Kopie über die SQLite-Online-Backup-API (nie Dateikopie im Betrieb), danach
   ``journal_mode=DELETE`` (eine einzige Datei ohne -wal/-shm), ``integrity_check``, gzip.
-- Dateiname: ``famko-JJJJMMTT-HHMMSS-<grund>.sqlite3.gz`` (lokale Zeit).
+- Dateiname: ``nestwerk-JJJJMMTT-HHMMSS-<grund>.sqlite3.gz`` (lokale Zeit).
 - Rotation nur für ``taeglich``: je Tag/ISO-Woche/Monat bleibt das neueste Backup erhalten
   (N Tage, M Wochen, K Monate). Backups mit anderem Grund (``update``, ``manuell``) werden
   separat auf die neuesten ``update_behalten`` begrenzt – sie sind die Rollback-Punkte.
@@ -22,7 +22,7 @@ from datetime import datetime
 from pathlib import Path
 
 GRUENDE = ("taeglich", "update", "manuell")
-_NAME = re.compile(r"^famko-(\d{8})-(\d{6})-([a-z]+)\.sqlite3\.gz$")
+_NAME = re.compile(r"^(?:nestwerk|famko)-(\d{8})-(\d{6})-([a-z]+)\.sqlite3\.gz$")
 
 
 class BackupFehler(Exception):
@@ -45,13 +45,15 @@ class BackupDatei:
 
 
 def dateiname(zeit, grund):
-    return f"famko-{zeit:%Y%m%d-%H%M%S}-{grund}.sqlite3.gz"
+    return f"nestwerk-{zeit:%Y%m%d-%H%M%S}-{grund}.sqlite3.gz"
 
 
 def auflisten(ordner):
     """Alle Backups im Ordner, neueste zuerst."""
     ergebnis = []
-    for pfad in Path(ordner).glob("famko-*.sqlite3.gz"):
+    # "famko-*": Backups bestehender Installationen (frühere Projektbezeichnung FamKo)
+    pfade = [*Path(ordner).glob("nestwerk-*.sqlite3.gz"), *Path(ordner).glob("famko-*.sqlite3.gz")]
+    for pfad in pfade:
         m = _NAME.match(pfad.name)
         if not m:
             continue
@@ -205,7 +207,7 @@ def pruefen(ordner, *, jetzt, live_db=None, ledger_tabellen=(), max_alter_stunde
         raise BackupFehler(f"Kein Backup in {ordner}")
     neuestes = liste[0]
     alter = (jetzt.replace(tzinfo=None) - neuestes.zeit).total_seconds() / 3600
-    with tempfile.TemporaryDirectory(prefix="famko-restore-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="nestwerk-restore-") as tmp:
         wiederhergestellt = wiederherstellen(neuestes.pfad, Path(tmp) / "restore.sqlite3")
         gesamt = zeilenzahlen(wiederhergestellt)
         ledger = {t: gesamt.get(t) for t in ledger_tabellen}

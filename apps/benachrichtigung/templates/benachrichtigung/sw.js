@@ -1,9 +1,9 @@
-/* FamKo Service Worker (AP08). Scope "/", ausgeliefert ohne Cache.
+/* Nestwerk Service Worker (AP08). Scope "/", ausgeliefert ohne Cache.
    Aufgaben: Push anzeigen (klassisch, auch für das Declarative-Format), Klick -> Deep-Link,
    App-Badge, schlichte Offline-Seite. Kein weiteres Caching. */
 "use strict";
 
-var VERSION = "famko-sw-1";
+var VERSION = "nestwerk-sw-1";
 var OFFLINE_URL = "{{ offline_url|escapejs }}";
 var ICON_URL = "{{ icon_url|escapejs }}";
 var BADGE_URL = "{{ badge_url|escapejs }}";
@@ -51,10 +51,10 @@ function nachrichtLesen(daten) {
   var n = null;
   if (daten && daten.web_push === 8030 && daten.notification) { n = daten.notification; }
   else if (daten && daten.title) { n = daten; }
-  if (!n) { return { title: "FamKo", body: "", navigate: START_URL, badge: null }; }
+  if (!n) { return { title: "Nestwerk", body: "", navigate: START_URL, badge: null }; }
   var badge = n.app_badge !== undefined ? n.app_badge : daten.app_badge;
   return {
-    title: n.title || "FamKo",
+    title: n.title || "Nestwerk",
     body: n.body || "",
     navigate: n.navigate || START_URL,
     badge: badge === undefined || badge === null ? null : Number(badge)

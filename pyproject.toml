@@ -1,7 +1,9 @@
 [project]
-name = "famko"
+name = "nestwerk"
 version = "0.1.0"
-description = "FamKo: modulares Familien-Dashboard (Aufgaben, Belohnungen, Spielebene)"
+description = "Nestwerk – the family hub for chores, rewards & learning (modulares Familien-Dashboard)"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
 requires-python = ">=3.13"
 dependencies = [
     "argon2-cffi==25.1.0",
@@ -42,17 +44,17 @@ extend-exclude = ["migrations"]
 select = ["E", "F", "W", "I", "B", "UP", "DJ"]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "famko.settings.test"
+DJANGO_SETTINGS_MODULE = "nestwerk.settings.test"
 python_files = ["test_*.py"]
 testpaths = ["apps", "tests"]
 
 [tool.importlinter]
-root_packages = ["apps", "famko"]
+root_packages = ["apps", "nestwerk"]
 
 # Schichten (ARCHITECTURE 2.1/2.2): Import nur nach unten. "|" = voneinander unabhängig.
 # Fach-Module (Schicht 3) importieren sich nie gegenseitig. Phase-2/3-Apps sind optional (Klammern).
 [[tool.importlinter.contracts]]
-name = "Schichten der FamKo-Apps"
+name = "Schichten der Nestwerk-Apps"
 type = "layers"
 containers = ["apps"]
 layers = [

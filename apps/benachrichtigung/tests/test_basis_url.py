@@ -16,10 +16,10 @@ def db_wert(wert):
 
 def test_db_wert_hat_vorrang_vor_settings(db, settings):
     settings.BASIS_URL = "https://alt.example"
-    db_wert("https://famko.example.org/")
-    assert adressen.basis_url() == "https://famko.example.org"
-    assert absolute_url("/kind/") == "https://famko.example.org/kind/"
-    assert pushschluessel.kontakt() == "https://famko.example.org"
+    db_wert("https://nestwerk.example.org/")
+    assert adressen.basis_url() == "https://nestwerk.example.org"
+    assert absolute_url("/kind/") == "https://nestwerk.example.org/kind/"
+    assert pushschluessel.kontakt() == "https://nestwerk.example.org"
 
 
 def test_ohne_db_wert_gilt_settings(db, settings):

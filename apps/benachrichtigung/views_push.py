@@ -22,7 +22,7 @@ from apps.konten.zugriff import nur_eltern
 from . import push, registry
 from . import pushschluessel as vapid
 
-logger = logging.getLogger("famko.benachrichtigung")
+logger = logging.getLogger("nestwerk.benachrichtigung")
 
 THEME_FARBE = "#120f20"  # --hintergrund (static/css/tokens.css)
 AKZENT_FARBE = "#2563eb"  # --akzent
@@ -62,8 +62,8 @@ def manifest_daten():
         }
 
     return {
-        "name": "FamKo",
-        "short_name": "FamKo",
+        "name": "Nestwerk",
+        "short_name": "Nestwerk",
         "description": "Das Familien-Dashboard",
         "lang": "de",
         "start_url": "/",

@@ -11,7 +11,7 @@ from .conftest import ELTERN, KINDER, NETZ, SMTP, ZEIT, url
 
 
 def _bis_schritt7(c, smtp=True):
-    assert c.post(url(1), {"app_name": "FamKo Zuhause"}).status_code == 302
+    assert c.post(url(1), {"app_name": "Nestwerk Zuhause"}).status_code == 302
     assert c.post(url(2), ELTERN).status_code == 302
     assert c.post(url(3), KINDER).status_code == 302
     if smtp:
@@ -56,7 +56,7 @@ def test_nur_heimnetz(c):
 
 
 def test_setup_token(c, monkeypatch):
-    monkeypatch.setenv("FAMKO_SETUP_TOKEN", "abc123")
+    monkeypatch.setenv("NESTWERK_SETUP_TOKEN", "abc123")
     r = c.get(url(1))
     assert r.status_code == 302 and r["Location"].endswith("/einrichtung/token/")
     assert c.post("/einrichtung/token/", {"token": "falsch"}).status_code == 200
@@ -71,7 +71,7 @@ def test_schritte_nicht_ueberspringbar(c):
 
 
 def test_validierung_schritt2(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     r = c.post(url(2), {**ELTERN, "passwort2": "anders"})
     assert r.status_code == 200 and "nicht gleich" in r.content.decode()
     r = c.post(url(2), {**ELTERN, "passwort": "12345678", "passwort2": "12345678"})
@@ -82,7 +82,7 @@ def test_validierung_schritt2(c):
 
 
 def test_validierung_kinder_und_zurueck(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     c.post(url(2), ELTERN)
     r = c.post(url(3), {**KINDER, "kind-1-pin2": "0000"})
     html = r.content.decode()
@@ -97,21 +97,21 @@ def test_validierung_kinder_und_zurueck(c):
 
 
 def test_mehr_zeilen(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     c.post(url(2), ELTERN)
     r = c.post(url(3), {**KINDER, "aktion": "mehr"})
     assert 'name="kind-3-name"' in r.content.decode()
 
 
 def test_validierung_netz_zeit(c):
-    _bis = {"app_name": "FamKo"}
+    _bis = {"app_name": "Nestwerk"}
     c.post(url(1), _bis)
     c.post(url(2), ELTERN)
     c.post(url(3), KINDER)
     c.post(url(4), {"aktion": "ueberspringen"})
     r = c.post(url(5), {**NETZ, "proxys": "0.0.0.0/0"})
     assert "/0" in r.content.decode()
-    r = c.post(url(5), {**NETZ, "basis_url": "famko"})
+    r = c.post(url(5), {**NETZ, "basis_url": "nestwerk"})
     assert "Adresse wie" in r.content.decode()
     c.post(url(5), NETZ)
     r = c.post(url(6), {"zeitzone": "Mars/Olymp", "go_live_datum": "2030-01-01"})
@@ -120,7 +120,7 @@ def test_validierung_netz_zeit(c):
 
 
 def test_proxy_vorbelegt_mit_remote(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     c.post(url(2), ELTERN)
     c.post(url(3), KINDER)
     c.post(url(4), {"aktion": "ueberspringen"})
@@ -129,7 +129,7 @@ def test_proxy_vorbelegt_mit_remote(c):
 
 
 def test_testmail_locmem(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     c.post(url(2), ELTERN)
     c.post(url(3), KINDER)
     r = c.post(url(4), {**SMTP, "aktion": "testen"})
@@ -140,7 +140,7 @@ def test_testmail_locmem(c):
 
 
 def test_smtp_pflicht_oder_ueberspringen(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     c.post(url(2), ELTERN)
     c.post(url(3), KINDER)
     r = c.post(url(4), {**SMTP, "passwort": "", "aktion": "weiter"})
@@ -158,7 +158,7 @@ def test_ganzer_assistent_dann_gesperrt_und_anmeldbar(c):
     assert einstellungen.wert("allgemein.einrichtung_abgeschlossen") is True
     assert einstellungen.wert("allgemein.go_live_datum") == datetime.date.today()
     assert einstellungen.wert("konten.vertraute_proxys") == ["192.168.1.5"]
-    assert einstellungen.wert("allgemein.anzeigename") == "FamKo Zuhause"
+    assert einstellungen.wert("allgemein.anzeigename") == "Nestwerk Zuhause"
     # gesperrt
     assert c.get("/einrichtung/").status_code == 404
     assert c.post(url(8)).status_code == 404
@@ -180,7 +180,7 @@ def test_ganzer_assistent_dann_gesperrt_und_anmeldbar(c):
 
 
 def test_session_ohne_secrets(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     c.post(url(2), ELTERN)
     c.post(url(3), KINDER)
     from django.contrib.sessions.models import Session
@@ -191,7 +191,7 @@ def test_session_ohne_secrets(c):
 
 
 def test_abschluss_mit_offenen_punkten(c):
-    c.post(url(1), {"app_name": "FamKo"})
+    c.post(url(1), {"app_name": "Nestwerk"})
     from apps.einrichtung import services
 
     assert services.offene_punkte()

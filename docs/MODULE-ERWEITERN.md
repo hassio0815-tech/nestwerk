@@ -1,6 +1,6 @@
 # Ein neues Modul anlegen
 
-Diese Anleitung zeigt am Beispiel **`lernen`** (Schicht 3), wie ein neues Fach-Modul in FamKo entsteht. Die Architektur steht in `docs/ARCHITECTURE.md`, die Regeln für Datenmodell und Startwerte in `docs/DATA_MODEL.md`.
+Diese Anleitung zeigt am Beispiel **`lernen`** (Schicht 3), wie ein neues Fach-Modul in Nestwerk entsteht. Die Architektur steht in `docs/ARCHITECTURE.md`, die Regeln für Datenmodell und Startwerte in `docs/DATA_MODEL.md`.
 
 **Grundregel:** Ein neues Modul ist eine neue Django-App im selben Image. Es braucht **keine Änderung** an `oberflaeche` und keine Änderung an anderen Fach-Modulen.
 
@@ -55,7 +55,7 @@ class LernenConfig(AppConfig):
         # Handler für fremde Ereignisse: siehe Abschnitt 4
 ```
 
-**App aktivieren:** `"apps.lernen"` in `INSTALLED_APPS` in `famko/settings/basis.py` eintragen (neben `"apps.sondertag"`).
+**App aktivieren:** `"apps.lernen"` in `INSTALLED_APPS` in `nestwerk/settings/basis.py` eintragen (neben `"apps.sondertag"`).
 
 **Schichtenvertrag:** In `pyproject.toml` steht `(lernen)` bereits in der Schicht-3-Zeile des Import-Linter-Vertrags. Der Eintrag in Klammern erlaubt, dass die App optional fehlt. Prüfen mit `lint-imports`.
 
@@ -108,8 +108,8 @@ def typen_deklarieren():
         LERNZIEL_ERREICHT,
         modul="lernen",
         bezeichnung="Lernziel erreicht",
-        zielgruppe="eltern",          # "kind", "eltern" oder "intern"
-        standard_kanaele=["push"],    # E-Mail, Push, Pop-up
+        zielgruppe="eltern",  # "kind", "eltern" oder "intern"
+        standard_kanaele=["push"],  # E-Mail, Push, Pop-up
     )
 
 
@@ -143,7 +143,7 @@ ereignis_registry.handler_registrieren(
     "punkte.gebucht",
     services.nach_punktebuchung,
     name="lernen.nach_punktebuchung",
-    synchron=False,   # asynchron über den Worker; synchron nur für zwingende Folgen in Schicht 2
+    synchron=False,  # asynchron über den Worker; synchron nur für zwingende Folgen in Schicht 2
 )
 ```
 
@@ -155,7 +155,16 @@ ereignis_registry.handler_registrieren(
 
 ```python
 # apps/lernen/registry.py
-from apps.kern.registry import ELTERN, KIND, Kachel, Metrik, Provider, kachel_registrieren, metrik_registrieren, provider_registrieren
+from apps.kern.registry import (
+    ELTERN,
+    KIND,
+    Kachel,
+    Metrik,
+    Provider,
+    kachel_registrieren,
+    metrik_registrieren,
+    provider_registrieren,
+)
 
 MODUL = "lernen"
 
@@ -179,9 +188,7 @@ def kacheln_registrieren():
 
 
 def metriken_registrieren():
-    metrik_registrieren(
-        Metrik("vokabeln_gesamt", MODUL, "Vokabeln gesamt", einheit="Stk")
-    )
+    metrik_registrieren(Metrik("vokabeln_gesamt", MODUL, "Vokabeln gesamt", einheit="Stk"))
     provider_registrieren(
         Provider("metrik.vokabeln_gesamt", MODUL, "Vokabeln gesamt", lambda kind: 0)
     )

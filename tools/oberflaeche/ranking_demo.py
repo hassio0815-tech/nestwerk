@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "famko.settings.entwicklung")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nestwerk.settings.entwicklung")
 
 import django  # noqa: E402
 

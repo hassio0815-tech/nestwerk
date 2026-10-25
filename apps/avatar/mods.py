@@ -43,7 +43,7 @@ from apps.spielregeln import selectors as spielregeln
 from . import events
 from .models import AKTIV, Avatar, BesitzStatus, ModBesitz, ModDefinition, Slot, Thema
 
-logger = logging.getLogger("famko.avatar")
+logger = logging.getLogger("nestwerk.avatar")
 
 EINSTELLUNG_PRO_WOCHE = "avatar.max_zaehlende_mods_woche"
 MAX_WARTESCHLANGE_WOCHEN = 520

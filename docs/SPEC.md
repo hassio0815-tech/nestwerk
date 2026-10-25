@@ -1,4 +1,4 @@
-# FamKo: Produktspezifikation
+# Nestwerk: Produktspezifikation
 
 - **Stand:** 23.10.2026
 - **Quellen:** Konzept "Familien-App: Konzept und Entscheidungsstand" (23.10.2026) und die bestätigten Interview-Entscheidungen 1–27. Die Entscheidungen haben Vorrang vor dem Konzept.
@@ -34,7 +34,7 @@
 - **[E]** Betrieb: Debian-VM auf einem Proxmox-Server zu Hause, 24/7 (siehe 16). Die Kinder nutzen die App nur im Heimnetz. Die Eltern erreichen sie unterwegs über das bestehende VPN (siehe 14).
 - **[V]** Oberflächensprache Deutsch.
 - **[O]** Zeitzone: Standard Europe/Berlin, noch nicht bestätigt (siehe 19).
-- **[E]** Name: **FamKo** (exakte Schreibweise, großes K). Der Anzeigename ist in den Einstellungen änderbar. (E8)
+- **[E]** Name: **Nestwerk** (exakte Schreibweise, großes K). Der Anzeigename ist in den Einstellungen änderbar. (E8)
 
 ---
 
@@ -414,7 +414,7 @@
 - **[V]** Wiederherstellungstest durchführen.
 - **[E] Zugriff:** Kinder nur im Heimnetz. Eltern erreichen die App unterwegs über das bestehende VPN. (E2, E20)
 - **[E] Fernzugriff** (z. B. Tailscale) richtet der Nutzer selbst ein. Das ist nicht Teil des Projekts. (E20)
-- **[E] Keine offenen Ports.** Kein Zugriff aus dem Internet ohne VPN. Kein cloudflared für FamKo. (E19, E20)
+- **[E] Keine offenen Ports.** Kein Zugriff aus dem Internet ohne VPN. Kein cloudflared für Nestwerk. (E19, E20)
 
 ---
 
@@ -521,9 +521,9 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
 - **[E] Datenbank:** SQLite-Datei im Volume, WAL-Modus. (E6)
 - **[E] Code:** Git-Repository. Entwicklung in einem lokalen Repository. (E21)
 - **[E] Reverse Proxy:** Nginx Proxy Manager. Traefik entfällt. (E19)
-- **[E] DNS:** AdGuard-DNS-Eintrag `famko.<Domain>` zeigt im Heimnetz auf den Nginx Proxy Manager. (E19)
+- **[E] DNS:** AdGuard-DNS-Eintrag `nestwerk.<Domain>` zeigt im Heimnetz auf den Nginx Proxy Manager. (E19)
 - **[E] HTTPS:** Let's-Encrypt-Zertifikat über DNS-Challenge im Nginx Proxy Manager. DNS-Anbieter offen (siehe 19). (E19)
-- **[E] Keine offenen Ports.** Kein cloudflared für FamKo. (E19, E20)
+- **[E] Keine offenen Ports.** Kein cloudflared für Nestwerk. (E19, E20)
 - **[E] Updates und Rollback** über Container-Versionen. (E21)
 - **[E] Backup:** Proxmox-VM-Backup plus tägliche Datenbank-Dumps (siehe 14). (E21)
 - **[E] Erweiterbarkeit:** Module als eigene Container. GPU-Durchreichung ist für spätere lokale KI vorgesehen. (E21)
@@ -695,6 +695,6 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
 - **Reservierung:** Ablauf nach Frist oder 48 Stunden, Erinnerung 6 Stunden vorher (E22). Verfall nicht übernommener Aufgaben ist neu (E23).
 - **Familienziel:** Gemeinschaftsziel ohne individuelle Wochenvorgabe (E26).
 - **Konfiguration:** Namen, PINs, Passwort, SMTP und Startwerte über den Einrichtungs-Assistenten statt Konzept-[O] (E7).
-- **Geschlossene Konzept-[O]-Punkte:** App-Name FamKo (E8), Stil der Kinderoberfläche (E11), Startwerte für Ränge, Katalog und Bibliothek (E13–E15), Mod-Seltenheit an Rang gekoppelt und 36 Mods pro Thema (E7, E9), Eltern-Avatar (E10), Meilenstein-Schwellen (E12), Mailpostfach (E18).
+- **Geschlossene Konzept-[O]-Punkte:** App-Name Nestwerk (E8), Stil der Kinderoberfläche (E11), Startwerte für Ränge, Katalog und Bibliothek (E13–E15), Mod-Seltenheit an Rang gekoppelt und 36 Mods pro Thema (E7, E9), Eltern-Avatar (E10), Meilenstein-Schwellen (E12), Mailpostfach (E18).
 - **Stufen:** Aufgabenbibliothek und Taschengeld-Limit nach Kern verschoben, weil die Startwerte im Assistenten gebraucht werden (E13, E15). Zuordnung offen (siehe 19, Punkt 8).
 - **Module:** Lernsystem und Forschungssystem als eigene Django-Module (Vorgabe des Auftrags).

@@ -1,13 +1,17 @@
-"""Gemeinsame Einstellungen. Konfiguration per Umgebungsvariablen (Präfix FAMKO_)."""
+"""Gemeinsame Einstellungen. Konfiguration per Umgebungsvariablen.
 
-import os
+Präfix NESTWERK_; der alte Präfix FAMKO_ gilt als Fallback (apps.kern.umgebung).
+"""
+
 from pathlib import Path
+
+from apps.kern.umgebung import umgebung
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def env(name, default=None):
-    return os.environ.get(f"FAMKO_{name}", default)
+    return umgebung(name, default)
 
 
 def env_liste(name, default=""):
@@ -17,16 +21,16 @@ def env_liste(name, default=""):
 # Datenverzeichnis (Volume): db/, media/, secrets/
 DATA_DIR = Path(env("DATA_DIR", BASE_DIR / "data"))
 
-# Geheimnisse im Volume; der Fernet-Schlüssel (SMTP-Passwort) kommt aus FAMKO_FERNET_KEY oder
+# Geheimnisse im Volume; der Fernet-Schlüssel (SMTP-Passwort) kommt aus NESTWERK_FERNET_KEY oder
 # wird einmalig als secrets/fernet.key angelegt
 SECRETS_DIR = DATA_DIR / "secrets"
 FERNET_KEY = env("FERNET_KEY")
-# Öffentliche Adresse für Links in E-Mails (z. B. https://famko.example.org)
+# Öffentliche Adresse für Links in E-Mails (z. B. https://nestwerk.example.org)
 BASIS_URL = env("BASIS_URL", "")
 VAPID_KONTAKT = env("VAPID_KONTAKT", "")  # optional: mailto:/https-Kontakt für Push (sub-Claim)
 
 # Backups (AP18): Zielordner im Container (compose mountet ihn als /backup) und Aufbewahrung.
-# Nicht FAMKO_BACKUP_DIR: das ist der Host-Pfad in .env.
+# Nicht NESTWERK_BACKUP_DIR: das ist der Host-Pfad in .env.
 BACKUP_DIR = Path(env("BACKUP_ZIEL", DATA_DIR / "backup"))
 BACKUP_TAEGLICH = int(env("BACKUP_TAEGLICH", "14"))
 BACKUP_WOECHENTLICH = int(env("BACKUP_WOECHENTLICH", "8"))
@@ -74,7 +78,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "famko.sicherheit.SicherheitsHeader",
+    "nestwerk.sicherheit.SicherheitsHeader",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -88,8 +92,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "famko.urls"
-WSGI_APPLICATION = "famko.wsgi.application"
+ROOT_URLCONF = "nestwerk.urls"
+WSGI_APPLICATION = "nestwerk.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -104,12 +108,17 @@ TEMPLATES = [
     }
 ]
 
+# Bestehende Installationen (frühere Projektbezeichnung FamKo) behalten ihre Datenbankdatei.
+_DB_ALT = DATA_DIR / "db" / "famko.sqlite3"
+_DB_NEU = DATA_DIR / "db" / "nestwerk.sqlite3"
+DB_DATEI = _DB_ALT if _DB_ALT.exists() and not _DB_NEU.exists() else _DB_NEU
+
 # SQLite mit WAL für drei Prozesse (ARCHITECTURE 3.2).
 # Die PRAGMAs laufen bei jedem Verbindungsaufbau; journal_mode=WAL ist dauerhaft in der Datei.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DATA_DIR / "db" / "famko.sqlite3",
+        "NAME": DB_DATEI,
         "OPTIONS": {
             "transaction_mode": "IMMEDIATE",
             "timeout": 5,

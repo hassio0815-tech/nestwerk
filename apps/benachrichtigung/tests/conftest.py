@@ -125,9 +125,9 @@ def smtp(db):
         host="smtp.example.org",
         port=587,
         sicherheit="starttls",
-        benutzername="famko@example.org",
+        benutzername="nestwerk@example.org",
         passwort=SMTP_PASSWORT,
-        absender="famko@example.org",
+        absender="nestwerk@example.org",
     )
 
 

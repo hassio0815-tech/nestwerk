@@ -13,7 +13,7 @@ from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "famko.settings.entwicklung")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nestwerk.settings.entwicklung")
 
 import django  # noqa: E402
 
@@ -33,17 +33,26 @@ def held_direkt(kind, thema_schluessel, rang, widmung="", figur=None):
     mods = {
         m.slot.schluessel: {"schluessel": m.schluessel, "name": m.name, "seltenheit": m.seltenheit}
         | m.render_mod()
-        for m in ModDefinition.objects.filter(thema=thema, seltenheit=rang, modset__isnull=True)
-        .select_related("slot")
+        for m in ModDefinition.objects.filter(
+            thema=thema, seltenheit=rang, modset__isnull=True
+        ).select_related("slot")
     }
     name, selten = RAENGE[rang]
     start = zeit.jetzt() - timedelta(weeks=14 + rang)
     eintrag = RuhmeshallenEintrag.objects.create(
-        kind=kind, thema=thema, thema_daten=thema.als_dict(), mods=mods,
+        kind=kind,
+        thema=thema,
+        thema_daten=thema.als_dict(),
+        mods=mods,
         figur=figur or {"haut": "haut5", "haar": "haar7", "frisur": "lang"},
-        rang_stufe=rang, rang_name=name, rang_selten=selten, themenstart=start,
-        erstellt_am=zeit.jetzt() - timedelta(days=rang * 3), bauzeit_wochen=14 + rang,
-        anzahl_mods=6, aufgaben_anzahl=40 + rang * 7,
+        rang_stufe=rang,
+        rang_name=name,
+        rang_selten=selten,
+        themenstart=start,
+        erstellt_am=zeit.jetzt() - timedelta(days=rang * 3),
+        bauzeit_wochen=14 + rang,
+        anzahl_mods=6,
+        aufgaben_anzahl=40 + rang * 7,
     )
     if widmung:
         eltern = Benutzer.objects.filter(rolle="eltern").first()
@@ -56,8 +65,13 @@ def main():
     a = Benutzer.objects.get(anzeigename="Kind A")
     b = Benutzer.objects.get(anzeigename="Kind B")
     held_direkt(b, "weltraum", 4, "Für unseren Sternenfahrer: Du hast den Mond erobert!")
-    held_direkt(b, "ritter", 6, "Legendär. Wir sind so stolz auf dich.",
-                {"haut": "haut5", "haar": "haar7", "frisur": "lang"})
+    held_direkt(
+        b,
+        "ritter",
+        6,
+        "Legendär. Wir sind so stolz auf dich.",
+        {"haut": "haut5", "haar": "haar7", "frisur": "lang"},
+    )
     # Kind A: alle sechs Slots fertig, angelegt und zählend
     from apps.punkte import services as punkte
     from apps.punkte.models import Art

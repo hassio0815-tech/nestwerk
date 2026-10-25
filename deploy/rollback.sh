@@ -4,7 +4,7 @@
 # Ohne <tag>: VORHER_TAG aus .deploy-zustand. --mit-db spielt zusätzlich das Pre-Update-Backup
 # zurück (ohne Dateiname: das neueste *-update-Backup). Ohne --mit-db bleibt die DB unverändert.
 # Achtung: --mit-db verwirft alle Änderungen seit dem Backup (die alte DB bleibt als
-# famko.sqlite3.vor-restore-<zeit> im Volume erhalten).
+# nestwerk.sqlite3.vor-restore-<zeit> im Volume erhalten).
 set -euo pipefail
 
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -12,6 +12,7 @@ HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "$HERE/lib.sh"
 cd "$HERE/.."
 
+image=$(image_name)
 tag=""
 mit_db=0
 backup_datei=""
@@ -42,13 +43,13 @@ done
     fehler "Kein Tag angegeben und kein VORHER_TAG in $ZUSTAND_DATEI"
     exit 1
 }
-docker image inspect "famko:$tag" >/dev/null 2>&1 || {
-    fehler "Image famko:$tag existiert nicht (docker images famko)"
+docker image inspect "$image:$tag" >/dev/null 2>&1 || {
+    fehler "Image $image:$tag existiert nicht (docker images $image)"
     exit 1
 }
 
-log "Rollback auf famko:$tag"
-export FAMKO_TAG="$tag"
+log "Rollback auf $image:$tag"
+export NESTWERK_TAG="$tag"
 docker compose stop web worker scheduler
 
 if [ "$mit_db" -eq 1 ]; then
@@ -62,10 +63,10 @@ if [ "$mit_db" -eq 1 ]; then
     docker compose run --rm --no-deps web python manage.py db_wiederherstellen "/backup/$(basename "$backup_datei")"
 fi
 
-env_setzen FAMKO_TAG "$tag"
+env_setzen NESTWERK_TAG "$tag"
 docker compose up -d --remove-orphans
 if warte_gesund 120; then
-    log "Rollback fertig, Stack läuft mit famko:$tag"
+    log "Rollback fertig, Stack läuft mit $image:$tag"
 else
     fehler "Stack wird nach dem Rollback nicht gesund: docker compose logs --tail=100"
     exit 1

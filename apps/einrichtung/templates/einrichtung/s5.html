@@ -2,7 +2,7 @@
   {% csrf_token %}
   <h1>Netzwerk</h1>
   {% include "einrichtung/_fehler.html" %}
-  {% include "komponenten/feld.html" with name="basis_url" label="Adresse der App" typ="url" wert=form.basis_url.value fehler=form.basis_url.errors.0 pflicht=True hilfe="z. B. https://famko.example.org. Für Links in Mails und Push zusätzlich die Umgebungsvariable BASIS_URL setzen." %}
+  {% include "komponenten/feld.html" with name="basis_url" label="Adresse der App" typ="url" wert=form.basis_url.value fehler=form.basis_url.errors.0 pflicht=True hilfe="z. B. https://nestwerk.example.org. Für Links in Mails und Push zusätzlich die Umgebungsvariable BASIS_URL setzen." %}
   <div class="feld{% if form.kind_netze.errors %} feld--fehler{% endif %}"><label class="feld__label" for="kind_netze">Heimnetz für den Kinder-Login *</label>
     <textarea class="feld__eingabe" id="kind_netze" name="kind_netze" rows="4" required>{{ form.kind_netze.value|default:"" }}</textarea>
     <p class="feld__hinweis{% if form.kind_netze.errors %} feld__hinweis--fehler{% endif %}">{% if form.kind_netze.errors %}{{ form.kind_netze.errors.0 }}{% else %}Eins pro Zeile (CIDR, z. B. 192.168.1.0/24). Aus diesen Netzen dürfen Kinder sich anmelden. Startwert: alle privaten Netze.{% endif %}</p></div>

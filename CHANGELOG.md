@@ -2,6 +2,21 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Umbenennung zu Nestwerk (25.10.2026)
+
+Das Projekt hieß bis hierhin **FamKo** und heißt jetzt **Nestwerk** (Untertitel: „Nestwerk – the family hub for chores, rewards & learning“). Lizenz: AGPL-3.0-or-later.
+
+### Geändert
+- Django-Projektpaket `famko/` heißt `nestwerk/`; Docker-, Deploy- und Doku-Dateien, Oberfläche, PWA-Name und Standard-App-Name tragen den neuen Namen
+- Umgebungsvariablen: Präfix `NESTWERK_*`. Die alten `FAMKO_*` gelten weiter als Fallback (zentral in `apps/kern/umgebung.py`)
+- Neue Installationen nutzen `/opt/nestwerk`, Compose-Projekt `nestwerk`, Volume `nestwerk_data`, Image `nestwerk:<tag>`, Firewall `/etc/nestwerk`, Datenbank `nestwerk.sqlite3`
+- `LICENSE` (GNU AGPL-3.0); `docs/LIZENZ-OFFEN.md` entfällt, der Lizenzhinweis steht im README
+
+### Kompatibilität (bestehende FamKo-Installationen)
+- `deploy/update.sh` erkennt eine alte `.env` (mit `FAMKO_*`) samt altem Volume und schreibt Projekt-, Volume- und Image-Namen in die `.env`; kein Datenverlust, keine manuelle Umbenennung nötig
+- Die vorhandene Datenbankdatei `famko.sqlite3` und Backups `famko-*.sqlite3.gz` werden weiter erkannt; App-Labels und Migrationen sind unverändert
+- Details: `docs/RUNBOOK.md`, Abschnitt „Bestehende FamKo-Installation umstellen“
+
 ## Phase 3: Feinschliff (25.10.2026)
 
 ### Hinzugefügt

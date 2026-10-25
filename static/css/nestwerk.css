@@ -1,4 +1,4 @@
-/* FamKo Designsystem: Basis, Layouts und Komponenten.
+/* Nestwerk Designsystem: Basis, Layouts und Komponenten.
    Mobil zuerst. Alle Ziele mindestens 48 px. Pixelschrift nur für Überschriften,
    Punkte und Ränge (Kinder-Optik). Eltern-Optik: Inter, flach, hell. */
 
@@ -624,7 +624,7 @@ a.kachel:hover {
 .toast--fehler { border-left-color: var(--gefahr); }
 .toast--fehler .icon { color: var(--gefahr); }
 /* Pop-ups (AP33): ein System fuer alle Meldungen in #meldungen. Varianten (Rang, Abzeichen,
-   Werkstatt, Serienbonus, Familienziel, Ruhm) setzen nur Farbe und Effekt. famko.js steuert
+   Werkstatt, Serienbonus, Familienziel, Ruhm) setzen nur Farbe und Effekt. nestwerk.js steuert
    Warteschlange, Auto-Ausblenden und Schliessen. Animiert wird ausschliesslich transform und
    opacity (keine Layout-Animationen, fluessig in der Tablet-WebView). */
 .popup {

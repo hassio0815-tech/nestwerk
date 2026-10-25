@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from django.conf import settings
 
-from famko.sicherheit import CSP
+from nestwerk.sicherheit import CSP
 
 WURZEL = Path(settings.BASE_DIR)
 INLINE_SKRIPT = re.compile(r"<script(?![^>]*\bsrc=)[^>]*>", re.IGNORECASE)
@@ -76,8 +76,8 @@ def test_htmx_eval_ist_abgeschaltet_und_csp_ohne_unsafe_eval():
 
 
 def test_polling_pausiert_per_skript_statt_filter():
-    """Die Sichtbarkeitspause liegt in famko.js (``data-nur-sichtbar``), nicht im Trigger."""
+    """Die Sichtbarkeitspause liegt in nestwerk.js (``data-nur-sichtbar``), nicht im Trigger."""
     tablet = (WURZEL / "apps/oberflaeche/templates/oberflaeche/tablet.html").read_text("utf-8")
     assert "data-nur-sichtbar" in tablet
-    js = (WURZEL / "static/js/famko.js").read_text(encoding="utf-8")
+    js = (WURZEL / "static/js/nestwerk.js").read_text(encoding="utf-8")
     assert "data-nur-sichtbar" in js and "htmx:beforeRequest" in js

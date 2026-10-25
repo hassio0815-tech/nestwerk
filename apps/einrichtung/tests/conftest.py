@@ -42,13 +42,13 @@ SMTP = {
     "host": "smtp.example.org",
     "port": "587",
     "sicherheit": "starttls",
-    "benutzername": "famko@example.org",
+    "benutzername": "nestwerk@example.org",
     "passwort": "geheim-smtp-pw",
-    "absender": "famko@example.org",
+    "absender": "nestwerk@example.org",
     "testadresse": "anna@example.org",
 }
 NETZ = {
-    "basis_url": "https://famko.example.org",
+    "basis_url": "https://nestwerk.example.org",
     "kind_netze": "192.168.0.0/16\n127.0.0.0/8",
     "proxys": "192.168.1.5",
 }

@@ -18,7 +18,7 @@ from django.shortcuts import resolve_url
 
 from .models import Rolle
 
-PASSIV_ATTRIBUT = "famko_passiv"
+PASSIV_ATTRIBUT = "nestwerk_passiv"
 
 
 def aktueller_elternteil(request):

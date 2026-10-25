@@ -1,11 +1,11 @@
 """Sitzungsdauer und Leerlauf (ARCHITECTURE 4.2-4.4). Zustand liegt in der Django-Session.
 
-Session-Schlüssel (alle mit Präfix ``famko_``):
-- ``famko_kiosk``: Sitzung wurde auf einem Kiosk-Gerät begonnen
-- ``famko_aktivitaet``: Zeitpunkt (Unix-Sekunden) der letzten **aktiven** Anfrage
-- ``famko_gleitend``: Sekunden, auf die eine gleitende Sitzung bei Nutzung verlängert wird
-- ``famko_verlaengert``: wann zuletzt verlängert wurde (Schreibzugriffe begrenzen)
-- ``famko_geraet_id``: registriertes Gerät, auf dem die Sitzung begann (oder ``None``). Wird es
+Session-Schlüssel (alle mit Präfix ``nestwerk_``):
+- ``nestwerk_kiosk``: Sitzung wurde auf einem Kiosk-Gerät begonnen
+- ``nestwerk_aktivitaet``: Zeitpunkt (Unix-Sekunden) der letzten **aktiven** Anfrage
+- ``nestwerk_gleitend``: Sekunden, auf die eine gleitende Sitzung bei Nutzung verlängert wird
+- ``nestwerk_verlaengert``: wann zuletzt verlängert wurde (Schreibzugriffe begrenzen)
+- ``nestwerk_geraet_id``: registriertes Gerät, auf dem die Sitzung begann (oder ``None``). Wird es
   widerrufen (oder fehlt sein Cookie), endet die Sitzung beim nächsten Aufruf (Review AP19,
   B-06): ein verlorenes/abgegebenes Gerät lässt sich so abmelden, auch das Flur-Tablet.
 """
@@ -16,11 +16,11 @@ from apps.kern import audit, einstellungen, zeit
 
 from .models import Rolle
 
-KIOSK = "famko_kiosk"
-AKTIVITAET = "famko_aktivitaet"
-GLEITEND = "famko_gleitend"
-VERLAENGERT = "famko_verlaengert"
-GERAET = "famko_geraet_id"
+KIOSK = "nestwerk_kiosk"
+AKTIVITAET = "nestwerk_aktivitaet"
+GLEITEND = "nestwerk_gleitend"
+VERLAENGERT = "nestwerk_verlaengert"
+GERAET = "nestwerk_geraet_id"
 
 # Gleitende Sitzungen werden höchstens so oft neu geschrieben (Sekunden)
 VERLAENGERUNG_ABSTAND = 3600

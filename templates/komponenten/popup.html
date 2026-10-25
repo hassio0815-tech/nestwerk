@@ -1,4 +1,4 @@
-{% load static %}{% comment %}Gemeinsame Hülle aller Meldungs-Pop-ups in #meldungen (AP33). Warteschlange, Auto-Ausblenden und Schließen per Tippen/Escape steuert famko.js. Effekt und Farbe per CSS-Klassen (popup--<art>, popup--<effekt>); animiert wird nur transform/opacity.{% endcomment %}
+{% load static %}{% comment %}Gemeinsame Hülle aller Meldungs-Pop-ups in #meldungen (AP33). Warteschlange, Auto-Ausblenden und Schließen per Tippen/Escape steuert nestwerk.js. Effekt und Farbe per CSS-Klassen (popup--<art>, popup--<effekt>); animiert wird nur transform/opacity.{% endcomment %}
 <div class="toast toast--{{ art }} popup popup--{{ art }} popup--{{ effekt }}" role="status" data-schliessbar data-popup data-popup-art="{{ art }}" data-dauer="{{ dauer }}">
   {% if effekt == "konfetti" %}<span class="konfetti" aria-hidden="true">{% for i in "123456789012345678" %}<i></i>{% endfor %}</span>{% endif %}
   {% if effekt == "funken" %}<span class="popup__funken" aria-hidden="true">{% for i in "12345678" %}<i></i>{% endfor %}</span>{% endif %}

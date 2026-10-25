@@ -1,4 +1,4 @@
-# Web Push für FamKo (iOS, Android, Kiosk-Tablet, Django)
+# Web Push für Nestwerk (iOS, Android, Kiosk-Tablet, Django)
 
 Stand: 23.10.2026. Quellen per WebFetch am 23.10.2026 abgerufen (Quellendatum jeweils dabei).
 Kennzeichnung: **[verifiziert]** = in Quelle gelesen. **[ungeprüft]** = Annahme/Altwissen, vor Umsetzung auf Gerät testen.
@@ -90,7 +90,7 @@ Hinweis: Die Apple-Developer-Doku-Seite war per Tool nicht lesbar (JS-Seite); Au
 
 - **Ja.** Push-Registrierung braucht nur: App über HTTPS im Heimnetz laden (gültiges Let's-Encrypt-Zertifikat, Domain per Split-DNS/lokal auflösbar), Subscription an den Server posten. Zustellung läuft Server -> Apple/Google-Push-Dienst -> Gerät über Internet. Gerät muss den Server **nicht** erreichen. [Schlussfolgerung aus Architektur, Push-Overview web.dev]
 - Fallstricke:
-  - **Tippen auf die Notification** öffnet `https://famko.<domain>/...`. Unterwegs nicht erreichbar (kein VPN/Split-DNS) -> Fehlerseite. Optionen: WireGuard/Tailscale auf Handys, oder Notification-Text selbsterklärend ("Aufgabe X erledigt"), nur Info statt Aktion.
+  - **Tippen auf die Notification** öffnet `https://nestwerk.<domain>/...`. Unterwegs nicht erreichbar (kein VPN/Split-DNS) -> Fehlerseite. Optionen: WireGuard/Tailscale auf Handys, oder Notification-Text selbsterklärend ("Aufgabe X erledigt"), nur Info statt Aktion.
   - Selbstsigniertes/ungültiges Zertifikat bricht Service Worker/Push -> LE-Zertifikat rechtzeitig erneuern (NPM-Auto-Renew überwachen). DNS-Challenge löst das ohne öffentlichen Zugang.
   - Service-Worker-Update: SW-Datei nie lange cachen (`Cache-Control: no-cache` für `/sw.js` in NPM und Django), `skipWaiting`/`clients.claim` bewusst einsetzen, Cache-Version im Dateinamen/Konstante. Scope = `/` (SW unter Root ausliefern).
   - Subscriptions laufen aus bzw. werden ungültig: 404/410 vom Push-Dienst -> sofort löschen. `expirationTime` ist meist null [web.dev]. iOS: App-Neuinstallation/Löschen vom Home-Bildschirm = neue Subscription nötig. Bei App-Start `pushManager.getSubscription()` mit Server abgleichen, ggf. neu abonnieren (`pushsubscriptionchange` unzuverlässig).
@@ -128,7 +128,7 @@ Hinweis: WebSearch lief in dieser Sitzung in einen Timeout (keine Freigabe), dah
    - Neu: BCD `Notification.navigate` Safari/iOS **18.5** [verifiziert].
    - Das Push-API-Spec kennt `actions` im Declarative-Format; ob iOS 26 sie anzeigt, ist **[ungeprüft]**. Nicht darauf bauen, auf iPhone testen.
 
-## Empfehlung für FamKo
+## Empfehlung für Nestwerk
 
 1. **Push nur für iPhones** (Eltern + Kinder) als Home-Bildschirm-Web-App. Setup-Anleitung: Safari -> Teilen -> Zum Home-Bildschirm -> "Als Web-App öffnen" an -> App öffnen -> Button "Benachrichtigungen aktivieren" (Nutzergeste).
 2. **Flur-Tablet (Fully Kiosk): kein Web Push.** Stattdessen HTMX-Polling/SSE für Live-Anzeige; optional Fully-REST (PLUS) für `screenOn` + `setOverlayMessage`/`textToSpeech` bei wichtigen Ereignissen. Lizenzkosten PLUS vorher prüfen.

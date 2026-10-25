@@ -1,7 +1,7 @@
 <form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
   {% csrf_token %}
   <h1>E-Mail-Versand</h1>
-  <p>Zugang zu eurem Postfach, über das FamKo Mails verschickt (z. B. Benachrichtigungen an die Eltern).</p>
+  <p>Zugang zu eurem Postfach, über das Nestwerk Mails verschickt (z. B. Benachrichtigungen an die Eltern).</p>
   <button type="submit" class="einrichtung-standard" tabindex="-1" aria-hidden="true"></button>
   {% include "einrichtung/_fehler.html" %}
   {% if ergebnis %}

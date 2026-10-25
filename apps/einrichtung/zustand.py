@@ -2,13 +2,13 @@
 
 import hmac
 import ipaddress
-import os
 
 from apps.kern import einstellungen
+from apps.kern.umgebung import umgebung
 from apps.konten import netz
 
 PRAEFIX = "/einrichtung/"
-TOKEN_VARIABLE = "FAMKO_SETUP_TOKEN"
+TOKEN_VARIABLE = "SETUP_TOKEN"  # NESTWERK_SETUP_TOKEN, Fallback FAMKO_SETUP_TOKEN
 SESSION_TOKEN_OK = "einrichtung_token_ok"
 
 
@@ -27,7 +27,7 @@ def freigegebener_schritt():
 
 
 def erwartetes_token():
-    return os.environ.get(TOKEN_VARIABLE, "").strip()
+    return umgebung(TOKEN_VARIABLE, "").strip()
 
 
 def token_stimmt(eingabe):
