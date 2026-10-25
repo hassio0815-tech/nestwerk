@@ -3,6 +3,8 @@
 {% block kopf_rechts %}
   {% url "konten:eltern_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% url "sondertag:prognose" as prognose_url %}
+  {% if prognose_url %}{% include "komponenten/button.html" with href=prognose_url variante="geist" klein=True icon="stern" text="Prognose" %}{% endif %}
 {% endblock %}
 {% block inhalt %}
   <h1>Ränge</h1>

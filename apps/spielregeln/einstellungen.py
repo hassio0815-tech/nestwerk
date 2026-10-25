@@ -21,8 +21,52 @@ HELD_STARTWERTE = {
     "spielregeln.held_mindestbasis_punkte": 50,
 }
 
+# AP32: Prognose und Kalibrierung (ARCHITECTURE 7.9)
+PROGNOSE_STARTWERTE = {
+    "spielregeln.prognose_wochen": 6,
+    "spielregeln.prognose_min_wochen": 3,
+    "spielregeln.prognose_ziel_sondertage": 2,
+    "spielregeln.prognose_kind_zeigen": True,
+}
+
 
 def einstellungen_definieren():
+    definieren(
+        "spielregeln.prognose_wochen",
+        Typ.GANZZAHL,
+        "Prognose: Basis in Wochen",
+        beschreibung="Die Prognose rechnet mit dem Durchschnitt der letzten so vielen "
+        "abgeschlossenen Wochen (Pausenwochen zählen nicht).",
+        einheit="Wochen",
+        minimum=2,
+        maximum=26,
+    )
+    definieren(
+        "spielregeln.prognose_min_wochen",
+        Typ.GANZZAHL,
+        "Prognose: Mindestzahl an Wochen",
+        beschreibung="Mit weniger abgeschlossenen Wochen gibt es keine Prognose, nur einen "
+        "Hinweis.",
+        einheit="Wochen",
+        minimum=1,
+        maximum=26,
+    )
+    definieren(
+        "spielregeln.prognose_ziel_sondertage",
+        Typ.GANZZAHL,
+        "Prognose: Ziel Sondertage je App-Jahr",
+        beschreibung="Daran misst die Eltern-Ansicht die Abweichung (Ampel).",
+        einheit="Sondertage",
+        minimum=1,
+        maximum=12,
+    )
+    definieren(
+        "spielregeln.prognose_kind_zeigen",
+        Typ.BOOL,
+        "Kind sieht Rang-Prognose",
+        beschreibung="Ja: Die Rang-Kachel zeigt „Nächster Rang voraussichtlich in ca. X "
+        "Wochen“. Nein: keine Prognose beim Kind.",
+    )
     definieren(
         "spielregeln.held_basis_wochen",
         Typ.GANZZAHL,

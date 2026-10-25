@@ -58,6 +58,7 @@ from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22; Mod-Konditione
     bauzeit_faktor,
     globaler_faktor,
     kind_faktor,
+    kind_wochen_faktor,
     mod_bauzeit_stunden,
     mod_preis,
     preis_faktor,
@@ -68,7 +69,9 @@ from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22; Mod-Konditione
     rang_zur_stufe,
     startrang,
     wirksame_schwelle,
+    wirksame_wochen,
     wirksamer_faktor,
+    wochen_faktor,
 )
 
 Stand = auswertung.Stand

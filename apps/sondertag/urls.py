@@ -12,5 +12,7 @@ urlpatterns = [
     path("eltern/sondertage/<int:pk>/stattgefunden/", views.stattgefunden, name="stattgefunden"),
     path("eltern/sondertage/<int:pk>/aendern/", views.aendern, name="aendern"),
     path("eltern/sondertage/<int:pk>/loeschen/", views.loeschen, name="loeschen"),
+    path("eltern/prognose/", views.prognose_seite, name="prognose"),
+    path("eltern/prognose/uebernehmen/", views.prognose_uebernehmen, name="prognose_uebernehmen"),
     path("eltern/sondertage/manuell/", views.manuell, name="manuell"),
 ]

@@ -119,3 +119,16 @@
   border-bottom: 1px solid var(--rahmen);
 }
 .st-historie .feld { margin: 0; }
+
+/* AP32: Prognose und Kalibrierung (Eltern) */
+.pg-ampel { display: inline-flex; gap: 0.4rem; align-items: center; font-weight: 700; }
+.pg-ampel::before { content: ""; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: currentColor; }
+.pg-ampel--gruen { color: var(--erfolg); }
+.pg-ampel--gelb { color: var(--warnung); }
+.pg-ampel--rot { color: var(--gefahr); }
+.pg-fakten { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin: 0; }
+.pg-fakten dt { font-weight: 700; }
+.pg-fakten dd { margin: 0; }
+.pg-hinweis { margin: 0; color: var(--warnung); font-weight: 600; }
+.pg-empfehlung { border-left: 4px solid var(--erfolg); padding-left: 0.75rem; }
+@media (max-width: 480px) { .pg-fakten { grid-template-columns: 1fr; } }

@@ -16,4 +16,6 @@
   {% endfor %}
   {% url "sondertag:eltern" as st_url %}
   {% include "komponenten/button.html" with href=st_url variante="geist" klein=True icon="geschenk" text="Sondertage verwalten" %}
+  {% url "sondertag:prognose" as pg_url %}
+  {% include "komponenten/button.html" with href=pg_url variante="geist" klein=True icon="stern" text="Prognose" %}
 </div></article>

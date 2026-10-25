@@ -57,6 +57,7 @@ from .raenge import (  # noqa: F401 (öffentliche Rang-API, AP22; Mod-Standards 
     mod_standard_aendern,
     raenge_pruefen,
     rang_aendern,
+    wochen_faktor_setzen,
 )
 
 logger = logging.getLogger("famko.spielregeln")

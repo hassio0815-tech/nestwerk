@@ -65,12 +65,28 @@ def kind_faktor(kind) -> Decimal | None:
     return zeile.faktor_schwelle if zeile else None
 
 
+def kind_wochen_faktor(kind) -> Decimal | None:
+    """AP32: eigener Faktor des Kindes auf die Mindestwochen oder ``None``."""
+    zeile = Kalibrierung.objects.filter(kind=kind).first()
+    return zeile.faktor_wochen if zeile and zeile.faktor_wochen != 1 else None
+
+
 def wirksamer_faktor(kind) -> Decimal:
     return globaler_faktor() * (kind_faktor(kind) or Decimal("1"))
 
 
 def wirksame_schwelle(rang: Rang, faktor: Decimal) -> int:
     return math.ceil(Decimal(rang.xp_schwelle) * faktor)
+
+
+def wirksame_wochen(rang: Rang, faktor: Decimal) -> int:
+    """AP32 (P-07): Mindest-Aktivwochen x Wochen-Faktor, aufgerundet."""
+    return math.ceil(Decimal(rang.min_aktive_wochen) * faktor)
+
+
+def wochen_faktor(kind=None) -> Decimal:
+    """AP32: wirksamer Faktor auf die Mindest-Aktivwochen = global x Kind."""
+    return _mod_faktor(kind, "faktor_wochen")
 
 
 def rang_zur_stufe(stufe: int) -> Rang | None:
@@ -145,9 +161,10 @@ def berechneter_rang(kind, *, xp=None, aktive_wochen=None, faktor=None) -> Rang 
         else (aktive_wochen)
     )
     faktor = wirksamer_faktor(kind) if faktor is None else faktor
+    wf = wochen_faktor(kind)
     ziel = None
     for rang in raenge():
-        if xp >= wirksame_schwelle(rang, faktor) and wochen >= rang.min_aktive_wochen:
+        if xp >= wirksame_schwelle(rang, faktor) and wochen >= wirksame_wochen(rang, wf):
             ziel = rang
     return ziel
 
@@ -176,11 +193,12 @@ def rang_fortschritt(kind, *, xp=None, aktive_wochen=None) -> RangFortschritt:
     if naechster is None:
         return RangFortschritt(rang, None, xp, aktive_wochen, 0, 0, 0, 100)
     schwelle = wirksame_schwelle(naechster, wirksamer_faktor(kind))
+    min_wochen = wirksame_wochen(naechster, wochen_faktor(kind))
     anteile = []
     if schwelle:
         anteile.append(min(1, max(0, xp) / schwelle))
-    if naechster.min_aktive_wochen:
-        anteile.append(min(1, aktive_wochen / naechster.min_aktive_wochen))
+    if min_wochen:
+        anteile.append(min(1, aktive_wochen / min_wochen))
     prozent = int(min(anteile) * 100) if anteile else 100
     return RangFortschritt(
         rang=rang,
@@ -189,7 +207,7 @@ def rang_fortschritt(kind, *, xp=None, aktive_wochen=None) -> RangFortschritt:
         aktive_wochen=aktive_wochen,
         schwelle=schwelle,
         xp_fehlt=max(0, schwelle - xp),
-        wochen_fehlen=max(0, naechster.min_aktive_wochen - aktive_wochen),
+        wochen_fehlen=max(0, min_wochen - aktive_wochen),
         prozent=prozent,
     )
 
@@ -376,14 +394,16 @@ def mod_standard_aendern(rang, *, von, mod_preis, bauzeit_stunden):
 
 
 @transaction.atomic
-def mod_faktoren_setzen(*, von, faktor_preis, faktor_bauzeit, jetzt=None):
-    """AP26: globale Kalibrierung von Mod-Preisen und Bauzeiten (Audit, K3)."""
+def mod_faktoren_setzen(*, von, faktor_preis, faktor_bauzeit, jetzt=None, kind=None):
+    """AP26: Kalibrierung von Mod-Preisen und Bauzeiten (Audit, K3), global oder (AP32) je Kind."""
     _eltern_pruefen(von)
+    if kind is not None and getattr(kind, "rolle", None) != "kind":
+        raise RangFehler("Kalibrierung gibt es nur global oder für Kinder.")
     neu = {
         "faktor_preis": faktor_lesen(faktor_preis),
         "faktor_bauzeit": faktor_lesen(faktor_bauzeit),
     }
-    zeile = Kalibrierung.objects.filter(kind__isnull=True).first() or Kalibrierung(kind=None)
+    zeile = Kalibrierung.objects.filter(kind=kind).first() or Kalibrierung(kind=kind)
     alt = {f: getattr(zeile, f) for f in neu}
     if zeile.pk and alt == neu:
         return zeile
@@ -396,7 +416,8 @@ def mod_faktoren_setzen(*, von, faktor_preis, faktor_bauzeit, jetzt=None):
         "kalibrierung.mod_geaendert",
         akteur=von,
         objekt_typ="spielregeln.kalibrierung",
-        objekt_id="global",
+        objekt_id=str(kind.pk) if kind else "global",
+        kind=kind,
         details={
             "alt": {f: str(v) for f, v in alt.items()},
             "neu": {f: str(v) for f, v in neu.items()},
@@ -436,7 +457,13 @@ def kalibrierung_setzen(kind, faktor, *, von, notiz="", jetzt=None):
             raise RangFehler("Der globale Faktor ist Pflicht.")
         if zeile is None:
             return None
-        zeile.delete()
+        if zeile.faktor_wochen != 1 or zeile.faktor_preis != 1 or zeile.faktor_bauzeit != 1:
+            zeile.faktor_schwelle = Decimal("1.00")  # andere Faktoren des Kindes bleiben
+            zeile.geaendert_von = von
+            zeile.geaendert_am = jetzt
+            zeile.save()
+        else:
+            zeile.delete()
         neu = None
     else:
         faktor = faktor_lesen(faktor)
@@ -463,3 +490,41 @@ def kalibrierung_setzen(kind, faktor, *, von, notiz="", jetzt=None):
     else:
         raenge_pruefen_sicher(kind, jetzt=jetzt)
     return zeile if faktor is not None else None
+
+
+@transaction.atomic
+def wochen_faktor_setzen(kind, faktor, *, von, notiz="", jetzt=None):
+    """AP32 (P-07): Faktor auf die Mindest-Aktivwochen der Ränge, global (``kind=None``) oder je
+    Kind. ``faktor=None`` (oder 1,0) setzt zurück. Audit; danach Ränge prüfen (ein kleinerer
+    Faktor kann Aufstiege auslösen, ein größerer nimmt nichts weg: Rang ist ein Fakt)."""
+    _eltern_pruefen(von)
+    jetzt = jetzt or zeit.jetzt()
+    notiz = (notiz or "").strip()[:NOTIZ_MAX]
+    if kind is not None and getattr(kind, "rolle", None) != "kind":
+        raise RangFehler("Kalibrierung gibt es nur global oder für Kinder.")
+    neu = Decimal("1.00") if faktor is None else faktor_lesen(faktor)
+    zeile = Kalibrierung.objects.filter(kind=kind).first()
+    alt = zeile.faktor_wochen if zeile else Decimal("1.00")
+    if alt == neu:
+        return zeile
+    if zeile is None:
+        zeile = Kalibrierung(kind=kind)
+    zeile.faktor_wochen = neu
+    if notiz:
+        zeile.notiz = notiz
+    zeile.geaendert_von = von
+    zeile.geaendert_am = jetzt
+    zeile.save()
+    audit.protokollieren(
+        "kalibrierung.wochen_geaendert",
+        akteur=von,
+        objekt_typ="spielregeln.kalibrierung",
+        objekt_id=str(kind.pk) if kind else "global",
+        kind=kind,
+        details={"alt": str(alt), "neu": str(neu), "notiz": notiz},
+    )
+    if kind is None:
+        alle_pruefen(jetzt)
+    else:
+        raenge_pruefen_sicher(kind, jetzt=jetzt)
+    return zeile

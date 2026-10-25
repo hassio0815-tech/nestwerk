@@ -176,7 +176,7 @@
 - **[E] Startwerte:** Schwellen, Mindestwochen und Mod-Preise je Rang siehe 18. Sie sind Startwerte und werden anhand der echten Wochenleistung kalibriert. (E14)
 - **[E]** Planungsziel: Der Rang- und Mod-Aufbau reicht für ein Probejahr und bis etwa 1,5 Jahre, ohne dass ein fleißiges Kind vorher am Ende ist.
 - **[E] God Mode:** Das Konzept sah God Mode als reinen Prestige-Rang vor. Entscheidung 1 ergänzt: Danach alle 26 aktiven Wochen ein Sondertag und ein neues Mod-Set, endlos (siehe 10 und 11). Titel, Aura, Pop-up und Abzeichen bleiben.
-- **[V] Prognose:** Die App berechnet pro Kind aus dem Durchschnitt der letzten Wochen, wann der nächste Rang und der nächste Sondertag erreicht werden. Die Eltern sehen die Abweichung vom Ziel von zwei Sondertagen pro Jahr.
+- **[V] Prognose:** Die App berechnet pro Kind aus dem Durchschnitt der letzten Wochen, wann der nächste Rang und der nächste Sondertag erreicht werden. Die Eltern sehen die Abweichung vom Ziel von zwei Sondertagen pro Jahr. Seite „Prognose & Kalibrierung“ mit Ampel, Empfehlung per Simulation und Übernahme per Klick; das Kind sieht nur „Nächster Rang voraussichtlich in ca. X Wochen“ (abschaltbar). Wirken die XP-Schwellen nie, lässt sich das Tempo über einen Faktor auf die Mindest-Aktivwochen pro Kind einstellen.
 - **[E] Kalibrierung:** Nach 4–6 Wochen Prognose prüfen. Schwellen, Mod-Preise und Bauzeiten pro Kind mit einem Faktor nachstellen. Annahme für die Startwerte: 150–200 Punkte pro Woche. (E14)
 
 ### 6.3 Serie, Serienbonus und Meilensteine

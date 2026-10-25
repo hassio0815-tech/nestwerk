@@ -7,8 +7,9 @@ from django.views.decorators.http import require_http_methods, require_POST
 from apps.kern import einstellungen
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktueller_elternteil, aktuelles_kind, nur_eltern, nur_kind
+from apps.spielregeln import services as spielregeln
 
-from . import selectors, services
+from . import prognose, selectors, services
 from .models import SondertagAnspruch
 
 
@@ -174,3 +175,52 @@ def manuell(request):
             notiz=p.get("notiz", ""),
         ),
     )
+
+
+# --- Prognose und Kalibrierung (AP32) -----------------------------------------------------------
+
+
+def _prognose_seite(request, *, fehler="", status=200):
+    return render(
+        request,
+        "sondertag/prognose.html",
+        {"zeilen": prognose.uebersicht(), "fehler": fehler},
+        status=status,
+    )
+
+
+@nur_eltern
+def prognose_seite(request):
+    return _prognose_seite(request)
+
+
+@nur_eltern
+@require_POST
+def prognose_uebernehmen(request):
+    """Faktor für Schwellen oder Mindestwochen eines Kindes setzen (Audit im Service)."""
+    kind = next(
+        (k for k in konten.aktive_kinder() if str(k.pk) == request.POST.get("kind", "")), None
+    )
+    if kind is None:
+        raise Http404
+    knopf = request.POST.get("knopf", "")
+    faktor = request.POST.get("faktor", "").strip() or None
+    notiz = request.POST.get("notiz", "") or "Prognose"
+    von = aktueller_elternteil(request)
+    try:
+        if knopf == prognose.WOCHEN:
+            spielregeln.wochen_faktor_setzen(kind, faktor, von=von, notiz=notiz)
+        elif knopf == "mods":
+            spielregeln.mod_faktoren_setzen(
+                kind=kind,
+                von=von,
+                faktor_preis=request.POST.get("faktor_preis", "") or "1",
+                faktor_bauzeit=request.POST.get("faktor_bauzeit", "") or "1",
+            )
+        elif knopf == prognose.SCHWELLE:
+            spielregeln.kalibrierung_setzen(kind, faktor, von=von, notiz=notiz)
+        else:
+            raise Http404
+    except spielregeln.RangFehler as fehler:
+        return _prognose_seite(request, fehler=str(fehler), status=400)
+    return redirect("sondertag:prognose")

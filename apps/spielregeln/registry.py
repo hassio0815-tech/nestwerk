@@ -149,9 +149,16 @@ def _kind_serie(request):
 
 
 def _kind_rang(request):
-    from . import selectors
+    from apps.kern import einstellungen
 
-    return {"f": selectors.rang_fortschritt(request.user)}
+    from . import prognose, selectors
+
+    f = selectors.rang_fortschritt(request.user)
+    wochen = None
+    if f.naechster and einstellungen.wert("spielregeln.prognose_kind_zeigen"):
+        ziel = prognose.naechster_rang(request.user)
+        wochen = ziel.wochen if ziel and ziel.wochen else None  # nur die Zahl, keine Eltern-Infos
+    return {"f": f, "prognose_wochen": wochen}
 
 
 def _eltern_raenge(request):

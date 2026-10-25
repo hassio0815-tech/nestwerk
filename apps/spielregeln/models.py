@@ -64,6 +64,8 @@ class Kalibrierung(models.Model):
     faktor_schwelle = models.DecimalField(max_digits=4, decimal_places=2, default=1)
     faktor_preis = models.DecimalField(max_digits=4, decimal_places=2, default=1)
     faktor_bauzeit = models.DecimalField(max_digits=4, decimal_places=2, default=1)
+    # AP32 (P-07): skaliert die Mindest-Aktivwochen der Ränge (global x Kind)
+    faktor_wochen = models.DecimalField(max_digits=4, decimal_places=2, default=1)
     notiz = models.CharField(max_length=200, blank=True, default="")
     geaendert_von = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"

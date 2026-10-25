@@ -497,6 +497,8 @@ stateDiagram-v2
 - Kalibrierungsvorschlag: Faktor = beobachtete XP/Woche ÷ Annahme (Startwert 175). Eltern übernehmen per Klick (Audit).
 
 ---
+- **Umsetzung (AP32):** `spielregeln/prognose.py` (reine Rang-Rechnung `rang_ziele`, Basis aus `Wochenauswertung`, Engpass `xp`/`wochen`/`beides`) und `sondertag/prognose.py` (`rechnen(Eingabe, faktor_schwelle, faktor_wochen)` rein und reproduzierbar: je offene Sondertag-Regel frühester Termin, dann durch `grenzen.einloesbar_ab`; `empfehlen` rechnet Kandidatenfaktoren 0,40–2,00 durch, kleinster Fehlbetrag zum Ziel, bei Gleichstand kleinste Änderung). Seite `/eltern/prognose/` (Ampel je App-Jahr: grün ≥ Ziel, gelb = Ziel − 1, rot darunter). Zu wenig Historie (`spielregeln.prognose_min_wochen`): Hinweis statt Zahl. Einstellungen `spielregeln.prognose_wochen` (6), `prognose_min_wochen` (3), `prognose_ziel_sondertage` (2), `prognose_kind_zeigen` (Kind-Kachel "Nächster Rang voraussichtlich in ca. X Wochen", nur die Zahl).
+- **P-07:** Binden die XP-Schwellen nie, erklärt die Seite, dass nur die Mindestwochen wirken. `Kalibrierung.faktor_wochen` (Standard 1,0, global x Kind) skaliert `min_aktive_wochen` (aufgerundet) in `berechneter_rang`/`rang_fortschritt`; Service `wochen_faktor_setzen` (Audit `kalibrierung.wochen_geaendert`). Mod-Preis-/Bauzeitfaktoren gibt es auch je Kind (`mod_faktoren_setzen(kind=…)`).
 
 ## 8. Avatar- und Mod-Grafik
 
