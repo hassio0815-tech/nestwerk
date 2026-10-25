@@ -1,5 +1,5 @@
 {% load static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
-<div class="st-popup" role="dialog" aria-modal="true" aria-labelledby="st-popup-titel-{{ p.pk }}" data-schliessbar data-popup-art="sondertag">
+<div class="st-popup" role="dialog" aria-modal="true" aria-labelledby="st-popup-titel-{{ p.pk }}" data-schliessbar data-festhalten data-popup-art="sondertag">
   <div class="st-popup__karte">
     <span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>
     <div class="st-popup__kopf">

@@ -1,10 +1,13 @@
-/* FamKo Oberflaeche: Hell/Dunkel-Umschalter, PIN-Pad, Schliessen von Meldungen und Pop-ups.
+/* FamKo Oberflaeche: Hell/Dunkel-Umschalter, PIN-Pad, Pop-up-Warteschlange (AP33), Schliessen.
    Keine externen Quellen, keine Inline-Skripte (CSP). */
 (function () {
   "use strict";
 
   var COOKIE_MODUS = "famko_modus";
   var PIN_LAENGE = 4;
+  var MELDUNGEN_ID = "meldungen";
+  var AKTIVES_POPUP = "#meldungen > [data-popup-aktiv]";
+  var INTERAKTIV = "a, button, input, select, textarea, label, form, [data-festhalten]";
 
   function modusSetzen(modus) {
     document.body.setAttribute("data-modus", modus);
@@ -42,6 +45,116 @@
     }
   }
 
+  /* Pop-ups (AP33): #meldungen zeigt nacheinander; jedes Pop-up blendet nach data-dauer (ms) aus,
+     data-festhalten bleibt stehen. Ohne Bewegungserlaubnis nur Einblenden, Zahlen gleich fertig. */
+  function bewegungReduziert() {
+    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
+  function schliessenMeldung(el) {
+    if (!el || !el.isConnected) {
+      return;
+    }
+    if (el.parentElement !== document.getElementById(MELDUNGEN_ID)) {
+      el.remove();
+      return;
+    }
+    if (el.hasAttribute("data-popup-weg")) {
+      return;
+    }
+    el.setAttribute("data-popup-weg", "");
+    window.setTimeout(function () {
+      el.remove();
+    }, bewegungReduziert() ? 0 : 200);
+  }
+
+  /* Serienbonus: die erste Zahl im Titel zaehlt von 0 hoch (reines Text-Update, kein Layout). */
+  function zaehlen(el) {
+    var ziel = el.querySelector("[data-zaehl]");
+    var text = ziel ? ziel.textContent : "";
+    var treffer = /\d+/.exec(text);
+    if (!treffer || bewegungReduziert()) {
+      return;
+    }
+    var bis = parseInt(treffer[0], 10);
+    var start = null;
+    function schritt(zeit) {
+      if (!ziel.isConnected) {
+        return;
+      }
+      if (start === null) {
+        start = zeit;
+      }
+      var t = Math.min(1, (zeit - start) / 800);
+      var wert = Math.round(bis * (1 - Math.pow(1 - t, 3)));
+      ziel.textContent = text.replace(/\d+/, String(wert));
+      if (t < 1) {
+        window.requestAnimationFrame(schritt);
+      }
+    }
+    ziel.textContent = text.replace(/\d+/, "0");
+    window.requestAnimationFrame(schritt);
+  }
+
+  function startePopup(el) {
+    var dauer = parseInt(el.getAttribute("data-dauer"), 10) || 6000;
+    if (!el.hasAttribute("data-festhalten")) {
+      window.setTimeout(function () {
+        schliessenMeldung(el);
+      }, dauer);
+    }
+    zaehlen(el);
+  }
+
+  /* Eine Warteschlange: genau ein Eintrag ist aktiv, alle anderen warten (display: none). */
+  function warteschlange() {
+    var bereich = document.getElementById(MELDUNGEN_ID);
+    if (!bereich) {
+      return;
+    }
+    var eintraege = Array.prototype.filter.call(bereich.children, function (el) {
+      return el.hasAttribute("data-schliessbar");
+    });
+    var aktiv = eintraege.filter(function (el) {
+      return el.hasAttribute("data-popup-aktiv");
+    })[0];
+    if (!aktiv && eintraege.length) {
+      aktiv = eintraege[0];
+      aktiv.removeAttribute("data-popup-wartet");
+      aktiv.setAttribute("data-popup-aktiv", "");
+      startePopup(aktiv);
+    }
+    eintraege.forEach(function (el) {
+      if (el !== aktiv) {
+        el.setAttribute("data-popup-wartet", "");
+      }
+    });
+  }
+
+  var meldungen = document.getElementById(MELDUNGEN_ID);
+  if (meldungen) {
+    var beobachter = new MutationObserver(warteschlange);
+    beobachter.observe(meldungen, { childList: true });
+    warteschlange();
+  }
+
+  document.addEventListener("keydown", function (ereignis) {
+    if (ereignis.key === "Escape") {
+      schliessenMeldung(document.querySelector(AKTIVES_POPUP));
+    }
+  });
+
+  /* Abzeichen-Grafik fehlt: Platzhalter-Icon zeigen (Ereignis ohne Inline-Handler, CSP-konform). */
+  document.addEventListener("error", function (ereignis) {
+    var bild = ereignis.target;
+    if (bild instanceof HTMLImageElement && bild.hasAttribute("data-bild-ersatz")) {
+      bild.hidden = true;
+      if (bild.nextElementSibling) {
+        bild.nextElementSibling.hidden = false;
+      }
+    }
+  }, true);
+
   document.addEventListener("click", function (ereignis) {
     var ziel = ereignis.target;
     if (!(ziel instanceof Element)) {
@@ -70,10 +183,14 @@
 
     var schliessen = ziel.closest("[data-schliessen]");
     if (schliessen) {
-      var bereich = schliessen.closest("[data-schliessbar]");
-      if (bereich) {
-        bereich.remove();
-      }
+      schliessenMeldung(schliessen.closest("[data-schliessbar]"));
+      return;
+    }
+
+    /* Tippen auf ein aktives Pop-up schliesst es; Eingabefelder und Festhalten-Dialoge nicht. */
+    var aktiv = ziel.closest(AKTIVES_POPUP);
+    if (aktiv && !ziel.closest(INTERAKTIV)) {
+      schliessenMeldung(aktiv);
     }
   });
 
@@ -98,6 +215,7 @@
     toast.className = "toast toast--fehler";
     toast.setAttribute("role", "status");
     toast.setAttribute("data-schliessbar", "");
+    toast.setAttribute("data-dauer", "9000");
     var text = document.createElement("span");
     text.className = "toast__text";
     text.textContent = xhr.responseText || "Die Datei ist zu groß.";

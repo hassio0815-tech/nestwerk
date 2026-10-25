@@ -623,27 +623,136 @@ a.kachel:hover {
 .toast--warnung .icon { color: var(--warnung); }
 .toast--fehler { border-left-color: var(--gefahr); }
 .toast--fehler .icon { color: var(--gefahr); }
-/* Rangaufstieg (AP22): festliches Pop-up; Animation nur ohne prefers-reduced-motion */
-.toast--rang {
-  border-left-color: var(--selten-legendary);
-  box-shadow: 0 0 0 2px var(--selten-legendary), var(--schatten-karte);
+/* Pop-ups (AP33): ein System fuer alle Meldungen in #meldungen. Varianten (Rang, Abzeichen,
+   Werkstatt, Serienbonus, Familienziel, Ruhm) setzen nur Farbe und Effekt. famko.js steuert
+   Warteschlange, Auto-Ausblenden und Schliessen. Animiert wird ausschliesslich transform und
+   opacity (keine Layout-Animationen, fluessig in der Tablet-WebView). */
+.popup {
+  --popup-farbe: var(--akzent);
+  position: relative;
+  overflow: hidden;
+  border-left-color: var(--popup-farbe);
+}
+.popup[data-popup-wartet] { display: none !important; }
+.popup .icon { color: var(--popup-farbe); width: 1.75rem; height: 1.75rem; }
+.popup__symbol {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+.popup__bild { width: 2.5rem; height: 2.5rem; image-rendering: pixelated; }
+.popup__titel { font-variant-numeric: tabular-nums; }
+.popup--rang {
+  --popup-farbe: var(--selten-legendary);
   font-size: 1.125rem;
+  box-shadow: 0 0 0 2px var(--popup-farbe), var(--schatten-karte);
 }
-.toast--rang .icon { color: var(--selten-legendary); width: 2rem; height: 2rem; }
+.popup--abzeichen { --popup-farbe: var(--selten-epic); }
+.popup--werkstatt { --popup-farbe: var(--selten-rare); }
+.popup--serienbonus { --popup-farbe: var(--erfolg); }
+.popup--familienziel { --popup-farbe: var(--selten-legendary); }
+.popup--familienziel .icon, .popup--rang .icon { width: 2rem; height: 2rem; }
+.popup--ruhm { --popup-farbe: var(--selten-god); }
+.popup--erfolg { --popup-farbe: var(--erfolg); }
+
+/* Werkstatt: Hammer schlaegt, Funken fliegen (nur Pixel-Stuecke, opacity/transform) */
+.popup__funken { position: absolute; left: 2.1rem; top: 50%; width: 0; height: 0; pointer-events: none; }
+.popup__funken i {
+  position: absolute; left: -0.2rem; top: -0.2rem; width: 0.4rem; height: 0.4rem;
+  border-radius: 50%; background: var(--selten-legendary); opacity: 0;
+}
+.popup__funken i:nth-child(3n) { background: var(--selten-god); }
+.popup__funken i:nth-child(1) { --dx: -1.8rem; --dy: -1.6rem; }
+.popup__funken i:nth-child(2) { --dx: 0.4rem; --dy: -2rem; }
+.popup__funken i:nth-child(3) { --dx: 1.8rem; --dy: -1.2rem; }
+.popup__funken i:nth-child(4) { --dx: 2.2rem; --dy: 0.4rem; }
+.popup__funken i:nth-child(5) { --dx: 1.6rem; --dy: 1.8rem; }
+.popup__funken i:nth-child(6) { --dx: -0.4rem; --dy: 2rem; }
+.popup__funken i:nth-child(7) { --dx: -2rem; --dy: 1.2rem; }
+.popup__funken i:nth-child(8) { --dx: -2.4rem; --dy: -0.2rem; }
+
+/* Familienziel: Konfetti (auch in der Tablet-Leiste genutzt) */
+.konfetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.konfetti i { position: absolute; top: -10%; width: 0.5rem; height: 0.9rem; opacity: 0; border-radius: 1px; }
+.konfetti i:nth-child(4n+1) { background: var(--selten-legendary); }
+.konfetti i:nth-child(4n+2) { background: var(--selten-epic); }
+.konfetti i:nth-child(4n+3) { background: var(--selten-rare); }
+.konfetti i:nth-child(4n) { background: var(--erfolg); }
+.konfetti i:nth-child(1) { left: 5%; } .konfetti i:nth-child(2) { left: 13%; }
+.konfetti i:nth-child(3) { left: 21%; } .konfetti i:nth-child(4) { left: 29%; }
+.konfetti i:nth-child(5) { left: 37%; } .konfetti i:nth-child(6) { left: 45%; }
+.konfetti i:nth-child(7) { left: 53%; } .konfetti i:nth-child(8) { left: 61%; }
+.konfetti i:nth-child(9) { left: 69%; } .konfetti i:nth-child(10) { left: 77%; }
+.konfetti i:nth-child(11) { left: 85%; } .konfetti i:nth-child(12) { left: 93%; }
+.konfetti i:nth-child(13) { left: 9%; } .konfetti i:nth-child(14) { left: 25%; }
+.konfetti i:nth-child(15) { left: 41%; } .konfetti i:nth-child(16) { left: 57%; }
+.konfetti i:nth-child(17) { left: 73%; } .konfetti i:nth-child(18) { left: 89%; }
+
+@keyframes popup-einblenden { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popup-ein {
+  from { opacity: 0; transform: translateY(0.75rem); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes popup-aus { to { opacity: 0; transform: translateY(0.5rem); } }
+@keyframes popup-feier {
+  0% { opacity: 0; transform: scale(0.9); }
+  40% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes popup-glanz { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes popup-feder {
+  0% { opacity: 0; transform: scale(0.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes popup-hammer {
+  0%, 100% { transform: rotate(-30deg); }
+  50% { transform: rotate(12deg); }
+}
+@keyframes popup-funke {
+  from { opacity: 1; transform: translate(0, 0) scale(0.6); }
+  to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1); }
+}
+@keyframes fz-fall {
+  0% { transform: translateY(0) rotate(0); opacity: 1; }
+  100% { transform: translateY(24rem) rotate(540deg); opacity: 0; }
+}
 @media (prefers-reduced-motion: no-preference) {
-  .toast--rang { animation: rang-feier 1.2s ease-out 2; }
+  .popup { animation: popup-ein 0.3s ease-out both; }
+  .popup[data-popup-weg] { animation: popup-aus 0.2s ease-in both; }
+  .popup--rang { animation: popup-feier 0.7s ease-out both; }
+  .popup--glanz::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 35%, color-mix(in srgb, var(--popup-farbe) 45%, transparent) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: popup-glanz 1.2s ease-out 0.25s forwards;
+  }
+  .popup--abzeichen .popup__symbol,
+  .popup--ruhm .popup__symbol {
+    animation: popup-feder 0.7s cubic-bezier(0.3, 1.5, 0.5, 1) 0.15s both;
+  }
+  .popup--funken .popup__symbol .icon {
+    transform-origin: 50% 90%;
+    animation: popup-hammer 0.5s ease-in-out 3 0.2s;
+  }
+  .popup__funken i { animation: popup-funke 0.5s ease-out 3 0.2s; }
+  .konfetti i { animation: fz-fall 3.2s linear infinite; animation-delay: -1.1s; }
+  .konfetti i:nth-child(odd) { animation-duration: 2.6s; animation-delay: -0.4s; }
+  .konfetti i:nth-child(3n) { animation-delay: -2.1s; }
+  .konfetti i:nth-child(5n) { animation-delay: -0.9s; }
 }
-@keyframes rang-feier {
-  0% { transform: scale(0.9); }
-  40% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  /* Keine Bewegung, nur Einblenden; Konfetti als ruhende Stuecke am unteren Rand */
+  .popup { animation: popup-einblenden 0.2s ease-out both !important; }
+  .konfetti i { top: auto; bottom: 0.4rem; opacity: 0.85; }
 }
-/* Abzeichen (AP23): Pop-up, Vitrine; Grafiken liefert AP28 (static/abzeichen/<symbol>.svg) */
-.toast--abzeichen { border-left-color: var(--selten-epic); }
-.toast--abzeichen .icon { color: var(--selten-epic); width: 1.75rem; height: 1.75rem; }
-@media (prefers-reduced-motion: no-preference) {
-  .toast--abzeichen { animation: rang-feier 1s ease-out 1; }
-}
+
 .abzeichen-liste {
   display: flex;
   flex-wrap: wrap;
