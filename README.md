@@ -1,4 +1,8 @@
+<p align="center"><img src="branding/nestwerk/logo-horizontal.svg" alt="Nestwerk" width="420"></p>
+
 # Nestwerk
+
+**Landingpage:** https://hassio0815-tech.github.io/nestwerk/ (nach Veröffentlichung)
 
 **Nestwerk – the family hub for chores, rewards & learning**
 
