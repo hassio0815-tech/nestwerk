@@ -4,6 +4,7 @@ Routing: ``/`` leitet je Rolle/Gerät weiter (Anmeldung bleibt bei ``konten``), 
 ``/eltern/`` sind die Dashboards, ``/tablet/`` die Live-Startseite des Flur-Tablets."""
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_POST
@@ -154,6 +155,21 @@ def eltern_dungeon(request):
 def dungeon_anzeige_setzen(request):
     request.user.dungeon_anzeigen = request.POST.get("dungeon_anzeigen") == "1"
     request.user.save(update_fields=["dungeon_anzeigen"])
+    return redirect("oberflaeche:einstellungen")
+
+
+@nur_eltern
+@require_POST
+def wappen_setzen(request):
+    """Eigenes Wappen wählen (HTMX: Karte neu rendern, sonst zurück zu den Einstellungen)."""
+    kontext = {}
+    try:
+        konten_services.wappen_setzen(request.user, request.POST.get("wappen", ""))
+        kontext["wappen_gespeichert"] = True
+    except ValidationError as exc:
+        kontext["wappen_fehler"] = " ".join(exc.messages)
+    if request.headers.get("HX-Request"):
+        return render(request, "oberflaeche/_wappen_karte.html", kontext)
     return redirect("oberflaeche:einstellungen")
 
 

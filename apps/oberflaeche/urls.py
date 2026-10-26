@@ -12,6 +12,7 @@ urlpatterns = [
     path("kind/", views.kind_heim, name="kind_heim"),
     path("kind/dungeon/", views.dungeon, name="dungeon"),
     path("eltern/dungeon/", views.eltern_dungeon, name="eltern_dungeon"),
+    path("eltern/einstellungen/wappen/", views.wappen_setzen, name="wappen"),
     path("eltern/dungeon/anzeige/", views.dungeon_anzeige_setzen, name="dungeon_anzeige"),
     path("kind/spielwelt/", RedirectView.as_view(pattern_name="oberflaeche:dungeon", permanent=True)),
     path("kind/akzent/", views.akzent_setzen, name="akzent"),

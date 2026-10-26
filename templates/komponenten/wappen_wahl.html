@@ -1,0 +1,18 @@
+{% load wappen_tags %}{% comment %}Wappen-Galerie (optional): Karten mit Radio. Parameter: name (Feldname), gewaehlt (Schlüssel), fehler, id_praefix (optional, bei mehreren Galerien).{% endcomment %}
+<fieldset class="wappen-wahl">
+  <legend class="feld__label">Wappen (optional)</legend>
+  <div class="wappen-galerie">
+    {% wappen_katalog as katalog %}
+    {% for w in katalog %}
+      <label class="wappen-karte">
+        <input type="radio" name="{{ name }}" value="{{ w.schluessel }}"{% if gewaehlt == w.schluessel %} checked{% endif %}>
+        <span class="wappen-karte__innen">
+          <span class="wappen-karte__emoji" aria-hidden="true">{{ w.emoji }}</span>
+          <span class="wappen-karte__titel">{{ w.titel }}</span>
+          <span class="wappen-karte__spruch">{{ w.spruch }}</span>
+        </span>
+      </label>
+    {% endfor %}
+  </div>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler }}</p>{% endif %}
+</fieldset>

@@ -12,7 +12,7 @@ from django.utils import timezone
 
 from apps.kern import audit
 
-from . import sperre
+from . import sperre, wappen as wappen_katalog
 from .backends import PIN_MUSTER
 from .models import (
     AnmeldeVersuch,
@@ -34,9 +34,22 @@ def _pin_pruefen(pin):
         raise ValidationError("Die PIN besteht aus genau 4 Ziffern.")
 
 
-def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0):
+def _freies_wappen(ausser=None):
+    belegt = Benutzer.objects.filter(rolle=Rolle.ELTERN, aktiv=True).exclude(wappen="")
+    if ausser is not None:
+        belegt = belegt.exclude(pk=ausser.pk)
+    return wappen_katalog.zufaellig(belegt.values_list("wappen", flat=True))
+
+
+def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0, wappen=""):
+    """Ohne ``wappen`` wird zufällig eines vergeben (möglichst anders als bei den anderen Eltern)."""
     with transaction.atomic():
-        benutzer = Benutzer(anzeigename=anzeigename, rolle=Rolle.ELTERN, reihenfolge=reihenfolge)
+        benutzer = Benutzer(
+            anzeigename=anzeigename,
+            rolle=Rolle.ELTERN,
+            reihenfolge=reihenfolge,
+            wappen=wappen or _freies_wappen(),
+        )
         benutzer.set_unusable_password()
         benutzer.full_clean()
         benutzer.save()
@@ -45,18 +58,31 @@ def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0
     return benutzer
 
 
-def eltern_aendern(benutzer, anzeigename, *, rolle_label, email):
-    """Ändert Name, Rolle (Mama/Papa/andere) und E-Mail eines Elternteils."""
+def eltern_aendern(benutzer, anzeigename, *, rolle_label, email, wappen=None):
+    """Ändert Name, Rolle (Mama/Papa/andere), E-Mail und optional das Wappen eines Elternteils."""
     with transaction.atomic():
         benutzer.anzeigename = anzeigename
+        felder = ["anzeigename"]
+        if wappen is not None or not benutzer.wappen:
+            benutzer.wappen = wappen or _freies_wappen(ausser=benutzer)
+            felder.append("wappen")
         benutzer.full_clean(exclude=["password"])
-        benutzer.save(update_fields=["anzeigename"])
+        benutzer.save(update_fields=felder)
         profil = benutzer.elternprofil
         profil.rolle_label = rolle_label
         profil.email = email
         profil.full_clean()
         profil.save(update_fields=["rolle_label", "email"])
         audit.protokollieren("konten.eltern_geaendert", objekt=benutzer)
+
+
+def wappen_setzen(benutzer, schluessel):
+    """Eltern wählen ihr Wappen (nur Katalog-Einträge)."""
+    if schluessel not in wappen_katalog.NACH_SCHLUESSEL:
+        raise ValidationError("Unbekanntes Wappen.")
+    benutzer.wappen = schluessel
+    benutzer.save(update_fields=["wappen"])
+    audit.protokollieren("konten.wappen_gesetzt", objekt=benutzer, details={"wappen": schluessel})
 
 
 def kind_umbenennen(kind, anzeigename):

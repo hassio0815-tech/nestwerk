@@ -13,6 +13,7 @@ from django.utils import timezone
 
 from apps.benachrichtigung.models import SmtpSicherheit
 from apps.konten.models import ElternLabel
+from apps.konten.wappen import CHOICES as WAPPEN_CHOICES
 
 PASSWORT_MINDESTLAENGE = 10
 HAEUFIGE_PASSWOERTER = {
@@ -82,9 +83,11 @@ class ElternForm(forms.Form):
     eltern1_name = forms.CharField(label="Name", max_length=40, strip=True)
     eltern1_rolle = forms.ChoiceField(label="Rolle", choices=ElternLabel.choices)
     eltern1_email = forms.EmailField(label="E-Mail")
+    eltern1_wappen = forms.ChoiceField(label="Wappen", choices=WAPPEN_CHOICES, required=False)
     eltern2_name = forms.CharField(label="Name", max_length=40, strip=True)
     eltern2_rolle = forms.ChoiceField(label="Rolle", choices=ElternLabel.choices)
     eltern2_email = forms.EmailField(label="E-Mail")
+    eltern2_wappen = forms.ChoiceField(label="Wappen", choices=WAPPEN_CHOICES, required=False)
     passwort = forms.CharField(label="Familien-Passwort", strip=False, required=False)
     passwort2 = forms.CharField(label="Passwort wiederholen", strip=False, required=False)
 
@@ -102,6 +105,9 @@ class ElternForm(forms.Form):
             name = daten.get(feld)
             if name and name.lower() in self.kinder_namen:
                 self.add_error(feld, "Dieser Name ist schon für ein Kind vergeben.")
+        w1, w2 = daten.get("eltern1_wappen"), daten.get("eltern2_wappen")
+        if w1 and w1 == w2:
+            self.add_error("eltern2_wappen", "Bitte zwei verschiedene Wappen wählen.")
         r1, r2 = daten.get("eltern1_rolle"), daten.get("eltern2_rolle")
         if r1 and r1 == r2 and r1 != ElternLabel.ANDERE:
             self.add_error("eltern2_rolle", "Mama und Papa können nur je einmal vorkommen.")

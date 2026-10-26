@@ -13,6 +13,8 @@ from django.db import models
 from django.db.models.functions import Lower
 from django.utils import timezone
 
+from .wappen import CHOICES as WAPPEN_CHOICES
+
 HEX_FARBE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
@@ -52,6 +54,9 @@ class Benutzer(AbstractBaseUser):
         default=True,
         help_text="Eltern: Dungeon-Bereich (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage) zeigen.",
     )
+    wappen = models.CharField(
+        max_length=20, blank=True, choices=WAPPEN_CHOICES, help_text="Eltern: humorvolles Wappen."
+    )
     erstellt_am = models.DateTimeField(default=timezone.now)
 
     objects = BenutzerManager()
@@ -89,6 +94,19 @@ class Benutzer(AbstractBaseUser):
             secret=secret,
             algorithm="sha256",
         ).hexdigest()
+
+    @property
+    def wappen_info(self):
+        """Wappen (emoji, titel, spruch) oder ``None`` (Kinder, leer)."""
+        from .wappen import info
+
+        return info(self.wappen) if self.rolle == Rolle.ELTERN else None
+
+    @property
+    def name_mit_wappen(self):
+        """Für Kinder-Texte: ``Mama (🐉 Hausdrache)``; ohne Wappen nur der Name."""
+        w = self.wappen_info
+        return f"{self.anzeigename} ({w.emoji} {w.titel})" if w else self.anzeigename
 
     @property
     def ist_eltern(self):
