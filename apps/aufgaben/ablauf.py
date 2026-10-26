@@ -31,7 +31,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 
 from apps.ereignisse import services as ereignisse
@@ -40,7 +40,7 @@ from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte
 from apps.spielregeln import selectors as spielregeln
 
-from . import events
+from . import events, schluessel
 from .instanzen import reservierung_frist
 from .models import (
     INTERESSE_LAUFEND,
@@ -453,13 +453,16 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
     _ist_kind(kind)
     text = _text(text, MELDUNG_TEXT_MAX)
     instanz = _laden(instanz)
-    if instanz.status != S.RESERVIERT:
+    if instanz.status not in (S.RESERVIERT, S.NACHBESSERN):
         raise UngueltigerUebergang("Diese Aufgabe ist nicht (mehr) für dich reserviert.")
+    if instanz.status == S.NACHBESSERN and instanz.nachbessern_bis and instanz.nachbessern_bis <= jetzt:
+        raise UngueltigerUebergang("Die Frist zum Nachbessern ist vorbei.")
     if instanz.kind_id != kind.pk:
         raise NichtErlaubt("Diese Aufgabe ist für ein anderes Kind reserviert.")
     gemeldet_am = instanz.gemeldet_am or jetzt
 
-    if instanz.freigabeart_snapshot == Freigabeart.VERTRAUEN:
+    nachbessern = instanz.status == S.NACHBESSERN  # einmal Bestätigung, auch bei Vertrauen
+    if instanz.freigabeart_snapshot == Freigabeart.VERTRAUEN and not nachbessern:
         uebergang(
             instanz,
             S.BESTAETIGT,
@@ -492,6 +495,7 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
         bedingung={"kind": kind},
         gemeldet_am=gemeldet_am,
         reserviert_bis=None,
+        nachbessern_bis=None,
     )
     meldung = Meldung.objects.create(
         instanz=instanz, kind=kind, gemeldet_am=jetzt, text=text, status=MeldungStatus.OFFEN
@@ -550,7 +554,7 @@ def _basis_buchen(instanz, *, von):
         instanz.kind,
         punkte.Art.AUFGABE,
         instanz.punkte_snapshot,
-        schluessel=f"aufgabe:{instanz.pk}:basis",
+        schluessel=schluessel.buchung(instanz.pk, "basis", instanz.nachbessern_anzahl),
         quelle_modul=QUELLE,
         bezugsdatum=_xp_bezugsdatum(instanz),
         referenz=instanz,
@@ -735,7 +739,7 @@ def _sonderpunkte_buchen(instanz, punktzahl, begruendung, *, von):
         instanz.kind,
         punkte.Art.SONDERPUNKTE,
         punktzahl,
-        schluessel=f"aufgabe:{instanz.pk}:sonderpunkte",
+        schluessel=schluessel.buchung(instanz.pk, "sonderpunkte", instanz.nachbessern_anzahl),
         quelle_modul=QUELLE,
         bezugsdatum=_xp_bezugsdatum(instanz),
         referenz=instanz,
@@ -769,33 +773,133 @@ def sonderpunkte_vergeben(instanz, punktzahl, begruendung, *, von):
 
 
 @transaction.atomic
-def korrigieren(instanz, *, von, begruendung, jetzt=None):
-    """Nachträgliche Korrektur (v. a. Vertrauen): ``bestaetigt`` -> ``storniert``, alle Punkte
-    der Instanz (Basis + Serienbonus + Sonderpunkte) per Gegenbuchung zurück. Mindert Guthaben
-    und XP (K2)."""
+def korrigieren(instanz, *, von, begruendung, jetzt=None, nachbessern=False):
+    """Nachträgliche Korrektur (v. a. Vertrauen): alle Punkte der Instanz (Basis + Serienbonus +
+    Sonderpunkte) per Gegenbuchung zurück; mindert Guthaben und XP (K2).
+
+    - Standard: ``bestaetigt`` -> ``storniert`` (endgültig).
+    - ``nachbessern``: dieselbe Instanz geht als ``nachbessern`` zurück an das Kind (Frist
+      ``nachbessern_bis``, Einstellung ``aufgaben.nachbessern_stunden``). Die nächste Meldung
+      braucht Bestätigung; die Punkte werden mit neuen Schlüsseln (Runde +1) erneut gebucht."""
     jetzt = jetzt or zeit.jetzt()
     _ist_eltern(von)
     begruendung = _text(begruendung, BEGRUENDUNG_MAX, "Begründung")
     if not begruendung:
         raise AblaufFehler("Bitte kurz begründen, warum korrigiert wird.")
     instanz = _laden(instanz)
-    uebergang(instanz, S.STORNIERT, von=S.BESTAETIGT)
+    runde = instanz.nachbessern_anzahl
+    if nachbessern:
+        uebergang(
+            instanz,
+            S.NACHBESSERN,
+            von=S.BESTAETIGT,
+            nachbessern_anzahl=runde + 1,
+            nachbessern_grund=begruendung,
+            nachbessern_bis=jetzt
+            + timedelta(hours=einstellungen.wert("aufgaben.nachbessern_stunden")),
+            gemeldet_am=None,
+            bestaetigt_am=None,
+            bestaetigt_von=None,
+            abgeschlossen_am=None,
+            geprueft_am=None,
+            geprueft_von=None,
+            reserviert_bis=None,
+        )
+    else:
+        uebergang(instanz, S.STORNIERT, von=S.BESTAETIGT)
     abgezogen = 0
     for art in ("basis", "serienbonus", "sonderpunkte"):
-        buchung = punkte_selectors.buchung_zu_schluessel(f"aufgabe:{instanz.pk}:{art}")
+        buchung = punkte_selectors.buchung_zu_schluessel(schluessel.buchung(instanz.pk, art, runde))
         if buchung is not None:
             storno = punkte.gegenbuchen(buchung, begruendung=begruendung, von=von)
             abgezogen -= storno.guthaben_delta
     ereignisse.veroeffentlichen(
-        events.KORRIGIERT,
+        events.NACHBESSERN if nachbessern else events.KORRIGIERT,
         kind=instanz.kind,
         akteur=von,
         daten=_daten(instanz, punkte=abgezogen, begruendung=begruendung),
+        **({"schluessel": f"{events.NACHBESSERN}:{instanz.pk}:{runde + 1}"} if nachbessern else {}),
     )
+    instanz.nachbessern_anzahl = runde  # Hooks stornieren die Aktivität der alten Runde
     for hook in _storno_hooks:
         hook(instanz, instanz.kind, von)
-    _protokoll("aufgabe.korrigiert", instanz, akteur=von, punkte=abgezogen, begruendung=begruendung)
+    instanz.nachbessern_anzahl = runde + 1 if nachbessern else runde
+    _protokoll(
+        "aufgabe.nachbessern" if nachbessern else "aufgabe.korrigiert",
+        instanz,
+        akteur=von,
+        punkte=abgezogen,
+        begruendung=begruendung,
+    )
     return instanz
+
+
+@transaction.atomic
+def nachbessern_pruefen(*, jetzt=None) -> dict:
+    """Frist abgelaufen: ``nachbessern`` -> ``storniert`` (keine Punkte), Eltern werden informiert.
+    Läuft im Job ``verfall_pruefen``."""
+    jetzt = jetzt or zeit.jetzt()
+    zaehler = {"nachbessern_abgelaufen": 0}
+    faellige = AufgabenInstanz.objects.filter(status=S.NACHBESSERN, nachbessern_bis__lte=jetzt)
+    for pk in list(faellige.values_list("pk", flat=True)):
+        instanz = AufgabenInstanz.objects.select_related("aufgabe", "kind").get(pk=pk)
+        try:
+            uebergang(instanz, S.STORNIERT, von=S.NACHBESSERN, abgeschlossen_am=jetzt, nachbessern_bis=None)
+        except UngueltigerUebergang:
+            continue
+        ereignisse.veroeffentlichen(
+            events.NACHBESSERN_ABGELAUFEN,
+            kind=instanz.kind,
+            daten=_daten(instanz),
+            schluessel=f"{events.NACHBESSERN_ABGELAUFEN}:{instanz.pk}:{instanz.nachbessern_anzahl}",
+        )
+        _protokoll("aufgabe.nachbessern_abgelaufen", instanz, akteur=None)
+        zaehler["nachbessern_abgelaufen"] += 1
+    return zaehler
+
+
+# --- Vertrauen prüfen (Eltern-Dashboard "Erledigt – kurz prüfen") ------------------------------
+
+
+def zu_pruefen():
+    """Vertrauens-Erledigungen, die noch niemand durchgesehen hat (neueste zuletzt)."""
+    return AufgabenInstanz.objects.filter(
+        status=S.BESTAETIGT,
+        freigabeart_snapshot=Freigabeart.VERTRAUEN,
+        bestaetigt_von__isnull=True,
+        geprueft_am__isnull=True,
+    ).select_related("kind", "aufgabe").order_by("bestaetigt_am", "pk")
+
+
+@transaction.atomic
+def passt(instanz, *, von, jetzt=None):
+    """"Passt": als geprüft markieren, Punkte bleiben."""
+    jetzt = jetzt or zeit.jetzt()
+    _ist_eltern(von)
+    instanz = _laden(instanz)
+    treffer = AufgabenInstanz.objects.filter(
+        pk=instanz.pk,
+        status=S.BESTAETIGT,
+        freigabeart_snapshot=Freigabeart.VERTRAUEN,
+        geprueft_am__isnull=True,
+    ).update(geprueft_am=jetzt, geprueft_von=von)
+    if not treffer:
+        raise UngueltigerUebergang("Diese Aufgabe ist schon geprüft oder wurde geändert.")
+    _protokoll("aufgabe.geprueft", instanz, akteur=von)
+    return instanz
+
+
+@transaction.atomic
+def alle_passen(*, von, jetzt=None):
+    """"Alle passen": jede offene Vertrauens-Erledigung als geprüft markieren. Gibt die Anzahl."""
+    anzahl = 0
+    for instanz in list(zu_pruefen()):
+        try:
+            passt(instanz, von=von, jetzt=jetzt)
+            anzahl += 1
+        except UngueltigerUebergang:
+            continue
+    return anzahl
 
 
 # --- Lesen für Oberflächen (eigene Daten) -----------------------------------------------------

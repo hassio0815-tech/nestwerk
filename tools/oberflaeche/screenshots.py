@@ -322,6 +322,7 @@ SEITEN_KIND = [
 ]
 SEITEN_ELTERN = [
     ("eltern-dashboard", "/eltern/"),
+    ("eltern-module", "/module/"),
     ("eltern-meldungen", "/eltern/meldungen/"),
     ("wochenplan", "/eltern/wochenplan/"),
     ("aufgabenformular", "/eltern/aufgaben/neu/"),
@@ -335,6 +336,7 @@ SEITEN_ELTERN = [
     ("styleguide", "/styleguide/"),
     ("abzeichen-galerie", "/abzeichen/galerie/"),  # AP28: alle Abzeichen-Grafiken (nur DEBUG)
     # Phase 2 (Review AP31: alle Eltern-Seiten der Spielebene auf CSP/Konsole prüfen)
+    ("eltern-dungeon", "/eltern/dungeon/"),
     ("eltern-pausen", "/eltern/pausen/"),
     ("eltern-raenge", "/eltern/raenge/"),
     ("eltern-abzeichen", "/eltern/abzeichen/"),

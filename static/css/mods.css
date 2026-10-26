@@ -232,12 +232,12 @@
 
 .mod-thema--gewaehlt {
   border-color: var(--akzent);
-  box-shadow: 0 var(--block-tiefe) 0 var(--akzent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--akzent) 35%, transparent);
 }
 
 .mod-warnung {
   border-color: var(--gefahr);
-  box-shadow: 0 var(--block-tiefe) 0 var(--gefahr);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gefahr) 35%, transparent);
 }
 
 .mod-warnung__kopf {

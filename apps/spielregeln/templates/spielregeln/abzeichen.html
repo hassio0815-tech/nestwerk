@@ -1,17 +1,17 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% block titel %}Abzeichen{% endblock %}
-{% block kopf_rechts %}
+{% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
   {% url "spielregeln:meilensteine" as ms_url %}
   {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text="Meilensteine" %}
 {% endblock %}
-{% block inhalt %}
+{% block seite %}
   <h1>Abzeichen</h1>
   <p>Abzeichen geben keine Punkte. Ein verdientes Abzeichen bleibt, auch wenn ihr die Schwelle später erhöht oder es ausschaltet.</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Je Kind</h2>
     {% for z in zeilen %}
       <div class="stapel" data-abzeichen-kind="{{ z.kind.pk }}">
@@ -34,14 +34,14 @@
     {% endfor %}
   </div></section>
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Regeln</h2>
     <p class="kachel__text">Ein Abzeichen gibt es, sobald der Wert die Schwelle erreicht. „Je Bereich“ verleiht es mehrfach, z. B. je Quartal oder je Rang.</p>
     {% for z in definitionen %}
       <form method="post" action="{% url 'spielregeln:abzeichen_aendern' z.d.pk %}" class="zeile" data-abzeichen-regel="{{ z.d.schluessel }}"{% if not z.d.aktiv %} data-inaktiv{% endif %}>{% csrf_token %}
         {% include "spielregeln/_abzeichen_symbol.html" with s=z.symbol %}
-        <label class="feld"><span class="feld__label">Name</span><input class="feld__eingabe" name="name" value="{{ z.d.name }}" maxlength="60" required></label>
-        <label class="feld"><span class="feld__label">Beschreibung</span><input class="feld__eingabe" name="beschreibung" value="{{ z.d.beschreibung }}" maxlength="200"></label>
+        <label class="feld"><span class="feld__label">Name</span><input class="nw-eingabe" name="name" value="{{ z.d.name }}" maxlength="60" required></label>
+        <label class="feld"><span class="feld__label">Beschreibung</span><input class="nw-eingabe" name="beschreibung" value="{{ z.d.beschreibung }}" maxlength="200"></label>
         {% include "spielregeln/_abzeichen_regelfelder.html" with d=z.d %}
         <span class="kachel__text">{{ z.anzahl }}× verliehen{% if not z.d.aktiv %} · aus{% endif %}</span>
         {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
@@ -53,11 +53,11 @@
     {% endfor %}
   </div></section>
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Neues Abzeichen</h2>
     <form method="post" action="{% url 'spielregeln:abzeichen_neu' %}" class="zeile">{% csrf_token %}
-      <label class="feld"><span class="feld__label">Name</span><input class="feld__eingabe" name="name" maxlength="60" required></label>
-      <label class="feld"><span class="feld__label">Beschreibung</span><input class="feld__eingabe" name="beschreibung" maxlength="200"></label>
+      <label class="feld"><span class="feld__label">Name</span><input class="nw-eingabe" name="name" maxlength="60" required></label>
+      <label class="feld"><span class="feld__label">Beschreibung</span><input class="nw-eingabe" name="beschreibung" maxlength="200"></label>
       {% include "spielregeln/_abzeichen_regelfelder.html" with d=None %}
       {% include "komponenten/button.html" with typ="submit" variante="primaer" klein=True icon="plus" text="Anlegen" %}
     </form>

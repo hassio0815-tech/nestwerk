@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from apps.oberflaeche import views, views_einstellungen, views_familie
 
@@ -9,8 +10,13 @@ urlpatterns = [
     # "/" = Weiche je Rolle/Gerät; die Anmeldung selbst bleibt bei konten
     path("", views.startseite, name="startseite"),
     path("kind/", views.kind_heim, name="kind_heim"),
+    path("kind/dungeon/", views.dungeon, name="dungeon"),
+    path("eltern/dungeon/", views.eltern_dungeon, name="eltern_dungeon"),
+    path("eltern/dungeon/anzeige/", views.dungeon_anzeige_setzen, name="dungeon_anzeige"),
+    path("kind/spielwelt/", RedirectView.as_view(pattern_name="oberflaeche:dungeon", permanent=True)),
     path("kind/akzent/", views.akzent_setzen, name="akzent"),
     path("eltern/ranking/modus/", views.ranking_modus, name="ranking_modus"),
+    path("module/", views.module_launcher, name="module"),
     path("eltern/", views.eltern_heim, name="eltern_heim"),
     path("tablet/", views.tablet, name="tablet"),
     path("tablet/teil/", views.tablet_teil, name="tablet_teil"),

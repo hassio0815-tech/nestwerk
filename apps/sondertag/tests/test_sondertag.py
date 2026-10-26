@@ -441,7 +441,7 @@ def test_eltern_seite_annehmen_und_uebergeben(eltern_client, anna, mama, papa, m
     assert antwort.status_code == 302
     a.refresh_from_db()
     assert a.annahme_datum == date(2026, 10, 25)
-    inhalt = eltern_client.get("/eltern/").content.decode()
+    inhalt = eltern_client.get("/eltern/dungeon/").content.decode()
     assert "Sondertage verwalten" in inhalt
 
 

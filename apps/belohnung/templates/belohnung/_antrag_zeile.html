@@ -19,7 +19,7 @@
       <form method="post" class="reihe" action="{% url 'belohnung:ablehnen' a.pk %}" hx-post="{% url 'belohnung:ablehnen' a.pk %}" hx-target="#antrag-{{ a.pk }}" hx-swap="outerHTML" hx-disabled-elt="find button">
         {% csrf_token %}
         <input class="feld__eingabe" type="text" name="grund" maxlength="200" placeholder="Grund (optional)" aria-label="Grund">
-        {% include "komponenten/button.html" with typ="submit" variante="gefahr" icon="x" text="Ablehnen" %}
+        {% include "komponenten/button.html" with typ="submit" variante="sanft" icon="x" text="Ablehnen" %}
       </form>
     </div>
   {% endif %}

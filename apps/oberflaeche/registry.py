@@ -10,7 +10,21 @@ T = "oberflaeche/kacheln/"
 
 
 def _kind_konto(request):
-    return selectors.kind_konto(request.user)
+    from apps.spielregeln import selectors as spielregeln
+
+    konto = selectors.kind_konto(request.user)
+    try:
+        konto["rang"] = spielregeln.rang_fortschritt(request.user).rang
+        konto["serie"] = spielregeln.stand(request.user).wochenserie
+    except Exception:  # Kopfkarte bleibt auch ohne Spielregeln nutzbar
+        konto["rang"], konto["serie"] = None, 0
+    return konto
+
+
+def _kind_belohnungen(request):
+    from apps.belohnung import views as belohnung
+
+    return belohnung._kind_kontext(request.user)
 
 
 def _kind_offene(request):
@@ -25,6 +39,12 @@ def _kind_akzent(request):
     from apps.konten import akzent
 
     return {"palette": list(akzent.PALETTE), "aktuell": akzent.akzent_name(request.user)}
+
+
+def _eltern_pruefen(request):
+    from apps.aufgaben import services as aufgaben
+
+    return {"liste": list(aufgaben.zu_pruefen())}
 
 
 def _eltern_entscheidungen(request):
@@ -88,9 +108,10 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_belohnungen",
             "oberflaeche",
-            "Belohnungen",
+            "Punkte einlösen",
             T + "kind_belohnungen.html",
             {KIND},
+            _kind_belohnungen,
             reihenfolge=40,
         ),
         Kachel(
@@ -163,6 +184,15 @@ def kacheln_registrieren():
             {KIND},
             _ranking,
             reihenfolge=60,
+        ),
+        Kachel(
+            "oberflaeche.eltern_pruefen",
+            "oberflaeche",
+            "Erledigt – kurz prüfen",
+            "aufgaben/kacheln/eltern_pruefen.html",
+            {ELTERN},
+            _eltern_pruefen,
+            reihenfolge=5,
         ),
         Kachel(
             "oberflaeche.eltern_ranking",

@@ -56,6 +56,8 @@ def _kind_kontext(kind, meldung="", fehler=""):
 
 def _kind_antwort(request, kind, meldung="", fehler=""):
     kontext = _kind_kontext(kind, meldung, fehler)
+    if _htmx(request) and request.POST.get("ort") == "dashboard":
+        return render(request, "belohnung/_einloesen.html", kontext)
     vorlage = "belohnung/_kind_inhalt.html" if _htmx(request) else "belohnung/kind.html"
     return render(request, vorlage, kontext)
 

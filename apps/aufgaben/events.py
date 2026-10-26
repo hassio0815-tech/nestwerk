@@ -26,6 +26,8 @@ ABGELEHNT = "aufgabe.abgelehnt"
 RUECKFRAGE = "aufgabe.rueckfrage"
 SONDERPUNKTE = "aufgabe.sonderpunkte"
 KORRIGIERT = "aufgabe.korrigiert"
+NACHBESSERN_ABGELAUFEN = "aufgabe.nachbessern_abgelaufen"  # Frist vorbei, keine Punkte
+NACHBESSERN = "aufgabe.nachbessern"  # Eltern geben eine Vertrauens-Aufgabe zurück (Punkte zurück)
 # Fakt für Phase 2 (spielregeln: Aktivität, K1). Daten: kind, instanz_id, bezugsdatum
 # (= Meldedatum, lokal), gemeldet_am, bestaetigt_am, punkte. Storno: ``aufgabe.korrigiert``.
 ERLEDIGT = "aufgabe.erledigt"
@@ -45,6 +47,11 @@ TEXTE = {
     ),
     SONDERPUNKTE: ("Sonderpunkte!", "+{punkte} für „{aufgabe}“: {begruendung}"),
     KORRIGIERT: ("Punkte korrigiert", "„{aufgabe}“: {punkte} Punkte abgezogen. {begruendung}"),
+    NACHBESSERN: ("Bitte nachbessern", "„{aufgabe}“: {begruendung}"),
+    NACHBESSERN_ABGELAUFEN: (
+        "Nachbessern nicht erledigt",
+        "{kind} hat „{aufgabe}“ nicht rechtzeitig nachgebessert. Keine Punkte.",
+    ),
 }
 
 
@@ -88,6 +95,8 @@ def typen_deklarieren():
     typ(RUECKFRAGE, "Rückfrage zur Aufgabe", "kind", kanaele=("push",), **kind)
     typ(SONDERPUNKTE, "Sonderpunkte erhalten", "kind", kanaele=("push",), **kind)
     typ(KORRIGIERT, "Punkte einer Aufgabe korrigiert", "kind", kanaele=("push",), **kind)
+    typ(NACHBESSERN, "Aufgabe zum Nachbessern zurück", "kind", kanaele=("push",), **kind)
+    typ(NACHBESSERN_ABGELAUFEN, "Nachbessern nicht rechtzeitig erledigt", "eltern", **eltern)
     typ(ERLEDIGT, "Aufgabe erledigt (Aktivität)", "intern", kanaele=())
 
 

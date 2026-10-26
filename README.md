@@ -105,7 +105,7 @@ Nestwerk steht unter der **GNU Affero General Public License, Version 3 oder neu
 
 - Nutzen, ändern und weitergeben ist erlaubt.
 - Wer eine geänderte Fassung als Dienst im Netz betreibt, muss den geänderten Quellcode den Nutzern dieses Dienstes anbieten. Das schützt selbst gehostete Installationen davor, als geschlossener Online-Dienst vereinnahmt zu werden.
-- Abhängigkeiten sind überwiegend permissiv (BSD, MIT, Apache-2.0); pywebpush (MPL-2.0) ist AGPL-kompatibel. Die Schriften Inter und Press Start 2P stehen unter der SIL OFL; ihre Lizenzhinweise in `static/fonts/` bleiben erhalten.
+- Abhängigkeiten sind überwiegend permissiv (BSD, MIT, Apache-2.0); pywebpush (MPL-2.0) ist AGPL-kompatibel. Die Schriften Inter und Fraunces stehen unter der SIL OFL; ihre Lizenzhinweise in `static/fonts/` bleiben erhalten.
 - Vor einer Weitergabe die Abhängigkeitslizenzen mit einem Werkzeug wie `pip-licenses` prüfen.
 
 Nestwerk hieß früher *FamKo*. Bestehende Installationen laufen unverändert weiter (siehe [docs/RUNBOOK.md](docs/RUNBOOK.md)).

@@ -8,6 +8,12 @@ urlpatterns = [
     re_path(r"^avatar/(?P<hash>[0-9a-f]{64})\.svg$", views.svg, name="svg"),
     path("avatar/galerie/", views.galerie, name="galerie"),
     path("kind/avatar/", views.kind_wahl, name="kind_wahl"),
+    path("kind/avatar/name/", views.name_setzen, name="name"),
+    path(
+        "eltern/avatar/<uuid:kind_id>/name-zuruecksetzen/",
+        views.name_zuruecksetzen,
+        name="name_zuruecksetzen",
+    ),
     # AP26: Mod-Shop, Werkstatt, Slots, Themenwechsel
     path("kind/mods/", views_mods.shop, name="shop"),
     path("kind/mods/slot/<slug:slot>/ablegen/", views_mods.ablegen, name="ablegen"),

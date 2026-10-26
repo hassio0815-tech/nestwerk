@@ -16,6 +16,8 @@ Alle erlaubten Übergänge stehen zentral in ``UEBERGAENGE``. Jeder Statuswechse
     konflikt   -> reserviert         Eltern teilen zu / Rückzug bis auf ein Kind (K11: Frist neu)
     konflikt   -> offen              Eltern lösen
     konflikt   -> nicht_uebernommen  Fensterende ohne Zuteilung
+    bestaetigt -> nachbessern        Eltern geben zurück (Punkte zurück, Frist nachbessern_bis)
+    nachbessern -> gemeldet | storniert   Kind meldet erneut / Frist abgelaufen
     gemeldet   -> bestaetigt | abgelehnt | rueckfrage   Eltern entscheiden
     rueckfrage -> gemeldet           Kind antwortet
     rueckfrage -> bestaetigt | abgelehnt                Eltern entscheiden ohne Antwort
@@ -36,7 +38,8 @@ UEBERGAENGE: dict[str, frozenset[str]] = {
     S.KONFLIKT: frozenset({S.RESERVIERT, S.OFFEN, S.NICHT_UEBERNOMMEN}),
     S.GEMELDET: frozenset({S.BESTAETIGT, S.ABGELEHNT, S.RUECKFRAGE}),
     S.RUECKFRAGE: frozenset({S.GEMELDET, S.BESTAETIGT, S.ABGELEHNT}),
-    S.BESTAETIGT: frozenset({S.STORNIERT}),
+    S.BESTAETIGT: frozenset({S.STORNIERT, S.NACHBESSERN}),
+    S.NACHBESSERN: frozenset({S.GEMELDET, S.STORNIERT}),
     S.ABGELEHNT: frozenset(),
     S.NICHT_UEBERNOMMEN: frozenset(),
     S.STORNIERT: frozenset(),

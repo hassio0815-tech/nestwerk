@@ -235,7 +235,7 @@ def test_neuberechnung_meldet_fehlenden_aufstieg(anna, uhr):
 def test_kind_kachel_rang_und_fortschritt(kind_client, anna, uhr):
     _wochen(anna, uhr, 5)
     _xp(anna, 500)
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/dungeon/").content.decode()
     assert 'data-kachel="spielregeln.kind_rang"' in html
     assert 'data-selten="common" data-rang="common"' in html
     assert "Noch 1500 XP und 15 aktive Wochen bis Uncommon." in html
@@ -245,7 +245,7 @@ def test_eltern_raenge_verwalten(eltern_client, anna, mama, uhr):
     html = eltern_client.get("/eltern/raenge/").content.decode()
     assert 'data-rang="godmode"' in html and "Kalibrierung" in html
     assert (
-        'data-kachel="spielregeln.eltern_raenge"' in eltern_client.get("/eltern/").content.decode()
+        'data-kachel="spielregeln.eltern_raenge"' in eltern_client.get("/eltern/dungeon/").content.decode()
     )
     rare = Rang.objects.get(schluessel="rare")
     antwort = eltern_client.post(

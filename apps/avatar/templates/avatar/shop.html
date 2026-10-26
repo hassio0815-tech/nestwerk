@@ -9,6 +9,7 @@
 {% block inhalt %}
   <div class="zeile mod-kopf">
     <h1>Mod-Shop</h1>
+    {% if slot_filter %}<p class="reihe" data-slot-filter="{{ slot_filter.schluessel }}"><span class="chip">Nur Slot: {{ slot_filter.name }}</span>{% url "avatar:shop" as alle_url %}<a class="knopf knopf--geist knopf--klein" href="{{ alle_url }}">Alle Slots zeigen</a></p>{% endif %}
     <div class="stapel mod-kopf__guthaben"><span>Verfügbar</span>{% include "komponenten/punkte.html" with wert=verfuegbar %}</div>
   </div>
   {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}

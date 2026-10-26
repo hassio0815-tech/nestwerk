@@ -5,13 +5,13 @@ from django.contrib import auth
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from apps.kern import audit, zeit
 
-from . import akzent, netz, selectors, services, sitzung, sperre
+from . import akzent, begruessung, netz, selectors, services, sitzung, sperre
 from .geraet import cookie_loeschen, cookie_setzen
 from .models import Benutzer, Geraet, GeraeteTyp, Rolle
 from .zugriff import nur_eltern, nur_kind
@@ -23,13 +23,23 @@ def _heim(user):
     return reverse("konten:eltern_heim" if user.rolle == Rolle.ELTERN else "konten:kind_heim")
 
 
+def _nach_login(user):
+    """Eltern landen im Modul-Launcher (oberflaeche), sonst im eigenen Heim."""
+    if user.rolle == Rolle.ELTERN:
+        try:
+            return reverse("oberflaeche:module")
+        except NoReverseMatch:
+            pass
+    return _heim(user)
+
+
 def _weiter(request, user):
     ziel = request.POST.get("next") or request.GET.get("next") or ""
     if ziel and url_has_allowed_host_and_scheme(
         ziel, allowed_hosts={request.get_host()}, require_https=request.is_secure()
     ):
         return redirect(ziel)
-    return redirect(_heim(user))
+    return redirect(_nach_login(user))
 
 
 def _minuten_text(bis):
@@ -52,7 +62,11 @@ def start(request):
         }
         for kind in selectors.aktive_kinder()
     ]
-    return render(request, "konten/start.html", {"kinder": kinder})
+    return render(
+        request,
+        "konten/start.html",
+        {"kinder": kinder, "eltern": selectors.aktive_eltern(), "gruss": begruessung.gruss()},
+    )
 
 
 @require_http_methods(["GET", "POST"])
@@ -100,6 +114,8 @@ def eltern_login(request):
     if request.user.is_authenticated:
         return redirect(_heim(request.user))
     kontext = {"eltern": selectors.aktive_eltern(), "next": request.GET.get("next", "")}
+    gewaehlt = _uuid(request.POST.get("eltern") or request.GET.get("eltern"))
+    kontext["gewaehlt"] = kontext["eltern"].filter(pk=gewaehlt).first() if gewaehlt else None
     if request.method == "GET":
         return render(request, "konten/eltern_login.html", kontext)
 

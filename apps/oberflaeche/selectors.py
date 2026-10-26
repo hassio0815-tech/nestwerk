@@ -9,7 +9,7 @@ from apps.kern import jobs, zeit
 from apps.konten import selectors as konten
 from apps.punkte import selectors as punkte
 
-LAUFENDE_ANZEIGE = ("rueckfrage", "reserviert", "konflikt", "gemeldet")
+LAUFENDE_ANZEIGE = ("rueckfrage", "nachbessern", "reserviert", "konflikt", "gemeldet")
 AUSZUG_OFFENE = 4
 SICHERUNGS_JOBS = ("db_sichern", "backup_pruefen")
 

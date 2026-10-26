@@ -5,7 +5,7 @@ vollen Seite. Fachliche Fehler (``AblaufFehler``) erscheinen als Hinweis, nie al
 """
 
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.konten.zugriff import aktueller_elternteil, aktuelles_kind, nur_eltern, nur_kind
@@ -214,3 +214,60 @@ def eltern_korrigieren(request, pk):
         services.korrigieren(instanz, von=von, begruendung=daten.get("begruendung", ""))
 
     return _eltern_aktion(request, pk, aktion, "Korrigiert, Punkte zurückgebucht.")
+
+
+# --- Vertrauen prüfen (Dashboard-Karte "Erledigt – kurz prüfen") -----------------------------------
+
+
+def _pruefen_antwort(request, hinweis="", art="erfolg"):
+    if not _htmx(request):
+        return redirect("oberflaeche:eltern_heim")
+    kontext = {"k": {"liste": list(services.zu_pruefen())}, "hinweis": hinweis, "hinweis_art": art}
+    return render(request, "aufgaben/_pruefen.html", kontext)
+
+
+def _pruefen_aktion(request, pk, aktion, erfolg):
+    von = aktueller_elternteil(request)
+    instanz = get_object_or_404(AufgabenInstanz, pk=pk)
+    try:
+        aktion(instanz, von, request.POST.get("begruendung", ""))
+    except services.AblaufFehler as fehler:
+        return _pruefen_antwort(request, str(fehler), "fehler")
+    return _pruefen_antwort(request, erfolg)
+
+
+@nur_eltern
+@require_POST
+def pruefen_passt(request, pk):
+    return _pruefen_aktion(
+        request, pk, lambda i, von, _g: services.passt(i, von=von), "Passt, danke."
+    )
+
+
+@nur_eltern
+@require_POST
+def pruefen_alle(request):
+    anzahl = services.alle_passen(von=aktueller_elternteil(request))
+    return _pruefen_antwort(request, f"{anzahl} als „passt“ markiert.")
+
+
+@nur_eltern
+@require_POST
+def pruefen_nachbessern(request, pk):
+    return _pruefen_aktion(
+        request,
+        pk,
+        lambda i, von, grund: services.korrigieren(i, von=von, begruendung=grund, nachbessern=True),
+        "Zurück ans Kind: Punkte abgezogen, es soll nachbessern.",
+    )
+
+
+@nur_eltern
+@require_POST
+def pruefen_ablehnen(request, pk):
+    return _pruefen_aktion(
+        request,
+        pk,
+        lambda i, von, grund: services.korrigieren(i, von=von, begruendung=grund),
+        "Abgelehnt, Punkte zurückgebucht.",
+    )

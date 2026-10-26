@@ -43,7 +43,7 @@
           </div>
           <div class="reihe">
             <button type="submit" class="knopf knopf--primaer" hx-post="{% url 'aufgaben:bestaetigen' i.pk %}" hx-disabled-elt="this">{% include "komponenten/icon.html" with name="check" %}<span>Bestätigen</span></button>
-            <button type="submit" class="knopf knopf--gefahr" formaction="{% url 'aufgaben:ablehnen' i.pk %}" hx-post="{% url 'aufgaben:ablehnen' i.pk %}" hx-confirm="Ablehnen? Es gibt keine Punkte.">{% include "komponenten/icon.html" with name="x" %}<span>Ablehnen</span></button>
+            <button type="submit" class="knopf knopf--sanft" formaction="{% url 'aufgaben:ablehnen' i.pk %}" hx-post="{% url 'aufgaben:ablehnen' i.pk %}" hx-confirm="Ablehnen? Es gibt keine Punkte.">{% include "komponenten/icon.html" with name="x" %}<span>Ablehnen</span></button>
           </div>
         </form>
         {% if i.status == "gemeldet" %}
@@ -85,7 +85,7 @@
           {% endif %}
           <form method="post" action="{% url 'aufgaben:korrigieren' i.pk %}" hx-post="{% url 'aufgaben:korrigieren' i.pk %}" class="reihe" hx-confirm="Alle Punkte dieser Aufgabe zurückbuchen?">{% csrf_token %}
             <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="Grund der Korrektur" aria-label="Grund der Korrektur" required>
-            {% include "komponenten/button.html" with typ="submit" variante="gefahr" klein=True icon="x" text="Korrigieren" %}
+            {% include "komponenten/button.html" with typ="submit" variante="sanft" klein=True icon="x" text="Korrigieren" %}
           </form>
         </div>
       </div></article>

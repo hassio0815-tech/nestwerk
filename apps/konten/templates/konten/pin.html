@@ -1,18 +1,20 @@
-{% extends "basis/kind.html" %}
-{% comment %}PIN-Eingabe für ein Kind. Akzentfarbe des Kindes über data-akzent am <body>.{% endcomment %}
+{% extends "basis/huelle.html" %}
+{% comment %}PIN-Eingabe für ein Kind im Marken-Look. Der Ring nutzt die Akzentfarbe des Kindes (data-akzent).{% endcomment %}
 {% block titel %}PIN{% endblock %}
-{% block kopf_rechts %}
-  {% url "konten:start" as start_url %}
-  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
-{% endblock %}
-{% block inhalt %}
-  <div class="einrichtung-karte stapel">
-    <form method="post" class="stapel" autocomplete="off">
+{% block buehne %}
+  <div class="huelle-buehne">
+    <div class="nw-profile nw-profile--eins">
+      {% include "komponenten/profil_kachel.html" with benutzer=kind name=kind.anzeigename akzent=akzent %}
+    </div>
+    <form method="post" class="stapel nw-voll" autocomplete="off">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ next }}">
-      <h1>Hallo {{ kind.anzeigename }}!</h1>
+      <h1 class="nw-begruessung">Hallo {{ kind.anzeigename }}!</h1>
+      <p class="nw-leise">Gib deine PIN ein.</p>
       {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
       {% include "komponenten/pin_pad.html" with feld="pin" %}
     </form>
+    {% url "konten:start" as start_url %}
+    {% include "komponenten/button.html" with href=start_url variante="geist" icon="pfeil-links" text="Zurück zur Auswahl" %}
   </div>
 {% endblock %}

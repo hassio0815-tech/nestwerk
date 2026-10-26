@@ -12,12 +12,13 @@
 
 import hashlib
 import logging
+import unicodedata
 from datetime import timedelta
 
 from django.db import IntegrityError, transaction
 from django.urls import reverse
 
-from apps.kern import zeit
+from apps.kern import audit, zeit
 from apps.spielregeln.services import (  # noqa: F401 (Mod-Standards, AP26)
     mod_faktoren_setzen,
     mod_standard_aendern,
@@ -307,3 +308,46 @@ def cache_aufraeumen(tage=30):
     zeilen.delete()
     _SPEICHER.clear()
     return anzahl
+
+
+# --- Figurenname ---------------------------------------------------------------------------------
+
+NAME_MAX = 20
+
+
+def name_bereinigen(roh) -> str:
+    """Steuer- und Formatzeichen raus, Leerraum zusammenfassen, trimmen. Zu lang -> Fehler."""
+    text = "".join(" " if z.isspace() else z for z in str(roh or ""))
+    text = "".join(z for z in text if unicodedata.category(z)[0] != "C")
+    text = " ".join(text.split())
+    if len(text) > NAME_MAX:
+        raise AvatarFehler(f"Der Name darf höchstens {NAME_MAX} Zeichen haben.")
+    return text
+
+
+def avatar_name_setzen(kind, roh) -> str:
+    """Kind benennt seine Figur (leer = Name entfernen). Gibt den gespeicherten Namen zurück."""
+    name = name_bereinigen(roh)
+    treffer = Avatar.objects.filter(pk=kind.pk).update(name=name)
+    if not treffer:
+        raise AvatarFehler("Wähle zuerst deinen Avatar.")
+    return name
+
+
+def avatar_name_zuruecksetzen(kind, *, von) -> bool:
+    """Eltern leeren den Namen (Protokoll). ``False``, wenn es nichts zu leeren gab."""
+    avatar = Avatar.objects.filter(pk=kind.pk).first()
+    if avatar is None or not avatar.name:
+        return False
+    alt = avatar.name
+    Avatar.objects.filter(pk=kind.pk).update(name="")
+    audit.protokollieren(
+        "avatar.name_zurueckgesetzt", akteur=von, objekt=avatar, kind=kind, details={"alt": alt}
+    )
+    return True
+
+
+def avatar_name(benutzer) -> str:
+    """Anzeigename der Figur; ohne eigenen Namen der Name des Kindes."""
+    name = Avatar.objects.filter(pk=benutzer.pk).values_list("name", flat=True).first()
+    return name or benutzer.anzeigename

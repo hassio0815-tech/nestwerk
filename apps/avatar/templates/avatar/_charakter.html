@@ -1,0 +1,21 @@
+{% load avatar_tags %}{% comment %}Charakter-Bildschirm (Dungeon, erster Abschnitt). c = avatar.charakter.charakter(kind).
+  Slots: gefüllt (Seltenheits-Glühen) und im Bau öffnen ein kleines Detail (details, ohne Skript), leer führt in den Shop mit Slot-Filter.{% endcomment %}
+<section class="karte charakter" data-charakter aria-labelledby="charakter-titel">
+  <div class="karte__inhalt stapel">
+    <div class="charakter__kopf">
+      <h2 id="charakter-titel" class="sr-only">Meine Figur</h2>
+      {% include "avatar/_name.html" with name=c.name standard=c.kind.anzeigename %}
+    </div>
+    <div class="charakter__buehne">
+      <div class="charakter__seite charakter__seite--links">{% for s in c.links %}{% include "avatar/_slot.html" %}{% endfor %}</div>
+      <div class="charakter__mitte">{% avatar_bild c.kind "riesig" %}</div>
+      <div class="charakter__seite charakter__seite--rechts">{% for s in c.rechts %}{% include "avatar/_slot.html" %}{% endfor %}</div>
+    </div>
+    <div class="charakter__zeile reihe">
+      <span class="chip rang-chip" data-selten="{{ c.stufe.rang_selten }}">{% include "komponenten/icon.html" with name="pokal" %} {{ c.stufe.rang_name }}</span>
+      {% include "komponenten/punkte.html" with wert=c.guthaben %}
+    </div>
+    {% include "komponenten/fortschritt.html" with label=c.label wert=c.stufe.aktuell max=c.stufe.slots selten=c.stufe.rang_selten %}
+    <p class="charakter__ziel" data-ziel>{% include "komponenten/icon.html" with name="stern" %} {{ c.ziel }}</p>
+  </div>
+</section>

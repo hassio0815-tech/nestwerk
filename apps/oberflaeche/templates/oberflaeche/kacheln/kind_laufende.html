@@ -1,5 +1,5 @@
 <article class="karte"><div class="karte__inhalt stapel">
-  <h2>Meine laufenden Aufgaben</h2>
+  <h2>Meine Aufgaben</h2>
   {% for i in k.laufende %}
     <div class="zeile">
       <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>

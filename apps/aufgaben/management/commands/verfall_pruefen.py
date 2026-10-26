@@ -7,4 +7,6 @@ class Command(JobBefehl):
     job_name = "verfall_pruefen"
 
     def job(self, sperre, **optionen):
-        return services.verfall_pruefen()
+        ergebnis = services.verfall_pruefen()
+        ergebnis.update(services.nachbessern_pruefen())
+        return ergebnis

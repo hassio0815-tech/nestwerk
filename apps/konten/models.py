@@ -48,6 +48,10 @@ class Benutzer(AbstractBaseUser):
     reihenfolge = models.SmallIntegerField(default=0)
     akzentfarben = models.JSONField(default=list, blank=True, validators=[akzentfarben_pruefen])
     aktiv = models.BooleanField(default=True)
+    dungeon_anzeigen = models.BooleanField(
+        default=True,
+        help_text="Eltern: Dungeon-Bereich (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage) zeigen.",
+    )
     erstellt_am = models.DateTimeField(default=timezone.now)
 
     objects = BenutzerManager()

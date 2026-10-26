@@ -7,7 +7,7 @@
   background: var(--flaeche-hoch);
   border: var(--rahmen-breite) solid var(--rahmen);
   border-radius: var(--radius);
-  box-shadow: 0 var(--block-tiefe) 0 var(--kante);
+  box-shadow: var(--schatten-karte);
 }
 
 .avatar-bild > svg {
@@ -115,7 +115,7 @@
 
 .avatar-wahl__thema {
   margin: 0;
-  font-family: var(--schrift-pixel);
+  font-family: var(--schrift-titel);
   font-size: 0.9rem;
   line-height: 1.6;
   text-align: center;
@@ -218,7 +218,7 @@
 
 .avatar-thema--gewaehlt {
   border-color: var(--akzent);
-  box-shadow: 0 var(--block-tiefe) 0 var(--akzent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--akzent) 35%, transparent);
 }
 
 .avatar-wahl__senden {

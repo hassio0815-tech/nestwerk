@@ -1,2 +1,3 @@
-{% url "belohnung:kind" as belohnungen_url %}
-{% include "komponenten/kachel.html" with href=belohnungen_url icon="geschenk" titel="Belohnungen" text="Aussuchen und beantragen" %}
+<article class="karte" id="kind-einloesen"><div class="karte__inhalt stapel">
+  {% include "belohnung/_einloesen.html" with kacheln=k.kacheln verfuegbar=k.verfuegbar meldung=k.meldung fehler=k.fehler %}
+</div></article>

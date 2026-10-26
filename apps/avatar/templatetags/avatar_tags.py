@@ -52,3 +52,9 @@ def svg_roh(svg, groesse="mittel", beschriftung=""):
         beschriftung,
         mark_safe(_ausschnitt(svg, groesse)),  # noqa: S308
     )
+
+
+@register.filter
+def avatar_name(benutzer):
+    """``{{ kind|avatar_name }}``: Figurenname, sonst Name des Kindes."""
+    return services.avatar_name(benutzer)

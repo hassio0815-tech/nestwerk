@@ -1,21 +1,4 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% load static %}
-{% comment %}Eltern-Seiten von oberflaeche: gemeinsame Kopfzeile und Navigation.{% endcomment %}
+{% comment %}Eltern-Seiten von oberflaeche: Einstellungs-Layout (Seitenleiste/Tabs) plus Fachseiten-CSS.{% endcomment %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/aufgaben.css' %}"><link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "benachrichtigung:liste" as benachrichtigungen_url %}
-  {% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text="Benachrichtigungen" %}
-  <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Abmelden" %}
-  </form>
-{% endblock %}
-{% block inhalt %}
-  <nav class="aufgaben-nav" aria-label="Eltern">
-    {% url "oberflaeche:eltern_heim" as u1 %}{% url "oberflaeche:einstellungen" as u2 %}{% url "oberflaeche:familie" as u3 %}{% url "konten:geraete" as u4 %}
-    {% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="home" text="Übersicht" %}
-    {% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="einstellungen" text="Einstellungen" %}
-    {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="person" text="Familie" %}
-    {% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="schloss" text="Geräte" %}
-  </nav>
-  {% block seite %}{% endblock %}
-{% endblock %}

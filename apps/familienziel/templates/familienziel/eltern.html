@@ -1,24 +1,24 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% load static %}
 {% block titel %}Familienziel{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">{% endblock %}
-{% block kopf_rechts %}
+{% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
 {% endblock %}
-{% block inhalt %}
+{% block seite %}
   <h1>Familienziel</h1>
   <p>Gezählt werden die verdienten XP aller Kinder von Montag bis Sonntag. Jedes nicht pausierte Kind braucht mindestens eine bestätigte Aufgabe.</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Diese Woche</h2>
     {% include "familienziel/kacheln/_balken.html" with a=a %}
     <p class="kachel__text">Serie: {{ a.serie }} von {{ a.serie_ziel }} Wochen in Folge für das große Ziel.</p>
   </div></section>
 
   {% for w in wochen %}
-    <section class="karte" data-fz-woche="{{ w.iso }}"><div class="karte__inhalt stapel">
+    <section class="nw-karte" data-fz-woche="{{ w.iso }}"><div class="karte__inhalt stapel">
       <h2>{% if forloop.first %}Aktuelle Woche{% else %}Nächste Woche{% endif %} ({{ w.zeile.montag|date:"d.m." }})</h2>
       <p class="fz-status">Ziel: <strong>{{ w.zeile.ziel_punkte }}</strong> Punkte · Belohnung: {% include "familienziel/_belohnung.html" with b=w.zeile.belohnung titel="noch nicht gewählt" %}
         · <span class="chip" data-selten="common">{{ w.zeile.get_abstimmung_status_display }}</span> <span class="chip" data-selten="common">{{ w.zeile.get_status_display }}</span></p>
@@ -34,7 +34,7 @@
     </div></section>
   {% endfor %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Belohnungsliste</h2>
     {% for b in belohnungen %}
       <div class="fz-zeile" data-belohnung="{{ b.pk }}">
@@ -58,7 +58,7 @@
     </form>
   </div></section>
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Historie</h2>
     {% for g in grossziele %}
       <div class="fz-zeile" data-grossziel="{{ g.pk }}"><strong>Großziel: {{ g.name|default:"Ausflug" }}</strong>

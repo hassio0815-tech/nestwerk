@@ -674,10 +674,11 @@ def aktivitaeten_nachtragen() -> dict:
                 },
             )
             angelegt += neu
-        for e in ereignis_selectors.ereignisse_vom_typ("aufgabe.korrigiert"):
-            instanz = e.daten.get("instanz_id")
-            if instanz is not None:
-                storniert += Aktivitaet.objects.filter(
-                    modul="aufgaben", referenz=str(instanz), storniert=False
-                ).update(storniert=True)
+        for typ in ("aufgabe.korrigiert", "aufgabe.nachbessern"):
+            for e in ereignis_selectors.ereignisse_vom_typ(typ):
+                instanz = e.daten.get("instanz_id")
+                if instanz is not None:
+                    storniert += Aktivitaet.objects.filter(
+                        modul="aufgaben", referenz=str(instanz), storniert=False
+                    ).update(storniert=True)
     return {"angelegt": angelegt, "storniert": storniert}

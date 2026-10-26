@@ -2,7 +2,7 @@
 <li class="rk-karte{% if e.ist_held %} rk-karte--held{% endif %}" data-kind="{{ e.kind.pk }}" data-akzent="{{ e.akzent }}"{% if e.rang %} data-selten="{{ e.rang.selten }}"{% endif %}>
   {% if e.ist_held %}<span class="rk-held-band" data-held>{% include "komponenten/icon.html" with name="pokal" %} Held der Woche</span>{% endif %}
   {% avatar_bild e.kind "riesig" %}
-  <h3 class="rk-karte__name">{{ e.kind.anzeigename }}</h3>
+  <h3 class="rk-karte__name">{{ e.kind|avatar_name }}</h3>
   {% if e.rang %}<span class="chip rang-chip" data-selten="{{ e.rang.selten }}" data-rang="{{ e.rang.schluessel }}">{% include "komponenten/icon.html" with name="pokal" %} {{ e.rang.name }}</span>{% endif %}
   <dl class="rk-fakten">
     <div><dt>Serie</dt><dd data-serie="{{ e.serie }}">{% if e.pausiert %}Pause{% else %}{{ e.serie }} {% if e.serie == 1 %}Woche{% else %}Wochen{% endif %}{% endif %}</dd></div>

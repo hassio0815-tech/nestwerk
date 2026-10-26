@@ -1,12 +1,12 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% load static avatar_tags %}
 {% block titel %}Ruhmeshalle{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}"><link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">{% endblock %}
-{% block kopf_rechts %}
+{% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
 {% endblock %}
-{% block inhalt %}
+{% block seite %}
   <h1>Ruhmeshalle</h1>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
   {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung icon="check" %}{% endif %}

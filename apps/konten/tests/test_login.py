@@ -79,7 +79,7 @@ def test_eltern_login_erfolg_mit_namen(mama, papa, client):
     seite = client.get(reverse("konten:eltern_login")).content.decode()
     assert "Mama" in seite and "Papa" in seite
     antwort = eltern_anmelden(client, papa)
-    assert antwort.status_code == 302 and antwort.url == reverse("konten:eltern_heim")
+    assert antwort.status_code == 302 and antwort.url == reverse("oberflaeche:module")
     assert client.session["_auth_user_id"] == str(papa.pk)
 
 
@@ -154,7 +154,7 @@ def test_next_nur_auf_eigene_seiten(mama, client):
         reverse("konten:eltern_login"),
         {"eltern": str(mama.pk), "passwort": PASSWORT, "next": "https://boese.example/x"},
     )
-    assert antwort.url == reverse("konten:eltern_heim")
+    assert antwort.url == reverse("oberflaeche:module")
     c = Client()
     antwort = c.post(
         reverse("konten:eltern_login"),

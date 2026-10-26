@@ -9,7 +9,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render, resolve_url
 from django.views.decorators.http import require_http_methods
 
-from apps.konten import akzent
+from apps.konten import akzent, begruessung
 from apps.konten import selectors as konten_selectors
 
 from . import forms, services, uebersicht, zustand
@@ -67,6 +67,7 @@ def _darstellen(request, nr, kontext=None):
             "zurueck_url": resolve_url("einrichtung:schritt", nr=nr - 1) if nr > 1 else "",
             "weiter_url": resolve_url("einrichtung:schritt", nr=nr),
             "app_name": services.app_name(),
+            "gruss": begruessung.gruss(),
         }
     )
     vorlage = "einrichtung/_assistent.html" if _htmx(request) else "einrichtung/seite.html"

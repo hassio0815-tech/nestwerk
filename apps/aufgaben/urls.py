@@ -82,6 +82,16 @@ urlpatterns += [
         views_ablauf.eltern_sonderpunkte,
         name="sonderpunkte",
     ),
+    path("eltern/pruefen/<int:pk>/passt/", views_ablauf.pruefen_passt, name="pruefen_passt"),
+    path("eltern/pruefen/alle/", views_ablauf.pruefen_alle, name="pruefen_alle"),
+    path(
+        "eltern/pruefen/<int:pk>/nachbessern/",
+        views_ablauf.pruefen_nachbessern,
+        name="pruefen_nachbessern",
+    ),
+    path(
+        "eltern/pruefen/<int:pk>/ablehnen/", views_ablauf.pruefen_ablehnen, name="pruefen_ablehnen"
+    ),
     path(
         "eltern/meldungen/<int:pk>/korrigieren/",
         views_ablauf.eltern_korrigieren,

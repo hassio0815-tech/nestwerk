@@ -1,4 +1,4 @@
-{% extends "basis/basis.html" %}{% load static %}
+{% extends "basis/marke.html" %}{% load static %}
 {% comment %}Einrichtungs-Assistent: hell, eine Karte pro Schritt. Schritt-Anzeige per Kontext (schritt, schritte, schritt_titel).{% endcomment %}
 {% block layout %}einrichtung{% endblock %}
 {% block titel %}Einrichtung{% endblock %}
@@ -8,6 +8,7 @@
   </div>
 {% endblock %}
 {% block inhalt %}
+  <div class="nw-punkte" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="einrichtung-karte stapel">
     {% block schritt %}
       {% if schritte %}

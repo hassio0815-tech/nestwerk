@@ -1,6 +1,6 @@
 /* Nestwerk Designsystem: Basis, Layouts und Komponenten.
-   Mobil zuerst. Alle Ziele mindestens 48 px. Pixelschrift nur für Überschriften,
-   Punkte und Ränge (Kinder-Optik). Eltern-Optik: Inter, flach, hell. */
+   Mobil zuerst. Alle Ziele mindestens 48 px. Ein Look für alle Layouts: Fraunces-Überschriften,
+   Inter-Text, runde Karten, weiche Schatten. Spiel-Effekte stehen in spiel.css. */
 
 *,
 *::before,
@@ -31,9 +31,9 @@ body {
 h1,
 h2 {
   margin: 0;
-  font-family: var(--schrift-pixel);
-  font-weight: 400;
-  line-height: 1.6;
+  font-family: var(--schrift-titel);
+  font-weight: 600;
+  line-height: 1.25;
   color: var(--text);
 }
 
@@ -144,8 +144,9 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--schrift-pixel);
-  font-size: 0.9rem;
+  font-family: var(--schrift-titel);
+  font-size: 1.1rem;
+  font-weight: 900;
   color: var(--text);
   text-decoration: none;
 }
@@ -163,11 +164,6 @@ p {
   height: 32px;
   flex: none;
   border-radius: 8px;
-}
-
-[data-layout="kind"] .kopf__logo,
-[data-layout="tablet"] .kopf__logo {
-  border-radius: 4px;
 }
 
 .inhalt {
@@ -241,7 +237,7 @@ p {
   background: var(--flaeche-hoch);
   border: var(--rahmen-breite) solid var(--rahmen);
   border-radius: var(--radius);
-  box-shadow: 0 var(--block-tiefe) 0 var(--kante);
+  box-shadow: none;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -249,7 +245,7 @@ p {
 }
 
 .knopf:active {
-  transform: translateY(var(--block-tiefe));
+  transform: scale(0.97);
   box-shadow: none;
 }
 
@@ -394,17 +390,16 @@ a.kachel:hover {
   place-items: center;
   width: 6rem;
   height: 6rem;
-  background: linear-gradient(135deg, var(--akzent) 0 50%, var(--flaeche-hoch) 50%);
-  border: var(--rahmen-breite) solid var(--rahmen);
-  border-radius: var(--radius);
-  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, var(--nutzer-akzent, var(--akzent)), var(--aubergine-500));
+  border-radius: 50%;
+  box-shadow: var(--schatten-karte);
 }
 
 .avatar-platz__buchstabe {
-  font-family: var(--schrift-pixel);
-  font-size: 1.75rem;
-  color: var(--akzent-text);
-  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  font-family: var(--schrift-titel);
+  font-weight: 900;
+  font-size: 2rem;
+  color: #ffffff;
 }
 
 .kachel--avatar .kachel__titel {
@@ -426,13 +421,9 @@ a.kachel:hover {
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.4;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: #0b0a12;
   background: var(--selten-farbe, var(--flaeche-hoch));
-  border: 2px solid rgba(0, 0, 0, 0.35);
-  border-radius: 2px;
-  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
 }
 
 .chip[data-selten="rare"],
@@ -444,7 +435,7 @@ a.kachel:hover {
   background: var(--selten-god);
 }
 
-/* Fortschritt: native progress, pixelige Spur */
+/* Fortschritt: native progress, runde Spur (Füllung und Glühen in spiel.css) */
 .fortschritt-block {
   display: flex;
   flex-direction: column;
@@ -474,7 +465,6 @@ a.kachel:hover {
 
 .fortschritt::-webkit-progress-bar {
   background: var(--flaeche-hoch);
-  background-image: repeating-linear-gradient(90deg, transparent 0 11px, rgba(0, 0, 0, 0.18) 11px 13px);
 }
 
 .fortschritt::-webkit-progress-value {
@@ -498,12 +488,13 @@ a.kachel:hover {
   background: var(--selten-god);
 }
 
-/* Punkte (Guthaben, XP): Pixelschrift, Eltern-Optik ruhig */
+/* Punkte (Guthaben, XP) */
 .punkte {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--schrift-pixel);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: var(--text);
 }
 
@@ -814,7 +805,7 @@ a.kachel:hover {
   height: 1.1rem;
   background: transparent;
   border: var(--rahmen-breite) solid var(--akzent-hell);
-  border-radius: 2px;
+  border-radius: 50%;
 }
 
 .pin__punkt--gefuellt {
@@ -843,14 +834,14 @@ a.kachel:hover {
   background: var(--flaeche-hoch);
   border: var(--rahmen-breite) solid var(--rahmen);
   border-radius: var(--radius);
-  box-shadow: 0 var(--block-tiefe) 0 var(--kante);
+  box-shadow: none;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 .pin__taste:active {
-  transform: translateY(var(--block-tiefe));
+  transform: scale(0.97);
   box-shadow: none;
 }
 

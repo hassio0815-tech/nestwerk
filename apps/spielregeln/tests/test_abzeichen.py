@@ -396,7 +396,7 @@ def test_kind_vitrine_kachel(kind_client, anna, uhr):
         )
     uhr.stellen(lok(2026, 10, 25, 20))
     services.wochen_sicherstellen(anna)
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/dungeon/").content.decode()
     assert 'data-kachel="spielregeln.kind_abzeichen"' in html
     assert 'data-abzeichen="tagesserie-7"' in html and 'data-symbol="tagesserie-7"' in html
     assert 'data-abzeichen-naechstes="tagesserie-14"' in html
@@ -406,7 +406,7 @@ def test_kind_vitrine_kachel(kind_client, anna, uhr):
 
 def test_eltern_abzeichen_seite(eltern_client, anna, mama, uhr):
     _wochen(anna, uhr, 1)
-    heim = eltern_client.get("/eltern/").content.decode()
+    heim = eltern_client.get("/eltern/dungeon/").content.decode()
     assert 'data-kachel="spielregeln.eltern_abzeichen"' in heim
     html = eltern_client.get("/eltern/abzeichen/").content.decode()
     assert f'data-abzeichen-kind="{anna.pk}"' in html

@@ -14,6 +14,7 @@ from apps.spielregeln import selectors as raenge
 from apps.spielregeln.services import RangFehler
 
 from . import selectors, services
+from .models import Slot
 
 # Feste Erfolgsmeldungen (kein frei wählbarer Text in der URL)
 MELDUNGEN = {
@@ -76,7 +77,16 @@ def _mit_rang(besitze):
 def shop(request):
     if not selectors.hat_avatar(request.user):
         return redirect("avatar:kind_wahl")
-    return render(request, "avatar/shop.html", _shop_kontext(request))
+    kontext = _shop_kontext(request)
+    slot = Slot.objects.filter(schluessel=request.GET.get("slot", "")).first()
+    if slot is not None:  # Filter aus dem Charakter-Bildschirm: nur Mods dieses Slots
+        gruppen = []
+        for g in kontext["gruppen"]:
+            g.karten = [k for k in g.karten if k.mod.slot_id == slot.pk]
+            if g.karten:
+                gruppen.append(g)
+        kontext.update(gruppen=gruppen, slot_filter=slot)
+    return render(request, "avatar/shop.html", kontext)
 
 
 def _mod_oder_404(request, schluessel):

@@ -14,7 +14,7 @@
 .halle-held__sockel::before { content: ""; height: 0.55rem; border-radius: 0.2rem 0.2rem 0 0;
   background: var(--selten-farbe, var(--rahmen)); filter: brightness(1.25); }
 .halle-held__sockel span { display: block; height: 1.3rem; background: var(--selten-farbe, var(--rahmen));
-  box-shadow: inset 0 -0.35rem 0 rgb(0 0 0 / 0.25); }
+  box-shadow: none; }
 .halle-held__sockel::after { content: ""; height: 0.3rem; margin-inline: -6%; border-radius: 0.2rem;
   background: var(--selten-farbe, var(--rahmen)); filter: brightness(0.7); }
 .halle-held[data-selten="god"] .halle-held__sockel::before,

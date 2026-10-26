@@ -215,6 +215,7 @@ class InstanzStatus(models.TextChoices):
     ABGELEHNT = "abgelehnt", "Abgelehnt"
     NICHT_UEBERNOMMEN = "nicht_uebernommen", "Nicht übernommen"
     STORNIERT = "storniert", "Storniert"
+    NACHBESSERN = "nachbessern", "Zum Nachbessern"
 
 
 # Nicht abgeschlossene Zustände ("offen" im Sinne von K9: kein Stapel)
@@ -278,6 +279,24 @@ class AufgabenInstanz(models.Model):
     )
     sonderpunkte = models.PositiveIntegerField(default=0)
     sonderpunkte_begruendung = models.CharField(max_length=200, blank=True, default="")
+    geprueft_am = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Vertrauens-Aufgabe: von den Eltern durchgesehen (\"Passt\").",
+    )
+    geprueft_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
+    nachbessern_anzahl = models.PositiveSmallIntegerField(
+        default=0,
+        help_text="Wie oft zum Nachbessern zurückgegeben (Runde; Teil der Buchungsschlüssel).",
+    )
+    nachbessern_bis = models.DateTimeField(null=True, blank=True)
+    nachbessern_grund = models.CharField(max_length=200, blank=True, default="")
     sortierung = models.IntegerField(default=0)
     erzeugt_am = models.DateTimeField(default=timezone.now)
 
@@ -293,7 +312,7 @@ class AufgabenInstanz(models.Model):
             ),
             models.UniqueConstraint(
                 fields=["aufgabe"],
-                condition=Q(fenster_ende__isnull=True, status__in=LAUFENDE_STATUS),
+                condition=Q(fenster_ende__isnull=True, status__in=LAUFENDE_STATUS, nachbessern_anzahl=0),
                 name="aufgaben_instanz_ungebunden_ein_laufend",
             ),
             models.CheckConstraint(

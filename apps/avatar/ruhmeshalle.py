@@ -150,6 +150,7 @@ def in_ruhmeshalle_stellen(
             thema_daten=alt.als_dict(),
             mods=mods,
             figur=dict(avatar.figur),
+            avatar_name=avatar.name,
             rang_stufe=stand.rang_stufe,
             rang_name=stand.rang_name,
             rang_selten=stand.rang_selten,

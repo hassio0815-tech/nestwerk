@@ -141,13 +141,13 @@ def test_kind_kachel_zeigt_nur_wochen(kind_client, anna, uhr):
         _xp(anna, 150)
     uhr.stellen(lok(2026, 10, 21, 12) + timedelta(weeks=6))
     services.wochen_sicherstellen(anna)
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/dungeon/").content.decode()
     assert "Nächster Rang voraussichtlich in ca." in html
     for verboten in ("Engpass", "Faktor", "Kalibrierung", "Ampel", "Aktivquote"):
         assert verboten not in html
     einstellungen.setzen("spielregeln.prognose_kind_zeigen", False, akteur=None)
-    assert "Nächster Rang voraussichtlich" not in kind_client.get("/kind/").content.decode()
+    assert "Nächster Rang voraussichtlich" not in kind_client.get("/kind/dungeon/").content.decode()
 
 
 def test_kind_kachel_ohne_historie_keine_prognose(kind_client, anna, uhr):
-    assert "Nächster Rang voraussichtlich" not in kind_client.get("/kind/").content.decode()
+    assert "Nächster Rang voraussichtlich" not in kind_client.get("/kind/dungeon/").content.decode()

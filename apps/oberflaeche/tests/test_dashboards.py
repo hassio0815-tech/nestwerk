@@ -116,7 +116,7 @@ def test_eltern_dashboard_zaehler_kinder_und_system(eltern_client, mama, anna):
     gutschrift(anna, 7, mama)
     html = eltern_client.get("/eltern/").content.decode()
     assert 'data-zaehler="2"' in html  # eine Meldung + ein Konflikt
-    assert "Anna" in html and "7 XP" in html
+    assert "Anna" in html and "7 XP" not in html  # XP-Details im Dungeon-Bereich
     for schluessel in ("entscheidungen", "kinder", "ereignisse", "system", "schnellzugriff"):
         assert f'data-kachel="oberflaeche.eltern_{schluessel}"' in html
     assert "Datensicherung" in html and "noch nie gelaufen" in html
@@ -227,3 +227,40 @@ def test_tablet_intervall_ist_einstellung(client, anna):
 
     einstellungen.setzen("oberflaeche.tablet_aktualisierung_sekunden", 20, akteur=None)
     assert "every 20s" in client.get("/tablet/").content.decode()
+
+
+def test_modul_launcher_nur_fuer_eltern_und_datengetrieben(eltern_client):
+    html = eltern_client.get(reverse("oberflaeche:module")).content.decode()
+    assert "Eltern-Bereich" in html and reverse("oberflaeche:einstellungen") in html
+    from django.test import Client
+
+    assert Client().get(reverse("oberflaeche:module")).status_code == 302
+
+
+# --- Dungeon-Bereich der Eltern ------------------------------------------------------------------
+
+
+def test_eltern_dashboard_ohne_spielkacheln_dungeon_mit(eltern_client):
+    heim = eltern_client.get("/eltern/").content.decode()
+    for schluessel in ("spielregeln.eltern_raenge", "avatar.eltern_mods", "sondertag.eltern"):
+        assert f'data-kachel="{schluessel}"' not in heim
+    assert 'data-kachel="oberflaeche.eltern_entscheidungen"' in heim
+    dungeon = eltern_client.get("/eltern/dungeon/").content.decode()
+    assert 'data-kachel="spielregeln.eltern_raenge"' in dungeon
+    assert 'data-kachel="oberflaeche.eltern_entscheidungen"' not in dungeon
+
+
+def test_dungeon_anzeige_schalter_blendet_menue_und_launcher_aus(eltern_client):
+    assert "/eltern/dungeon/" in eltern_client.get("/module/").content.decode()
+    assert "/eltern/dungeon/" in eltern_client.get("/eltern/").content.decode()
+    eltern_client.post(reverse("oberflaeche:dungeon_anzeige"), {})  # Haken aus
+    assert "/eltern/dungeon/" not in eltern_client.get("/module/").content.decode()
+    assert "/eltern/dungeon/" not in eltern_client.get("/eltern/").content.decode()
+    assert eltern_client.get("/eltern/dungeon/").status_code == 200  # per Adresse erreichbar
+    eltern_client.post(reverse("oberflaeche:dungeon_anzeige"), {"dungeon_anzeigen": "1"})
+    assert "/eltern/dungeon/" in eltern_client.get("/module/").content.decode()
+
+
+def test_kind_alte_spielwelt_adresse_leitet_um(kind_client):
+    antwort = kind_client.get("/kind/spielwelt/")
+    assert antwort.status_code == 301 and antwort["Location"] == "/kind/dungeon/"

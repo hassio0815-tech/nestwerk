@@ -14,6 +14,10 @@ from django.db import transaction
 from apps.kern import audit
 
 from .ablauf import (
+    nachbessern_pruefen,
+    alle_passen,
+    passt,
+    zu_pruefen,
     Erledigung,
     LimitErreicht,
     NichtErlaubt,
@@ -49,6 +53,10 @@ from .models import Aufgabe, Kategorie, Status, Vorlage
 from .zustand import AblaufFehler, UngueltigerUebergang
 
 __all__ = [
+    "nachbessern_pruefen",
+    "alle_passen",
+    "passt",
+    "zu_pruefen",
     "AblaufFehler",
     "Erledigung",
     "LimitErreicht",

@@ -10,5 +10,6 @@
     {% include "komponenten/button.html" with href=u5 variante="sekundaer" klein=True icon="person" text="Familie" %}
     {% include "komponenten/button.html" with href=u6 variante="sekundaer" klein=True icon="schloss" text="Geräte" %}
     {% include "komponenten/button.html" with href=u7 variante="sekundaer" klein=True icon="glocke" text="Benachrichtigungen" %}
+    {% if request.user.dungeon_anzeigen %}{% url "oberflaeche:eltern_dungeon" as u9 %}{% include "komponenten/button.html" with href=u9 variante="sekundaer" klein=True icon="pokal" text="Dungeon" %}{% endif %}
   </div>
 </div></article>

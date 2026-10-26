@@ -1,17 +1,17 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% block titel %}Pausen{% endblock %}
-{% block kopf_rechts %}
+{% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
 {% endblock %}
-{% block inhalt %}
+{% block seite %}
   <h1>Pausen</h1>
   <p>Pausierte Tage und Wochen sind neutral: Die Serie bricht nicht. Aufgaben in der Pause zählen normal.</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   {% include "spielregeln/kacheln/eltern_pausen.html" with k=pausen_kachel %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Pause eintragen</h2>
     <form method="post" action="{% url 'spielregeln:pause_neu' %}" class="stapel">{% csrf_token %}
       {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
@@ -28,7 +28,7 @@
   </div></section>
 
   {% for titel, liste, art in abschnitte %}
-    <section class="karte"><div class="karte__inhalt stapel">
+    <section class="nw-karte"><div class="karte__inhalt stapel">
       <h2>{{ titel }}</h2>
       {% for p in liste %}
         <div class="zeile" data-pause="{{ p.pk }}">

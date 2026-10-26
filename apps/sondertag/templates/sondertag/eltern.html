@@ -1,17 +1,17 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% load static %}
 {% block titel %}Sondertage{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">{% endblock %}
-{% block kopf_rechts %}
+{% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
 {% endblock %}
-{% block inhalt %}
+{% block seite %}
   <h1>Sondertage</h1>
   <p>Höchstens {{ regeln.max_pro_jahr }} Sondertage je Kind und App-Jahr (ab {{ regeln.go_live|date:"d.m.Y" }}), mindestens {{ regeln.abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Offene Wünsche</h2>
     {% for e in wuensche %}
       <div class="st-wunschkarte" data-st-wunsch="{{ e.anspruch.pk }}">
@@ -33,7 +33,7 @@
   </div></section>
 
   {% if angenommen %}
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Angenommen, noch nicht erledigt</h2>
     {% for a in angenommen %}
       <div class="st-wunschkarte" data-st-angenommen="{{ a.pk }}">
@@ -42,11 +42,11 @@
         <div class="reihe">
           <form method="post" action="{% url 'sondertag:uebergeben' a.pk %}" class="reihe">{% csrf_token %}
             <label class="feld"><span class="feld__label">Übergeben an</span>
-              <select class="feld__eingabe" name="an">{% for e in eltern %}{% if e.pk != a.begleitung_id %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endif %}{% endfor %}</select></label>
+              <select class="nw-eingabe" name="an">{% for e in eltern %}{% if e.pk != a.begleitung_id %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endif %}{% endfor %}</select></label>
             {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="person" text="Übergeben" %}
           </form>
           <form method="post" action="{% url 'sondertag:stattgefunden' a.pk %}" class="reihe">{% csrf_token %}
-            <label class="feld"><span class="feld__label">Tag war am</span><input class="feld__eingabe" type="date" name="datum"></label>
+            <label class="feld"><span class="feld__label">Tag war am</span><input class="nw-eingabe" type="date" name="datum"></label>
             {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text="Hat stattgefunden" %}
           </form>
         </div>
@@ -56,7 +56,7 @@
   {% endif %}
 
   {% for z in zeilen %}
-  <section class="karte" data-st-kind="{{ z.kind.pk }}"><div class="karte__inhalt stapel">
+  <section class="nw-karte" data-st-kind="{{ z.kind.pk }}"><div class="karte__inhalt stapel">
     <h2>{{ z.kind.anzeigename }}</h2>
     <dl class="st-fakten">
       <div><dt>Letzter Sondertag</dt><dd>{% if z.letzter %}{{ z.letzter.annahme_datum|date:"d.m.Y" }}{% if z.letzter.begleitung %} mit {{ z.letzter.begleitung.anzeigename }}{% endif %}{% else %}noch keiner{% endif %}</dd></div>
@@ -75,11 +75,11 @@
     <h3>Historie</h3>
     {% for h in z.historie %}
       <form method="post" action="{% url 'sondertag:aendern' h.pk %}" class="zeile st-historie" data-st-historie="{{ h.pk }}">{% csrf_token %}
-        <label class="feld"><span class="feld__label">Bezugsdatum</span><input class="feld__eingabe" type="date" name="annahme_datum" value="{{ h.annahme_datum|date:'Y-m-d' }}" required></label>
+        <label class="feld"><span class="feld__label">Bezugsdatum</span><input class="nw-eingabe" type="date" name="annahme_datum" value="{{ h.annahme_datum|date:'Y-m-d' }}" required></label>
         <label class="feld"><span class="feld__label">Begleitung</span>
-          <select class="feld__eingabe" name="begleitung"><option value="">offen</option>{% for e in eltern %}<option value="{{ e.pk }}"{% if e.pk == h.begleitung_id %} selected{% endif %}>{{ e.anzeigename }}</option>{% endfor %}</select></label>
-        <label class="feld"><span class="feld__label">Tag war am</span><input class="feld__eingabe" type="date" name="stattgefunden_am" value="{{ h.stattgefunden_am|date:'Y-m-d' }}"></label>
-        <label class="feld"><span class="feld__label">Notiz</span><input class="feld__eingabe" name="notiz" value="{{ h.notiz }}"{% if h.wunsch %} placeholder="{{ h.wunsch|truncatechars:60 }}"{% endif %} maxlength="200"></label>
+          <select class="nw-eingabe" name="begleitung"><option value="">offen</option>{% for e in eltern %}<option value="{{ e.pk }}"{% if e.pk == h.begleitung_id %} selected{% endif %}>{{ e.anzeigename }}</option>{% endfor %}</select></label>
+        <label class="feld"><span class="feld__label">Tag war am</span><input class="nw-eingabe" type="date" name="stattgefunden_am" value="{{ h.stattgefunden_am|date:'Y-m-d' }}"></label>
+        <label class="feld"><span class="feld__label">Notiz</span><input class="nw-eingabe" name="notiz" value="{{ h.notiz }}"{% if h.wunsch %} placeholder="{{ h.wunsch|truncatechars:60 }}"{% endif %} maxlength="200"></label>
         <span class="kachel__text">{{ h.get_status_display }}{% if h.quelle == "manuell" %} · manuell{% endif %}</span>
         {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
       </form>
@@ -90,19 +90,19 @@
   </div></section>
   {% endfor %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
+  <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>Sondertag nachtragen</h2>
     <p class="kachel__text">Zum Beispiel einen Sondertag vor dem Start der App. Er zählt für Abstand und App-Jahr.</p>
     <form method="post" action="{% url 'sondertag:manuell' %}" class="st-historie">{% csrf_token %}
-      <label class="feld"><span class="feld__label">Kind</span><select class="feld__eingabe" name="kind" required>{% for kd in kinder %}<option value="{{ kd.pk }}">{{ kd.anzeigename }}</option>{% endfor %}</select></label>
-      <label class="feld"><span class="feld__label">Datum</span><input class="feld__eingabe" type="date" name="datum" required></label>
-      <label class="feld"><span class="feld__label">Begleitung</span><select class="feld__eingabe" name="begleitung"><option value="">–</option>{% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}</select></label>
-      <label class="feld"><span class="feld__label">Notiz</span><input class="feld__eingabe" name="notiz" maxlength="200"></label>
+      <label class="feld"><span class="feld__label">Kind</span><select class="nw-eingabe" name="kind" required>{% for kd in kinder %}<option value="{{ kd.pk }}">{{ kd.anzeigename }}</option>{% endfor %}</select></label>
+      <label class="feld"><span class="feld__label">Datum</span><input class="nw-eingabe" type="date" name="datum" required></label>
+      <label class="feld"><span class="feld__label">Begleitung</span><select class="nw-eingabe" name="begleitung"><option value="">–</option>{% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}</select></label>
+      <label class="feld"><span class="feld__label">Notiz</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
       {% include "komponenten/button.html" with typ="submit" klein=True icon="plus" text="Nachtragen" %}
     </form>
   </div></section>
 
-  <section class="karte"><div class="karte__inhalt reihe">
+  <section class="nw-karte"><div class="karte__inhalt reihe">
     {% url "spielregeln:meilensteine" as ms_url %}
     {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text="Meilensteine verwalten" %}
   </div></section>

@@ -5,7 +5,6 @@
       <span class="zeile__name">{% avatar_bild z.kind "klein" %}<strong>{{ z.kind.anzeigename }}</strong></span>
       <span class="reihe">
         {% include "komponenten/punkte.html" with wert=z.guthaben %}
-        <span class="chip" data-selten="rare">{{ z.xp }} XP</span>
         <span>{{ z.laufend }} laufend</span>
         <span>{{ z.heute }} heute erledigt</span>
       </span>

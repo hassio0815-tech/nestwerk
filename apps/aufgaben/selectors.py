@@ -7,6 +7,7 @@ from django.db.models import Count, Prefetch, Q
 from apps.kern import einstellungen, zeit
 from apps.punkte import selectors as punkte_selectors
 
+from . import schluessel
 from .models import (
     INTERESSE_LAUFEND,
     LAUFENDE_STATUS,
@@ -103,7 +104,12 @@ def kind_eigene(kind, *, jetzt=None):
     laufend = AufgabenInstanz.objects.filter(
         Q(
             kind=kind,
-            status__in=(InstanzStatus.RESERVIERT, InstanzStatus.GEMELDET, InstanzStatus.RUECKFRAGE),
+            status__in=(
+                InstanzStatus.RESERVIERT,
+                InstanzStatus.NACHBESSERN,
+                InstanzStatus.GEMELDET,
+                InstanzStatus.RUECKFRAGE,
+            ),
         )
         | Q(
             status=InstanzStatus.KONFLIKT,
@@ -133,10 +139,10 @@ def kind_eigene(kind, *, jetzt=None):
         )
     )
     boni = punkte_selectors.buchungen_zu_schluesseln(
-        f"aufgabe:{i.pk}:serienbonus" for i in instanzen if i.status == InstanzStatus.BESTAETIGT
+        schluessel.buchung(i.pk, "serienbonus", i.nachbessern_anzahl) for i in instanzen if i.status == InstanzStatus.BESTAETIGT
     )
     for instanz in instanzen:
-        instanz.serienbonus = boni.get(f"aufgabe:{instanz.pk}:serienbonus")
+        instanz.serienbonus = boni.get(schluessel.buchung(instanz.pk, "serienbonus", instanz.nachbessern_anzahl))
         if instanz.kind_id != kind.pk and instanz.status != InstanzStatus.KONFLIKT:
             instanz.anzeige_status = "vergeben"
         else:
@@ -144,6 +150,7 @@ def kind_eigene(kind, *, jetzt=None):
         instanz.rueckfrage_text = fragen.get(instanz.pk, "")
     reihenfolge = {
         "rueckfrage": 0,
+        "nachbessern": 0,
         "reserviert": 1,
         "konflikt": 2,
         "gemeldet": 3,

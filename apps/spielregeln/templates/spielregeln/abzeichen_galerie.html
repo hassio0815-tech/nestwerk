@@ -1,15 +1,15 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/einstellungen.html" %}
 {% comment %}Entwickler-Galerie (AP28, nur DEBUG): alle Abzeichen-Grafiken, hell (Eltern) und dunkel (Kind).{% endcomment %}
 {% block titel %}Abzeichen-Galerie{% endblock %}
-{% block inhalt %}
+{% block seite %}
   <h1>Abzeichen-Galerie</h1>
   <p class="kachel__text">Alle Grafiken, je Rang eine Variante. Nur im Entwicklungsmodus.</p>
-  <section class="karte" aria-label="Heller Hintergrund">
+  <section class="nw-karte" aria-label="Heller Hintergrund">
     <h2>Hell</h2>
     {% include "spielregeln/_abzeichen_galerie_raster.html" %}
   </section>
   <section data-layout="kind" data-modus="dunkel" aria-label="Dunkler Hintergrund">
-    <div class="karte">
+    <div class="nw-karte">
       <h2>Dunkel</h2>
       {% include "spielregeln/_abzeichen_galerie_raster.html" %}
     </div>

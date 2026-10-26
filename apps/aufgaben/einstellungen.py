@@ -17,6 +17,9 @@ STARTWERTE_ABLAUF = {
     "aufgaben.kind_vorschau_tage": 1,
 }
 
+# Nachbessern (Vertrauen prüfen), Datenmigration 0009
+STARTWERTE_NACHBESSERN = {"aufgaben.nachbessern_stunden": 48}
+
 # Nachweis-Fotos (AP13), Datenmigration 0007 (Review AP19, B-09: vorher Django-Setting/Konstante)
 STARTWERTE_NACHWEIS = {
     "aufgaben.nachweis_max_upload_mb": 15,
@@ -44,6 +47,16 @@ def einstellungen_definieren():
         einheit="Stunden",
         minimum=0,
         maximum=72,
+    )
+    definieren(
+        "aufgaben.nachbessern_stunden",
+        Typ.GANZZAHL,
+        "Frist zum Nachbessern",
+        beschreibung="So lange hat ein Kind Zeit, eine zurückgegebene Aufgabe zu verbessern. "
+        "Danach verfällt sie ohne Punkte.",
+        einheit="Stunden",
+        minimum=1,
+        maximum=720,
     )
     definieren(
         "aufgaben.reservierung_stunden",

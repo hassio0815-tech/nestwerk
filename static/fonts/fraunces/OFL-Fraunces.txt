@@ -1,8 +1,4 @@
-Schrift: Press Start 2P, Regular (als WOFF2 konvertiert aus der TTF, Inhalt unverändert)
-Quelle: https://github.com/google/fonts/tree/main/ofl/pressstart2p (PressStart2P-Regular.ttf)
-Lizenz: SIL Open Font License 1.1 (Text unten)
-----
-Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name "Press Start 2P".
+Copyright 2018 The Fraunces Project Authors (https://github.com/undercasetype/Fraunces)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

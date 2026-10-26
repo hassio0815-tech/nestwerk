@@ -13,6 +13,7 @@
         <span class="reihe">
           {% if i.anzeige_status == "reserviert" %}{% include "komponenten/chip.html" with text="Deine Aufgabe" stufe="uncommon" %}{% if i.reserviert_bis %}<span class="aufgabe-karte__frist">{% include "komponenten/icon.html" with name="uhr" %} bis {{ i.reserviert_bis|date:"D H:i" }}</span>{% endif %}
           {% elif i.anzeige_status == "konflikt" %}{% include "komponenten/chip.html" with text="Mehrere wollen sie – Eltern entscheiden" %}
+          {% elif i.anzeige_status == "nachbessern" %}<span class="chip" data-nachbessern>{% include "komponenten/icon.html" with name="hammer" %} Bitte nachbessern: {{ i.nachbessern_grund }}</span>{% if i.nachbessern_bis %}<span class="aufgabe-karte__frist">{% include "komponenten/icon.html" with name="uhr" %} bis {{ i.nachbessern_bis|date:"D H:i" }}</span>{% endif %}
           {% elif i.anzeige_status == "gemeldet" %}{% include "komponenten/chip.html" with text="Gemeldet – wartet auf Bestätigung" stufe="rare" %}
           {% elif i.anzeige_status == "rueckfrage" %}{% include "komponenten/chip.html" with text="Rückfrage" stufe="epic" %}
           {% elif i.anzeige_status == "bestaetigt" %}{% include "komponenten/chip.html" with text="Geschafft!" stufe="legendary" %}{% if i.sonderpunkte %}<span class="aufgabe-karte__bonus">{% include "komponenten/icon.html" with name="stern" %} +{{ i.sonderpunkte }} Bonus: {{ i.sonderpunkte_begruendung }}</span>{% endif %}{% if i.serienbonus %}<span class="aufgabe-karte__bonus" data-serienbonus>{% include "komponenten/icon.html" with name="funke" %} +{{ i.serienbonus.guthaben_delta }} {{ i.serienbonus.begruendung }}</span>{% endif %}
@@ -20,7 +21,7 @@
           {% elif i.anzeige_status == "storniert" %}{% include "komponenten/chip.html" with text="Punkte korrigiert" %}
           {% elif i.anzeige_status == "vergeben" %}{% include "komponenten/chip.html" with text="Vergeben" %}{% endif %}
         </span>
-        {% if i.anzeige_status == "reserviert" %}
+        {% if i.anzeige_status == "reserviert" or i.anzeige_status == "nachbessern" %}
           <form method="post" action="{% url 'aufgaben:kind_melden' i.pk %}" hx-post="{% url 'aufgaben:kind_melden' i.pk %}" enctype="multipart/form-data" hx-encoding="multipart/form-data" class="stapel">{% csrf_token %}
             {% if i.freigabeart_snapshot != "vertrauen" %}
               <label class="feld"><span class="feld__label">{% if i.freigabeart_snapshot == "nachweis" %}Was hast du gemacht? (Pflicht){% else %}Nachricht (optional){% endif %}</span>
@@ -29,9 +30,11 @@
             {% if i.freigabeart_snapshot == "nachweis" %}{% include "aufgaben/_nachweis_feld.html" with label="Foto (optional)" %}{% endif %}
             {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text="Erledigt melden" %}
           </form>
+          {% if i.anzeige_status == "reserviert" %}
           <form method="post" action="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-post="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-confirm="Aufgabe wirklich zurückgeben?">{% csrf_token %}
             {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Zurückgeben" %}
           </form>
+          {% endif %}
         {% elif i.anzeige_status == "konflikt" %}
           <form method="post" action="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-post="{% url 'aufgaben:kind_zurueckgeben' i.pk %}">{% csrf_token %}
             {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Doch nicht" %}

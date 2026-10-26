@@ -5,7 +5,9 @@ from django.http import Http404, HttpResponse, HttpResponseNotModified
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_http_methods
 
-from apps.konten.zugriff import nur_kind, passiv
+from django.views.decorators.http import require_POST
+
+from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
 from . import selectors, services
 from .generator import bibliothek
@@ -132,3 +134,30 @@ def galerie(request):
         "mods": mods,
     }
     return render(request, "avatar/galerie.html", kontext)
+
+
+@nur_kind
+@require_POST
+def name_setzen(request):
+    """Kind benennt oder benennt um (HTMX: nur der Namensblock kommt zurück)."""
+    fehler = ""
+    try:
+        services.avatar_name_setzen(request.user, request.POST.get("name", ""))
+    except services.AvatarFehler as exc:
+        fehler = str(exc)
+    if request.headers.get("HX-Request") == "true":
+        kontext = {"name": services.avatar_name(request.user), "fehler": fehler}
+        return render(request, "avatar/_name.html", kontext, status=422 if fehler else 200)
+    return redirect("oberflaeche:dungeon")
+
+
+@nur_eltern
+@require_POST
+def name_zuruecksetzen(request, kind_id):
+    from apps.konten.models import Benutzer, Rolle
+
+    kind = Benutzer.objects.filter(pk=kind_id, rolle=Rolle.KIND).first()
+    if kind is None:
+        raise Http404
+    services.avatar_name_zuruecksetzen(kind, von=request.user)
+    return redirect("oberflaeche:eltern_dungeon")

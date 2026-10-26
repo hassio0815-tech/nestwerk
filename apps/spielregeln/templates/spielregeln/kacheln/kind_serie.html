@@ -1,5 +1,5 @@
 <article class="karte"><div class="karte__inhalt stapel">
-  <h2>Meine Serie</h2>
+  {% with w=k.stand.wochenserie %}<div class="reihe"><span class="flamme" aria-hidden="true" data-stufe="{% if w >= 12 %}4{% elif w >= 6 %}3{% elif w >= 3 %}2{% elif w >= 1 %}1{% else %}0{% endif %}">{% include "komponenten/icon.html" with name="funke" %}</span><h2>Meine Serie</h2></div>{% endwith %}
   {% if k.pause %}
     <p class="reihe" data-pause="1">{% include "komponenten/icon.html" with name="pause" %} <strong>Pause – deine Serie ist sicher</strong></p>
     <p class="kachel__text">{% if k.pause.bis %}Pause bis {{ k.pause.bis|date:"d.m.Y" }}.{% else %}Pause, bis Mama oder Papa sie ausschalten.{% endif %} Aufgaben zählen trotzdem.</p>

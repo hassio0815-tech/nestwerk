@@ -81,7 +81,7 @@ def test_fremder_mod_404(kind_client, mit_avatar):
 
 def test_dashboard_kachel_werkstatt(kind_client, mit_avatar):
     services.mod_kaufen(mit_avatar, mod("kopf"))
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/dungeon/").content.decode()
     assert "Meine Schmiede" in html
     assert "fertig in 2 Tagen" in html
     assert "0/6 im Rang Common" in html
@@ -158,7 +158,7 @@ def test_kind_darf_eltern_seite_nicht(kind_client, mit_avatar):
 
 def test_eltern_kachel(eltern_client, mit_avatar):
     services.mod_kaufen(mit_avatar, mod("kopf"))
-    html = eltern_client.get("/eltern/").content.decode()
+    html = eltern_client.get("/eltern/dungeon/").content.decode()
     assert "Mods und Bauaufträge" in html
     assert "1 im Bau" in html
 

@@ -118,7 +118,7 @@ def test_kind_sieht_familie_aber_keine_eltern_daten(kind_client, anna, ben, uhr)
 
 def test_eltern_sehen_umschalter_und_zuwaechse(eltern_client, anna, ben, uhr):
     held_anlegen(ben, uhr)
-    html = eltern_client.get(reverse("oberflaeche:eltern_heim")).content.decode()
+    html = eltern_client.get(reverse("oberflaeche:eltern_dungeon")).content.decode()
     assert "data-eltern-ranking" in html and "data-zuwaechse" in html
     assert "+80 %" in html and reverse("oberflaeche:ranking_modus") in html
 

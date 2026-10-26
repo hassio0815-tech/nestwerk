@@ -8,13 +8,13 @@ die tiefere Schicht spielregeln auf (erlaubt); spielregeln kennt aufgaben nicht.
 
 from apps.spielregeln import services as spielregeln
 
-from . import ablauf
+from . import ablauf, schluessel
 
 MODUL = "aufgaben"
 
 
-def serienbonus_schluessel(instanz_pk) -> str:
-    return f"aufgabe:{instanz_pk}:serienbonus"
+def serienbonus_schluessel(instanz_pk, anzahl=0) -> str:
+    return schluessel.buchung(instanz_pk, "serienbonus", anzahl)
 
 
 def erfassen(erledigung):
@@ -23,7 +23,7 @@ def erfassen(erledigung):
         erledigung.kind,
         erledigung.bezugsdatum,
         modul=MODUL,
-        referenz=erledigung.instanz.pk,
+        referenz=schluessel.aktivitaet(erledigung.instanz.pk, erledigung.instanz.nachbessern_anzahl),
         erfasst_am=erledigung.bestaetigt_am,
     )
 
@@ -35,7 +35,9 @@ def serienbonus(erledigung):
         basispunkte=erledigung.punkte,
         meldedatum=erledigung.bezugsdatum,
         erfasst_am=erledigung.bestaetigt_am,
-        schluessel=serienbonus_schluessel(erledigung.instanz.pk),
+        schluessel=serienbonus_schluessel(
+            erledigung.instanz.pk, erledigung.instanz.nachbessern_anzahl
+        ),
         quelle_modul=MODUL,
         referenz=erledigung.instanz,
         von=erledigung.von,
@@ -43,7 +45,9 @@ def serienbonus(erledigung):
 
 
 def stornieren(instanz, kind, von):
-    spielregeln.aktivitaet_stornieren(modul=MODUL, referenz=instanz.pk)
+    spielregeln.aktivitaet_stornieren(
+        modul=MODUL, referenz=schluessel.aktivitaet(instanz.pk, instanz.nachbessern_anzahl)
+    )
 
 
 def registrieren():

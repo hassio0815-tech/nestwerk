@@ -1,4 +1,4 @@
-{% comment %}Polling-Ausschnitt der Tablet-Startseite (auch Teil der Vollseite).{% endcomment %}
+{% load avatar_tags %}{% comment %}Polling-Ausschnitt der Tablet-Startseite (auch Teil der Vollseite).{% endcomment %}
 {% for eintrag in slots %}
   <section class="tablet-abschnitt" data-kachel="{{ eintrag.kachel.schluessel }}" aria-label="{{ eintrag.kachel.titel }}">
     {% include eintrag.kachel.template with k=eintrag.k %}
@@ -10,7 +10,7 @@
     {% for eintrag in kinder %}
       <div data-akzent="{{ eintrag.akzent }}" class="tablet-kind">
         {% url "konten:kind_pin" eintrag.benutzer.pk as pin_url %}
-        {% include "komponenten/avatar_kachel.html" with benutzer=eintrag.benutzer name=eintrag.benutzer.anzeigename initial=eintrag.benutzer.anzeigename|slice:":1"|upper href=pin_url gesperrt=eintrag.gesperrt %}
+        {% include "komponenten/avatar_kachel.html" with benutzer=eintrag.benutzer name=eintrag.benutzer|avatar_name initial=eintrag.benutzer.anzeigename|slice:":1"|upper href=pin_url gesperrt=eintrag.gesperrt %}
         <p class="tablet-kind__zeile">
           {% include "komponenten/punkte.html" with wert=eintrag.guthaben %}
           <span>{{ eintrag.offen }} offen</span>

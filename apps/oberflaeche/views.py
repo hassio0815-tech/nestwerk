@@ -10,7 +10,7 @@ from django.views.decorators.http import require_GET, require_POST
 
 from apps.kern import einstellungen, zeit
 from apps.kern.registry import ELTERN, KIND, TABLET
-from apps.konten import akzent, netz, sperre
+from apps.konten import akzent, begruessung, netz, sperre
 from apps.konten import selectors as konten_selectors
 from apps.konten import services as konten_services
 from apps.konten import views as konten_views
@@ -18,7 +18,7 @@ from apps.konten.geraet import ist_kiosk
 from apps.konten.models import Rolle
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
-from . import kacheln, ranking, selectors
+from . import kacheln, module, ranking, selectors
 
 
 @require_GET
@@ -44,13 +44,60 @@ def startseite(request):
     return konten_views.start(request)
 
 
+# Dungeon (über den Avatar erreichbar): Figur, Mods, Shop, Ränge, Ruhmeshalle, Abzeichen.
+DUNGEON = (
+    "avatar.kind_werkstatt",
+    "avatar.kind_ruhmeshalle",
+    "spielregeln.kind_rang",
+    "spielregeln.kind_abzeichen",
+)
+# Dashboard-Reihenfolge; unbekannte (neue) Kacheln folgen in Registry-Reihenfolge.
+KIND_REIHENFOLGE = (
+    "oberflaeche.kind_konto",
+    "avatar.kind_avatar",  # nur sichtbar, solange noch keine Figur gewählt ist
+    "oberflaeche.kind_laufende",
+    "oberflaeche.kind_offene",
+    "oberflaeche.kind_belohnungen",
+    "familienziel.kind",
+    "oberflaeche.kind_ranking",
+    "sondertag.kind",
+    "spielregeln.kind_serie",
+)
+NICHT_AUF_DASHBOARD = DUNGEON + ("oberflaeche.kind_akzent",)
+
+
+def _kind_kacheln(request):
+    alle = [e for e in kacheln.fuer(KIND, request) if e["kachel"].schluessel not in NICHT_AUF_DASHBOARD]
+
+    def rang(e):
+        try:
+            return KIND_REIHENFOLGE.index(e["kachel"].schluessel)
+        except ValueError:
+            return len(KIND_REIHENFOLGE)
+
+    return sorted(alle, key=rang)  # stabil: Registry-Reihenfolge bleibt innerhalb der Gruppen
+
+
 @nur_kind
 @require_GET
 def kind_heim(request):
     return render(
         request,
         "oberflaeche/kind_heim.html",
-        {"kacheln": kacheln.fuer(KIND, request)},
+        {"kacheln": _kind_kacheln(request)},
+    )
+
+
+@nur_kind
+@require_GET
+def dungeon(request):
+    eintraege = [e for e in kacheln.fuer(KIND, request) if e["kachel"].schluessel in DUNGEON]
+    from apps.avatar import charakter
+
+    return render(
+        request,
+        "oberflaeche/kind_dungeon.html",
+        {"kacheln": eintraege, "charakter": charakter.charakter(request.user)},
     )
 
 
@@ -60,7 +107,54 @@ def akzent_setzen(request):
     name = request.POST.get("akzent", "")
     if name in akzent.PALETTE:
         konten_services.akzentfarben_setzen(request.user, [akzent.name_zu_hex(name)])
+    ziel = request.POST.get("next", "")
+    if ziel.startswith("/") and not ziel.startswith("//"):
+        return redirect(ziel)
     return redirect("oberflaeche:kind_heim")
+
+
+@nur_eltern
+@require_GET
+def module_launcher(request):
+    """Nach der Eltern-Anmeldung: große Karten je Modul/Bereich (module.MODULE)."""
+    return render(
+        request,
+        "oberflaeche/module.html",
+        {"module": module.fuer(request.user), "gruss": begruessung.gruss()},
+    )
+
+
+# Spiel-Kacheln der Eltern: wandern in den Dungeon-Bereich (/eltern/dungeon/).
+ELTERN_DUNGEON = (
+    "oberflaeche.eltern_ranking",
+    "spielregeln.eltern_raenge",
+    "spielregeln.eltern_abzeichen",
+    "avatar.eltern_mods",
+    "avatar.eltern_ruhmeshalle",
+    "sondertag.eltern",
+)
+
+
+@nur_eltern
+@require_GET
+def eltern_dungeon(request):
+    eintraege = [e for e in kacheln.fuer(ELTERN, request) if e["kachel"].schluessel in ELTERN_DUNGEON]
+    from apps.avatar.models import Avatar
+
+    namen = Avatar.objects.exclude(name="").select_related("benutzer").order_by("benutzer__reihenfolge")
+    return render(
+        request,
+        "oberflaeche/eltern_dungeon.html",
+        {"kacheln": eintraege, "namen": list(namen)},
+    )
+
+
+@nur_eltern
+@require_POST
+def dungeon_anzeige_setzen(request):
+    request.user.dungeon_anzeigen = request.POST.get("dungeon_anzeigen") == "1"
+    request.user.save(update_fields=["dungeon_anzeigen"])
+    return redirect("oberflaeche:einstellungen")
 
 
 @nur_eltern
@@ -70,7 +164,9 @@ def eltern_heim(request):
         request,
         "oberflaeche/eltern_heim.html",
         {
-            "kacheln": kacheln.fuer(ELTERN, request),
+            "kacheln": [
+                e for e in kacheln.fuer(ELTERN, request) if e["kachel"].schluessel not in ELTERN_DUNGEON
+            ],
             "gesperrte_kinder": konten_selectors.gesperrte_kinder(),
         },
     )
