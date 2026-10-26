@@ -1,0 +1,69 @@
+/* Familienziel (AP29): Tablet-Leiste, Kinder-Kachel, Eltern-Seite, Konfetti.
+   Konfetti ist reines CSS und läuft nur ohne prefers-reduced-motion. */
+
+.fz-leiste {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand);
+  padding: var(--abstand-gross);
+  background: var(--flaeche);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+  box-shadow: var(--schatten-karte);
+  margin-block-end: var(--abstand-gross);
+}
+.fz-leiste--erreicht { border-color: var(--erfolg); }
+.fz-leiste__kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--abstand-klein); }
+.fz-leiste__kopf h2 { margin: 0; }
+.fz-leiste__ziel { margin: 0; font-size: 1.4rem; }
+.fz-leiste__hinweis, .fz-leiste__feier, .fz-serie { margin: 0; color: var(--text-leise); font-size: 1.05rem; }
+.fz-leiste__feier { color: var(--erfolg); font-weight: 700; font-size: 1.3rem; display: flex; gap: 0.5rem; align-items: center; }
+.fz-serie { font-size: 0.95rem; }
+
+.fz-belohnung { display: inline-flex; align-items: center; gap: 0.5rem; }
+.fz-belohnung__icon { width: 1.5em; height: 1.5em; color: var(--selten-legendary); }
+
+.fz-balken { display: flex; flex-direction: column; gap: 0.35rem; }
+.fz-balken .fortschritt { height: 1.6rem; }
+.fz-balken--gross .fortschritt { height: 3rem; }
+.fz-balken--erreicht .fortschritt::-webkit-progress-value { background: var(--erfolg); }
+.fz-balken--erreicht .fortschritt::-moz-progress-bar { background: var(--erfolg); }
+.fz-balken__zahlen { margin: 0; color: var(--text-leise); }
+.fz-balken--gross .fz-balken__zahlen { font-size: 1.3rem; }
+.fz-balken__zahlen strong { color: var(--text); font-size: 1.2em; }
+
+.fz-beitraege { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--abstand-klein); }
+.fz-beitrag {
+  display: flex; gap: 0.6rem; align-items: baseline;
+  padding: 0.4rem 0.9rem;
+  background: var(--flaeche-hoch);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+.fz-beitrag--pause { opacity: 0.7; }
+
+.fz-abstimmung {
+  padding: var(--abstand);
+  border: 2px dashed var(--akzent);
+  border-radius: var(--radius);
+}
+.fz-abstimmung h3 { margin: 0 0 0.25rem; }
+.fz-optionen { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.fz-optionen li { padding: 0.35rem 0.8rem; background: var(--flaeche-hoch); border-radius: var(--radius); }
+
+.fz-wahl__option {
+  display: flex; align-items: center; gap: 0.75rem;
+  min-height: var(--tap-min);
+  padding: 0.4rem 0.8rem;
+  background: var(--flaeche-hoch);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+.fz-wahl__option input { width: 1.4rem; height: 1.4rem; }
+
+.fz-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: var(--abstand-klein); padding: 0.4rem 0; border-bottom: 1px solid var(--rahmen); }
+.fz-zeile > .fz-belohnung, .fz-zeile > strong { flex: 1 1 10rem; }
+.fz-zeile form { margin: 0; }
+.fz-status { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }

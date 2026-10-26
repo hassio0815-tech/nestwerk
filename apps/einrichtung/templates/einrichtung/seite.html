@@ -1,0 +1,8 @@
+{% extends "basis/einrichtung.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/einrichtung.css' %}">{% endblock %}
+{% block schritt %}{% endblock %}
+{% block einrichtung_inhalt %}
+  <div id="assistent">{% include "einrichtung/_assistent.html" %}</div>
+  <script src="{% static 'js/einrichtung.js' %}" defer></script>
+{% endblock %}

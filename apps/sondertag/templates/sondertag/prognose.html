@@ -1,0 +1,97 @@
+{% extends "basis/einstellungen.html" %}
+{% load static %}
+{% block titel %}Prognose &amp; Kalibrierung{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "konten:eltern_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+{% endblock %}
+{% block seite %}
+  <link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+  <h1>Prognose &amp; Kalibrierung</h1>
+  <p>Gerechnet aus dem Durchschnitt der letzten Wochen. Das Ziel sind {{ zeilen.0.e.ziel|default:2 }} Sondertage je App-Jahr. Es ist eine Schätzung, kein Versprechen.</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  {% for z in zeilen %}
+  <section class="nw-karte" data-prognose-kind="{{ z.kind.pk }}"><div class="karte__inhalt stapel">
+    <h2 class="reihe">{{ z.kind.anzeigename }}
+      {% if z.basis.genug %}<span class="pg-ampel pg-ampel--{{ z.ampel }}" data-ampel="{{ z.ampel }}">{{ z.ampel_text }}</span>{% endif %}
+    </h2>
+
+    {% if not z.basis.genug %}
+      <p class="pg-hinweis" data-pg-zuwenig>{{ z.basis.hinweis }}</p>
+    {% else %}
+      <dl class="pg-fakten">
+        <dt>Basis</dt>
+        <dd>Ø {{ z.basis.xp_schnitt|floatformat:0 }} XP je Woche, {% widthratio z.basis.aktivquote.numerator z.basis.aktivquote.denominator 100 %} % aktive Wochen (letzte {{ z.basis.wochen }} Wochen)</dd>
+        <dt>Nächster Rang</dt>
+        <dd data-pg-rang>
+          {% with r=z.naechster_rang %}
+            {% if r %}
+              {{ r.name }} ca. {{ r.datum|date:"d.m.Y" }} (in {{ r.wochen }} Wochen)
+              {% if r.engpass == "xp" %}· Engpass: XP-Schwelle (noch {{ r.xp_fehlt }} XP)
+              {% elif r.engpass == "wochen" %}· Engpass: Mindest-Aktivwochen (noch {{ r.wochen_fehlen }})
+              {% elif r.engpass == "beides" %}· XP und Aktivwochen gleich knapp{% endif %}
+            {% elif z.ergebnis.ziele %}Mit dem jetzigen Tempo nicht absehbar.
+            {% else %}Höchster Rang erreicht.{% endif %}
+          {% endwith %}
+        </dd>
+        <dt>Nächster Sondertag</dt>
+        <dd data-pg-sondertag>
+          {% with t=z.naechster_sondertag %}
+            {% if t %}ca. {{ t.datum|date:"d.m.Y" }} ({{ t.name }}){% if t.verschoben_tage %}, durch die Grenzen {{ t.verschoben_tage }} Tage später{% endif %}
+            {% else %}Keiner absehbar.{% endif %}
+          {% endwith %}
+        </dd>
+        {% for j in z.ergebnis.jahre %}
+          <dt>App-Jahr {{ j.nummer }}</dt>
+          <dd data-pg-jahr="{{ j.nummer }}"><span class="pg-ampel pg-ampel--{{ j.ampel }}">{{ j.anzahl }} von {{ j.ziel }} Sondertagen ({{ j.ampel_text }})</span>
+            <span class="kachel__text">({{ j.beginn|date:"d.m.Y" }} bis {{ j.letzter_tag|date:"d.m.Y" }})</span></dd>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    {% for t in z.texte %}{% if z.basis.genug %}<p class="pg-hinweis" data-pg-p07>{{ t }}</p>{% endif %}{% endfor %}
+
+    {% if z.empfehlung %}
+      <div class="pg-empfehlung stapel" data-pg-empfehlung>
+        <p><strong>Empfehlung:</strong> {{ z.empfehlung.text }}</p>
+        <form method="post" action="{% url 'sondertag:prognose_uebernehmen' %}">{% csrf_token %}
+          <input type="hidden" name="kind" value="{{ z.kind.pk }}">
+          <input type="hidden" name="knopf" value="{{ z.empfehlung.knopf }}">
+          <input type="hidden" name="faktor" value="{{ z.empfehlung.faktor }}">
+          <input type="hidden" name="notiz" value="Empfehlung aus der Prognose">
+          {% include "komponenten/button.html" with typ="submit" variante="primaer" klein=True icon="check" text="Übernehmen" %}
+        </form>
+      </div>
+    {% elif z.basis.genug and not z.ziel_getroffen %}
+      <p class="kachel__text" data-pg-keine>Kein Faktor bringt das Ziel näher. Dann bremsen die Sondertag-Grenzen (höchstens 2 je App-Jahr, 150 Tage Abstand) oder die Zeit bis zum nächsten Rang.</p>
+    {% endif %}
+
+    <details class="stapel" data-pg-kalibrierung><summary><strong>Kalibrierung von {{ z.kind.anzeigename }}</strong></summary>
+    <form method="post" action="{% url 'sondertag:prognose_uebernehmen' %}" class="zeile">{% csrf_token %}
+      <input type="hidden" name="kind" value="{{ z.kind.pk }}">
+      <input type="hidden" name="knopf" value="schwelle">
+      <label class="feld"><span class="feld__label">Faktor XP-Schwellen (leer = keiner)</span><input class="nw-eingabe" name="faktor" value="{{ z.faktor_schwelle|default_if_none:'' }}" inputmode="decimal"></label>
+      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+    </form>
+    <form method="post" action="{% url 'sondertag:prognose_uebernehmen' %}" class="zeile">{% csrf_token %}
+      <input type="hidden" name="kind" value="{{ z.kind.pk }}">
+      <input type="hidden" name="knopf" value="wochen">
+      <label class="feld"><span class="feld__label">Faktor Mindestwochen (leer = keiner)</span><input class="nw-eingabe" name="faktor" value="{{ z.faktor_wochen|default_if_none:'' }}" inputmode="decimal"></label>
+      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+    </form>
+    <form method="post" action="{% url 'sondertag:prognose_uebernehmen' %}" class="zeile">{% csrf_token %}
+      <input type="hidden" name="kind" value="{{ z.kind.pk }}">
+      <input type="hidden" name="knopf" value="mods">
+      <label class="feld"><span class="feld__label">Faktor Mod-Preise</span><input class="nw-eingabe" name="faktor_preis" value="{{ z.mod_faktoren.0 }}" inputmode="decimal"></label>
+      <label class="feld"><span class="feld__label">Faktor Bauzeit</span><input class="nw-eingabe" name="faktor_bauzeit" value="{{ z.mod_faktoren.1 }}" inputmode="decimal"></label>
+      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+    </form>
+    </details>
+  </div></section>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+  {% endfor %}
+
+  <p class="kachel__text">Mod-Preise und Bauzeiten stellt ihr unter <a href="{% url 'spielregeln:raenge' %}">Ränge</a> nach. Die Faktoren wirken nur auf künftige Aufstiege und Käufe; erreichte Ränge bleiben.</p>
+{% endblock %}

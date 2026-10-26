@@ -1,0 +1,8 @@
+{% extends "basis/marke.html" %}{% load static %}
+{% comment %}Hülle: Begrüßung, Login, Modul-Launcher. Ohne Kopfzeile, zentrierte Bühne mit weichen Teal-Punkten.{% endcomment %}
+{% block layout %}huelle{% endblock %}
+{% block kopf %}{% endblock %}
+{% block inhalt %}
+  <div class="nw-punkte" aria-hidden="true"><i></i><i></i><i></i></div>
+  {% block buehne %}{% endblock %}
+{% endblock %}

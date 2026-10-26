@@ -1,0 +1,2230 @@
+{
+  "seiten": [
+    {
+      "label": "einrichtung-1-name",
+      "url": "/einrichtung/schritt/1/",
+      "dateien": [
+        "einrichtung-1-name__handy.png",
+        "einrichtung-1-name__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-2-eltern",
+      "url": "/einrichtung/schritt/2/",
+      "dateien": [
+        "einrichtung-2-eltern__handy.png",
+        "einrichtung-2-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-3-kinder",
+      "url": "/einrichtung/schritt/3/",
+      "dateien": [
+        "einrichtung-3-kinder__handy.png",
+        "einrichtung-3-kinder__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-4-mail",
+      "url": "/einrichtung/schritt/4/",
+      "dateien": [
+        "einrichtung-4-mail__handy.png",
+        "einrichtung-4-mail__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-8-abschluss",
+      "url": "/einrichtung/schritt/8/",
+      "dateien": [
+        "einrichtung-8-abschluss__handy.png",
+        "einrichtung-8-abschluss__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-9-fertig",
+      "url": "/einrichtung/schritt/8/",
+      "dateien": [
+        "einrichtung-9-fertig__handy.png",
+        "einrichtung-9-fertig__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "avatar-aufruf-dashboard",
+      "url": "/kind/",
+      "dateien": [
+        "avatar-aufruf-dashboard__handy.png",
+        "avatar-aufruf-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "avatar-wahl",
+      "url": "/kind/avatar/",
+      "dateien": [
+        "avatar-wahl__handy.png",
+        "avatar-wahl__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Avatar wählen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Avatar wählen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "avatar-wahl-getroffen",
+      "url": "/kind/avatar/",
+      "dateien": [
+        "avatar-wahl-getroffen__handy.png",
+        "avatar-wahl-getroffen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Avatar wählen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Avatar wählen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "avatar-dashboard-neu",
+      "url": "/kind/",
+      "dateien": [
+        "avatar-dashboard-neu__handy.png",
+        "avatar-dashboard-neu__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "avatar-galerie",
+      "url": "/avatar/galerie/",
+      "dateien": [
+        "avatar-galerie__handy.png",
+        "avatar-galerie__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-ritter",
+      "url": "/avatar/galerie/?thema=ritter",
+      "dateien": [
+        "mods-ritter__handy.png",
+        "mods-ritter__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-weltraum",
+      "url": "/avatar/galerie/?thema=weltraum",
+      "dateien": [
+        "mods-weltraum__handy.png",
+        "mods-weltraum__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-ninja",
+      "url": "/avatar/galerie/?thema=ninja",
+      "dateien": [
+        "mods-ninja__handy.png",
+        "mods-ninja__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-roboter",
+      "url": "/avatar/galerie/?thema=roboter",
+      "dateien": [
+        "mods-roboter__handy.png",
+        "mods-roboter__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-pirat",
+      "url": "/avatar/galerie/?thema=pirat",
+      "dateien": [
+        "mods-pirat__handy.png",
+        "mods-pirat__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-wikinger",
+      "url": "/avatar/galerie/?thema=wikinger",
+      "dateien": [
+        "mods-wikinger__handy.png",
+        "mods-wikinger__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-fussballer",
+      "url": "/avatar/galerie/?thema=fussballer",
+      "dateien": [
+        "mods-fussballer__handy.png",
+        "mods-fussballer__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-basketballer",
+      "url": "/avatar/galerie/?thema=basketballer",
+      "dateien": [
+        "mods-basketballer__handy.png",
+        "mods-basketballer__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-rennfahrer",
+      "url": "/avatar/galerie/?thema=rennfahrer",
+      "dateien": [
+        "mods-rennfahrer__handy.png",
+        "mods-rennfahrer__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "mods-dschungel",
+      "url": "/avatar/galerie/?thema=dschungel",
+      "dateien": [
+        "mods-dschungel__handy.png",
+        "mods-dschungel__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ritter 46x21",
+            "Weltraum-Forscher 159x21",
+            "Ninja 42x21",
+            "Roboter 68x21",
+            "Pirat 39x21",
+            "Wikinger 73x21",
+            "Fußballer 77x21",
+            "Basketballer 103x21"
+          ],
+          "kleine_ziele_gesamt": 10,
+          "titel": "Avatar-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "tablet-familienziel",
+      "url": "/tablet/",
+      "dateien": [
+        "tablet-familienziel__handy.png",
+        "tablet-familienziel__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "tablet-familienziel-abstimmung",
+      "url": "/tablet/",
+      "dateien": [
+        "tablet-familienziel-abstimmung__handy.png",
+        "tablet-familienziel-abstimmung__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kind-familienziel-abstimmung",
+      "url": "/kind/",
+      "dateien": [
+        "kind-familienziel-abstimmung__handy.png",
+        "kind-familienziel-abstimmung__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kind-familienziel-abgestimmt",
+      "url": "/kind/",
+      "dateien": [
+        "kind-familienziel-abgestimmt__handy.png",
+        "kind-familienziel-abgestimmt__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "tablet-familienziel-erreicht",
+      "url": "/tablet/",
+      "dateien": [
+        "tablet-familienziel-erreicht__handy.png",
+        "tablet-familienziel-erreicht__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-familienziel",
+      "url": "/eltern/familienziel/",
+      "dateien": [
+        "eltern-familienziel__handy.png",
+        "eltern-familienziel__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Familienziel · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Familienziel · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "tablet-startseite",
+      "url": "/",
+      "dateien": [
+        "tablet-startseite__handy.png",
+        "tablet-startseite__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "pin-eingabe",
+      "url": "/anmelden/kind/8b5e15a0-a6f9-4f21-89f2-38e8f67c0a40/",
+      "dateien": [
+        "pin-eingabe__handy.png",
+        "pin-eingabe__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "PIN · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "PIN · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-dashboard",
+      "url": "/kind/",
+      "dateien": [
+        "kinder-dashboard__handy.png",
+        "kinder-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-aufgaben",
+      "url": "/kind/aufgaben/",
+      "dateien": [
+        "kinder-aufgaben__handy.png",
+        "kinder-aufgaben__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-belohnungen",
+      "url": "/kind/belohnungen/",
+      "dateien": [
+        "kinder-belohnungen__handy.png",
+        "kinder-belohnungen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-sondertag-wunsch",
+      "url": "/kind/sondertag/wunsch/",
+      "dateien": [
+        "kinder-sondertag-wunsch__handy.png",
+        "kinder-sondertag-wunsch__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertag · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertag · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-dashboard",
+      "url": "/eltern/",
+      "dateien": [
+        "eltern-dashboard__handy.png",
+        "eltern-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-meldungen",
+      "url": "/eltern/meldungen/",
+      "dateien": [
+        "eltern-meldungen__handy.png",
+        "eltern-meldungen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meldungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meldungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "wochenplan",
+      "url": "/eltern/wochenplan/",
+      "dateien": [
+        "wochenplan__handy.png",
+        "wochenplan__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wochenplan · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wochenplan · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "aufgabenformular",
+      "url": "/eltern/aufgaben/neu/",
+      "dateien": [
+        "aufgabenformular__handy.png",
+        "aufgabenformular__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Neue Aufgabe · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Neue Aufgabe · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "aufgabenliste",
+      "url": "/eltern/aufgaben/",
+      "dateien": [
+        "aufgabenliste__handy.png",
+        "aufgabenliste__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "bibliothek",
+      "url": "/eltern/bibliothek/",
+      "dateien": [
+        "bibliothek__handy.png",
+        "bibliothek__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Bibliothek · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Bibliothek · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "belohnungs-antraege",
+      "url": "/eltern/belohnungen/",
+      "dateien": [
+        "belohnungs-antraege__handy.png",
+        "belohnungs-antraege__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungs-Anträge · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungs-Anträge · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einstellungen-editor",
+      "url": "/eltern/einstellungen/",
+      "dateien": [
+        "einstellungen-editor__handy.png",
+        "einstellungen-editor__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einstellungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einstellungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "familie",
+      "url": "/eltern/familie/",
+      "dateien": [
+        "familie__handy.png",
+        "familie__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Familie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Familie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "benachrichtigungen",
+      "url": "/eltern/benachrichtigungen/",
+      "dateien": [
+        "benachrichtigungen__handy.png",
+        "benachrichtigungen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Benachrichtigungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Benachrichtigungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "push-seite",
+      "url": "/push/",
+      "dateien": [
+        "push-seite__handy.png",
+        "push-seite__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Push auf diesem Gerät · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Push auf diesem Gerät · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "styleguide",
+      "url": "/styleguide/",
+      "dateien": [
+        "styleguide__handy.png",
+        "styleguide__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Styleguide · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Styleguide · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "abzeichen-galerie",
+      "url": "/abzeichen/galerie/",
+      "dateien": [
+        "abzeichen-galerie__handy.png",
+        "abzeichen-galerie__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Abzeichen-Galerie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Abzeichen-Galerie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-pausen",
+      "url": "/eltern/pausen/",
+      "dateien": [
+        "eltern-pausen__handy.png",
+        "eltern-pausen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ganze Familie\nKind A\nKind B\nKi 324x19",
+            "von 324x21",
+            "bis 324x21",
+            "grund 324x21"
+          ],
+          "kleine_ziele_gesamt": 4,
+          "titel": "Pausen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ganze Familie\nKind A\nKind B\nKi 1086x19",
+            "von 1086x21",
+            "bis 1086x21",
+            "grund 1086x21"
+          ],
+          "kleine_ziele_gesamt": 4,
+          "titel": "Pausen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-raenge",
+      "url": "/eltern/raenge/",
+      "dateien": [
+        "eltern-raenge__handy.png",
+        "eltern-raenge__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ränge · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ränge · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-abzeichen",
+      "url": "/eltern/abzeichen/",
+      "dateien": [
+        "eltern-abzeichen__handy.png",
+        "eltern-abzeichen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Abzeichen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Abzeichen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-meilensteine",
+      "url": "/eltern/meilensteine/",
+      "dateien": [
+        "eltern-meilensteine__handy.png",
+        "eltern-meilensteine__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meilensteine · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meilensteine · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-sondertage",
+      "url": "/eltern/sondertage/",
+      "dateien": [
+        "eltern-sondertage__handy.png",
+        "eltern-sondertage__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertage · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertage · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "shop",
+      "url": "/kind/mods/",
+      "dateien": [
+        "shop__handy.png",
+        "shop__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mod-Shop · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mod-Shop · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "shop-mod-detail",
+      "url": "/kind/mods/ritter-hintergrund-1/",
+      "dateien": [
+        "shop-mod-detail__handy.png",
+        "shop-mod-detail__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Burgwiese · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Burgwiese · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "shop-nach-kauf",
+      "url": "/kind/mods/?ok=gekauft",
+      "dateien": [
+        "shop-nach-kauf__handy.png",
+        "shop-nach-kauf__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mod-Shop · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mod-Shop · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "shop-gesperrt-detail",
+      "url": "/kind/mods/ritter-kopf-3/",
+      "dateien": [
+        "shop-gesperrt-detail__handy.png",
+        "shop-gesperrt-detail__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Visierhelm · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Visierhelm · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "shop-werkstatt-dashboard",
+      "url": "/kind/",
+      "dateien": [
+        "shop-werkstatt-dashboard__handy.png",
+        "shop-werkstatt-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "themenwechsel-auswahl",
+      "url": "/kind/avatar/thema/",
+      "dateien": [
+        "themenwechsel-auswahl__handy.png",
+        "themenwechsel-auswahl__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Thema wechseln · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Thema wechseln · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "themenwechsel-warnung",
+      "url": "/kind/avatar/thema/?thema=pirat",
+      "dateien": [
+        "themenwechsel-warnung__handy.png",
+        "themenwechsel-warnung__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Thema wechseln · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Thema wechseln · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-mods",
+      "url": "/eltern/mods/",
+      "dateien": [
+        "eltern-mods__handy.png",
+        "eltern-mods__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mods und Bauaufträge · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mods und Bauaufträge · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-schaufenster-eltern",
+      "url": "/eltern/",
+      "dateien": [
+        "ranking-schaufenster-eltern__handy.png",
+        "ranking-schaufenster-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-schaufenster-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ranking-schaufenster-tablet__handy.png",
+        "ranking-schaufenster-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-schaufenster-kind",
+      "url": "/kind/",
+      "dateien": [
+        "ranking-schaufenster-kind__handy.png",
+        "ranking-schaufenster-kind__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-held-eltern",
+      "url": "/eltern/",
+      "dateien": [
+        "ranking-held-eltern__handy.png",
+        "ranking-held-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-held-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ranking-held-tablet__handy.png",
+        "ranking-held-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-held-kind",
+      "url": "/kind/",
+      "dateien": [
+        "ranking-held-kind__handy.png",
+        "ranking-held-kind__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-rohpunkte-eltern",
+      "url": "/eltern/",
+      "dateien": [
+        "ranking-rohpunkte-eltern__handy.png",
+        "ranking-rohpunkte-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-rohpunkte-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ranking-rohpunkte-tablet__handy.png",
+        "ranking-rohpunkte-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-rohpunkte-kind",
+      "url": "/kind/",
+      "dateien": [
+        "ranking-rohpunkte-kind__handy.png",
+        "ranking-rohpunkte-kind__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    }
+  ],
+  "ereignisse": {
+    "_start": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-1": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-2": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-3": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-4": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-5": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-6": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-7": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-8": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-startseite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "pin-eingabe": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "avatar-aufruf-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "avatar-wahl": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "avatar-wahl-getroffen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "avatar-dashboard-neu": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "avatar-galerie": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-ritter": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-weltraum": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-ninja": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-roboter": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-pirat": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-wikinger": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-fussballer": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-basketballer": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-rennfahrer": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "mods-dschungel": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-familienziel": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-familienziel-abstimmung": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kind-familienziel-abstimmung": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kind-familienziel-abgestimmt": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-familienziel-erreicht": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-login": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-familienziel": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-aufgaben": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-belohnungen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-sondertag-wunsch": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-meldungen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "wochenplan": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "aufgabenformular": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "aufgabenliste": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "bibliothek": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "belohnungs-antraege": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einstellungen-editor": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "familie": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "benachrichtigungen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "push-seite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "styleguide": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "abzeichen-galerie": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-pausen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-raenge": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-abzeichen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-meilensteine": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-sondertage": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "shop": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "shop-mod-detail": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "shop-nach-kauf": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "shop-gesperrt-detail": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "shop-werkstatt-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "themenwechsel-auswahl": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "themenwechsel-warnung": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-mods": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-schaufenster-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-schaufenster-tablet": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-schaufenster-kind": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-held-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-held-tablet": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-held-kind": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-rohpunkte-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-rohpunkte-tablet": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-rohpunkte-kind": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    }
+  }
+}

@@ -1,0 +1,380 @@
+{
+  "seiten": [
+    {
+      "label": "ruhmeshalle-tablet-vorher",
+      "url": "/tablet/",
+      "dateien": [
+        "ruhmeshalle-tablet-vorher__handy.png",
+        "ruhmeshalle-tablet-vorher__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-kind-dashboard",
+      "url": "/kind/",
+      "dateien": [
+        "ruhmeshalle-kind-dashboard__handy.png",
+        "ruhmeshalle-kind-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-kind-bereit",
+      "url": "/kind/ruhmeshalle/",
+      "dateien": [
+        "ruhmeshalle-kind-bereit__handy.png",
+        "ruhmeshalle-kind-bereit__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ruhmeshalle · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ruhmeshalle · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-dialog",
+      "url": "/kind/ruhmeshalle/stellen/",
+      "dateien": [
+        "ruhmeshalle-dialog__handy.png",
+        "ruhmeshalle-dialog__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "In die Ruhmeshalle stellen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "In die Ruhmeshalle stellen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-dialog-gewaehlt",
+      "url": "/kind/ruhmeshalle/stellen/?thema=pirat",
+      "dateien": [
+        "ruhmeshalle-dialog-gewaehlt__handy.png",
+        "ruhmeshalle-dialog-gewaehlt__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "In die Ruhmeshalle stellen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "In die Ruhmeshalle stellen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-kind-danach",
+      "url": "/kind/ruhmeshalle/?ok=gestellt",
+      "dateien": [
+        "ruhmeshalle-kind-danach__handy.png",
+        "ruhmeshalle-kind-danach__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ruhmeshalle · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ruhmeshalle · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-shop-danach",
+      "url": "/kind/mods/",
+      "dateien": [
+        "ruhmeshalle-shop-danach__handy.png",
+        "ruhmeshalle-shop-danach__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mod-Shop · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Mod-Shop · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ruhmeshalle-tablet__handy.png",
+        "ruhmeshalle-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-eltern-dashboard",
+      "url": "/eltern/",
+      "dateien": [
+        "ruhmeshalle-eltern-dashboard__handy.png",
+        "ruhmeshalle-eltern-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ruhmeshalle-eltern",
+      "url": "/eltern/ruhmeshalle/",
+      "dateien": [
+        "ruhmeshalle-eltern__handy.png",
+        "ruhmeshalle-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ruhmeshalle · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Ruhmeshalle · Nestwerk"
+        }
+      }
+    }
+  ],
+  "ereignisse": {
+    "_start": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-1": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-2": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-3": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-4": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-5": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-6": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-7": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-8": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-tablet-vorher": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-startseite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "pin-eingabe": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-kind-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-kind-bereit": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-dialog": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-dialog-gewaehlt": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-kind-danach": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-shop-danach": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-tablet": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-login": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-eltern-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ruhmeshalle-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    }
+  }
+}

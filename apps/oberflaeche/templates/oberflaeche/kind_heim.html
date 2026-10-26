@@ -1,0 +1,20 @@
+{% extends "basis/kind.html" %}
+{% load static %}
+{% comment %}Kinder-Dashboard: Begrüßung + alle Kacheln, die die Registry für "kind" liefert.{% endcomment %}
+{% block titel %}Hallo{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
+    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Abmelden" %}
+  </form>
+{% endblock %}
+{% block inhalt %}
+  <h1>Hallo {{ request.user.anzeigename }}!</h1>
+  <div class="dashboard" id="dashboard">
+    {% for eintrag in kacheln %}
+      <section class="dashboard__kachel" data-kachel="{{ eintrag.kachel.schluessel }}" aria-label="{{ eintrag.kachel.titel }}">
+        {% include eintrag.kachel.template with k=eintrag.k %}
+      </section>
+    {% endfor %}
+  </div>
+{% endblock %}

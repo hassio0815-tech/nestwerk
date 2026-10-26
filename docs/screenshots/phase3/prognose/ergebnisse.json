@@ -1,0 +1,120 @@
+{
+  "seiten": [
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "prognose-eltern",
+      "url": "/eltern/prognose/",
+      "dateien": [
+        "prognose-eltern__handy.png",
+        "prognose-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ränge 42x17"
+          ],
+          "kleine_ziele_gesamt": 1,
+          "titel": "Prognose & Kalibrierung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [
+            "Ränge 42x17"
+          ],
+          "kleine_ziele_gesamt": 1,
+          "titel": "Prognose & Kalibrierung · Nestwerk"
+        }
+      }
+    }
+  ],
+  "ereignisse": {
+    "_start": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-1": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-2": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-3": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-4": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-5": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-6": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-7": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-8": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-login": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "prognose-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    }
+  }
+}

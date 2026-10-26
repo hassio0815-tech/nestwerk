@@ -1,0 +1,5 @@
+{% comment %}Fortschrittsbalken (a = Ansicht). Größe über Klasse ``gross``.{% endcomment %}
+<div class="fz-balken{% if gross %} fz-balken--gross{% endif %}{% if a.erreicht %} fz-balken--erreicht{% endif %}">
+  <progress class="fortschritt" value="{{ a.stand.punkte }}" max="{{ a.stand.ziel }}" aria-label="Familienziel">{{ a.stand.punkte }} von {{ a.stand.ziel }}</progress>
+  <p class="fz-balken__zahlen"><strong>{{ a.stand.punkte }}</strong> von {{ a.stand.ziel }} Punkten</p>
+</div>

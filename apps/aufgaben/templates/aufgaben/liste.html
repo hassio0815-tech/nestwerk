@@ -1,0 +1,20 @@
+{% extends "aufgaben/basis.html" %}
+{% block titel %}Aufgaben{% endblock %}
+{% block seite %}
+  <div class="zeile">
+    <h1>Aufgaben</h1>
+    <div class="reihe">
+      {% url "aufgaben:neu" as neu_url %}
+      <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>Neue Aufgabe</span></a>
+      {% url "aufgaben:vorlagen" as vorlagen_url %}
+      {% include "komponenten/button.html" with href=vorlagen_url variante="sekundaer" text="Aus Vorlage" %}
+    </div>
+  </div>
+  <div id="formular"></div>
+  <form class="reihe" method="get" hx-get="{% url 'aufgaben:liste' %}" hx-target="#liste" hx-swap="outerHTML" hx-push-url="true" hx-trigger="change">
+    {% include "aufgaben/_feld.html" with f=filter.kategorie %}
+    {% include "aufgaben/_feld.html" with f=filter.status %}
+    <noscript>{% include "komponenten/button.html" with typ="submit" text="Filtern" %}</noscript>
+  </form>
+  {% include "aufgaben/_liste.html" %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "basis/huelle.html" %}
+{% comment %}Begrüßung + Profilwahl vor der Anmeldung: Splash (einmal je Sitzung), dann Kind- und Eltern-Kacheln.{% endcomment %}
+{% block titel %}Wer bist du?{% endblock %}
+{% block buehne %}
+  <div class="nw-splash" data-splash aria-hidden="true">
+    {% include "komponenten/logo_kachel.html" %}
+    <span class="nw-balken"></span>
+    <p class="nw-wortmarke">{{ app_name|default:"Nestwerk" }}</p>
+    <span class="nw-lauf"></span>
+  </div>
+  <div class="huelle-buehne">
+    {% include "komponenten/logo_kachel.html" %}
+    <div class="stapel">
+      <span class="nw-balken nw-mitte"></span>
+      <h1 class="nw-begruessung">{{ gruss }}!</h1>
+      <p class="nw-leise">Wer ist heute dabei?</p>
+    </div>
+    <section class="nw-profil-gruppe" aria-labelledby="kinder-titel">
+      <h2 id="kinder-titel">Kinder</h2>
+      <div class="nw-profile">
+        {% for eintrag in kinder %}
+          {% url "konten:kind_pin" eintrag.benutzer.pk as pin_url %}
+          {% include "komponenten/profil_kachel.html" with benutzer=eintrag.benutzer name=eintrag.benutzer.anzeigename href=pin_url akzent=eintrag.akzent gesperrt=eintrag.gesperrt %}
+        {% empty %}
+          {% include "komponenten/leer.html" with titel="Noch keine Kinder" text="Die Eltern legen die Kinder in der Einrichtung an." icon="person" %}
+        {% endfor %}
+      </div>
+    </section>
+    {% if eltern %}
+      <section class="nw-profil-gruppe" aria-labelledby="eltern-titel">
+        <h2 id="eltern-titel">Eltern</h2>
+        <div class="nw-profile">
+          {% url "konten:eltern_login" as login_url %}
+          {% for e in eltern %}
+            {% include "komponenten/profil_kachel.html" with name=e.wappen_name href=login_url|add:"?eltern="|add:e.pk.hex rolle=e.wappen_info.titel|default:"Eltern" wappen=e.wappen_info.emoji %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,864 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "ninja-hintergrund-1",
+   "name": "Nachthimmel",
+   "beschreibung": "Dunkler Himmel über dem Dojo.",
+   "thema": "ninja",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-ruecken-1",
+   "name": "Pfeilköcher",
+   "beschreibung": "Ein Köcher für den Rücken.",
+   "thema": "ninja",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "koecher",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-koerper-1",
+   "name": "Dojo-Anzug",
+   "beschreibung": "Ein dunkler Anzug für das Training.",
+   "thema": "ninja",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-kopf-1",
+   "name": "Rotes Stirnband",
+   "beschreibung": "Ein Stirnband für schnelle Sprünge.",
+   "thema": "ninja",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "p3",
+      "b": "p3",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hand-1",
+   "name": "Holzschwert",
+   "beschreibung": "Ein Holzschwert für das Dojo.",
+   "thema": "ninja",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#c68a4e",
+      "b": "#8a5a2b",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-begleiter-1",
+   "name": "Schattenkatze",
+   "beschreibung": "Eine schwarze Katze mit hellen Augen.",
+   "thema": "ninja",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p4"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hintergrund-2",
+   "name": "Hügel bei Nacht",
+   "beschreibung": "Hügel im dunklen Blau.",
+   "thema": "ninja",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#4a3f7a",
+      "b": "#2d2758",
+      "c": "#1d1a3a"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-ruecken-2",
+   "name": "Schattenumhang",
+   "beschreibung": "Umhang mit hellem Rand.",
+   "thema": "ninja",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-koerper-2",
+   "name": "Weste mit Kante",
+   "beschreibung": "Weste mit hellem Rand.",
+   "thema": "ninja",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p4"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-kopf-2",
+   "name": "Schatten-Kapuze",
+   "beschreibung": "Eine Kapuze mit Kante.",
+   "thema": "ninja",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kapuze",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hand-2",
+   "name": "Dojo-Stab",
+   "beschreibung": "Ein Stab mit hellem Rand.",
+   "thema": "ninja",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-begleiter-2",
+   "name": "Fuchs der Nacht",
+   "beschreibung": "Ein Fuchs mit hellem Rand.",
+   "thema": "ninja",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "p2",
+      "b": "p3",
+      "c": "p4"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hintergrund-3",
+   "name": "Dojo-Halle",
+   "beschreibung": "Eine Halle mit Streifen.",
+   "thema": "ninja",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#34344d",
+      "b": "#7b8394",
+      "c": "#23233a"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-ruecken-3",
+   "name": "Blauer Umhang",
+   "beschreibung": "Umhang mit blauen Streifen.",
+   "thema": "ninja",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-koerper-3",
+   "name": "Blauer Ninja-Anzug",
+   "beschreibung": "Dunkler Anzug mit blauen Streifen.",
+   "thema": "ninja",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-kopf-3",
+   "name": "Blaue Kapuze",
+   "beschreibung": "Kapuze mit blauen Streifen.",
+   "thema": "ninja",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kapuze",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hand-3",
+   "name": "Blaue Fackel",
+   "beschreibung": "Fackel mit blauen Streifen.",
+   "thema": "ninja",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fackel",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p3",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-begleiter-3",
+   "name": "Blaue Katze",
+   "beschreibung": "Katze mit blauen Streifen.",
+   "thema": "ninja",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hintergrund-4",
+   "name": "Mondnacht",
+   "beschreibung": "Nachthimmel mit lila Leuchten.",
+   "thema": "ninja",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#a855f7"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#a855f7",
+      "b": "#a855f7",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-ruecken-4",
+   "name": "Köcher und Umhang",
+   "beschreibung": "Lila Umhang mit Köcher.",
+   "thema": "ninja",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "koecher",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-koerper-4",
+   "name": "Schattenmantel",
+   "beschreibung": "Lila Mantel mit Punkten.",
+   "thema": "ninja",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-kopf-4",
+   "name": "Kapuze mit Stirnband",
+   "beschreibung": "Lila Kapuze mit rotem Band.",
+   "thema": "ninja",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kapuze",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "p3",
+      "b": "p3",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hand-4",
+   "name": "Stab mit Punkten",
+   "beschreibung": "Lila Stab mit Punktemuster.",
+   "thema": "ninja",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-begleiter-4",
+   "name": "Eulen-Vogel",
+   "beschreibung": "Ein Vogel mit lila Punkten.",
+   "thema": "ninja",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hintergrund-5",
+   "name": "Goldener Mond",
+   "beschreibung": "Hügel unter goldenem Mond.",
+   "thema": "ninja",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#8a6a1f",
+      "c": "#5a4a14"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-ruecken-5",
+   "name": "Goldköcher",
+   "beschreibung": "Goldener Köcher mit Umhang.",
+   "thema": "ninja",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "koecher",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-koerper-5",
+   "name": "Goldmantel",
+   "beschreibung": "Mantel mit goldenem Karo.",
+   "thema": "ninja",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-kopf-5",
+   "name": "Goldband-Kapuze",
+   "beschreibung": "Kapuze mit goldenem Stirnband.",
+   "thema": "ninja",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kapuze",
+     "farben": {
+      "a": "#facc15",
+      "b": "p2",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hand-5",
+   "name": "Goldschwert",
+   "beschreibung": "Goldenes Holzschwert mit Karo.",
+   "thema": "ninja",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-begleiter-5",
+   "name": "Goldfuchs",
+   "beschreibung": "Goldener Fuchs mit Karo.",
+   "thema": "ninja",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hintergrund-6",
+   "name": "Himmelstor",
+   "beschreibung": "Ein Tor aus Licht unter dem Sternenhimmel.",
+   "thema": "ninja",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-ruecken-6",
+   "name": "Mond-Aura",
+   "beschreibung": "Ein Leuchten aus Mondlicht.",
+   "thema": "ninja",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-koerper-6",
+   "name": "Mondmantel",
+   "beschreibung": "Glänzender Mantel mit pinker Weste.",
+   "thema": "ninja",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-kopf-6",
+   "name": "Mond-Ninja",
+   "beschreibung": "Glänzende Kapuze mit Mondband.",
+   "thema": "ninja",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kapuze",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-hand-6",
+   "name": "Mondstab",
+   "beschreibung": "Ein Stab aus Mondlicht.",
+   "thema": "ninja",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ninja-begleiter-6",
+   "name": "Schattendrache",
+   "beschreibung": "Ein Drache mit goldenen Akzenten.",
+   "thema": "ninja",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

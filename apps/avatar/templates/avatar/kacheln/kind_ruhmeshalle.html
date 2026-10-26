@@ -1,0 +1,12 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">
+<article class="karte" {% if k.bereit %}data-selten="legendary"{% endif %}><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="pokal" %} Ruhmeshalle</h2>
+  {% if k.eintraege %}
+    <div class="halle-reihe">{% for e in k.eintraege %}{% include "avatar/_held.html" with klein=True %}{% endfor %}</div>
+  {% else %}
+    <p class="kachel__text">{% if k.bereit %}Dein Held ist fertig!{% else %}Hier ziehen deine fertigen Helden ein.{% endif %}</p>
+  {% endif %}
+  {% if k.bereit %}<p><strong>Dein Held ist bereit für die Ruhmeshalle!</strong></p>{% endif %}
+  {% url "avatar:halle_kind" as halle_url %}
+  {% include "komponenten/button.html" with href=halle_url variante="sekundaer" voll=True icon="pokal" text="Zur Ruhmeshalle" %}
+</div></article>

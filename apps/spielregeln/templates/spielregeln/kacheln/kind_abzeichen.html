@@ -1,0 +1,25 @@
+<article class="karte abzeichen-vitrine"><div class="karte__inhalt stapel">
+  <h2>Meine Abzeichen</h2>
+  {% if k.v.verdient %}
+    <ul class="abzeichen-liste" data-abzeichen-verdient="{{ k.v.verdient|length }}">
+      {% for a in k.v.verdient %}
+        <li class="abzeichen" data-abzeichen="{{ a.verleihung.abzeichen.schluessel }}" data-gruppe="{{ a.verleihung.abzeichen.gruppe }}" title="{{ a.verleihung.abzeichen.beschreibung }}">
+          {% include "spielregeln/_abzeichen_symbol.html" with s=a.symbol %}
+          <span class="abzeichen__name">{{ a.titel }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="kachel__text">Noch keine Abzeichen. Schon eine Woche mit Aufgaben bringt dein erstes!</p>
+  {% endif %}
+  {% if k.v.naechste %}
+    <h3>Als Nächstes</h3>
+    {% for n in k.v.naechste %}
+      <div class="abzeichen abzeichen--offen" data-abzeichen-naechstes="{{ n.abzeichen.schluessel }}">
+        {% include "spielregeln/_abzeichen_symbol.html" with s=n.symbol %}
+        {% include "komponenten/fortschritt.html" with label=n.abzeichen.name wert=n.wert max=n.ziel %}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% if k.v.rekord_wochenserie or k.v.rekord_tagesserie %}<p class="kachel__text" data-rekord>{% include "komponenten/icon.html" with name="pokal" %} Rekord: {{ k.v.rekord_wochenserie }} {% if k.v.rekord_wochenserie == 1 %}Woche{% else %}Wochen{% endif %} · {{ k.v.rekord_tagesserie }} {% if k.v.rekord_tagesserie == 1 %}Tag{% else %}Tage{% endif %} in Folge</p>{% endif %}
+</div></article>

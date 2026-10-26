@@ -1,0 +1,9 @@
+{# Zurück (ohne Speichern) und Weiter #}
+<div class="einrichtung-navigation">
+  {% if zurueck_url %}
+    <a class="knopf knopf--sekundaer" href="{{ zurueck_url }}" hx-get="{{ zurueck_url }}" hx-target="#assistent" hx-swap="innerHTML" hx-push-url="true">
+      {% include "komponenten/icon.html" with name="pfeil-links" %}<span>Zurück</span>
+    </a>
+  {% endif %}
+  {% include "komponenten/button.html" with typ="submit" text=weiter_text|default:"Weiter" icon="pfeil-rechts" gross=True %}
+</div>

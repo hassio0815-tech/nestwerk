@@ -1,0 +1,7 @@
+{% with feld_id=id|default:name %}
+<div class="feld{% if fehler %} feld--fehler{% endif %}">
+  <label class="feld__label" for="{{ feld_id }}">{{ label }}{% if pflicht %} <span aria-hidden="true">*</span>{% endif %}</label>
+  <input class="feld__eingabe" id="{{ feld_id }}" name="{{ name }}" type="{{ typ|default:'text' }}" value="{{ wert|default:'' }}"{% if inputmode %} inputmode="{{ inputmode }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if pflicht %} required{% endif %}{% if fehler %} aria-invalid="true"{% endif %}{% if fehler or hilfe %} aria-describedby="{{ feld_id }}-hinweis"{% endif %}>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" id="{{ feld_id }}-hinweis">{{ fehler }}</p>{% elif hilfe %}<p class="feld__hinweis" id="{{ feld_id }}-hinweis">{{ hilfe }}</p>{% endif %}
+</div>
+{% endwith %}

@@ -1,0 +1,7 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="pokal" %} {{ k.anzahl }} Held{{ k.anzahl|pluralize:"en" }} in der Ruhmeshalle</h2>
+  <div class="halle-reihe">{% for e in k.eintraege %}{% include "avatar/_held.html" with klein=True mit_kind=True %}{% endfor %}</div>
+  {% url "avatar:halle_eltern" as halle_url %}
+  {% include "komponenten/button.html" with href=halle_url variante="sekundaer" voll=True icon="pokal" text="Widmungen schreiben" %}
+</div></article>

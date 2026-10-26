@@ -1,0 +1,29 @@
+{% extends "basis/huelle.html" %}
+{% comment %}Eltern-Login: gewähltes Profil (oder Auswahlliste) + gemeinsames Familien-Passwort.{% endcomment %}
+{% block titel %}Eltern-Anmeldung{% endblock %}
+{% block buehne %}
+  <div class="huelle-buehne">
+    {% include "komponenten/logo_kachel.html" %}
+    <form method="post" class="nw-karte stapel nw-voll nw-links">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <h1>{% if gewaehlt %}Hallo {{ gewaehlt.anzeigename }}!{% else %}Eltern-Anmeldung{% endif %}</h1>
+      {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+      {% if gewaehlt %}
+        <input type="hidden" name="eltern" value="{{ gewaehlt.pk }}">
+      {% else %}
+        <div class="feld">
+          <label class="feld__label" for="eltern">Wer bist du?</label>
+          <select class="feld__eingabe" id="eltern" name="eltern" required>
+            {% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}
+          </select>
+        </div>
+      {% endif %}
+      {% include "komponenten/feld.html" with name="passwort" label="Familien-Passwort" typ="password" autocomplete="current-password" pflicht=True %}
+      <label class="nw-schalter"><input type="checkbox" name="vertraut" role="switch"><span class="nw-schalter__spur"></span><span>Dieses Gerät ist vertraut (angemeldet bleiben)</span></label>
+      {% include "komponenten/button.html" with typ="submit" text="Anmelden" icon="check" voll=True gross=True %}
+    </form>
+    {% url "konten:start" as start_url %}
+    {% include "komponenten/button.html" with href=start_url variante="geist" icon="pfeil-links" text="Zurück zur Auswahl" %}
+  </div>
+{% endblock %}

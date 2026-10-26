@@ -1,0 +1,14 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  {% with w=k.stand.wochenserie %}<div class="reihe"><span class="flamme" aria-hidden="true" data-stufe="{% if w >= 12 %}4{% elif w >= 6 %}3{% elif w >= 3 %}2{% elif w >= 1 %}1{% else %}0{% endif %}">{% include "komponenten/icon.html" with name="funke" %}</span><h2>Meine Serie</h2></div>{% endwith %}
+  {% if k.pause %}
+    <p class="reihe" data-pause="1">{% include "komponenten/icon.html" with name="pause" %} <strong>Pause – deine Serie ist sicher</strong></p>
+    <p class="kachel__text">{% if k.pause.bis %}Pause bis {{ k.pause.bis|date:"d.m.Y" }}.{% else %}Pause, bis Mama oder Papa sie ausschalten.{% endif %} Aufgaben zählen trotzdem.</p>
+  {% endif %}
+  <div class="reihe">
+    <span class="chip" data-selten="epic">{% include "komponenten/icon.html" with name="funke" %} {{ k.stand.wochenserie }} {% if k.stand.wochenserie == 1 %}Woche{% else %}Wochen{% endif %} Serie</span>
+    <span class="chip" data-selten="rare">{% include "komponenten/icon.html" with name="kalender" %} {{ k.stand.aktive_wochen_gesamt }} aktive {% if k.stand.aktive_wochen_gesamt == 1 %}Woche{% else %}Wochen{% endif %}</span>
+    <span class="chip" data-selten="uncommon">{% include "komponenten/icon.html" with name="stern" %} {{ k.stand.tagesserie }} {% if k.stand.tagesserie == 1 %}Tag{% else %}Tage{% endif %} in Folge</span>
+  </div>
+  <p class="kachel__text">{% if k.stand.woche_aktiv %}{% include "komponenten/icon.html" with name="check" %} Diese Woche zählt schon für deine Serie.{% else %}Eine Aufgabe diese Woche hält deine Serie am Laufen.{% endif %}</p>
+  {% if k.stand.rekord_wochenserie or k.stand.rekord_tagesserie %}<p class="kachel__text">Rekord: {{ k.stand.rekord_wochenserie }} Wochen · {{ k.stand.rekord_tagesserie }} Tage</p>{% endif %}
+</div></article>

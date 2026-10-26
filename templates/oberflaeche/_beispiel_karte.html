@@ -1,0 +1,6 @@
+{% extends "komponenten/karte.html" %}
+{% block karte_attribute %}{% if selten %}data-selten="{{ selten }}"{% endif %}{% endblock %}
+{% block inhalt %}
+  <h2>{{ titel }}</h2>
+  <p>{{ text }}</p>
+{% endblock %}

@@ -1,0 +1,9 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Offene Entscheidungen <span class="chip" data-selten="{% if k.gesamt %}epic{% else %}common{% endif %}" data-zaehler="{{ k.gesamt }}">{{ k.gesamt }}</span></h2>
+  <ul class="liste-schlicht">
+    <li class="zeile"><span>Meldungen</span><a href="{% url 'aufgaben:entscheidungen' %}">{{ k.meldungen }}</a></li>
+    <li class="zeile"><span>Konflikte</span><a href="{% url 'aufgaben:entscheidungen' %}">{{ k.konflikte }}</a></li>
+    <li class="zeile"><span>Einlöseanträge</span><a href="{% url 'belohnung:antraege' %}">{{ k.antraege }}</a></li>
+  </ul>
+  {% if not k.gesamt %}<p class="kachel__text">Nichts zu entscheiden.</p>{% endif %}
+</div></article>

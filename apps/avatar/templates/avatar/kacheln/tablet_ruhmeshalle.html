@@ -1,0 +1,3 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">
+<h2 class="tablet-abschnitt__titel">{{ k.anzahl }} Held{{ k.anzahl|pluralize:"en" }} in der Ruhmeshalle</h2>
+<div class="halle-reihe halle-reihe--gross">{% for e in k.eintraege %}{% include "avatar/_held.html" with klein=True mit_kind=True %}{% endfor %}</div>

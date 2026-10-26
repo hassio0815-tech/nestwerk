@@ -1,0 +1,13 @@
+{% extends "basis/einstellungen.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/aufgaben.css' %}">{% endblock %}
+{% block subnav %}
+  <nav class="aufgaben-nav" aria-label="Aufgaben">
+    {% url "aufgaben:entscheidungen" as u0 %}{% url "aufgaben:liste" as u1 %}{% url "aufgaben:vorlagen" as u2 %}{% url "aufgaben:kategorien" as u3 %}{% url "aufgaben:wochenplan" as u4 %}
+    {% include "komponenten/button.html" with href=u0 variante="sekundaer" klein=True icon="check" text="Meldungen" %}
+    {% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="liste" text="Aufgaben" %}
+    {% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="kalender" text="Wochenplan" %}
+    {% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="stern" text="Bibliothek" %}
+    {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="einstellungen" text="Kategorien" %}
+  </nav>
+{% endblock %}

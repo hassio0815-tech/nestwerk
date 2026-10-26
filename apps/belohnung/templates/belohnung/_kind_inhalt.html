@@ -1,0 +1,48 @@
+<div class="zeile">
+  <h1>Belohnungen</h1>
+  <div class="stapel belohnung-guthaben">
+    <span>Verfügbar</span>
+    {% include "komponenten/punkte.html" with wert=verfuegbar %}
+  </div>
+</div>
+{% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler %}{% endif %}
+{% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung %}{% endif %}
+
+<div class="raster">
+  {% for k in kacheln %}
+    <form method="post" action="{% url 'belohnung:beantragen' k.b.pk %}" hx-post="{% url 'belohnung:beantragen' k.b.pk %}" hx-target="#belohnungen" hx-swap="innerHTML">
+      {% csrf_token %}
+      <button type="submit" class="kachel belohnung-kachel{% if not k.moeglich %} kachel--gesperrt{% endif %}"{% if not k.moeglich %} disabled{% endif %}>
+        {% include "komponenten/icon.html" with name=k.b.anzeige_symbol klasse="kachel__icon" %}
+        <span class="kachel__titel">{{ k.b.titel }}</span>
+        <span class="kachel__text">{{ k.b.preis_punkte }} Punkte{% if k.grund %} · {{ k.grund }}{% endif %}</span>
+      </button>
+    </form>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="geschenk" titel="Noch keine Belohnungen" text="Mama und Papa legen sie an." %}
+  {% endfor %}
+</div>
+
+<h2>Meine Anträge</h2>
+<div class="stapel">
+  {% for a in antraege %}
+    <article class="karte"><div class="karte__inhalt zeile">
+      <div class="zeile__text stapel">
+        <strong>{{ a.titel_snapshot }}</strong>
+        <span class="reihe">
+          {% include "komponenten/chip.html" with text=a.get_status_display %}
+          {% if a.ablehnungsgrund %}<span>{{ a.ablehnungsgrund }}</span>{% endif %}
+        </span>
+      </div>
+      {% include "komponenten/punkte.html" with wert=a.preis_snapshot %}
+      {% if a.status == "offen" %}
+        <form method="post" action="{% url 'belohnung:zurueckziehen' a.pk %}" hx-post="{% url 'belohnung:zurueckziehen' a.pk %}" hx-target="#belohnungen" hx-swap="innerHTML">
+          {% csrf_token %}
+          {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Zurückziehen" %}
+        </form>
+      {% endif %}
+    </div></article>
+  {% empty %}
+    <p>Noch nichts beantragt.</p>
+  {% endfor %}
+</div>

@@ -1,0 +1,16 @@
+<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel">
+  {% csrf_token %}
+  <h1>Zusammenfassung</h1>
+  {% for m in offen %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ m }}</p>{% endfor %}
+  <section class="karte"><div class="karte__inhalt stapel">
+    <p><strong>App:</strong> {{ z.app_name }}</p>
+    <p><strong>Eltern:</strong> {% for name, mail in z.eltern %}{{ name }} ({{ mail }}){% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p><strong>Passwort:</strong> gesetzt</p>
+    <p><strong>Kinder:</strong> {{ z.kinder|join:", " }}</p>
+    <p><strong>E-Mail-Versand:</strong> {% if z.smtp %}{{ z.smtp }}{% elif z.smtp_uebersprungen %}übersprungen. Ohne Postfach gibt es keine Mails.{% else %}nicht eingerichtet{% endif %}</p>
+    <p><strong>Adresse:</strong> {{ z.netzwerk.basis_url }}</p>
+    <p><strong>Zeitzone:</strong> {{ z.zeit.zeitzone }}, <strong>Go-live:</strong> {{ z.zeit.go_live_datum|date:"d.m.Y" }}</p>
+  </div></section>
+  <p>Danach ist der Assistent gesperrt. Weitere Änderungen machst du im Eltern-Dashboard.</p>
+  {% include "einrichtung/_navigation.html" with weiter_text="Einrichtung abschließen" %}
+</form>

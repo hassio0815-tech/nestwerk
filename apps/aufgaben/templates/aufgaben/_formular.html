@@ -1,0 +1,36 @@
+<section class="karte" id="formular-karte"><div class="karte__inhalt stapel">
+  <h2>{{ titel }}</h2>
+  <form method="post" action="{{ aktion }}" class="stapel" hx-post="{{ aktion }}" hx-target="#formular" hx-swap="innerHTML">
+    {% csrf_token %}
+    {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
+    {% for f in form.hidden_fields %}{{ f }}{% endfor %}
+    {% for f in form.visible_fields %}
+      {% if f.name == "wiederholungsart" %}
+        <fieldset class="plan stapel">
+          <legend>Wann und wie oft?</legend>
+          {% include "aufgaben/_feld.html" with f=f %}
+          <div class="plan__wochen">{% include "aufgaben/_feld.html" with f=form.wochentage %}</div>
+          <div class="plan__intervall">{% include "aufgaben/_feld.html" with f=form.intervall_tage %}</div>
+          {% include "aufgaben/_feld.html" with f=form.fenster_von %}
+          {% include "aufgaben/_feld.html" with f=form.fenster_bis %}
+          {% include "aufgaben/_feld.html" with f=form.fenster_tage %}
+          <div class="plan__serie stapel">
+            {% if form.start_datum %}{% include "aufgaben/_feld.html" with f=form.start_datum %}{% include "aufgaben/_feld.html" with f=form.end_datum %}{% endif %}
+            <div class="reihe">
+              {% include "aufgaben/_feld.html" with f=form.limit_anzahl %}
+              {% include "aufgaben/_feld.html" with f=form.limit_zeitraum %}
+            </div>
+            <p class="feld__hinweis">Limit gilt je Kind und Aufgabe.</p>
+          </div>
+        </fieldset>
+      {% elif f.name in "wochentage intervall_tage start_datum end_datum fenster_von fenster_bis fenster_tage limit_anzahl limit_zeitraum" %}
+      {% else %}
+        {% include "aufgaben/_feld.html" with f=f %}
+      {% endif %}
+    {% endfor %}
+    <div class="reihe">
+      {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
+      {% include "komponenten/button.html" with href=zurueck variante="geist" text="Abbrechen" %}
+    </div>
+  </form>
+</div></section>

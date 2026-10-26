@@ -1,0 +1,381 @@
+{
+  "seiten": [
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-schaufenster-eltern",
+      "url": "/eltern/",
+      "dateien": [
+        "ranking-schaufenster-eltern__handy.png",
+        "ranking-schaufenster-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-schaufenster-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ranking-schaufenster-tablet__handy.png",
+        "ranking-schaufenster-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [
+            "Horizontaler Überlauf: 419 > 390",
+            "3 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [
+            "3 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-schaufenster-kind",
+      "url": "/kind/",
+      "dateien": [
+        "ranking-schaufenster-kind__handy.png",
+        "ranking-schaufenster-kind__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [
+            "3 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [
+            "3 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-held-eltern",
+      "url": "/eltern/",
+      "dateien": [
+        "ranking-held-eltern__handy.png",
+        "ranking-held-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-held-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ranking-held-tablet__handy.png",
+        "ranking-held-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [
+            "Horizontaler Überlauf: 419 > 390",
+            "1 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [
+            "1 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-held-kind",
+      "url": "/kind/",
+      "dateien": [
+        "ranking-held-kind__handy.png",
+        "ranking-held-kind__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [
+            "1 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [
+            "1 Textelemente unter 14px"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-rohpunkte-eltern",
+      "url": "/eltern/",
+      "dateien": [
+        "ranking-rohpunkte-eltern__handy.png",
+        "ranking-rohpunkte-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-rohpunkte-tablet",
+      "url": "/tablet/",
+      "dateien": [
+        "ranking-rohpunkte-tablet__handy.png",
+        "ranking-rohpunkte-tablet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [
+            "Horizontaler Überlauf: 419 > 390"
+          ],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "ranking-rohpunkte-kind",
+      "url": "/kind/",
+      "dateien": [
+        "ranking-rohpunkte-kind__handy.png",
+        "ranking-rohpunkte-kind__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    }
+  ],
+  "ereignisse": {
+    "_start": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-1": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-2": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-3": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-4": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-5": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-6": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-7": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-8": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-login": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-startseite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "pin-eingabe": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-schaufenster-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-schaufenster-tablet": {
+      "konsole": [],
+      "csp": [
+        "error: EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because 'unsafe-eval' is not an allowed source of script: script-src 'self'\".\n",
+        "script-src blockiert eval (http://127.0.0.1:8766/static/vendor/htmx.min.js:1)"
+      ],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-schaufenster-kind": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-held-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-held-tablet": {
+      "konsole": [],
+      "csp": [
+        "error: EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because 'unsafe-eval' is not an allowed source of script: script-src 'self'\".\n",
+        "script-src blockiert eval (http://127.0.0.1:8766/static/vendor/htmx.min.js:1)"
+      ],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-held-kind": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-rohpunkte-eltern": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-rohpunkte-tablet": {
+      "konsole": [],
+      "csp": [
+        "error: EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because 'unsafe-eval' is not an allowed source of script: script-src 'self'\".\n",
+        "script-src blockiert eval (http://127.0.0.1:8766/static/vendor/htmx.min.js:1)"
+      ],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "ranking-rohpunkte-kind": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    }
+  }
+}

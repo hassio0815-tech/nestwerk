@@ -1,0 +1,830 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "basketballer-hintergrund-1",
+   "name": "Hallenboden",
+   "beschreibung": "Ein Hallenboden mit Gitter.",
+   "thema": "basketballer",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#e5e7eb",
+      "b": "#6d28d9",
+      "c": "#c4b5fd"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-ruecken-1",
+   "name": "Sporttasche",
+   "beschreibung": "Tasche für den Hallentag.",
+   "thema": "basketballer",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-koerper-1",
+   "name": "Trikot",
+   "beschreibung": "Das lila Trikot der Mannschaft.",
+   "thema": "basketballer",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p1",
+      "b": "p6",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-kopf-1",
+   "name": "Stirnband",
+   "beschreibung": "Ein Stirnband in Gelb.",
+   "thema": "basketballer",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "p3",
+      "b": "p3",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hand-1",
+   "name": "Basketball",
+   "beschreibung": "Der Ball für den Korb.",
+   "thema": "basketballer",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ball",
+     "farben": {
+      "a": "p3",
+      "b": "p5",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-begleiter-1",
+   "name": "Hallenhund",
+   "beschreibung": "Ein Hund für die Halle.",
+   "thema": "basketballer",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hintergrund-2",
+   "name": "Arena",
+   "beschreibung": "Eine Arena mit Kante.",
+   "thema": "basketballer",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "streifen",
+     "farben": {
+      "a": "#2d1b4e",
+      "b": "#6d28d9",
+      "c": "#4c1d95"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-ruecken-2",
+   "name": "Umhang mit Kante",
+   "beschreibung": "Umhang mit hellem Rand.",
+   "thema": "basketballer",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-koerper-2",
+   "name": "Weste mit Kante",
+   "beschreibung": "Weste mit hellem Rand.",
+   "thema": "basketballer",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-kopf-2",
+   "name": "Kappe mit Kante",
+   "beschreibung": "Kappe mit hellem Rand.",
+   "thema": "basketballer",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p4"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hand-2",
+   "name": "Pokal",
+   "beschreibung": "Ein Pokal mit Rand.",
+   "thema": "basketballer",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-begleiter-2",
+   "name": "Katze mit Kante",
+   "beschreibung": "Katze mit hellem Rand.",
+   "thema": "basketballer",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "p4",
+      "b": "p1",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hintergrund-3",
+   "name": "Halle mit Streifen",
+   "beschreibung": "Halle mit blauen Streifen.",
+   "thema": "basketballer",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#e5e7eb",
+      "b": "#3b82f6",
+      "c": "#c4b5fd"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-ruecken-3",
+   "name": "Blauer Rucksack",
+   "beschreibung": "Rucksack mit blauen Streifen.",
+   "thema": "basketballer",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-koerper-3",
+   "name": "Blaues Trikot",
+   "beschreibung": "Trikot mit blauen Streifen.",
+   "thema": "basketballer",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p1",
+      "b": "p6",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-kopf-3",
+   "name": "Blaues Stirnband",
+   "beschreibung": "Stirnband mit blauen Streifen.",
+   "thema": "basketballer",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "#3b82f6",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hand-3",
+   "name": "Wimpel",
+   "beschreibung": "Wimpel mit blauen Streifen.",
+   "thema": "basketballer",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p4",
+      "c": "p6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-begleiter-3",
+   "name": "Blauer Vogel",
+   "beschreibung": "Vogel mit blauen Streifen.",
+   "thema": "basketballer",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p4",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hintergrund-4",
+   "name": "Halle mit Punkten",
+   "beschreibung": "Halle mit lila Punkten.",
+   "thema": "basketballer",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#e5e7eb",
+      "b": "p1",
+      "c": "#c4b5fd"
+     },
+     "muster": "punkte",
+     "muster_farbe": "#a855f7"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-ruecken-4",
+   "name": "Umhang mit Punkten",
+   "beschreibung": "Umhang mit lila Punkten.",
+   "thema": "basketballer",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-koerper-4",
+   "name": "Anzug mit Punkten",
+   "beschreibung": "Anzug mit lila Punkten.",
+   "thema": "basketballer",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-kopf-4",
+   "name": "Kappe mit Punkten",
+   "beschreibung": "Lila Kappe mit Punkten.",
+   "thema": "basketballer",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hand-4",
+   "name": "Ball mit Punkten",
+   "beschreibung": "Ball mit lila Punkten.",
+   "thema": "basketballer",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ball",
+     "farben": {
+      "a": "p3",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-begleiter-4",
+   "name": "Hund mit Punkten",
+   "beschreibung": "Hund mit lila Punkten.",
+   "thema": "basketballer",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hintergrund-5",
+   "name": "Goldhalle",
+   "beschreibung": "Halle mit goldenem Karo.",
+   "thema": "basketballer",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#facc15",
+      "b": "p1",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-ruecken-5",
+   "name": "Goldtasche",
+   "beschreibung": "Goldene Tasche mit Karo.",
+   "thema": "basketballer",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-koerper-5",
+   "name": "Goldtrikot",
+   "beschreibung": "Goldenes Trikot mit Karo.",
+   "thema": "basketballer",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-kopf-5",
+   "name": "Goldkappe",
+   "beschreibung": "Goldene Kappe mit Karo.",
+   "thema": "basketballer",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hand-5",
+   "name": "Goldpokal",
+   "beschreibung": "Goldener Pokal mit Karo.",
+   "thema": "basketballer",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-begleiter-5",
+   "name": "Goldkatze",
+   "beschreibung": "Goldene Katze mit Karo.",
+   "thema": "basketballer",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hintergrund-6",
+   "name": "Lichtkranz-Halle",
+   "beschreibung": "Halle mit pinkem Lichtkranz.",
+   "thema": "basketballer",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#e5e7eb",
+      "b": "p1",
+      "c": "#4c1d95"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-ruecken-6",
+   "name": "Aura der Halle",
+   "beschreibung": "Ein Leuchten für die Halle.",
+   "thema": "basketballer",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-koerper-6",
+   "name": "Starspieler-Trikot",
+   "beschreibung": "Glänzend mit pinker Weste.",
+   "thema": "basketballer",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-kopf-6",
+   "name": "Königskrone",
+   "beschreibung": "Eine Krone für den besten Werfer.",
+   "thema": "basketballer",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "#facc15"
+     }
+    },
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-hand-6",
+   "name": "Goldball",
+   "beschreibung": "Glänzender Ball mit Wimpel.",
+   "thema": "basketballer",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ball",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "basketballer-begleiter-6",
+   "name": "Goldvogel",
+   "beschreibung": "Goldener Vogel mit Glanz.",
+   "thema": "basketballer",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

@@ -1,0 +1,352 @@
+{
+  "seiten": [
+    {
+      "label": "sondertag-popup",
+      "url": "/kind/",
+      "dateien": [
+        "sondertag-popup__handy.png",
+        "sondertag-popup__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-popup-gesendet",
+      "url": "/kind/",
+      "dateien": [
+        "sondertag-popup-gesendet__handy.png",
+        "sondertag-popup-gesendet__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-kind-kachel-verdient",
+      "url": "/kind/",
+      "dateien": [
+        "sondertag-kind-kachel-verdient__handy.png",
+        "sondertag-kind-kachel-verdient__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-kind-kachel-fortschritt",
+      "url": "/kind/",
+      "dateien": [
+        "sondertag-kind-kachel-fortschritt__handy.png",
+        "sondertag-kind-kachel-fortschritt__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-eltern-dashboard",
+      "url": "/eltern/",
+      "dateien": [
+        "sondertag-eltern-dashboard__handy.png",
+        "sondertag-eltern-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-eltern-uebersicht",
+      "url": "/eltern/sondertage/",
+      "dateien": [
+        "sondertag-eltern-uebersicht__handy.png",
+        "sondertag-eltern-uebersicht__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertage · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertage · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-eltern-angenommen",
+      "url": "/eltern/sondertage/",
+      "dateien": [
+        "sondertag-eltern-angenommen__handy.png",
+        "sondertag-eltern-angenommen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertage · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Sondertage · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "meilensteine-verwaltung",
+      "url": "/eltern/meilensteine/",
+      "dateien": [
+        "meilensteine-verwaltung__handy.png",
+        "meilensteine-verwaltung__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meilensteine · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meilensteine · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "sondertag-bestaetigung",
+      "url": "/kind/",
+      "dateien": [
+        "sondertag-bestaetigung__handy.png",
+        "sondertag-bestaetigung__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    }
+  ],
+  "ereignisse": {
+    "_start": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-1": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-2": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-3": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-4": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-5": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-6": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-7": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-8": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-startseite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "pin-eingabe": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-popup": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-popup-gesendet": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-kind-kachel-verdient": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-kind-kachel-fortschritt": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-login": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-eltern-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-eltern-uebersicht": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-eltern-angenommen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "meilensteine-verwaltung": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "sondertag-bestaetigung": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    }
+  }
+}

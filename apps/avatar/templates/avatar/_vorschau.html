@@ -1,0 +1,17 @@
+{% load avatar_tags %}
+<div class="avatar-wahl__haupt">
+  {% svg_roh haupt "riesig" "Vorschau deines Avatars" %}
+  <p class="avatar-wahl__thema">{% if gewaehlt %}{% for k in karten %}{% if k.gewaehlt %}{{ k.thema.name }}{% endif %}{% endfor %}{% else %}Wähle unten dein Thema{% endif %}</p>
+</div>
+<fieldset class="avatar-wahl__gruppe">
+  <legend>Dein Thema</legend>
+  <div class="avatar-themen">
+    {% for k in karten %}
+      <label class="avatar-thema{% if k.gewaehlt %} avatar-thema--gewaehlt{% endif %}">
+        <input type="radio" name="thema" value="{{ k.thema.schluessel }}"{% if k.gewaehlt %} checked{% endif %} required>
+        {% svg_roh k.svg "mittel" "" %}
+        <span class="avatar-thema__name">{{ k.thema.name }}</span>
+      </label>
+    {% endfor %}
+  </div>
+</fieldset>

@@ -1,0 +1,145 @@
+{% comment %}Gemeinsamer Komponenten-Block. sg_praefix macht IDs eindeutig (wird je Abschnitt gesetzt).{% endcomment %}
+<div class="sg-gruppe">
+  <h2>Akzentfarben (Kinder wählen eine)</h2>
+  <div class="reihe">
+    <span class="sg-probe" data-akzent="blau" title="blau"></span>
+    <span class="sg-probe" data-akzent="rot" title="rot"></span>
+    <span class="sg-probe" data-akzent="orange" title="orange"></span>
+    <span class="sg-probe" data-akzent="gelb" title="gelb"></span>
+    <span class="sg-probe" data-akzent="gruen" title="grün"></span>
+    <span class="sg-probe" data-akzent="tuerkis" title="türkis"></span>
+    <span class="sg-probe" data-akzent="lila" title="lila"></span>
+    <span class="sg-probe" data-akzent="pink" title="pink"></span>
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Seltenheit</h2>
+  <div class="reihe">
+    {% include "komponenten/chip.html" with stufe="common" %}
+    {% include "komponenten/chip.html" with stufe="uncommon" %}
+    {% include "komponenten/chip.html" with stufe="rare" %}
+    {% include "komponenten/chip.html" with stufe="epic" %}
+    {% include "komponenten/chip.html" with stufe="legendary" %}
+    {% include "komponenten/chip.html" with stufe="god" %}
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Schaltflächen (Symbol + Text, min. 48 px)</h2>
+  <div class="reihe">
+    {% include "komponenten/button.html" with text="Erledigt" icon="check" variante="primaer" %}
+    {% include "komponenten/button.html" with text="Später" icon="uhr" variante="sekundaer" %}
+    {% include "komponenten/button.html" with text="Löschen" icon="x" variante="gefahr" %}
+    {% include "komponenten/button.html" with text="Abbrechen" variante="geist" %}
+    {% include "komponenten/button.html" with text="Deaktiviert" icon="schloss" variante="primaer" disabled=True %}
+  </div>
+  <div class="reihe">
+    {% include "komponenten/button.html" with text="Groß: Mod kaufen" icon="geschenk" variante="primaer" gross=True voll=True %}
+  </div>
+  <div class="reihe">
+    {% include "komponenten/button.html" with text="Als Link" icon="pfeil-rechts" href="#" variante="sekundaer" %}
+    {% include "komponenten/button.html" with text="Klein" icon="plus" variante="sekundaer" klein=True %}
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Symbole (Sprite, eigene Entwürfe)</h2>
+  <div class="sg-symbole">
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="check" %}check</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="x" %}x</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="plus" %}plus</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="pfeil-links" %}pfeil-links</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="pfeil-rechts" %}pfeil-rechts</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="home" %}home</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="person" %}person</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="geschenk" %}geschenk</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="stern" %}stern</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="pokal" %}pokal</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="kalender" %}kalender</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="uhr" %}uhr</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="glocke" %}glocke</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="einstellungen" %}einstellungen</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="schloss" %}schloss</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="pin" %}pin</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="kamera" %}kamera</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="funke" %}funke</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="mond" %}mond</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="sonne" %}sonne</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="info" %}info</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="warnung" %}warnung</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="muenze" %}muenze</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="liste" %}liste</span>
+    <span class="sg-symbol">{% include "komponenten/icon.html" with name="pause" %}pause</span>
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Karten</h2>
+  <div class="sg-raster">
+    {% include "oberflaeche/_beispiel_karte.html" with titel="Heute" text="Drei Aufgaben offen." %}
+    {% include "oberflaeche/_beispiel_karte.html" with titel="Seltene Karte" text="Blaue Kante für Rare." selten="rare" %}
+    {% include "oberflaeche/_beispiel_karte.html" with titel="God Mode" text="Regenbogen-Kante." selten="god" %}
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Kacheln (Module) und Avatar-Platzhalter</h2>
+  <div class="sg-raster">
+    {% include "komponenten/kachel.html" with titel="Aufgaben" text="Was ist heute zu tun?" icon="liste" href="#" %}
+    {% include "komponenten/kachel.html" with titel="Belohnungen" text="Was kann ich einlösen?" icon="geschenk" href="#" %}
+    {% include "komponenten/kachel.html" with titel="Ausbau" text="Mod bauen" icon="funke" selten="epic" %}
+  </div>
+  <div class="avatar-raster">
+    {% include "komponenten/avatar_kachel.html" with name="Kind 1" initial="1" href="#" %}
+    {% include "komponenten/avatar_kachel.html" with name="Kind 2" initial="2" href="#" selten="legendary" %}
+    {% include "komponenten/avatar_kachel.html" with name="Kind 3" initial="3" gesperrt=True %}
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Fortschritt und Punkte</h2>
+  {% include "komponenten/fortschritt.html" with label="Wochenziel" wert=6 max=10 %}
+  {% include "komponenten/fortschritt.html" with label="Rang 3 (Rare)" wert=3 max=6 selten="rare" %}
+  {% include "komponenten/fortschritt.html" with label="God Mode" wert=6 max=6 selten="god" %}
+  <div class="reihe">
+    {% include "komponenten/punkte.html" with wert="1.250" einheit="XP" %}
+    {% include "komponenten/punkte.html" with wert="340" %}
+  </div>
+</div>
+
+<div class="sg-gruppe">
+  <h2>Pop-up</h2>
+  {% include "oberflaeche/_beispiel_modal.html" with modal_id=sg_praefix %}
+</div>
+
+<div class="sg-gruppe">
+  <h2>Meldungen</h2>
+  {% include "komponenten/toast.html" with art="info" text="Gespeichert." icon="info" %}
+  {% include "komponenten/toast.html" with art="erfolg" text="Aufgabe bestätigt. +50 Punkte." icon="check" %}
+  {% include "komponenten/toast.html" with art="warnung" text="Die Frist endet in 3 Stunden." icon="warnung" %}
+  {% include "komponenten/toast.html" with art="fehler" text="Das hat nicht geklappt." icon="x" %}
+</div>
+
+<div class="sg-gruppe">
+  <h2>PIN-Pad (4 Ziffern)</h2>
+  {% include "komponenten/pin_pad.html" %}
+</div>
+
+<div class="sg-gruppe">
+  <h2>Formularfelder</h2>
+  {% include "komponenten/feld.html" with name="vorname" id=sg_praefix|add:"-vorname" label="Vorname" wert="Mia" pflicht=True autocomplete="given-name" %}
+  {% include "komponenten/feld.html" with name="email" id=sg_praefix|add:"-email" label="E-Mail" typ="email" hilfe="Für Erinnerungen." autocomplete="email" %}
+  {% include "komponenten/feld.html" with name="pin_neu" id=sg_praefix|add:"-pin" label="Neue PIN" typ="password" fehler="Bitte 4 Ziffern eingeben." inputmode="numeric" %}
+</div>
+
+<div class="sg-gruppe">
+  <h2>Leerer Zustand</h2>
+  {% include "komponenten/leer.html" with titel="Noch keine Aufgaben" text="Lege die erste Aufgabe an, dann startet die Woche." icon="liste" aktion_text="Aufgabe anlegen" aktion_icon="plus" aktion_href="#" %}
+</div>
+
+<div class="sg-gruppe">
+  <h2>Typografie</h2>
+  <p>Fließtext: Inter, gut lesbar. Überschriften und Punkte sind im Kinder-Design pixelig, im Eltern-Design ruhig.</p>
+  <p><small>Kleintext für Hinweise und Zeitangaben.</small></p>
+</div>

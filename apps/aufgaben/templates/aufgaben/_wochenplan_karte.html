@@ -1,0 +1,22 @@
+<article class="wochenplan__karte{% if not i.beweglich and not ohne %} wochenplan__karte--gesperrt{% endif %}" data-id="{{ i.pk }}" data-status="{{ i.status }}" {% if i.beweglich and not ohne %}data-beweglich="1" data-url="{% url 'aufgaben:wochenplan_verschieben' i.pk %}"{% endif %}>
+  <div class="reihe">
+    {% if i.aufgabe.kategorie %}{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol %}{% endif %}
+    <strong>{{ i.titel_snapshot }}</strong>
+  </div>
+  <div class="reihe">
+    {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
+    {% include "komponenten/chip.html" with text=i.get_status_display %}
+  </div>
+  {% if i.fenster_ende %}<span class="wochenplan__zeit">{% include "komponenten/icon.html" with name="uhr" %}{% if i.fenster_start %}{{ i.fenster_start|time:"H:i" }}–{% else %}bis {% endif %}{{ i.fenster_ende|time:"H:i" }}</span>{% endif %}
+  {% if i.kind %}<span class="wochenplan__zeit">{% include "komponenten/icon.html" with name="person" %}{{ i.kind.anzeigename }}</span>{% endif %}
+  {% if i.beweglich %}
+    <form class="reihe wochenplan__verschieben" method="post" action="{% url 'aufgaben:wochenplan_verschieben' i.pk %}" hx-post="{% url 'aufgaben:wochenplan_verschieben' i.pk %}" hx-target="#wochenplan" hx-swap="outerHTML">
+      {% csrf_token %}
+      <input type="hidden" name="woche" value="{{ woche.montag|date:'Y-m-d' }}">
+      <label class="wochenplan__label">Verschieben nach <input class="feld__eingabe" type="date" name="datum" value="{{ i.faellig_am|date:'Y-m-d' }}" required></label>
+      <button class="knopf knopf--sekundaer knopf--klein" type="submit">Verschieben</button>
+    </form>
+  {% else %}
+    <span class="wochenplan__sperre">{% include "komponenten/icon.html" with name="schloss" %}Nicht verschiebbar</span>
+  {% endif %}
+</article>

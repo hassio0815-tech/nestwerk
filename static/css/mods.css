@@ -1,0 +1,363 @@
+/* Mod-Shop, Werkstatt, Themenwechsel (AP26). Baut auf tokens.css/nestwerk.css/avatar.css auf. */
+
+.mod-kopf {
+  align-items: flex-end;
+}
+
+.mod-kopf__guthaben {
+  gap: 0.25rem;
+  align-items: flex-end;
+  color: var(--text-leise);
+  font-size: 0.9rem;
+}
+
+/* Kopfkarte mit großem Avatar */
+.mod-held__inhalt {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--abstand);
+}
+
+.mod-held__inhalt > .avatar-bild {
+  flex: 0 0 auto;
+  width: 9rem;
+}
+
+.mod-held__text {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.mod-held__text .knopf {
+  align-self: flex-start;
+}
+
+/* Werkstatt: Funken-Symbol pulsiert leise, Balken mit Schraffur */
+.mod-bau {
+  gap: 0.35rem;
+  padding: 0.75rem;
+  background: var(--flaeche-hoch);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.mod-bau .zeile {
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.mod-bau__funke {
+  color: var(--selten-legendary, #facc15);
+  animation: mod-funke 1.6s ease-in-out infinite;
+}
+
+.mod-bau__balken::-webkit-progress-value {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--akzent) 0 10px,
+    var(--akzent-hell) 10px 20px
+  );
+}
+
+@keyframes mod-funke {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mod-bau__funke {
+    animation: none;
+  }
+}
+
+/* Meine Mods */
+.mod-besitz {
+  flex-wrap: nowrap;
+  align-items: center;
+  padding-block: 0.35rem;
+  border-bottom: 1px solid var(--rahmen);
+}
+
+.mod-besitz:last-child {
+  border-bottom: 0;
+}
+
+.mod-besitz__text {
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+/* Shop-Raster */
+.mod-gruppe {
+  gap: var(--abstand-klein);
+}
+
+.mod-gruppe > .zeile {
+  flex-wrap: wrap;
+}
+
+.mod-raster {
+  display: grid;
+  gap: var(--abstand-klein);
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+}
+
+.mod-karte {
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 0;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+}
+
+.mod-karte .avatar-bild {
+  width: 4.5rem;
+  box-shadow: none;
+}
+
+.mod-karte .kachel__titel {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.mod-karte .kachel__text {
+  font-size: 0.875rem;
+}
+
+.mod-karte__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.mod-karte__status .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.mod-karte--gesperrt {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+.mod-karte--zu_teuer .punkte {
+  opacity: 0.6;
+}
+
+.mod-karte--besitzt,
+.mod-karte--im_bau {
+  background: var(--flaeche-hoch);
+}
+
+/* Detail */
+.mod-detail__inhalt {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--abstand);
+  align-items: flex-start;
+}
+
+.mod-detail__bild {
+  flex: 0 0 auto;
+  margin-inline: auto;
+}
+
+.mod-detail__inhalt > .stapel {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.mod-detail__titel {
+  overflow-wrap: anywhere;
+}
+
+.mod-werte {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.mod-werte > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mod-werte dt {
+  color: var(--text-leise);
+}
+
+.mod-werte dd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Themenwechsel */
+.mod-themen {
+  display: grid;
+  gap: var(--abstand-klein);
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+}
+
+.mod-thema .avatar-bild {
+  width: 4.5rem;
+  box-shadow: none;
+}
+
+.mod-thema .kachel__titel {
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.mod-thema--aktuell {
+  border-style: dashed;
+}
+
+.mod-thema--gewaehlt {
+  border-color: var(--akzent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--akzent) 35%, transparent);
+}
+
+.mod-warnung {
+  border-color: var(--gefahr);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gefahr) 35%, transparent);
+}
+
+.mod-warnung__kopf {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mod-warnung__icon {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--gefahr);
+}
+
+.mod-warnung__vergleich {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--abstand);
+  text-align: center;
+}
+
+.mod-warnung__vergleich .stapel {
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mod-warnung__pfeil {
+  width: 2rem;
+  height: 2rem;
+  color: var(--text-leise);
+}
+
+.mod-warnung__liste {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.mod-warnung__bestaetigen {
+  min-height: var(--tap-min);
+  font-weight: 700;
+}
+
+.mod-warnung__bestaetigen input {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.mod-warnung__aktionen {
+  justify-content: flex-end;
+}
+
+/* Eltern */
+.mod-eltern-bau {
+  flex-wrap: wrap;
+}
+
+.mod-eltern-bau > .stapel {
+  flex: 1 1 14rem;
+  gap: 0.15rem;
+}
+
+.mod-eltern-bau__balken {
+  flex: 1 1 8rem;
+  max-width: 14rem;
+}
+
+.mod-standard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Handy 390 px: Spalten dürfen schrumpfen */
+  gap: var(--abstand-klein);
+  align-items: end;
+}
+
+.mod-standard .chip {
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-width: 7.5rem;
+  justify-content: center;
+}
+
+.mod-standard .kachel__text {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 48rem) {
+  .mod-standard {
+    grid-template-columns: 8rem 10rem 10rem 1fr;
+  }
+
+  .mod-standard .chip,
+  .mod-standard .kachel__text {
+    grid-column: auto;
+    align-self: center;
+  }
+
+  .mod-standard .chip {
+    align-self: end;
+    margin-bottom: 0.6rem;
+  }
+}
+
+.mod-faktoren {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--abstand-klein);
+  align-items: flex-end;
+}
+
+.mod-faktoren .feld {
+  flex: 0 1 10rem;
+  min-width: 0;
+}
+
+.mod-standard .feld,
+.mod-standard .feld__eingabe,
+.mod-faktoren .feld__eingabe {
+  min-width: 0;
+  width: 100%;
+}

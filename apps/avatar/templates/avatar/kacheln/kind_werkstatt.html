@@ -1,0 +1,8 @@
+<article class="karte mod-kachel" data-selten="{{ k.stufe.rang_selten }}"><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="funke" %} Meine {{ k.ort }}</h2>
+  {% include "avatar/_ausbaustufe.html" with stufe=k.stufe %}
+  {% for b in k.bau %}{% include "avatar/_bauauftrag.html" %}
+  {% empty %}<p class="kachel__text">Gerade wird nichts gebaut.</p>{% endfor %}
+  {% url "avatar:shop" as shop_url %}
+  {% include "komponenten/button.html" with href=shop_url variante="sekundaer" voll=True icon="stern" text="Zum Mod-Shop" %}
+</div></article>

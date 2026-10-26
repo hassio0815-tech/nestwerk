@@ -1,0 +1,73 @@
+{% extends "basis/kind.html" %}
+{% load static avatar_tags %}
+{% block titel %}Mod-Shop{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:kind_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Start" %}
+{% endblock %}
+{% block inhalt %}
+  <div class="zeile mod-kopf">
+    <h1>Mod-Shop</h1>
+    {% if slot_filter %}<p class="reihe" data-slot-filter="{{ slot_filter.schluessel }}"><span class="chip">Nur Slot: {{ slot_filter.name }}</span>{% url "avatar:shop" as alle_url %}<a class="knopf knopf--geist knopf--klein" href="{{ alle_url }}">Alle Slots zeigen</a></p>{% endif %}
+    <div class="stapel mod-kopf__guthaben"><span>Verfügbar</span>{% include "komponenten/punkte.html" with wert=verfuegbar %}</div>
+  </div>
+  {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
+  {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung icon="check" %}{% endif %}
+
+  <section class="karte mod-held" data-selten="{{ stufe.rang_selten }}"><div class="karte__inhalt mod-held__inhalt">
+    {% svg_roh svg "riesig" "Dein Avatar" %}
+    <div class="stapel mod-held__text">
+      <p class="reihe"><strong>{{ avatar.thema.name }}</strong><span class="chip" data-selten="{{ stufe.rang_selten }}">{{ stufe.rang_name }}</span></p>
+      {% include "avatar/_ausbaustufe.html" %}
+      {% if stufe.wartend %}<p class="kachel__text" data-wartend>{% include "komponenten/icon.html" with name="uhr" %} {{ stufe.wartend|length }} fertige{% if stufe.wartend|length == 1 %}r Mod wartet{% else %} Mods warten{% endif %} auf die Wertung: pro Woche zählt ein neuer Mod, der nächste ab KW {{ stufe.wartend.0.zaehlt_ab_iso_woche }}.</p>{% endif %}
+      {% url "avatar:thema" as thema_url %}
+      {% include "komponenten/button.html" with href=thema_url variante="geist" klein=True icon="einstellungen" text="Thema wechseln" %}
+    </div>
+  </div></section>
+
+  <section class="karte mod-werkstatt"><div class="karte__inhalt stapel">
+    <h2 class="reihe">{% include "komponenten/icon.html" with name="funke" %} {{ ort }}</h2>
+    {% for b in bau %}{% include "avatar/_bauauftrag.html" %}
+    {% empty %}<p class="kachel__text">Gerade wird nichts gebaut. Such dir unten einen Mod aus!</p>{% endfor %}
+  </div></section>
+
+  <section class="karte" id="meine-mods"><div class="karte__inhalt stapel">
+    <h2>Meine Mods</h2>
+    {% for b in fertige %}
+      <div class="zeile mod-besitz">
+        <span class="stapel mod-besitz__text"><strong>{{ b.mod.name }}</strong><span class="reihe kachel__text">{{ b.mod.slot.name }} {% include "komponenten/chip.html" with stufe=b.selten text=b.rang_name %}</span></span>
+        {% if b.mod.schluessel in angelegt %}
+          <form method="post" action="{% url 'avatar:ablegen' b.mod.slot.schluessel %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Ablegen" %}</form>
+        {% else %}
+          <form method="post" action="{% url 'avatar:anlegen' b.mod.schluessel %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Anlegen" %}</form>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p class="kachel__text">Noch keine fertigen Mods. Gekaufte Mods landen hier, sobald sie fertig sind.</p>
+    {% endfor %}
+  </div></section>
+
+  {% for g in gruppen %}
+    <section class="stapel mod-gruppe" data-selten="{{ g.rang_selten }}" data-gruppe="{% if g.set_nummer %}set-{{ g.set_nummer }}{% else %}{{ g.stufe }}{% endif %}">
+      <div class="zeile">
+        <h2 class="reihe"><span class="chip" data-selten="{{ g.rang_selten }}">{{ g.rang_name }}</span>{% if g.titel %} {{ g.titel }}{% endif %}</h2>
+        {% if g.gesperrt %}<span class="kachel__text">{% include "komponenten/icon.html" with name="schloss" %} ab Rang {{ g.rang_name }}</span>
+        {% else %}<span class="kachel__text">{{ g.zaehlend }}/{{ g.karten|length }} gebaut</span>{% endif %}
+      </div>
+      <div class="mod-raster">
+        {% for k in g.karten %}
+          <a class="kachel mod-karte mod-karte--{{ k.zustand }}" data-selten="{{ g.rang_selten }}" href="{% url 'avatar:mod' k.mod.schluessel %}">
+            {% svg_roh k.svg "mittel" k.mod.name %}
+            <span class="kachel__titel">{{ k.mod.name }}</span>
+            <span class="kachel__text">{{ k.mod.slot.name }}</span>
+            {% if k.zustand == "gesperrt" %}<span class="mod-karte__status" title="ab Rang {{ g.rang_name }}">{% include "komponenten/icon.html" with name="schloss" %} {{ k.konditionen.preis }} P</span>
+            {% elif k.zustand == "im_bau" %}<span class="mod-karte__status">{% include "komponenten/icon.html" with name="uhr" %} im Bau</span>
+            {% elif k.zustand == "besitzt" %}<span class="mod-karte__status">{% include "komponenten/icon.html" with name="check" %} gehört dir</span>
+            {% else %}<span class="mod-karte__status">{% include "komponenten/punkte.html" with wert=k.konditionen.preis einheit="P" %}</span>{% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+{% endblock %}

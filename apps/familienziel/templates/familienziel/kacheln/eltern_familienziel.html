@@ -1,0 +1,14 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
+{% with a=k.a %}
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Familienziel</h2>
+  <p>{% include "familienziel/_belohnung.html" with b=a.belohnung titel="Wochenziel" %}</p>
+  {% include "familienziel/kacheln/_balken.html" with a=a %}
+  {% if a.namen_offen %}<p class="kachel__text">Noch ohne Aufgabe: {{ a.namen_offen|join:", " }}</p>{% endif %}
+  {% for w in k.gleichstand %}
+    <p class="feld__hinweis feld__hinweis--fehler" data-fz-gleichstand>Bitte Ziel für Woche {{ w.iso_woche }} wählen (Gleichstand oder keine Stimmen).</p>
+  {% endfor %}
+  {% url "familienziel:eltern" as seite %}
+  {% include "komponenten/button.html" with href=seite variante="sekundaer" klein=True icon="einstellungen" text="Familienziel verwalten" %}
+</div></article>
+{% endwith %}

@@ -1,0 +1,4 @@
+{% if href %}<a class="knopf knopf--{{ variante|default:'primaer' }}{% if gross %} knopf--gross{% endif %}{% if klein %} knopf--klein{% endif %}{% if voll %} knopf--block{% endif %}" href="{{ href }}">{% else %}<button type="{{ typ|default:'button' }}" class="knopf knopf--{{ variante|default:'primaer' }}{% if gross %} knopf--gross{% endif %}{% if klein %} knopf--klein{% endif %}{% if voll %} knopf--block{% endif %}"{% if name %} name="{{ name }}"{% endif %}{% if wert %} value="{{ wert }}"{% endif %}{% if disabled %} disabled{% endif %}>{% endif %}
+  {% if icon %}{% include "komponenten/icon.html" with name=icon %}{% endif %}
+  {% if text %}<span>{{ text }}</span>{% endif %}
+{% if href %}</a>{% else %}</button>{% endif %}

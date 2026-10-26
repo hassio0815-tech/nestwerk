@@ -1,0 +1,5 @@
+{% if href %}<a class="kachel"{% if selten %} data-selten="{{ selten }}"{% endif %} href="{{ href }}">{% else %}<div class="kachel"{% if selten %} data-selten="{{ selten }}"{% endif %}>{% endif %}
+  {% if icon %}{% include "komponenten/icon.html" with name=icon klasse="kachel__icon" %}{% endif %}
+  <span class="kachel__titel">{{ titel }}</span>
+  {% if text %}<span class="kachel__text">{{ text }}</span>{% endif %}
+{% if href %}</a>{% else %}</div>{% endif %}

@@ -1,0 +1,696 @@
+{
+  "seiten": [
+    {
+      "label": "einrichtung-1-name",
+      "url": "/einrichtung/schritt/1/",
+      "dateien": [
+        "einrichtung-1-name__handy.png",
+        "einrichtung-1-name__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-2-eltern",
+      "url": "/einrichtung/schritt/2/",
+      "dateien": [
+        "einrichtung-2-eltern__handy.png",
+        "einrichtung-2-eltern__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-3-kinder",
+      "url": "/einrichtung/schritt/3/",
+      "dateien": [
+        "einrichtung-3-kinder__handy.png",
+        "einrichtung-3-kinder__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-4-mail",
+      "url": "/einrichtung/schritt/4/",
+      "dateien": [
+        "einrichtung-4-mail__handy.png",
+        "einrichtung-4-mail__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-8-abschluss",
+      "url": "/einrichtung/schritt/8/",
+      "dateien": [
+        "einrichtung-8-abschluss__handy.png",
+        "einrichtung-8-abschluss__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einrichtung-9-fertig",
+      "url": "/einrichtung/schritt/8/",
+      "dateien": [
+        "einrichtung-9-fertig__handy.png",
+        "einrichtung-9-fertig__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einrichtung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "tablet-startseite",
+      "url": "/",
+      "dateien": [
+        "tablet-startseite__handy.png",
+        "tablet-startseite__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wer bist du? · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "pin-eingabe",
+      "url": "/anmelden/kind/4f6913c0-e5bb-43a4-b280-95fb90cdb0c9/",
+      "dateien": [
+        "pin-eingabe__handy.png",
+        "pin-eingabe__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "PIN · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "PIN · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-dashboard",
+      "url": "/kind/",
+      "dateien": [
+        "kinder-dashboard__handy.png",
+        "kinder-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Hallo · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-aufgaben",
+      "url": "/kind/aufgaben/",
+      "dateien": [
+        "kinder-aufgaben__handy.png",
+        "kinder-aufgaben__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "kinder-belohnungen",
+      "url": "/kind/belohnungen/",
+      "dateien": [
+        "kinder-belohnungen__handy.png",
+        "kinder-belohnungen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-login",
+      "url": "/anmelden/eltern/",
+      "dateien": [
+        "eltern-login__handy.png",
+        "eltern-login__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern-Anmeldung · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-dashboard",
+      "url": "/eltern/",
+      "dateien": [
+        "eltern-dashboard__handy.png",
+        "eltern-dashboard__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Eltern · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "eltern-meldungen",
+      "url": "/eltern/meldungen/",
+      "dateien": [
+        "eltern-meldungen__handy.png",
+        "eltern-meldungen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meldungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Meldungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "wochenplan",
+      "url": "/eltern/wochenplan/",
+      "dateien": [
+        "wochenplan__handy.png",
+        "wochenplan__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wochenplan · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Wochenplan · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "aufgabenformular",
+      "url": "/eltern/aufgaben/neu/",
+      "dateien": [
+        "aufgabenformular__handy.png",
+        "aufgabenformular__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Neue Aufgabe · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Neue Aufgabe · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "aufgabenliste",
+      "url": "/eltern/aufgaben/",
+      "dateien": [
+        "aufgabenliste__handy.png",
+        "aufgabenliste__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Aufgaben · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "bibliothek",
+      "url": "/eltern/bibliothek/",
+      "dateien": [
+        "bibliothek__handy.png",
+        "bibliothek__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Bibliothek · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Bibliothek · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "belohnungs-antraege",
+      "url": "/eltern/belohnungen/",
+      "dateien": [
+        "belohnungs-antraege__handy.png",
+        "belohnungs-antraege__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungs-Anträge · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Belohnungs-Anträge · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "einstellungen-editor",
+      "url": "/eltern/einstellungen/",
+      "dateien": [
+        "einstellungen-editor__handy.png",
+        "einstellungen-editor__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einstellungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Einstellungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "familie",
+      "url": "/eltern/familie/",
+      "dateien": [
+        "familie__handy.png",
+        "familie__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Familie · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Familie · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "benachrichtigungen",
+      "url": "/eltern/benachrichtigungen/",
+      "dateien": [
+        "benachrichtigungen__handy.png",
+        "benachrichtigungen__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Benachrichtigungen · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Benachrichtigungen · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "push-seite",
+      "url": "/push/",
+      "dateien": [
+        "push-seite__handy.png",
+        "push-seite__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Push auf diesem Gerät · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Push auf diesem Gerät · Nestwerk"
+        }
+      }
+    },
+    {
+      "label": "styleguide",
+      "url": "/styleguide/",
+      "dateien": [
+        "styleguide__handy.png",
+        "styleguide__tablet.png"
+      ],
+      "pruefung": {
+        "handy": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Styleguide · Nestwerk"
+        },
+        "tablet": {
+          "probleme": [],
+          "kleine_ziele": [],
+          "kleine_ziele_gesamt": 0,
+          "titel": "Styleguide · Nestwerk"
+        }
+      }
+    }
+  ],
+  "ereignisse": {
+    "_start": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-1": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-2": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-3": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-4": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-5": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-6": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-7": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einrichtung-8": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "tablet-startseite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "pin-eingabe": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-aufgaben": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "kinder-belohnungen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-login": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-dashboard": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "eltern-meldungen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "wochenplan": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "aufgabenformular": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "aufgabenliste": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "bibliothek": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "belohnungs-antraege": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "einstellungen-editor": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "familie": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "benachrichtigungen": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "push-seite": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    },
+    "styleguide": {
+      "konsole": [],
+      "csp": [],
+      "fehl_requests": [],
+      "extern": []
+    }
+  }
+}

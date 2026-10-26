@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Nestwerk - Vergleich Industrial Teal</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    width: 1200px; height: 700px; position: relative; overflow: hidden;
+    font-family: Arial, Helvetica, "Liberation Sans", sans-serif; color: #1f2d31;
+  }
+  .grid { position: absolute; top: 0; left: 0; width: 1200px; height: 580px; display: flex; }
+  .col {
+    flex: 1 1 0; display: flex; flex-direction: column; align-items: center;
+    padding: 24px 18px 20px; border-right: 1px solid #E3EEF1;
+  }
+  .col:last-child { border-right: none; }
+  .num { font-size: 44px; font-weight: 700; color: #0E6A80; line-height: 1; }
+  .name { font-size: 21px; font-weight: 600; margin-top: 6px; }
+  .big { width: 200px; height: 200px; display: block; margin-top: 22px; }
+  .small { margin-top: 44px; display: flex; flex-direction: column; align-items: center; }
+  .small img { width: 32px; height: 32px; display: block; }
+  .hint { font-size: 12px; color: #5B6B70; margin-top: 6px; }
+  .logo-wrap { margin-top: auto; display: flex; flex-direction: column; align-items: center; }
+  .logo { width: 236px; height: auto; display: block; }
+  .strip {
+    position: absolute; top: 580px; left: 0; width: 1200px; height: 120px;
+    background: #0E6A80; display: grid; grid-template-columns: repeat(4, 1fr); align-items: center;
+  }
+  .strip figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
+  .strip img {
+    width: 64px; height: 64px; display: block; border-radius: 14px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+  }
+  .strip figcaption { color: #DDF3F8; font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="grid">
+
+  <div class="col">
+    <div class="num">1</div>
+    <div class="name">Nestblock</div>
+    <img class="big" src="icon-1-industrial.svg" alt="Icon 1 Nestblock">
+    <div class="small">
+      <img src="icon-1-industrial.svg" alt="">
+      <div class="hint">so im Browser-Tab</div>
+    </div>
+    <div class="logo-wrap">
+      <img class="logo" src="logo-1-nestblock-industrial.svg" alt="Logo 1 Nestblock">
+      <div class="hint">Logo horizontal</div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="num">2</div>
+    <div class="name">Dachnest</div>
+    <img class="big" src="icon-2-industrial.svg" alt="Icon 2 Dachnest">
+    <div class="small">
+      <img src="icon-2-industrial.svg" alt="">
+      <div class="hint">so im Browser-Tab</div>
+    </div>
+    <div class="logo-wrap">
+      <img class="logo" src="logo-2-dachnest-industrial.svg" alt="Logo 2 Dachnest">
+      <div class="hint">Logo horizontal</div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="num">3</div>
+    <div class="name">Monogramm</div>
+    <img class="big" src="icon-3-industrial.svg" alt="Icon 3 Monogramm">
+    <div class="small">
+      <img src="icon-3-industrial.svg" alt="">
+      <div class="hint">so im Browser-Tab</div>
+    </div>
+    <div class="logo-wrap">
+      <img class="logo" src="logo-3-monogramm-industrial.svg" alt="Logo 3 Monogramm">
+      <div class="hint">Logo horizontal</div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="num">4</div>
+    <div class="name">Geflecht</div>
+    <img class="big" src="icon-4-industrial.svg" alt="Icon 4 Geflecht">
+    <div class="small">
+      <img src="icon-4-industrial.svg" alt="">
+      <div class="hint">so im Browser-Tab</div>
+    </div>
+    <div class="logo-wrap">
+      <img class="logo" src="logo-4-geflecht-industrial.svg" alt="Logo 4 Geflecht">
+      <div class="hint">Logo horizontal</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="strip">
+  <figure><img src="icon-1-industrial.svg" alt="Icon 1"><figcaption>1 Nestblock</figcaption></figure>
+  <figure><img src="icon-2-industrial.svg" alt="Icon 2"><figcaption>2 Dachnest</figcaption></figure>
+  <figure><img src="icon-3-industrial.svg" alt="Icon 3"><figcaption>3 Monogramm</figcaption></figure>
+  <figure><img src="icon-4-industrial.svg" alt="Icon 4"><figcaption>4 Geflecht</figcaption></figure>
+</div>
+
+</body>
+</html>

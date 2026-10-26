@@ -1,0 +1,54 @@
+{% extends "basis/einstellungen.html" %}
+{% load static avatar_tags %}
+{% block titel %}Mods und Bauaufträge{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "konten:eltern_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+{% endblock %}
+{% block seite %}
+  <h1>Mods und Bauaufträge</h1>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+  {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung icon="check" %}{% endif %}
+
+  {% for z in zeilen %}
+    <section class="nw-karte" data-kind="{{ z.kind.pk }}"><div class="karte__inhalt stapel">
+      <div class="zeile">
+        <span class="reihe">{% avatar_bild z.kind "klein" %}<strong>{{ z.kind.anzeigename }}</strong>{% if z.stufe.thema %}<span class="kachel__text">{{ z.stufe.thema.name }}</span>{% endif %}</span>
+        <span class="kachel__text">Ausbaustufe {{ z.stufe.aktuell }}/{{ z.stufe.slots }} im Rang {{ z.stufe.rang_name }}{% if z.stufe.wartend %} · {{ z.stufe.wartend|length }} wartet auf Wertung{% endif %}</span>
+      </div>
+      {% for b in z.bau %}
+        <div class="zeile mod-eltern-bau">
+          <span class="stapel"><strong>{{ b.mod.name }}</strong><span class="kachel__text">{{ b.mod.slot.name }} · {{ b.besitz.preis_bezahlt }} Punkte · fertig {{ b.rest }}</span></span>
+          <progress class="fortschritt mod-eltern-bau__balken" value="{{ b.prozent }}" max="100" aria-label="Baufortschritt {{ b.mod.name }}">{{ b.prozent }} %</progress>
+          <form method="post" action="{% url 'avatar:sofort' b.besitz.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="funke" text="Sofort fertigstellen" %}</form>
+        </div>
+      {% empty %}
+        <p class="kachel__text">Kein Bauauftrag.</p>
+      {% endfor %}
+      {% if z.fertig %}<p class="kachel__text">Zuletzt fertig: {% for b in z.fertig %}{{ b.mod.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+    </div></section>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" %}
+  {% endfor %}
+
+  <section class="nw-karte" id="standards"><div class="karte__inhalt stapel">
+    <h2>Preise und Bauzeiten je Seltenheit</h2>
+    <p class="kachel__text">Standardwerte für alle Mods ohne eigenen Preis. Der Faktor wirkt auf alle Preise bzw. Bauzeiten (1,0 = wie eingetragen). Änderungen gelten für neue Käufe; laufende Bauaufträge bleiben.</p>
+    <form method="post" action="{% url 'avatar:standards' %}" class="stapel">{% csrf_token %}
+      {% for s in standards %}
+        <div class="zeile mod-standard" data-rang="{{ s.rang.schluessel }}">
+          <span class="chip" data-selten="{{ s.rang.selten }}">{{ s.rang.name }}</span>
+          <label class="feld"><span class="feld__label">Preis (Punkte)</span><input class="nw-eingabe" type="number" min="1" name="preis_{{ s.rang.stufe }}" value="{{ s.rang.mod_preis }}" required></label>
+          <label class="feld"><span class="feld__label">Bauzeit (Tage)</span><input class="nw-eingabe" name="bauzeit_{{ s.rang.stufe }}" inputmode="decimal" value="{{ s.bauzeit_tage }}" required></label>
+          <span class="kachel__text">wirksam: {{ s.preis_wirksam }} Punkte, {{ s.bauzeit_wirksam }}</span>
+        </div>
+      {% endfor %}
+      <div class="mod-faktoren">
+        <label class="feld"><span class="feld__label">Faktor Preise</span><input class="nw-eingabe" name="faktor_preis" inputmode="decimal" value="{{ faktor_preis }}"></label>
+        <label class="feld"><span class="feld__label">Faktor Bauzeiten</span><input class="nw-eingabe" name="faktor_bauzeit" inputmode="decimal" value="{{ faktor_bauzeit }}"></label>
+        {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
+      </div>
+    </form>
+  </div></section>
+{% endblock %}

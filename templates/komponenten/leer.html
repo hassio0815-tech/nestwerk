@@ -1,0 +1,6 @@
+<div class="leer">
+  {% include "komponenten/icon.html" with name=icon|default:"info" klasse="leer__icon" %}
+  <h2 class="leer__titel">{{ titel }}</h2>
+  {% if text %}<p class="leer__text">{{ text }}</p>{% endif %}
+  {% if aktion_text %}{% include "komponenten/button.html" with text=aktion_text href=aktion_href icon=aktion_icon variante="sekundaer" %}{% endif %}
+</div>

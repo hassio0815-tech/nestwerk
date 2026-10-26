@@ -1,0 +1,134 @@
+/* Sondertag (AP27): festliches Pop-up, Kind-Kachel, Eltern-Seite.
+   Funkel-Sterne sind reines CSS und bewegen sich nur ohne prefers-reduced-motion. */
+
+.st-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--hintergrund) 78%, transparent);
+  pointer-events: auto;
+  overflow-y: auto;
+}
+.st-popup__karte {
+  position: relative;
+  overflow: hidden;
+  width: min(100%, 34rem);
+  margin-block: auto; /* zentriert, scrollt aber bei Überlänge bis oben */
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand);
+  padding: var(--abstand-gross);
+  background:
+    radial-gradient(circle at 50% -20%, color-mix(in srgb, var(--selten-legendary) 35%, transparent), transparent 60%),
+    var(--flaeche-hoch);
+  border: 3px solid var(--selten-legendary);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--selten-god) 35%, transparent), var(--schatten-karte);
+  font-weight: 400;
+}
+.st-popup__kopf { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.4rem; }
+.st-popup__symbol .icon { width: 3.5rem; height: 3.5rem; color: var(--selten-legendary); }
+.st-popup__titel { margin: 0; font-size: clamp(1.3rem, 6vw, 1.7rem); color: var(--selten-legendary); }
+.st-popup__text { margin: 0; color: var(--text); }
+.st-popup__inhalt { position: relative; }
+.st-popup__fuss { position: relative; display: flex; flex-wrap: wrap; gap: var(--abstand-klein); align-items: center; justify-content: space-between; }
+
+/* Funkel-Sterne */
+.st-sterne { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.st-sterne i {
+  position: absolute; width: 0.55rem; height: 0.55rem;
+  background: var(--selten-legendary);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0.75;
+}
+.st-sterne i:nth-child(3n) { background: var(--selten-god); }
+.st-sterne i:nth-child(4n) { background: var(--selten-rare); }
+.st-sterne i:nth-child(1) { left: 6%; top: 8%; }
+.st-sterne i:nth-child(2) { left: 18%; top: 22%; }
+.st-sterne i:nth-child(3) { left: 30%; top: 6%; }
+.st-sterne i:nth-child(4) { left: 44%; top: 16%; }
+.st-sterne i:nth-child(5) { left: 58%; top: 5%; }
+.st-sterne i:nth-child(6) { left: 70%; top: 20%; }
+.st-sterne i:nth-child(7) { left: 84%; top: 9%; }
+.st-sterne i:nth-child(8) { left: 93%; top: 26%; }
+.st-sterne i:nth-child(9) { left: 10%; top: 40%; }
+.st-sterne i:nth-child(10) { left: 90%; top: 46%; }
+.st-sterne i:nth-child(11) { left: 4%; top: 70%; }
+.st-sterne i:nth-child(12) { left: 95%; top: 78%; }
+@media (prefers-reduced-motion: no-preference) {
+  .st-sterne i { animation: st-funkeln 2.4s ease-in-out infinite; }
+  .st-sterne i:nth-child(odd) { animation-delay: -1.2s; }
+  .st-sterne i:nth-child(3n) { animation-duration: 3.1s; }
+  .st-popup__karte { animation: st-auftritt 0.45s ease-out both; }
+  @keyframes st-funkeln {
+    0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.35; }
+    50% { transform: scale(1.35) rotate(45deg); opacity: 1; }
+  }
+  @keyframes st-auftritt {
+    from { transform: translateY(1.5rem) scale(0.96); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+}
+
+/* Wunsch-Formular */
+.st-wunsch { display: flex; flex-direction: column; gap: var(--abstand); }
+.st-wunsch textarea { min-height: 5.5rem; resize: vertical; }
+.st-wunsch__danke { margin: 0; display: flex; gap: 0.5rem; align-items: center; font-weight: 700; color: var(--erfolg); font-size: 1.2rem; }
+.st-begleitung { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.st-begleitung__wahl { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.6rem; }
+.st-begleitung__option {
+  display: flex; align-items: center; gap: 0.6rem;
+  min-height: var(--tap-min);
+  padding: 0.5rem 0.8rem;
+  background: var(--flaeche);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.st-begleitung__option:has(input:checked) { border-color: var(--selten-legendary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--selten-legendary) 40%, transparent); }
+.st-begleitung__option input { width: 1.3rem; height: 1.3rem; flex: none; }
+
+/* Kind-Kachel */
+.st-karte { position: relative; overflow: hidden; }
+.st-karte--fest { border-color: var(--selten-legendary); }
+.st-karte h2 .icon, .st-karte h1 .icon { color: var(--selten-legendary); }
+.st-status { margin: 0; font-size: 1.1rem; font-weight: 600; position: relative; }
+.st-bestaetigt { margin: 0; display: flex; gap: 0.5rem; align-items: center; color: var(--erfolg); font-weight: 700; position: relative; }
+
+/* Eltern */
+.st-hinweis { margin: 0; font-weight: 600; color: var(--warnung); }
+.st-zeile { flex-wrap: wrap; }
+.st-zeile > strong { flex: 0 0 6rem; }
+.st-wunschkarte { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.6rem 0; border-bottom: 1px solid var(--rahmen); }
+.st-wunschkarte p { margin: 0; }
+.st-wunschkarte form { margin: 0; }
+.st-fakten { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.6rem 1.2rem; }
+.st-fakten dt { color: var(--text-leise); font-size: 0.95rem; }
+.st-fakten dd { margin: 0; font-weight: 600; }
+.st-liste { margin: 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.st-historie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.6rem 1rem;
+  align-items: end;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rahmen);
+}
+.st-historie .feld { margin: 0; }
+
+/* AP32: Prognose und Kalibrierung (Eltern) */
+.pg-ampel { display: inline-flex; gap: 0.4rem; align-items: center; font-weight: 700; }
+.pg-ampel::before { content: ""; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: currentColor; }
+.pg-ampel--gruen { color: var(--erfolg); }
+.pg-ampel--gelb { color: var(--warnung); }
+.pg-ampel--rot { color: var(--gefahr); }
+.pg-fakten { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin: 0; }
+.pg-fakten dt { font-weight: 700; }
+.pg-fakten dd { margin: 0; }
+.pg-hinweis { margin: 0; color: var(--warnung); font-weight: 600; }
+.pg-empfehlung { border-left: 4px solid var(--erfolg); padding-left: 0.75rem; }
+@media (max-width: 480px) { .pg-fakten { grid-template-columns: 1fr; } }

@@ -1,0 +1,839 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "fussballer-hintergrund-1",
+   "name": "Rasenplatz",
+   "beschreibung": "Ein grüner Platz mit Streifen.",
+   "thema": "fussballer",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "streifen",
+     "farben": {
+      "a": "#2f9e4f",
+      "b": "#47b866",
+      "c": "#2a8c45"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-ruecken-1",
+   "name": "Sporttasche",
+   "beschreibung": "Eine Tasche für das Training.",
+   "thema": "fussballer",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p4",
+      "b": "p1",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-koerper-1",
+   "name": "Teamtrikot",
+   "beschreibung": "Das rote Trikot der Mannschaft.",
+   "thema": "fussballer",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-kopf-1",
+   "name": "Stirnband",
+   "beschreibung": "Ein Stirnband für lange Spiele.",
+   "thema": "fussballer",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "p1",
+      "b": "p1",
+      "c": "p2"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hand-1",
+   "name": "Fußball",
+   "beschreibung": "Der Ball für jedes Spiel.",
+   "thema": "fussballer",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ball",
+     "farben": {
+      "a": "p6",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-begleiter-1",
+   "name": "Teamhund",
+   "beschreibung": "Ein Hund im Teamtrikot.",
+   "thema": "fussballer",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hintergrund-2",
+   "name": "Himmel",
+   "beschreibung": "Blauer Himmel über dem Platz.",
+   "thema": "fussballer",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#8ecae6",
+      "b": "#ffffff",
+      "c": "#5fa052"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-ruecken-2",
+   "name": "Team-Umhang",
+   "beschreibung": "Umhang mit hellem Rand.",
+   "thema": "fussballer",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-koerper-2",
+   "name": "Trikot mit Kante",
+   "beschreibung": "Trikot mit hellem Rand.",
+   "thema": "fussballer",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-kopf-2",
+   "name": "Kappe mit Schirm",
+   "beschreibung": "Kappe mit hellem Rand.",
+   "thema": "fussballer",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hand-2",
+   "name": "Pokal",
+   "beschreibung": "Ein Pokal mit Rand.",
+   "thema": "fussballer",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-begleiter-2",
+   "name": "Maskottchen-Vogel",
+   "beschreibung": "Ein Vogel mit hellem Rand.",
+   "thema": "fussballer",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p6"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hintergrund-3",
+   "name": "Stadion",
+   "beschreibung": "Ein Stadion mit Tribünen.",
+   "thema": "fussballer",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stadion",
+     "farben": {
+      "a": "#2c3e50",
+      "b": "#8ecae6",
+      "c": "#5a6b80"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-ruecken-3",
+   "name": "Blaue Tasche",
+   "beschreibung": "Tasche mit blauen Streifen.",
+   "thema": "fussballer",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p4",
+      "b": "p1",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-koerper-3",
+   "name": "Blaues Trikot",
+   "beschreibung": "Blau gestreiftes Trikot.",
+   "thema": "fussballer",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-kopf-3",
+   "name": "Kappe mit Streifen",
+   "beschreibung": "Kappe mit blauen Streifen.",
+   "thema": "fussballer",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hand-3",
+   "name": "Wimpel",
+   "beschreibung": "Ein Wimpel mit blauen Streifen.",
+   "thema": "fussballer",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-begleiter-3",
+   "name": "Torwart-Katze",
+   "beschreibung": "Katze mit blauen Streifen.",
+   "thema": "fussballer",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hintergrund-4",
+   "name": "Stadion mit Punkten",
+   "beschreibung": "Stadion mit lila Punkten.",
+   "thema": "fussballer",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stadion",
+     "farben": {
+      "a": "#2c3e50",
+      "b": "#8ecae6",
+      "c": "#5a6b80"
+     },
+     "muster": "punkte",
+     "muster_farbe": "#a855f7"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-ruecken-4",
+   "name": "Kapitäns-Umhang",
+   "beschreibung": "Umhang mit lila Punkten.",
+   "thema": "fussballer",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-koerper-4",
+   "name": "Trikot mit Punkten",
+   "beschreibung": "Trikot mit lila Punkten.",
+   "thema": "fussballer",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "p1",
+      "b": "p6",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-kopf-4",
+   "name": "Lorbeer mit Band",
+   "beschreibung": "Stirnband mit Lorbeerkranz.",
+   "thema": "fussballer",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "p1",
+      "b": "p1",
+      "c": "p2"
+     }
+    },
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hand-4",
+   "name": "Ball mit Punkten",
+   "beschreibung": "Ball mit lila Punkten.",
+   "thema": "fussballer",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ball",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-begleiter-4",
+   "name": "Hund mit Punkten",
+   "beschreibung": "Hund mit lila Punkten.",
+   "thema": "fussballer",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hintergrund-5",
+   "name": "Goldstadion",
+   "beschreibung": "Stadion mit goldenem Lichtkranz.",
+   "thema": "fussballer",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stadion",
+     "farben": {
+      "a": "#2c3e50",
+      "b": "#8ecae6",
+      "c": "#5a6b80"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-ruecken-5",
+   "name": "Goldtasche",
+   "beschreibung": "Goldene Tasche mit Umhang.",
+   "thema": "fussballer",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-koerper-5",
+   "name": "Goldtrikot",
+   "beschreibung": "Goldenes Trikot mit Karo.",
+   "thema": "fussballer",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-kopf-5",
+   "name": "Goldener Lorbeer",
+   "beschreibung": "Goldener Siegerkranz.",
+   "thema": "fussballer",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "#facc15"
+     }
+    },
+    {
+     "form": "stirnband",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hand-5",
+   "name": "Goldpokal",
+   "beschreibung": "Goldener Pokal mit Karo.",
+   "thema": "fussballer",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-begleiter-5",
+   "name": "Goldkatze",
+   "beschreibung": "Goldene Katze mit Karo.",
+   "thema": "fussballer",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hintergrund-6",
+   "name": "Traumstadion",
+   "beschreibung": "Stadion mit pinkem Lichtkranz.",
+   "thema": "fussballer",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stadion",
+     "farben": {
+      "a": "#2c3e50",
+      "b": "#8ecae6",
+      "c": "#5a6b80"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-ruecken-6",
+   "name": "Aura des Stars",
+   "beschreibung": "Ein Leuchten für den Star.",
+   "thema": "fussballer",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-koerper-6",
+   "name": "Pokaltrikot",
+   "beschreibung": "Glänzendes Trikot in Gold.",
+   "thema": "fussballer",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "trikot",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-kopf-6",
+   "name": "Königskrone",
+   "beschreibung": "Eine Krone für den besten Spieler.",
+   "thema": "fussballer",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "#facc15"
+     }
+    },
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-hand-6",
+   "name": "Goldball",
+   "beschreibung": "Glänzender Ball mit Wimpel.",
+   "thema": "fussballer",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ball",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "flagge",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "fussballer-begleiter-6",
+   "name": "Goldfuchs",
+   "beschreibung": "Goldener Fuchs mit Glanz.",
+   "thema": "fussballer",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

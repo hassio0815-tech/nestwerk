@@ -1,0 +1,4 @@
+{% extends "basis/basis.html" %}{% load static %}
+{% comment %}Gemeinsame Grundlage des Marken-Looks (huelle, eltern, einrichtung): Komponenten-CSS, Darstellungs-JS
+und Hell/Dunkel/System aus dem Cookie nestwerk_marke_modus (leer = System).{% endcomment %}
+{% block modus %}{% if request.COOKIES.nestwerk_marke_modus == "hell" %}hell{% elif request.COOKIES.nestwerk_marke_modus == "dunkel" %}dunkel{% endif %}{% endblock %}

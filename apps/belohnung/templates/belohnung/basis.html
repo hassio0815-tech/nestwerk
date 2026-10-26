@@ -1,0 +1,10 @@
+{% extends "basis/einstellungen.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/aufgaben.css' %}"><link rel="stylesheet" href="{% static 'css/belohnung.css' %}">{% endblock %}
+{% block subnav %}
+  <nav class="aufgaben-nav" aria-label="Belohnungen">
+    {% url "belohnung:antraege" as u1 %}{% url "belohnung:katalog" as u2 %}
+    {% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="geschenk" text="Anträge" %}
+    {% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="liste" text="Katalog" %}
+  </nav>
+{% endblock %}

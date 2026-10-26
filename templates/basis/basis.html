@@ -1,0 +1,45 @@
+{% load static %}<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0E6A80">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'benachrichtigung/icons/icon-180.png' %}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="{{ app_name|default:'Nestwerk' }}">
+  <meta name="htmx-config" content='{"includeIndicatorStyles": false, "allowEval": false, "allowScriptTags": false}'>
+  <title>{% block titel %}{% endblock %} · Nestwerk</title>
+  <link rel="preload" href="{% static 'fonts/inter/Inter-Regular.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/fraunces/Fraunces-SemiBold.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'css/nestwerk.css' %}">
+  <link rel="stylesheet" href="{% static 'css/avatar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/huelle.css' %}">
+  <link rel="stylesheet" href="{% static 'css/spiel.css' %}">
+  {% block marke_css %}{% endblock %}
+  {% block css %}{% endblock %}
+  <script src="{% static 'vendor/htmx.min.js' %}" defer></script>
+  <script src="{% static 'js/nestwerk.js' %}" defer></script>
+  <script src="{% static 'js/huelle.js' %}" defer></script>
+  <script src="{% static 'js/spiel.js' %}" defer></script>
+  {% block marke_js %}{% endblock %}
+  <script src="{% static 'benachrichtigung/pwa.js' %}" defer></script>
+</head>
+<body data-layout="{% block layout %}kind{% endblock %}" data-modus="{% block modus %}{{ request.COOKIES.nestwerk_modus|default:'dunkel' }}{% endblock %}" data-akzent="{{ akzent|default:'blau' }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  {% include "komponenten/_sprite.html" %}
+  <a class="sprung-link" href="#inhalt">Zum Inhalt</a>
+  <header class="kopf">
+    {% block kopf %}{% endblock %}
+  </header>
+  <main id="inhalt" class="inhalt">
+    {% block inhalt %}{% endblock %}
+  </main>
+  {% block navigation %}{% endblock %}
+  <div class="toast-bereich" id="meldungen" aria-live="polite"></div>
+  {% include "konten/_leerlauf.html" %}
+</body>
+</html>

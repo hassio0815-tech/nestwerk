@@ -1,0 +1,8 @@
+<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel">
+  {% csrf_token %}
+  <h1>Zeit</h1>
+  {% include "einrichtung/_fehler.html" %}
+  {% include "komponenten/feld.html" with name="zeitzone" label="Zeitzone" wert=form.zeitzone.value fehler=form.zeitzone.errors.0 pflicht=True hilfe="Tage und Wochen werden in dieser Zeitzone gerechnet, z. B. Europe/Berlin." %}
+  {% include "komponenten/feld.html" with name="go_live_datum" label="Go-live-Datum" typ="date" wert=form.go_live_datum.value fehler=form.go_live_datum.errors.0 pflicht=True hilfe="Das App-Jahr für Sondertage beginnt an diesem Tag." %}
+  {% include "einrichtung/_navigation.html" %}
+</form>

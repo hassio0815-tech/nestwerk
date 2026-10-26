@@ -1,0 +1,24 @@
+<article class="karte" id="aufgabe-{{ a.pk }}"><div class="karte__inhalt zeile">
+  <div class="zeile__text stapel">
+    <strong>{{ a.titel }}</strong>
+    <span class="zeile__plan">{{ a.plan.beschreiben }}{% if a.zugewiesen_an %} · nur {{ a.zugewiesen_an.anzeigename }}{% endif %}</span>
+    <span class="reihe">
+      {% if a.kategorie %}{% include "komponenten/chip.html" with text=a.kategorie.name %}{% endif %}
+      {% include "komponenten/chip.html" with text=a.get_freigabeart_display %}
+      {% include "komponenten/chip.html" with text=a.get_status_display %}
+    </span>
+  </div>
+  {% include "komponenten/punkte.html" with wert=a.punkte %}
+  <div class="reihe">
+    {% url "aufgaben:bearbeiten" a.pk as bearbeiten_url %}
+    {% include "komponenten/button.html" with href=bearbeiten_url variante="sekundaer" klein=True text="Bearbeiten" %}
+    {% if a.status == "aktiv" %}
+      <button class="knopf knopf--geist knopf--klein" hx-post="{% url 'aufgaben:status' a.pk 'pausiert' %}" hx-target="#aufgabe-{{ a.pk }}" hx-swap="outerHTML">Pausieren</button>
+    {% elif a.status == "pausiert" %}
+      <button class="knopf knopf--geist knopf--klein" hx-post="{% url 'aufgaben:status' a.pk 'aktiv' %}" hx-target="#aufgabe-{{ a.pk }}" hx-swap="outerHTML">Fortsetzen</button>
+    {% endif %}
+    {% if a.status != "beendet" %}
+      <button class="knopf knopf--gefahr knopf--klein" hx-post="{% url 'aufgaben:status' a.pk 'beendet' %}" hx-target="#aufgabe-{{ a.pk }}" hx-swap="outerHTML" hx-confirm="Aufgabe beenden? Das kann nicht rückgängig gemacht werden. Vergebene Punkte bleiben.">Beenden</button>
+    {% endif %}
+  </div>
+</div></article>

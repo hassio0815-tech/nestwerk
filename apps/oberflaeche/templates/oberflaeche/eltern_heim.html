@@ -1,0 +1,25 @@
+{% extends "oberflaeche/eltern_basis.html" %}
+{% comment %}Eltern-Dashboard: alles, was die Registry für "eltern" liefert.{% endcomment %}
+{% block titel %}Eltern{% endblock %}
+{% load avatar_tags %}
+{% block seite %}
+  <h1 class="zeile__name">{% avatar_bild request.user "klein" %}{% if request.user.wappen_info and request.user.rolle_anzeige %}Hallo <span class="wappen-rolle-gross">{{ request.user.wappen_info.emoji }} {{ request.user.rolle_anzeige }}</span>!<br><span class="wappen-zeile">{{ request.user.wappen_info.titel }}</span>{% else %}Hallo {{ request.user.anzeigename }}!{% if request.user.wappen_info %} <span class="wappen-zeile">{{ request.user.wappen_info.emoji }} {{ request.user.wappen_info.titel }}</span>{% endif %}{% endif %}</h1>
+  {% if gesperrte_kinder %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>Gesperrte PINs</h2>
+      {% for k in gesperrte_kinder %}
+        <form method="post" action="{% url 'oberflaeche:familie_kind_entsperren' k.pk %}" class="reihe">{% csrf_token %}
+          <span>{{ k.anzeigename }}</span>
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="schloss" text="Entsperren" %}
+        </form>
+      {% endfor %}
+    </div></section>
+  {% endif %}
+  <div class="dashboard" id="dashboard">
+    {% for eintrag in kacheln %}
+      <section class="dashboard__kachel" data-kachel="{{ eintrag.kachel.schluessel }}" aria-label="{{ eintrag.kachel.titel }}">
+        {% include eintrag.kachel.template with k=eintrag.k %}
+      </section>
+    {% endfor %}
+  </div>
+{% endblock %}

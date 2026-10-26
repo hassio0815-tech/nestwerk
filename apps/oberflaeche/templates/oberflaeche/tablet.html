@@ -1,0 +1,16 @@
+{% extends "basis/tablet.html" %}
+{% load static %}
+{% comment %}Tablet-Startseite: Familienziel-Slot (Registry "tablet"), Avatar-Kacheln mit Guthaben und
+  offenen Aufgaben. Der Ausschnitt lädt sich per HTMX-Polling nach (passiv: verlängert keine
+  Sitzung) und pausiert bei verstecktem Tab; nach einigen Stunden lädt die ganze Seite neu.{% endcomment %}
+{% block titel %}Wer bist du?{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><meta http-equiv="refresh" content="{{ neuladen_sekunden }}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:eltern_login" as eltern_url %}
+  {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="person" text="Eltern" %}
+{% endblock %}
+{% block inhalt %}
+  <div id="tablet-live" hx-get="{% url 'oberflaeche:tablet_teil' %}" hx-trigger="every {{ intervall }}s" data-nur-sichtbar hx-swap="innerHTML">
+    {% include "oberflaeche/_tablet_teil.html" %}
+  </div>
+{% endblock %}

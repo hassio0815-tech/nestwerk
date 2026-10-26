@@ -1,0 +1,24 @@
+<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+  {% csrf_token %}
+  <h1>Kinder</h1>
+  <p>Name, vierstellige PIN (zweimal) und optional eine Akzentfarbe. Leere Zeilen werden ignoriert.</p>
+  <button type="submit" class="einrichtung-standard" tabindex="-1" aria-hidden="true"></button>
+  <input type="hidden" name="anzahl" value="{{ anzahl }}">
+  {% for m in allgemein_fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ m }}</p>{% endfor %}
+  {% for z in zeilen %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>Kind {{ forloop.counter }}</h2>
+      <input type="hidden" name="kind-{{ z.nr }}-id" value="{{ z.kind_id }}">
+      {% include "komponenten/feld.html" with name=z.name_feld label="Name" wert=z.name fehler=z.fehler.name %}
+      {% include "komponenten/feld.html" with name=z.pin_feld label="PIN (4 Ziffern)" typ="password" inputmode="numeric" fehler=z.fehler.pin autocomplete="off" hilfe=z.pin_hilfe %}
+      {% include "komponenten/feld.html" with name=z.pin2_feld label="PIN wiederholen" typ="password" inputmode="numeric" fehler=z.fehler.pin2 autocomplete="off" %}
+      <div class="feld"><label class="feld__label" for="farbe-{{ z.nr }}">Akzentfarbe</label>
+        <select class="feld__eingabe" id="farbe-{{ z.nr }}" name="kind-{{ z.nr }}-farbe">
+          <option value="">keine</option>
+          {% for f in farben %}<option value="{{ f }}"{% if z.farbe == f %} selected{% endif %}>{{ f|capfirst }}</option>{% endfor %}
+        </select></div>
+    </div></section>
+  {% endfor %}
+  <button type="submit" name="aktion" value="mehr" class="knopf knopf--sekundaer" formnovalidate>{% include "komponenten/icon.html" with name="plus" %}<span>Weiteres Kind</span></button>
+  {% include "einrichtung/_navigation.html" %}
+</form>

@@ -1,0 +1,922 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "ritter-hintergrund-1",
+   "name": "Burgwiese",
+   "beschreibung": "Blauer Himmel und frisches Gras.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#8ecae6",
+      "b": "#ffffff",
+      "c": "#5fa052"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-1",
+   "name": "Roter Umhang",
+   "beschreibung": "Flattert hinter jedem Helden her.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p6",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-1",
+   "name": "Wappenrock",
+   "beschreibung": "Roter Rock über dem Hemd, mit goldenem Kragen.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p6",
+      "b": "p1",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-kopf-1",
+   "name": "Eisenhelm",
+   "beschreibung": "Solider Helm mit Nasenschutz.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-1",
+   "name": "Übungsschwert",
+   "beschreibung": "Stumpf, aber gut für den Anfang.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-1",
+   "name": "Treuer Hund",
+   "beschreibung": "Folgt dir auf Schritt und Tritt.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "#c68a4e",
+      "b": "#8a5a2b",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hintergrund-2",
+   "name": "Hügelland",
+   "beschreibung": "Grüne Hügel unter weitem Himmel.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#bfe3a8",
+      "b": "#4f9a56",
+      "c": "#3a7a3f"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-2",
+   "name": "Wappenumhang",
+   "beschreibung": "Umhang mit Wappen-Schild.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p6",
+      "b": "p3",
+      "c": "p3"
+     },
+     "muster": "kante"
+    },
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "p3",
+      "c": "p1"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-2",
+   "name": "Kettenhemd",
+   "beschreibung": "Silbernes Kettenhemd mit Muster.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-kopf-2",
+   "name": "Helm mit Feder",
+   "beschreibung": "Ein Helm mit roter Feder.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "p6",
+      "b": "p6",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-2",
+   "name": "Schwert mit Kante",
+   "beschreibung": "Ein Schwert mit schönem Rand.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-2",
+   "name": "Falke",
+   "beschreibung": "Schnell und treu an deiner Seite.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "p4",
+      "b": "p3",
+      "c": "p6"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hintergrund-3",
+   "name": "Burg auf dem Hügel",
+   "beschreibung": "Eine Burg über dem Land.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#8ecae6",
+      "b": "#ffffff",
+      "c": "#5fa052"
+     }
+    },
+    {
+     "form": "burg",
+     "farben": {
+      "a": "#b8b8c4",
+      "b": "#8f94a6",
+      "c": "#3a3550"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-3",
+   "name": "Blauer Schildumhang",
+   "beschreibung": "Blauer Umhang mit Rückenschild.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    },
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "#3b82f6",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-3",
+   "name": "Blaue Rüstung",
+   "beschreibung": "Blau gestreifte Rüstung mit Goldnaht.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p4",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-kopf-3",
+   "name": "Visierhelm",
+   "beschreibung": "Blauer Helm mit Sehschlitz.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p1",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p4",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-3",
+   "name": "Blaues Schwert",
+   "beschreibung": "Schwert mit blau gestreiftem Griff.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p4",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-3",
+   "name": "Hund mit Halsband",
+   "beschreibung": "Ein Hund mit blauem Halsband.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "#c68a4e",
+      "b": "#8a5a2b",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hintergrund-4",
+   "name": "Burg bei Nacht",
+   "beschreibung": "Die Burg mit leuchtendem Tor.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    },
+    {
+     "form": "burg",
+     "farben": {
+      "a": "#7d7f96",
+      "b": "#585b74",
+      "c": "#fff1a8"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-4",
+   "name": "Lila Umhang",
+   "beschreibung": "Lila Umhang mit Punktemuster.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "#a855f7",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-4",
+   "name": "Wappenpanzer",
+   "beschreibung": "Lila Panzer mit Punkten und Gold.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p4",
+      "c": "p3"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-kopf-4",
+   "name": "Wächterhelm",
+   "beschreibung": "Lila Helm mit Muster und Lorbeer.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-4",
+   "name": "Turnierpokal",
+   "beschreibung": "Pokal vom großen Ritterturnier.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "pokal",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p3",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-4",
+   "name": "Mini-Drache",
+   "beschreibung": "Ein kleiner Drache mit Punkten.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p3",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hintergrund-5",
+   "name": "Goldene Burg",
+   "beschreibung": "Eine Burg im goldenen Abendlicht.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#fff1a8",
+      "b": "#ffffff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "burg",
+     "farben": {
+      "a": "#facc15",
+      "b": "#c79a2a",
+      "c": "#3a3550"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-5",
+   "name": "Goldumhang",
+   "beschreibung": "Golden glänzender Umhang mit Schild.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "#facc15",
+      "b": "p6",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "schild",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-5",
+   "name": "Goldrüstung",
+   "beschreibung": "Glänzende Rüstung aus Gold.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-kopf-5",
+   "name": "Kronhelm",
+   "beschreibung": "Goldener Helm mit kleiner Krone.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "p6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-5",
+   "name": "Goldschwert",
+   "beschreibung": "Goldenes Schwert mit Karomuster.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "schild",
+     "farben": {
+      "a": "#facc15",
+      "b": "p1",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-5",
+   "name": "Goldene Katze",
+   "beschreibung": "Eine Katze, die golden glänzt.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hintergrund-6",
+   "name": "Burg der Legenden",
+   "beschreibung": "Burg im Sternenlicht mit Lichtkranz.",
+   "thema": "ritter",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    },
+    {
+     "form": "burg",
+     "farben": {
+      "a": "#facc15",
+      "b": "#c79a2a",
+      "c": "#3a3550"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-ruecken-6",
+   "name": "Aura der Legenden",
+   "beschreibung": "Ein Leuchten aus Gold und Regenbogen.",
+   "thema": "ritter",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-koerper-6",
+   "name": "Sonnenrüstung",
+   "beschreibung": "Strahlende Rüstung mit Glanz und Pink.",
+   "thema": "ritter",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-kopf-6",
+   "name": "Goldene Krone",
+   "beschreibung": "Die prächtigste Krone der Legenden.",
+   "thema": "ritter",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lorbeer",
+     "farben": {
+      "a": "#facc15"
+     }
+    },
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-hand-6",
+   "name": "Sonnenklinge",
+   "beschreibung": "Ein leuchtendes Schwert der Sonne.",
+   "thema": "ritter",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "ritter-begleiter-6",
+   "name": "Goldener Drache",
+   "beschreibung": "Ein Drache der Legenden mit Glanz.",
+   "thema": "ritter",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

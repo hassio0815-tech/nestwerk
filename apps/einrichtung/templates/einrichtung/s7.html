@@ -1,0 +1,46 @@
+<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel">
+  {% csrf_token %}
+  <h1>Startwerte prüfen</h1>
+  <p>Alle Werte sind vorausgefüllt und lassen sich später im Eltern-Dashboard ändern.</p>
+  {% if fehler_anzahl %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler_anzahl }} Wert{{ fehler_anzahl|pluralize:"e" }} korrigieren.</p>{% endif %}
+  {% for titel, modul, felder in gruppen %}
+    <details class="karte"{% for f in felder %}{% if f.fehler %} open{% endif %}{% endfor %}>
+      <summary class="karte__inhalt"><strong>{{ titel }}</strong> ({{ felder|length }})</summary>
+      <div class="karte__inhalt stapel">
+        {% for f in felder %}
+          <div class="feld{% if f.fehler %} feld--fehler{% endif %}">
+            {% if f.art == "bool" %}
+              <label class="reihe"><input type="checkbox" name="{{ f.name }}"{% if f.angehakt %} checked{% endif %}> <span>{{ f.definition.bezeichnung }}</span></label>
+            {% else %}
+              <label class="feld__label" for="{{ f.name }}">{{ f.definition.bezeichnung }}{% if f.definition.einheit %} ({{ f.definition.einheit }}){% endif %}</label>
+              {% if f.art == "auswahl" %}
+                <select class="feld__eingabe" id="{{ f.name }}" name="{{ f.name }}">{% for a in f.auswahl %}<option value="{{ a }}"{% if a == f.wert %} selected{% endif %}>{{ a }}</option>{% endfor %}</select>
+              {% elif f.art == "liste" %}
+                <textarea class="feld__eingabe" id="{{ f.name }}" name="{{ f.name }}" rows="3">{{ f.wert }}</textarea>
+              {% elif f.art == "zahl" %}
+                <input class="feld__eingabe" id="{{ f.name }}" name="{{ f.name }}" type="number" inputmode="numeric" value="{{ f.wert }}">
+              {% elif f.art == "datum" %}
+                <input class="feld__eingabe" id="{{ f.name }}" name="{{ f.name }}" type="date" value="{{ f.wert }}">
+              {% elif f.art == "uhrzeit" %}
+                <input class="feld__eingabe" id="{{ f.name }}" name="{{ f.name }}" type="time" value="{{ f.wert }}">
+              {% else %}
+                <input class="feld__eingabe" id="{{ f.name }}" name="{{ f.name }}" type="text" value="{{ f.wert }}">
+              {% endif %}
+            {% endif %}
+            {% if f.fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ f.fehler }}</p>{% elif f.definition.beschreibung %}<p class="feld__hinweis">{{ f.definition.beschreibung }}</p>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </details>
+  {% endfor %}
+  {% for liste in listen %}
+    <details class="karte">
+      <summary class="karte__inhalt"><strong>{{ liste.titel }}</strong> ({{ liste.zeilen|length }})</summary>
+      <div class="karte__inhalt">
+        <ul>{% for titel, wert in liste.zeilen %}<li>{{ titel }}: {{ wert }}</li>{% endfor %}</ul>
+        <p class="feld__hinweis">Nur Ansicht. <a href="/eltern/" target="_blank" rel="noopener">Später im Eltern-Dashboard anpassen.</a></p>
+      </div>
+    </details>
+  {% endfor %}
+  {% include "einrichtung/_navigation.html" %}
+</form>

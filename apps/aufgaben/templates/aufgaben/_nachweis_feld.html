@@ -1,0 +1,6 @@
+{% comment %}Foto-Feld im Melden-Dialog: öffnet auf dem iPhone direkt die Kamera; Vorschau und Verkleinerung per static/js/nachweis.js.{% endcomment %}
+<div class="feld nachweis-feld" data-nachweis>
+  <label class="feld__label" for="foto-{{ i.pk }}">{{ label|default:"Foto" }}</label>
+  <input class="feld__eingabe" id="foto-{{ i.pk }}" type="file" name="foto" accept="image/*" capture="environment" data-nachweis-feld>
+  <img class="nachweis-feld__vorschau" data-nachweis-vorschau alt="Vorschau deines Fotos" hidden>
+</div>
