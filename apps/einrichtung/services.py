@@ -80,10 +80,15 @@ def eltern_speichern(daten):
                         rolle_label=rolle,
                         email=email,
                         wappen=wappen_wahl or None,
+                        wappen_rolle=daten.get(f"eltern{i}_wappen_rolle") or "",
+                        wappen_rolle_eigen=daten.get(f"eltern{i}_wappen_rolle_eigen") or "",
                     )
                 else:
                     konten_services.eltern_anlegen(
-                        name, rolle_label=rolle, email=email, reihenfolge=i, wappen=wappen_wahl
+                        name, rolle_label=rolle, email=email, reihenfolge=i,
+                        wappen=wappen_wahl,
+                        wappen_rolle=daten.get(f"eltern{i}_wappen_rolle") or "",
+                        wappen_rolle_eigen=daten.get(f"eltern{i}_wappen_rolle_eigen") or "",
                     )
             if daten.get("passwort"):
                 konten_services.eltern_passwort_setzen(daten["passwort"], von=None)
@@ -100,6 +105,8 @@ def eltern_werte():
         werte[f"eltern{i}_rolle"] = benutzer.elternprofil.rolle_label
         werte[f"eltern{i}_email"] = benutzer.elternprofil.email
         werte[f"eltern{i}_wappen"] = benutzer.wappen
+        werte[f"eltern{i}_wappen_rolle"] = benutzer.wappen_rolle
+        werte[f"eltern{i}_wappen_rolle_eigen"] = benutzer.wappen_rolle_eigen
     werte.setdefault("eltern1_rolle", "mama")
     werte.setdefault("eltern2_rolle", "papa")
     # Vorbelegung: zufällig, die beiden Eltern möglichst verschieden

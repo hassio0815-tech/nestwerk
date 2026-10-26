@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from apps.benachrichtigung.models import SmtpSicherheit
-from apps.konten.models import ElternLabel
+from apps.konten.models import ElternLabel, WappenRolle
 from apps.konten.wappen import CHOICES as WAPPEN_CHOICES
 
 PASSWORT_MINDESTLAENGE = 10
@@ -84,10 +84,22 @@ class ElternForm(forms.Form):
     eltern1_rolle = forms.ChoiceField(label="Rolle", choices=ElternLabel.choices)
     eltern1_email = forms.EmailField(label="E-Mail")
     eltern1_wappen = forms.ChoiceField(label="Wappen", choices=WAPPEN_CHOICES, required=False)
+    eltern1_wappen_rolle = forms.ChoiceField(
+        label="Rolle", choices=WappenRolle.choices, required=False
+    )
+    eltern1_wappen_rolle_eigen = forms.CharField(
+        label="Eigene Rolle", max_length=15, required=False, strip=True
+    )
     eltern2_name = forms.CharField(label="Name", max_length=40, strip=True)
     eltern2_rolle = forms.ChoiceField(label="Rolle", choices=ElternLabel.choices)
     eltern2_email = forms.EmailField(label="E-Mail")
     eltern2_wappen = forms.ChoiceField(label="Wappen", choices=WAPPEN_CHOICES, required=False)
+    eltern2_wappen_rolle = forms.ChoiceField(
+        label="Rolle", choices=WappenRolle.choices, required=False
+    )
+    eltern2_wappen_rolle_eigen = forms.CharField(
+        label="Eigene Rolle", max_length=15, required=False, strip=True
+    )
     passwort = forms.CharField(label="Familien-Passwort", strip=False, required=False)
     passwort2 = forms.CharField(label="Passwort wiederholen", strip=False, required=False)
 

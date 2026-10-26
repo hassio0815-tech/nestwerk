@@ -629,3 +629,5 @@
 .wappen-karte__spruch { font-size: 0.875rem; color: var(--text-leise); }
 .nw-profil__wappen { font-size: 1.8rem; line-height: 1; }
 .wappen-zeile { font-size: 1rem; color: var(--text-leise); font-weight: 400; }
+.wappen-rolle { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
+.wappen-rolle-gross { font-size: 1.15em; font-weight: 800; }

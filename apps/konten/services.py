@@ -41,7 +41,8 @@ def _freies_wappen(ausser=None):
     return wappen_katalog.zufaellig(belegt.values_list("wappen", flat=True))
 
 
-def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0, wappen=""):
+def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0, wappen="",
+                  wappen_rolle="", wappen_rolle_eigen=""):
     """Ohne ``wappen`` wird zufällig eines vergeben (möglichst anders als bei den anderen Eltern)."""
     with transaction.atomic():
         benutzer = Benutzer(
@@ -49,6 +50,8 @@ def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0
             rolle=Rolle.ELTERN,
             reihenfolge=reihenfolge,
             wappen=wappen or _freies_wappen(),
+            wappen_rolle=wappen_rolle,
+            wappen_rolle_eigen=wappen_rolle_eigen.strip(),
         )
         benutzer.set_unusable_password()
         benutzer.full_clean()
@@ -58,7 +61,8 @@ def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0
     return benutzer
 
 
-def eltern_aendern(benutzer, anzeigename, *, rolle_label, email, wappen=None):
+def eltern_aendern(benutzer, anzeigename, *, rolle_label, email, wappen=None,
+                  wappen_rolle=None, wappen_rolle_eigen=None):
     """Ändert Name, Rolle (Mama/Papa/andere), E-Mail und optional das Wappen eines Elternteils."""
     with transaction.atomic():
         benutzer.anzeigename = anzeigename
@@ -66,6 +70,12 @@ def eltern_aendern(benutzer, anzeigename, *, rolle_label, email, wappen=None):
         if wappen is not None or not benutzer.wappen:
             benutzer.wappen = wappen or _freies_wappen(ausser=benutzer)
             felder.append("wappen")
+        if wappen_rolle is not None:
+            benutzer.wappen_rolle = wappen_rolle
+            felder.append("wappen_rolle")
+        if wappen_rolle_eigen is not None:
+            benutzer.wappen_rolle_eigen = wappen_rolle_eigen.strip()
+            felder.append("wappen_rolle_eigen")
         benutzer.full_clean(exclude=["password"])
         benutzer.save(update_fields=felder)
         profil = benutzer.elternprofil
@@ -76,13 +86,25 @@ def eltern_aendern(benutzer, anzeigename, *, rolle_label, email, wappen=None):
         audit.protokollieren("konten.eltern_geaendert", objekt=benutzer)
 
 
-def wappen_setzen(benutzer, schluessel):
-    """Eltern wählen ihr Wappen (nur Katalog-Einträge)."""
-    if schluessel not in wappen_katalog.NACH_SCHLUESSEL:
-        raise ValidationError("Unbekanntes Wappen.")
-    benutzer.wappen = schluessel
-    benutzer.save(update_fields=["wappen"])
-    audit.protokollieren("konten.wappen_gesetzt", objekt=benutzer, details={"wappen": schluessel})
+def wappen_setzen(benutzer, schluessel=None, rolle=None, eigen=None):
+    """Eltern wählen Wappen und/oder Rolle (``None`` = unverändert; Katalog-Prüfung)."""
+    felder = []
+    if schluessel is not None:
+        if schluessel not in wappen_katalog.NACH_SCHLUESSEL:
+            raise ValidationError("Unbekanntes Wappen.")
+        benutzer.wappen = schluessel
+        felder.append("wappen")
+    if rolle is not None:
+        benutzer.wappen_rolle = rolle
+        felder.append("wappen_rolle")
+    if eigen is not None:
+        benutzer.wappen_rolle_eigen = eigen.strip()
+        felder.append("wappen_rolle_eigen")
+    benutzer.full_clean(exclude=["password", "anzeigename"])
+    benutzer.save(update_fields=felder)
+    audit.protokollieren(
+        "konten.wappen_gesetzt", objekt=benutzer, details={"wappen": benutzer.wappen}
+    )
 
 
 def kind_umbenennen(kind, anzeigename):

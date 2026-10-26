@@ -18,6 +18,13 @@ from .wappen import CHOICES as WAPPEN_CHOICES
 HEX_FARBE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
+class WappenRolle(models.TextChoices):
+    MAMA = "mama", "Mama"
+    MUM = "mum", "Mum"
+    PAPA = "papa", "Papa"
+    DAD = "dad", "Dad"
+
+
 class Rolle(models.TextChoices):
     ELTERN = "eltern", "Eltern"
     KIND = "kind", "Kind"
@@ -56,6 +63,10 @@ class Benutzer(AbstractBaseUser):
     )
     wappen = models.CharField(
         max_length=20, blank=True, choices=WAPPEN_CHOICES, help_text="Eltern: humorvolles Wappen."
+    )
+    wappen_rolle = models.CharField(max_length=5, blank=True, choices=WappenRolle.choices)
+    wappen_rolle_eigen = models.CharField(
+        max_length=15, blank=True, help_text="Eltern: freie Rolle (z. B. Mami), ersetzt die Auswahl."
     )
     erstellt_am = models.DateTimeField(default=timezone.now)
 
@@ -103,10 +114,20 @@ class Benutzer(AbstractBaseUser):
         return info(self.wappen) if self.rolle == Rolle.ELTERN else None
 
     @property
+    def rolle_anzeige(self):
+        """Eigene Rolle, sonst gewählte Rolle, sonst leer."""
+        return self.wappen_rolle_eigen or self.get_wappen_rolle_display() or ""
+
+    @property
+    def wappen_name(self):
+        """Großer Wappen-Name: Rolle, ohne Rolle der Anzeigename."""
+        return self.rolle_anzeige or self.anzeigename
+
+    @property
     def name_mit_wappen(self):
-        """Für Kinder-Texte: ``Mama (🐉 Hausdrache)``; ohne Wappen nur der Name."""
+        """Für Kinder-Texte: ``Mama (🐉 Hausdrache)``; ohne Rolle der Name."""
         w = self.wappen_info
-        return f"{self.anzeigename} ({w.emoji} {w.titel})" if w else self.anzeigename
+        return f"{self.wappen_name} ({w.emoji} {w.titel})" if w else self.wappen_name
 
     @property
     def ist_eltern(self):

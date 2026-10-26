@@ -164,7 +164,13 @@ def wappen_setzen(request):
     """Eigenes Wappen wählen (HTMX: Karte neu rendern, sonst zurück zu den Einstellungen)."""
     kontext = {}
     try:
-        konten_services.wappen_setzen(request.user, request.POST.get("wappen", ""))
+        post = request.POST
+        konten_services.wappen_setzen(
+            request.user,
+            post.get("wappen"),
+            post.get("wappen_rolle"),
+            post.get("wappen_rolle_eigen"),
+        )
         kontext["wappen_gespeichert"] = True
     except ValidationError as exc:
         kontext["wappen_fehler"] = " ".join(exc.messages)
