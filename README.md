@@ -2,13 +2,13 @@
 
 # Nestwerk
 
-**Landingpage:** https://hassio0815-tech.github.io/nestwerk/ (nach Veröffentlichung)
+**Landingpage:** https://hassio0815-tech.github.io/nestwerk/
 
 **Nestwerk – the family hub for chores, rewards & learning**
 
 **Nestwerk** ist ein Familien-Dashboard für den eigenen Server. Kinder übernehmen freiwillig Aufgaben im Haushalt, sammeln Punkte und steigen in Rängen auf. Eltern behalten den Überblick, bestätigen Aufgaben und pflegen Belohnungen. Alles läuft lokal im Heimnetz.
 
-![Kinder-Dashboard auf dem Handy](docs/screenshots/phase1/kinder-dashboard__handy.png)
+![Kinder-Dashboard](site/bilder/kinder-dashboard.jpg)
 
 ---
 
@@ -71,16 +71,14 @@ Alle Screenshots zeigen **Demo-Daten** (Mama, Papa, Kind A/B/C).
 
 | Thema | Ansicht |
 |---|---|
-| Kinder-Dashboard | ![Kinder-Dashboard](docs/screenshots/phase1/kinder-dashboard__handy.png) |
-| Eltern-Dashboard | ![Eltern-Dashboard](docs/screenshots/phase1/eltern-dashboard__tablet.png) |
-| Flur-Tablet | ![Tablet-Startseite](docs/screenshots/phase1/tablet-startseite__tablet.png) |
-| Wochenplaner | ![Wochenplaner](docs/screenshots/phase1/wochenplan__tablet.png) |
-| Einrichtung | ![Einrichtung](docs/screenshots/phase1/einrichtung-1-name__handy.png) |
-| Ranking und Held der Woche | ![Ranking](docs/screenshots/phase2/ranking/ranking-held-kind__handy.png) |
-| Prognose für Eltern | ![Prognose](docs/screenshots/phase3/prognose/prognose-eltern__tablet.png) |
-| Ruhmeshalle | ![Ruhmeshalle](docs/screenshots/phase3/ruhmeshalle/ruhmeshalle-eltern-dashboard__tablet.png) |
+| Kinder-Dashboard | ![Kinder-Dashboard](site/bilder/kinder-dashboard.jpg) |
+| Eltern-Dashboard | ![Eltern-Dashboard](site/bilder/eltern-dashboard.jpg) |
+| Familienziel | ![Familienziel](site/bilder/familienziel.jpg) |
+| Mod-Shop | ![Mod-Shop](site/bilder/mod-shop.jpg) |
+| Avatar-Galerie | ![Avatar-Galerie](site/bilder/avatar-galerie.jpg) |
+| Flur-Tablet mit Ranking | ![Tablet-Ranking](site/bilder/tablet-ranking.jpg) |
 
-Alle Bilder liegen in `docs/screenshots/` (Phasen 1 bis 3, mit Prüfberichten).
+Ältere Screenshots aus den Entwicklungsphasen 1 bis 3 (noch unter dem alten Namen) liegen als Archiv in `docs/screenshots/`.
 
 ---
 
