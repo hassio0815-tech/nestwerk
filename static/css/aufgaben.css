@@ -1,0 +1,54 @@
+/* Aufgaben-Stammdaten (Eltern-UI). Nutzt nur Tokens/Komponenten des Designsystems. */
+.plan { border: 1px solid var(--rand, #ccc); border-radius: 12px; padding: 1rem; }
+.plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+.plan__wochen, .plan__intervall, .plan .plan__serie { display: none; }
+.plan:has(input[name="wiederholungsart"][value="woechentlich"]:checked) .plan__wochen,
+.plan:has(input[name="wiederholungsart"][value="intervall"]:checked) .plan__intervall { display: block; }
+/* Start/Ende/Limit nur bei Wiederholung; "Einmalig" blendet sie aus (reines CSS, ohne JS bedienbar). */
+.plan:has(input[name="wiederholungsart"][value="woechentlich"]:checked) .plan__serie,
+.plan:has(input[name="wiederholungsart"][value="intervall"]:checked) .plan__serie { display: flex; }
+@supports not selector(:has(*)) { .plan__wochen, .plan__intervall { display: block; } .plan .plan__serie { display: flex; } }
+.zeile { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
+.zeile__text { flex: 1 1 16rem; }
+.zeile__plan { font-size: .9rem; opacity: .8; }
+.aufgaben-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
+/* Kinderablauf (AP12) */
+.aufgaben-raster { grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); }
+.aufgabe-kachel { width: 100%; min-height: 9rem; cursor: pointer; font: inherit; color: inherit; }
+.aufgabe-kachel:disabled { opacity: .5; cursor: not-allowed; }
+.aufgabe-kachel--vergeben { opacity: .75; border-style: dashed; }
+.aufgabe-karte__frist, .aufgabe-karte__bonus { display: inline-flex; gap: .25rem; align-items: center; font-size: .9rem; }
+.aufgabe-karte__frage { font-style: italic; }
+/* Wochenplan (AP14) */
+.wochenplan__raster { display: grid; gap: .75rem; grid-template-columns: repeat(7, minmax(9rem, 1fr)); overflow-x: auto; padding-bottom: .5rem; }
+.wochenplan__tag { border: 1px solid var(--rand, #ccc); border-radius: 12px; padding: .5rem; min-width: 9rem; }
+.wochenplan__tag--heute { border-width: 2px; }
+.wochenplan__kopf { display: flex; justify-content: space-between; align-items: center; }
+.wochenplan__kopf h2 { font-size: 1rem; margin: 0; }
+.wochenplan__liste { display: flex; flex-direction: column; gap: .5rem; min-height: 5rem; }
+.wochenplan__karte { border: 1px solid var(--rand, #ccc); border-radius: 10px; padding: .5rem; display: flex; flex-direction: column; gap: .25rem; touch-action: pan-y; }
+.wochenplan__karte[data-beweglich] { cursor: grab; }
+.wochenplan__karte--gesperrt { opacity: .6; border-style: dashed; }
+.wochenplan__karte--geist { opacity: .4; }
+.wochenplan__karte[data-status="reserviert"] { border-left: 4px solid var(--akzent, #3b82f6); }
+.wochenplan__karte[data-status="konflikt"] { border-left: 4px solid #d97706; }
+.wochenplan__karte[data-status="gemeldet"], .wochenplan__karte[data-status="rueckfrage"] { border-left: 4px solid #8b5cf6; }
+.wochenplan__karte[data-status="bestaetigt"] { border-left: 4px solid #16a34a; }
+.wochenplan__karte[data-status="offen"] { border-left: 4px solid #94a3b8; }
+.wochenplan__zeit, .wochenplan__sperre { display: inline-flex; gap: .25rem; align-items: center; font-size: .875rem; }
+.wochenplan__verschieben { gap: .25rem; align-items: flex-end; min-width: 0; }
+.wochenplan__verschieben .wochenplan__label { min-width: 0; max-width: 100%; }
+.wochenplan__verschieben .feld__eingabe { width: 100%; min-width: 0; box-sizing: border-box; padding: .4rem .3rem; font-size: .875rem; }
+.wochenplan__verschieben .knopf { max-width: 100%; }
+.wochenplan__label { font-size: .875rem; display: flex; flex-direction: column; }
+.wochenplan__ohne { margin-top: 1rem; }
+.wochenplan__liste--info { flex-direction: row; flex-wrap: wrap; }
+/* Handy: Tage untereinander (Ziehen zwischen Tagen bleibt möglich, "Verschieben" ist der Formular-Fallback);
+   leere Tage sind kompakt. */
+@media (max-width: 700px) {
+  .wochenplan__raster { grid-template-columns: 1fr; overflow-x: visible; }
+  .wochenplan__tag { min-width: 0; }
+  .wochenplan__tag--leer { padding-block: .25rem; }
+  .wochenplan__tag--leer .wochenplan__liste { min-height: 2rem; }
+  .wochenplan__verschieben .feld__eingabe { font-size: 1rem; }
+}

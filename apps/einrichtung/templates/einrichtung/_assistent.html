@@ -1,0 +1,6 @@
+{% if fertig %}
+  {% include "einrichtung/fertig.html" %}
+{% else %}
+  {% include "komponenten/fortschritt.html" with label=schritt_titel wert=schritt max=schritte %}
+  <div class="stapel">{% include inhalt %}</div>
+{% endif %}

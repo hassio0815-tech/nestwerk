@@ -1,0 +1,56 @@
+{% extends "basis/kind.html" %}
+{% load static %}
+{% comment %}Erstwahl des Avatars (Kind): Figur und Thema. Die Vorschau lädt per HTMX nach, ohne JavaScript
+  funktioniert das Formular trotzdem (Absenden prüft alles auf dem Server).{% endcomment %}
+{% block titel %}Avatar wählen{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
+{% block inhalt %}
+  <h1>Bau deinen Avatar</h1>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+  <form method="post" class="avatar-wahl" hx-get="{% url 'avatar:kind_wahl' %}" hx-trigger="change" hx-target="#avatar-vorschau" hx-swap="innerHTML">
+    {% csrf_token %}
+    <div class="avatar-wahl__figur">
+      <fieldset class="avatar-wahl__gruppe">
+        <legend>Hautton</legend>
+        <div class="avatar-farben">
+          {% for schluessel, name, farbe in optionen.haut %}
+            <label class="avatar-farbe">
+              <input type="radio" name="haut" value="{{ schluessel }}"{% if figur.haut == schluessel %} checked{% endif %}>
+              <svg class="avatar-farbe__feld" viewBox="0 0 1 1" aria-hidden="true"><rect width="1" height="1" fill="{{ farbe }}"/></svg>
+              <span class="sr-only">{{ name }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <fieldset class="avatar-wahl__gruppe">
+        <legend>Haarfarbe</legend>
+        <div class="avatar-farben">
+          {% for schluessel, name, farbe in optionen.haar %}
+            <label class="avatar-farbe">
+              <input type="radio" name="haar" value="{{ schluessel }}"{% if figur.haar == schluessel %} checked{% endif %}>
+              <svg class="avatar-farbe__feld" viewBox="0 0 1 1" aria-hidden="true"><rect width="1" height="1" fill="{{ farbe }}"/></svg>
+              <span class="sr-only">{{ name }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <fieldset class="avatar-wahl__gruppe">
+        <legend>Frisur</legend>
+        <div class="avatar-frisuren">
+          {% for schluessel, name in optionen.frisur %}
+            <label class="avatar-frisur">
+              <input type="radio" name="frisur" value="{{ schluessel }}"{% if figur.frisur == schluessel %} checked{% endif %}>
+              <span>{{ name }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+    </div>
+    <div id="avatar-vorschau" class="avatar-wahl__vorschau">
+      {% include "avatar/_vorschau.html" %}
+    </div>
+    <div class="avatar-wahl__senden">
+      {% include "komponenten/button.html" with typ="submit" gross=True icon="check" text="Das bin ich!" %}
+    </div>
+  </form>
+{% endblock %}

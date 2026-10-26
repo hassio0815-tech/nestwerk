@@ -1,0 +1,14 @@
+<table class="rk-tabelle" data-ranking-liste>
+  <caption class="sr-only">Punkte der Kinder</caption>
+  <thead><tr><th scope="col">Kind</th><th scope="col">Diese Woche</th><th scope="col">Gesamt</th></tr></thead>
+  <tbody>
+    {% for e in a.nach_woche %}
+      <tr data-kind="{{ e.kind.pk }}" data-akzent="{{ e.akzent }}">
+        <th scope="row">{{ e.kind.anzeigename }}{% if e.pausiert %} <span class="chip">Pause</span>{% endif %}</th>
+        <td>{{ e.xp_woche }} XP</td>
+        <td>{{ e.xp_gesamt }} XP</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="rk-held__text">Punkte zeigen, was geschafft wurde. Der Weg zählt: Rang, Serie und Abzeichen findest du im Schaufenster.</p>

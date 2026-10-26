@@ -1,0 +1,22 @@
+<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+  {% csrf_token %}
+  <h1>E-Mail-Versand</h1>
+  <p>Zugang zu eurem Postfach, über das Nestwerk Mails verschickt (z. B. Benachrichtigungen an die Eltern).</p>
+  <button type="submit" class="einrichtung-standard" tabindex="-1" aria-hidden="true"></button>
+  {% include "einrichtung/_fehler.html" %}
+  {% if ergebnis %}
+    <div class="feld__hinweis{% if not ergebnis.ok %} feld__hinweis--fehler{% endif %}" role="status"><strong>{% if ergebnis.ok %}Testmail gesendet.{% else %}Testmail fehlgeschlagen.{% endif %}</strong> {{ ergebnis.meldung }}</div>
+  {% endif %}
+  {% include "komponenten/feld.html" with name="host" label="Server" wert=form.host.value fehler=form.host.errors.0 pflicht=True hilfe="z. B. smtp.example.org" %}
+  {% include "komponenten/feld.html" with name="port" label="Port" typ="number" inputmode="numeric" wert=form.port.value fehler=form.port.errors.0 pflicht=True %}
+  <div class="feld"><label class="feld__label" for="sicherheit">Verschlüsselung</label>
+    <select class="feld__eingabe" id="sicherheit" name="sicherheit">{% for k, t in sicherheiten %}<option value="{{ k }}"{% if form.sicherheit.value == k %} selected{% endif %}>{{ t }}</option>{% endfor %}</select></div>
+  {% include "komponenten/feld.html" with name="benutzername" label="Benutzername" wert=form.benutzername.value fehler=form.benutzername.errors.0 pflicht=True autocomplete="off" %}
+  {% include "komponenten/feld.html" with name="passwort" label="Passwort" typ="password" fehler=form.passwort.errors.0 autocomplete="new-password" hilfe=passwort_hilfe %}
+  {% include "komponenten/feld.html" with name="absender" label="Absender-Adresse" typ="email" wert=form.absender.value fehler=form.absender.errors.0 pflicht=True %}
+  {% include "komponenten/feld.html" with name="testadresse" label="Testmail an" typ="email" wert=form.testadresse.value fehler=form.testadresse.errors.0 %}
+  <button type="submit" name="aktion" value="testen" class="knopf knopf--sekundaer">{% include "komponenten/icon.html" with name="glocke" %}<span>Testmail senden</span></button>
+  <div class="feld__hinweis feld__hinweis--fehler" role="note"><strong>Überspringen?</strong> Ohne E-Mail-Versand bekommen die Eltern keine Mails (z. B. Hinweise bei Anfragen). Das lässt sich später in den Einstellungen nachholen.</div>
+  <button type="submit" name="aktion" value="ueberspringen" class="knopf knopf--geist" formnovalidate>{% include "komponenten/icon.html" with name="warnung" %}<span>Ohne E-Mail fortfahren</span></button>
+  {% include "einrichtung/_navigation.html" %}
+</form>

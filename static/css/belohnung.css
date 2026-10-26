@@ -1,0 +1,4 @@
+/* Belohnungen: Kacheln als Buttons. Nutzt nur Tokens/Komponenten des Designsystems. */
+.belohnung-kachel { width: 100%; font: inherit; text-align: left; cursor: pointer; }
+.belohnung-kachel:disabled { cursor: not-allowed; }
+.belohnung-guthaben { align-items: flex-end; }

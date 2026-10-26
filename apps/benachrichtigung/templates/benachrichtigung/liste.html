@@ -1,0 +1,14 @@
+{% extends "basis/einstellungen.html" %}
+{% block titel %}Benachrichtigungen{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "benachrichtigung:einstellungen" as einstellungen_url %}
+  {% include "komponenten/button.html" with href=einstellungen_url variante="geist" klein=True icon="einstellungen" text="Einstellungen" %}
+  {% url "konten:eltern_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
+{% endblock %}
+{% block seite %}
+  <div class="stapel">
+    <h1>Benachrichtigungen</h1>
+    {% include "benachrichtigung/_liste.html" %}
+  </div>
+{% endblock %}

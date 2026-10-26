@@ -1,0 +1,888 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "wikinger-hintergrund-1",
+   "name": "Hügelland",
+   "beschreibung": "Hügel unter winterlichem Himmel.",
+   "thema": "wikinger",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#b7d3e6",
+      "b": "#e8f1f7",
+      "c": "#d2e2ec"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-ruecken-1",
+   "name": "Rundschild",
+   "beschreibung": "Ein Rundschild am Rücken.",
+   "thema": "wikinger",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-koerper-1",
+   "name": "Lederweste",
+   "beschreibung": "Weste aus braunem Leder.",
+   "thema": "wikinger",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-kopf-1",
+   "name": "Hörnerhelm",
+   "beschreibung": "Ein Helm mit kleinen Hörnern.",
+   "thema": "wikinger",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hoerner",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hand-1",
+   "name": "Holzschwert",
+   "beschreibung": "Ein Holzschwert aus dem Langhaus.",
+   "thema": "wikinger",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "#c68a4e",
+      "b": "#8a5a2b",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-begleiter-1",
+   "name": "Jagdhund",
+   "beschreibung": "Ein treuer Hund aus dem Norden.",
+   "thema": "wikinger",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hund",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hintergrund-2",
+   "name": "Meer",
+   "beschreibung": "Wellen mit Rand.",
+   "thema": "wikinger",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#a5c8e0",
+      "b": "#4d7fa8",
+      "c": "#e8f1f7"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-ruecken-2",
+   "name": "Bärenfell",
+   "beschreibung": "Fell über den Schultern.",
+   "thema": "wikinger",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fell",
+     "farben": {
+      "a": "#6b4a2e",
+      "b": "p5",
+      "c": "#d8c3a0"
+     },
+     "muster": "punkte",
+     "muster_farbe": "#d8c3a0"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-koerper-2",
+   "name": "Kettenhemd",
+   "beschreibung": "Kettenhemd mit Muster.",
+   "thema": "wikinger",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-kopf-2",
+   "name": "Helm mit Kante",
+   "beschreibung": "Runder Helm mit Rand.",
+   "thema": "wikinger",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hand-2",
+   "name": "Trinkhorn",
+   "beschreibung": "Ein Horn mit Rand.",
+   "thema": "wikinger",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "horn",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-begleiter-2",
+   "name": "Rabe",
+   "beschreibung": "Ein Rabe mit hellem Rand.",
+   "thema": "wikinger",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "p5",
+      "b": "p2",
+      "c": "p4"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hintergrund-3",
+   "name": "Nordlicht",
+   "beschreibung": "Nacht mit blauem Lichtkranz.",
+   "thema": "wikinger",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "#3b82f6",
+      "c": "#3b82f6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-ruecken-3",
+   "name": "Blauer Schild",
+   "beschreibung": "Schild mit blauen Streifen.",
+   "thema": "wikinger",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-koerper-3",
+   "name": "Blauer Mantel",
+   "beschreibung": "Mantel mit blauen Streifen.",
+   "thema": "wikinger",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-kopf-3",
+   "name": "Blauer Hörnerhelm",
+   "beschreibung": "Hörnerhelm mit blauen Streifen.",
+   "thema": "wikinger",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hoerner",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hand-3",
+   "name": "Blauer Handschild",
+   "beschreibung": "Kleiner Schild mit blauen Streifen.",
+   "thema": "wikinger",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-begleiter-3",
+   "name": "Drachenjunges",
+   "beschreibung": "Drache mit blauen Streifen.",
+   "thema": "wikinger",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "p1",
+      "b": "p3",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hintergrund-4",
+   "name": "Fjord",
+   "beschreibung": "Hügel über blauem Wasser.",
+   "thema": "wikinger",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#8fa3c4",
+      "b": "#5a6b80",
+      "c": "#4d5a6a"
+     }
+    },
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#7ec8e3",
+      "b": "#3b82f6",
+      "c": "#e8f1f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-ruecken-4",
+   "name": "Fellumhang",
+   "beschreibung": "Fell mit lila Umhang.",
+   "thema": "wikinger",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fell",
+     "farben": {
+      "a": "#6b4a2e",
+      "b": "p5",
+      "c": "#d8c3a0"
+     },
+     "muster": "punkte",
+     "muster_farbe": "#d8c3a0"
+    },
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-koerper-4",
+   "name": "Schuppenpanzer",
+   "beschreibung": "Panzer mit lila Punkten.",
+   "thema": "wikinger",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "p4",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-kopf-4",
+   "name": "Hörnerhelm mit Feder",
+   "beschreibung": "Hörnerhelm mit lila Punkten und Feder.",
+   "thema": "wikinger",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "hoerner",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "p6",
+      "b": "p6",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hand-4",
+   "name": "Schwert mit Knauf",
+   "beschreibung": "Schwert mit lila Punkten.",
+   "thema": "wikinger",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schwert",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-begleiter-4",
+   "name": "Schwarzer Rabe",
+   "beschreibung": "Rabe mit lila Punkten.",
+   "thema": "wikinger",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hintergrund-5",
+   "name": "Goldhimmel",
+   "beschreibung": "Goldener Himmel über Wellen.",
+   "thema": "wikinger",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#fff1a8",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#7ec8e3",
+      "b": "#3b82f6",
+      "c": "#e8f1f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-ruecken-5",
+   "name": "Goldschild",
+   "beschreibung": "Goldener Schild mit Fell.",
+   "thema": "wikinger",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "fell",
+     "farben": {
+      "a": "#6b4a2e",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-koerper-5",
+   "name": "Goldrüstung",
+   "beschreibung": "Goldene Rüstung mit Karo.",
+   "thema": "wikinger",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-kopf-5",
+   "name": "Goldhelm",
+   "beschreibung": "Goldener Helm mit Karo.",
+   "thema": "wikinger",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "hoerner",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hand-5",
+   "name": "Goldhorn",
+   "beschreibung": "Goldenes Horn mit Karo.",
+   "thema": "wikinger",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "horn",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-begleiter-5",
+   "name": "Goldener Drache",
+   "beschreibung": "Goldener Drache mit Karo.",
+   "thema": "wikinger",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hintergrund-6",
+   "name": "Nordlicht-Pracht",
+   "beschreibung": "Grünes und pinkes Nordlicht über Hügeln.",
+   "thema": "wikinger",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#7ee081",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#8fa3c4",
+      "b": "#5a6b80",
+      "c": "#4d5a6a"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-ruecken-6",
+   "name": "Aura der Wikinger",
+   "beschreibung": "Glanz über dem Bärenfell.",
+   "thema": "wikinger",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "fell",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-koerper-6",
+   "name": "Sonnenkönig",
+   "beschreibung": "Glänzende Rüstung über braunem Mantel.",
+   "thema": "wikinger",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#ff6bd6"
+     }
+    },
+    {
+     "form": "ruestung",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-kopf-6",
+   "name": "Sonnenhelm",
+   "beschreibung": "Glänzender Helm mit Feder.",
+   "thema": "wikinger",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-hand-6",
+   "name": "Sonnenschild",
+   "beschreibung": "Glänzender Schild mit Horn.",
+   "thema": "wikinger",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schild",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "horn",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "wikinger-begleiter-6",
+   "name": "Sturmdrache",
+   "beschreibung": "Drache mit Glanz und Gold.",
+   "thema": "wikinger",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

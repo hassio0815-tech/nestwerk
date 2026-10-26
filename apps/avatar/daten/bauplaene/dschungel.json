@@ -1,0 +1,864 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "dschungel-hintergrund-1",
+   "name": "Hügel im Grünen",
+   "beschreibung": "Grüne Hügel im Sonnenschein.",
+   "thema": "dschungel",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#bfe3a8",
+      "b": "#4f9a56",
+      "c": "#3a7a3f"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-ruecken-1",
+   "name": "Entdeckerrucksack",
+   "beschreibung": "Ein Rucksack für Expeditionen.",
+   "thema": "dschungel",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-koerper-1",
+   "name": "Entdeckerweste",
+   "beschreibung": "Weste mit vielen Taschen.",
+   "thema": "dschungel",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-kopf-1",
+   "name": "Entdeckerkappe",
+   "beschreibung": "Eine Kappe für Entdecker.",
+   "thema": "dschungel",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "kappe",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hand-1",
+   "name": "Entdeckerstab",
+   "beschreibung": "Ein Stab für den Weg.",
+   "thema": "dschungel",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-begleiter-1",
+   "name": "Papagei",
+   "beschreibung": "Ein bunter Papagei.",
+   "thema": "dschungel",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "p3",
+      "b": "p1",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hintergrund-2",
+   "name": "Urwald",
+   "beschreibung": "Dichter Urwald mit Rand.",
+   "thema": "dschungel",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "urwald",
+     "farben": {
+      "a": "#2f6b3a",
+      "b": "#4f9a56",
+      "c": "#7fbf5f"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-ruecken-2",
+   "name": "Schmetterlingsflügel",
+   "beschreibung": "Flügel mit hellem Rand.",
+   "thema": "dschungel",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fluegel",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-koerper-2",
+   "name": "Weste mit Kante",
+   "beschreibung": "Weste mit hellem Rand.",
+   "thema": "dschungel",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-kopf-2",
+   "name": "Tuch mit Mustern",
+   "beschreibung": "Tuch mit hellem Rand.",
+   "thema": "dschungel",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "tuch",
+     "farben": {
+      "a": "p4",
+      "b": "p1",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hand-2",
+   "name": "Fackel",
+   "beschreibung": "Eine Fackel mit hellem Rand.",
+   "thema": "dschungel",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fackel",
+     "farben": {
+      "a": "p3",
+      "b": "p5",
+      "c": "p6"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-begleiter-2",
+   "name": "Äffchen",
+   "beschreibung": "Ein Äffchen mit hellem Rand.",
+   "thema": "dschungel",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "affe",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hintergrund-3",
+   "name": "Fluss",
+   "beschreibung": "Ein Fluss mit blauen Streifen.",
+   "thema": "dschungel",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "wellen",
+     "farben": {
+      "a": "#7fbf5f",
+      "b": "#2a7fb0",
+      "c": "#7ec8e3"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-ruecken-3",
+   "name": "Blauer Umhang",
+   "beschreibung": "Umhang mit blauen Streifen.",
+   "thema": "dschungel",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "umhang",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-koerper-3",
+   "name": "Blauer Expeditionsmantel",
+   "beschreibung": "Mantel mit blauen Streifen.",
+   "thema": "dschungel",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-kopf-3",
+   "name": "Blauer Tropenhelm",
+   "beschreibung": "Tropenhelm mit blauen Streifen.",
+   "thema": "dschungel",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "tropenhelm",
+     "farben": {
+      "a": "p3",
+      "b": "p2",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hand-3",
+   "name": "Lupe",
+   "beschreibung": "Eine Lupe mit blauen Streifen.",
+   "thema": "dschungel",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lupe",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-begleiter-3",
+   "name": "Schildkröte",
+   "beschreibung": "Schildkröte mit blauen Streifen.",
+   "thema": "dschungel",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schildkroete",
+     "farben": {
+      "a": "p1",
+      "b": "p3",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hintergrund-4",
+   "name": "Sonniger Urwald",
+   "beschreibung": "Urwald unter hellem Himmel.",
+   "thema": "dschungel",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#bfe3a8",
+      "b": "#ffffff",
+      "c": "#7fbf5f"
+     }
+    },
+    {
+     "form": "urwald",
+     "farben": {
+      "a": "#2f6b3a",
+      "b": "#4f9a56",
+      "c": "#7fbf5f"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-ruecken-4",
+   "name": "Rucksack mit Punkten",
+   "beschreibung": "Rucksack mit lila Punkten.",
+   "thema": "dschungel",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-koerper-4",
+   "name": "Safari-Anzug",
+   "beschreibung": "Anzug mit lila Punkten.",
+   "thema": "dschungel",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-kopf-4",
+   "name": "Tropenhelm mit Feder",
+   "beschreibung": "Tropenhelm mit lila Punkten und Feder.",
+   "thema": "dschungel",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "tropenhelm",
+     "farben": {
+      "a": "p3",
+      "b": "p2",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "p6",
+      "b": "p6",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hand-4",
+   "name": "Karte mit Punkten",
+   "beschreibung": "Karte mit lila Punkten.",
+   "thema": "dschungel",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "karte",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-begleiter-4",
+   "name": "Papagei mit Punkten",
+   "beschreibung": "Papagei mit lila Punkten.",
+   "thema": "dschungel",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "vogel",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p3",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hintergrund-5",
+   "name": "Goldener Urwald",
+   "beschreibung": "Urwald im goldenen Licht.",
+   "thema": "dschungel",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ffffff",
+      "c": "#7fbf5f"
+     }
+    },
+    {
+     "form": "urwald",
+     "farben": {
+      "a": "#facc15",
+      "b": "#4f9a56",
+      "c": "#3a7a3f"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-ruecken-5",
+   "name": "Goldflügel",
+   "beschreibung": "Goldene Flügel mit Karo.",
+   "thema": "dschungel",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fluegel",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-koerper-5",
+   "name": "Goldweste",
+   "beschreibung": "Goldene Weste mit Karo.",
+   "thema": "dschungel",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "weste",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-kopf-5",
+   "name": "Goldener Tropenhelm",
+   "beschreibung": "Goldener Helm mit Feder.",
+   "thema": "dschungel",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "tropenhelm",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hand-5",
+   "name": "Goldlupe",
+   "beschreibung": "Goldene Lupe mit Karo.",
+   "thema": "dschungel",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lupe",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-begleiter-5",
+   "name": "Goldäffchen",
+   "beschreibung": "Goldenes Äffchen mit Karo.",
+   "thema": "dschungel",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "affe",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hintergrund-6",
+   "name": "Urwaldtempel",
+   "beschreibung": "Urwald mit goldenem Lichtkranz.",
+   "thema": "dschungel",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "himmel",
+     "farben": {
+      "a": "#bfe3a8",
+      "b": "#ffffff",
+      "c": "#7fbf5f"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    },
+    {
+     "form": "urwald",
+     "farben": {
+      "a": "#facc15",
+      "b": "#4f9a56",
+      "c": "#3a7a3f"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-ruecken-6",
+   "name": "Regenbogenflügel",
+   "beschreibung": "Flügel mit Glanz und Lichtkranz.",
+   "thema": "dschungel",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "fluegel",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "#facc15",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-koerper-6",
+   "name": "Goldmantel",
+   "beschreibung": "Glänzender Mantel mit pinker Weste.",
+   "thema": "dschungel",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "mantel",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-kopf-6",
+   "name": "Dschungelkrone",
+   "beschreibung": "Eine Krone mit Glanz und Feder.",
+   "thema": "dschungel",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p6",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-hand-6",
+   "name": "Goldkarte",
+   "beschreibung": "Glänzende Karte mit Stab.",
+   "thema": "dschungel",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "karte",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "stab",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "dschungel-begleiter-6",
+   "name": "Goldschildkröte",
+   "beschreibung": "Schildkröte mit Glanz.",
+   "thema": "dschungel",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "schildkroete",
+     "farben": {
+      "a": "#facc15",
+      "b": "p1",
+      "c": "#ff6bd6"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

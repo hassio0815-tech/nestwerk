@@ -1,0 +1,257 @@
+/* Avatar (AP24): SVG-Figur im Block-Rahmen, Erstwahl, Galerie. Nur Tokens, keine Inline-Styles. */
+.avatar-bild {
+  display: inline-block;
+  flex: none;
+  line-height: 0;
+  overflow: hidden;
+  background: var(--flaeche-hoch);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+  box-shadow: var(--schatten-karte);
+}
+
+.avatar-bild > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.avatar-bild--klein { width: 3rem; }
+.avatar-bild--mittel { width: 5rem; }
+.avatar-bild--gross { width: 7.5rem; }
+.avatar-bild--riesig { width: 12rem; }
+
+/* Tablet-Kachel: Figur statt Buchstabe */
+.kachel--avatar .avatar-bild {
+  width: 6.5rem;
+}
+
+.kachel--avatar:hover .avatar-bild,
+.kachel--avatar:focus-visible .avatar-bild {
+  border-color: var(--akzent);
+}
+
+.kachel--gesperrt .avatar-bild {
+  filter: grayscale(0.8);
+}
+
+/* Eltern: ruhig und flach */
+[data-layout="eltern"] .avatar-bild {
+  box-shadow: none;
+}
+
+.zeile__name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-klein);
+}
+
+.avatar-aufruf__inhalt {
+  align-items: center;
+  gap: var(--abstand);
+  text-align: center;
+}
+
+.avatar-aufruf__bilder {
+  display: flex;
+  justify-content: center;
+  gap: var(--abstand-klein);
+}
+
+.avatar-aufruf__bilder .avatar-bild {
+  width: 4.5rem;
+}
+
+.avatar-aufruf__inhalt h2 {
+  margin: 0;
+}
+
+.avatar-aufruf__inhalt p {
+  margin: 0;
+}
+
+/* Erstwahl */
+.avatar-wahl {
+  display: grid;
+  gap: var(--abstand-gross);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 48rem) {
+  .avatar-wahl {
+    grid-template-columns: minmax(16rem, 22rem) 1fr;
+  }
+
+  .avatar-wahl__senden {
+    grid-column: 1 / -1;
+  }
+}
+
+.avatar-wahl__figur {
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand);
+}
+
+.avatar-wahl__gruppe {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.avatar-wahl__gruppe > legend {
+  margin-bottom: var(--abstand-klein);
+  font-weight: 700;
+}
+
+.avatar-wahl__haupt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--abstand-klein);
+  margin-bottom: var(--abstand);
+}
+
+.avatar-wahl__thema {
+  margin: 0;
+  font-family: var(--schrift-titel);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.avatar-farben,
+.avatar-frisuren {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--abstand-klein);
+}
+
+.avatar-farbe,
+.avatar-frisur {
+  position: relative;
+  cursor: pointer;
+}
+
+.avatar-farbe input,
+.avatar-frisur input,
+.avatar-thema input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.avatar-farbe__feld {
+  display: block;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.avatar-farbe input:checked + .avatar-farbe__feld {
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+}
+
+.avatar-frisur span {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  padding: 0 var(--abstand);
+  font-weight: 700;
+  background: var(--flaeche-hoch);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.avatar-frisur input:checked + span {
+  color: var(--akzent-text);
+  background: var(--akzent);
+  border-color: var(--akzent);
+}
+
+.avatar-farbe input:focus-visible + .avatar-farbe__feld,
+.avatar-frisur input:focus-visible + span,
+.avatar-thema input:focus-visible ~ .avatar-bild {
+  outline: 3px solid var(--akzent-hell);
+  outline-offset: 2px;
+}
+
+.avatar-themen {
+  display: grid;
+  gap: var(--abstand-klein);
+  grid-template-columns: repeat(auto-fill, minmax(6.75rem, 1fr));
+}
+
+.avatar-thema {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: var(--abstand-klein) 0.25rem;
+  text-align: center;
+  background: var(--flaeche);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.avatar-thema .avatar-bild {
+  width: 4.5rem;
+  box-shadow: none;
+}
+
+.avatar-thema__name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.avatar-thema--gewaehlt {
+  border-color: var(--akzent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--akzent) 35%, transparent);
+}
+
+.avatar-wahl__senden {
+  display: flex;
+  justify-content: center;
+}
+
+/* Galerie (nur DEBUG) */
+.avatar-galerie {
+  margin-top: var(--abstand-gross);
+  padding: var(--abstand);
+  color: var(--text);
+  background: var(--hintergrund);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.avatar-galerie__raster {
+  display: grid;
+  gap: var(--abstand);
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+}
+
+.avatar-galerie__eintrag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--abstand-klein);
+  margin: 0;
+  text-align: center;
+}
+
+.zeile--spalte {
+  flex-direction: column;
+  align-items: flex-start;
+}

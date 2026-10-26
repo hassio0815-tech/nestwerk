@@ -1,0 +1,15 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Meine Aufgaben</h2>
+  {% for i in k.laufende %}
+    <div class="zeile">
+      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>
+      {% if i.anzeige_status == "reserviert" %}{% include "komponenten/chip.html" with text="Deine Aufgabe" stufe="uncommon" %}
+      {% elif i.anzeige_status == "gemeldet" %}{% include "komponenten/chip.html" with text="Gemeldet" stufe="rare" %}
+      {% elif i.anzeige_status == "rueckfrage" %}{% include "komponenten/chip.html" with text="Rückfrage" stufe="epic" %}
+      {% else %}{% include "komponenten/chip.html" with text="Eltern entscheiden" %}{% endif %}
+    </div>
+  {% empty %}
+    <p class="kachel__text">Du hast gerade nichts am Laufen.</p>
+  {% endfor %}
+  {% if k.laufende %}{% url "aufgaben:kind" as aufgaben_url %}{% include "komponenten/button.html" with href=aufgaben_url variante="sekundaer" voll=True text="Zu meinen Aufgaben" %}{% endif %}
+</div></article>

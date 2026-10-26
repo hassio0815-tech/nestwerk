@@ -1,0 +1,888 @@
+{
+ "format": 1,
+ "bauplaene": [
+  {
+   "schluessel": "weltraum-hintergrund-1",
+   "name": "Sternennacht",
+   "beschreibung": "Nachthimmel voller Sterne.",
+   "thema": "weltraum",
+   "slot": "hintergrund",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-ruecken-1",
+   "name": "Forscher-Rucksack",
+   "beschreibung": "Rucksack für den Weg zu den Sternen.",
+   "thema": "weltraum",
+   "slot": "ruecken",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p4"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-koerper-1",
+   "name": "Raumanzug",
+   "beschreibung": "Ein hellblauer Anzug für Expeditionen.",
+   "thema": "weltraum",
+   "slot": "koerper",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p4"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-kopf-1",
+   "name": "Glashelm",
+   "beschreibung": "Ein Helm aus klarem Glas.",
+   "thema": "weltraum",
+   "slot": "kopf",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "blase",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p4"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hand-1",
+   "name": "Leuchtstab",
+   "beschreibung": "Ein Stab, der im Dunkeln leuchtet.",
+   "thema": "weltraum",
+   "slot": "hand",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "p4",
+      "b": "p3",
+      "c": "p6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-begleiter-1",
+   "name": "Schwebe-Drohne",
+   "beschreibung": "Eine Drohne, die um dich schwebt.",
+   "thema": "weltraum",
+   "slot": "begleiter",
+   "seltenheit": 1,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "p2",
+      "b": "p4",
+      "c": "p3"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hintergrund-2",
+   "name": "Raster-Labor",
+   "beschreibung": "Ein Labor mit Gitternetz.",
+   "thema": "weltraum",
+   "slot": "hintergrund",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#223040",
+      "b": "#20d1c4",
+      "c": "#3a4a5c"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-ruecken-2",
+   "name": "Düsenrucksack",
+   "beschreibung": "Ein Rucksack mit kleiner Düse.",
+   "thema": "weltraum",
+   "slot": "ruecken",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-koerper-2",
+   "name": "Anzug mit Kante",
+   "beschreibung": "Raumanzug mit orangenem Rand.",
+   "thema": "weltraum",
+   "slot": "koerper",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p2",
+      "c": "p3"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-kopf-2",
+   "name": "Funkkopf",
+   "beschreibung": "Mit Antenne für Signale aus dem All.",
+   "thema": "weltraum",
+   "slot": "kopf",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "p2",
+      "b": "p3",
+      "c": "p4"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hand-2",
+   "name": "Forscher-Lupe",
+   "beschreibung": "Eine Lupe für kleine Entdeckungen.",
+   "thema": "weltraum",
+   "slot": "hand",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lupe",
+     "farben": {
+      "a": "p4",
+      "b": "p5",
+      "c": "p2"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-begleiter-2",
+   "name": "Raumkatze",
+   "beschreibung": "Eine Katze mit Weltraum-Fell.",
+   "thema": "weltraum",
+   "slot": "begleiter",
+   "seltenheit": 2,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "katze",
+     "farben": {
+      "a": "p2",
+      "b": "p3",
+      "c": "p4"
+     },
+     "muster": "kante"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hintergrund-3",
+   "name": "Mondlandschaft",
+   "beschreibung": "Hügel auf dem Mond unter Sternen.",
+   "thema": "weltraum",
+   "slot": "hintergrund",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#fff1a8"
+     }
+    },
+    {
+     "form": "huegel",
+     "farben": {
+      "a": "#8fa3c4",
+      "b": "#5a6b80",
+      "c": "#3b82f6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-ruecken-3",
+   "name": "Blauer Düsenrucksack",
+   "beschreibung": "Düsen-Rucksack mit blauen Streifen.",
+   "thema": "weltraum",
+   "slot": "ruecken",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-koerper-3",
+   "name": "Blauer Raumanzug",
+   "beschreibung": "Dunkler Anzug mit blauen Streifen.",
+   "thema": "weltraum",
+   "slot": "koerper",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-kopf-3",
+   "name": "Sternen-Helm",
+   "beschreibung": "Blauer Helm mit Streifen.",
+   "thema": "weltraum",
+   "slot": "kopf",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "helm_rund",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hand-3",
+   "name": "Signalfackel",
+   "beschreibung": "Fackel mit blauen Streifen.",
+   "thema": "weltraum",
+   "slot": "hand",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fackel",
+     "farben": {
+      "a": "#3b82f6",
+      "b": "p3",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-begleiter-3",
+   "name": "Funkdrohne",
+   "beschreibung": "Drohne mit blauen Streifen.",
+   "thema": "weltraum",
+   "slot": "begleiter",
+   "seltenheit": 3,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "p2",
+      "b": "p4",
+      "c": "#3b82f6"
+     },
+     "muster": "streifen"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hintergrund-4",
+   "name": "Galaxie",
+   "beschreibung": "Sterne mit lila Leuchten.",
+   "thema": "weltraum",
+   "slot": "hintergrund",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#a855f7"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#a855f7",
+      "b": "#a855f7",
+      "c": "#a855f7"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-ruecken-4",
+   "name": "Sternen-Düse",
+   "beschreibung": "Lila Düse mit Rucksack darunter.",
+   "thema": "weltraum",
+   "slot": "ruecken",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "rucksack",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#a855f7"
+     }
+    },
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-koerper-4",
+   "name": "Forscherpanzer",
+   "beschreibung": "Panzer mit lila Punkten.",
+   "thema": "weltraum",
+   "slot": "koerper",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "panzer",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-kopf-4",
+   "name": "Planeten-Helm",
+   "beschreibung": "Glashelm mit lila Punkten und Antenne.",
+   "thema": "weltraum",
+   "slot": "kopf",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "blase",
+     "farben": {
+      "a": "p2",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    },
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "p2",
+      "b": "#a855f7",
+      "c": "p4"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hand-4",
+   "name": "Sternen-Lupe",
+   "beschreibung": "Lila Lupe mit Punkten.",
+   "thema": "weltraum",
+   "slot": "hand",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lupe",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-begleiter-4",
+   "name": "Lila Drohne",
+   "beschreibung": "Drohne mit lila Punkten.",
+   "thema": "weltraum",
+   "slot": "begleiter",
+   "seltenheit": 4,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drohne",
+     "farben": {
+      "a": "#a855f7",
+      "b": "p5",
+      "c": "#a855f7"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hintergrund-5",
+   "name": "Raumstation",
+   "beschreibung": "Eine goldene Raumstation.",
+   "thema": "weltraum",
+   "slot": "hintergrund",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "raster",
+     "farben": {
+      "a": "#facc15",
+      "b": "#20d1c4",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-ruecken-5",
+   "name": "Goldene Düse",
+   "beschreibung": "Goldene Düse mit Flügeln.",
+   "thema": "weltraum",
+   "slot": "ruecken",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "jetpack",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "fluegel",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-koerper-5",
+   "name": "Goldanzug",
+   "beschreibung": "Goldener Anzug mit Weste.",
+   "thema": "weltraum",
+   "slot": "koerper",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "p1",
+      "b": "p5",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-kopf-5",
+   "name": "Goldhelm",
+   "beschreibung": "Goldener Glashelm mit Karo und Antenne.",
+   "thema": "weltraum",
+   "slot": "kopf",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "blase",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "antenne",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hand-5",
+   "name": "Goldlupe",
+   "beschreibung": "Goldene Lupe mit Stab.",
+   "thema": "weltraum",
+   "slot": "hand",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "lupe",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    },
+    {
+     "form": "stab",
+     "farben": {
+      "a": "#facc15",
+      "b": "p3",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-begleiter-5",
+   "name": "Sternenfuchs",
+   "beschreibung": "Ein goldener Fuchs mit Karo.",
+   "thema": "weltraum",
+   "slot": "begleiter",
+   "seltenheit": 5,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "fuchs",
+     "farben": {
+      "a": "#facc15",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "karo"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hintergrund-6",
+   "name": "Sternenkreis",
+   "beschreibung": "Ein goldener Kreis aus Licht.",
+   "thema": "weltraum",
+   "slot": "hintergrund",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "nacht",
+     "farben": {
+      "a": "#171a3d",
+      "b": "#e8ecff",
+      "c": "#facc15"
+     }
+    },
+    {
+     "form": "lichtkranz",
+     "farben": {
+      "a": "#facc15",
+      "b": "#facc15",
+      "c": "#ff6bd6"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-ruecken-6",
+   "name": "Galaxie-Flügel",
+   "beschreibung": "Flügel aus Licht vor dem Sternenhimmel.",
+   "thema": "weltraum",
+   "slot": "ruecken",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "aura"
+    },
+    {
+     "form": "fluegel",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "#facc15",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-koerper-6",
+   "name": "Galaxie-Anzug",
+   "beschreibung": "Glänzend mit pinken Akzenten.",
+   "thema": "weltraum",
+   "slot": "koerper",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "anzug",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "weste",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p5",
+      "c": "#facc15"
+     },
+     "muster": "punkte"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-kopf-6",
+   "name": "Sternenkrone",
+   "beschreibung": "Eine Krone aus Sternenlicht.",
+   "thema": "weltraum",
+   "slot": "kopf",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "krone",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    },
+    {
+     "form": "feder",
+     "farben": {
+      "a": "#ff6bd6",
+      "b": "p4",
+      "c": "#facc15"
+     }
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-hand-6",
+   "name": "Sternenstab",
+   "beschreibung": "Ein Stab aus funkelndem Licht.",
+   "thema": "weltraum",
+   "slot": "hand",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "stab",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  },
+  {
+   "schluessel": "weltraum-begleiter-6",
+   "name": "Lichtdrache",
+   "beschreibung": "Ein Drache aus Sternenlicht.",
+   "thema": "weltraum",
+   "slot": "begleiter",
+   "seltenheit": 6,
+   "preis": null,
+   "bauzeit_stunden": null,
+   "teile": [
+    {
+     "form": "drache",
+     "farben": {
+      "a": "#facc15",
+      "b": "#ff6bd6",
+      "c": "#facc15"
+     },
+     "muster": "glanz"
+    }
+   ],
+   "svg_override": null
+  }
+ ]
+}

@@ -1,0 +1,213 @@
+/* Nestwerk Designsystem: Schriften und Tokens (Farben, Maße, Schatten).
+   Alles selbst gehostet, keine externen Quellen. Ein Designsystem für alle Layouts
+   (data-layout="huelle|eltern|einrichtung|kind|tablet"): Teal + Aubergine, Fraunces + Inter,
+   runde Karten, weiche Schatten. Spiel = Inhalt (Avatar, Seltenheit, Animationen), nicht
+   Look. Eltern/Hülle: hell nach System oder data-modus; Kind/Tablet: dunkel als Standard,
+   hell per data-modus="hell". Pro Kind nur --nutzer-akzent für kleine Elemente.
+   Kurzübersicht: branding/nestwerk/farbkonzept.md */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fraunces (OFL): Marken-Überschriften in Hülle, Eltern, Einrichtung, Modulen. */
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces/Fraunces-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces/Fraunces-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --schrift-text: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --schrift-titel: "Fraunces", Georgia, "Times New Roman", serif;
+
+  --tap-min: 48px;
+  --tap-gross: 64px;
+  --abstand-klein: 0.5rem;
+  --abstand: 1rem;
+  --abstand-gross: 1.5rem;
+
+  /* Marke (Logo): Teal = Primär, Aubergine = Sekundär/Schrift. Skalen 50–900. */
+  --teal-50: #e8fbf6;
+  --teal-100: #c8f4ea;
+  --teal-200: #9be9d8;
+  --teal-300: #63dbc4;
+  --teal-400: #2dd4b4;
+  --teal-500: #17b39a;
+  --teal-600: #0e9483;
+  --teal-700: #0e7c74;
+  --teal-800: #0f5f5a;
+  --teal-900: #0d4744;
+  --aubergine-50: #f3f0f9;
+  --aubergine-100: #e3dcf1;
+  --aubergine-200: #c5b8e2;
+  --aubergine-300: #9f8ccb;
+  --aubergine-400: #7660ad;
+  --aubergine-500: #57428e;
+  --aubergine-600: #433172;
+  --aubergine-700: #2e2152;
+  --aubergine-800: #241a40;
+  --aubergine-900: #18112c;
+  /* Rosé: weiches Rot passend zu Teal/Aubergine (Ablehnen, Fehler) */
+  --rose-100: #fce7ea;
+  --rose-300: #f4a6b4;
+  --rose-500: #e07a8e;
+  --rose-700: #a8344f;
+  --marke-verlauf: linear-gradient(135deg, var(--teal-400), var(--teal-700));
+  --radius-gross: 24px;
+
+  /* Seltenheit wie in Spielen. God Mode ist ein Regenbogen-Verlauf. */
+  --selten-common: #9ca3af;
+  --selten-uncommon: #34d670;
+  --selten-rare: #3b82f6;
+  --selten-epic: #a855f7;
+  --selten-legendary: #facc15;
+  --selten-god: linear-gradient(90deg, #ff5577, #ff9f40, #ffe14d, #4ddf8a, #40c4ff, #8b6cff, #ff6bd6);
+
+  /* Akzent-Standard. Je Kind überschreibt data-akzent diese Werte. */
+  --akzent: #2563eb;
+  --akzent-hell: #7db4ff;
+  --akzent-text: #ffffff;
+}
+
+/* Marken-Look: Hülle (Begrüßung, Login, Launcher), Eltern, Einrichtung,
+   künftige Module. Hell ist Standard; dunkel per System oder data-modus. */
+[data-layout="huelle"],
+[data-layout="eltern"],
+[data-layout="einrichtung"],
+[data-layout="kind"],
+[data-layout="tablet"] {
+  --hintergrund: #f7f7f4;
+  --flaeche: #ffffff;
+  --flaeche-hoch: #eef3f1;
+  --rahmen: #dde3e1;
+  --kante: transparent;
+  --text: var(--aubergine-700);
+  --text-leise: #5d5873;
+  --gefahr: #b23a55;
+  --erfolg: #1a8a4c;
+  --warnung: #a86200;
+  --info: #2e6fb0;
+  --rahmen-breite: 1px;
+  --block-tiefe: 0px;
+  --radius: 16px;
+  --schatten-karte: 0 1px 2px rgba(46, 33, 82, 0.06), 0 8px 24px rgba(46, 33, 82, 0.06);
+  --schatten-hoch: 0 20px 48px rgba(14, 124, 116, 0.18);
+  --schrift-grund: 1rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-layout="huelle"]:not([data-modus="hell"]),
+  [data-layout="eltern"]:not([data-modus="hell"]),
+  [data-layout="einrichtung"]:not([data-modus="hell"]),
+  [data-layout="kind"]:not([data-modus="hell"]),
+  [data-layout="tablet"]:not([data-modus="hell"]) {
+    --hintergrund: #15111f;
+    --flaeche: #1f1930;
+    --flaeche-hoch: #2a2340;
+    --rahmen: #3a3155;
+    --text: #f3f1f8;
+    --text-leise: #b7b0cc;
+    --gefahr: #f4a6b4;
+    --erfolg: #4ade80;
+    --warnung: #fbbf4d;
+    --info: #7db4ff;
+    --schatten-karte: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --schatten-hoch: 0 20px 48px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+[data-layout="huelle"][data-modus="dunkel"],
+[data-layout="eltern"][data-modus="dunkel"],
+[data-layout="einrichtung"][data-modus="dunkel"],
+[data-layout="kind"][data-modus="dunkel"],
+[data-layout="tablet"][data-modus="dunkel"] {
+  --hintergrund: #15111f;
+  --flaeche: #1f1930;
+  --flaeche-hoch: #2a2340;
+  --rahmen: #3a3155;
+  --text: #f3f1f8;
+  --text-leise: #b7b0cc;
+  --gefahr: #f4a6b4;
+  --erfolg: #4ade80;
+  --warnung: #fbbf4d;
+  --info: #7db4ff;
+  --schatten-karte: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+  --schatten-hoch: 0 20px 48px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+/* Seltenheit: ein Attribut setzt die Farbe für Karten, Chips und Fortschritt. */
+[data-selten="common"] { --selten-farbe: var(--selten-common); }
+[data-selten="uncommon"] { --selten-farbe: var(--selten-uncommon); }
+[data-selten="rare"] { --selten-farbe: var(--selten-rare); }
+[data-selten="epic"] { --selten-farbe: var(--selten-epic); }
+[data-selten="legendary"] { --selten-farbe: var(--selten-legendary); }
+[data-selten="god"] { --selten-farbe: #ff6bd6; }
+
+/* Kinder-Akzente. Jedes Kind wählt eine Farbe (Attribut am body oder Abschnitt). */
+[data-akzent="blau"] { --akzent: #2563eb; --nutzer-akzent: #2563eb; --akzent-hell: #7db4ff; --akzent-text: #ffffff; }
+[data-akzent="rot"] { --akzent: #e5364a; --nutzer-akzent: #e5364a; --akzent-hell: #ff9aa4; --akzent-text: #ffffff; }
+[data-akzent="orange"] { --akzent: #ff8a2b; --nutzer-akzent: #ff8a2b; --akzent-hell: #ffb47a; --akzent-text: #1d1206; }
+[data-akzent="gelb"] { --akzent: #ffd23f; --nutzer-akzent: #ffd23f; --akzent-hell: #fff0a3; --akzent-text: #1d1700; }
+[data-akzent="gruen"] { --akzent: #22c55e; --nutzer-akzent: #22c55e; --akzent-hell: #86efac; --akzent-text: #06210f; }
+[data-akzent="tuerkis"] { --akzent: #20d1c4; --nutzer-akzent: #20d1c4; --akzent-hell: #8ff3ec; --akzent-text: #03201e; }
+[data-akzent="lila"] { --akzent: #8b4dff; --nutzer-akzent: #8b4dff; --akzent-hell: #c7a4ff; --akzent-text: #ffffff; }
+[data-akzent="pink"] { --akzent: #ff4fa0; --nutzer-akzent: #ff4fa0; --akzent-hell: #ff9cc8; --akzent-text: #1d0a14; }
+
+/* Persönlicher Akzent bleibt als --nutzer-akzent für kleine Elemente (Avatar,
+   eigene Kacheln). Im Marken-Look ist --akzent immer Teal (steht nach den
+   Kinder-Akzenten, gewinnt also am selben Element). */
+[data-layout="huelle"],
+[data-layout="eltern"],
+[data-layout="einrichtung"],
+[data-layout="kind"],
+[data-layout="tablet"] { --akzent: var(--teal-700); --akzent-hell: var(--teal-400); --akzent-text: #ffffff; }
+@media (prefers-color-scheme: dark) {
+  [data-layout="huelle"]:not([data-modus="hell"]),
+  [data-layout="eltern"]:not([data-modus="hell"]),
+  [data-layout="einrichtung"]:not([data-modus="hell"]),
+  [data-layout="kind"]:not([data-modus="hell"]),
+  [data-layout="tablet"]:not([data-modus="hell"]) { --akzent: var(--teal-400); --akzent-hell: var(--teal-200); --akzent-text: #06201c; }
+}
+[data-layout="huelle"][data-modus="dunkel"],
+[data-layout="eltern"][data-modus="dunkel"],
+[data-layout="einrichtung"][data-modus="dunkel"],
+[data-layout="kind"][data-modus="dunkel"],
+[data-layout="tablet"][data-modus="dunkel"] { --akzent: var(--teal-400); --akzent-hell: var(--teal-200); --akzent-text: #06201c; }
+
+/* Kinder: etwas größere Schrift und Ziele, sonst identisches Designsystem. */
+[data-layout="kind"],
+[data-layout="tablet"] { --schrift-grund: 1.0625rem; --radius: 18px; --radius-gross: 28px; }

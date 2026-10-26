@@ -1,0 +1,5 @@
+<div class="toast toast--{{ art|default:'info' }}" role="status" data-schliessbar>
+  {% include "komponenten/icon.html" with name=icon|default:"info" %}
+  <span class="toast__text">{{ text }}</span>
+  <button type="button" class="knopf knopf--geist knopf--klein" data-schliessen>{% include "komponenten/icon.html" with name="x" %}<span>Schließen</span></button>
+</div>

@@ -1,0 +1,26 @@
+<article class="karte" id="antrag-{{ a.pk }}"><div class="karte__inhalt zeile">
+  <div class="zeile__text stapel">
+    <strong>{{ a.kind.anzeigename }}: {{ a.titel_snapshot }}</strong>
+    <span class="reihe">
+      {% include "komponenten/chip.html" with text=a.get_status_display %}
+      {% if a.geldwert_cent_snapshot %}<span>{{ a.geldwert_text }}</span>{% endif %}
+      {% if a.status == "offen" and a.kind_verfuegbar is not None %}<span>Guthaben: {{ a.kind_verfuegbar }} P</span>{% endif %}
+      {% if a.ablehnungsgrund %}<span>{{ a.ablehnungsgrund }}</span>{% endif %}
+    </span>
+    {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler }}</p>{% endif %}
+  </div>
+  {% include "komponenten/punkte.html" with wert=a.preis_snapshot %}
+  {% if a.status == "offen" %}
+    <div class="reihe">
+      <form method="post" action="{% url 'belohnung:bestaetigen' a.pk %}" hx-post="{% url 'belohnung:bestaetigen' a.pk %}" hx-target="#antrag-{{ a.pk }}" hx-swap="outerHTML" hx-disabled-elt="find button">
+        {% csrf_token %}
+        {% include "komponenten/button.html" with typ="submit" icon="check" text="Bestätigen" %}
+      </form>
+      <form method="post" class="reihe" action="{% url 'belohnung:ablehnen' a.pk %}" hx-post="{% url 'belohnung:ablehnen' a.pk %}" hx-target="#antrag-{{ a.pk }}" hx-swap="outerHTML" hx-disabled-elt="find button">
+        {% csrf_token %}
+        <input class="feld__eingabe" type="text" name="grund" maxlength="200" placeholder="Grund (optional)" aria-label="Grund">
+        {% include "komponenten/button.html" with typ="submit" variante="sanft" icon="x" text="Ablehnen" %}
+      </form>
+    </div>
+  {% endif %}
+</div></article>

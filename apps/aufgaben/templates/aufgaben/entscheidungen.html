@@ -1,0 +1,5 @@
+{% extends "aufgaben/basis.html" %}
+{% load static %}
+{% block titel %}Meldungen{% endblock %}
+{% block css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/nachweis.css' %}">{% endblock %}
+{% block seite %}{% include "aufgaben/_entscheidungen.html" %}{% endblock %}

@@ -1,0 +1,94 @@
+{% comment %}Eltern: offene Entscheidungen (Konflikte, Meldungen), Reservierungen, kürzlich bestätigte (Sonderpunkte, Korrektur). HTMX ersetzt den Bereich.{% endcomment %}
+<div id="entscheidungen" class="stapel" hx-target="#entscheidungen" hx-swap="outerHTML">
+  {% include "aufgaben/_hinweis.html" %}
+  <h1>Meldungen und Entscheidungen</h1>
+
+  <section class="stapel"><h2>Konflikte</h2>
+    {% for i in konflikte %}
+      <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt zeile">
+        <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong><span class="zeile__plan">Mehrere Kinder wollen diese Aufgabe.</span></div>
+        {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
+        <div class="reihe">
+          {% for interesse in i.aktive_interessen %}
+            <form method="post" action="{% url 'aufgaben:zuteilen' i.pk interesse.kind_id %}" hx-post="{% url 'aufgaben:zuteilen' i.pk interesse.kind_id %}">{% csrf_token %}
+              {% include "komponenten/button.html" with typ="submit" klein=True icon="person" text=interesse.kind.anzeigename %}
+            </form>
+          {% endfor %}
+          <form method="post" action="{% url 'aufgaben:loesen' i.pk %}" hx-post="{% url 'aufgaben:loesen' i.pk %}">{% csrf_token %}
+            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Keinem (wieder frei)" %}
+          </form>
+        </div>
+      </div></article>
+    {% empty %}<p class="zeile__plan">Keine Konflikte.</p>{% endfor %}
+  </section>
+
+  <section class="stapel"><h2>Gemeldet</h2>
+    {% for i in meldungen %}
+      <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
+        <div class="zeile">
+          <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong>
+            <span class="zeile__plan">{{ i.kind.anzeigename }} · gemeldet {{ i.gemeldet_am|date:"D d.m. H:i" }} · {{ i.get_freigabeart_snapshot_display }}</span></div>
+          {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
+        </div>
+        {% if i.meldung.text %}<p>„{{ i.meldung.text }}“</p>{% endif %}
+        {% include "aufgaben/_nachweis_fotos.html" with meldung=i.meldung %}
+        {% if i.status == "rueckfrage" %}<p class="zeile__plan">Rückfrage: {{ i.meldung.rueckfrage_text }} – wartet auf Antwort.</p>{% endif %}
+        {% if i.meldung.antwort_text %}<p>Antwort: „{{ i.meldung.antwort_text }}“</p>{% endif %}
+        <form method="post" action="{% url 'aufgaben:bestaetigen' i.pk %}" class="stapel">{% csrf_token %}
+          <div class="reihe">
+            <label class="feld"><span class="feld__label">Sonderpunkte{% if i.deckel is not None %} (max. {{ i.deckel }}){% endif %}</span>
+              <input class="feld__eingabe" type="number" name="sonderpunkte" min="0"{% if i.deckel is not None %} max="{{ i.deckel }}"{% endif %} inputmode="numeric"></label>
+            <label class="feld"><span class="feld__label">Begründung (für Sonderpunkte/Ablehnung)</span>
+              <input class="feld__eingabe" type="text" name="begruendung" maxlength="200"></label>
+          </div>
+          <div class="reihe">
+            <button type="submit" class="knopf knopf--primaer" hx-post="{% url 'aufgaben:bestaetigen' i.pk %}" hx-disabled-elt="this">{% include "komponenten/icon.html" with name="check" %}<span>Bestätigen</span></button>
+            <button type="submit" class="knopf knopf--sanft" formaction="{% url 'aufgaben:ablehnen' i.pk %}" hx-post="{% url 'aufgaben:ablehnen' i.pk %}" hx-confirm="Ablehnen? Es gibt keine Punkte.">{% include "komponenten/icon.html" with name="x" %}<span>Ablehnen</span></button>
+          </div>
+        </form>
+        {% if i.status == "gemeldet" %}
+          <form method="post" action="{% url 'aufgaben:rueckfrage' i.pk %}" hx-post="{% url 'aufgaben:rueckfrage' i.pk %}" class="reihe">{% csrf_token %}
+            <label class="feld"><span class="feld__label">Rückfrage</span><input class="feld__eingabe" type="text" name="frage" maxlength="300" required></label>
+            {% include "komponenten/button.html" with typ="submit" variante="sekundaer" icon="info" text="Nachfragen" %}
+          </form>
+        {% endif %}
+      </div></article>
+    {% empty %}<p class="zeile__plan">Keine offenen Meldungen.</p>{% endfor %}
+  </section>
+
+  <section class="stapel"><h2>Reserviert</h2>
+    {% for i in reserviert %}
+      <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt zeile">
+        <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong><span class="zeile__plan">{{ i.kind.anzeigename }} · bis {{ i.reserviert_bis|date:"D d.m. H:i" }}</span></div>
+        <form method="post" action="{% url 'aufgaben:loesen' i.pk %}" hx-post="{% url 'aufgaben:loesen' i.pk %}" hx-confirm="Reservierung lösen? Die Aufgabe wird wieder frei.">{% csrf_token %}
+          {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Lösen" %}
+        </form>
+      </div></article>
+    {% empty %}<p class="zeile__plan">Nichts reserviert.</p>{% endfor %}
+  </section>
+
+  <section class="stapel"><h2>Zuletzt bestätigt</h2>
+    {% for i in bestaetigt %}
+      <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
+        <div class="zeile">
+          <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong>
+            <span class="zeile__plan">{{ i.kind.anzeigename }} · {% if i.bestaetigt_von %}bestätigt von {{ i.bestaetigt_von.anzeigename }}{% else %}Vertrauen (automatisch){% endif %} · {{ i.bestaetigt_am|date:"D d.m. H:i" }}{% if i.sonderpunkte %} · +{{ i.sonderpunkte }} Bonus ({{ i.sonderpunkte_begruendung }}){% endif %}</span></div>
+          {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
+        </div>
+        <div class="reihe">
+          {% if not i.sonderpunkte and i.deckel != 0 %}
+            <form method="post" action="{% url 'aufgaben:sonderpunkte' i.pk %}" hx-post="{% url 'aufgaben:sonderpunkte' i.pk %}" class="reihe">{% csrf_token %}
+              <input class="feld__eingabe" type="number" name="sonderpunkte" min="1"{% if i.deckel is not None %} max="{{ i.deckel }}"{% endif %} placeholder="Bonus" aria-label="Sonderpunkte" required>
+              <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="Begründung" aria-label="Begründung" required>
+              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="stern" text="Sonderpunkte" %}
+            </form>
+          {% endif %}
+          <form method="post" action="{% url 'aufgaben:korrigieren' i.pk %}" hx-post="{% url 'aufgaben:korrigieren' i.pk %}" class="reihe" hx-confirm="Alle Punkte dieser Aufgabe zurückbuchen?">{% csrf_token %}
+            <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="Grund der Korrektur" aria-label="Grund der Korrektur" required>
+            {% include "komponenten/button.html" with typ="submit" variante="sanft" klein=True icon="x" text="Korrigieren" %}
+          </form>
+        </div>
+      </div></article>
+    {% empty %}<p class="zeile__plan">In den letzten 7 Tagen nichts bestätigt.</p>{% endfor %}
+  </section>
+</div>

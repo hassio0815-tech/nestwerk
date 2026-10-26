@@ -1,0 +1,9 @@
+{% comment %}Ausbaustufe "4/6 im Rang Rare" (stufe = mods.Ausbaustufe){% endcomment %}
+<div class="mod-ausbau" data-ausbaustufe="{{ stufe.aktuell }}">
+  {% include "komponenten/fortschritt.html" with label="Ausbaustufe" wert=stufe.aktuell max=stufe.slots selten=stufe.rang_selten %}
+  <p class="kachel__text">{{ stufe.aktuell }}/{{ stufe.slots }} im Rang {{ stufe.rang_name }}{% if stufe.aktuell >= stufe.slots %} – voll ausgebaut!{% endif %}</p>
+</div>
+{% if stufe.halle_bereit and not nur_anzeige %}
+  {% url "avatar:halle_stellen" as halle_url %}
+  <p class="mod-ausbau__halle">{% include "komponenten/button.html" with href=halle_url variante="sekundaer" voll=True icon="pokal" text="Held in die Ruhmeshalle stellen" %}</p>
+{% endif %}

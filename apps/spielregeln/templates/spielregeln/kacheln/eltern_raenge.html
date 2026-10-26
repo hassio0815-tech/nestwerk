@@ -1,0 +1,14 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Ränge</h2>
+  {% for z in k.zeilen %}
+    <div class="zeile" data-rang-kind="{{ z.kind.pk }}">
+      <strong>{{ z.kind.anzeigename }}</strong>
+      {% if z.f.rang %}<span class="chip" data-selten="{{ z.f.rang.selten }}">{{ z.f.rang.name }}</span>{% endif %}
+      <span class="kachel__text">{% if z.f.naechster %}{{ z.f.naechster.name }}: noch {{ z.f.xp_fehlt }} XP / {{ z.f.wochen_fehlen }} Wochen{% else %}Endstufe{% endif %}{% if z.faktor %} · Faktor {{ z.faktor }}{% endif %}</span>
+    </div>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+  {% endfor %}
+  {% url "spielregeln:raenge" as raenge_url %}
+  {% include "komponenten/button.html" with href=raenge_url variante="geist" klein=True icon="pokal" text="Ränge verwalten" %}
+</div></article>

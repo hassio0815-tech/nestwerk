@@ -1,0 +1,27 @@
+{% load wappen_tags %}{% wappen_rollen as wappen_rollen %}{% comment %}Wappen-Galerie (optional): Karten mit Radio. Parameter: name (Feldname), gewaehlt (Schlüssel), fehler, rolle_name/rolle_wert, eigen_name/eigen_wert (Rolle: Mama/Mum/Papa/Dad oder frei).{% endcomment %}
+<fieldset class="wappen-wahl">
+  {% if rolle_name %}<div class="wappen-rolle">
+    <label class="feld__label">Rolle
+      <select class="feld__eingabe" name="{{ rolle_name }}">
+        <option value="">– keine –</option>
+        {% for k, t in wappen_rollen %}<option value="{{ k }}"{% if rolle_wert == k %} selected{% endif %}>{{ t }}</option>{% endfor %}
+      </select></label>
+    <label class="feld__label">Oder eigene Rolle (z. B. Mami)
+      <input class="feld__eingabe" type="text" name="{{ eigen_name }}" value="{{ eigen_wert|default:'' }}" maxlength="15"></label>
+  </div>{% endif %}
+  <legend class="feld__label">Wappen (optional)</legend>
+  <div class="wappen-galerie">
+    {% wappen_katalog as katalog %}
+    {% for w in katalog %}
+      <label class="wappen-karte">
+        <input type="radio" name="{{ name }}" value="{{ w.schluessel }}"{% if gewaehlt == w.schluessel %} checked{% endif %}>
+        <span class="wappen-karte__innen">
+          <span class="wappen-karte__emoji" aria-hidden="true">{{ w.emoji }}</span>
+          <span class="wappen-karte__titel">{{ w.titel }}</span>
+          <span class="wappen-karte__spruch">{{ w.spruch }}</span>
+        </span>
+      </label>
+    {% endfor %}
+  </div>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler }}</p>{% endif %}
+</fieldset>

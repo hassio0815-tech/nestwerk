@@ -1,0 +1,877 @@
+{
+ "format": 1,
+ "themen": [
+  {
+   "schluessel": "ritter",
+   "name": "Ritter",
+   "beschreibung": "Mutig, ehrenhaft und immer bereit für ein Abenteuer.",
+   "reihenfolge": 1,
+   "nur_eltern": false,
+   "bau_inszenierung": "schmiede",
+   "palette": {
+    "p1": "#4f74b8",
+    "p2": "#6b6f80",
+    "p3": "#e0b83c",
+    "p4": "#aeb7c4",
+    "p5": "#3a3550",
+    "p6": "#d64545"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       ".1111.",
+       "122221",
+       "123321",
+       "122221",
+       ".1221.",
+       "..11.."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p3",
+       "2": "p4",
+       "3": "p6"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "himmel",
+      "farben": {
+       "a": "#8ecae6",
+       "b": "#ffffff",
+       "c": "#5fa052"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "helm_rund",
+     "krone"
+    ],
+    "koerper": [
+     "ruestung",
+     "weste"
+    ],
+    "ruecken": [
+     "umhang",
+     "schild"
+    ],
+    "hand": [
+     "schwert",
+     "schild",
+     "hammer"
+    ],
+    "begleiter": [
+     "hund",
+     "vogel"
+    ],
+    "hintergrund": [
+     "himmel",
+     "huegel"
+    ]
+   }
+  },
+  {
+   "schluessel": "weltraum",
+   "name": "Weltraum-Forscher",
+   "beschreibung": "Auf zu den Sternen: Planeten entdecken und Rätsel lösen.",
+   "reihenfolge": 2,
+   "nur_eltern": false,
+   "bau_inszenierung": "raumdock",
+   "palette": {
+    "p1": "#e9eef7",
+    "p2": "#8fa3c4",
+    "p3": "#ff8a2b",
+    "p4": "#38bdf8",
+    "p5": "#2a3350",
+    "p6": "#8b5cf6"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       "..11..",
+       ".1111.",
+       "112211",
+       "112211",
+       ".1111.",
+       "..11.."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p3",
+       "2": "p6"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "nacht",
+      "farben": {
+       "a": "#171a3d",
+       "b": "#e8ecff",
+       "c": "#fff1a8"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "stirnband",
+      "farben": {
+       "a": "p3",
+       "b": "p3",
+       "c": "p4"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "blase",
+     "antenne"
+    ],
+    "koerper": [
+     "anzug",
+     "panzer"
+    ],
+    "ruecken": [
+     "jetpack",
+     "rucksack"
+    ],
+    "hand": [
+     "stab",
+     "fackel"
+    ],
+    "begleiter": [
+     "drohne",
+     "katze"
+    ],
+    "hintergrund": [
+     "nacht",
+     "raster"
+    ]
+   }
+  },
+  {
+   "schluessel": "ninja",
+   "name": "Ninja",
+   "beschreibung": "Leise, schnell und geschickt, kaum zu sehen.",
+   "reihenfolge": 3,
+   "nur_eltern": false,
+   "bau_inszenierung": "dojo",
+   "palette": {
+    "p1": "#34344d",
+    "p2": "#23233a",
+    "p3": "#e5364a",
+    "p4": "#7b8394",
+    "p5": "#14141f",
+    "p6": "#f2f2f7"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       ".1111.",
+       "11....",
+       "1.....",
+       "1.....",
+       "11....",
+       ".1111."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p6"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "huegel",
+      "farben": {
+       "a": "#4a3f7a",
+       "b": "#2d2758",
+       "c": "#1d1a3a"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "stirnband",
+      "farben": {
+       "a": "p3",
+       "b": "p3",
+       "c": "p6"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "stirnband",
+     "kapuze"
+    ],
+    "koerper": [
+     "anzug",
+     "weste"
+    ],
+    "ruecken": [
+     "koecher",
+     "umhang"
+    ],
+    "hand": [
+     "schwert",
+     "stab"
+    ],
+    "begleiter": [
+     "katze",
+     "fuchs"
+    ],
+    "hintergrund": [
+     "nacht",
+     "huegel"
+    ]
+   }
+  },
+  {
+   "schluessel": "roboter",
+   "name": "Roboter",
+   "beschreibung": "Zahnräder, Funken und jede Menge Technik.",
+   "reihenfolge": 4,
+   "nur_eltern": false,
+   "bau_inszenierung": "werkstatt",
+   "palette": {
+    "p1": "#8ea2b8",
+    "p2": "#5a6b80",
+    "p3": "#20d1c4",
+    "p4": "#c8d3df",
+    "p5": "#2a3340",
+    "p6": "#ffd23f"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       ".11.11",
+       "111111",
+       "111111",
+       ".1111.",
+       "..11.."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p6"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "raster",
+      "farben": {
+       "a": "#223040",
+       "b": "#20d1c4",
+       "c": "#3a4a5c"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "antenne",
+      "farben": {
+       "a": "p4",
+       "b": "p2",
+       "c": "p3"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "antenne",
+     "helm_rund"
+    ],
+    "koerper": [
+     "panzer",
+     "anzug"
+    ],
+    "ruecken": [
+     "jetpack",
+     "rucksack"
+    ],
+    "hand": [
+     "hammer",
+     "fackel"
+    ],
+    "begleiter": [
+     "drohne",
+     "hund"
+    ],
+    "hintergrund": [
+     "raster",
+     "nacht"
+    ]
+   }
+  },
+  {
+   "schluessel": "pirat",
+   "name": "Pirat",
+   "beschreibung": "Ahoi! Auf der Suche nach Schätzen auf hoher See.",
+   "reihenfolge": 5,
+   "nur_eltern": false,
+   "bau_inszenierung": "werft",
+   "palette": {
+    "p1": "#8a2434",
+    "p2": "#3b3a52",
+    "p3": "#e0b84c",
+    "p4": "#c9b99a",
+    "p5": "#2a2118",
+    "p6": "#f2f2f2"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       "..11..",
+       ".1..1.",
+       "..11..",
+       "111111",
+       "..11..",
+       "1.11.1",
+       ".1111."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p3"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "wellen",
+      "farben": {
+       "a": "#7ec8e3",
+       "b": "#2a7fb0",
+       "c": "#e5c78a"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "tuch",
+      "farben": {
+       "a": "p6",
+       "b": "p1",
+       "c": "p1"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "tuch",
+     "kappe"
+    ],
+    "koerper": [
+     "mantel",
+     "weste"
+    ],
+    "ruecken": [
+     "umhang",
+     "rucksack"
+    ],
+    "hand": [
+     "schwert",
+     "fackel"
+    ],
+    "begleiter": [
+     "vogel",
+     "katze"
+    ],
+    "hintergrund": [
+     "wellen",
+     "himmel"
+    ]
+   }
+  },
+  {
+   "schluessel": "wikinger",
+   "name": "Wikinger",
+   "beschreibung": "Stark wie ein Bär und mutig auf allen Meeren.",
+   "reihenfolge": 6,
+   "nur_eltern": false,
+   "bau_inszenierung": "langhaus",
+   "palette": {
+    "p1": "#8a5a3b",
+    "p2": "#4d5a6a",
+    "p3": "#d4a62a",
+    "p4": "#a5adb8",
+    "p5": "#2c2420",
+    "p6": "#3b82f6"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       ".1111.",
+       "144441",
+       "145541",
+       "144441",
+       ".1441.",
+       "..11.."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p3",
+       "4": "p4",
+       "5": "p1"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "huegel",
+      "farben": {
+       "a": "#b7d3e6",
+       "b": "#e8f1f7",
+       "c": "#d2e2ec"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "hoerner",
+     "helm_rund"
+    ],
+    "koerper": [
+     "ruestung",
+     "mantel"
+    ],
+    "ruecken": [
+     "schild",
+     "umhang"
+    ],
+    "hand": [
+     "hammer",
+     "schwert"
+    ],
+    "begleiter": [
+     "hund",
+     "drache"
+    ],
+    "hintergrund": [
+     "huegel",
+     "wellen"
+    ]
+   }
+  },
+  {
+   "schluessel": "fussballer",
+   "name": "Fußballer",
+   "beschreibung": "Tore schießen, Teamgeist und Fairplay.",
+   "reihenfolge": 7,
+   "nur_eltern": false,
+   "bau_inszenierung": "trainingsplatz",
+   "palette": {
+    "p1": "#d62839",
+    "p2": "#f4f4f8",
+    "p3": "#ffd23f",
+    "p4": "#2563eb",
+    "p5": "#1b1b2b",
+    "p6": "#ffffff"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p4"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       ".1..111",
+       "11..1.1",
+       ".1..1.1",
+       ".1..1.1",
+       "111.111"
+      ],
+      "x": 12,
+      "y": 21,
+      "farben": {
+       "1": "p3"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "streifen",
+      "farben": {
+       "a": "#2f9e4f",
+       "b": "#47b866",
+       "c": "#2a8c45"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "stirnband",
+     "kappe"
+    ],
+    "koerper": [
+     "trikot",
+     "anzug"
+    ],
+    "ruecken": [
+     "rucksack",
+     "umhang"
+    ],
+    "hand": [
+     "ball",
+     "fackel"
+    ],
+    "begleiter": [
+     "hund",
+     "vogel"
+    ],
+    "hintergrund": [
+     "streifen",
+     "himmel"
+    ]
+   }
+  },
+  {
+   "schluessel": "basketballer",
+   "name": "Basketballer",
+   "beschreibung": "Springen, passen, punkten: ab in den Korb!",
+   "reihenfolge": 8,
+   "nur_eltern": false,
+   "bau_inszenierung": "trainingshalle",
+   "palette": {
+    "p1": "#6d28d9",
+    "p2": "#4c1d95",
+    "p3": "#fbbf24",
+    "p4": "#e5e7eb",
+    "p5": "#1b1b2b",
+    "p6": "#ffffff"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       "..11..",
+       "..11..",
+       "111111",
+       ".1111.",
+       ".11.11",
+       "1....1"
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p3"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "streifen",
+      "farben": {
+       "a": "#d9a066",
+       "b": "#c98b4d",
+       "c": "#a8672f"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "stirnband",
+      "farben": {
+       "a": "p3",
+       "b": "p3",
+       "c": "p6"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "stirnband",
+     "kappe"
+    ],
+    "koerper": [
+     "trikot",
+     "weste"
+    ],
+    "ruecken": [
+     "rucksack",
+     "umhang"
+    ],
+    "hand": [
+     "ball",
+     "stab"
+    ],
+    "begleiter": [
+     "katze",
+     "drohne"
+    ],
+    "hintergrund": [
+     "streifen",
+     "raster"
+    ]
+   }
+  },
+  {
+   "schluessel": "rennfahrer",
+   "name": "Rennfahrer",
+   "beschreibung": "Vollgas auf der Rennstrecke, Zielflagge im Blick.",
+   "reihenfolge": 9,
+   "nur_eltern": false,
+   "bau_inszenierung": "boxengasse",
+   "palette": {
+    "p1": "#f5f5f5",
+    "p2": "#2b3340",
+    "p3": "#e5364a",
+    "p4": "#9ca3af",
+    "p5": "#111827",
+    "p6": "#facc15"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       "131313",
+       "313131",
+       "131313",
+       "313131",
+       "2.....",
+       "2....."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p6",
+       "3": "p5",
+       "2": "p4"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "himmel",
+      "farben": {
+       "a": "#7fb8e6",
+       "b": "#ffffff",
+       "c": "#555b66"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "kappe",
+      "farben": {
+       "a": "p3",
+       "b": "p6",
+       "c": "p6"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "kappe",
+     "blase"
+    ],
+    "koerper": [
+     "anzug",
+     "trikot"
+    ],
+    "ruecken": [
+     "rucksack",
+     "jetpack"
+    ],
+    "hand": [
+     "hammer",
+     "ball"
+    ],
+    "begleiter": [
+     "fuchs",
+     "drohne"
+    ],
+    "hintergrund": [
+     "raster",
+     "streifen"
+    ]
+   }
+  },
+  {
+   "schluessel": "dschungel",
+   "name": "Dschungel-Entdecker",
+   "beschreibung": "Zwischen Lianen und Wasserfällen auf Entdeckungstour.",
+   "reihenfolge": 10,
+   "nur_eltern": false,
+   "bau_inszenierung": "basislager",
+   "palette": {
+    "p1": "#3f8f4a",
+    "p2": "#8a6a43",
+    "p3": "#e2b14a",
+    "p4": "#7fbf5f",
+    "p5": "#3b2a1a",
+    "p6": "#c0562b"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "koerper": [
+     {
+      "bild": [
+       "...111",
+       "..1111",
+       ".11311",
+       "113111",
+       "311...",
+       "3....."
+      ],
+      "x": 13,
+      "y": 21,
+      "farben": {
+       "1": "p4",
+       "3": "p5"
+      }
+     }
+    ],
+    "hintergrund": [
+     {
+      "form": "huegel",
+      "farben": {
+       "a": "#bfe3a8",
+       "b": "#4f9a56",
+       "c": "#3a7a3f"
+      }
+     }
+    ],
+    "kopf": [
+     {
+      "form": "kappe",
+      "farben": {
+       "a": "p2",
+       "b": "p5",
+       "c": "p3"
+      }
+     }
+    ]
+   },
+   "formen": {
+    "kopf": [
+     "kappe",
+     "tuch"
+    ],
+    "koerper": [
+     "weste",
+     "mantel"
+    ],
+    "ruecken": [
+     "rucksack",
+     "koecher"
+    ],
+    "hand": [
+     "stab",
+     "fackel"
+    ],
+    "begleiter": [
+     "vogel",
+     "fuchs"
+    ],
+    "hintergrund": [
+     "huegel",
+     "himmel"
+    ]
+   }
+  },
+  {
+   "schluessel": "eltern",
+   "name": "Eltern",
+   "beschreibung": "Schlichte Figur für Mama und Papa.",
+   "reihenfolge": 99,
+   "nur_eltern": true,
+   "bau_inszenierung": "keine",
+   "palette": {
+    "p1": "#6b8cae",
+    "p2": "#4a5568",
+    "p3": "#e0c38c",
+    "p4": "#9ca3af",
+    "p5": "#2d2a3a",
+    "p6": "#ffffff"
+   },
+   "kleidung": {
+    "oberteil": "p1",
+    "hose": "p2",
+    "schuhe": "p5"
+   },
+   "grundausstattung": {
+    "hintergrund": [
+     {
+      "form": "himmel",
+      "farben": {
+       "a": "#cfe3f5",
+       "b": "#ffffff",
+       "c": "#9bc58a"
+      }
+     }
+    ]
+   },
+   "formen": {}
+  }
+ ]
+}

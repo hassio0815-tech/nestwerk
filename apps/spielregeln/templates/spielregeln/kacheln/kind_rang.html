@@ -1,0 +1,14 @@
+<article class="karte rang-karte"{% if k.f.rang %} data-selten="{{ k.f.rang.selten }}"{% endif %}><div class="karte__inhalt stapel">
+  <h2>Mein Rang</h2>
+  {% if k.f.rang %}
+    <p class="reihe"><span class="chip rang-chip" data-selten="{{ k.f.rang.selten }}" data-rang="{{ k.f.rang.schluessel }}">{% include "komponenten/icon.html" with name="pokal" %} {{ k.f.rang.name }}</span></p>
+    {% if k.f.naechster %}
+      {% include "komponenten/fortschritt.html" with label="Bis "|add:k.f.naechster.name wert=k.f.prozent max=100 selten=k.f.naechster.selten %}
+      <p class="kachel__text" data-rang-fehlt>Noch {% if k.f.xp_fehlt %}{{ k.f.xp_fehlt }} XP{% endif %}{% if k.f.xp_fehlt and k.f.wochen_fehlen %} und {% endif %}{% if k.f.wochen_fehlen %}{{ k.f.wochen_fehlen }} aktive {% if k.f.wochen_fehlen == 1 %}Woche{% else %}Wochen{% endif %}{% endif %} bis {{ k.f.naechster.name }}.</p>
+      {% if k.prognose_wochen %}<p class="kachel__text" data-rang-prognose>Nächster Rang voraussichtlich in ca. {{ k.prognose_wochen }} {% if k.prognose_wochen == 1 %}Woche{% else %}Wochen{% endif %}.</p>{% endif %}
+      <p class="kachel__text">{{ k.f.xp }} XP · {{ k.f.aktive_wochen }} aktive {% if k.f.aktive_wochen == 1 %}Woche{% else %}Wochen{% endif %}</p>
+    {% else %}
+      <p class="kachel__text">{% include "komponenten/icon.html" with name="stern" %} Höchster Rang erreicht!</p>
+    {% endif %}
+  {% endif %}
+</div></article>

@@ -1,0 +1,8 @@
+<section class="karte"><div class="karte__inhalt stapel">
+  <h2>{% include "komponenten/icon.html" with name="glocke" %} Benachrichtigungen {% include "benachrichtigung/_zaehler.html" %}</h2>
+  <ul class="stapel">
+    {% for b in neueste %}<li>{{ b.titel }}</li>{% empty %}<li>Noch nichts passiert.</li>{% endfor %}
+  </ul>
+  {% url "benachrichtigung:liste" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="sekundaer" klein=True text="Alle ansehen" %}
+</div></section>

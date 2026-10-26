@@ -1,0 +1,11 @@
+{% extends "basis/marke.html" %}{% load static %}
+{% comment %}Eltern-Layout: hell, ruhig, Fokus Übersicht. Gleiches Designsystem.{% endcomment %}
+{% block layout %}eltern{% endblock %}
+{% block kopf %}
+  <div class="kopf__zeile">
+    <a class="kopf__marke" href="/"><img class="kopf__logo" src="{% static 'img/icon-klein.svg' %}" alt="" width="32" height="32"><span>{{ app_name|default:"Nestwerk" }}</span></a>
+    <div class="reihe">
+      {% block kopf_rechts %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

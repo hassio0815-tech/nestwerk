@@ -1,0 +1,21 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} Sondertage</h2>
+  {% if k.wuensche %}
+    <p class="st-hinweis" data-st-wuensche>{{ k.wuensche|length }} offene{% if k.wuensche|length == 1 %}r Wunsch{% else %} Wünsche{% endif %}:
+      {% for e in k.wuensche %}{{ e.anspruch.kind.anzeigename }}{% if not e.einloesbar %} (ab {{ e.einloesbar_ab|date:"d.m." }}){% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  {% endif %}
+  {% for z in k.zeilen %}
+    <div class="zeile st-zeile" data-st-kind="{{ z.kind.pk }}">
+      <strong>{{ z.kind.anzeigename }}</strong>
+      <span class="kachel__text">{% if z.letzter %}zuletzt {{ z.letzter.annahme_datum|date:"d.m.Y" }}{% if z.letzter.begleitung %} mit {{ z.letzter.begleitung.anzeigename }}{% endif %}{% else %}noch keiner{% endif %}
+        · {% if z.warteschlange %}{{ z.warteschlange|length }} verdient, {% if z.warteschlange.0.einloesbar %}einlösbar{% else %}ab {{ z.warteschlange.0.einloesbar_ab|date:"d.m.Y" }}{% endif %}{% else %}nächster frühestens {{ z.naechster_moeglich|date:"d.m.Y" }}{% endif %}</span>
+    </div>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+  {% endfor %}
+  {% url "sondertag:eltern" as st_url %}
+  {% include "komponenten/button.html" with href=st_url variante="geist" klein=True icon="geschenk" text="Sondertage verwalten" %}
+  {% url "sondertag:prognose" as pg_url %}
+  {% include "komponenten/button.html" with href=pg_url variante="geist" klein=True icon="stern" text="Prognose" %}
+</div></article>

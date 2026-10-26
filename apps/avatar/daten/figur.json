@@ -1,0 +1,79 @@
+{
+  "breite": 32,
+  "hoehe": 48,
+  "outline": "#1c1830",
+  "hautfarben": {
+    "haut1": {"name": "Hell", "farbe": "#fbd5b5"},
+    "haut2": {"name": "Sand", "farbe": "#f1c27d"},
+    "haut3": {"name": "Honig", "farbe": "#e0a370"},
+    "haut4": {"name": "Bronze", "farbe": "#c68642"},
+    "haut5": {"name": "Braun", "farbe": "#8d5524"},
+    "haut6": {"name": "Dunkel", "farbe": "#5c3a21"}
+  },
+  "haarfarben": {
+    "haar1": {"name": "Schwarz", "farbe": "#26212f"},
+    "haar2": {"name": "Dunkelbraun", "farbe": "#4a2f1d"},
+    "haar3": {"name": "Braun", "farbe": "#8b5a2b"},
+    "haar4": {"name": "Blond", "farbe": "#e8c46a"},
+    "haar5": {"name": "Rot", "farbe": "#c4521e"},
+    "haar6": {"name": "Silber", "farbe": "#b8bcc8"},
+    "haar7": {"name": "Blau", "farbe": "#3b82f6"},
+    "haar8": {"name": "Pink", "farbe": "#ff4fa0"}
+  },
+  "frisuren": {
+    "kurz": {
+      "name": "Kurz",
+      "prims": [
+        ["b", 9, 4, 14, 4, "haar", "o"],
+        ["r", 9, 8, 2, 3, "haar", "om"],
+        ["r", 11, 8, 4, 1, "haar"],
+        ["r", 17, 8, 3, 1, "haar"]
+      ]
+    },
+    "struppig": {
+      "name": "Struppig",
+      "prims": [
+        ["r", 10, 2, 3, 3, "haar", "o"],
+        ["r", 15, 1, 3, 4, "haar", "o"],
+        ["r", 20, 2, 3, 3, "haar", "o"],
+        ["b", 9, 4, 14, 4, "haar", "o"],
+        ["r", 9, 8, 2, 2, "haar", "om"],
+        ["r", 12, 8, 3, 1, "haar"],
+        ["r", 18, 8, 2, 1, "haar"]
+      ]
+    },
+    "lang": {
+      "name": "Lang",
+      "prims": [
+        ["b", 9, 4, 14, 4, "haar", "o"],
+        ["b", 8, 8, 3, 11, "haar", "om"],
+        ["r", 11, 8, 6, 1, "haar"],
+        ["r", 18, 8, 2, 1, "haar"]
+      ]
+    }
+  },
+  "gesicht": [
+    ["r", 12, 10, 2, 3, "#1d1a2e"],
+    ["r", 18, 10, 2, 3, "#1d1a2e"],
+    ["r", 12, 10, 1, 1, "#ffffff"],
+    ["r", 18, 10, 1, 1, "#ffffff"],
+    ["r", 11, 13, 2, 1, "#ff6f91@45"],
+    ["r", 19, 13, 2, 1, "#ff6f91@45"],
+    ["r", 13, 14, 1, 1, "#7a3b3b"],
+    ["r", 18, 14, 1, 1, "#7a3b3b"],
+    ["r", 14, 15, 4, 1, "#7a3b3b"]
+  ],
+  "schatten": [
+    ["r", 9, 41, 14, 2, "#000000@28"]
+  ],
+  "koerper": [
+    ["b", 11, 30, 5, 8, "kl2", "o"],
+    ["b", 16, 30, 5, 8, "kl2", "o"],
+    ["b", 10, 38, 6, 3, "kl3", "o"],
+    ["b", 16, 38, 6, 3, "kl3", "o"],
+    ["b", 11, 18, 10, 12, "kl1", "o"],
+    ["b", 7, 18, 4, 9, "kl1", "om"],
+    ["b", 7, 27, 4, 3, "haut", "om"],
+    ["b", 9, 4, 14, 14, "haut", "o"]
+  ]
+}

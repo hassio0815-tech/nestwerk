@@ -1,0 +1,12 @@
+{% extends layout %}
+{% block titel %}Push auf diesem Gerät{% endblock %}
+{% block inhalt %}
+  <div class="stapel">
+    <h1>Benachrichtigungen</h1>
+    {% if push_kiosk %}
+      <p>Auf dem Tablet gibt es keine Push-Nachrichten. Die Anzeige aktualisiert sich von selbst.</p>
+    {% else %}
+      {% include "benachrichtigung/_push_karte.html" %}
+    {% endif %}
+  </div>
+{% endblock %}

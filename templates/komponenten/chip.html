@@ -1,0 +1,1 @@
+<span class="chip" data-selten="{{ stufe|default:'common' }}">{% if text %}{{ text }}{% elif stufe == "uncommon" %}Uncommon{% elif stufe == "rare" %}Rare{% elif stufe == "epic" %}Epic{% elif stufe == "legendary" %}Legendary{% elif stufe == "god" %}God Mode{% else %}Common{% endif %}</span>

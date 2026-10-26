@@ -1,0 +1,10 @@
+{% load avatar_tags %}
+<article class="karte avatar-aufruf"><div class="karte__inhalt avatar-aufruf__inhalt">
+  <div class="avatar-aufruf__bilder" aria-hidden="true">
+    {% for svg in k.beispiele %}{% svg_roh svg "mittel" "" %}{% endfor %}
+  </div>
+  <h2>Dein Avatar wartet!</h2>
+  <p>Wähle deine Figur und eins von {{ k.anzahl_themen }} Themen.</p>
+  {% url "avatar:kind_wahl" as wahl_url %}
+  {% include "komponenten/button.html" with href=wahl_url gross=True voll=True icon="stern" text="Avatar bauen" %}
+</div></article>

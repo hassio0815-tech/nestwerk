@@ -1,0 +1,40 @@
+/* Ruhmeshalle (P3-A): Held auf Sockel in der Seltenheitsfarbe des Rangs. Nur Tokens. */
+.halle-raster { display: grid; gap: var(--abstand-gross, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.halle-reihe { display: flex; flex-wrap: wrap; gap: var(--abstand); justify-content: center; align-items: flex-end; }
+.halle-reihe--gross .halle-held--klein .avatar-bild { width: 7rem; }
+.halle-held { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
+.halle-held__buehne { display: flex; flex-direction: column; align-items: center; width: 100%;
+  padding: var(--abstand) var(--abstand) 0; border-radius: var(--radius);
+  background: radial-gradient(ellipse at 50% 90%, color-mix(in srgb, var(--selten-farbe, var(--rahmen)) 35%, transparent), transparent 70%); }
+.halle-held__buehne .avatar-bild { margin-bottom: -0.4rem; position: relative; z-index: 1; }
+.halle-held--klein .halle-held__buehne { padding: 0.25rem 0.25rem 0; }
+.halle-held--klein .avatar-bild { width: 5rem; }
+.halle-held__sockel { width: 78%; max-width: 11rem; display: flex; flex-direction: column; align-items: stretch; }
+.halle-held__sockel::before { content: ""; height: 0.55rem; border-radius: 0.2rem 0.2rem 0 0;
+  background: var(--selten-farbe, var(--rahmen)); filter: brightness(1.25); }
+.halle-held__sockel span { display: block; height: 1.3rem; background: var(--selten-farbe, var(--rahmen));
+  box-shadow: none; }
+.halle-held__sockel::after { content: ""; height: 0.3rem; margin-inline: -6%; border-radius: 0.2rem;
+  background: var(--selten-farbe, var(--rahmen)); filter: brightness(0.7); }
+.halle-held[data-selten="god"] .halle-held__sockel::before,
+.halle-held[data-selten="god"] .halle-held__sockel span,
+.halle-held[data-selten="god"] .halle-held__sockel::after { background: var(--selten-god); }
+.halle-held__text { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+.halle-held__name { font-size: 1.1rem; }
+.halle-held__thema { color: var(--text-leise); font-size: 0.9rem; }
+.halle-held__widmung { margin: 0.25rem 0; padding: 0.25rem 0.75rem; max-width: 20rem; font-style: italic;
+  border-left: 0.2rem solid var(--selten-farbe, var(--rahmen)); text-align: left; overflow-wrap: anywhere; }
+.halle-held__widmung::before { content: "„"; }
+.halle-held__widmung::after { content: "“"; }
+.halle-held__statistik { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 1rem; margin: 0; }
+.halle-held__statistik div { display: flex; flex-direction: column; align-items: center; }
+.halle-held__statistik dt { font-size: 0.875rem; color: var(--text-leise); }
+.halle-held__statistik dd { margin: 0; font-weight: 700; }
+.halle-aufruf { margin-bottom: var(--abstand); box-shadow: 0 0 1.2rem var(--selten-farbe, transparent); }
+.halle-dialog__liste { margin: 0; padding-left: 1.25rem; }
+.halle-dialog__aktionen { flex-wrap: wrap; align-items: center; }
+.halle-widmung { display: flex; flex-direction: column; gap: 0.35rem; }
+.halle-widmung textarea { width: 100%; font: inherit; padding: 0.4rem; border-radius: var(--radius);
+  border: var(--rahmen-breite) solid var(--rahmen); background: var(--flaeche); color: inherit; }
+.mod-ausbau__halle { margin: var(--abstand-klein) 0 0; }

@@ -1,0 +1,3 @@
+{% comment %}In Kinder-Seiten einbinden: holt ungesehene Pop-ups (HTMX-Polling) in den Toast-Bereich.{% endcomment %}
+{% url "benachrichtigung:popups" as popups_url %}
+{% if popups_url %}<div hidden hx-get="{{ popups_url }}" data-nur-sichtbar hx-trigger="load, every 15s, nestwerk-aktualisiert from:body" hx-target="#meldungen" hx-swap="beforeend"></div>{% endif %}

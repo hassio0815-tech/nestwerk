@@ -1,0 +1,10 @@
+{% load avatar_tags %}{% comment %}Profil-Kachel (Marken-Look): Ring in --nutzer-akzent, Initial, Name, kleine Zeile. Mit href ein Link.
+Parameter: benutzer (optional, echte Figur), wappen (Emoji statt Initial), name, href, akzent (Farbname), rolle (Text), gesperrt.{% endcomment %}
+<div{% if akzent %} data-akzent="{{ akzent }}"{% endif %}>
+  {% if href %}<a class="nw-profil{% if gesperrt %} nw-profil--gesperrt{% endif %}" href="{{ href }}">{% else %}<div class="nw-profil">{% endif %}
+    <span class="nw-profil__ring">{% if benutzer %}<span class="nw-profil__bild">{% avatar_bild benutzer "gross" %}</span>{% elif wappen %}<span class="nw-profil__wappen" aria-hidden="true">{{ wappen }}</span>{% else %}<span class="nw-profil__initial" aria-hidden="true">{{ name|slice:":1"|upper }}</span>{% endif %}</span>
+    <span class="nw-profil__name">{{ name }}</span>
+    {% if gesperrt %}<span class="nw-profil__rolle">{% include "komponenten/icon.html" with name="schloss" %} <span>gesperrt</span></span>
+    {% elif rolle %}<span class="nw-profil__rolle">{{ rolle }}</span>{% endif %}
+  {% if href %}</a>{% else %}</div>{% endif %}
+</div>

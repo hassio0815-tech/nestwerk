@@ -1,0 +1,11 @@
+{% comment %}
+  Karte (Slot-Komponente). Verwendung:
+  {% extends "komponenten/karte.html" %}
+  {% block karte_attribute %}data-selten="rare"{% endblock %}
+  {% block inhalt %}...{% endblock %}
+{% endcomment %}
+<section class="karte {% block karte_klasse %}{% endblock %}" {% block karte_attribute %}{% endblock %}>
+  <div class="karte__inhalt">
+    {% block inhalt %}{% endblock %}
+  </div>
+</section>

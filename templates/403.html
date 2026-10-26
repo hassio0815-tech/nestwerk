@@ -1,0 +1,6 @@
+{% extends "basis/kind.html" %}
+{% block titel %}Kein Zugriff{% endblock %}
+{% block inhalt %}
+  {% include "komponenten/leer.html" with titel="Kein Zugriff" text="Diese Seite ist nicht für dich." icon="schloss" %}
+  {% include "komponenten/button.html" with href="/" text="Zur Startseite" icon="home" %}
+{% endblock %}

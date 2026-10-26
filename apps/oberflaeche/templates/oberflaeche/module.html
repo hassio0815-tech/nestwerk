@@ -1,0 +1,24 @@
+{% extends "basis/huelle.html" %}
+{% comment %}Modul-Launcher: große Karten je Bereich, Daten aus apps/oberflaeche/module.py.{% endcomment %}
+{% block titel %}Start{% endblock %}
+{% block buehne %}
+  <div class="huelle-buehne huelle-buehne--breit">
+    {% include "komponenten/logo_kachel.html" %}
+    <div class="stapel">
+      <h1 class="nw-begruessung">{{ gruss }}, {{ request.user.anzeigename }}!</h1>
+      <p class="nw-leise">Wohin soll es gehen?</p>
+    </div>
+    <nav class="nw-module nw-voll nw-links" aria-label="Bereiche">
+      {% for eintrag in module %}
+        <a class="nw-modul" href="{{ eintrag.url }}">
+          <span class="nw-modul__icon">{% include "komponenten/icon.html" with name=eintrag.modul.icon %}</span>
+          <span class="nw-modul__name">{{ eintrag.modul.name }}</span>
+          <span class="nw-modul__kurz">{{ eintrag.modul.kurz }}</span>
+        </a>
+      {% endfor %}
+    </nav>
+    <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
+      {% include "komponenten/button.html" with typ="submit" variante="geist" icon="x" text="Abmelden" %}
+    </form>
+  </div>
+{% endblock %}

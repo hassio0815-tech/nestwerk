@@ -1,0 +1,11 @@
+{% extends "basis/einrichtung.html" %}
+{% block einrichtung_inhalt %}
+  <form method="post" class="stapel">
+    {% csrf_token %}
+    <h1>Setup-Token</h1>
+    <p>Für diese Installation ist ein Setup-Token festgelegt (Umgebungsvariable <code>NESTWERK_SETUP_TOKEN</code>).</p>
+    {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+    {% include "komponenten/feld.html" with name="token" label="Token" typ="password" pflicht=True autocomplete="off" %}
+    {% include "komponenten/button.html" with typ="submit" text="Weiter" icon="schloss" voll=True %}
+  </form>
+{% endblock %}

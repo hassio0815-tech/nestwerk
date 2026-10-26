@@ -1,0 +1,58 @@
+{% extends "basis/kind.html" %}
+{% load static avatar_tags %}
+{% block titel %}Thema wechseln{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "avatar:shop" as shop_url %}
+  {% include "komponenten/button.html" with href=shop_url variante="geist" klein=True icon="pfeil-links" text="Shop" %}
+{% endblock %}
+{% block inhalt %}
+  <h1>Thema wechseln</h1>
+  {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
+
+  {% if warnung %}
+    <section class="karte mod-warnung" role="alertdialog" aria-labelledby="warnung-titel" aria-describedby="warnung-text"><div class="karte__inhalt stapel">
+      <div class="mod-warnung__kopf">
+        {% include "komponenten/icon.html" with name="warnung" klasse="mod-warnung__icon" %}
+        <h2 id="warnung-titel">Wirklich zu „{{ warnung.neu.name }}“ wechseln?</h2>
+      </div>
+      <div class="mod-warnung__vergleich">
+        <span class="stapel"><strong>{{ warnung.alt.name }}</strong>{% avatar_bild request.user "gross" %}</span>
+        {% include "komponenten/icon.html" with name="pfeil-rechts" klasse="mod-warnung__pfeil" %}
+        <span class="stapel"><strong>{{ warnung.neu.name }}</strong>{% svg_roh warnung_svg "gross" warnung.neu.name %}</span>
+      </div>
+      <ul class="mod-warnung__liste" id="warnung-text">
+        {% if warnung.verlorene_mods %}
+          <li data-verlust><strong>Du verlierst {{ warnung.verlorene_mods }} Mod{{ warnung.verlorene_mods|pluralize:"s" }} im Wert von {{ warnung.wert }} Punkten.</strong>{% if warnung.davon_im_bau %} Davon {{ warnung.davon_im_bau }} noch im Bau.{% endif %}</li>
+        {% else %}
+          <li data-verlust>Du hast noch keine Mods in {{ warnung.alt.name }} – du verlierst nichts.</li>
+        {% endif %}
+        <li data-ausbaustufe>Deine Ausbaustufe fällt von {{ warnung.ausbaustufe_vorher }} auf <strong>0</strong>.</li>
+        <li data-meilenstein>Bis zum nächsten Meilenstein (Ausbaustufe {{ warnung.mods_bis_meilenstein }} im Rang {{ warnung.rang_name }}) brauchst du wieder <strong>{{ warnung.mods_bis_meilenstein }} Mods</strong> – das dauert mindestens {{ warnung.wochen_mindestens }} Woche{{ warnung.wochen_mindestens|pluralize:"n" }}.</li>
+        <li>Es gibt <strong>keine Punkte zurück</strong>. Dein Rang {{ warnung.rang_name }} und schon verdiente Sondertage bleiben.</li>
+      </ul>
+      <form method="post" class="stapel">{% csrf_token %}
+        <input type="hidden" name="thema" value="{{ warnung.neu.schluessel }}">
+        <input type="hidden" name="pruefwert" value="{{ warnung.pruefwert }}">
+        <label class="reihe mod-warnung__bestaetigen"><input type="checkbox" name="verstanden" required> Ich habe verstanden.</label>
+        <div class="reihe mod-warnung__aktionen">
+          {% url "avatar:thema" as zurueck_url %}
+          {% include "komponenten/button.html" with href=zurueck_url variante="geist" icon="x" text="Abbrechen" %}
+          {% include "komponenten/button.html" with typ="submit" variante="gefahr" icon="warnung" text="Ja, Thema wechseln" %}
+        </div>
+      </form>
+    </div></section>
+  {% else %}
+    <p>Wähle ein neues Thema. Vor dem Wechsel zeigen wir dir genau, was du verlierst.</p>
+  {% endif %}
+
+  <div class="mod-themen">
+    {% for t in karten %}
+      {% if t.aktuell %}
+        <div class="kachel kachel--avatar mod-thema mod-thema--aktuell">{% svg_roh t.svg "mittel" t.thema.name %}<span class="kachel__titel">{{ t.thema.name }}</span><span class="kachel__text">dein Thema</span></div>
+      {% else %}
+        <a class="kachel kachel--avatar mod-thema{% if t.gewaehlt %} mod-thema--gewaehlt{% endif %}" href="?thema={{ t.thema.schluessel }}#inhalt">{% svg_roh t.svg "mittel" t.thema.name %}<span class="kachel__titel">{{ t.thema.name }}</span></a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

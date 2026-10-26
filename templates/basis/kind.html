@@ -1,0 +1,14 @@
+{% extends "basis/basis.html" %}{% load static %}
+{% comment %}Kind-Layout: dunkel (Standard), hell per Umschalter. Große Ziele, Symbol + Text.{% endcomment %}
+{% block layout %}kind{% endblock %}
+{% block kopf %}
+  <div class="kopf__zeile">
+    <a class="kopf__marke" href="/"><img class="kopf__logo" src="{% static 'img/icon-klein.svg' %}" alt="" width="32" height="32"><span>{{ app_name|default:"Nestwerk" }}</span></a>
+    <div class="reihe">
+      {% block kopf_rechts %}{% endblock %}
+      {% if request.user.is_authenticated and request.user.rolle == "kind" %}{% include "komponenten/akzent_wahl.html" %}{% endif %}
+      {% include "komponenten/umschalter.html" %}
+    </div>
+  </div>
+  {% if request.user.is_authenticated and request.user.rolle == "kind" %}{% include "benachrichtigung/_popup_abruf.html" %}{% endif %}
+{% endblock %}

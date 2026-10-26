@@ -1,0 +1,130 @@
+/* Dashboards, Tablet-Startseite, Einstellungen, Familie (AP17). Nutzt nur Tokens. */
+.dashboard {
+  display: grid;
+  gap: var(--abstand);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+  .dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dashboard__kachel > .karte,
+.dashboard__kachel > .kachel {
+  height: 100%;
+}
+
+.kind-konto {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: var(--abstand);
+}
+
+.kind-konto .stapel {
+  align-items: center;
+}
+
+.kind-konto .reihe {
+  justify-content: center;
+}
+
+.zeile {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--abstand-klein);
+}
+
+/* Zahlenlinks (Dashboard): große Tippfläche statt Browser-Standardlink. */
+.zeile > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  font-weight: 700;
+  color: var(--akzent-hell, var(--text));
+  text-decoration: underline;
+}
+
+.zeile--neu {
+  font-weight: 700;
+}
+
+.liste-schlicht {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand-klein);
+}
+
+.akzent-wahl__knopf {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--akzent);
+  border: var(--rahmen-breite) solid var(--kante);
+  cursor: pointer;
+}
+
+.akzent-wahl__knopf--aktiv {
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+}
+
+.tablet-kind {
+  min-width: 0; /* Raster-Spalte darf schmaler werden als ihr Inhalt (Handy 390 px) */
+}
+
+.tablet-kind__zeile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem var(--abstand-klein);
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--abstand-klein) 0 0;
+}
+
+.familie-zeile {
+  padding-bottom: var(--abstand);
+  border-bottom: 1px solid var(--rahmen);
+}
+
+.feld__label input[type="checkbox"] {
+  width: 1.5rem;
+  height: 1.5rem;
+  vertical-align: middle;
+}
+
+/* Einstellungen-Editor: je Modul ein aufklappbarer Abschnitt. */
+.einstellungen-gruppe > summary {
+  gap: var(--abstand-klein);
+  list-style: none;
+}
+
+.einstellungen-gruppe > summary::-webkit-details-marker {
+  display: none;
+}
+
+.einstellungen-gruppe > summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1.5rem;
+  font-weight: 700;
+}
+
+.einstellungen-gruppe[open] > summary::before {
+  content: "\2212";
+}
+
+.einstellungen-gruppe > summary h2 {
+  margin: 0;
+}

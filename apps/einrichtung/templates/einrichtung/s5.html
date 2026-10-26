@@ -1,0 +1,13 @@
+<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel">
+  {% csrf_token %}
+  <h1>Netzwerk</h1>
+  {% include "einrichtung/_fehler.html" %}
+  {% include "komponenten/feld.html" with name="basis_url" label="Adresse der App" typ="url" wert=form.basis_url.value fehler=form.basis_url.errors.0 pflicht=True hilfe="z. B. https://nestwerk.example.org. Für Links in Mails und Push zusätzlich die Umgebungsvariable BASIS_URL setzen." %}
+  <div class="feld{% if form.kind_netze.errors %} feld--fehler{% endif %}"><label class="feld__label" for="kind_netze">Heimnetz für den Kinder-Login *</label>
+    <textarea class="feld__eingabe" id="kind_netze" name="kind_netze" rows="4" required>{{ form.kind_netze.value|default:"" }}</textarea>
+    <p class="feld__hinweis{% if form.kind_netze.errors %} feld__hinweis--fehler{% endif %}">{% if form.kind_netze.errors %}{{ form.kind_netze.errors.0 }}{% else %}Eins pro Zeile (CIDR, z. B. 192.168.1.0/24). Aus diesen Netzen dürfen Kinder sich anmelden. Startwert: alle privaten Netze.{% endif %}</p></div>
+  <div class="feld{% if form.proxys.errors %} feld--fehler{% endif %}"><label class="feld__label" for="proxys">Vertraute Proxys</label>
+    <textarea class="feld__eingabe" id="proxys" name="proxys" rows="3">{{ form.proxys.value|default:"" }}</textarea>
+    <p class="feld__hinweis{% if form.proxys.errors %} feld__hinweis--fehler{% endif %}">{% if form.proxys.errors %}{{ form.proxys.errors.0 }}{% else %}Trage hier die IP-Adresse des Nginx Proxy Managers ein. Nur von dort wird die echte Client-Adresse (X-Forwarded-For) übernommen.{% if remote %} Erkannt für diese Anfrage: <strong>{{ remote }}</strong>.{% endif %}{% endif %}</p></div>
+  {% include "einrichtung/_navigation.html" %}
+</form>

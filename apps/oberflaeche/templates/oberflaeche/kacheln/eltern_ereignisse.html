@@ -1,0 +1,15 @@
+<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Ereignisse <span class="chip" data-selten="{% if k.ungelesen %}epic{% else %}common{% endif %}">{{ k.ungelesen }} neu</span></h2>
+  <ul class="liste-schlicht">
+    {% for b in k.eintraege %}
+      <li class="zeile{% if not b.gelesen_am %} zeile--neu{% endif %}">
+        <a href="{% url 'benachrichtigung:oeffnen' b.pk %}"><strong>{{ b.titel }}</strong>{% if b.text %} · {{ b.text }}{% endif %}</a>
+        <time datetime="{{ b.erstellt_am|date:'c' }}">{{ b.erstellt_am|date:"d.m. H:i" }}</time>
+      </li>
+    {% empty %}
+      <li>Noch keine Ereignisse.</li>
+    {% endfor %}
+  </ul>
+  {% url "benachrichtigung:liste" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="sekundaer" klein=True icon="glocke" text="Alle Ereignisse" %}
+</div></article>

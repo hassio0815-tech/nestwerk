@@ -1,0 +1,39 @@
+# supercronic-Crontab (ARCHITECTURE 6). TZ=Europe/Berlin kommt aus dem Container (ENV TZ).
+# Regeln: keine Jobs zwischen 02:00 und 03:00 (Sommerzeit-Umstellung); alle Commands sind
+# idempotent und holen Versäumtes beim nächsten Lauf nach. Ergebnis je Lauf: Tabelle JobLauf.
+# Format: Minute Stunde Tag Monat Wochentag  Befehl   (nur ganze Zeilen, keine Inline-Kommentare)
+
+# Aufgaben-Instanzen bis zum Horizont erzeugen
+*/15 * * * * python manage.py aufgaben_erzeugen
+5 0 * * * python manage.py aufgaben_erzeugen
+
+# Verfall/Vorwarnung und Reservierungen (reservierungen_pruefen entsteht in AP12)
+*/5 * * * * python manage.py verfall_pruefen
+*/5 * * * * python manage.py reservierungen_pruefen
+
+# Spielregeln (AP20): Wochenauswertung/Serien, idempotent mit Catch-up. Stündlich; der
+# Wochenabschluss fällt nach dem Puffer (Startwert 24 h) auf Di 00:10.
+10 * * * * python manage.py wochen_sicherstellen
+
+# Familienziel (AP29): Woche anlegen, Abstimmung schließen/auswerten, Großziel; idempotent.
+3,18,33,48 * * * * python manage.py familienwoche_sicherstellen
+
+# Avatar (AP26): fällige Mod-Bauaufträge fertigstellen, idempotent mit Catch-up
+*/5 * * * * python manage.py mods_fertigstellen
+
+# Sondertag (AP27, Review AP31): Ansprüche nachholen, Einlösedaten, "jetzt einlösbar" melden
+25 * * * * python manage.py sondertag_sicherstellen
+
+# Datensicherung: 03:30 regulär; 13:30 Nachholtermin (überspringt, wenn heute schon gesichert)
+30 3 * * * python manage.py db_sichern
+30 13 * * * python manage.py db_sichern
+
+# Aufräumen
+15 4 * * * python manage.py konten_aufraeumen
+20 4 * * * python manage.py benachrichtigungen_aufraeumen
+
+# Nachweis-Fotos: Sicherheitsnetz zur sofortigen Löschung (idempotent)
+17 * * * * python manage.py nachweise_aufraeumen
+
+# Wiederherstellungstest, sonntags
+30 4 * * 0 python manage.py backup_pruefen

@@ -1,0 +1,25 @@
+{% load static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+{% with f=k.f %}
+<article class="karte st-karte{% if f.art == 'einloesbar' %} st-karte--fest{% endif %}" data-sondertag="{{ f.art }}"><div class="karte__inhalt stapel">
+  {% if f.art == "einloesbar" %}<span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>{% endif %}
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} Sondertag</h2>
+  {% if f.bestaetigt %}
+    <p class="st-bestaetigt" data-sondertag-bestaetigt>{% include "komponenten/icon.html" with name="check" %} Dein Wunsch ist angenommen!{% if f.bestaetigt.begleitung %} {{ f.bestaetigt.begleitung.name_mit_wappen }} plant den Tag mit dir.{% endif %}</p>
+  {% endif %}
+  <p class="st-status">{{ f.text }}</p>
+  {% if f.art == "unterwegs" and f.mods_ziel %}
+    {% include "komponenten/fortschritt.html" with label="Gebaute Slots" wert=f.mods_ist max=f.mods_ziel selten="legendary" %}
+  {% endif %}
+  {% if f.eintrag and k.wunsch_erlaubt %}
+    {% url "sondertag:wunsch" as wunsch_url %}
+    {% if f.eintrag.wunsch_offen %}
+      <p class="kachel__text">Dein Wunsch: „{{ f.eintrag.anspruch.wunsch }}“</p>
+      {% include "komponenten/button.html" with href=wunsch_url variante="geist" klein=True icon="geschenk" text="Wunsch ändern" %}
+    {% else %}
+      {% include "komponenten/button.html" with href=wunsch_url icon="geschenk" text="Wunsch abschicken" %}
+    {% endif %}
+  {% endif %}
+  {% if f.warten %}<p class="kachel__text">{{ f.warten }} weitere{% if f.warten == 1 %}r Sondertag wartet{% else %} Sondertage warten{% endif %} schon auf dich.</p>{% endif %}
+  {% if f.weiter %}<p class="kachel__text">Danach: {{ f.weiter }}</p>{% endif %}
+</div></article>
+{% endwith %}

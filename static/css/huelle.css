@@ -1,0 +1,633 @@
+/* Nestwerk Marken-Look: App-Hülle (Begrüßung, Login, Launcher), Einstellungs-Layout und
+   gemeinsame Komponenten. Gilt für alle Layouts (huelle, eltern, einrichtung, kind, tablet),
+   wird nach nestwerk.css geladen und nutzt ausschließlich Tokens aus tokens.css.
+   Keine externen Quellen. Spiel-Effekte: spiel.css. */
+
+/* --- Akzent der Marke ------------------------------------------------------------------------
+   Teal ist der Akzent. data-akzent (Kind-Farbe) setzt nur --nutzer-akzent für Ringe. */
+[data-layout][data-akzent],
+[data-layout] {
+  --akzent: var(--teal-700);
+  --akzent-hell: var(--teal-300);
+  --akzent-text: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-layout]:not([data-modus="hell"]) {
+    --akzent: var(--teal-400);
+    --akzent-hell: var(--teal-200);
+    --akzent-text: var(--aubergine-900);
+  }
+}
+
+[data-layout][data-modus="dunkel"] {
+  --akzent: var(--teal-400);
+  --akzent-hell: var(--teal-200);
+  --akzent-text: var(--aubergine-900);
+}
+
+[data-layout] :focus-visible {
+  outline: 3px solid var(--akzent);
+  outline-offset: 3px;
+}
+
+/* --- Schrift --------------------------------------------------------------------------------- */
+[data-layout] h1,
+[data-layout] h2,
+[data-layout] h3 {
+  font-family: var(--schrift-titel);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+[data-layout] h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
+[data-layout] h2 { font-size: 1.3rem; }
+[data-layout] h3 { margin: 0; font-size: 1.1rem; }
+
+/* --- Kopfzeile ------------------------------------------------------------------------------- */
+[data-layout] .kopf {
+  background: color-mix(in srgb, var(--flaeche) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+[data-layout] .kopf__marke {
+  font-family: var(--schrift-titel);
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+/* --- Knöpfe: primär, sekundär, Geist (legacy .knopf wird mitgestaltet) ------------------------ */
+.nw-knopf,
+[data-layout] .knopf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--tap-min);
+  padding: 0.6rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--flaeche);
+  border: 1px solid var(--rahmen);
+  border-radius: 999px;
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nw-knopf:hover,
+[data-layout] .knopf:hover { background: var(--flaeche-hoch); }
+
+.nw-knopf:active,
+[data-layout] .knopf:active { transform: scale(0.98); box-shadow: none; }
+
+.nw-knopf:disabled,
+[data-layout] .knopf:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.nw-knopf--primaer,
+[data-layout] .knopf--primaer {
+  color: var(--akzent-text);
+  background: var(--akzent);
+  border-color: transparent;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--akzent) 30%, transparent);
+}
+
+.nw-knopf--primaer:hover,
+[data-layout] .knopf--primaer:hover { background: color-mix(in srgb, var(--akzent) 88%, var(--text)); }
+
+.nw-knopf--sekundaer,
+[data-layout] .knopf--sekundaer { background: var(--flaeche-hoch); border-color: transparent; }
+
+.nw-knopf--geist,
+[data-layout] .knopf--geist { background: transparent; border-color: transparent; color: var(--text-leise); }
+
+.nw-knopf--geist:hover,
+[data-layout] .knopf--geist:hover { color: var(--text); background: var(--flaeche-hoch); }
+
+/* Sanft: Ablehnen, Zurückweisen. Voll (--gefahr) nur für Unwiderrufliches wie Löschen. */
+[data-layout] .knopf--sanft { color: var(--rose-700); background: var(--rose-100); border-color: transparent; }
+[data-layout] .knopf--sanft:hover { background: color-mix(in srgb, var(--rose-300) 55%, var(--rose-100)); }
+[data-layout][data-modus="dunkel"] .knopf--sanft { color: var(--rose-300); background: color-mix(in srgb, var(--rose-500) 22%, transparent); }
+@media (prefers-color-scheme: dark) {
+  [data-layout]:not([data-modus="hell"]) .knopf--sanft { color: var(--rose-300); background: color-mix(in srgb, var(--rose-500) 22%, transparent); }
+}
+[data-layout] .knopf--gefahr { color: #ffffff; background: var(--gefahr); border-color: transparent; }
+[data-layout][data-modus="dunkel"] .knopf--gefahr { color: #3a0d19; }
+@media (prefers-color-scheme: dark) {
+  [data-layout]:not([data-modus="hell"]) .knopf--gefahr { color: #3a0d19; }
+}
+
+.nw-knopf--gross,
+[data-layout] .knopf--gross { min-height: var(--tap-gross); padding-inline: 2rem; font-size: 1.1rem; }
+
+.nw-knopf--voll { width: 100%; }
+
+/* --- Karten ---------------------------------------------------------------------------------- */
+.nw-karte,
+[data-layout] .karte {
+  padding: var(--abstand-gross);
+  color: var(--text);
+  background: var(--flaeche);
+  border: 1px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  box-shadow: var(--schatten-karte);
+}
+
+[data-layout] .karte__inhalt { padding: 0; }
+
+/* --- Eingaben -------------------------------------------------------------------------------- */
+.nw-eingabe,
+[data-layout] .feld__eingabe {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0.6rem 1rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--flaeche);
+  border: 1.5px solid var(--rahmen);
+  border-radius: var(--radius);
+}
+
+.nw-eingabe:focus,
+[data-layout] .feld__eingabe:focus {
+  border-color: var(--akzent);
+  outline: 3px solid color-mix(in srgb, var(--akzent) 35%, transparent);
+  outline-offset: 0;
+}
+
+[data-layout] .feld__label { font-weight: 600; }
+
+/* Eingaben: Schriftgröße und Fehlerzustand (alte und neue Klassen) */
+.nw-eingabe,
+[data-layout] .feld__eingabe { font-size: 1.05rem; }
+
+.feld--fehler .nw-eingabe,
+.feld--fehler .feld__eingabe,
+.nw-eingabe[aria-invalid="true"],
+.nw-eingabe--fehler {
+  border-color: var(--gefahr);
+}
+
+.feld--fehler .nw-eingabe:focus,
+.feld--fehler .feld__eingabe:focus {
+  outline-color: color-mix(in srgb, var(--gefahr) 35%, transparent);
+}
+
+/* Alte Layout-Klassen laufen im Marken-Look: gemeinsame Zeile */
+.zeile { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; justify-content: space-between; }
+
+/* Schalter: <label class="nw-schalter"><input type="checkbox" role="switch"><span class="nw-schalter__spur"></span> Text</label> */
+.nw-schalter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+
+.nw-schalter input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.nw-schalter__spur {
+  position: relative;
+  flex: none;
+  width: 3rem;
+  height: 1.75rem;
+  background: var(--rahmen);
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.nw-schalter__spur::after {
+  content: "";
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.nw-schalter input:checked + .nw-schalter__spur { background: var(--akzent); }
+.nw-schalter input:checked + .nw-schalter__spur::after { transform: translateX(1.25rem); }
+.nw-schalter input:focus-visible + .nw-schalter__spur { outline: 3px solid var(--akzent); outline-offset: 3px; }
+
+/* Segment (z. B. Hell / Dunkel / System): Radios als Pillen */
+.nw-segment {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--flaeche-hoch);
+  border-radius: 999px;
+}
+
+.nw-segment label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: var(--tap-min);
+  padding: 0 1.1rem;
+  font-weight: 600;
+  color: var(--text-leise);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.nw-segment input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.nw-segment label:has(input:checked) { color: var(--akzent-text); background: var(--akzent); }
+.nw-segment label:has(input:focus-visible) { outline: 3px solid var(--akzent); outline-offset: 2px; }
+
+/* Tabs / Fortschritt */
+.nw-tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+}
+
+.nw-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  min-height: var(--tap-min);
+  padding: 0 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-leise);
+  border-radius: 999px;
+}
+
+.nw-tab:hover { background: var(--flaeche-hoch); color: var(--text); }
+.nw-tab[aria-current="page"] { color: var(--akzent-text); background: var(--akzent); }
+
+/* Zweifarbiger Balken (auch für <progress class="fortschritt">) */
+[data-layout] .fortschritt,
+.nw-lauf {
+  display: block;
+  width: 100%;
+  height: 0.6rem;
+  border: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  appearance: none;
+  background: color-mix(in srgb, var(--aubergine-300) 30%, transparent);
+}
+
+[data-layout] .fortschritt::-webkit-progress-bar { background: color-mix(in srgb, var(--aubergine-300) 30%, transparent); }
+[data-layout] .fortschritt::-webkit-progress-value { background: var(--marke-verlauf); border-radius: 999px; }
+[data-layout] .fortschritt::-moz-progress-bar { background: var(--teal-500); border-radius: 999px; }
+
+/* Dialog */
+.nw-dialog,
+[data-layout] .modal {
+  width: min(100% - 2rem, 32rem);
+  padding: var(--abstand-gross);
+  color: var(--text);
+  background: var(--flaeche);
+  border: 1px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  box-shadow: var(--schatten-hoch);
+}
+
+.nw-dialog::backdrop { background: color-mix(in srgb, var(--aubergine-900) 55%, transparent); }
+
+/* --- Logo-Kachel: gekippte Teal-Kachel über Aubergine, Ringe, weiche Punkte --------------------- */
+.nw-logo {
+  position: relative;
+  flex: none;
+  width: 7rem;
+  aspect-ratio: 1;
+}
+
+.nw-logo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--aubergine-700);
+  border-radius: 28%;
+  transform: translate(-9%, -7%) rotate(-10deg);
+}
+
+.nw-logo__kachel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--marke-verlauf);
+  border-radius: 28%;
+  box-shadow: var(--schatten-hoch);
+  transform: rotate(6deg);
+}
+
+.nw-logo__ring,
+.nw-logo__ring::after {
+  border: 0.32rem solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+}
+
+.nw-logo__ring { position: relative; width: 56%; aspect-ratio: 1; border-top-color: rgba(255, 255, 255, 0.55); }
+.nw-logo__ring::after { content: ""; position: absolute; inset: 18%; border-width: 0.22rem; }
+
+.nw-wortmarke {
+  margin: 0;
+  font-family: var(--schrift-titel);
+  font-weight: 900;
+  font-size: clamp(2.8rem, 12vw, 4.8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.nw-balken {
+  display: block;
+  width: 3rem;
+  height: 0.4rem;
+  background: var(--akzent);
+  border-radius: 999px;
+}
+
+/* --- Bühne (Begrüßung, Login): zentriert, weiche Teal-Punkte im Hintergrund -------------------- */
+.huelle-buehne {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--abstand-gross);
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.nw-punkte {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nw-punkte i {
+  position: absolute;
+  background: var(--teal-400);
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.28;
+}
+
+.nw-punkte i:nth-child(1) { top: 8%; left: 6%; width: 9rem; height: 9rem; }
+.nw-punkte i:nth-child(2) { top: 55%; right: 4%; width: 12rem; height: 12rem; }
+.nw-punkte i:nth-child(3) { bottom: 6%; left: 22%; width: 6rem; height: 6rem; background: var(--aubergine-300); }
+
+.nw-begruessung {
+  font-family: var(--schrift-titel);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  color: var(--text);
+}
+
+.nw-leise { color: var(--text-leise); }
+
+/* Splash-Overlay: blendet sich nach ~2 s aus. Ohne Bewegung (reduced motion) entfällt es. */
+.nw-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  text-align: center;
+  background: var(--hintergrund);
+  animation: nw-splash-aus 0.6s ease 2.2s forwards;
+}
+
+.nw-splash .nw-logo { animation: nw-schweben 1.6s ease-in-out infinite alternate; }
+.nw-splash .nw-lauf { width: min(14rem, 60vw); position: relative; }
+.nw-splash .nw-lauf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: var(--marke-verlauf);
+  border-radius: 999px;
+  animation: nw-lauf 2.2s ease-out forwards;
+}
+
+@keyframes nw-splash-aus { to { opacity: 0; visibility: hidden; } }
+@keyframes nw-lauf { to { width: 100%; } }
+@keyframes nw-schweben { to { transform: translateY(-6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .nw-splash { display: none; }
+  .nw-splash .nw-logo,
+  .nw-splash .nw-lauf::after { animation: none; }
+}
+
+/* --- Profil-Kacheln --------------------------------------------------------------------------- */
+.nw-profile {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: var(--abstand);
+  width: 100%;
+}
+
+.nw-profil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: var(--tap-gross);
+  padding: var(--abstand-gross) var(--abstand);
+  color: var(--text);
+  text-decoration: none;
+  background: var(--flaeche);
+  border: 1px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  box-shadow: var(--schatten-karte);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nw-profil:hover { transform: translateY(-2px); box-shadow: var(--schatten-hoch); }
+
+.nw-profil__ring {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  height: 5rem;
+  padding: 4px;
+  border: 3px solid var(--nutzer-akzent, var(--akzent));
+  border-radius: 50%;
+}
+
+.nw-profil__initial {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--schrift-titel);
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: var(--akzent-text);
+  background: var(--marke-verlauf);
+  border-radius: 50%;
+}
+
+.nw-profil__name { font-weight: 600; font-size: 1.1rem; }
+.nw-profil__rolle { font-size: 0.875rem; color: var(--text-leise); }
+.nw-profil--gesperrt { opacity: 0.7; }
+
+.nw-profil-gruppe { width: 100%; display: flex; flex-direction: column; gap: 0.75rem; }
+.nw-profil-gruppe h2 { font-size: 1rem; font-family: var(--schrift-text); color: var(--text-leise); text-align: left; }
+
+/* PIN-Pad im Marken-Look (Komponente komponenten/pin_pad.html) */
+[data-layout] .pin__punkt { border-radius: 50%; border-color: var(--akzent); width: 1rem; height: 1rem; }
+[data-layout] .pin__punkt--gefuellt { background: var(--nutzer-akzent, var(--akzent)); border-color: var(--nutzer-akzent, var(--akzent)); }
+
+[data-layout] .pin__taste {
+  min-height: var(--tap-gross);
+  font-family: var(--schrift-text);
+  font-weight: 600;
+  background: var(--flaeche);
+  border: 1px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  box-shadow: var(--schatten-karte);
+}
+
+[data-layout] .pin__taste:active { transform: scale(0.96); box-shadow: none; }
+[data-layout] .pin__taste--ok { color: var(--akzent-text); background: var(--akzent); border-color: transparent; }
+
+/* --- Launcher --------------------------------------------------------------------------------- */
+.nw-module {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--abstand-gross);
+}
+
+.nw-modul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-height: 11rem;
+  padding: var(--abstand-gross);
+  color: var(--text);
+  text-decoration: none;
+  background: var(--flaeche);
+  border: 1px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  box-shadow: var(--schatten-karte);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nw-modul:hover { transform: translateY(-3px); box-shadow: var(--schatten-hoch); }
+
+.nw-modul__icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--akzent-text);
+  background: var(--marke-verlauf);
+  border-radius: 1.1rem;
+}
+
+.nw-modul__name { font-family: var(--schrift-titel); font-weight: 600; font-size: 1.3rem; line-height: 1.2; }
+.nw-modul__kurz { color: var(--text-leise); }
+.nw-modul__zaehler {
+  margin-left: auto;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--flaeche-hoch);
+  border-radius: 999px;
+}
+
+/* --- Einstellungs-Layout: Seitenleiste (Desktop), Tab-Leiste (mobil) ---------------------------- */
+.nw-schale {
+  display: grid;
+  gap: var(--abstand-gross);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.nw-schale__nav { min-width: 0; }
+.nw-schale__inhalt { display: flex; flex-direction: column; gap: var(--abstand-gross); min-width: 0; }
+
+@media (min-width: 56rem) {
+  .nw-schale { grid-template-columns: 15rem minmax(0, 1fr); align-items: start; }
+  .nw-schale__nav {
+    position: sticky;
+    top: 5rem;
+    padding: 0.75rem;
+    background: var(--flaeche);
+    border: 1px solid var(--rahmen);
+    border-radius: var(--radius-gross);
+  }
+  .nw-schale__nav .nw-tabs { flex-direction: column; overflow: visible; }
+  .nw-schale__nav .nw-tab { border-radius: var(--radius); }
+}
+
+/* Darstellung (Hell/Dunkel/System) */
+.nw-darstellung { display: flex; flex-direction: column; gap: 0.75rem; }
+
+/* Einrichtungs-Assistent */
+[data-layout="einrichtung"] .einrichtung-karte { max-width: 38rem; }
+.nw-willkommen { align-items: center; text-align: center; gap: 1rem; }
+.nw-willkommen .nw-logo { width: 5.5rem; margin: 1rem 0 0.5rem; }
+[data-layout="einrichtung"] .einrichtung-karte { gap: 1.5rem; }
+.nw-willkommen .stapel { align-items: stretch; text-align: left; }
+
+[data-layout="huelle"] .kopf { display: none; }
+.nw-mitte { align-self: center; }
+.nw-voll { width: 100%; }
+.nw-links { text-align: left; }
+.nw-profile--eins { grid-template-columns: 11rem; justify-content: center; }
+.huelle-buehne--breit { max-width: 64rem; }
+.nw-willkommen .nw-wortmarke { font-size: clamp(2rem, 7vw, 3rem); }
+.nw-willkommen .nw-lauf { background: linear-gradient(90deg, var(--teal-500) 0 35%, color-mix(in srgb, var(--aubergine-300) 30%, transparent) 35% 100%); }
+.nw-profil__bild { display: grid; place-items: center; width: 100%; height: 100%; overflow: hidden; border-radius: 50%; background: var(--flaeche-hoch); }
+.nw-profil__bild > * { max-width: 100%; max-height: 100%; }
+
+/* Wappen-Galerie (Eltern) und Wappen-Anzeige */
+.wappen-wahl { border: 0; padding: 0; margin: 0; min-width: 0; }
+.wappen-galerie { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.5rem; }
+.wappen-karte { display: block; cursor: pointer; }
+.wappen-karte input { position: absolute; opacity: 0; pointer-events: none; }
+.wappen-karte__innen {
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem; height: 100%;
+  padding: 0.75rem 0.5rem; text-align: center;
+  background: var(--flaeche); border: 2px solid var(--rahmen); border-radius: 0.75rem;
+}
+.wappen-karte:hover .wappen-karte__innen { transform: translateY(-2px); }
+.wappen-karte input:checked + .wappen-karte__innen { border-color: var(--akzent); box-shadow: 0 0 0 2px var(--akzent); }
+.wappen-karte input:focus-visible + .wappen-karte__innen { outline: 3px solid var(--akzent); outline-offset: 2px; }
+.wappen-karte__emoji { font-size: 2.5rem; line-height: 1; }
+.wappen-karte__titel { font-weight: 700; }
+.wappen-karte__spruch { font-size: 0.875rem; color: var(--text-leise); }
+.nw-profil__wappen { font-size: 1.8rem; line-height: 1; }
+.wappen-zeile { font-size: 1rem; color: var(--text-leise); font-weight: 400; }
+.wappen-rolle { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
+.wappen-rolle-gross { font-size: 1.15em; font-weight: 800; }

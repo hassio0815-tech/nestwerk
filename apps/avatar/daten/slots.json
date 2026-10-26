@@ -1,0 +1,36 @@
+{
+ "format": 1,
+ "figur_ebene": 30,
+ "slots": [
+  {
+   "schluessel": "hintergrund",
+   "name": "Hintergrund",
+   "ebene": 10
+  },
+  {
+   "schluessel": "ruecken",
+   "name": "Rücken",
+   "ebene": 20
+  },
+  {
+   "schluessel": "koerper",
+   "name": "Körper",
+   "ebene": 40
+  },
+  {
+   "schluessel": "kopf",
+   "name": "Kopf",
+   "ebene": 50
+  },
+  {
+   "schluessel": "hand",
+   "name": "Hand",
+   "ebene": 60
+  },
+  {
+   "schluessel": "begleiter",
+   "name": "Begleiter",
+   "ebene": 70
+  }
+ ]
+}

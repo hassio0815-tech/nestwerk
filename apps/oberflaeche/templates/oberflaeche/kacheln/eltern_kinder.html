@@ -1,0 +1,15 @@
+{% load avatar_tags %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>Kinder</h2>
+  {% for z in k.zeilen %}
+    <div class="zeile zeile--spalte">
+      <span class="zeile__name">{% avatar_bild z.kind "klein" %}<strong>{{ z.kind.anzeigename }}</strong></span>
+      <span class="reihe">
+        {% include "komponenten/punkte.html" with wert=z.guthaben %}
+        <span>{{ z.laufend }} laufend</span>
+        <span>{{ z.heute }} heute erledigt</span>
+      </span>
+    </div>
+  {% empty %}
+    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+  {% endfor %}
+</div></article>

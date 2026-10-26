@@ -1,0 +1,94 @@
+{% extends "oberflaeche/eltern_basis.html" %}
+{% comment %}Kinder- und Elternverwaltung nach der Einrichtung.{% endcomment %}
+{% block titel %}Familie{% endblock %}
+{% block seite %}
+  <h1>Familie</h1>
+  {% if ok %}<p class="feld__hinweis" role="status">{{ ok }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>Kinder</h2>
+    {% for z in kinder %}
+      {% with fkey="kind_"|add:z.benutzer.pk|stringformat:"s" %}
+      <article class="stapel familie-zeile" id="{{ fkey }}">
+        <div class="reihe"><strong>{{ z.benutzer.anzeigename }}</strong>{% if z.gesperrt %}{% include "komponenten/chip.html" with text="PIN gesperrt" stufe="epic" %}{% endif %}</div>
+        {% for key, text in fehler.items %}{% if key == fkey %}<p class="feld__hinweis feld__hinweis--fehler">{{ text }}</p>{% endif %}{% endfor %}
+        <form method="post" action="{% url 'oberflaeche:familie_kind_umbenennen' z.benutzer.pk %}" class="reihe">{% csrf_token %}
+          <label class="sr-only" for="n-{{ z.benutzer.pk }}">Name</label>
+          <input class="feld__eingabe" id="n-{{ z.benutzer.pk }}" name="anzeigename" value="{{ z.benutzer.anzeigename }}" maxlength="60" required>
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text="Umbenennen" %}
+        </form>
+        <form method="post" action="{% url 'oberflaeche:familie_kind_pin' z.benutzer.pk %}" class="reihe">{% csrf_token %}
+          <label class="sr-only" for="p-{{ z.benutzer.pk }}">Neue PIN</label>
+          <input class="feld__eingabe" id="p-{{ z.benutzer.pk }}" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" placeholder="Neue PIN" autocomplete="off" required>
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="schloss" text="PIN zurücksetzen" %}
+        </form>
+        <div class="reihe">
+          {% if z.gesperrt %}
+            <form method="post" action="{% url 'oberflaeche:familie_kind_entsperren' z.benutzer.pk %}">{% csrf_token %}
+              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text="Sperre aufheben" %}
+            </form>
+          {% endif %}
+          <details>
+            <summary>Deaktivieren</summary>
+            <form method="post" action="{% url 'oberflaeche:familie_kind_deaktivieren' z.benutzer.pk %}" class="reihe">{% csrf_token %}
+              <span>{{ z.benutzer.anzeigename }} kann sich dann nicht mehr anmelden. Die Punkte bleiben erhalten.</span>
+              {% include "komponenten/button.html" with typ="submit" variante="gefahr" klein=True text="Ja, deaktivieren" %}
+            </form>
+          </details>
+        </div>
+      </article>
+      {% endwith %}
+    {% empty %}
+      <p>Noch keine Kinder.</p>
+    {% endfor %}
+    <h3>Kind anlegen</h3>
+    {% if fehler.kind_neu %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler.kind_neu }}</p>{% endif %}
+    <form method="post" action="{% url 'oberflaeche:familie_kind_neu' %}" class="reihe">{% csrf_token %}
+      <label class="sr-only" for="kn-name">Name</label>
+      <input class="feld__eingabe" id="kn-name" name="anzeigename" placeholder="Name" maxlength="60" required>
+      <label class="sr-only" for="kn-pin">PIN</label>
+      <input class="feld__eingabe" id="kn-pin" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" placeholder="PIN (4 Ziffern)" autocomplete="off" required>
+      {% include "komponenten/button.html" with typ="submit" icon="plus" text="Anlegen" %}
+    </form>
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>Eltern</h2>
+    {% for e in eltern %}
+      {% with fkey="eltern_"|add:e.benutzer.pk|stringformat:"s" %}
+      <form method="post" action="{% url 'oberflaeche:familie_eltern' e.benutzer.pk %}" class="stapel familie-zeile">{% csrf_token %}
+        {% for key, text in fehler.items %}{% if key == fkey %}<p class="feld__hinweis feld__hinweis--fehler">{{ text }}</p>{% endif %}{% endfor %}
+        <div class="reihe">
+          <label class="sr-only" for="en-{{ e.benutzer.pk }}">Name</label>
+          <input class="feld__eingabe" id="en-{{ e.benutzer.pk }}" name="anzeigename" value="{{ e.benutzer.anzeigename }}" maxlength="60" required>
+          <label class="sr-only" for="er-{{ e.benutzer.pk }}">Rolle</label>
+          <select class="feld__eingabe" id="er-{{ e.benutzer.pk }}" name="rolle_label">
+            {% for wert, label in labels %}<option value="{{ wert }}"{% if wert == e.profil.rolle_label %} selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select>
+          <label class="sr-only" for="em-{{ e.benutzer.pk }}">E-Mail</label>
+          <input class="feld__eingabe" id="em-{{ e.benutzer.pk }}" name="email" type="email" value="{{ e.profil.email }}" placeholder="E-Mail">
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+        </div>
+      </form>
+      {% endwith %}
+    {% endfor %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>Familien-Passwort</h2>
+    {% if fehler.passwort %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler.passwort }}</p>{% endif %}
+    <form method="post" action="{% url 'oberflaeche:familie_passwort' %}" class="reihe">{% csrf_token %}
+      <label class="sr-only" for="pw1">Neues Passwort</label>
+      <input class="feld__eingabe" id="pw1" name="passwort" type="password" autocomplete="new-password" placeholder="Neues Passwort" minlength="8" required>
+      <label class="sr-only" for="pw2">Wiederholen</label>
+      <input class="feld__eingabe" id="pw2" name="passwort2" type="password" autocomplete="new-password" placeholder="Wiederholen" required>
+      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" icon="schloss" text="Passwort ändern" %}
+    </form>
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt reihe">
+    <h2>Geräte</h2>
+    {% url "konten:geraete" as geraete_url %}
+    {% include "komponenten/button.html" with href=geraete_url variante="sekundaer" icon="einstellungen" text="Geräte verwalten" %}
+  </div></section>
+{% endblock %}

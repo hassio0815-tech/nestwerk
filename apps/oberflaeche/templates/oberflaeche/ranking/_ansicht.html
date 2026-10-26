@@ -1,0 +1,11 @@
+{% comment %}Familien-Ranking (AP30). Gemeinsam für Tablet, Kinder-Seite und Eltern. Kontext: a = Ansicht,
+  gross = Tablet-Größe. Kein "letzter Platz": Reihenfolge ist nie eine Leistungsreihenfolge.{% endcomment %}
+{% if a.leer %}
+  {% include "komponenten/leer.html" with titel="Noch kein Ranking" text="Sobald die erste Woche läuft, erscheint hier die Familie." icon="pokal" %}
+{% else %}
+  <div class="rk{% if gross %} rk--gross{% endif %}" data-ranking-modus="{{ a.modus }}">
+    {% if a.modus == "held" %}{% include "oberflaeche/ranking/_held.html" %}
+    {% elif a.modus == "rohpunkte" %}{% include "oberflaeche/ranking/_roh.html" %}
+    {% else %}{% include "oberflaeche/ranking/_schaufenster.html" %}{% endif %}
+  </div>
+{% endif %}

@@ -1,0 +1,35 @@
+/* Familien-Ranking (AP30): Fortschritts-Schaufenster. Nur Tokens des Designsystems. */
+.rk { display: flex; flex-direction: column; gap: var(--abstand); }
+.rk-raster { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--abstand);
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); }
+.rk-karte { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: var(--abstand); background: var(--flaeche); text-align: center;
+  border: var(--rahmen-breite) solid var(--selten-farbe, var(--rahmen)); border-radius: var(--radius); }
+.rk-karte[data-selten] { box-shadow: 0 0 0 1px var(--selten-farbe, transparent); }
+.rk-karte--held { box-shadow: 0 0 1.2rem var(--selten-legendary); }
+.rk-karte__name { margin: 0; font-size: 1.15rem; }
+.rk-held-band { display: inline-flex; gap: 0.3rem; align-items: center; padding: 0.15rem 0.7rem;
+  background: var(--selten-legendary); color: #1a1a1a; border-radius: 999px; font-weight: 700; font-size: 0.875rem; }
+.rk-held-band .icon { width: 1.1em; height: 1.1em; }
+.rk-fakten { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem 1rem; margin: 0; }
+.rk-fakten div { display: flex; flex-direction: column; align-items: center; }
+.rk-fakten dt { font-size: 0.875rem; color: var(--text-leise); }
+.rk-fakten dd { margin: 0; font-weight: 700; }
+.rk-abzeichen { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.4rem; justify-content: center; }
+.rk-karte__punkte { margin: 0; color: var(--text-leise); font-size: 0.875rem; }
+.rk .avatar-bild--riesig { width: 7.5rem; }
+.rk--gross .avatar-bild--riesig { width: 8.5rem; }
+.rk--gross .rk-karte__name { font-size: 1.5rem; }
+.rk--gross .rk-fakten dd { font-size: 1.2rem; }
+.rk-held { display: flex; flex-direction: column; gap: var(--abstand-klein); align-items: center; text-align: center; }
+.rk-held__titel { display: flex; gap: 0.4rem; align-items: center; margin: 0; font-size: 1.2rem; font-weight: 700; }
+.rk-held__titel .icon { color: var(--selten-legendary); }
+.rk-held__text, .rk-held__vor { margin: 0; color: var(--text-leise); }
+.rk-titel { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; justify-content: center; color: var(--text-leise); }
+.rk-tabelle { width: 100%; border-collapse: collapse; }
+.rk-tabelle th, .rk-tabelle td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: var(--rahmen-breite) solid var(--rahmen); }
+.rk-tabelle thead th { color: var(--text-leise); font-size: 0.875rem; }
+.rk--gross .rk-tabelle { font-size: 1.3rem; }
+.rk-zuwachs { margin: 0; padding-left: 1.2rem; }
+.rk-modus { flex-wrap: wrap; }
+[data-kachel="oberflaeche.tablet_ranking"] { margin-block: var(--abstand-gross); }

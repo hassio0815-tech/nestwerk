@@ -1,0 +1,140 @@
+[project]
+name = "nestwerk"
+version = "0.1.0"
+description = "Nestwerk – the family hub for chores, rewards & learning (modulares Familien-Dashboard)"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+requires-python = ">=3.13"
+dependencies = [
+    "argon2-cffi==25.1.0",
+    "cryptography==50.0.2",
+    "Django==5.2.18",
+    "gunicorn==26.2.0",
+    "py-vapid==1.9.6",
+    "pillow==13.0.0",
+    "pillow-heif==1.8.1",
+    "pywebpush==2.5.0",
+    "whitenoise==6.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "pytest-django==4.14.0",
+    "ruff==0.17.2",
+    "import-linter==2.15",
+    "hypothesis==6.170.8",
+    "playwright==1.64.1",
+]
+
+# Kein installierbares Paket, nur Abhängigkeitsliste (pip install -e ".[dev]")
+[tool.setuptools]
+py-modules = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["migrations", "branding"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "nestwerk.settings.test"
+python_files = ["test_*.py"]
+testpaths = ["apps", "tests"]
+
+[tool.importlinter]
+root_packages = ["apps", "nestwerk"]
+
+# Schichten (ARCHITECTURE 2.1/2.2): Import nur nach unten. "|" = voneinander unabhängig.
+# Fach-Module (Schicht 3) importieren sich nie gegenseitig. Phase-2/3-Apps sind optional (Klammern).
+[[tool.importlinter.contracts]]
+name = "Schichten der Nestwerk-Apps"
+type = "layers"
+containers = ["apps"]
+layers = [
+    "oberflaeche | einrichtung",
+    "aufgaben | belohnung | (avatar) | (sondertag) | (familienziel) | (lernen) | (forschen) | (hausautomation)",
+    "spielregeln | benachrichtigung",
+    # punkte publiziert "punkte.gebucht" (ARCHITECTURE 2.3/5.2, AP04) -> punkte über ereignisse
+    "punkte",
+    "ereignisse",
+    "konten",
+    "kern",
+]
+
+# Öffentliche Schnittstelle je App (ARCHITECTURE 2.2): fremde models.py werden nicht importiert
+# (Review AP19, B-11). Indirekt über selectors/services ist erlaubt. Enums (z. B. konten.Rolle)
+# bleiben als bewusste Ausnahme erlaubt und sind deshalb nicht aufgeführt.
+[[tool.importlinter.contracts]]
+name = "Oberfläche liest nur über selectors/services"
+type = "forbidden"
+source_modules = ["apps.oberflaeche", "apps.einrichtung"]
+forbidden_modules = [
+    "apps.kern.models",
+    "apps.punkte.models",
+    "apps.ereignisse.models",
+    "apps.aufgaben.models",
+    "apps.belohnung.models",
+    "apps.avatar.models",
+    "apps.familienziel.models",
+    "apps.sondertag.models",
+]
+allow_indirect_imports = "True"
+ignore_imports = ["apps.*.tests.** -> **"]
+
+[[tool.importlinter.contracts]]
+name = "Fach-Module nutzen keine fremden Modelle"
+type = "forbidden"
+source_modules = [
+    "apps.aufgaben",
+    "apps.belohnung",
+    "apps.avatar",
+    "apps.sondertag",
+    "apps.familienziel",
+]
+forbidden_modules = [
+    "apps.kern.models",
+    "apps.punkte.models",
+    "apps.ereignisse.models",
+    "apps.benachrichtigung.models",
+    "apps.spielregeln.models",
+]
+allow_indirect_imports = "True"
+ignore_imports = ["apps.*.tests.** -> **"]
+
+[[tool.importlinter.contracts]]
+# Review AP31: Interna von spielregeln (raenge, abzeichen, held, auswertung ...) nur über
+# selectors/services/registry/events; avatar importierte spielregeln.raenge direkt.
+name = "spielregeln nur ueber seine oeffentliche Schnittstelle"
+type = "forbidden"
+source_modules = [
+    "apps.aufgaben",
+    "apps.belohnung",
+    "apps.avatar",
+    "apps.sondertag",
+    "apps.familienziel",
+    "apps.oberflaeche",
+    "apps.einrichtung",
+]
+forbidden_modules = [
+    "apps.spielregeln.raenge",
+    "apps.spielregeln.abzeichen",
+    "apps.spielregeln.held",
+    "apps.spielregeln.auswertung",
+    "apps.spielregeln.kontinuitaet",
+    "apps.spielregeln.serienbonus",
+]
+allow_indirect_imports = "True"
+ignore_imports = ["apps.*.tests.** -> **"]
+
+[[tool.importlinter.contracts]]
+name = "benachrichtigung haengt nur von ereignisse ab (nicht von punkte)"
+type = "forbidden"
+source_modules = ["apps.benachrichtigung"]
+forbidden_modules = ["apps.punkte"]
