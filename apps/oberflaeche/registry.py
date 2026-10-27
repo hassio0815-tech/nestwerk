@@ -2,6 +2,8 @@
 registrieren ihre Kacheln selbst über ``kern.registry.kachel_registrieren``; die Dashboards
 zeigen alles, was die Registry alle die Zielgruppe liefert."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern.registry import ELTERN, KIND, TABLET, Kachel, kachel_registrieren
 
 from . import ranking, selectors
@@ -81,7 +83,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_konto",
             "oberflaeche",
-            "Guthaben und XP",
+            _("Guthaben und XP"),
             T + "kind_konto.html",
             {KIND},
             _kind_konto,
@@ -90,7 +92,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_offene",
             "oberflaeche",
-            "Offene Aufgaben",
+            _("Offene Aufgaben"),
             T + "kind_offene.html",
             {KIND},
             _kind_offene,
@@ -99,7 +101,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_laufende",
             "oberflaeche",
-            "Meine Aufgaben",
+            _("Meine Aufgaben"),
             T + "kind_laufende.html",
             {KIND},
             _kind_laufende,
@@ -108,7 +110,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_belohnungen",
             "oberflaeche",
-            "Punkte einlösen",
+            _("Punkte einlösen"),
             T + "kind_belohnungen.html",
             {KIND},
             _kind_belohnungen,
@@ -117,7 +119,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_akzent",
             "oberflaeche",
-            "Meine Farbe",
+            _("Meine Farbe"),
             T + "kind_akzent.html",
             {KIND},
             _kind_akzent,
@@ -126,7 +128,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_entscheidungen",
             "oberflaeche",
-            "Entscheidungen",
+            _("Entscheidungen"),
             T + "eltern_entscheidungen.html",
             {ELTERN},
             _eltern_entscheidungen,
@@ -135,7 +137,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_kinder",
             "oberflaeche",
-            "Kinder",
+            _("Kinder"),
             T + "eltern_kinder.html",
             {ELTERN},
             _eltern_kinder,
@@ -144,7 +146,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_ereignisse",
             "oberflaeche",
-            "Ereignisse",
+            _("Ereignisse"),
             T + "eltern_ereignisse.html",
             {ELTERN},
             _eltern_ereignisse,
@@ -153,7 +155,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_system",
             "oberflaeche",
-            "Systemstatus",
+            _("Systemstatus"),
             T + "eltern_system.html",
             {ELTERN},
             _eltern_system,
@@ -162,7 +164,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_schnellzugriff",
             "oberflaeche",
-            "Schnellzugriff",
+            _("Schnellzugriff"),
             T + "eltern_schnellzugriff.html",
             {ELTERN},
             reihenfolge=50,
@@ -170,7 +172,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.tablet_ranking",
             "oberflaeche",
-            "Ranking",
+            _("Ranking"),
             T + "tablet_ranking.html",
             {TABLET},
             _ranking,
@@ -179,7 +181,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.kind_ranking",
             "oberflaeche",
-            "Familie",
+            _("Familie"),
             T + "kind_ranking.html",
             {KIND},
             _ranking,
@@ -188,7 +190,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_pruefen",
             "oberflaeche",
-            "Erledigt – kurz prüfen",
+            _("Erledigt – kurz prüfen"),
             "aufgaben/kacheln/eltern_pruefen.html",
             {ELTERN},
             _eltern_pruefen,
@@ -197,7 +199,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_ranking",
             "oberflaeche",
-            "Familien-Ranking",
+            _("Familien-Ranking"),
             T + "eltern_ranking.html",
             {ELTERN},
             _ranking_eltern,

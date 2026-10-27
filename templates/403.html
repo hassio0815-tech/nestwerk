@@ -1,6 +1,6 @@
-{% extends "basis/kind.html" %}
-{% block titel %}Kein Zugriff{% endblock %}
+{% extends "basis/kind.html" %}{% load i18n %}
+{% block titel %}{% translate "Kein Zugriff" %}{% endblock %}
 {% block inhalt %}
-  {% include "komponenten/leer.html" with titel="Kein Zugriff" text="Diese Seite ist nicht für dich." icon="schloss" %}
-  {% include "komponenten/button.html" with href="/" text="Zur Startseite" icon="home" %}
+  {% include "komponenten/leer.html" with titel=_("Kein Zugriff") text=_("Diese Seite ist nicht für dich.") icon="schloss" %}
+  {% include "komponenten/button.html" with href="/" text=_("Zur Startseite") icon="home" %}
 {% endblock %}

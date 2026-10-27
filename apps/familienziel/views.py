@@ -1,6 +1,7 @@
 """Eltern-Seite (Belohnungsliste, Wochenziel, Gleichstand, Historie) und Abstimmung der Kinder."""
 
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext
 from django.views.decorators.http import require_POST
 
 from apps.kern import zeit
@@ -101,7 +102,7 @@ def woche_setzen(request, pk):
         except services.FamilienzielFehler as fehler:
             return eltern_seite(request, fehler=str(fehler), status=400)
     else:
-        return eltern_seite(request, fehler="Bitte Ziel und Belohnung prüfen.", status=400)
+        return eltern_seite(request, fehler=gettext("Bitte Ziel und Belohnung prüfen."), status=400)
     return redirect("familienziel:eltern")
 
 

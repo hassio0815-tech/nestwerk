@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from django.db import IntegrityError, connection, transaction
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from apps.kern import audit, einstellungen
 from apps.kern.einstellungen import Typ
@@ -84,7 +85,7 @@ def _typ_sicherstellen(definition):
 
 
 def _typ_anlegen(definition):
-    _, erstellt = EreignisTyp.objects.get_or_create(
+    _typ, erstellt = EreignisTyp.objects.get_or_create(
         slug=definition.slug,
         defaults={
             "modul": definition.modul,
@@ -173,25 +174,27 @@ def einstellungen_definieren():
     einstellungen.definieren(
         "ereignisse.aufbewahrung_tage",
         Typ.GANZZAHL,
-        "Aufbewahrung verarbeiteter Ereignisse",
-        beschreibung="Erfolgreich verarbeitete Ereignisse (internes Protokoll) werden danach "
-        "gelöscht. Punkte, Protokoll (Audit) und Spielstände bleiben immer.",
-        einheit="Tage",
+        _("Aufbewahrung verarbeiteter Ereignisse"),
+        beschreibung=_(
+            "Erfolgreich verarbeitete Ereignisse (internes Protokoll) werden danach "
+            "gelöscht. Punkte, Protokoll (Audit) und Spielstände bleiben immer."
+        ),
+        einheit=_("Tage"),
         minimum=30,
         maximum=3650,
     )
     einstellungen.definieren(
         "ereignisse.max_versuche",
         Typ.GANZZAHL,
-        "Max. Versuche je Ereignis-Handler",
-        beschreibung="Danach gilt die Verarbeitung als aufgegeben (Systemstatus).",
+        _("Max. Versuche je Ereignis-Handler"),
+        beschreibung=_("Danach gilt die Verarbeitung als aufgegeben (Systemstatus)."),
         minimum=1,
         maximum=50,
     )
     einstellungen.definieren(
         "ereignisse.backoff_basis_sekunden",
         Typ.GANZZAHL,
-        "Wartezeit vor dem 1. Wiederholversuch",
+        _("Wartezeit vor dem 1. Wiederholversuch"),
         einheit="s",
         minimum=1,
         maximum=3600,
@@ -199,7 +202,7 @@ def einstellungen_definieren():
     einstellungen.definieren(
         "ereignisse.backoff_max_sekunden",
         Typ.GANZZAHL,
-        "Max. Wartezeit zwischen Versuchen",
+        _("Max. Wartezeit zwischen Versuchen"),
         einheit="s",
         minimum=1,
         maximum=86400,

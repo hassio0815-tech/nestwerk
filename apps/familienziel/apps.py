@@ -1,11 +1,12 @@
 from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
 
 
 class FamilienzielConfig(AppConfig):
     name = "apps.familienziel"
     label = "familienziel"
     default_auto_field = "django.db.models.BigAutoField"
-    verbose_name = "Familienziel"
+    verbose_name = _("Familienziel")
 
     def ready(self):
         from apps.ereignisse import registry as ereignis_registry

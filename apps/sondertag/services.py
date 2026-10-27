@@ -21,6 +21,7 @@ from datetime import date, datetime
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
@@ -264,26 +265,32 @@ def begleitung_text(wunsch: str) -> str:
 def wunsch_senden(kind, anspruch, *, wunsch, begleitung, jetzt=None) -> SondertagAnspruch:
     """Kind schickt (oder ändert) seinen Wunsch für den ersten offenen Anspruch."""
     if getattr(kind, "rolle", None) != "kind":
-        raise SondertagFehler("Nur Kinder schicken einen Sondertag-Wunsch.")
+        raise SondertagFehler(_("Nur Kinder schicken einen Sondertag-Wunsch."))
     jetzt = jetzt or zeit.jetzt()
     heute = zeit.heute(jetzt)
     text = " ".join((wunsch or "").split())
     max_zeichen = einstellungen.wert("sondertag.wunsch_max_zeichen")
     if not text:
-        raise SondertagFehler("Schreib auf, was du dir wünschst.")
+        raise SondertagFehler(_("Schreib auf, was du dir wünschst."))
     if len(text) > max_zeichen:
-        raise SondertagFehler(f"Dein Wunsch ist zu lang (höchstens {max_zeichen} Zeichen).")
+        raise SondertagFehler(
+            _("Dein Wunsch ist zu lang (höchstens %(max)s Zeichen).") % {"max": max_zeichen}
+        )
     if begleitung not in BegleitungWunsch.values:
-        raise SondertagFehler("Wähle, mit wem du den Tag verbringen möchtest.")
+        raise SondertagFehler(_("Wähle, mit wem du den Tag verbringen möchtest."))
     with transaction.atomic():
         geplant = plan(kind, heute)
         if not geplant or geplant[0][0].pk != getattr(anspruch, "pk", anspruch):
-            raise SondertagFehler("Für diesen Sondertag kannst du gerade keinen Wunsch schicken.")
+            raise SondertagFehler(
+                _("Für diesen Sondertag kannst du gerade keinen Wunsch schicken.")
+            )
         anspruch, ab = geplant[0]
         if ab > heute and not einstellungen.wert("sondertag.wunsch_vor_einloesbar_erlaubt"):
-            raise SondertagFehler(f"Wünschen kannst du dir etwas ab {datum_text(ab)}.")
+            raise SondertagFehler(
+                _("Wünschen kannst du dir etwas ab %(datum)s.") % {"datum": datum_text(ab)}
+            )
         if anspruch.kind_id != kind.pk:
-            raise SondertagFehler("Das ist nicht dein Sondertag.")
+            raise SondertagFehler(_("Das ist nicht dein Sondertag."))
         erneut = anspruch.status == Status.WUNSCH_OFFEN
         SondertagAnspruch.objects.filter(pk=anspruch.pk, status__in=OFFEN).update(
             wunsch=text,
@@ -324,14 +331,14 @@ def wunsch_senden(kind, anspruch, *, wunsch, begleitung, jetzt=None) -> Sonderta
 
 def _eltern_pruefen(von):
     if getattr(von, "rolle", None) != "eltern":
-        raise SondertagFehler("Das dürfen nur Eltern.")
+        raise SondertagFehler(_("Das dürfen nur Eltern."))
 
 
 def _laden(anspruch) -> SondertagAnspruch:
     pk = getattr(anspruch, "pk", anspruch)
     gefunden = SondertagAnspruch.objects.select_for_update().filter(pk=pk).first()
     if gefunden is None:
-        raise SondertagFehler("Diesen Sondertag gibt es nicht.")
+        raise SondertagFehler(_("Diesen Sondertag gibt es nicht."))
     return gefunden
 
 
@@ -343,17 +350,19 @@ def annehmen(anspruch, *, von, heute: date | None = None) -> SondertagAnspruch:
     with transaction.atomic():
         anspruch = _laden(anspruch)
         if anspruch.status != Status.WUNSCH_OFFEN:
-            raise SondertagFehler("Hier gibt es keinen offenen Wunsch.")
+            raise SondertagFehler(_("Hier gibt es keinen offenen Wunsch."))
         geplant = plan(anspruch.kind, heute)
         if not geplant or geplant[0][0].pk != anspruch.pk:
-            raise SondertagFehler("Ein früherer Sondertag dieses Kindes ist noch offen.")
+            raise SondertagFehler(_("Ein früherer Sondertag dieses Kindes ist noch offen."))
         ab = geplant[0][1]
         if ab > heute:
-            raise SondertagFehler(f"Annehmen geht erst ab {datum_text(ab)}.")
+            raise SondertagFehler(_("Annehmen geht erst ab %(datum)s.") % {"datum": datum_text(ab)})
         r, daten = regeln(), angenommene_daten(anspruch.kind)
         if not grenzen.erlaubt(heute, daten, r):  # z. B. später datierte Korrektur
             frei = grenzen.einloesbar_ab(heute, daten, r)
-            raise SondertagFehler(f"Annehmen geht erst ab {datum_text(frei)}.")
+            raise SondertagFehler(
+                _("Annehmen geht erst ab %(datum)s.") % {"datum": datum_text(frei)}
+            )
         SondertagAnspruch.objects.filter(pk=anspruch.pk, status=Status.WUNSCH_OFFEN).update(
             status=Status.ANGENOMMEN,
             angenommen_von=von,
@@ -391,7 +400,7 @@ def _anderer_elternteil(an):
     except (ValueError, ValidationError):
         eltern = None
     if eltern is None:
-        raise SondertagFehler("Bitte einen Elternteil wählen.")
+        raise SondertagFehler(_("Bitte einen Elternteil wählen."))
     return eltern
 
 
@@ -401,10 +410,10 @@ def uebergeben(anspruch, *, von, an) -> SondertagAnspruch:
     with transaction.atomic():
         anspruch = _laden(anspruch)
         if anspruch.status not in ANGENOMMEN:
-            raise SondertagFehler("Übergeben geht erst nach der Annahme.")
+            raise SondertagFehler(_("Übergeben geht erst nach der Annahme."))
         neu = _anderer_elternteil(an)
         if neu.pk == anspruch.begleitung_id:
-            raise SondertagFehler(f"{neu.anzeigename} begleitet schon.")
+            raise SondertagFehler(_("%(name)s begleitet schon.") % {"name": neu.anzeigename})
         alt = anspruch.begleitung_id
         SondertagAnspruch.objects.filter(pk=anspruch.pk).update(begleitung=neu)
         anspruch.refresh_from_db()
@@ -428,7 +437,7 @@ def _datum(wert, feld, *, leer_erlaubt=False) -> date | None:
     if wert in (None, ""):
         if leer_erlaubt:
             return None
-        raise SondertagFehler(f"{feld}: bitte ein Datum angeben.")
+        raise SondertagFehler(_("%(feld)s: bitte ein Datum angeben.") % {"feld": feld})
     if isinstance(wert, datetime):
         return wert.date()
     if isinstance(wert, date):
@@ -436,7 +445,7 @@ def _datum(wert, feld, *, leer_erlaubt=False) -> date | None:
     try:
         return date.fromisoformat(str(wert).strip())
     except ValueError:
-        raise SondertagFehler(f"{feld}: Datum im Format JJJJ-MM-TT.") from None
+        raise SondertagFehler(_("%(feld)s: Datum im Format JJJJ-MM-TT.") % {"feld": feld}) from None
 
 
 def _begleitung(wert):
@@ -461,19 +470,19 @@ def eintrag_aendern(
     with transaction.atomic():
         anspruch = _laden(anspruch)
         if anspruch.status not in ANGENOMMEN:
-            raise SondertagFehler("Nur angenommene oder vergangene Sondertage sind änderbar.")
+            raise SondertagFehler(_("Nur angenommene oder vergangene Sondertage sind änderbar."))
         neu = {}
         if annahme_datum is not None:
-            neu["annahme_datum"] = _datum(annahme_datum, "Bezugsdatum")
+            neu["annahme_datum"] = _datum(annahme_datum, _("Bezugsdatum"))
         if begleitung is not None:
             b = _begleitung(begleitung)
             neu["begleitung_id"] = b.pk if b else None
         if stattgefunden_am is not None:
-            neu["stattgefunden_am"] = _datum(stattgefunden_am, "Datum", leer_erlaubt=True)
+            neu["stattgefunden_am"] = _datum(stattgefunden_am, _("Datum"), leer_erlaubt=True)
         if notiz is not None:
             notiz = notiz.strip()
             if len(notiz) > NOTIZ_MAX:
-                raise SondertagFehler(f"Notiz: höchstens {NOTIZ_MAX} Zeichen.")
+                raise SondertagFehler(_("Notiz: höchstens %(max)s Zeichen.") % {"max": NOTIZ_MAX})
             neu["notiz"] = notiz
         geaendert = {f: v for f, v in neu.items() if getattr(anspruch, f) != v}
         if not geaendert:
@@ -505,11 +514,11 @@ def _json(wert):
 def stattgefunden(anspruch, *, von, datum=None, heute: date | None = None) -> SondertagAnspruch:
     """Sondertag hat stattgefunden (optional mit Datum, Standard heute)."""
     _eltern_pruefen(von)
-    tag = _datum(datum, "Datum", leer_erlaubt=True) or heute or zeit.heute()
+    tag = _datum(datum, _("Datum"), leer_erlaubt=True) or heute or zeit.heute()
     with transaction.atomic():
         anspruch = _laden(anspruch)
         if anspruch.status != Status.ANGENOMMEN:
-            raise SondertagFehler("Erst annehmen, dann als erledigt markieren.")
+            raise SondertagFehler(_("Erst annehmen, dann als erledigt markieren."))
         SondertagAnspruch.objects.filter(pk=anspruch.pk).update(
             status=Status.STATTGEFUNDEN, stattgefunden_am=tag
         )
@@ -530,11 +539,11 @@ def manuell_erfassen(
     """Historie nachtragen (z. B. Sondertag vor Go-live). Zählt für Abstand und App-Jahr."""
     _eltern_pruefen(von)
     if getattr(kind, "rolle", None) != "kind":
-        raise SondertagFehler("Sondertage gibt es nur für Kinder.")
-    tag = _datum(datum, "Datum")
+        raise SondertagFehler(_("Sondertage gibt es nur für Kinder."))
+    tag = _datum(datum, _("Datum"))
     notiz = (notiz or "").strip()
     if len(notiz) > NOTIZ_MAX:
-        raise SondertagFehler(f"Notiz: höchstens {NOTIZ_MAX} Zeichen.")
+        raise SondertagFehler(_("Notiz: höchstens %(max)s Zeichen.") % {"max": NOTIZ_MAX})
     b = _begleitung(begleitung)
     with transaction.atomic():
         anspruch = SondertagAnspruch.objects.create(
@@ -566,7 +575,7 @@ def manuell_loeschen(anspruch, *, von, heute: date | None = None) -> None:
     with transaction.atomic():
         anspruch = _laden(anspruch)
         if anspruch.quelle != Quelle.MANUELL:
-            raise SondertagFehler("Nur manuell erfasste Einträge lassen sich löschen.")
+            raise SondertagFehler(_("Nur manuell erfasste Einträge lassen sich löschen."))
         kind = anspruch.kind
         audit.protokollieren(
             "sondertag.manuell_geloescht",

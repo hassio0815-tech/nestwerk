@@ -1,5 +1,7 @@
 import pytest
+from django.conf import settings
 from django.test import Client
+from django.utils import translation
 
 from apps.konten.tests.conftest import (  # noqa: F401  (Fixtures weiterreichen)
     PIN,
@@ -29,6 +31,15 @@ def _beispielwert(d):
         Typ.ZEITZONE: "Europe/Berlin",
         Typ.LISTE: [],
     }[d.typ]
+
+
+@pytest.fixture(autouse=True)
+def sprache_zuruecksetzen():
+    """Die Sprach-Middleware aktiviert die Sprache je Anfrage dauerhaft im Thread: nach jedem
+    Test auf die Standardsprache zurück, damit deutsche Tests nicht von englischen abhängen."""
+    translation.activate(settings.LANGUAGE_CODE)
+    yield
+    translation.activate(settings.LANGUAGE_CODE)
 
 
 @pytest.fixture(autouse=True)

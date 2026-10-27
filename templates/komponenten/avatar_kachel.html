@@ -1,7 +1,7 @@
-{% load avatar_tags %}
+{% load i18n %}{% load avatar_tags %}
 {% comment %}Avatar-Kachel: mit ``benutzer`` die echte Figur (AP24), sonst Buchstaben-Platzhalter.{% endcomment %}
 {% if href %}<a class="kachel kachel--avatar{% if gesperrt %} kachel--gesperrt{% endif %}"{% if selten %} data-selten="{{ selten }}"{% endif %} href="{{ href }}">{% else %}<div class="kachel kachel--avatar{% if gesperrt %} kachel--gesperrt{% endif %}"{% if selten %} data-selten="{{ selten }}"{% endif %}>{% endif %}
   {% if benutzer %}{% avatar_bild benutzer "gross" %}{% else %}<span class="avatar-platz" aria-hidden="true"><span class="avatar-platz__buchstabe">{{ initial|default:"?" }}</span></span>{% endif %}
   <span class="kachel__titel">{{ name }}</span>
-  {% if gesperrt %}<span class="kachel__text">{% include "komponenten/icon.html" with name="schloss" %} <span>gesperrt</span></span>{% endif %}
+  {% if gesperrt %}<span class="kachel__text">{% include "komponenten/icon.html" with name="schloss" %} <span>{% translate "gesperrt" %}</span></span>{% endif %}
 {% if href %}</a>{% else %}</div>{% endif %}

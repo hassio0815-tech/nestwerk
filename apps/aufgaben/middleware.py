@@ -9,12 +9,13 @@ App kennt keine anderen Uploads; normale Formulare sind um Größenordnungen kle
 """
 
 from django.http import HttpResponse
+from django.utils.translation import gettext_lazy
 
 from apps.kern.einstellungen import EinstellungFehlt
 
 from . import nachweise
 
-MELDUNG = "Die Fotos sind zu groß. Bitte ein kleineres Foto nehmen."
+MELDUNG = gettext_lazy("Die Fotos sind zu groß. Bitte ein kleineres Foto nehmen.")
 
 
 class UploadGrenze:
@@ -29,5 +30,7 @@ class UploadGrenze:
             except EinstellungFehlt:  # vor der Einrichtung: keine Grenze bekannt
                 zu_gross = False
             if zu_gross:
-                return HttpResponse(MELDUNG, status=413, content_type="text/plain; charset=utf-8")
+                return HttpResponse(
+                    str(MELDUNG), status=413, content_type="text/plain; charset=utf-8"
+                )
         return self.get_response(request)

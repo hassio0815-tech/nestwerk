@@ -1,5 +1,6 @@
 {% extends "aufgaben/basis.html" %}
+{% load i18n %}
 {% load static %}
-{% block titel %}Meldungen{% endblock %}
+{% block titel %}{% translate "Meldungen" %}{% endblock %}
 {% block css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/nachweis.css' %}">{% endblock %}
 {% block seite %}{% include "aufgaben/_entscheidungen.html" %}{% endblock %}

@@ -4,6 +4,7 @@ als Kacheln (gefüllt / im Bau / leer), Ausbaustufe und ein nächstes Ziel."""
 from dataclasses import dataclass
 
 from django.urls import reverse
+from django.utils.translation import gettext, ngettext
 
 from apps.punkte import selectors as punkte_selectors
 
@@ -31,11 +32,15 @@ def _ziel_text(stufe, raenge_map, kind) -> str:
         f = sondertag.fortschritt(kind)
         if f.art in ("unterwegs", "ab_rang") and f.text:
             return f.text
-        return f"Noch {fehlt} {'Slot' if fehlt == 1 else 'Slots'} bis zur vollen Ausbaustufe!"
+        return ngettext(
+            "Noch %(n)s Slot bis zur vollen Ausbaustufe!",
+            "Noch %(n)s Slots bis zur vollen Ausbaustufe!",
+            fehlt,
+        ) % {"n": fehlt}
     naechster = raenge_map.get(stufe.rang_stufe + 1)
     if naechster is not None:
-        return f"Alle Slots voll! Als Nächstes: Rang {naechster.name}."
-    return "Alles ausgebaut. Höchster Rang erreicht!"
+        return gettext("Alle Slots voll! Als Nächstes: Rang %(rang)s.") % {"rang": naechster.name}
+    return gettext("Alles ausgebaut. Höchster Rang erreicht!")
 
 
 def charakter(kind, jetzt=None) -> dict | None:
@@ -62,16 +67,15 @@ def charakter(kind, jetzt=None) -> dict | None:
             kacheln.append(SlotKachel(slot, "gefuellt", b.mod, b, selten=selten))
         elif slot.pk in bau:
             e = bau[slot.pk]
-            kacheln.append(
-                SlotKachel(slot, "im_bau", e["mod"], e["besitz"], e, selten=selten)
-            )
+            kacheln.append(SlotKachel(slot, "im_bau", e["mod"], e["besitz"], e, selten=selten))
         else:
             link = f"{reverse('avatar:shop')}?slot={slot.schluessel}"
             kacheln.append(SlotKachel(slot, "leer", link=link))
     haelfte = (len(kacheln) + 1) // 2
     return {
         "name": services.avatar_name(kind),
-        "label": f"Ausbaustufe {stufe.aktuell}/{stufe.slots}",
+        "label": gettext("Ausbaustufe %(aktuell)s/%(slots)s")
+        % {"aktuell": stufe.aktuell, "slots": stufe.slots},
         "kind": kind,
         "stufe": stufe,
         "links": kacheln[:haelfte],

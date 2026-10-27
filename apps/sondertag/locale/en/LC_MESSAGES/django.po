@@ -1,0 +1,883 @@
+# English translation (source language: German).
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-26 19:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: einstellungen.py:19
+msgid "Sondertage pro App-Jahr"
+msgstr "Special days per app year"
+
+#: einstellungen.py:21
+msgid ""
+"Höchstens so viele Sondertage je Kind und App-Jahr (das App-Jahr beginnt am "
+"Go-live-Datum). Früher verdiente Sondertage warten, bis wieder Platz ist."
+msgstr ""
+"At most this many special days per child and app year (the app year starts "
+"on the go-live date). Special days earned earlier wait until there is room "
+"again."
+
+#: einstellungen.py:24 registry.py:42 templates/sondertag/eltern.html:3
+#: templates/sondertag/eltern.html:10
+#: templates/sondertag/kacheln/eltern_sondertag.html:3
+msgid "Sondertage"
+msgstr "Special days"
+
+#: einstellungen.py:31
+msgid "Mindestabstand zwischen Sondertagen"
+msgstr "Minimum gap between special days"
+
+#: einstellungen.py:33
+msgid ""
+"So viele Tage müssen zwischen zwei Sondertagen eines Kindes liegen. Bezug "
+"ist das Datum, an dem ihr den Wunsch angenommen habt (korrigierbar)."
+msgstr ""
+"This many days must pass between two special days of a child. It counts from "
+"the date you accepted the wish (can be corrected)."
+
+#: einstellungen.py:36
+msgid "Tage"
+msgstr "Days"
+
+#: einstellungen.py:43
+msgid "Wunsch schon vor dem Einlösedatum"
+msgstr "Wish before the redeem date"
+
+#: einstellungen.py:45
+msgid ""
+"Ja: Das Kind darf sich sofort nach dem Verdienen etwas wünschen; annehmen "
+"könnt ihr den Wunsch erst ab dem Einlösedatum."
+msgstr ""
+"Yes: the child can make a wish right after earning it; you can only accept "
+"the wish from the redeem date."
+
+#: einstellungen.py:52
+msgid "Länge des Sondertag-Wunschs"
+msgstr "Length of the special-day wish"
+
+#: einstellungen.py:53
+msgid "So viele Zeichen darf der Wunsch des Kindes höchstens haben."
+msgstr "The child's wish may have at most this many characters."
+
+#: einstellungen.py:54
+msgid "Zeichen"
+msgstr "Characters"
+
+#: events.py:37
+msgid "Sondertag freigeschaltet"
+msgstr "Special day unlocked"
+
+#: events.py:38
+msgid "Sondertag verdient"
+msgstr "Special day earned"
+
+#: events.py:39
+msgid "Sondertag-Wunsch"
+msgstr "Special-day wish"
+
+#: events.py:40
+msgid "Sondertag-Wunsch angenommen"
+msgstr "Special-day wish accepted"
+
+#: events.py:41
+msgid "Sondertag-Begleitung übergeben"
+msgstr "Special-day companion handed over"
+
+#: events.py:42
+msgid "Sondertag jetzt einlösbar"
+msgstr "Special day can be redeemed now"
+
+#: events.py:43
+msgid "Sondertag jetzt einlösbar (Eltern)"
+msgstr "Special day can be redeemed now (parents)"
+
+#: events.py:47
+msgid "Sondertag verdient!"
+msgstr "Special day earned!"
+
+#: events.py:48
+#, python-brace-format
+msgid "{kind} hat einen Sondertag verdient"
+msgstr "{kind} earned a special day"
+
+#: events.py:48
+#, python-brace-format
+msgid "{titel}. {hinweis}"
+msgstr "{titel}. {hinweis}"
+
+#: events.py:50
+#, python-brace-format
+msgid "Sondertag-Wunsch von {kind}"
+msgstr "Special-day wish from {kind}"
+
+#: events.py:51
+#, python-brace-format
+msgid "„{wunsch}“ · Begleitung: {begleitung}. {hinweis}"
+msgstr "\"{wunsch}\" · Companion: {begleitung}. {hinweis}"
+
+#: events.py:54
+msgid "Dein Wunsch wurde angenommen!"
+msgstr "Your wish was accepted!"
+
+#: events.py:55
+#, python-brace-format
+msgid "{begleitung} plant deinen Sondertag mit dir."
+msgstr "{begleitung} will plan your special day with you."
+
+#: events.py:57
+#, python-brace-format
+msgid "Sondertag von {kind}: {begleitung} übernimmt"
+msgstr "{kind}'s special day: {begleitung} takes over"
+
+#: events.py:57
+#, python-brace-format
+msgid "Übergeben von {akteur}."
+msgstr "Handed over by {akteur}."
+
+#: events.py:58
+msgid "Dein Sondertag ist jetzt einlösbar!"
+msgstr "Your special day can be redeemed now!"
+
+#: events.py:59
+#, python-brace-format
+msgid "Sondertag von {kind} ist jetzt einlösbar"
+msgstr "{kind}'s special day can be redeemed now"
+
+#: models.py:18
+msgid "Meilenstein"
+msgstr "Milestone"
+
+#: models.py:19
+msgid "manuell erfasst"
+msgstr "added manually"
+
+#: models.py:23
+msgid "verdient"
+msgstr "earned"
+
+#: models.py:24 templates/sondertag/eltern.html:71
+msgid "Wunsch offen"
+msgstr "Wish open"
+
+#: models.py:25
+msgid "angenommen"
+msgstr "accepted"
+
+#: models.py:26
+msgid "stattgefunden"
+msgstr "took place"
+
+#: models.py:32 selectors.py:102
+msgid "egal"
+msgstr "doesn't matter"
+
+#: prognose.py:37
+msgid "Ziel erreicht"
+msgstr "Goal reached"
+
+#: prognose.py:38
+msgid "knapp unter dem Ziel"
+msgstr "just below the goal"
+
+#: prognose.py:39
+msgid "deutlich unter dem Ziel"
+msgstr "well below the goal"
+
+#: prognose.py:164
+#, python-format
+msgid "%(name)s (Zyklus %(nr)s)"
+msgstr "%(name)s (cycle %(nr)s)"
+
+#: prognose.py:274
+msgid "XP-Schwellen"
+msgstr "XP thresholds"
+
+#: prognose.py:274
+msgid "Mindestwochen"
+msgstr "minimum weeks"
+
+#: prognose.py:283
+#, python-format
+msgid ""
+"Faktor %(faktor)s auf die %(knopf)s würde %(zahlen)s Sondertage in den "
+"beiden App-Jahren ergeben."
+msgstr ""
+"A factor of %(faktor)s on the %(knopf)s would give %(zahlen)s special days "
+"in the two app years."
+
+#: prognose.py:369
+msgid ""
+"Die XP-Schwellen bremsen hier nie: nur die Mindest-Aktivwochen bestimmen das "
+"Tempo (P-07). Ein Faktor auf die XP-Schwellen ändert deshalb nichts; den "
+"Faktor auf die Mindestwochen könnt ihr stattdessen nutzen."
+msgstr ""
+"The XP thresholds never slow things down here: only the minimum active weeks "
+"set the pace (P-07). A factor on the XP thresholds changes nothing, so use "
+"the factor on the minimum weeks instead."
+
+#: registry.py:31 templates/sondertag/kacheln/kind_sondertag.html:5
+msgid "Sondertag"
+msgstr "Special day"
+
+#: selectors.py:154
+#, python-format
+msgid "%(n)s Mod"
+msgid_plural "%(n)s Mods"
+msgstr[0] "%(n)s mod"
+msgstr[1] "%(n)s mods"
+
+#: selectors.py:156
+#, python-format
+msgid "%(n)s Woche"
+msgid_plural "%(n)s Wochen"
+msgstr[0] "%(n)s week"
+msgstr[1] "%(n)s weeks"
+
+#: selectors.py:158
+msgid "Fast geschafft: dein nächster Sondertag kommt gleich!"
+msgstr "Almost there: your next special day is coming soon!"
+
+#: selectors.py:160
+#, python-format
+msgid "%(a)s und %(b)s"
+msgstr "%(a)s and %(b)s"
+
+#: selectors.py:161
+#, python-format
+msgid "Noch %(teile)s bis zum Sondertag"
+msgstr "%(teile)s to go until your special day"
+
+#: selectors.py:269
+#, python-format
+msgid ""
+"Ab Rang %(rang)s: alle 6 Slots mit %(rang)s-Mods bauen bringt deinen "
+"nächsten Sondertag."
+msgstr ""
+"From rank %(rang)s: building all 6 slots with %(rang)s mods earns your next "
+"special day."
+
+#: selectors.py:300
+msgid "Dein Wunsch ist bei Mama und Papa. Sie melden sich!"
+msgstr "Your wish is with Mum and Dad. They will get back to you!"
+
+#: selectors.py:302
+msgid "Sondertag verdient! Wünsch dir etwas."
+msgstr "Special day earned! Make a wish."
+
+#: selectors.py:305
+#, python-format
+msgid "Wunsch gesendet. Verdient, einlösbar ab %(datum)s."
+msgstr "Wish sent. Earned, can be redeemed from %(datum)s."
+
+#: selectors.py:310
+#, python-format
+msgid "Sondertag verdient, einlösbar ab %(datum)s."
+msgstr "Special day earned, can be redeemed from %(datum)s."
+
+#: selectors.py:320
+msgid "Alle Sondertage verdient. Stark!"
+msgstr "All special days earned. Awesome!"
+
+#: services.py:268
+msgid "Nur Kinder schicken einen Sondertag-Wunsch."
+msgstr "Only kids send a special-day wish."
+
+#: services.py:274
+msgid "Schreib auf, was du dir wünschst."
+msgstr "Write down what you wish for."
+
+#: services.py:277
+#, python-format
+msgid "Dein Wunsch ist zu lang (höchstens %(max)s Zeichen)."
+msgstr "Your wish is too long (at most %(max)s characters)."
+
+#: services.py:280
+msgid "Wähle, mit wem du den Tag verbringen möchtest."
+msgstr "Choose who you want to spend the day with."
+
+#: services.py:285
+msgid "Für diesen Sondertag kannst du gerade keinen Wunsch schicken."
+msgstr "You can't send a wish for this special day right now."
+
+#: services.py:290
+#, python-format
+msgid "Wünschen kannst du dir etwas ab %(datum)s."
+msgstr "You can make a wish from %(datum)s."
+
+#: services.py:293
+msgid "Das ist nicht dein Sondertag."
+msgstr "That's not your special day."
+
+#: services.py:334
+msgid "Das dürfen nur Eltern."
+msgstr "Only parents can do that."
+
+#: services.py:341
+msgid "Diesen Sondertag gibt es nicht."
+msgstr "This special day doesn't exist."
+
+#: services.py:353
+msgid "Hier gibt es keinen offenen Wunsch."
+msgstr "There is no open wish here."
+
+#: services.py:356
+msgid "Ein früherer Sondertag dieses Kindes ist noch offen."
+msgstr "An earlier special day of this child is still open."
+
+#: services.py:359 services.py:364
+#, python-format
+msgid "Annehmen geht erst ab %(datum)s."
+msgstr "Accepting is possible from %(datum)s."
+
+#: services.py:403
+msgid "Bitte einen Elternteil wählen."
+msgstr "Please choose a parent."
+
+#: services.py:413
+msgid "Übergeben geht erst nach der Annahme."
+msgstr "Handing over is only possible after accepting."
+
+#: services.py:416
+#, python-format
+msgid "%(name)s begleitet schon."
+msgstr "%(name)s is already the companion."
+
+#: services.py:440
+#, python-format
+msgid "%(feld)s: bitte ein Datum angeben."
+msgstr "%(feld)s: please enter a date."
+
+#: services.py:448
+#, python-format
+msgid "%(feld)s: Datum im Format JJJJ-MM-TT."
+msgstr "%(feld)s: date in the format YYYY-MM-DD."
+
+#: services.py:473
+msgid "Nur angenommene oder vergangene Sondertage sind änderbar."
+msgstr "Only accepted or past special days can be changed."
+
+#: services.py:476 templates/sondertag/eltern.html:78
+msgid "Bezugsdatum"
+msgstr "Reference date"
+
+#: services.py:481 services.py:517 services.py:543
+#: templates/sondertag/eltern.html:98
+msgid "Datum"
+msgstr "Date"
+
+#: services.py:485 services.py:546
+#, python-format
+msgid "Notiz: höchstens %(max)s Zeichen."
+msgstr "Note: at most %(max)s characters."
+
+#: services.py:521
+msgid "Erst annehmen, dann als erledigt markieren."
+msgstr "Accept first, then mark as done."
+
+#: services.py:542
+msgid "Sondertage gibt es nur für Kinder."
+msgstr "Special days are only for kids."
+
+#: services.py:578
+msgid "Nur manuell erfasste Einträge lassen sich löschen."
+msgstr "Only manually added entries can be deleted."
+
+#: templates/sondertag/_popup.html:13
+msgid "Einen Moment …"
+msgstr "One moment …"
+
+#: templates/sondertag/_popup.html:16
+msgid "Den Termin macht ihr zusammen aus. Viel Spaß!"
+msgstr "You'll agree on a date together. Have fun!"
+
+#: templates/sondertag/_popup.html:19
+msgid "Du kannst den Wunsch auch später auf deiner Startseite schicken."
+msgstr "You can also send your wish later from your home page."
+
+#: templates/sondertag/_popup.html:20
+msgid "Später"
+msgstr "Later"
+
+#: templates/sondertag/_popup.html:20
+msgid "Schließen"
+msgstr "Close"
+
+#: templates/sondertag/_wunsch_form.html:3
+msgid "Dein Wunsch ist unterwegs zu Mama und Papa!"
+msgstr "Your wish is on its way to Mum and Dad!"
+
+#: templates/sondertag/_wunsch_form.html:4
+#, python-format
+msgid "Einlösen könnt ihr ihn ab %(ab)s."
+msgstr "You can redeem it from %(ab)s."
+
+#: templates/sondertag/_wunsch_form.html:6
+msgid "Gerade ist kein Sondertag offen."
+msgstr "No special day is open right now."
+
+#: templates/sondertag/_wunsch_form.html:8
+#, python-format
+msgid "Wünschen kannst du dir etwas ab %(ab)s."
+msgstr "You can make a wish from %(ab)s."
+
+#: templates/sondertag/_wunsch_form.html:12
+#, python-format
+msgid ""
+"Einlösbar ab <strong>%(ab)s</strong>. Deinen Wunsch kannst du schon jetzt "
+"schicken."
+msgstr ""
+"Can be redeemed from <strong>%(ab)s</strong>. You can send your wish right "
+"now."
+
+#: templates/sondertag/_wunsch_form.html:14
+msgid "Was wünschst du dir für deinen Sondertag?"
+msgstr "What do you wish for your special day?"
+
+#: templates/sondertag/_wunsch_form.html:15
+msgid "Zum Beispiel: Kletterhalle und danach Pizza"
+msgstr "For example: climbing gym and then pizza"
+
+#: templates/sondertag/_wunsch_form.html:18
+msgid "Mit wem möchtest du den Tag verbringen?"
+msgstr "Who do you want to spend the day with?"
+
+#: templates/sondertag/_wunsch_form.html:26
+#: templates/sondertag/kacheln/kind_sondertag.html:19
+msgid "Wunsch abschicken"
+msgstr "Send wish"
+
+#: templates/sondertag/_wunsch_form.html:27
+msgid ""
+"Du hast schon einen Wunsch geschickt. Du kannst ihn ändern, bis er "
+"angenommen ist."
+msgstr "You already sent a wish. You can change it until it is accepted."
+
+#: templates/sondertag/eltern.html:7 templates/sondertag/prognose.html:6
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/sondertag/eltern.html:11
+#, python-format
+msgid ""
+"Höchstens %(max)s Sondertage je Kind und App-Jahr (ab %(start)s), mindestens "
+"%(abstand)s Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht "
+"ihr außerhalb der App aus."
+msgstr ""
+"At most %(max)s special days per child and app year (from %(start)s), at "
+"least %(abstand)s days apart. It counts from the date of acceptance. You "
+"agree on the date outside the app."
+
+#: templates/sondertag/eltern.html:15
+msgid "Offene Wünsche"
+msgstr "Open wishes"
+
+#: templates/sondertag/eltern.html:18
+#, python-format
+msgid "<strong>%(kind)s</strong> wünscht sich: „%(wunsch)s“"
+msgstr "<strong>%(kind)s</strong> wishes for: \"%(wunsch)s\""
+
+#: templates/sondertag/eltern.html:19
+#, python-format
+msgid "Begleitung: %(begleitung)s · gesendet %(am)s · %(titel)s"
+msgstr "Companion: %(begleitung)s · sent %(am)s · %(titel)s"
+
+#: templates/sondertag/eltern.html:22 templates/sondertag/eltern.html:25
+msgid "Wunsch angenommen"
+msgstr "Wish accepted"
+
+#: templates/sondertag/eltern.html:23
+msgid "Wer annimmt, begleitet. Übergeben geht danach."
+msgstr "Whoever accepts is the companion. Handing over is possible afterwards."
+
+#: templates/sondertag/eltern.html:26
+#, python-format
+msgid "Annehmen ab %(ab)s (noch %(tage)s Tage)."
+msgstr "Accept from %(ab)s (%(tage)s days to go)."
+
+#: templates/sondertag/eltern.html:31
+msgid "Keine offenen Wünsche."
+msgstr "No open wishes."
+
+#: templates/sondertag/eltern.html:37
+msgid "Angenommen, noch nicht erledigt"
+msgstr "Accepted, not done yet"
+
+#: templates/sondertag/eltern.html:40
+#, python-format
+msgid "<strong>%(kind)s</strong>: „%(wunsch)s“ · angenommen %(am)s von %(von)s"
+msgstr "<strong>%(kind)s</strong>: \"%(wunsch)s\" · accepted %(am)s by %(von)s"
+
+#: templates/sondertag/eltern.html:41
+msgid "Begleitung:"
+msgstr "Companion:"
+
+#: templates/sondertag/eltern.html:41 templates/sondertag/eltern.html:80
+msgid "offen"
+msgstr "open"
+
+#: templates/sondertag/eltern.html:44
+msgid "Übergeben an"
+msgstr "Hand over to"
+
+#: templates/sondertag/eltern.html:46
+msgid "Übergeben"
+msgstr "Hand over"
+
+#: templates/sondertag/eltern.html:49 templates/sondertag/eltern.html:81
+msgid "Tag war am"
+msgstr "Day took place on"
+
+#: templates/sondertag/eltern.html:50
+msgid "Hat stattgefunden"
+msgstr "Took place"
+
+#: templates/sondertag/eltern.html:62
+msgid "Letzter Sondertag"
+msgstr "Last special day"
+
+#: templates/sondertag/eltern.html:62
+#: templates/sondertag/kacheln/eltern_sondertag.html:11
+#, python-format
+msgid "mit %(name)s"
+msgstr "with %(name)s"
+
+#: templates/sondertag/eltern.html:62
+#: templates/sondertag/kacheln/eltern_sondertag.html:11
+msgid "noch keiner"
+msgstr "none yet"
+
+#: templates/sondertag/eltern.html:63
+msgid "Nächster möglicher"
+msgstr "Next possible"
+
+#: templates/sondertag/eltern.html:63
+msgid "jetzt"
+msgstr "now"
+
+#: templates/sondertag/eltern.html:63
+msgid "(verdient)"
+msgstr "(earned)"
+
+#: templates/sondertag/eltern.html:63
+#, python-format
+msgid "frühestens %(datum)s"
+msgstr "earliest %(datum)s"
+
+#: templates/sondertag/eltern.html:64
+msgid "Zuletzt mit"
+msgstr "Last time with"
+
+#: templates/sondertag/eltern.html:64
+msgid "noch nie"
+msgstr "never"
+
+#: templates/sondertag/eltern.html:65
+msgid "Fortschritt"
+msgstr "Progress"
+
+#: templates/sondertag/eltern.html:65
+#: templates/sondertag/kacheln/kind_sondertag.html:23
+#, python-format
+msgid "Danach: %(weiter)s"
+msgstr "Then: %(weiter)s"
+
+#: templates/sondertag/eltern.html:68
+msgid "Verdient (Warteschlange)"
+msgstr "Earned (queue)"
+
+#: templates/sondertag/eltern.html:71
+#, python-format
+msgid "%(titel)s · verdient %(am)s"
+msgstr "%(titel)s · earned %(am)s"
+
+#: templates/sondertag/eltern.html:71
+#: templates/sondertag/kacheln/eltern_sondertag.html:12
+msgid "einlösbar"
+msgstr "can be redeemed"
+
+#: templates/sondertag/eltern.html:71
+#, python-format
+msgid "einlösbar ab %(ab)s"
+msgstr "can be redeemed from %(ab)s"
+
+#: templates/sondertag/eltern.html:75
+msgid "Historie"
+msgstr "History"
+
+#: templates/sondertag/eltern.html:79 templates/sondertag/eltern.html:99
+msgid "Begleitung"
+msgstr "Companion"
+
+#: templates/sondertag/eltern.html:82 templates/sondertag/eltern.html:100
+msgid "Notiz"
+msgstr "Note"
+
+#: templates/sondertag/eltern.html:83
+msgid "manuell"
+msgstr "manual"
+
+#: templates/sondertag/eltern.html:84 templates/sondertag/prognose.html:75
+#: templates/sondertag/prognose.html:81 templates/sondertag/prognose.html:88
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/sondertag/eltern.html:86
+msgid "Eintrag löschen"
+msgstr "Delete entry"
+
+#: templates/sondertag/eltern.html:88
+msgid "Noch keine Sondertage."
+msgstr "No special days yet."
+
+#: templates/sondertag/eltern.html:94
+msgid "Sondertag nachtragen"
+msgstr "Add a past special day"
+
+#: templates/sondertag/eltern.html:95
+msgid ""
+"Zum Beispiel einen Sondertag vor dem Start der App. Er zählt für Abstand und "
+"App-Jahr."
+msgstr ""
+"For example a special day from before the app started. It counts for the gap "
+"and the app year."
+
+#: templates/sondertag/eltern.html:97
+msgid "Kind"
+msgstr "Child"
+
+#: templates/sondertag/eltern.html:101
+msgid "Nachtragen"
+msgstr "Add"
+
+#: templates/sondertag/eltern.html:107
+msgid "Meilensteine verwalten"
+msgstr "Manage milestones"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:5
+#, python-format
+msgid "%(anzahl)s offener Wunsch"
+msgid_plural "%(anzahl)s offene Wünsche"
+msgstr[0] "%(anzahl)s open wish"
+msgstr[1] "%(anzahl)s open wishes"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:6
+#, python-format
+msgid "(ab %(ab)s)"
+msgstr "(from %(ab)s)"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:11
+#, python-format
+msgid "zuletzt %(am)s"
+msgstr "last on %(am)s"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:12
+#, python-format
+msgid "%(anzahl)s verdient,"
+msgstr "%(anzahl)s earned,"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:12
+#, python-format
+msgid "ab %(ab)s"
+msgstr "from %(ab)s"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:12
+#, python-format
+msgid "nächster frühestens %(datum)s"
+msgstr "next one earliest %(datum)s"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:15
+#: templates/sondertag/prognose.html:93
+msgid "Noch keine Kinder"
+msgstr "No kids yet"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:15
+#: templates/sondertag/prognose.html:93
+msgid "Kinder legst du unter Familie an."
+msgstr "You add kids under Family."
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:18
+msgid "Sondertage verwalten"
+msgstr "Manage special days"
+
+#: templates/sondertag/kacheln/eltern_sondertag.html:20
+msgid "Prognose"
+msgstr "Forecast"
+
+#: templates/sondertag/kacheln/kind_sondertag.html:7
+msgid "Dein Wunsch ist angenommen!"
+msgstr "Your wish is accepted!"
+
+#: templates/sondertag/kacheln/kind_sondertag.html:7
+#, python-format
+msgid "%(name)s plant den Tag mit dir."
+msgstr "%(name)s is planning the day with you."
+
+#: templates/sondertag/kacheln/kind_sondertag.html:11
+msgid "Gebaute Slots"
+msgstr "Slots built"
+
+#: templates/sondertag/kacheln/kind_sondertag.html:16
+#, python-format
+msgid "Dein Wunsch: „%(wunsch)s“"
+msgstr "Your wish: \"%(wunsch)s\""
+
+#: templates/sondertag/kacheln/kind_sondertag.html:17
+msgid "Wunsch ändern"
+msgstr "Change wish"
+
+#: templates/sondertag/kacheln/kind_sondertag.html:22
+#, python-format
+msgid "%(anzahl)s weiterer Sondertag wartet schon auf dich."
+msgid_plural "%(anzahl)s weitere Sondertage warten schon auf dich."
+msgstr[0] "%(anzahl)s more special day is already waiting for you."
+msgstr[1] "%(anzahl)s more special days are already waiting for you."
+
+#: templates/sondertag/prognose.html:3 templates/sondertag/prognose.html:10
+msgid "Prognose & Kalibrierung"
+msgstr "Forecast & calibration"
+
+#: templates/sondertag/prognose.html:11
+#, python-format
+msgid ""
+"Gerechnet aus dem Durchschnitt der letzten Wochen. Das Ziel sind %(ziel)s "
+"Sondertage je App-Jahr. Es ist eine Schätzung, kein Versprechen."
+msgstr ""
+"Calculated from the average of the last weeks. The goal is %(ziel)s special "
+"days per app year. It is an estimate, not a promise."
+
+#: templates/sondertag/prognose.html:24
+msgid "Basis"
+msgstr "Basis"
+
+#: templates/sondertag/prognose.html:25
+#, python-format
+msgid ""
+"Ø %(xp)s XP je Woche, %(quote)s %% aktive Wochen (letzte %(wochen)s Wochen)"
+msgstr ""
+"Avg. %(xp)s XP per week, %(quote)s %% active weeks (last %(wochen)s weeks)"
+
+#: templates/sondertag/prognose.html:26
+msgid "Nächster Rang"
+msgstr "Next rank"
+
+#: templates/sondertag/prognose.html:30
+#, python-format
+msgid "%(name)s ca. %(datum)s (in %(wochen)s Wochen)"
+msgstr "%(name)s approx. %(datum)s (in %(wochen)s weeks)"
+
+#: templates/sondertag/prognose.html:31
+#, python-format
+msgid "Engpass: XP-Schwelle (noch %(fehlt)s XP)"
+msgstr "Bottleneck: XP threshold (%(fehlt)s XP to go)"
+
+#: templates/sondertag/prognose.html:32
+#, python-format
+msgid "Engpass: Mindest-Aktivwochen (noch %(fehlt)s)"
+msgstr "Bottleneck: minimum active weeks (%(fehlt)s to go)"
+
+#: templates/sondertag/prognose.html:33
+msgid "XP und Aktivwochen gleich knapp"
+msgstr "XP and active weeks are equally tight"
+
+#: templates/sondertag/prognose.html:34
+msgid "Mit dem jetzigen Tempo nicht absehbar."
+msgstr "Not in sight at the current pace."
+
+#: templates/sondertag/prognose.html:35
+msgid "Höchster Rang erreicht."
+msgstr "Highest rank reached."
+
+#: templates/sondertag/prognose.html:38
+msgid "Nächster Sondertag"
+msgstr "Next special day"
+
+#: templates/sondertag/prognose.html:41
+#, python-format
+msgid "ca. %(datum)s (%(name)s)"
+msgstr "approx. %(datum)s (%(name)s)"
+
+#: templates/sondertag/prognose.html:41
+#, python-format
+msgid ", durch die Grenzen %(tage)s Tage später"
+msgstr ", %(tage)s days later because of the limits"
+
+#: templates/sondertag/prognose.html:42
+msgid "Keiner absehbar."
+msgstr "None in sight."
+
+#: templates/sondertag/prognose.html:46
+#, python-format
+msgid "App-Jahr %(nr)s"
+msgstr "App year %(nr)s"
+
+#: templates/sondertag/prognose.html:47
+#, python-format
+msgid "%(anzahl)s von %(ziel)s Sondertagen (%(ampel)s)"
+msgstr "%(anzahl)s of %(ziel)s special days (%(ampel)s)"
+
+#: templates/sondertag/prognose.html:48
+#, python-format
+msgid "(%(von)s bis %(bis)s)"
+msgstr "(%(von)s to %(bis)s)"
+
+#: templates/sondertag/prognose.html:57
+msgid "Empfehlung:"
+msgstr "Recommendation:"
+
+#: templates/sondertag/prognose.html:63
+msgid "Übernehmen"
+msgstr "Apply"
+
+#: templates/sondertag/prognose.html:67
+msgid ""
+"Kein Faktor bringt das Ziel näher. Dann bremsen die Sondertag-Grenzen "
+"(höchstens 2 je App-Jahr, 150 Tage Abstand) oder die Zeit bis zum nächsten "
+"Rang."
+msgstr ""
+"No factor gets closer to the goal. The special-day limits (at most 2 per app "
+"year, 150 days apart) or the time until the next rank are the brake."
+
+#: templates/sondertag/prognose.html:70
+#, python-format
+msgid "Kalibrierung von %(name)s"
+msgstr "Calibration for %(name)s"
+
+#: templates/sondertag/prognose.html:74
+msgid "Faktor XP-Schwellen (leer = keiner)"
+msgstr "XP threshold factor (empty = none)"
+
+#: templates/sondertag/prognose.html:80
+msgid "Faktor Mindestwochen (leer = keiner)"
+msgstr "Minimum weeks factor (empty = none)"
+
+#: templates/sondertag/prognose.html:86
+msgid "Faktor Mod-Preise"
+msgstr "Mod price factor"
+
+#: templates/sondertag/prognose.html:87
+msgid "Faktor Bauzeit"
+msgstr "Build time factor"
+
+#: templates/sondertag/prognose.html:96
+#, python-format
+msgid ""
+"Mod-Preise und Bauzeiten stellt ihr unter <a href=\"%(raenge_url)s\">Ränge</"
+"a> nach. Die Faktoren wirken nur auf künftige Aufstiege und Käufe; erreichte "
+"Ränge bleiben."
+msgstr ""
+"You adjust mod prices and build times under <a "
+"href=\"%(raenge_url)s\">Ranks</a>. The factors only affect future rank-ups "
+"and purchases; ranks already reached stay."
+
+#: views.py:168
+msgid "Bitte ein Kind wählen."
+msgstr "Please choose a child."

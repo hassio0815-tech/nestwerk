@@ -1,4 +1,4 @@
-{% comment %}
+{% load i18n %}{% comment %}
   PIN-Pad, 4 Ziffern. Schreibt in ein verstecktes Feld (Name: feld, Standard "pin").
   Gehört in ein <form>. Der OK-Knopf ist erst bei 4 Ziffern aktiv (static/js/nestwerk.js).
 {% endcomment %}
@@ -20,8 +20,8 @@
     <button type="button" class="pin__taste" data-pin-taste="7">7</button>
     <button type="button" class="pin__taste" data-pin-taste="8">8</button>
     <button type="button" class="pin__taste" data-pin-taste="9">9</button>
-    <button type="button" class="pin__taste pin__taste--aktion" data-pin-loeschen>{% include "komponenten/icon.html" with name="pfeil-links" %}<span>Löschen</span></button>
+    <button type="button" class="pin__taste pin__taste--aktion" data-pin-loeschen>{% include "komponenten/icon.html" with name="pfeil-links" %}<span>{% translate "Löschen" %}</span></button>
     <button type="button" class="pin__taste" data-pin-taste="0">0</button>
-    <button type="submit" class="pin__taste pin__taste--aktion pin__taste--ok" data-pin-ok disabled>{% include "komponenten/icon.html" with name="check" %}<span>OK</span></button>
+    <button type="submit" class="pin__taste pin__taste--aktion pin__taste--ok" data-pin-ok disabled>{% include "komponenten/icon.html" with name="check" %}<span>{% translate "OK" %}</span></button>
   </div>
 </div>

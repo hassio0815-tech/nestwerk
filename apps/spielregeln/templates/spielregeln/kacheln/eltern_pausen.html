@@ -1,13 +1,13 @@
-<article class="karte"><div class="karte__inhalt stapel">
-  <h2>Pausen</h2>
+{% load i18n %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Pausen" %}</h2>
   <form method="post" action="{% url 'spielregeln:schalter' %}" class="zeile">{% csrf_token %}
     <input type="hidden" name="ziel" value="{{ k.familie_wert }}"><input type="hidden" name="zurueck" value="{{ k.zurueck|default:"heim" }}">
-    <strong>Ganze Familie</strong>
+    <strong>{% translate "Ganze Familie" %}</strong>
     {% if k.familie %}
-      <span class="chip" data-selten="legendary">{% include "komponenten/icon.html" with name="pause" %} Pause{% if k.familie.bis %} bis {{ k.familie.bis|date:"d.m." }}{% endif %}</span>
-      {% include "komponenten/button.html" with typ="submit" name="aktion" wert="aus" variante="sekundaer" klein=True icon="x" text="Pause aus" %}
+      <span class="chip" data-selten="legendary">{% include "komponenten/icon.html" with name="pause" %} {% translate "Pause" %}{% if k.familie.bis %} {% translate "d.m." context "Datum ohne Jahr" as dfmt %}{% blocktranslate with datum=k.familie.bis|date:dfmt %}bis {{ datum }}{% endblocktranslate %}{% endif %}</span>
+      {% include "komponenten/button.html" with typ="submit" name="aktion" wert="aus" variante="sekundaer" klein=True icon="x" text=_("Pause aus") %}
     {% else %}
-      {% include "komponenten/button.html" with typ="submit" name="aktion" wert="an" variante="sekundaer" klein=True icon="pause" text="Pause an" %}
+      {% include "komponenten/button.html" with typ="submit" name="aktion" wert="an" variante="sekundaer" klein=True icon="pause" text=_("Pause an") %}
     {% endif %}
   </form>
   {% for z in k.zeilen %}
@@ -15,22 +15,22 @@
       <input type="hidden" name="ziel" value="{{ z.kind.pk }}"><input type="hidden" name="zurueck" value="{{ k.zurueck|default:"heim" }}">
       <strong>{{ z.kind.anzeigename }}</strong>
       <span class="reihe">
-        <span class="chip" data-selten="epic">{{ z.stand.wochenserie }} W Serie</span>
-        <span>{{ z.stand.aktive_wochen_gesamt }} aktive Wochen</span>
-        <span>{{ z.stand.tagesserie }} Tage in Folge</span>
+        <span class="chip" data-selten="epic">{% blocktranslate with w=z.stand.wochenserie %}{{ w }} W Serie{% endblocktranslate %}</span>
+        <span>{% blocktranslate count n=z.stand.aktive_wochen_gesamt %}{{ n }} aktive Woche{% plural %}{{ n }} aktive Wochen{% endblocktranslate %}</span>
+        <span>{% blocktranslate count n=z.stand.tagesserie %}{{ n }} Tag in Folge{% plural %}{{ n }} Tage in Folge{% endblocktranslate %}</span>
       </span>
       {% if z.eigene %}
-        <span class="chip" data-selten="legendary">{% include "komponenten/icon.html" with name="pause" %} Pause{% if z.eigene.bis %} bis {{ z.eigene.bis|date:"d.m." }}{% endif %}</span>
-        {% include "komponenten/button.html" with typ="submit" name="aktion" wert="aus" variante="sekundaer" klein=True icon="x" text="Pause aus" %}
+        <span class="chip" data-selten="legendary">{% include "komponenten/icon.html" with name="pause" %} {% translate "Pause" %}{% if z.eigene.bis %} {% translate "d.m." context "Datum ohne Jahr" as dfmt %}{% blocktranslate with datum=z.eigene.bis|date:dfmt %}bis {{ datum }}{% endblocktranslate %}{% endif %}</span>
+        {% include "komponenten/button.html" with typ="submit" name="aktion" wert="aus" variante="sekundaer" klein=True icon="x" text=_("Pause aus") %}
       {% elif k.familie %}
-        <span class="kachel__text">Familienpause</span>
+        <span class="kachel__text">{% translate "Familienpause" %}</span>
       {% else %}
-        {% include "komponenten/button.html" with typ="submit" name="aktion" wert="an" variante="sekundaer" klein=True icon="pause" text="Pause an" %}
+        {% include "komponenten/button.html" with typ="submit" name="aktion" wert="an" variante="sekundaer" klein=True icon="pause" text=_("Pause an") %}
       {% endif %}
     </form>
   {% empty %}
-    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+    {% include "komponenten/leer.html" with icon="person" titel=_("Noch keine Kinder") text=_("Kinder legst du unter Familie an.") %}
   {% endfor %}
   {% url "spielregeln:pausen" as pausen_url %}
-  {% include "komponenten/button.html" with href=pausen_url variante="geist" klein=True icon="kalender" text="Pause mit Zeitraum planen" %}
+  {% include "komponenten/button.html" with href=pausen_url variante="geist" klein=True icon="kalender" text=_("Pause mit Zeitraum planen") %}
 </div></article>

@@ -1,10 +1,11 @@
 {% extends "basis/kind.html" %}
+{% load i18n %}
 {% load static %}
-{% block titel %}Belohnungen{% endblock %}
+{% block titel %}{% translate "Belohnungen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/belohnung.css' %}">{% endblock %}
 {% block kopf_rechts %}
   {% url "konten:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Start" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
 {% endblock %}
 {% block inhalt %}
   <div id="belohnungen" class="stapel">{% include "belohnung/_kind_inhalt.html" %}</div>

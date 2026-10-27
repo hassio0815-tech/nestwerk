@@ -1,0 +1,169 @@
+# Nestwerk English translation.
+# This file is distributed under the same license as the PACKAGE package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/403.html:2 templates/403.html:4
+msgid "Kein Zugriff"
+msgstr "No access"
+
+#: templates/403.html:4
+msgid "Diese Seite ist nicht für dich."
+msgstr "This page is not for you."
+
+#: templates/403.html:5
+msgid "Zur Startseite"
+msgstr "Back to start"
+
+#: templates/basis/basis.html:32 templates/komponenten/modal.html:13
+#: templates/komponenten/popup.html:9 templates/komponenten/toast.html:4
+msgid "Schließen"
+msgstr "Close"
+
+#: templates/basis/basis.html:32
+msgid "Die Datei ist zu groß."
+msgstr "The file is too big."
+
+#: templates/basis/basis.html:34
+msgid "Zum Inhalt"
+msgstr "Skip to content"
+
+#: templates/basis/einrichtung.html:5 templates/basis/einrichtung.html:8
+msgid "Einrichtung"
+msgstr "Setup"
+
+#: templates/basis/einrichtung.html:16 templates/komponenten/fortschritt.html:3
+msgid "Fortschritt"
+msgstr "Progress"
+
+#: templates/basis/einstellungen.html:10
+msgid "Start"
+msgstr "Home"
+
+#: templates/basis/einstellungen.html:12
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+#: templates/basis/einstellungen.html:14
+msgid "Abmelden"
+msgstr "Log out"
+
+#: templates/basis/einstellungen.html:19
+msgid "Eltern-Bereich"
+msgstr "Parents' area"
+
+#: templates/basis/einstellungen.html:23
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/basis/einstellungen.html:24
+msgid "Einstellungen"
+msgstr "Settings"
+
+#: templates/basis/einstellungen.html:25
+msgid "Familie"
+msgstr "Family"
+
+#: templates/basis/einstellungen.html:26
+msgid "Geräte"
+msgstr "Devices"
+
+#: templates/basis/einstellungen.html:27
+msgid "Dungeon"
+msgstr "Dungeon"
+
+#: templates/basis/tablet.html:19
+msgid "Wer bist du?"
+msgstr "Who are you?"
+
+#: templates/basis/tablet.html:30
+msgid "Ranking"
+msgstr "Ranking"
+
+#: templates/basis/tablet.html:32
+msgid "Noch kein Ranking"
+msgstr "No ranking yet"
+
+#: templates/basis/tablet.html:32
+msgid "Sobald die erste Woche läuft, erscheint hier die Familie."
+msgstr "As soon as the first week is under way, your family shows up here."
+
+#: templates/komponenten/akzent_wahl.html:3
+msgid "Meine Farbe wählen"
+msgstr "Choose my colour"
+
+#: templates/komponenten/akzent_wahl.html:6
+#, python-format
+msgid "Farbe %(farbe)s"
+msgstr "Colour %(farbe)s"
+
+#: templates/komponenten/avatar_kachel.html:7
+#: templates/komponenten/profil_kachel.html:8
+msgid "gesperrt"
+msgstr "locked"
+
+#: templates/komponenten/darstellung.html:4
+msgid "Darstellung"
+msgstr "Appearance"
+
+#: templates/komponenten/darstellung.html:5
+msgid "Gilt für dieses Gerät. „System“ folgt der Einstellung deines Geräts."
+msgstr "Applies to this device. “System” follows your device setting."
+
+#: templates/komponenten/darstellung.html:7
+msgid "System"
+msgstr "System"
+
+#: templates/komponenten/darstellung.html:8
+#: templates/komponenten/umschalter.html:2
+msgid "Hell"
+msgstr "Light"
+
+#: templates/komponenten/darstellung.html:9
+#: templates/komponenten/umschalter.html:3
+msgid "Dunkel"
+msgstr "Dark"
+
+#: templates/komponenten/fortschritt.html:3
+#, python-format
+msgid "%(wert)s von %(max)s"
+msgstr "%(wert)s of %(max)s"
+
+#: templates/komponenten/pin_pad.html:23
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/komponenten/pin_pad.html:25
+msgid "OK"
+msgstr "OK"
+
+#: templates/komponenten/punkte.html:1
+msgid "Punkte"
+msgstr "Points"
+
+#: templates/komponenten/sprache_wahl.html:8
+msgid "Sprache"
+msgstr "Language"
+
+#: templates/komponenten/wappen_wahl.html:5
+msgid "Rolle"
+msgstr "Role"
+
+#: templates/komponenten/wappen_wahl.html:7
+msgid "– keine –"
+msgstr "– none –"
+
+#: templates/komponenten/wappen_wahl.html:10
+msgid "Oder eigene Rolle (z. B. Mami)"
+msgstr "Or your own role (e.g. Mummy)"
+
+#: templates/komponenten/wappen_wahl.html:13
+msgid "Wappen (optional)"
+msgstr "Crest (optional)"

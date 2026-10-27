@@ -3,6 +3,7 @@
 from datetime import date
 
 from django.db import transaction
+from django.utils.translation import gettext as _
 
 from apps.kern import zeit
 
@@ -59,9 +60,9 @@ def reihenfolge_lesen(text) -> list[int]:
     try:
         ids = [int(x) for x in str(text).split(",") if x.strip()]
     except ValueError as exc:
-        raise ValueError("Ungültige Reihenfolge") from exc
+        raise ValueError(_("Ungültige Reihenfolge")) from exc
     if len(ids) > MAX_REIHENFOLGE or len(set(ids)) != len(ids):
-        raise ValueError("Ungültige Reihenfolge")
+        raise ValueError(_("Ungültige Reihenfolge"))
     return ids
 
 
@@ -75,7 +76,7 @@ def verschieben(instanz_pk, datum: date, *, von, reihenfolge=()):
     try:
         inst = AufgabenInstanz.objects.get(pk=instanz_pk)
     except AufgabenInstanz.DoesNotExist as exc:
-        raise ValueError("Aufgabe nicht gefunden") from exc
+        raise ValueError(_("Aufgabe nicht gefunden")) from exc
     reihenfolge = list(reihenfolge)
     position = reihenfolge.index(inst.pk) if inst.pk in reihenfolge else None
     inst = instanzen.instanz_verschieben(inst, datum, von=von, sortierung=position)

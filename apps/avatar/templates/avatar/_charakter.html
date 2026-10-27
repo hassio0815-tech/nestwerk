@@ -1,9 +1,9 @@
-{% load avatar_tags %}{% comment %}Charakter-Bildschirm (Dungeon, erster Abschnitt). c = avatar.charakter.charakter(kind).
+{% load i18n avatar_tags %}{% comment %}Charakter-Bildschirm (Dungeon, erster Abschnitt). c = avatar.charakter.charakter(kind).
   Slots: gefüllt (Seltenheits-Glühen) und im Bau öffnen ein kleines Detail (details, ohne Skript), leer führt in den Shop mit Slot-Filter.{% endcomment %}
 <section class="karte charakter" data-charakter aria-labelledby="charakter-titel">
   <div class="karte__inhalt stapel">
     <div class="charakter__kopf">
-      <h2 id="charakter-titel" class="sr-only">Meine Figur</h2>
+      <h2 id="charakter-titel" class="sr-only">{% translate "Meine Figur" %}</h2>
       {% include "avatar/_name.html" with name=c.name standard=c.kind.anzeigename %}
     </div>
     <div class="charakter__buehne">

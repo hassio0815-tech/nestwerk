@@ -4,22 +4,29 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 TASCHENGELD = "taschengeld"
+
+
+def euro_text(cent):
+    """Cent als Betrag in der aktiven Sprache (de: ``2,50 €``, en: ``€2.50``)."""
+    return gettext("%(euro)s,%(cent)02d €") % {"euro": cent // 100, "cent": cent % 100}
 
 
 class Belohnungskategorie(models.Model):
     name = models.CharField(max_length=40, unique=True)
     symbol = models.CharField(max_length=60)
     systemschluessel = models.SlugField(
-        blank=True, help_text="Feste Kennung; 'taschengeld' aktiviert die Limit-Logik."
+        blank=True, help_text=_("Feste Kennung; 'taschengeld' aktiviert die Limit-Logik.")
     )
     reihenfolge = models.SmallIntegerField(default=0)
 
     class Meta:
         ordering = ["reihenfolge", "name"]
-        verbose_name = "Belohnungskategorie"
-        verbose_name_plural = "Belohnungskategorien"
+        verbose_name = _("Belohnungskategorie")
+        verbose_name_plural = _("Belohnungskategorien")
         constraints = [
             models.UniqueConstraint(
                 fields=["systemschluessel"],
@@ -43,7 +50,7 @@ class Belohnung(models.Model):
     )
     preis_punkte = models.PositiveIntegerField()
     geldwert_cent = models.PositiveIntegerField(
-        null=True, blank=True, help_text="Nur Taschengeld: Betrag in Cent."
+        null=True, blank=True, help_text=_("Nur Taschengeld: Betrag in Cent.")
     )
     symbol = models.CharField(max_length=60, blank=True)
     aktiv = models.BooleanField(default=True)
@@ -51,8 +58,8 @@ class Belohnung(models.Model):
 
     class Meta:
         ordering = ["kategorie__reihenfolge", "reihenfolge", "titel"]
-        verbose_name = "Belohnung"
-        verbose_name_plural = "Belohnungen"
+        verbose_name = _("Belohnung")
+        verbose_name_plural = _("Belohnungen")
         constraints = [
             models.CheckConstraint(condition=Q(preis_punkte__gt=0), name="belohnung_preis_pos"),
         ]
@@ -68,16 +75,18 @@ class Belohnung(models.Model):
         kategorie = getattr(self, "kategorie", None) if self.kategorie_id else None
         if kategorie is not None and kategorie.ist_taschengeld:
             if not self.geldwert_cent:
-                raise ValidationError({"geldwert_cent": "Taschengeld braucht einen Betrag."})
+                raise ValidationError(
+                    {"geldwert_cent": gettext("Taschengeld braucht einen Betrag.")}
+                )
         elif self.geldwert_cent is not None:
-            raise ValidationError({"geldwert_cent": "Nur Taschengeld hat einen Betrag."})
+            raise ValidationError({"geldwert_cent": gettext("Nur Taschengeld hat einen Betrag.")})
 
 
 class Status(models.TextChoices):
-    OFFEN = "offen", "Offen"
-    BESTAETIGT = "bestaetigt", "Bestätigt"
-    ABGELEHNT = "abgelehnt", "Abgelehnt"
-    ZURUECKGEZOGEN = "zurueckgezogen", "Zurückgezogen"
+    OFFEN = "offen", _("Offen")
+    BESTAETIGT = "bestaetigt", _("Bestätigt")
+    ABGELEHNT = "abgelehnt", _("Abgelehnt")
+    ZURUECKGEZOGEN = "zurueckgezogen", _("Zurückgezogen")
 
 
 class Einloeseantrag(models.Model):
@@ -105,8 +114,8 @@ class Einloeseantrag(models.Model):
 
     class Meta:
         ordering = ["-erstellt_am", "-id"]
-        verbose_name = "Einlöseantrag"
-        verbose_name_plural = "Einlöseanträge"
+        verbose_name = _("Einlöseantrag")
+        verbose_name_plural = _("Einlöseanträge")
         indexes = [models.Index(fields=["kind", "status"], name="belohnung_antrag_kind_status")]
         constraints = [
             models.CheckConstraint(
@@ -120,7 +129,7 @@ class Einloeseantrag(models.Model):
     @property
     def geldwert_text(self):
         cent = self.geldwert_cent_snapshot
-        return "" if cent is None else f"{cent // 100},{cent % 100:02d} €"
+        return "" if cent is None else euro_text(cent)
 
 
 class TaschengeldLimit(models.Model):
@@ -135,8 +144,8 @@ class TaschengeldLimit(models.Model):
     monatslimit_cent = models.PositiveIntegerField()
 
     class Meta:
-        verbose_name = "Taschengeld-Limit"
-        verbose_name_plural = "Taschengeld-Limits"
+        verbose_name = _("Taschengeld-Limit")
+        verbose_name_plural = _("Taschengeld-Limits")
 
     def __str__(self):
         return f"{self.kind_id}: {self.monatslimit_cent} Cent"

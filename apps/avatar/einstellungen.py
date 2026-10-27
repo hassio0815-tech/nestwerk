@@ -1,6 +1,8 @@
 """Einstellungen von avatar (AP26, AP27). Definition hier, Startwerte per Datenmigration
 0003/0004."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern.einstellungen import Typ, definieren
 
 STARTWERTE = {
@@ -18,30 +20,36 @@ def einstellungen_definieren():
     definieren(
         "avatar.max_zaehlende_mods_woche",
         Typ.GANZZAHL,
-        "Zählende Mods pro Woche",
-        beschreibung="So viele neu fertige Mods zählen je Woche für die Ausbaustufe. Weitere "
-        "Mods sind sofort nutzbar und zählen ab der nächsten freien Woche (Warteschlange).",
-        einheit="Mods",
+        _("Zählende Mods pro Woche"),
+        beschreibung=_(
+            "So viele neu fertige Mods zählen je Woche für die Ausbaustufe. Weitere "
+            "Mods sind sofort nutzbar und zählen ab der nächsten freien Woche (Warteschlange)."
+        ),
+        einheit=_("Mods"),
         minimum=1,
         maximum=6,
     )
     definieren(
         "avatar.godmode_zyklus_aktivwochen",
         Typ.GANZZAHL,
-        "God-Mode-Zyklus",
-        beschreibung="Nach dem Aufstieg in God Mode gibt es alle so viele aktiven Wochen ein "
-        "neues Mod-Set. Wer das Set des Zyklus fertig baut, verdient einen Sondertag.",
-        einheit="aktive Wochen",
+        _("God-Mode-Zyklus"),
+        beschreibung=_(
+            "Nach dem Aufstieg in God Mode gibt es alle so viele aktiven Wochen ein "
+            "neues Mod-Set. Wer das Set des Zyklus fertig baut, verdient einen Sondertag."
+        ),
+        einheit=_("aktive Wochen"),
         minimum=4,
         maximum=104,
     )
     definieren(
         "avatar.ruhmeshalle_ausbaustufe",
         Typ.GANZZAHL,
-        "Ruhmeshalle ab Ausbaustufe",
-        beschreibung="Ab dieser Ausbaustufe im aktuellen Rang kann ein Kind seinen Helden in die "
-        "Ruhmeshalle stellen und mit einem neuen Thema von vorn beginnen.",
-        einheit="Slots",
+        _("Ruhmeshalle ab Ausbaustufe"),
+        beschreibung=_(
+            "Ab dieser Ausbaustufe im aktuellen Rang kann ein Kind seinen Helden in die "
+            "Ruhmeshalle stellen und mit einem neuen Thema von vorn beginnen."
+        ),
+        einheit=_("Slots"),
         minimum=1,
         maximum=6,
     )

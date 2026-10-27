@@ -1,8 +1,8 @@
-<!doctype html>
-<html lang="de"><body style="font-family: sans-serif; color: #1c1830;">
-<p>Hallo {{ empfaenger.anzeigename }},</p>
+{% load i18n %}<!doctype html>
+{% get_current_language as LANGUAGE_CODE %}<html lang="{{ LANGUAGE_CODE }}"><body style="font-family: sans-serif; color: #1c1830;">
+<p>{% blocktranslate with name=empfaenger.anzeigename %}Hallo {{ name }},{% endblocktranslate %}</p>
 <h2 style="margin: 0 0 8px;">{{ titel }}</h2>
 {% if text %}<p>{{ text }}</p>{% endif %}
-{% if link %}<p><a href="{{ link }}" style="display: inline-block; padding: 10px 16px; background: #5b4bd6; color: #fff; text-decoration: none; border-radius: 8px;">Öffnen</a></p>{% endif %}
-<p style="color: #6b6880; font-size: 12px;">Nestwerk · <a href="{{ einstellungen }}">Benachrichtigungen einstellen</a></p>
+{% if link %}<p><a href="{{ link }}" style="display: inline-block; padding: 10px 16px; background: #5b4bd6; color: #fff; text-decoration: none; border-radius: 8px;">{% translate "Öffnen" %}</a></p>{% endif %}
+<p style="color: #6b6880; font-size: 12px;">Nestwerk · <a href="{{ einstellungen }}">{% translate "Benachrichtigungen einstellen" %}</a></p>
 </body></html>

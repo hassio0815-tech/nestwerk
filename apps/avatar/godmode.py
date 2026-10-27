@@ -23,6 +23,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext
 
 from apps.kern import einstellungen, zeit
 from apps.kern.zeit import IsoWoche
@@ -217,7 +218,10 @@ def metrik_zyklus(kind) -> int:
 
 def metrik_zyklus_bereiche(kind) -> dict[str, tuple[int, str]]:
     z = zyklus(kind)
-    return {f"zyklus-{n}": (int(n <= z.geschafft), f"Zyklus {n}") for n in range(1, z.aktuell + 1)}
+    return {
+        f"zyklus-{n}": (int(n <= z.geschafft), gettext("Zyklus %(n)s") % {"n": n})
+        for n in range(1, z.aktuell + 1)
+    }
 
 
 def metrik_set_bereiche(kind) -> dict[str, tuple[int, str]]:
@@ -227,7 +231,10 @@ def metrik_set_bereiche(kind) -> dict[str, tuple[int, str]]:
     if not z.godmode:
         return {}
     je_set = ausbaustufe(kind).je_set
-    return {f"zyklus-{n}": (je_set.get(n, 0), f"Set {n}") for n in range(1, z.aktuell + 1)}
+    return {
+        f"zyklus-{n}": (je_set.get(n, 0), gettext("Set %(n)s") % {"n": n})
+        for n in range(1, z.aktuell + 1)
+    }
 
 
 def metrik_set_vollstaendig(kind) -> int:

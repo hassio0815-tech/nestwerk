@@ -6,6 +6,7 @@ Kalibrierungsfaktor global/je Kind (K3). Abzeichen (AP23): anlegen, ändern, (de
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
 from apps.kern import registry as kern_registry
@@ -56,9 +57,9 @@ def _seite(request, form, status=200, fehler=""):
         "fehler": fehler,
         "pausen_kachel": {**pausen_kachel_kontext(), "zurueck": "pausen"},
         "abschnitte": [
-            ("Laufend", uebersicht.laufend, "laufend"),
-            ("Geplant", uebersicht.geplant, "geplant"),
-            ("Vorbei", uebersicht.vergangen, "vorbei"),
+            (_("Laufend"), uebersicht.laufend, "laufend"),
+            (_("Geplant"), uebersicht.geplant, "geplant"),
+            (_("Vorbei"), uebersicht.vergangen, "vorbei"),
         ],
     }
     return render(request, "spielregeln/pausen.html", kontext, status=status)
@@ -293,6 +294,8 @@ def abzeichen_galerie(request):
     for d in selectors.definitionen():
         varianten = [("", selectors.symbol(d))]  # Grundgrafik (auch Vorschau "Als Nächstes")
         if d.gruppe == "rang":
-            varianten += [(f"Rang {n}", selectors.symbol(d, f"rang-{n}")) for n in stufen]
+            varianten += [
+                (_("Rang %(n)s") % {"n": n}, selectors.symbol(d, f"rang-{n}")) for n in stufen
+            ]
         zeilen.append({"d": d, "varianten": varianten})
     return render(request, "spielregeln/abzeichen_galerie.html", {"zeilen": zeilen})

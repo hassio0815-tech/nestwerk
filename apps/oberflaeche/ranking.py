@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.avatar import selectors as avatar
 from apps.kern import einstellungen, zeit
 from apps.kern.zeit import IsoWoche
@@ -26,9 +28,9 @@ from apps.spielregeln import selectors as spielregeln
 from .einstellungen import RANKING_MODI  # noqa: F401 (auch für Views)
 
 MODUS_TEXTE = {
-    "schaufenster": "Schaufenster",
-    "held": "Held der Woche",
-    "rohpunkte": "Rohpunkte",
+    "schaufenster": _("Schaufenster"),
+    "held": _("Held der Woche"),
+    "rohpunkte": _("Rohpunkte"),
 }
 TOP_ABZEICHEN = 3
 

@@ -1,10 +1,10 @@
-{% comment %}Leerlauf-Timer für Kiosk-Sitzungen (Kontext kommt von konten.context.konten).
+{% load i18n %}{% comment %}Leerlauf-Timer für Kiosk-Sitzungen (Kontext kommt von konten.context.konten).
   Kein Inline-Script: Werte als data-Attribute, Logik in static/js/leerlauf.js.{% endcomment %}
 {% load static %}
 {% if kiosk_leerlauf_sekunden %}
   <div data-leerlauf data-sekunden="{{ kiosk_leerlauf_sekunden }}" data-warnung="{{ kiosk_warnung_sekunden }}" data-aktiv-url="{% url 'konten:aktiv' %}">
     <div class="toast toast--info" role="status" data-leerlauf-warnung hidden>
-      <span class="toast__text">Noch da? Tippe irgendwo, sonst wirst du gleich abgemeldet.</span>
+      <span class="toast__text">{% translate "Noch da? Tippe irgendwo, sonst wirst du gleich abgemeldet." %}</span>
     </div>
     <form method="post" action="{% url 'konten:abmelden' %}" data-leerlauf-form>{% csrf_token %}</form>
   </div>

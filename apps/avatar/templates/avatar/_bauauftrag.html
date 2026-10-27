@@ -1,9 +1,11 @@
-{% comment %}Ein laufender Bauauftrag (b = Eintrag aus selectors.bauauftraege){% endcomment %}
+{% load i18n avatar_tags %}{% comment %}Ein laufender Bauauftrag (b = Eintrag aus selectors.bauauftraege){% endcomment %}
+{% with modname=b.mod.name|uebersetzt %}
 <div class="mod-bau stapel" data-bau="{{ b.besitz.pk }}">
   <div class="zeile">
-    <strong class="reihe">{% include "komponenten/icon.html" with name="funke" klasse="mod-bau__funke" %} {{ b.mod.name }}</strong>
-    <span class="kachel__text">{% include "komponenten/icon.html" with name="uhr" %} fertig {{ b.rest }}</span>
+    <strong class="reihe">{% include "komponenten/icon.html" with name="funke" klasse="mod-bau__funke" %} {{ modname }}</strong>
+    <span class="kachel__text">{% include "komponenten/icon.html" with name="uhr" %} {% blocktranslate with rest=b.rest %}fertig {{ rest }}{% endblocktranslate %}</span>
   </div>
-  <progress class="fortschritt mod-bau__balken" value="{{ b.prozent }}" max="100" aria-label="{{ b.mod.name }} {{ b.taetigkeit }}">{{ b.prozent }} %</progress>
-  <span class="kachel__text">{{ b.mod.slot.name }} {{ b.taetigkeit }} …</span>
+  <progress class="fortschritt mod-bau__balken" value="{{ b.prozent }}" max="100" aria-label="{{ modname }} {{ b.taetigkeit }}">{{ b.prozent }} %</progress>
+  <span class="kachel__text">{{ b.mod.slot.name|uebersetzt }} {{ b.taetigkeit }} …</span>
 </div>
+{% endwith %}

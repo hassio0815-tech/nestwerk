@@ -1,4 +1,6 @@
 from django import forms
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from apps.konten import selectors as konten_selectors
 
@@ -24,43 +26,45 @@ class PlanFelderMixin(forms.Form):
     """Gemeinsame Formularfelder für Wiederholung/Zeitfenster/Limit (Aufgabe und Vorlage)."""
 
     wiederholungsart = forms.ChoiceField(
-        label="Wiederholung",
+        label=gettext_lazy("Wiederholung"),
         choices=wiederholung.ARTEN,
         initial=wiederholung.EINMALIG,
         widget=forms.RadioSelect,
     )
     wochentage = forms.MultipleChoiceField(
-        label="An diesen Wochentagen",
+        label=gettext_lazy("An diesen Wochentagen"),
         required=False,
-        choices=[(str(n), kurz) for n, kurz, _ in wiederholung.WOCHENTAGE],
+        choices=[(str(n), kurz) for n, kurz, _lang in wiederholung.WOCHENTAGE],
         widget=forms.CheckboxSelectMultiple,
     )
     intervall_tage = forms.IntegerField(
-        label="Alle ... Tage", required=False, min_value=1, max_value=365
+        label=gettext_lazy("Alle ... Tage"), required=False, min_value=1, max_value=365
     )
     fenster_von = forms.TimeField(
-        label="Frühestens ab (Uhrzeit)",
+        label=gettext_lazy("Frühestens ab (Uhrzeit)"),
         required=False,
         widget=forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
     )
     fenster_bis = forms.TimeField(
-        label="Erledigt bis (Uhrzeit)",
+        label=gettext_lazy("Erledigt bis (Uhrzeit)"),
         required=False,
-        help_text="Gesetzt = zeitgebunden: nach dieser Frist verfällt der Termin.",
+        help_text=gettext_lazy("Gesetzt = zeitgebunden: nach dieser Frist verfällt der Termin."),
         widget=forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
     )
     fenster_tage = forms.IntegerField(
-        label="Frist liegt ... Tage später",
+        label=gettext_lazy("Frist liegt ... Tage später"),
         required=False,
         min_value=0,
         max_value=30,
-        help_text="Zum Beispiel Mi 18:00 bis Do 07:00 = 1 Tag später.",
+        help_text=gettext_lazy("Zum Beispiel Mi 18:00 bis Do 07:00 = 1 Tag später."),
     )
     limit_anzahl = forms.IntegerField(
-        label="Höchstens ... mal", required=False, min_value=1, max_value=99
+        label=gettext_lazy("Höchstens ... mal"), required=False, min_value=1, max_value=99
     )
     limit_zeitraum = forms.ChoiceField(
-        label="pro", required=False, choices=[("", "(kein Limit)"), *wiederholung.ZEITRAEUME]
+        label=gettext_lazy("pro"),
+        required=False,
+        choices=[("", gettext_lazy("(kein Limit)")), *wiederholung.ZEITRAEUME],
     )
 
     def clean_wochentage(self):
@@ -69,12 +73,12 @@ class PlanFelderMixin(forms.Form):
 
 class AufgabeForm(PlanFelderMixin, forms.ModelForm):
     start_datum = forms.DateField(
-        label="Start",
+        label=gettext_lazy("Start"),
         required=False,
         widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
     )
     end_datum = forms.DateField(
-        label="Ende (optional)",
+        label=gettext_lazy("Ende (optional)"),
         required=False,
         widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
     )
@@ -103,11 +107,15 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         ]
         widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3}), "vorlage": forms.HiddenInput}
         labels = {
-            "punkte": "Punkte",
-            "titel": "Titel",
-            "beschreibung": "Beschreibung (optional)",
-            "zugewiesen_an": "Nur für dieses Kind (optional)",
-            "sonderpunkte_deckel_prozent": "Deckel für Sonderpunkte in % (leer = Standard)",
+            "punkte": gettext_lazy("Punkte"),
+            "kategorie": gettext_lazy("Kategorie"),
+            "freigabeart": gettext_lazy("Freigabeart"),
+            "titel": gettext_lazy("Titel"),
+            "beschreibung": gettext_lazy("Beschreibung (optional)"),
+            "zugewiesen_an": gettext_lazy("Nur für dieses Kind (optional)"),
+            "sonderpunkte_deckel_prozent": gettext_lazy(
+                "Deckel für Sonderpunkte in % (leer = Standard)"
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -117,9 +125,9 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
             self.fields["kategorie"].queryset |= Kategorie.objects.filter(
                 pk=self.instance.kategorie_id
             )
-        self.fields["kategorie"].empty_label = "(keine)"
+        self.fields["kategorie"].empty_label = _("(keine)")
         self.fields["zugewiesen_an"].queryset = konten_selectors.aktive_kinder()
-        self.fields["zugewiesen_an"].empty_label = "Alle Kinder"
+        self.fields["zugewiesen_an"].empty_label = _("Alle Kinder")
         self.fields["vorlage"].required = False
         if self.instance.pk and not self.is_bound:
             self.initial["wochentage"] = [str(t) for t in tage_aus_maske(self.instance.wochentage)]
@@ -134,7 +142,14 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
         model = Vorlage
         fields = ["titel", "punkte", "beschreibung", "kategorie", "freigabeart", "aktiv"]
         widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3})}
-        labels = {"beschreibung": "Beschreibung (optional)"}
+        labels = {
+            "beschreibung": gettext_lazy("Beschreibung (optional)"),
+            "titel": gettext_lazy("Titel"),
+            "punkte": gettext_lazy("Punkte"),
+            "kategorie": gettext_lazy("Kategorie"),
+            "freigabeart": gettext_lazy("Freigabeart"),
+            "aktiv": gettext_lazy("Aktiv"),
+        }
 
     # Wiederholung ist optional, solange nichts angegeben ist -> einmalig ohne JSON.
     def __init__(self, *args, **kwargs):
@@ -145,7 +160,7 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
             self.fields["kategorie"].queryset |= Kategorie.objects.filter(
                 pk=self.instance.kategorie_id
             )
-        self.fields["kategorie"].empty_label = "(keine)"
+        self.fields["kategorie"].empty_label = _("(keine)")
         if self.instance.pk and not self.is_bound:
             plan = self.instance.plan
             self.initial.update(
@@ -187,12 +202,17 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
 
 
 class KategorieForm(forms.ModelForm):
-    symbol = forms.ChoiceField(label="Symbol", choices=SYMBOLE)
+    symbol = forms.ChoiceField(label=gettext_lazy("Symbol"), choices=SYMBOLE)
 
     class Meta:
         model = Kategorie
         fields = ["name", "symbol", "farbe", "reihenfolge", "aktiv"]
-        labels = {"farbe": "Farbe (#rrggbb, optional)"}
+        labels = {
+            "farbe": gettext_lazy("Farbe (#rrggbb, optional)"),
+            "name": gettext_lazy("Name"),
+            "reihenfolge": gettext_lazy("Reihenfolge"),
+            "aktiv": gettext_lazy("Aktiv"),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -201,10 +221,10 @@ class KategorieForm(forms.ModelForm):
 
 class AufgabenFilterForm(forms.Form):
     kategorie = forms.ModelChoiceField(
-        Kategorie.objects.all(), required=False, empty_label="Alle Kategorien"
+        Kategorie.objects.all(), required=False, empty_label=gettext_lazy("Alle Kategorien")
     )
     status = forms.ChoiceField(
-        required=False, choices=[("", "Alle (ohne beendete)"), *Status.choices]
+        required=False, choices=[("", gettext_lazy("Alle (ohne beendete)")), *Status.choices]
     )
 
     def __init__(self, *args, **kwargs):

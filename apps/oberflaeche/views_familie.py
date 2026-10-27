@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_GET, require_POST
 
 from apps.konten import selectors, services
@@ -12,13 +14,13 @@ from apps.konten.models import ElternLabel, Rolle
 from apps.konten.zugriff import nur_eltern
 
 MELDUNGEN = {
-    "kind_neu": "Kind angelegt.",
-    "umbenannt": "Name geändert.",
-    "pin": "PIN zurückgesetzt.",
-    "entsperrt": "PIN-Sperre aufgehoben.",
-    "deaktiviert": "Kind deaktiviert.",
-    "eltern": "Angaben gespeichert.",
-    "passwort": "Familien-Passwort geändert.",
+    "kind_neu": gettext_lazy("Kind angelegt."),
+    "umbenannt": gettext_lazy("Name geändert."),
+    "pin": gettext_lazy("PIN zurückgesetzt."),
+    "entsperrt": gettext_lazy("PIN-Sperre aufgehoben."),
+    "deaktiviert": gettext_lazy("Kind deaktiviert."),
+    "eltern": gettext_lazy("Angaben gespeichert."),
+    "passwort": gettext_lazy("Familien-Passwort geändert."),
 }
 
 
@@ -130,7 +132,7 @@ def passwort(request):
     neu = request.POST.get("passwort", "")
     if neu != request.POST.get("passwort2", ""):
         return _seite(
-            request, fehler={"passwort": "Die beiden Eingaben sind verschieden."}, status=422
+            request, fehler={"passwort": _("Die beiden Eingaben sind verschieden.")}, status=422
         )
     try:
         services.eltern_passwort_setzen(neu)

@@ -1,17 +1,17 @@
 {% extends "basis/kind.html" %}
-{% load static %}
+{% load i18n static avatar_tags %}
 {% comment %}Erstwahl des Avatars (Kind): Figur und Thema. Die Vorschau lädt per HTMX nach, ohne JavaScript
   funktioniert das Formular trotzdem (Absenden prüft alles auf dem Server).{% endcomment %}
-{% block titel %}Avatar wählen{% endblock %}
+{% block titel %}{% translate "Avatar wählen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
 {% block inhalt %}
-  <h1>Bau deinen Avatar</h1>
+  <h1>{% translate "Bau deinen Avatar" %}</h1>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
   <form method="post" class="avatar-wahl" hx-get="{% url 'avatar:kind_wahl' %}" hx-trigger="change" hx-target="#avatar-vorschau" hx-swap="innerHTML">
     {% csrf_token %}
     <div class="avatar-wahl__figur">
       <fieldset class="avatar-wahl__gruppe">
-        <legend>Hautton</legend>
+        <legend>{% translate "Hautton" %}</legend>
         <div class="avatar-farben">
           {% for schluessel, name, farbe in optionen.haut %}
             <label class="avatar-farbe">
@@ -23,7 +23,7 @@
         </div>
       </fieldset>
       <fieldset class="avatar-wahl__gruppe">
-        <legend>Haarfarbe</legend>
+        <legend>{% translate "Haarfarbe" %}</legend>
         <div class="avatar-farben">
           {% for schluessel, name, farbe in optionen.haar %}
             <label class="avatar-farbe">
@@ -35,7 +35,7 @@
         </div>
       </fieldset>
       <fieldset class="avatar-wahl__gruppe">
-        <legend>Frisur</legend>
+        <legend>{% translate "Frisur" %}</legend>
         <div class="avatar-frisuren">
           {% for schluessel, name in optionen.frisur %}
             <label class="avatar-frisur">
@@ -50,7 +50,7 @@
       {% include "avatar/_vorschau.html" %}
     </div>
     <div class="avatar-wahl__senden">
-      {% include "komponenten/button.html" with typ="submit" gross=True icon="check" text="Das bin ich!" %}
+      {% include "komponenten/button.html" with typ="submit" gross=True icon="check" text=_("Das bin ich!") %}
     </div>
   </form>
 {% endblock %}

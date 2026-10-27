@@ -1,18 +1,19 @@
 {% extends "basis/einstellungen.html" %}
-{% block titel %}Pausen{% endblock %}
+{% load i18n %}
+{% block titel %}{% translate "Pausen" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
 {% endblock %}
 {% block seite %}
-  <h1>Pausen</h1>
-  <p>Pausierte Tage und Wochen sind neutral: Die Serie bricht nicht. Aufgaben in der Pause zählen normal.</p>
+  <h1>{% translate "Pausen" %}</h1>
+  <p>{% translate "Pausierte Tage und Wochen sind neutral: Die Serie bricht nicht. Aufgaben in der Pause zählen normal." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   {% include "spielregeln/kacheln/eltern_pausen.html" with k=pausen_kachel %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Pause eintragen</h2>
+    <h2>{% translate "Pause eintragen" %}</h2>
     <form method="post" action="{% url 'spielregeln:pause_neu' %}" class="stapel">{% csrf_token %}
       {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
       {% for f in form.visible_fields %}
@@ -23,7 +24,7 @@
           {% if f.help_text %}<p class="feld__hinweis">{{ f.help_text }}</p>{% endif %}
         </div>
       {% endfor %}
-      <div class="reihe">{% include "komponenten/button.html" with typ="submit" icon="pause" text="Pause eintragen" %}</div>
+      <div class="reihe">{% include "komponenten/button.html" with typ="submit" icon="pause" text=_("Pause eintragen") %}</div>
     </form>
   </div></section>
 
@@ -32,20 +33,20 @@
       <h2>{{ titel }}</h2>
       {% for p in liste %}
         <div class="zeile" data-pause="{{ p.pk }}">
-          <strong>{% if p.kind %}{{ p.kind.anzeigename }}{% else %}Ganze Familie{% endif %}</strong>
-          <span>{{ p.von|date:"d.m.Y" }} – {% if p.bis %}{{ p.bis|date:"d.m.Y" }}{% else %}offen{% endif %}</span>
+          <strong>{% if p.kind %}{{ p.kind.anzeigename }}{% else %}{% translate "Ganze Familie" %}{% endif %}</strong>
+          <span>{{ p.von|date:"SHORT_DATE_FORMAT" }} – {% if p.bis %}{{ p.bis|date:"SHORT_DATE_FORMAT" }}{% else %}{% translate "offen" %}{% endif %}</span>
           {% if p.grund %}<span class="kachel__text">{{ p.grund }}</span>{% endif %}
-          <span class="kachel__text">von {% if p.erstellt_von %}{{ p.erstellt_von.anzeigename }}{% else %}{{ p.get_quelle_display }}{% endif %}</span>
+          <span class="kachel__text">{% if p.erstellt_von %}{% blocktranslate with name=p.erstellt_von.anzeigename %}von {{ name }}{% endblocktranslate %}{% else %}{% blocktranslate with quelle=p.get_quelle_display %}von {{ quelle }}{% endblocktranslate %}{% endif %}</span>
           {% if art == "laufend" %}
             <form method="post" action="{% url 'spielregeln:pause_beenden' p.pk %}">{% csrf_token %}<input type="hidden" name="zurueck" value="pausen">
-              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text="Beenden" %}</form>
+              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text=_("Beenden") %}</form>
           {% elif art == "geplant" %}
             <form method="post" action="{% url 'spielregeln:pause_loeschen' p.pk %}">{% csrf_token %}<input type="hidden" name="zurueck" value="pausen">
-              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text="Löschen" %}</form>
+              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text=_("Löschen") %}</form>
           {% endif %}
         </div>
       {% empty %}
-        <p class="kachel__text">Keine.</p>
+        <p class="kachel__text">{% translate "Keine." %}</p>
       {% endfor %}
     </div></section>
   {% endfor %}

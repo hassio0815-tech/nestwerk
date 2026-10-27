@@ -1,3 +1,3 @@
-{% load static %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">
-<h2 class="tablet-abschnitt__titel">Ranking</h2>
+{% load i18n %}{% load static %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">
+<h2 class="tablet-abschnitt__titel">{% translate "Ranking" %}</h2>
 {% include "oberflaeche/ranking/_ansicht.html" with a=k.a gross=True %}

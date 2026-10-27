@@ -3,6 +3,8 @@
 Ereignisse ohne Kind erreichen nur die Eltern. Für die Kinder (Konfetti-Pop-up) entsteht je Kind
 ein eigenes Ereignis mit Zusatz ``_kind`` (Router: ein Kind je Ereignis)."""
 
+from django.utils.translation import gettext_noop
+
 from apps.ereignisse import registry
 
 ERREICHT = "familienziel.erreicht"  # Eltern: Push "Pizza-Abend freigeschaltet!"
@@ -29,16 +31,24 @@ def typen_deklarieren():
 
     eltern = {"deep_link_muster": LINK_ELTERN}
     kind = {"deep_link_muster": LINK_KIND}
-    typ(ERREICHT, "Familienziel erreicht", "eltern", ("push",), **eltern)
-    typ(ERREICHT_KIND, "Familienziel erreicht (Kind)", "kind", ("popup",), **kind)
-    typ(ABSTIMMUNG_OFFEN, "Abstimmung über das Familienziel", "kind", ("popup",), **kind)
+    typ(ERREICHT, gettext_noop("Familienziel erreicht"), "eltern", ("push",), **eltern)
+    typ(ERREICHT_KIND, gettext_noop("Familienziel erreicht (Kind)"), "kind", ("popup",), **kind)
+    typ(
+        ABSTIMMUNG_OFFEN,
+        gettext_noop("Abstimmung über das Familienziel"),
+        "kind",
+        ("popup",),
+        **kind,
+    )
     typ(
         ABSTIMMUNG_GLEICHSTAND,
-        "Gleichstand bei der Abstimmung",
+        gettext_noop("Gleichstand bei der Abstimmung"),
         "eltern",
         ("push",),
         entscheidung=True,
         **eltern,
     )
-    typ(GROSSZIEL, "Großes Familienziel freigeschaltet", "eltern", ("push",), **eltern)
-    typ(GROSSZIEL_KIND, "Großes Familienziel (Kind)", "kind", ("popup",), **kind)
+    typ(
+        GROSSZIEL, gettext_noop("Großes Familienziel freigeschaltet"), "eltern", ("push",), **eltern
+    )
+    typ(GROSSZIEL_KIND, gettext_noop("Großes Familienziel (Kind)"), "kind", ("popup",), **kind)

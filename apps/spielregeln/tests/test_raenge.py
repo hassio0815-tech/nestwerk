@@ -245,7 +245,8 @@ def test_eltern_raenge_verwalten(eltern_client, anna, mama, uhr):
     html = eltern_client.get("/eltern/raenge/").content.decode()
     assert 'data-rang="godmode"' in html and "Kalibrierung" in html
     assert (
-        'data-kachel="spielregeln.eltern_raenge"' in eltern_client.get("/eltern/dungeon/").content.decode()
+        'data-kachel="spielregeln.eltern_raenge"'
+        in eltern_client.get("/eltern/dungeon/").content.decode()
     )
     rare = Rang.objects.get(schluessel="rare")
     antwort = eltern_client.post(

@@ -9,10 +9,11 @@ erreichbar. Nach Abschluss ist er gesperrt (404).
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import resolve_url
+from django.utils.translation import gettext as _
 
 from . import zustand
 
-FREIE_PFADE = ("/gesundheit/", "/static/", "/sw.js", "/manifest.json")
+FREIE_PFADE = ("/gesundheit/", "/static/", "/sw.js", "/manifest.json", "/i18n/")
 
 
 class EinrichtungErzwingen:
@@ -32,7 +33,7 @@ class EinrichtungErzwingen:
             return self.get_response(request)
         if not zustand.aus_heimnetz(request):
             return HttpResponseForbidden(
-                "Die Einrichtung ist nur aus dem Heimnetz möglich.", content_type="text/plain"
+                _("Die Einrichtung ist nur aus dem Heimnetz möglich."), content_type="text/plain"
             )
         if not im_assistenten:
             ziel = resolve_url("einrichtung:start")

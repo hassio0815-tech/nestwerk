@@ -96,7 +96,7 @@
         });
       });
     }).catch(function () {
-      fehler(karte, "Das hat nicht geklappt. Bitte noch einmal versuchen.");
+      fehler(karte, karte.getAttribute("data-push-text-aktivieren-fehler"));
       pruefen(karte);
     });
   }
@@ -112,7 +112,7 @@
         return senden(karte, karte.getAttribute("data-push-abmelden-url"), { endpoint: endpoint });
       });
     }).then(function () { anzeigen(karte, "bereit"); }).catch(function () {
-      fehler(karte, "Abmelden hat nicht geklappt. Bitte noch einmal versuchen.");
+      fehler(karte, karte.getAttribute("data-push-text-abmelden-fehler"));
     });
   }
 

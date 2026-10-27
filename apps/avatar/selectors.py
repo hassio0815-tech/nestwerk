@@ -6,6 +6,8 @@ AP26 (Logik in ``mods``): ``ausbaustufe(kind)`` (``.aktuell``, ``.je_seltenheit`
 ``inszenierung(thema)``, ``mod(schluessel)``.
 """
 
+from django.utils.translation import gettext
+
 from .generator import bibliothek
 from .models import Avatar, ModDefinition, Thema
 from .mods import (  # noqa: F401 (öffentliche Mod-API, AP26)
@@ -50,9 +52,9 @@ def figur_optionen():
     """Wählbare Hautfarben, Haarfarben und Frisuren für die Auswahl."""
     lib = bibliothek.figur()
     return {
-        "haut": [(k, v["name"], v["farbe"]) for k, v in lib["hautfarben"].items()],
-        "haar": [(k, v["name"], v["farbe"]) for k, v in lib["haarfarben"].items()],
-        "frisur": [(k, v["name"]) for k, v in lib["frisuren"].items()],
+        "haut": [(k, gettext(v["name"]), v["farbe"]) for k, v in lib["hautfarben"].items()],
+        "haar": [(k, gettext(v["name"]), v["farbe"]) for k, v in lib["haarfarben"].items()],
+        "frisur": [(k, gettext(v["name"])) for k, v in lib["frisuren"].items()],
     }
 
 

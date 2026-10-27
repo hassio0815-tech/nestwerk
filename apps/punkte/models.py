@@ -8,19 +8,20 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext_lazy
 
 from apps.kern.db import NurEinfuegenModell
 
 
 class Art(models.TextChoices):
-    AUFGABE = "aufgabe", "Aufgabe"
-    SERIENBONUS = "serienbonus", "Serienbonus"
-    SONDERPUNKTE = "sonderpunkte", "Sonderpunkte"
-    MODUL = "modul", "Modul"
-    EINLOESUNG = "einloesung", "Einlösung"
-    MODKAUF = "modkauf", "Mod-Kauf"
-    KORREKTUR = "korrektur", "Korrektur"
-    STORNO = "storno", "Storno"
+    AUFGABE = "aufgabe", gettext_lazy("Aufgabe")
+    SERIENBONUS = "serienbonus", gettext_lazy("Serienbonus")
+    SONDERPUNKTE = "sonderpunkte", gettext_lazy("Sonderpunkte")
+    MODUL = "modul", gettext_lazy("Modul")
+    EINLOESUNG = "einloesung", gettext_lazy("Einlösung")
+    MODKAUF = "modkauf", gettext_lazy("Mod-Kauf")
+    KORREKTUR = "korrektur", gettext_lazy("Korrektur")
+    STORNO = "storno", gettext_lazy("Storno")
 
 
 # Arten, deren XP-Wirkung negativ sein darf (ARCHITECTURE 13.2 K2)
@@ -64,8 +65,8 @@ class Buchung(NurEinfuegenModell):
     )
 
     class Meta:
-        verbose_name = "Buchung"
-        verbose_name_plural = "Buchungen"
+        verbose_name = gettext_lazy("Buchung")
+        verbose_name_plural = gettext_lazy("Buchungen")
         indexes = [
             models.Index(fields=["kind", "gebucht_am"], name="punkte_buchung_kind_idx"),
             models.Index(fields=["referenz_typ", "referenz_id"], name="punkte_buchung_ref_idx"),

@@ -13,6 +13,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.translation import get_language
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
 from apps.konten import sitzung
@@ -65,8 +67,8 @@ def manifest_daten():
     return {
         "name": "Nestwerk",
         "short_name": "Nestwerk",
-        "description": "Das Familien-Dashboard",
-        "lang": "de",
+        "description": _("Das Familien-Dashboard"),
+        "lang": get_language() or "de",
         "start_url": "/",
         "scope": "/",
         "id": "/",
@@ -202,11 +204,18 @@ def test_push(request):
     else:
         if not gesendet and not fehler:
             text, art = (
-                "Noch kein Gerät angemeldet. Zuerst Benachrichtigungen aktivieren.",
+                _("Noch kein Gerät angemeldet. Zuerst Benachrichtigungen aktivieren."),
                 "fehler",
             )
         elif fehler:
-            text, art = f"{gesendet} gesendet, {fehler} fehlgeschlagen.", "fehler"
+            text, art = (
+                _("%(gesendet)s gesendet, %(fehler)s fehlgeschlagen.")
+                % {"gesendet": gesendet, "fehler": fehler},
+                "fehler",
+            )
         else:
-            text, art = f"Test an {gesendet} Gerät(e) gesendet.", "ok"
+            text, art = (
+                _("Test an %(anzahl)s Gerät(e) gesendet.") % {"anzahl": gesendet},
+                "ok",
+            )
     return render(request, "benachrichtigung/_push_test_ergebnis.html", {"text": text, "art": art})

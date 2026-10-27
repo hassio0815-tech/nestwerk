@@ -9,6 +9,7 @@ from datetime import timedelta
 from zoneinfo import ZoneInfo
 
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from apps.kern import zeit
 from apps.kern.einstellungen import EinstellungFehlt
@@ -16,7 +17,7 @@ from apps.kern.einstellungen import EinstellungFehlt
 from . import registry
 
 ALLE_TAGE = 127
-TAGE = ("Mo", "Di", "Mi", "Do", "Fr", "Sa", "So")
+TAGE = (_("Mo"), _("Di"), _("Mi"), _("Do"), _("Fr"), _("Sa"), _("So"))
 
 
 def tag_bit(wochentag):
