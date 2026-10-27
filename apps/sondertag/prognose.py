@@ -163,7 +163,7 @@ def rechnen(e: Eingabe, faktor_schwelle: Decimal, faktor_wochen: Decimal) -> Erg
                     (
                         tag,
                         _("%(name)s (Zyklus %(nr)s)")
-                        % {"name": s.name, "nr": s.godmode_zyklus + i},
+                        % {"name": uebersetzt(s.name), "nr": s.godmode_zyklus + i},
                     )
                 )
             continue
@@ -236,7 +236,7 @@ def eingabe(kind, heute: date | None = None) -> Eingabe:
     f = spielregeln.rang_fortschritt(kind)
     aktuell = f.rang
     offen = tuple(
-        (r.stufe, r.name, r.xp_schwelle, r.min_aktive_wochen)
+        (r.stufe, uebersetzt(r.name), r.xp_schwelle, r.min_aktive_wochen)
         for r in spielregeln.raenge()
         if aktuell is None or r.stufe > aktuell.stufe
     )

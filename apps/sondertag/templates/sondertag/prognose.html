@@ -38,7 +38,7 @@
         <dt>{% translate "Nächster Sondertag" %}</dt>
         <dd data-pg-sondertag>
           {% with t=z.naechster_sondertag %}
-            {% if t %}{% blocktranslate with datum=t.datum|date:"SHORT_DATE_FORMAT" name=t.name %}ca. {{ datum }} ({{ name }}){% endblocktranslate %}{% if t.verschoben_tage %}{% blocktranslate with tage=t.verschoben_tage %}, durch die Grenzen {{ tage }} Tage später{% endblocktranslate %}{% endif %}
+            {% if t %}{% blocktranslate with datum=t.datum|date:"SHORT_DATE_FORMAT" name=t.name|uebersetzt %}ca. {{ datum }} ({{ name }}){% endblocktranslate %}{% if t.verschoben_tage %}{% blocktranslate with tage=t.verschoben_tage %}, durch die Grenzen {{ tage }} Tage später{% endblocktranslate %}{% endif %}
             {% else %}{% translate "Keiner absehbar." %}{% endif %}
           {% endwith %}
         </dd>

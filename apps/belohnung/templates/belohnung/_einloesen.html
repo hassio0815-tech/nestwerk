@@ -7,7 +7,7 @@
 {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung %}{% endif %}
 <div class="einloesen">
   {% for k in kacheln %}
-    <form method="post" action="{% url 'belohnung:beantragen' k.b.pk %}" hx-post="{% url 'belohnung:beantragen' k.b.pk %}" hx-target="#kind-einloesen .karte__inhalt" hx-swap="innerHTML" hx-confirm="{% blocktranslate with titel=k.b.titel count preis=k.b.preis_punkte %}{{ titel }} für {{ preis }} Punkt beantragen?{% plural %}{{ titel }} für {{ preis }} Punkte beantragen?{% endblocktranslate %}">
+    <form method="post" action="{% url 'belohnung:beantragen' k.b.pk %}" hx-post="{% url 'belohnung:beantragen' k.b.pk %}" hx-target="#kind-einloesen .karte__inhalt" hx-swap="innerHTML" hx-confirm="{% blocktranslate with titel=k.b.titel|uebersetzt count preis=k.b.preis_punkte %}{{ titel }} für {{ preis }} Punkt beantragen?{% plural %}{{ titel }} für {{ preis }} Punkte beantragen?{% endblocktranslate %}">
       {% csrf_token %}
       <input type="hidden" name="ort" value="dashboard">
       <button type="submit" class="kachel einloesen__kachel"{% if not k.moeglich %} disabled{% endif %}>

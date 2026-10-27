@@ -5,7 +5,7 @@
       {% for a in k.v.verdient %}
         <li class="abzeichen" data-abzeichen="{{ a.verleihung.abzeichen.schluessel }}" data-gruppe="{{ a.verleihung.abzeichen.gruppe }}" title="{{ a.verleihung.abzeichen.beschreibung|uebersetzt }}">
           {% include "spielregeln/_abzeichen_symbol.html" with s=a.symbol %}
-          <span class="abzeichen__name">{{ a.titel }}</span>
+          <span class="abzeichen__name">{{ a.titel|uebersetzt }}</span>
         </li>
       {% endfor %}
     </ul>

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 05:00+0000\n"
+"POT-Creation-Date: 2026-10-27 05:36+0000\n"
 "PO-Revision-Date: 2026-10-26 20:00+0000\n"
 "Last-Translator: Nestwerk\n"
 "Language-Team: English\n"
@@ -15,23 +15,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: charakter.py:36
+#: charakter.py:38
 #, python-format
 msgid "Noch %(n)s Slot bis zur vollen Ausbaustufe!"
 msgid_plural "Noch %(n)s Slots bis zur vollen Ausbaustufe!"
 msgstr[0] "Just %(n)s slot to go until fully built!"
 msgstr[1] "Just %(n)s slots to go until fully built!"
 
-#: charakter.py:42
+#: charakter.py:44
 #, python-format
 msgid "Alle Slots voll! Als Nächstes: Rang %(rang)s."
 msgstr "All slots full! Next up: rank %(rang)s."
 
-#: charakter.py:43
+#: charakter.py:45
 msgid "Alles ausgebaut. Höchster Rang erreicht!"
 msgstr "Everything built. Top rank reached!"
 
-#: charakter.py:77
+#: charakter.py:79
 #, python-format
 msgid "Ausbaustufe %(aktuell)s/%(slots)s"
 msgstr "Build level %(aktuell)s/%(slots)s"
@@ -3451,6 +3451,42 @@ msgstr "Price factor"
 #: templates/avatar/eltern.html:49
 msgid "Faktor Bauzeiten"
 msgstr "Build time factor"
+
+#: templates/avatar/galerie.html:5 templates/avatar/galerie.html:8
+msgid "Avatar-Galerie"
+msgstr "Avatar gallery"
+
+#: templates/avatar/galerie.html:9
+msgid ""
+"Grundfiguren aller Themen, je mit anderem Hautton, Haar und Frisur. Nur im "
+"Entwicklungsmodus."
+msgstr "Base figures of all themes, each with a different skin tone, hair and hairstyle. Development mode only."
+
+#: templates/avatar/galerie.html:10 templates/avatar/galerie.html:11
+msgid "Dunkler Hintergrund"
+msgstr "Dark background"
+
+#: templates/avatar/galerie.html:21 templates/avatar/galerie.html:22
+msgid "Heller Hintergrund"
+msgstr "Light background"
+
+#: templates/avatar/galerie.html:32 templates/avatar/galerie.html:33
+msgid "Mods je Thema"
+msgstr "Mods per theme"
+
+#: templates/avatar/galerie.html:34
+msgid "Je Thema 36 Mods: 6 Slots x Seltenheit 1 bis 6."
+msgstr "36 mods per theme: 6 slots x rarity 1 to 6."
+
+#: templates/avatar/galerie.html:42
+#, python-format
+msgid "Mods %(thema)s"
+msgstr "%(thema)s mods"
+
+#: templates/avatar/galerie.html:43
+#, python-format
+msgid "%(thema)s (%(anzahl)s Mods)"
+msgstr "%(thema)s (%(anzahl)s mods)"
 
 #: templates/avatar/kachel_kind.html:6
 msgid "Dein Avatar wartet!"

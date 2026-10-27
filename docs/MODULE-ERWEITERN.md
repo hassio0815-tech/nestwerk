@@ -1,5 +1,7 @@
 # Ein neues Modul anlegen
 
+🇬🇧 [English](en/EXTENDING-MODULES.md) · 🇩🇪 **Deutsch**
+
 Diese Anleitung zeigt am Beispiel **`lernen`** (Schicht 3), wie ein neues Fach-Modul in Nestwerk entsteht. Die Architektur steht in `docs/ARCHITECTURE.md`, die Regeln für Datenmodell und Startwerte in `docs/DATA_MODEL.md`.
 
 **Grundregel:** Ein neues Modul ist eine neue Django-App im selben Image. Es braucht **keine Änderung** an `oberflaeche` und keine Änderung an anderen Fach-Modulen.
@@ -207,7 +209,7 @@ Abzeichen und Meilensteine sind **Daten**, keine Code-Logik. Die Engine in `spie
 - **Abzeichen (`AbzeichenDefinition`):** Schlüssel, Name, Symbol, **Metrik** (z. B. `lernen.vokabeln_gesamt`), Schwelle, Wiederholbarkeit (`einmalig`, `je_quartal`, `je_rang`), Modul, aktiv.
 - **Meilenstein (`MeilensteinRegel`):** Metrik, Bedingung (JSON), Belohnungsart (z. B. `sondertag`), Wiederholbarkeit.
 - Beide legst du über eine **Datenmigration** an, wie `spielregeln/migrations/0008_abzeichen_startwerte.py`. Die Eltern können Werte danach über die Oberfläche ändern.
-- **Symbol:** eigener Entwurf, keine fremden Marken (siehe `CONTRIBUTING.md`).
+- **Symbol:** eigener Entwurf, keine fremden Marken (siehe `CONTRIBUTING.de.md`).
 
 Test-Hinweis: Ein neues Abzeichen soll ohne Änderung der Engine funktionieren. Das prüft ein Test mit einem Testmodul (Muster: `spielregeln/tests/test_abzeichen.py`).
 

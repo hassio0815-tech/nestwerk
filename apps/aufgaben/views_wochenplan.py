@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import wochenplan
@@ -44,5 +45,7 @@ def instanz_verschieben(request, pk):
         return _antwort(request, woche, fehler=str(exc), status=409)
     # Gezielte Woche = Woche des neuen Tages, falls aus dem Formular verschoben wurde
     return _antwort(
-        request, woche, meldung=_("„%(titel)s“ verschoben.") % {"titel": inst.titel_snapshot}
+        request,
+        woche,
+        meldung=_("„%(titel)s“ verschoben.") % {"titel": uebersetzt(inst.titel_snapshot)},
     )

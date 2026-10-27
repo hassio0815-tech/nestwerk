@@ -261,7 +261,7 @@ def metrik_ausbaustufe(kind) -> int:
 def metrik_ausbaustufe_bereiche(kind) -> dict[str, tuple[int, str]]:
     """``{"seltenheit-<n>": (zählende Slots, Rangname)}`` je Seltenheit."""
     a = ausbaustufe(kind)
-    namen = {r.stufe: r.name for r in spielregeln.raenge()}
+    namen = {r.stufe: uebersetzt(r.name) for r in spielregeln.raenge()}
     return {f"seltenheit-{n}": (wert, namen.get(n, str(n))) for n, wert in a.je_seltenheit.items()}
 
 

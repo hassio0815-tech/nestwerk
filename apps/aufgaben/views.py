@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import services
@@ -197,7 +198,7 @@ def vorlage_als_aufgabe(request, pk):
     return _formular(
         request,
         form,
-        titel=_("Aufgabe aus Vorlage „%(titel)s“") % {"titel": vorlage.titel},
+        titel=_("Aufgabe aus Vorlage „%(titel)s“") % {"titel": uebersetzt(vorlage.titel)},
         aktion=reverse("aufgaben:neu"),
         zurueck=reverse("aufgaben:vorlagen"),
     )

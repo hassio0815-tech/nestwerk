@@ -1,11 +1,11 @@
-{% load i18n static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+{% load i18n static sprache %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
 <div class="st-popup" role="dialog" aria-modal="true" aria-labelledby="st-popup-titel-{{ p.pk }}" data-schliessbar data-festhalten data-popup-art="sondertag">
   <div class="st-popup__karte">
     <span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>
     <div class="st-popup__kopf">
       <span class="st-popup__symbol" aria-hidden="true">{% include "komponenten/icon.html" with name="geschenk" %}</span>
-      <h2 class="st-popup__titel" id="st-popup-titel-{{ p.pk }}">{{ p.titel }}</h2>
-      {% if p.text %}<p class="st-popup__text">{{ p.text }}</p>{% endif %}
+      <h2 class="st-popup__titel" id="st-popup-titel-{{ p.pk }}">{{ p.titel|uebersetzt }}</h2>
+      {% if p.text %}<p class="st-popup__text">{{ p.text|uebersetzt }}</p>{% endif %}
     </div>
     {% if p.art == "sondertag.freigeschaltet" %}
       {% url "sondertag:wunsch" as wunsch_url %}

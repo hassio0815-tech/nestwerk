@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from django.urls import reverse
 from django.utils.translation import gettext, ngettext
 
+from apps.kern.sprache import uebersetzt
 from apps.punkte import selectors as punkte_selectors
 
 from . import services
@@ -39,7 +40,9 @@ def _ziel_text(stufe, raenge_map, kind) -> str:
         ) % {"n": fehlt}
     naechster = raenge_map.get(stufe.rang_stufe + 1)
     if naechster is not None:
-        return gettext("Alle Slots voll! Als Nächstes: Rang %(rang)s.") % {"rang": naechster.name}
+        return gettext("Alle Slots voll! Als Nächstes: Rang %(rang)s.") % {
+            "rang": uebersetzt(naechster.name)
+        }
     return gettext("Alles ausgebaut. Höchster Rang erreicht!")
 
 

@@ -4,7 +4,7 @@
     <div class="zeile" data-abzeichen-kind="{{ z.kind.pk }}">
       <strong>{{ z.kind.anzeigename }}</strong>
       <span class="chip">{% include "komponenten/icon.html" with name="stern" %} {{ z.verdient|length }}</span>
-      <span class="kachel__text">{% if z.verdient %}{% with letzt=z.verdient|last %}{% blocktranslate with titel=letzt.titel %}zuletzt: {{ titel }}{% endblocktranslate %}{% endwith %}{% endif %}{% if z.naechste %}{% if z.verdient %} · {% endif %}{% with n=z.naechste.0 %}{% blocktranslate with name=n.abzeichen.name|uebersetzt wert=n.wert ziel=n.ziel %}nächstes: {{ name }} ({{ wert }}/{{ ziel }}){% endblocktranslate %}{% endwith %}{% endif %}</span>
+      <span class="kachel__text">{% if z.verdient %}{% with letzt=z.verdient|last %}{% blocktranslate with titel=letzt.titel|uebersetzt %}zuletzt: {{ titel }}{% endblocktranslate %}{% endwith %}{% endif %}{% if z.naechste %}{% if z.verdient %} · {% endif %}{% with n=z.naechste.0 %}{% blocktranslate with name=n.abzeichen.name|uebersetzt wert=n.wert ziel=n.ziel %}nächstes: {{ name }} ({{ wert }}/{{ ziel }}){% endblocktranslate %}{% endwith %}{% endif %}</span>
     </div>
   {% empty %}
     {% include "komponenten/leer.html" with icon="person" titel=_("Noch keine Kinder") text=_("Kinder legst du unter Familie an.") %}

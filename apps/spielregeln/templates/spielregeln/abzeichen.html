@@ -22,7 +22,7 @@
             {% for a in z.verdient %}
               <li class="abzeichen" data-abzeichen="{{ a.verleihung.abzeichen.schluessel }}">
                 {% include "spielregeln/_abzeichen_symbol.html" with s=a.symbol %}
-                <span class="abzeichen__name">{{ a.titel }}</span>
+                <span class="abzeichen__name">{{ a.titel|uebersetzt }}</span>
                 <span class="kachel__text">{{ a.verleihung.verliehen_am|date:"SHORT_DATE_FORMAT" }}</span>
               </li>
             {% endfor %}

@@ -1,8 +1,8 @@
-{% load i18n %}<article class="karte"><div class="karte__inhalt stapel">
+{% load i18n sprache %}<article class="karte"><div class="karte__inhalt stapel">
   <h2>{% translate "Meine Aufgaben" %}</h2>
   {% for i in k.laufende %}
     <div class="zeile">
-      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>
+      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot|uebersetzt }}</strong></span>
       {% if i.anzeige_status == "reserviert" %}{% include "komponenten/chip.html" with text=_("Deine Aufgabe") stufe="uncommon" %}
       {% elif i.anzeige_status == "gemeldet" %}{% include "komponenten/chip.html" with text=_("Gemeldet") stufe="rare" %}
       {% elif i.anzeige_status == "rueckfrage" %}{% include "komponenten/chip.html" with text=_("Rückfrage") stufe="epic" %}

@@ -1,5 +1,7 @@
 # Nestwerk installieren (Schritt für Schritt)
 
+🇬🇧 [English](en/INSTALLATION.md) · 🇩🇪 **Deutsch**
+
 Diese Anleitung richtet Nestwerk auf einem eigenen Server im Heimnetz ein. Sie ist für technisch interessierte Eltern mit Grundkenntnissen in Proxmox, Linux und Docker gedacht.
 
 Platzhalter in `<spitzen Klammern>` musst du durch deine Werte ersetzen. Beispiele:

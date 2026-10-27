@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import ngettext
 from django.views.decorators.http import require_http_methods, require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten_selectors
 from apps.konten.zugriff import aktuelles_kind, nur_eltern, nur_kind
 from apps.punkte import selectors as punkte
@@ -82,7 +83,7 @@ def beantragen(request, pk):
     except services.BelohnungFehler as fehler:
         return _kind_antwort(request, kind, fehler=str(fehler))
     meldung = _("Antrag für „%(titel)s“ ist raus. Mama oder Papa schauen drauf.") % {
-        "titel": antrag.titel_snapshot
+        "titel": uebersetzt(antrag.titel_snapshot)
     }
     if _htmx(request):
         return _kind_antwort(request, kind, meldung=meldung)

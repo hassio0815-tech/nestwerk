@@ -11,6 +11,7 @@ from django.views.decorators.http import require_GET, require_POST
 
 from apps.kern import registry as kern_registry
 from apps.kern import zeit
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
@@ -181,7 +182,7 @@ def rang_aendern(request, pk):
             min_aktive_wochen=request.POST.get("min_aktive_wochen", ""),
         )
     except services.RangFehler as fehler:
-        return _raenge_seite(request, status=400, fehler=f"{rang.name}: {fehler}")
+        return _raenge_seite(request, status=400, fehler=f"{uebersetzt(rang.name)}: {fehler}")
     return redirect("spielregeln:raenge")
 
 
@@ -269,7 +270,9 @@ def abzeichen_aendern(request, pk):
             **_abzeichen_daten(request),
         )
     except services.AbzeichenFehler as fehler:
-        return _abzeichen_seite(request, status=400, fehler=f"{definition.name}: {fehler}")
+        return _abzeichen_seite(
+            request, status=400, fehler=f"{uebersetzt(definition.name)}: {fehler}"
+        )
     return redirect("spielregeln:abzeichen")
 
 

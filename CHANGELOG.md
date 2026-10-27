@@ -1,87 +1,97 @@
 # Changelog
 
-Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
+🇬🇧 **English** · 🇩🇪 [Deutsch](CHANGELOG.de.md)
 
-## Umbenennung zu Nestwerk (25.10.2026)
+Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
-Das Projekt hieß bis hierhin **FamKo** und heißt jetzt **Nestwerk** (Untertitel: „Nestwerk – the family hub for chores, rewards & learning“). Lizenz: AGPL-3.0-or-later.
+## Bilingual release: German and English (27.10.2026)
 
-### Geändert
-- Django-Projektpaket `famko/` heißt `nestwerk/`; Docker-, Deploy- und Doku-Dateien, Oberfläche, PWA-Name und Standard-App-Name tragen den neuen Namen
-- Umgebungsvariablen: Präfix `NESTWERK_*`. Die alten `FAMKO_*` gelten weiter als Fallback (zentral in `apps/kern/umgebung.py`)
-- Neue Installationen nutzen `/opt/nestwerk`, Compose-Projekt `nestwerk`, Volume `nestwerk_data`, Image `nestwerk:<tag>`, Firewall `/etc/nestwerk`, Datenbank `nestwerk.sqlite3`
-- `LICENSE` (GNU AGPL-3.0); `docs/LIZENZ-OFFEN.md` entfällt, der Lizenzhinweis steht im README
+### Added
+- UI in German and English, with a language switch on the start screen
+- Per-user language; family language for notifications
+- Push and email notifications are sent in the recipient's language
+- English documentation in `docs/en/`
 
-### Kompatibilität (bestehende FamKo-Installationen)
-- `deploy/update.sh` erkennt eine alte `.env` (mit `FAMKO_*`) samt altem Volume und schreibt Projekt-, Volume- und Image-Namen in die `.env`; kein Datenverlust, keine manuelle Umbenennung nötig
-- Die vorhandene Datenbankdatei `famko.sqlite3` und Backups `famko-*.sqlite3.gz` werden weiter erkannt; App-Labels und Migrationen sind unverändert
-- Details: `docs/RUNBOOK.md`, Abschnitt „Bestehende FamKo-Installation umstellen“
+## Renamed to Nestwerk (25.10.2026)
 
-## Phase 3: Feinschliff (25.10.2026)
+Until now the project was called **FamKo**; it is now called **Nestwerk** (subtitle: "Nestwerk – the family hub for chores, rewards & learning"). License: AGPL-3.0-or-later.
 
-### Hinzugefügt
-- Prognose und Kalibrierungsansicht mit Übernahme per Klick (AP32)
-- Ruhmeshalle: Helden auf Sockeln, Widmungen und Abzeichen (P3-A)
-- Einheitliche, animierte Pop-ups (Konfetti, Rangaufstieg, Ruhmeshalle) mit Rücksicht auf „reduzierte Bewegung“ (AP33)
-- Dokumentation für die Weitergabe: Installation, Benutzerhandbuch, Module erweitern, neutralisierte Beispieldaten
+### Changed
+- Django project package `famko/` is now `nestwerk/`; Docker, deploy and documentation files, UI, PWA name and default app name use the new name
+- Environment variables: prefix `NESTWERK_*`. The old `FAMKO_*` variables remain as fallback (centrally in `apps/kern/umgebung.py`)
+- New installations use `/opt/nestwerk`, Compose project `nestwerk`, volume `nestwerk_data`, image `nestwerk:<tag>`, firewall `/etc/nestwerk`, database `nestwerk.sqlite3`
+- `LICENSE` (GNU AGPL-3.0); `docs/LIZENZ-OFFEN.md` is removed, the license notice is in the README
 
-### Geändert
-- Ruhmeshalle erst, wenn alle Bauaufträge im aktuellen Thema fertig sind (AP36)
-- `deploy/install.sh` verweist zum Schluss auf `docs/INSTALLATION.md` (AP36)
-- Abschluss-Review Phase 3: `docs/reviews/REVIEW_PHASE3.md` (AP36)
+### Compatibility (existing FamKo installations)
+- `deploy/update.sh` detects an old `.env` (with `FAMKO_*`) and the old volume and writes project, volume and image names into the `.env`; no data loss, no manual renaming needed
+- The existing database file `famko.sqlite3` and backups `famko-*.sqlite3.gz` are still recognized; app labels and migrations are unchanged
+- Details: `docs/en/RUNBOOK.md`, section "Converting an existing FamKo installation"
 
-### Noch offen
-- God-Mode-Mod-Sets und weitere Mods, AP34
-- Preis und Bauzeit je Mod, Themen an/aus im Eltern-Dashboard (P-15)
+## Phase 3: Polish (25.10.2026)
 
-## Phase 2: Spielebene (23.10. bis 24.10.2026)
+### Added
+- Forecast and calibration view with one-click apply (AP32)
+- Hall of fame: heroes on pedestals, dedications and badges (P3-A)
+- Uniform, animated pop-ups (confetti, rank-up, hall of fame) that respect "reduced motion" (AP33)
+- Documentation for sharing: installation, user guide, extending modules, sanitized sample data
 
-### Hinzugefügt
-- Regel-Engine `spielregeln`: Aktivität, Pausen für Kind oder Familie, Wochenauswertung, Serie und Tagesserie (AP20)
-- Serienbonus bei der Bestätigung von Aufgaben (AP21)
-- Ränge mit Schwellen, aktiven Wochen und Kalibrierungsfaktor (AP22)
-- Generische Abzeichen- und Meilenstein-Engine mit Metrik-Registry (AP23)
-- Avatar-Generator: deterministische SVG-Blockfiguren, Themen und SVG-Whitelist (AP24)
-- 10 Themen mit je 36 Mod-Bauplänen (AP25)
-- Mod-Shop mit Kauf über das Ledger, Bauzeit, Ausbaustufe und Themenwechsel mit Warnung (AP26)
-- Sondertag: Ansprüche aus Meilensteinen, Grenzen, Wunsch, Begleitung und Annahme (AP27)
-- Abzeichen-Grafiken (AP28)
-- Familienziel mit Wochenfortschritt, Abstimmung und Großziel (AP29)
-- Familien-Ranking mit Held der Woche und umschaltbarem Modus (AP30)
-- Datenschutz: Aufbewahrungsfristen für Ereignisse, Zustellungen und Benachrichtigungen (B-15)
-- Sondertag-Job in der Crontab, Benachrichtigung „jetzt einlösbar“
+### Changed
+- Hall of fame only appears once all build orders in the current theme are finished (AP36)
+- `deploy/install.sh` points to `docs/INSTALLATION.md` at the end (AP36)
+- Final review phase 3: `docs/reviews/REVIEW_PHASE3.md` (AP36)
 
-### Behoben
-- Ruhezeit wird vor jedem Versand erneut geprüft (B-19)
-- Späte Bestätigungen zählen in der Woche der Aktivität
-- Großziel genau einmal je Folge
-- Tablet ohne htmx-eval (CSP), kein Überlauf auf 390 px, Schrift ab 14 px
-- Datumsformat ISO bei Pausen
+### Still open
+- God-mode mod sets and further mods, AP34
+- Price and build time per mod, themes on/off in the parent dashboard (P-15)
+
+## Phase 2: Game layer (23.10. to 24.10.2026)
+
+### Added
+- Rule engine `spielregeln`: activity, pauses for child or family, weekly evaluation, streak and daily streak (AP20)
+- Streak bonus when tasks are confirmed (AP21)
+- Ranks with thresholds, active weeks and calibration factor (AP22)
+- Generic badge and milestone engine with metric registry (AP23)
+- Avatar generator: deterministic SVG block figures, themes and SVG whitelist (AP24)
+- 10 themes with 36 mod blueprints each (AP25)
+- Mod shop with purchase via the ledger, build time, upgrade level and theme change with warning (AP26)
+- Special day: entitlements from milestones, limits, wish, companion and acceptance (AP27)
+- Badge graphics (AP28)
+- Family goal with weekly progress, voting and big goal (AP29)
+- Family ranking with Hero of the Week and switchable mode (AP30)
+- Data protection: retention periods for events, deliveries and notifications (B-15)
+- Special-day job in the crontab, notification "redeemable now"
+
+### Fixed
+- Quiet hours are checked again before each send (B-19)
+- Late confirmations count in the week of the activity
+- Big goal counted exactly once per cycle
+- Tablet works without htmx-eval (CSP), no overflow at 390 px, font size from 14 px
+- ISO date format for pauses
 
 ### Review
-- Review Phase 2 (AP31): Szenario-Tests über 52 Wochen und drei App-Jahre, Abgleich von DATA_MODEL und ARCHITECTURE mit dem Code (B-22)
+- Review phase 2 (AP31): scenario tests over 52 weeks and three app years, comparison of DATA_MODEL and ARCHITECTURE with the code (B-22)
 
-## Phase 1: Kern (23.10.2026)
+## Phase 1: Core (23.10.2026)
 
-### Hinzugefügt
-- Projektgerüst, Einstellungs-Registry, Zeit-Utilities, Audit-Log und Job-Sperren (AP01, AP02)
-- Designsystem und Basis-Templates (AP06)
-- Transaktionale Outbox für Domain-Ereignisse mit Worker (AP05)
-- Benutzer, Eltern-Login, Kinder-PIN mit Rate-Limit und Kiosk-Sitzungen (AP03)
-- Unveränderliches Punkte-Ledger mit idempotenter Buchung (AP04)
-- Benachrichtigungen: Router, Präferenzen, Ruhezeiten, E-Mail, Pop-up, PWA-Manifest und Web-Push (AP07, AP08)
-- Aufgaben: Kategorien, Bibliothek, Wiederholung und Instanz-Erzeugung, Reservierung, Nachweise mit EXIF-Entfernung, Bestätigung und Bonuspunkte, Wochenplaner mit Drag and drop (AP10 bis AP14)
-- Belohnungen: Katalog, Einlöseanträge, Taschengeld-Monatslimit (AP15)
-- Einrichtungs-Assistent mit Setup-Token (AP16)
-- Dashboards für Kinder, Eltern und Tablet, Einstellungs-Editor, Familienverwaltung (AP17)
-- Betrieb: Crontab-Scheduler, Datenbank-Backups, Backup-Test, Update und Rollback, Runbook (AP18)
+### Added
+- Project scaffold, settings registry, time utilities, audit log and job locks (AP01, AP02)
+- Design system and base templates (AP06)
+- Transactional outbox for domain events with worker (AP05)
+- Users, parent login, child PIN with rate limit and kiosk sessions (AP03)
+- Immutable points ledger with idempotent booking (AP04)
+- Notifications: router, preferences, quiet hours, email, pop-up, PWA manifest and web push (AP07, AP08)
+- Tasks: categories, library, recurrence and instance creation, reservation, proofs with EXIF removal, confirmation and bonus points, weekly planner with drag and drop (AP10 to AP14)
+- Rewards: catalog, redemption requests, monthly allowance limit (AP15)
+- Setup assistant with setup token (AP16)
+- Dashboards for kids, parents and tablet, settings editor, family management (AP17)
+- Operations: crontab scheduler, database backups, backup test, update and rollback, runbook (AP18)
 
-### Behoben und gehärtet
-- Schichtenregeln mit import-linter, nur Lesen über selectors (AP19)
-- Sicherheit: X-Forwarded-For nur rechtester Eintrag, CSP-Header, Sitzungen bei Passwortwechsel und Gerätewiderruf, enge Dateirechte, Deep-Links nur intern
-- Web-Push-Endpunkte auf erlaubte Push-Dienste beschränkt (B-14)
-- Nachweis-Fotos nie an eine fremde Meldung, Upload-Grenze
-- Eine Schreibsperre für Punkte und Belohnungen (Nebenläufigkeit)
-- Healthcheck-Host immer erlaubt
-- Installer und Update: Bundle statt Git-Remote, git safe.directory, Egress-Sperre für Container
-- Oberfläche: Mobile Wochenplanung, Touch-Ziele, Schriftgrößen
+### Fixed and hardened
+- Layer rules with import-linter, read access only via selectors (AP19)
+- Security: X-Forwarded-For uses only the rightmost entry, CSP header, sessions reset on password change and device revocation, tight file permissions, deep links internal only
+- Web push endpoints restricted to allowed push services (B-14)
+- Proof photos never attached to someone else's submission; upload limit
+- One write lock for points and rewards (concurrency)
+- Healthcheck host always allowed
+- Installer and update: bundle instead of Git remote, git safe.directory, egress block for containers
+- UI: mobile weekly planning, touch targets, font sizes

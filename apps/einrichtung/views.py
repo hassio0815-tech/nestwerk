@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_http_methods
 
+from apps.kern.sprache import uebersetzt
 from apps.konten import akzent, begruessung
 from apps.konten import selectors as konten_selectors
 
@@ -276,11 +277,13 @@ def _listen():
     return [
         {
             "titel": _("Belohnungs-Katalog"),
-            "zeilen": [(b.titel, b.preis_punkte) for b in belohnung.katalog(nur_aktive=False)],
+            "zeilen": [
+                (uebersetzt(b.titel), b.preis_punkte) for b in belohnung.katalog(nur_aktive=False)
+            ],
         },
         {
             "titel": _("Aufgaben-Bibliothek"),
-            "zeilen": [(v.titel, v.punkte) for v in aufgaben.vorlagen()],
+            "zeilen": [(uebersetzt(v.titel), v.punkte) for v in aufgaben.vorlagen()],
         },
     ]
 

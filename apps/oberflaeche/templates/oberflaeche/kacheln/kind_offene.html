@@ -1,8 +1,8 @@
-{% load i18n %}<article class="karte"><div class="karte__inhalt stapel">
+{% load i18n sprache %}<article class="karte"><div class="karte__inhalt stapel">
   <h2>{% translate "Offene Aufgaben" %}</h2>
   {% for i in k.aufgaben %}
     <div class="zeile">
-      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>
+      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot|uebersetzt }}</strong></span>
       {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
     </div>
   {% empty %}

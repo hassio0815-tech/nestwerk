@@ -26,7 +26,7 @@
           <a class="knopf knopf--primaer knopf--klein" href="{{ als_url }}" hx-get="{{ als_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Als Aufgabe" %}</span></a>
           {% url "aufgaben:vorlage_bearbeiten" v.pk as bearbeiten_url %}
           <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>{% translate "Bearbeiten" %}</span></a>
-          <button class="knopf knopf--gefahr knopf--klein" hx-post="{% url 'aufgaben:vorlage_loeschen' v.pk %}" hx-target="#vorlage-{{ v.pk }}" hx-swap="outerHTML" hx-confirm="{% blocktranslate with titel=v.titel %}Vorlage „{{ titel }}“ löschen? Bereits angelegte Aufgaben bleiben erhalten.{% endblocktranslate %}">{% translate "Löschen" %}</button>
+          <button class="knopf knopf--gefahr knopf--klein" hx-post="{% url 'aufgaben:vorlage_loeschen' v.pk %}" hx-target="#vorlage-{{ v.pk }}" hx-swap="outerHTML" hx-confirm="{% blocktranslate with titel=v.titel|uebersetzt %}Vorlage „{{ titel }}“ löschen? Bereits angelegte Aufgaben bleiben erhalten.{% endblocktranslate %}">{% translate "Löschen" %}</button>
         </div>
       </div></article>
     {% empty %}{% include "komponenten/leer.html" with icon="stern" text=_("Noch keine Vorlagen.") %}{% endfor %}

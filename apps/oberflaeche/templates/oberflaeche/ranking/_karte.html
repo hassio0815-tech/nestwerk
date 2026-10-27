@@ -1,9 +1,9 @@
-{% load i18n %}{% load avatar_tags %}
+{% load i18n sprache %}{% load avatar_tags %}
 <li class="rk-karte{% if e.ist_held %} rk-karte--held{% endif %}" data-kind="{{ e.kind.pk }}" data-akzent="{{ e.akzent }}"{% if e.rang %} data-selten="{{ e.rang.selten }}"{% endif %}>
   {% if e.ist_held %}<span class="rk-held-band" data-held>{% include "komponenten/icon.html" with name="pokal" %} {% translate "Held der Woche" %}</span>{% endif %}
   {% avatar_bild e.kind "riesig" %}
   <h3 class="rk-karte__name">{{ e.kind|avatar_name }}</h3>
-  {% if e.rang %}<span class="chip rang-chip" data-selten="{{ e.rang.selten }}" data-rang="{{ e.rang.schluessel }}">{% include "komponenten/icon.html" with name="pokal" %} {{ e.rang.name }}</span>{% endif %}
+  {% if e.rang %}<span class="chip rang-chip" data-selten="{{ e.rang.selten }}" data-rang="{{ e.rang.schluessel }}">{% include "komponenten/icon.html" with name="pokal" %} {{ e.rang.name|uebersetzt }}</span>{% endif %}
   <dl class="rk-fakten">
     <div><dt>{% translate "Serie" %}</dt><dd data-serie="{{ e.serie }}">{% if e.pausiert %}{% translate "Pause" %}{% else %}{% blocktranslate count n=e.serie %}{{ n }} Woche{% plural %}{{ n }} Wochen{% endblocktranslate %}{% endif %}</dd></div>
     {% if e.ausbau %}<div><dt>{% translate "Ausbau" %}</dt><dd data-ausbau>{% blocktranslate with aktuell=e.ausbau.aktuell slots=e.ausbau.slots %}{{ aktuell }} von {{ slots }}{% endblocktranslate %}</dd></div>{% endif %}
@@ -11,7 +11,7 @@
   </dl>
   {% if e.abzeichen %}
     <ul class="rk-abzeichen" aria-label="{% blocktranslate with name=e.kind.anzeigename %}Abzeichen von {{ name }}{% endblocktranslate %}">
-      {% for a in e.abzeichen %}<li class="abzeichen" title="{{ a.titel }}">{% include "spielregeln/_abzeichen_symbol.html" with s=a.symbol %}</li>{% endfor %}
+      {% for a in e.abzeichen %}<li class="abzeichen" title="{{ a.titel|uebersetzt }}">{% include "spielregeln/_abzeichen_symbol.html" with s=a.symbol %}</li>{% endfor %}
     </ul>
   {% endif %}
   <p class="rk-karte__punkte">{% blocktranslate with n=e.xp_woche %}{{ n }} Punkte diese Woche{% endblocktranslate %}</p>
