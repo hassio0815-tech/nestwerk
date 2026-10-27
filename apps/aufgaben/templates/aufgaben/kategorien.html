@@ -1,18 +1,19 @@
 {% extends "aufgaben/basis.html" %}
-{% block titel %}Kategorien{% endblock %}
+{% load i18n sprache %}
+{% block titel %}{% translate "Kategorien" %}{% endblock %}
 {% block seite %}
   <div class="zeile">
-    <h1>Kategorien</h1>
+    <h1>{% translate "Kategorien" %}</h1>
     {% url "aufgaben:kategorie_neu" as neu_url %}
-    <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>Neue Kategorie</span></a>
+    <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neue Kategorie" %}</span></a>
   </div>
   <div id="formular"></div>
   <div class="stapel">
     {% for k in kategorien %}
       <article class="karte"><div class="karte__inhalt zeile">
-        <span class="reihe">{% include "komponenten/icon.html" with name=k.symbol %}<strong>{{ k.name }}</strong>{% if not k.aktiv %} {% include "komponenten/chip.html" with text="Inaktiv" %}{% endif %}</span>
+        <span class="reihe">{% include "komponenten/icon.html" with name=k.symbol %}<strong>{{ k.name|uebersetzt }}</strong>{% if not k.aktiv %} {% include "komponenten/chip.html" with text=_("Inaktiv") %}{% endif %}</span>
         {% url "aufgaben:kategorie_bearbeiten" k.pk as bearbeiten_url %}
-        <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>Bearbeiten</span></a>
+        <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>{% translate "Bearbeiten" %}</span></a>
       </div></article>
     {% endfor %}
   </div>

@@ -1,17 +1,18 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Familienbelohnung
 
 SYMBOLE = [
-    ("geschenk", "Geschenk"),
-    ("kueche", "Küche"),
-    ("controller", "Spiele"),
-    ("tv", "Film"),
-    ("stern", "Stern"),
-    ("garten", "Garten"),
-    ("pokal", "Pokal"),
-    ("sonne", "Sonne"),
-    ("mond", "Mond"),
+    ("geschenk", _("Geschenk")),
+    ("kueche", _("Küche")),
+    ("controller", _("Spiele")),
+    ("tv", _("Film")),
+    ("stern", _("Stern")),
+    ("garten", _("Garten")),
+    ("pokal", _("Pokal")),
+    ("sonne", _("Sonne")),
+    ("mond", _("Mond")),
 ]
 
 
@@ -21,12 +22,12 @@ def _eingabe(feld):
 
 
 class BelohnungForm(forms.ModelForm):
-    symbol = forms.ChoiceField(choices=SYMBOLE, label="Symbol")
+    symbol = forms.ChoiceField(choices=SYMBOLE, label=_("Symbol"))
 
     class Meta:
         model = Familienbelohnung
         fields = ["titel", "symbol", "ist_grossziel"]
-        labels = {"titel": "Name", "ist_grossziel": "Großes Ziel (Ausflug o. Ä.)"}
+        labels = {"titel": _("Name"), "ist_grossziel": _("Großes Ziel (Ausflug o. Ä.)")}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -35,12 +36,12 @@ class BelohnungForm(forms.ModelForm):
 
 
 class WocheForm(forms.Form):
-    ziel_punkte = forms.IntegerField(label="Ziel in Punkten", min_value=1, max_value=100000)
+    ziel_punkte = forms.IntegerField(label=_("Ziel in Punkten"), min_value=1, max_value=100000)
     belohnung = forms.ModelChoiceField(
-        label="Belohnung",
+        label=_("Belohnung"),
         queryset=Familienbelohnung.objects.none(),
         required=False,
-        empty_label="(keine Änderung)",
+        empty_label=_("(keine Änderung)"),
     )
 
     def __init__(self, *args, **kwargs):

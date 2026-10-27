@@ -1,4 +1,4 @@
-<div class="fortschritt-block">
+{% load i18n %}<div class="fortschritt-block">
   {% if label %}<div class="fortschritt-block__kopf"><span>{{ label }}</span><span>{{ wert|default:0 }} / {{ max|default:100 }}</span></div>{% endif %}
-  <progress class="fortschritt"{% if selten %} data-selten="{{ selten }}"{% endif %} value="{{ wert|default:0 }}" max="{{ max|default:100 }}" aria-label="{{ label|default:'Fortschritt' }}">{{ wert|default:0 }} von {{ max|default:100 }}</progress>
+  <progress class="fortschritt"{% if selten %} data-selten="{{ selten }}"{% endif %} value="{{ wert|default:0 }}" max="{{ max|default:100 }}" aria-label="{{ label|default:_('Fortschritt') }}">{% blocktranslate with wert=wert|default:0 max=max|default:100 %}{{ wert }} von {{ max }}{% endblocktranslate %}</progress>
 </div>

@@ -1,10 +1,10 @@
-{% load avatar_tags %}
+{% load i18n avatar_tags %}
 <article class="karte avatar-aufruf"><div class="karte__inhalt avatar-aufruf__inhalt">
   <div class="avatar-aufruf__bilder" aria-hidden="true">
     {% for svg in k.beispiele %}{% svg_roh svg "mittel" "" %}{% endfor %}
   </div>
-  <h2>Dein Avatar wartet!</h2>
-  <p>Wähle deine Figur und eins von {{ k.anzahl_themen }} Themen.</p>
+  <h2>{% translate "Dein Avatar wartet!" %}</h2>
+  <p>{% blocktranslate with n=k.anzahl_themen %}Wähle deine Figur und eins von {{ n }} Themen.{% endblocktranslate %}</p>
   {% url "avatar:kind_wahl" as wahl_url %}
-  {% include "komponenten/button.html" with href=wahl_url gross=True voll=True icon="stern" text="Avatar bauen" %}
+  {% include "komponenten/button.html" with href=wahl_url gross=True voll=True icon="stern" text=_("Avatar bauen") %}
 </div></article>

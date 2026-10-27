@@ -1,0 +1,549 @@
+# English translation for Nestwerk.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 05:02+0000\n"
+"PO-Revision-Date: 2026-10-26 00:00+0000\n"
+"Last-Translator: Nestwerk\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps.py:9 registry.py:42 registry.py:53 registry.py:64
+#: templates/familienziel/eltern.html:4 templates/familienziel/eltern.html:11
+#: templates/familienziel/kacheln/_balken.html:4
+#: templates/familienziel/kacheln/eltern_familienziel.html:4
+#: templates/familienziel/kacheln/kind_familienziel.html:4
+#: templates/familienziel/kacheln/tablet_leiste.html:8
+msgid "Familienziel"
+msgstr "Family goal"
+
+#: einstellungen.py:11 templates/familienziel/eltern.html:65
+#: templates/familienziel/kacheln/tablet_leiste.html:27
+msgid "Ausflug"
+msgstr "Day trip"
+
+#: einstellungen.py:24
+msgid "Wochenziel der Familie"
+msgstr "Weekly goal of the family"
+
+#: einstellungen.py:26
+msgid ""
+"Verdiente XP aller Kinder in einer Woche (Montag bis Sonntag). Gilt für neue "
+"Wochen; die Eltern können das Ziel einer Woche einzeln überschreiben."
+msgstr ""
+"XP earned by all kids in one week (Monday to Sunday). Applies to new weeks; "
+"parents can change the goal of a single week."
+
+#: einstellungen.py:29
+msgid "Punkte"
+msgstr "points"
+
+#: einstellungen.py:36
+msgid "Großziel nach Wochenzielen in Folge"
+msgstr "Big goal after weekly goals in a row"
+
+#: einstellungen.py:38
+msgid ""
+"So viele erreichte Wochenziele in Folge schalten das große Ziel frei. "
+"Wochen, in denen die ganze Familie pausiert, zählen weder noch brechen sie "
+"die Folge."
+msgstr ""
+"This many weekly goals reached in a row unlock the big goal. Weeks when the "
+"whole family is on a break neither count nor break the streak."
+
+#: einstellungen.py:41
+msgid "Wochen"
+msgstr "weeks"
+
+#: einstellungen.py:48
+msgid "Name des großen Ziels"
+msgstr "Name of the big goal"
+
+#: einstellungen.py:50
+msgid ""
+"Zum Beispiel Ausflug. Wird angezeigt, wenn das Großziel freigeschaltet ist."
+msgstr "For example, a day trip. Shown when the big goal is unlocked."
+
+#: einstellungen.py:57
+msgid "Abstimmung: Wochentag"
+msgstr "Voting: day of the week"
+
+#: einstellungen.py:59
+msgid ""
+"Tag der Woche, an dem die Kinder über das Ziel der nächsten Woche abstimmen "
+"(1 = Montag … 7 = Sonntag)."
+msgstr ""
+"Day of the week when the kids vote on next week's goal (1 = Monday … 7 = "
+"Sunday)."
+
+#: einstellungen.py:69
+msgid "Abstimmung: Beginn"
+msgstr "Voting: start"
+
+#: einstellungen.py:70
+msgid "Uhrzeit, ab der die Kinder abstimmen dürfen."
+msgstr "Time from which the kids may vote."
+
+#: einstellungen.py:75
+msgid "Abstimmung: Ende"
+msgstr "Voting: end"
+
+#: einstellungen.py:77
+msgid ""
+"Uhrzeit, bis zu der abgestimmt werden darf (23:59 = bis Tagesende). Danach "
+"zählt das Ergebnis; bei Gleichstand entscheiden die Eltern."
+msgstr ""
+"Time until which voting is allowed (23:59 = until the end of the day). After "
+"that the result counts; if it is a tie, the parents decide."
+
+#: events.py:34
+msgid "Familienziel erreicht"
+msgstr "Family goal reached"
+
+#: events.py:35
+msgid "Familienziel erreicht (Kind)"
+msgstr "Family goal reached (kid)"
+
+#: events.py:38
+msgid "Abstimmung über das Familienziel"
+msgstr "Vote on the family goal"
+
+#: events.py:45
+msgid "Gleichstand bei der Abstimmung"
+msgstr "Tie in the vote"
+
+#: events.py:52
+msgid "Großes Familienziel freigeschaltet"
+msgstr "Big family goal unlocked"
+
+#: events.py:54
+msgid "Großes Familienziel (Kind)"
+msgstr "Big family goal (kid)"
+
+#: forms.py:7
+msgid "Geschenk"
+msgstr "Gift"
+
+#: forms.py:8
+msgid "Küche"
+msgstr "Kitchen"
+
+#: forms.py:9
+msgid "Spiele"
+msgstr "Games"
+
+#: forms.py:10
+msgid "Film"
+msgstr "Movie"
+
+#: forms.py:11
+msgid "Stern"
+msgstr "Star"
+
+#: forms.py:12
+msgid "Garten"
+msgstr "Garden"
+
+#: forms.py:13
+msgid "Pokal"
+msgstr "Trophy"
+
+#: forms.py:14
+msgid "Sonne"
+msgstr "Sun"
+
+#: forms.py:15
+msgid "Mond"
+msgstr "Moon"
+
+#: forms.py:25
+msgid "Symbol"
+msgstr "Icon"
+
+#: forms.py:30
+msgid "Name"
+msgstr "Name"
+
+#: forms.py:30
+msgid "Großes Ziel (Ausflug o. Ä.)"
+msgstr "Big goal (day trip or similar)"
+
+#: forms.py:39
+msgid "Ziel in Punkten"
+msgstr "Goal in points"
+
+#: forms.py:41 templates/familienziel/eltern.html:24
+msgid "Belohnung"
+msgstr "Reward"
+
+#: forms.py:44
+msgid "(keine Änderung)"
+msgstr "(no change)"
+
+#: migrations/0002_startwerte.py:10
+msgid "Pizza"
+msgstr "Pizza"
+
+#: migrations/0002_startwerte.py:11
+msgid "Spieleabend"
+msgstr "Game night"
+
+#: migrations/0002_startwerte.py:12
+msgid "Kino"
+msgstr "Cinema"
+
+#: migrations/0002_startwerte.py:13
+msgid "Eis essen"
+msgstr "Ice cream"
+
+#: migrations/0002_startwerte.py:14
+msgid "Grillen"
+msgstr "Barbecue"
+
+#: models.py:26
+msgid "Familienbelohnung"
+msgstr "Family reward"
+
+#: models.py:27
+msgid "Familienbelohnungen"
+msgstr "Family rewards"
+
+#: models.py:35
+msgid "offen"
+msgstr "open"
+
+#: models.py:36
+msgid "geschlossen"
+msgstr "closed"
+
+#: models.py:37
+msgid "Eltern entscheiden"
+msgstr "Parents decide"
+
+#: models.py:38
+msgid "von den Eltern entschieden"
+msgstr "decided by the parents"
+
+#: models.py:42
+msgid "laufend"
+msgstr "running"
+
+#: models.py:43
+msgid "erreicht"
+msgstr "reached"
+
+#: models.py:44
+msgid "verfehlt"
+msgstr "missed"
+
+#: models.py:45
+msgid "neutral"
+msgstr "neutral"
+
+#: models.py:52
+msgid "Snapshot aus der Einstellung"
+msgstr "Snapshot from the setting"
+
+#: models.py:71
+msgid "Familienwoche"
+msgstr "Family week"
+
+#: models.py:72
+msgid "Familienwochen"
+msgstr "Family weeks"
+
+#: models.py:99
+msgid "Stimme"
+msgstr "Vote"
+
+#: models.py:100
+msgid "Stimmen"
+msgstr "Votes"
+
+#: models.py:121
+msgid "Großziel"
+msgstr "Big goal"
+
+#: models.py:122
+msgid "Großziele"
+msgstr "Big goals"
+
+#: models.py:126
+#, python-format
+msgid "Großziel nach %(woche)s"
+msgstr "Big goal after %(woche)s"
+
+#: services.py:38
+#, python-format
+msgid "Gleichstand zwischen %(titel)s. Bitte entscheidet."
+msgstr "Tie between %(titel)s. Please decide."
+
+#: services.py:39
+msgid "Niemand hat abgestimmt. Bitte wählt das Ziel der Woche."
+msgstr "Nobody voted. Please pick the goal for the week."
+
+#: services.py:91 templates/familienziel/_belohnung.html:3
+#: templates/familienziel/kacheln/eltern_familienziel.html:5
+#: templates/familienziel/kacheln/kind_familienziel.html:5
+#: templates/familienziel/kacheln/tablet_leiste.html:9
+msgid "Wochenziel"
+msgstr "Weekly goal"
+
+#: services.py:201
+msgid "Nur Kinder stimmen ab."
+msgstr "Only kids vote."
+
+#: services.py:204
+msgid "Gerade läuft keine Abstimmung."
+msgstr "There is no vote going on right now."
+
+#: services.py:208
+msgid "Die Abstimmung ist schon beendet."
+msgstr "The vote has already ended."
+
+#: services.py:211 services.py:426
+msgid "Diese Belohnung steht nicht zur Wahl."
+msgstr "This reward is not up for vote."
+
+#: services.py:356
+msgid "Der Titel ist Pflicht (höchstens 60 Zeichen)."
+msgstr "A title is required (at most 60 characters)."
+
+#: services.py:415
+msgid "Diese Woche ist schon ausgewertet."
+msgstr "This week has already been scored."
+
+#: services.py:420
+msgid "Das Ziel muss zwischen 1 und 100000 Punkten liegen."
+msgstr "The goal must be between 1 and 100000 points."
+
+#: services.py:441
+msgid "Nur erreichte Ziele lassen sich einlösen."
+msgstr "Only goals that were reached can be redeemed."
+
+#: templates/familienziel/eltern.html:8
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/familienziel/eltern.html:12
+msgid ""
+"Gezählt werden die verdienten XP aller Kinder von Montag bis Sonntag. Jedes "
+"nicht pausierte Kind braucht mindestens eine bestätigte Aufgabe."
+msgstr ""
+"The XP earned by all kids from Monday to Sunday are counted. Every kid who "
+"is not on a break needs at least one approved task."
+
+#: templates/familienziel/eltern.html:16
+msgid "Diese Woche"
+msgstr "This week"
+
+#: templates/familienziel/eltern.html:18
+#, python-format
+msgid "Serie: %(serie)s von %(ziel)s Wochen in Folge für das große Ziel."
+msgstr "Streak: %(serie)s of %(ziel)s weeks in a row for the big goal."
+
+#: templates/familienziel/eltern.html:23
+msgid "d.m."
+msgstr "M j"
+
+#: templates/familienziel/eltern.html:23
+msgid "Aktuelle Woche"
+msgstr "Current week"
+
+#: templates/familienziel/eltern.html:23
+msgid "Nächste Woche"
+msgstr "Next week"
+
+#: templates/familienziel/eltern.html:24
+#, python-format
+msgid "Ziel: <strong>%(ziel)s</strong> Punkte"
+msgstr "Goal: <strong>%(ziel)s</strong> points"
+
+#: templates/familienziel/eltern.html:24
+msgid "noch nicht gewählt"
+msgstr "not chosen yet"
+
+#: templates/familienziel/eltern.html:26
+msgid "Gleichstand oder keine Stimmen: Bitte wählt die Belohnung."
+msgstr "Tie or no votes: please pick the reward."
+
+#: templates/familienziel/eltern.html:32
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/familienziel/eltern.html:39
+msgid "Belohnungsliste"
+msgstr "Reward list"
+
+#: templates/familienziel/eltern.html:43
+msgid "Großes Ziel"
+msgstr "Big goal"
+
+#: templates/familienziel/eltern.html:44
+msgid "aus"
+msgstr "off"
+
+#: templates/familienziel/eltern.html:46
+msgid "Ausblenden"
+msgstr "Hide"
+
+#: templates/familienziel/eltern.html:47
+msgid "Einblenden"
+msgstr "Show"
+
+#: templates/familienziel/eltern.html:48
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/familienziel/eltern.html:52
+msgid "Neue Belohnung"
+msgstr "New reward"
+
+#: templates/familienziel/eltern.html:58
+msgid "Hinzufügen"
+msgstr "Add"
+
+#: templates/familienziel/eltern.html:63
+msgid "Historie"
+msgstr "History"
+
+#: templates/familienziel/eltern.html:65
+#, python-format
+msgid "Großziel: %(name)s"
+msgstr "Big goal: %(name)s"
+
+#: templates/familienziel/eltern.html:66
+msgid "d.m.Y"
+msgstr "M j, Y"
+
+#: templates/familienziel/eltern.html:67 templates/familienziel/eltern.html:77
+msgid "eingelöst"
+msgstr "redeemed"
+
+#: templates/familienziel/eltern.html:68 templates/familienziel/eltern.html:78
+msgid "Eingelöst"
+msgstr "Redeemed"
+
+#: templates/familienziel/eltern.html:73
+#, python-format
+msgid "Woche %(woche)s/%(jahr)s"
+msgstr "Week %(woche)s/%(jahr)s"
+
+#: templates/familienziel/eltern.html:75
+msgid "ohne Belohnung"
+msgstr "no reward"
+
+#: templates/familienziel/eltern.html:80
+msgid "Noch keine Wochen."
+msgstr "No weeks yet."
+
+#: templates/familienziel/kacheln/_balken.html:4
+#, python-format
+msgid "%(punkte)s von %(ziel)s"
+msgstr "%(punkte)s of %(ziel)s"
+
+#: templates/familienziel/kacheln/_balken.html:5
+#, python-format
+msgid "<strong>%(punkte)s</strong> von %(ziel)s Punkten"
+msgstr "<strong>%(punkte)s</strong> of %(ziel)s points"
+
+#: templates/familienziel/kacheln/eltern_familienziel.html:7
+#, python-format
+msgid "Noch ohne Aufgabe: %(namen)s"
+msgstr "Still without a task: %(namen)s"
+
+#: templates/familienziel/kacheln/eltern_familienziel.html:9
+#, python-format
+msgid "Bitte Ziel für Woche %(woche)s wählen (Gleichstand oder keine Stimmen)."
+msgstr "Please pick a goal for week %(woche)s (tie or no votes)."
+
+#: templates/familienziel/kacheln/eltern_familienziel.html:12
+msgid "Familienziel verwalten"
+msgstr "Manage family goal"
+
+#: templates/familienziel/kacheln/kind_familienziel.html:7
+msgid "Geschafft! Die Familie hat das Ziel erreicht."
+msgstr "You did it! The family reached the goal."
+
+#: templates/familienziel/kacheln/kind_familienziel.html:8
+#, python-format
+msgid "Noch eine Aufgabe von: %(namen)s."
+msgstr "One more task needed from: %(namen)s."
+
+#: templates/familienziel/kacheln/kind_familienziel.html:11
+msgid "Wähle das Ziel für nächste Woche"
+msgstr "Pick the goal for next week"
+
+#: templates/familienziel/kacheln/kind_familienziel.html:15
+msgid "Abstimmen"
+msgstr "Vote"
+
+#: templates/familienziel/kacheln/kind_familienziel.html:16
+#, python-format
+msgid "Du hast %(titel)s gewählt. Du kannst bis zum Ende ändern."
+msgstr "You picked %(titel)s. You can change it until the end."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:13
+#, python-format
+msgid "Geschafft! %(titel)s ist freigeschaltet."
+msgstr "You did it! %(titel)s is unlocked."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:13
+msgid "Geschafft! Das Wochenziel ist erreicht."
+msgstr "You did it! The weekly goal is reached."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:15
+#, python-format
+msgid "Fast! Noch eine Aufgabe von: %(namen)s."
+msgstr "Almost! One more task needed from: %(namen)s."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:17
+#, python-format
+msgid "Noch %(fehlt)s Punkte, und eine Aufgabe von: %(namen)s."
+msgstr "%(fehlt)s more points to go, and a task from: %(namen)s."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:17
+#, python-format
+msgid "Noch %(fehlt)s Punkte."
+msgstr "%(fehlt)s more points to go."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:20
+msgid "Beiträge der Kinder"
+msgstr "Contributions of the kids"
+
+#: templates/familienziel/kacheln/tablet_leiste.html:22
+msgid "Pause"
+msgstr "Break"
+
+#: templates/familienziel/kacheln/tablet_leiste.html:27
+#, python-format
+msgid "Großes Ziel freigeschaltet: <strong>%(name)s</strong>!"
+msgstr "Big goal unlocked: <strong>%(name)s</strong>!"
+
+#: templates/familienziel/kacheln/tablet_leiste.html:28
+#, python-format
+msgid "Großes Ziel: %(serie)s von %(ziel)s Wochen in Folge."
+msgstr "Big goal: %(serie)s of %(ziel)s weeks in a row."
+
+#: templates/familienziel/kacheln/tablet_leiste.html:32
+msgid "Abstimmung für nächste Woche"
+msgstr "Vote for next week"
+
+#: templates/familienziel/kacheln/tablet_leiste.html:33
+#, python-format
+msgid ""
+"Kinder: Wählt eure Belohnung auf eurem Dashboard. %(abgegeben)s von "
+"%(kinder)s haben abgestimmt."
+msgstr ""
+"Kids: pick your reward on your dashboard. %(abgegeben)s of %(kinder)s have "
+"voted."
+
+#: views.py:105
+msgid "Bitte Ziel und Belohnung prüfen."
+msgstr "Please check the goal and the reward."

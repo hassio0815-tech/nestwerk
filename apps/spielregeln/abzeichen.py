@@ -31,11 +31,14 @@ from django.contrib.staticfiles import finders
 from django.db import transaction
 from django.templatetags.static import static
 from django.utils.text import slugify
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_noop
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.kern import registry as kern_registry
 from apps.kern import svg as kern_svg
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 
 from . import events
@@ -93,16 +96,16 @@ class Bedingung:
 def bedingung_lesen(roh) -> Bedingung:
     """``{"metrik": "rang", "vergleich": ">=", "wert": 2}`` prüfen (Metrik registriert)."""
     if not isinstance(roh, dict):
-        raise AbzeichenFehler("Bedingung: Objekt mit metrik, vergleich, wert erwartet.")
+        raise AbzeichenFehler(_("Bedingung: Objekt mit metrik, vergleich, wert erwartet."))
     metrik = roh.get("metrik")
     vergleich = roh.get("vergleich", Vergleich.MIN)
     wert = roh.get("wert")
     if not isinstance(metrik, str) or metrik not in kern_registry.metrik_verzeichnis:
-        raise AbzeichenFehler(f"Unbekannte Metrik: {metrik!r}.")
+        raise AbzeichenFehler(_("Unbekannte Metrik: %(wert)r.") % {"wert": metrik})
     if vergleich not in VERGLEICHE:
-        raise AbzeichenFehler(f"Unbekannter Vergleich: {vergleich!r}.")
+        raise AbzeichenFehler(_("Unbekannter Vergleich: %(wert)r.") % {"wert": vergleich})
     if isinstance(wert, bool) or not isinstance(wert, int) or not 0 <= wert <= SCHWELLE_MAX:
-        raise AbzeichenFehler("Wert: ganze Zahl ab 0 erwartet.")
+        raise AbzeichenFehler(_("Wert: ganze Zahl ab 0 erwartet."))
     return Bedingung(metrik, vergleich, wert)
 
 
@@ -188,8 +191,11 @@ class Pruefung:
 
 
 def _titel(verleihung) -> str:
-    name = verleihung.abzeichen.name
-    return f"{name} · {verleihung.bereich_bezeichnung}" if verleihung.bereich else name
+    """Anzeigetitel in der aktiven Sprache (Start-Namen übersetzt, Umbenanntes unverändert)."""
+    name = uebersetzt(verleihung.abzeichen.name)
+    if not verleihung.bereich:
+        return name
+    return f"{name} · {uebersetzt(verleihung.bereich_bezeichnung)}"
 
 
 @transaction.atomic
@@ -253,8 +259,26 @@ def _treffer(regel, werte) -> list[Treffer]:
         return []
 
 
+_MEHR_TITEL = gettext_noop("%(titel)s (+%(n)s weitere)")
+_MEHR_KOPF = "%(n)s neue Abzeichen: "  # deutscher Rückfall; Anzeige: _KOPF_NEU + Liste
+_KOPF_NEU = gettext_noop("Neue Abzeichen:")
+gettext_noop("Neu in der Vitrine.")  # Rückfall, wenn ein Abzeichen keine Beschreibung hat
+
+
+def _titel_teile(verleihung) -> dict:
+    teile = {"name": verleihung.abzeichen.name}
+    if verleihung.bereich:
+        teile["bereich"] = verleihung.bereich_bezeichnung
+    return teile
+
+
+def _titel_roh(verleihung) -> str:
+    """Deutscher Titel, wie gespeichert (Rückfall in Ereignissen)."""
+    name = verleihung.abzeichen.name
+    return f"{name} · {verleihung.bereich_bezeichnung}" if verleihung.bereich else name
+
+
 def _abzeichen_melden(kind, neu, melden):
-    titel = [_titel(v) for v in neu]
     audit.protokollieren(
         "abzeichen.verliehen",
         akteur=None,
@@ -265,11 +289,35 @@ def _abzeichen_melden(kind, neu, melden):
     if not melden:
         return
     erstes = neu[0]
+    # Nur msgid + Parameter speichern, gerendert wird in der Sprache des Empfängers
+    # (benachrichtigung.texte.werte_aus). ``abzeichen``/``beschreibung`` bleiben als deutscher
+    # Rückfall für ältere Leser stehen.
+    daten = {}
+    erste_teile = _titel_teile(erstes)
     if len(neu) == 1:
-        anzeige, beschreibung = titel[0], erstes.abzeichen.beschreibung or "Neu in der Vitrine."
+        anzeige = _titel_roh(erstes)
+        beschreibung = erstes.abzeichen.beschreibung or "Neu in der Vitrine."
+        if erstes.bereich:
+            daten["abzeichen_msgid"] = "%(name)s · %(bereich)s"
+            daten["abzeichen_parameter"] = erste_teile
     else:
-        anzeige = f"{titel[0]} (+{len(neu) - 1} weitere)"
-        beschreibung = f"{len(neu)} neue Abzeichen: " + ", ".join(titel)
+        titel = [_titel_roh(v) for v in neu]
+        anzeige = _MEHR_TITEL % {"titel": titel[0], "n": len(neu) - 1}
+        beschreibung = _MEHR_KOPF % {"n": len(neu)} + ", ".join(titel)
+        daten["abzeichen_msgid"] = _MEHR_TITEL
+        daten["abzeichen_parameter"] = {"titel": erste_teile["name"], "n": len(neu) - 1}
+        # Liste aus lauter Platzhaltern: braucht selbst keine Übersetzung, die Namen schon.
+        teile, parameter = [], {"kopf": _KOPF_NEU, "n": len(neu)}
+        for i, v in enumerate(neu):
+            teil = _titel_teile(v)
+            parameter[f"a{i}"] = teil["name"]
+            if v.bereich:
+                parameter[f"b{i}"] = teil["bereich"]
+                teile.append(f"%(a{i})s · %(b{i})s")
+            else:
+                teile.append(f"%(a{i})s")
+        daten["beschreibung_msgid"] = "%(kopf)s " + ", ".join(teile)
+        daten["beschreibung_parameter"] = parameter
     ereignisse.veroeffentlichen(
         events.ABZEICHEN_VERLIEHEN,
         kind=kind,
@@ -280,6 +328,7 @@ def _abzeichen_melden(kind, neu, melden):
             "symbol": erstes.abzeichen.symbol,
             "verleihungen": [v.pk for v in neu],
             "schluessel": [v.abzeichen.schluessel for v in neu],
+            **daten,
         },
         schluessel=f"{events.ABZEICHEN_VERLIEHEN}:{kind.pk}:{erstes.pk}",
     )
@@ -515,14 +564,16 @@ def eltern_uebersicht() -> list[dict]:
 
 def _eltern_pruefen(von):
     if getattr(von, "rolle", None) != "eltern":
-        raise AbzeichenFehler("Abzeichen ändern nur Eltern.")
+        raise AbzeichenFehler(_("Abzeichen ändern nur Eltern."))
 
 
 def _ganzzahl(wert, feld, maximum=SCHWELLE_MAX):
     if isinstance(wert, str) and wert.strip().isdigit():
         wert = int(wert.strip())
     if isinstance(wert, bool) or not isinstance(wert, int) or not 0 <= wert <= maximum:
-        raise AbzeichenFehler(f"{feld}: bitte eine ganze Zahl von 0 bis {maximum}.")
+        raise AbzeichenFehler(
+            _("%(feld)s: bitte eine ganze Zahl von 0 bis %(max)s.") % {"feld": feld, "max": maximum}
+        )
     return wert
 
 
@@ -559,27 +610,29 @@ def abzeichen_speichern(
     name = (name or "").strip()
     beschreibung = (beschreibung or "").strip()
     if not name or len(name) > NAME_MAX:
-        raise AbzeichenFehler(f"Name: 1 bis {NAME_MAX} Zeichen.")
+        raise AbzeichenFehler(_("Name: 1 bis %(max)s Zeichen.") % {"max": NAME_MAX})
     if len(beschreibung) > BESCHREIBUNG_MAX:
-        raise AbzeichenFehler(f"Beschreibung: höchstens {BESCHREIBUNG_MAX} Zeichen.")
+        raise AbzeichenFehler(
+            _("Beschreibung: höchstens %(max)s Zeichen.") % {"max": BESCHREIBUNG_MAX}
+        )
     bedingung_lesen(
-        {"metrik": metrik, "vergleich": vergleich, "wert": _ganzzahl(schwelle, "Schwelle")}
+        {"metrik": metrik, "vergleich": vergleich, "wert": _ganzzahl(schwelle, _("Schwelle"))}
     )
     if wiederholbar not in Wiederholbar.values:
-        raise AbzeichenFehler("Wiederholung: einmalig oder je Bereich.")
+        raise AbzeichenFehler(_("Wiederholung: einmalig oder je Bereich."))
     if wiederholbar == Wiederholbar.BEREICH and not hat_bereiche(metrik):
-        raise AbzeichenFehler("Diese Metrik hat keine Bereiche – bitte „einmalig“ wählen.")
+        raise AbzeichenFehler(_("Diese Metrik hat keine Bereiche – bitte „einmalig“ wählen."))
     neu = {
         "name": name,
         "beschreibung": beschreibung,
         "metrik": metrik,
         "vergleich": vergleich,
-        "schwelle": _ganzzahl(schwelle, "Schwelle"),
+        "schwelle": _ganzzahl(schwelle, _("Schwelle")),
         "wiederholbar": wiederholbar,
         "aktiv": bool(aktiv),
     }
     if reihenfolge not in (None, ""):
-        neu["reihenfolge"] = _ganzzahl(reihenfolge, "Reihenfolge", 32767)
+        neu["reihenfolge"] = _ganzzahl(reihenfolge, _("Reihenfolge"), 32767)
     if definition is None:
         schluessel = _neuer_schluessel(name)
         definition = AbzeichenDefinition.objects.create(
@@ -642,7 +695,7 @@ def meilenstein_uebersicht() -> list[dict]:
             try:
                 bezeichnung = kern_registry.metrik(metrik).bezeichnung
             except kern_registry.UnbekannterEintrag:
-                bezeichnung = f"{metrik} (Modul fehlt)"
+                bezeichnung = _("%(metrik)s (Modul fehlt)") % {"metrik": metrik}
             bedingungen.append({**b, "bezeichnung": bezeichnung})
         zeilen.append(
             {"regel": regel, "bedingungen": bedingungen, "anzahl": regel.erreicht.count()}
@@ -658,18 +711,20 @@ def meilenstein_speichern(regel, *, von, name, bedingungen, beschreibung=""):
     name = (name or "").strip()
     beschreibung = (beschreibung or "").strip()
     if not name or len(name) > 80:
-        raise AbzeichenFehler("Name: 1 bis 80 Zeichen.")
+        raise AbzeichenFehler(_("Name: 1 bis 80 Zeichen."))
     if len(beschreibung) > BESCHREIBUNG_MAX:
-        raise AbzeichenFehler(f"Beschreibung: höchstens {BESCHREIBUNG_MAX} Zeichen.")
+        raise AbzeichenFehler(
+            _("Beschreibung: höchstens %(max)s Zeichen.") % {"max": BESCHREIBUNG_MAX}
+        )
     if not isinstance(bedingungen, list | tuple) or not bedingungen:
-        raise AbzeichenFehler("Mindestens eine Bedingung.")
+        raise AbzeichenFehler(_("Mindestens eine Bedingung."))
     gelesen = [
-        bedingung_lesen({**b, "wert": _ganzzahl(b.get("wert"), "Wert")}) for b in bedingungen
+        bedingung_lesen({**b, "wert": _ganzzahl(b.get("wert"), _("Wert"))}) for b in bedingungen
     ]
     if regel.wiederholbar == Wiederholbar.BEREICH and not any(
         hat_bereiche(b.metrik) for b in gelesen
     ):
-        raise AbzeichenFehler("„Je Bereich“ braucht mindestens eine Metrik mit Bereichen.")
+        raise AbzeichenFehler(_("„Je Bereich“ braucht mindestens eine Metrik mit Bereichen."))
     regel = MeilensteinRegel.objects.select_for_update().get(pk=regel.pk)
     neu = {
         "name": name,
@@ -731,15 +786,15 @@ def meilenstein_anlegen(
     die Zeile unverändert). ``bedingungen``: Liste von ``{"metrik", "vergleich", "wert"}``, alle
     müssen gelten (UND)."""
     if not isinstance(bedingungen, list | tuple) or not bedingungen:
-        raise AbzeichenFehler("Mindestens eine Bedingung.")
+        raise AbzeichenFehler(_("Mindestens eine Bedingung."))
     gelesen = [bedingung_lesen(b) for b in bedingungen]
     if wiederholbar not in Wiederholbar.values:
-        raise AbzeichenFehler("Wiederholung: einmalig oder je Bereich.")
+        raise AbzeichenFehler(_("Wiederholung: einmalig oder je Bereich."))
     if wiederholbar == Wiederholbar.BEREICH and not any(hat_bereiche(b.metrik) for b in gelesen):
-        raise AbzeichenFehler("„Je Bereich“ braucht mindestens eine Metrik mit Bereichen.")
+        raise AbzeichenFehler(_("„Je Bereich“ braucht mindestens eine Metrik mit Bereichen."))
     if slugify(schluessel) != schluessel or not 0 < len(schluessel) <= 60:
-        raise AbzeichenFehler("Schlüssel: Kleinbuchstaben, Ziffern, Bindestrich (max. 60).")
-    regel, _ = MeilensteinRegel.objects.get_or_create(
+        raise AbzeichenFehler(_("Schlüssel: Kleinbuchstaben, Ziffern, Bindestrich (max. 60)."))
+    regel, _angelegt = MeilensteinRegel.objects.get_or_create(
         schluessel=schluessel,
         defaults={
             "name": name[:80],

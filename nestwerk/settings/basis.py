@@ -81,12 +81,14 @@ MIDDLEWARE = [
     "nestwerk.sicherheit.SicherheitsHeader",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "apps.aufgaben.middleware.UploadGrenze",  # vor CSRF: die liest den Body schon
     "django.middleware.csrf.CsrfViewMiddleware",
     "apps.einrichtung.middleware.EinrichtungErzwingen",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "apps.konten.middleware.GeraetMiddleware",
+    "apps.konten.middleware.BenutzerSprache",
     "apps.konten.middleware.SitzungsRichtlinie",
     "apps.konten.middleware.AuditKontextMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -102,6 +104,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
                 "apps.konten.context.konten",
             ]
         },
@@ -148,6 +151,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LANGUAGE_CODE = "de"
 TIME_ZONE = "Europe/Berlin"  # nur Anzeige; intern UTC
 USE_I18N = True
+# Quellsprache im Code ist Deutsch; Englisch kommt aus locale/en (Entscheidung 45).
+# Reihenfolge der Wahl: Benutzer-Einstellung, Geräte-Cookie (Schalter auf dem Startbildschirm),
+# Browser-Sprache, sonst Deutsch.
+LANGUAGES = [("de", "Deutsch"), ("en", "English")]
+LOCALE_PATHS = [BASE_DIR / "locale"]
+LANGUAGE_COOKIE_NAME = "nestwerk_sprache"
+LANGUAGE_COOKIE_AGE = 365 * 24 * 3600
+LANGUAGE_COOKIE_SAMESITE = "Lax"
 USE_TZ = True
 
 STATIC_URL = "static/"

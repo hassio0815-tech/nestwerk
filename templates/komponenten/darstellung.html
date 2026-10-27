@@ -1,10 +1,10 @@
-{% comment %}Hell/Dunkel/System-Wahl (Marken-Look). Setzt data-modus am body, Cookie nestwerk_marke_modus (static/js/huelle.js).{% endcomment %}
+{% load i18n %}{% comment %}Hell/Dunkel/System-Wahl (Marken-Look). Setzt data-modus am body, Cookie nestwerk_marke_modus (static/js/huelle.js).{% endcomment %}
 <section class="nw-karte nw-darstellung" aria-labelledby="darstellung-titel">
-  <h2 id="darstellung-titel">Darstellung</h2>
-  <p class="feld__hinweis">Gilt für dieses Gerät. „System“ folgt der Einstellung deines Geräts.</p>
+  <h2 id="darstellung-titel">{% translate "Darstellung" %}</h2>
+  <p class="feld__hinweis">{% translate "Gilt für dieses Gerät. „System“ folgt der Einstellung deines Geräts." %}</p>
   <div class="nw-segment" role="radiogroup" aria-labelledby="darstellung-titel">
-    <label><input type="radio" name="darstellung" value="system" data-modus-wahl checked>{% include "komponenten/icon.html" with name="einstellungen" %}<span>System</span></label>
-    <label><input type="radio" name="darstellung" value="hell" data-modus-wahl>{% include "komponenten/icon.html" with name="sonne" %}<span>Hell</span></label>
-    <label><input type="radio" name="darstellung" value="dunkel" data-modus-wahl>{% include "komponenten/icon.html" with name="mond" %}<span>Dunkel</span></label>
+    <label><input type="radio" name="darstellung" value="system" data-modus-wahl checked>{% include "komponenten/icon.html" with name="einstellungen" %}<span>{% translate "System" %}</span></label>
+    <label><input type="radio" name="darstellung" value="hell" data-modus-wahl>{% include "komponenten/icon.html" with name="sonne" %}<span>{% translate "Hell" %}</span></label>
+    <label><input type="radio" name="darstellung" value="dunkel" data-modus-wahl>{% include "komponenten/icon.html" with name="mond" %}<span>{% translate "Dunkel" %}</span></label>
   </div>
 </section>

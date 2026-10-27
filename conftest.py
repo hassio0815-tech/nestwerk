@@ -18,3 +18,12 @@ def _flush_im_wartungsmodus():
     TransactionTestCase._fixture_teardown = _fixture_teardown
     yield
     TransactionTestCase._fixture_teardown = original
+
+
+@pytest.fixture(autouse=True)
+def _sprache_zuruecksetzen():
+    """Eine englische Anfrage im Test-Client lässt Englisch im Thread aktiv; danach Deutsch."""
+    from django.utils import translation
+
+    yield
+    translation.activate("de")

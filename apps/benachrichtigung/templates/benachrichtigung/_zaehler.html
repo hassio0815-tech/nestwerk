@@ -1,1 +1,1 @@
-<span class="chip" id="benachrichtigung-zaehler" data-ungelesen="{{ ungelesen }}" hx-get="{% url 'benachrichtigung:zaehler' %}" data-nur-sichtbar hx-trigger="every 30s, nestwerk-aktualisiert from:body" hx-swap="outerHTML">{{ ungelesen }} neu</span>
+{% load i18n %}<span class="chip" id="benachrichtigung-zaehler" data-ungelesen="{{ ungelesen }}" hx-get="{% url 'benachrichtigung:zaehler' %}" data-nur-sichtbar hx-trigger="every 30s, nestwerk-aktualisiert from:body" hx-swap="outerHTML">{% blocktranslate %}{{ ungelesen }} neu{% endblocktranslate %}</span>

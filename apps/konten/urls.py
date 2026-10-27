@@ -9,6 +9,7 @@ urlpatterns = [
     path("anmelden/kind/<uuid:kind_id>/", views.kind_pin, name="kind_pin"),
     path("anmelden/eltern/", views.eltern_login, name="eltern_login"),
     path("abmelden/", views.abmelden, name="abmelden"),
+    path("sprache/", views.sprache_setzen, name="sprache_setzen"),
     path("aktiv/", views.aktiv, name="aktiv"),
     path("kind/", views.kind_heim, name="kind_heim"),
     # Alles unter eltern/ ist nur für Eltern (Rollen-Decorator je View)

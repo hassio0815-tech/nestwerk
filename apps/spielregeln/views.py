@@ -6,10 +6,12 @@ Kalibrierungsfaktor global/je Kind (K3). Abzeichen (AP23): anlegen, ändern, (de
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
 from apps.kern import registry as kern_registry
 from apps.kern import zeit
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
@@ -56,9 +58,9 @@ def _seite(request, form, status=200, fehler=""):
         "fehler": fehler,
         "pausen_kachel": {**pausen_kachel_kontext(), "zurueck": "pausen"},
         "abschnitte": [
-            ("Laufend", uebersicht.laufend, "laufend"),
-            ("Geplant", uebersicht.geplant, "geplant"),
-            ("Vorbei", uebersicht.vergangen, "vorbei"),
+            (_("Laufend"), uebersicht.laufend, "laufend"),
+            (_("Geplant"), uebersicht.geplant, "geplant"),
+            (_("Vorbei"), uebersicht.vergangen, "vorbei"),
         ],
     }
     return render(request, "spielregeln/pausen.html", kontext, status=status)
@@ -180,7 +182,7 @@ def rang_aendern(request, pk):
             min_aktive_wochen=request.POST.get("min_aktive_wochen", ""),
         )
     except services.RangFehler as fehler:
-        return _raenge_seite(request, status=400, fehler=f"{rang.name}: {fehler}")
+        return _raenge_seite(request, status=400, fehler=f"{uebersetzt(rang.name)}: {fehler}")
     return redirect("spielregeln:raenge")
 
 
@@ -268,7 +270,9 @@ def abzeichen_aendern(request, pk):
             **_abzeichen_daten(request),
         )
     except services.AbzeichenFehler as fehler:
-        return _abzeichen_seite(request, status=400, fehler=f"{definition.name}: {fehler}")
+        return _abzeichen_seite(
+            request, status=400, fehler=f"{uebersetzt(definition.name)}: {fehler}"
+        )
     return redirect("spielregeln:abzeichen")
 
 
@@ -293,6 +297,8 @@ def abzeichen_galerie(request):
     for d in selectors.definitionen():
         varianten = [("", selectors.symbol(d))]  # Grundgrafik (auch Vorschau "Als Nächstes")
         if d.gruppe == "rang":
-            varianten += [(f"Rang {n}", selectors.symbol(d, f"rang-{n}")) for n in stufen]
+            varianten += [
+                (_("Rang %(n)s") % {"n": n}, selectors.symbol(d, f"rang-{n}")) for n in stufen
+            ]
         zeilen.append({"d": d, "varianten": varianten})
     return render(request, "spielregeln/abzeichen_galerie.html", {"zeilen": zeilen})

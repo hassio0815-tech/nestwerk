@@ -17,6 +17,7 @@ from collections import Counter
 from datetime import date, timedelta
 
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext, gettext_noop
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
@@ -32,6 +33,10 @@ from .models import (
     Stimme,
     WochenStatus,
 )
+
+# Msgids der Hinweise im Gleichstand-Ereignis (übersetzt beim Rendern je Empfänger)
+GLEICHSTAND_HINWEIS = gettext_noop("Gleichstand zwischen %(titel)s. Bitte entscheidet.")
+KEINE_STIMMEN_HINWEIS = gettext_noop("Niemand hat abgestimmt. Bitte wählt das Ziel der Woche.")
 
 logger = logging.getLogger("nestwerk.familienziel")
 
@@ -83,7 +88,7 @@ def _kinder_ereignisse(typ, schluessel, daten):
 
 
 def _belohnung_titel(zeile):
-    return zeile.belohnung.titel if zeile.belohnung_id else "Wochenziel"
+    return zeile.belohnung.titel if zeile.belohnung_id else gettext_noop("Wochenziel")
 
 
 def erfolg_pruefen(iso: IsoWoche, jetzt=None, *, melden=None) -> bool:
@@ -193,17 +198,17 @@ def stimme_abgeben(kind, belohnung_id, jetzt=None) -> Stimme:
     """Eine Stimme je Kind und Zielwoche; Ändern ist bis zum Abstimmungsende möglich."""
     jetzt = jetzt or zeit.jetzt()
     if getattr(kind, "rolle", None) != "kind" or not kind.aktiv:
-        raise FamilienzielFehler("Nur Kinder stimmen ab.")
+        raise FamilienzielFehler(gettext("Nur Kinder stimmen ab."))
     ziel = IsoWoche.von(jetzt).naechste()
     if not zeitplan.abstimmung_offen_zeitlich(ziel, jetzt):
-        raise FamilienzielFehler("Gerade läuft keine Abstimmung.")
+        raise FamilienzielFehler(gettext("Gerade läuft keine Abstimmung."))
     with transaction.atomic():
         zeile, _ = woche_sicherstellen(ziel)
         if zeile.abstimmung_status != AbstimmungStatus.OFFEN:
-            raise FamilienzielFehler("Die Abstimmung ist schon beendet.")
+            raise FamilienzielFehler(gettext("Die Abstimmung ist schon beendet."))
         wahl = selectors.wahl_optionen().filter(pk=belohnung_id).first()
         if wahl is None:
-            raise FamilienzielFehler("Diese Belohnung steht nicht zur Wahl.")
+            raise FamilienzielFehler(gettext("Diese Belohnung steht nicht zur Wahl."))
         stimme, _ = Stimme.objects.update_or_create(
             woche=zeile, kind=kind, defaults={"belohnung": wahl, "abgegeben_am": jetzt}
         )
@@ -223,7 +228,7 @@ def abstimmung_abschliessen(zeile: Familienwoche, jetzt=None) -> str | None:
     zaehlung = Counter(
         b for b in zeile.stimmen.values_list("belohnung_id", flat=True) if b in erlaubt
     )
-    belohnung_id, hinweis = None, ""
+    belohnung_id, hinweis, hinweis_msgid, hinweis_titel = None, "", "", ""
     if zaehlung:
         spitze = max(zaehlung.values())
         sieger = sorted(b for b, n in zaehlung.items() if n == spitze)
@@ -231,13 +236,15 @@ def abstimmung_abschliessen(zeile: Familienwoche, jetzt=None) -> str | None:
             belohnung_id = sieger[0]
         else:
             titel = Familienbelohnung.objects.filter(pk__in=sieger).values_list("titel", flat=True)
-            hinweis = "Gleichstand zwischen " + ", ".join(sorted(titel)) + ". Bitte entscheidet."
+            hinweis_titel = ", ".join(sorted(titel))
+            hinweis = GLEICHSTAND_HINWEIS % {"titel": hinweis_titel}
+            hinweis_msgid = GLEICHSTAND_HINWEIS
     else:
         vorher = selectors.woche(iso.vorherige())
         if vorher is not None and vorher.belohnung_id in erlaubt:
             belohnung_id = vorher.belohnung_id
         else:
-            hinweis = "Niemand hat abgestimmt. Bitte wählt das Ziel der Woche."
+            hinweis = hinweis_msgid = KEINE_STIMMEN_HINWEIS
     with transaction.atomic():
         if belohnung_id is not None:
             geaendert = Familienwoche.objects.filter(
@@ -252,7 +259,13 @@ def abstimmung_abschliessen(zeile: Familienwoche, jetzt=None) -> str | None:
             if geaendert and zeile.montag >= IsoWoche.von(jetzt).montag:
                 ereignisse.veroeffentlichen(
                     events.ABSTIMMUNG_GLEICHSTAND,
-                    daten={"hinweis": hinweis, "woche": str(iso)},
+                    daten={
+                        "hinweis": hinweis,
+                        # Empfängersprache: texte.werte_aus übersetzt die Msgid beim Rendern
+                        "hinweis_msgid": hinweis_msgid,
+                        "hinweis_titel": hinweis_titel,
+                        "woche": str(iso),
+                    },
                     schluessel=f"{events.ABSTIMMUNG_GLEICHSTAND}:{iso}",
                 )
     return neu if geaendert else None
@@ -340,7 +353,7 @@ def belohnung_speichern(*, von, titel, symbol="", ist_grossziel=False, aktiv=Tru
     _nur_eltern(von)
     titel = (titel or "").strip()
     if not titel or len(titel) > 60:
-        raise FamilienzielFehler("Der Titel ist Pflicht (höchstens 60 Zeichen).")
+        raise FamilienzielFehler(gettext("Der Titel ist Pflicht (höchstens 60 Zeichen)."))
     with transaction.atomic():
         if pk is None:
             letzte = Familienbelohnung.objects.order_by("-reihenfolge").first()
@@ -399,16 +412,18 @@ def woche_festlegen(zeile, *, von, belohnung=None, ziel_punkte=None, jetzt=None)
     with transaction.atomic():
         zeile = Familienwoche.objects.select_for_update().get(pk=zeile.pk)
         if zeile.status != WochenStatus.LAUFEND:
-            raise FamilienzielFehler("Diese Woche ist schon ausgewertet.")
+            raise FamilienzielFehler(gettext("Diese Woche ist schon ausgewertet."))
         details = {"woche": str(_iso(zeile))}
         if ziel_punkte is not None:
             if not 1 <= int(ziel_punkte) <= 100000:
-                raise FamilienzielFehler("Das Ziel muss zwischen 1 und 100000 Punkten liegen.")
+                raise FamilienzielFehler(
+                    gettext("Das Ziel muss zwischen 1 und 100000 Punkten liegen.")
+                )
             zeile.ziel_punkte = int(ziel_punkte)
             details["ziel_punkte"] = zeile.ziel_punkte
         if belohnung is not None:
             if not belohnung.aktiv or belohnung.ist_grossziel:
-                raise FamilienzielFehler("Diese Belohnung steht nicht zur Wahl.")
+                raise FamilienzielFehler(gettext("Diese Belohnung steht nicht zur Wahl."))
             zeile.belohnung = belohnung
             zeile.abstimmung_status = AbstimmungStatus.ELTERN_ENTSCHIEDEN
             details["belohnung"] = belohnung.titel
@@ -423,7 +438,7 @@ def woche_festlegen(zeile, *, von, belohnung=None, ziel_punkte=None, jetzt=None)
 def woche_einloesen(zeile, *, von, jetzt=None):
     _nur_eltern(von)
     if zeile.status != WochenStatus.ERREICHT:
-        raise FamilienzielFehler("Nur erreichte Ziele lassen sich einlösen.")
+        raise FamilienzielFehler(gettext("Nur erreichte Ziele lassen sich einlösen."))
     Familienwoche.objects.filter(pk=zeile.pk, eingeloest_am__isnull=True).update(
         eingeloest_am=jetzt or zeit.jetzt()
     )

@@ -15,10 +15,12 @@ from urllib.parse import urlsplit
 
 from django.db.models import F
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import gettext, gettext_noop
 from pywebpush import WebPushException, webpush
 
 from apps.kern import adressen, audit, einstellungen
+from apps.kern import sprache as kern_sprache
 from apps.konten.models import Rolle
 
 from . import pushschluessel as vapid
@@ -156,7 +158,7 @@ def topic(schluessel):
 
 def _eigene_origin_url(pfad):
     if not adressen.basis_url():
-        raise registry.NichtKonfiguriert("Basis-URL fehlt: Push braucht absolute Links")
+        raise registry.NichtKonfiguriert(gettext("Basis-URL fehlt: Push braucht absolute Links"))
     if not texte.ist_interner_pfad(pfad):
         pfad = "/"
     return absolute_url(pfad)
@@ -216,7 +218,7 @@ def _fehler_zaehlen(abo):
 
 class PushKanal(registry.ZustellKanal):
     slug = "push"
-    bezeichnung = "Push"
+    bezeichnung = gettext_noop("Push")
 
     def ziele(self, benutzer):
         """Ein Ziel je aktivem Gerät. Ohne Gerät bleibt eine Zustellung ohne Ziel, damit die
@@ -253,12 +255,13 @@ class PushKanal(registry.ZustellKanal):
 def probe_senden(benutzer):
     """Test-Push an alle aktiven Geräte des Benutzers. Gibt ``(gesendet, fehlgeschlagen)``
     zurück. ``NichtKonfiguriert`` (BASIS_URL fehlt) wird weitergereicht."""
-    payload = nutzlast(
-        "Nestwerk Test",
-        "Benachrichtigungen funktionieren auf diesem Gerät.",
-        _eigene_origin_url(reverse("benachrichtigung:push_geraet")),
-        badge=selectors.ungelesen(benutzer),
-    )
+    with translation.override(kern_sprache.fuer(benutzer)):
+        payload = nutzlast(
+            gettext("Nestwerk Test"),
+            gettext("Benachrichtigungen funktionieren auf diesem Gerät."),
+            _eigene_origin_url(reverse("benachrichtigung:push_geraet")),
+            badge=selectors.ungelesen(benutzer),
+        )
     gesendet = fehler = 0
     for abo in aktive_abos(benutzer):
         try:

@@ -1,5 +1,5 @@
-{% load static %}<!doctype html>
-<html lang="de">
+{% load i18n %}{% load static i18n %}{% get_current_language as sprache %}<!doctype html>
+<html lang="{{ sprache|default:'de' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -29,9 +29,9 @@
   {% block marke_js %}{% endblock %}
   <script src="{% static 'benachrichtigung/pwa.js' %}" defer></script>
 </head>
-<body data-layout="{% block layout %}kind{% endblock %}" data-modus="{% block modus %}{{ request.COOKIES.nestwerk_modus|default:'dunkel' }}{% endblock %}" data-akzent="{{ akzent|default:'blau' }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body data-text-schliessen="{% translate "Schließen" %}" data-text-zu-gross="{% translate "Die Datei ist zu groß." %}" data-layout="{% block layout %}kind{% endblock %}" data-modus="{% block modus %}{{ request.COOKIES.nestwerk_modus|default:'dunkel' }}{% endblock %}" data-akzent="{{ akzent|default:'blau' }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   {% include "komponenten/_sprite.html" %}
-  <a class="sprung-link" href="#inhalt">Zum Inhalt</a>
+  <a class="sprung-link" href="#inhalt">{% translate "Zum Inhalt" %}</a>
   <header class="kopf">
     {% block kopf %}{% endblock %}
   </header>

@@ -19,6 +19,8 @@ Neue Metrik (z. B. AP26 ``ausbaustufe``, später ``lernen.*``) in ``AppConfig.re
 Danach kennt die Abzeichen-/Meilenstein-Engine die Metrik ohne Code-Änderung.
 """
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern import registry
 from apps.kern.registry import ELTERN, KIND, Kachel, Metrik, Provider
 
@@ -56,11 +58,21 @@ def _stand_feld(feld):
 
 
 METRIKEN = (
-    ("wochenserie", "Wochenserie", "Aktive Wochen in Folge (Pausen neutral)", "Wochen"),
-    ("aktive_wochen", "Aktive Wochen", "Aktive Wochen insgesamt, nie zurückgesetzt", "Wochen"),
-    ("tagesserie", "Tagesserie", "Tage in Folge mit bestätigter Aufgabe (Pausen neutral)", "Tage"),
-    ("rekord_wochenserie", "Rekord Wochenserie", "Längste Wochenserie bisher", "Wochen"),
-    ("rekord_tagesserie", "Rekord Tagesserie", "Längste Tagesserie bisher", "Tage"),
+    ("wochenserie", _("Wochenserie"), _("Aktive Wochen in Folge (Pausen neutral)"), _("Wochen")),
+    (
+        "aktive_wochen",
+        _("Aktive Wochen"),
+        _("Aktive Wochen insgesamt, nie zurückgesetzt"),
+        _("Wochen"),
+    ),
+    (
+        "tagesserie",
+        _("Tagesserie"),
+        _("Tage in Folge mit bestätigter Aufgabe (Pausen neutral)"),
+        _("Tage"),
+    ),
+    ("rekord_wochenserie", _("Rekord Wochenserie"), _("Längste Wochenserie bisher"), _("Wochen")),
+    ("rekord_tagesserie", _("Rekord Tagesserie"), _("Längste Tagesserie bisher"), _("Tage")),
 )
 _FELD = {
     "wochenserie": "wochenserie",
@@ -91,9 +103,9 @@ def metriken_registrieren():
         Metrik(
             "rang",
             MODUL,
-            "Rang",
-            beschreibung="Stufe des höchsten erreichten Rangs (1 = Startrang)",
-            einheit="Stufe",
+            _("Rang"),
+            beschreibung=_("Stufe des höchsten erreichten Rangs (1 = Startrang)"),
+            einheit=_("Stufe"),
         )
     )
     registry.provider_registrieren(Provider("metrik.rang", MODUL, "Rang", _rang_stufe))
@@ -105,9 +117,9 @@ def metriken_registrieren():
         Metrik(
             "quartal_voll_aktiv",
             MODUL,
-            "Volle Quartale",
-            beschreibung="Abgeschlossene Quartale, in denen jede Woche aktiv oder pausiert war",
-            einheit="Quartale",
+            _("Volle Quartale"),
+            beschreibung=_("Abgeschlossene Quartale, in denen jede Woche aktiv oder pausiert war"),
+            einheit=_("Quartale"),
         )
     )
     registry.provider_registrieren(
@@ -190,7 +202,7 @@ def kacheln_registrieren():
         Kachel(
             "spielregeln.kind_abzeichen",
             MODUL,
-            "Meine Abzeichen",
+            _("Meine Abzeichen"),
             "spielregeln/kacheln/kind_abzeichen.html",
             {KIND},
             _kind_abzeichen,
@@ -201,7 +213,7 @@ def kacheln_registrieren():
         Kachel(
             "spielregeln.eltern_abzeichen",
             MODUL,
-            "Abzeichen",
+            _("Abzeichen"),
             "spielregeln/kacheln/eltern_abzeichen.html",
             {ELTERN},
             _eltern_abzeichen,
@@ -212,7 +224,7 @@ def kacheln_registrieren():
         Kachel(
             "spielregeln.kind_rang",
             MODUL,
-            "Mein Rang",
+            _("Mein Rang"),
             "spielregeln/kacheln/kind_rang.html",
             {KIND},
             _kind_rang,
@@ -223,7 +235,7 @@ def kacheln_registrieren():
         Kachel(
             "spielregeln.eltern_raenge",
             MODUL,
-            "Ränge",
+            _("Ränge"),
             "spielregeln/kacheln/eltern_raenge.html",
             {ELTERN},
             _eltern_raenge,
@@ -234,7 +246,7 @@ def kacheln_registrieren():
         Kachel(
             "spielregeln.kind_serie",
             MODUL,
-            "Meine Serie",
+            _("Meine Serie"),
             "spielregeln/kacheln/kind_serie.html",
             {KIND},
             _kind_serie,
@@ -245,7 +257,7 @@ def kacheln_registrieren():
         Kachel(
             "spielregeln.eltern_pausen",
             MODUL,
-            "Pausen",
+            _("Pausen"),
             "spielregeln/kacheln/eltern_pausen.html",
             {ELTERN},
             _eltern_pausen,

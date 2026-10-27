@@ -23,6 +23,11 @@ p{margin:0 0 1rem}
 .kopf nav{display:flex;gap:1.25rem}
 .kopf nav a{color:var(--text);text-decoration:none;font-weight:600;font-size:.95rem;padding:.4rem 0}
 .kopf nav a:hover{color:var(--teal-dunkel)}
+.kopf nav{margin-left:auto}
+.sprachwahl{display:inline-flex;gap:.2rem;padding:.2rem;background:var(--ton);border:1px solid var(--rahmen);border-radius:999px}
+.sprachwahl button{min-height:36px;min-width:44px;padding:0 .8rem;font:inherit;font-weight:700;font-size:.9rem;color:var(--leise);background:none;border:0;border-radius:999px;cursor:pointer}
+.sprachwahl button[aria-pressed="true"]{background:var(--teal-dunkel);color:#fff}
+.sprachwahl button:focus-visible{outline:3px solid var(--teal-hell);outline-offset:2px}
 .hero{background:linear-gradient(180deg,var(--ton),var(--grund));padding:3.5rem 0 4rem;text-align:center}
 .hero__innen{display:flex;flex-direction:column;align-items:center}
 .hero__logo{width:min(300px,70vw);margin-bottom:1.5rem}

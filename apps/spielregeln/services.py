@@ -34,9 +34,13 @@ from datetime import date, datetime, timedelta
 
 from django.db import transaction
 from django.db.models import Q
+from django.utils import formats, translation
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_noop
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
+from apps.kern.sprache import CODES
 from apps.konten import selectors as konten
 
 from . import abzeichen, auswertung, events, held, raenge, serienbonus
@@ -92,7 +96,7 @@ class SpielregelnFehler(ValueError):
 
 def _kind_pruefen(kind):
     if getattr(kind, "pk", None) is None or getattr(kind, "rolle", None) != "kind":
-        raise SpielregelnFehler("Aktivitäten und Pausen gibt es nur für Kinder.")
+        raise SpielregelnFehler(_("Aktivitäten und Pausen gibt es nur für Kinder."))
 
 
 @transaction.atomic
@@ -164,6 +168,12 @@ def _nachfuehren(kind, jetzt=None):
 # --- Serienbonus (AP21) ---------------------------------------------------------------------
 
 
+def _serienbonus_grund(satz, serie) -> str:
+    """Buchungsgrund: wird deutsch in der Datenbank abgelegt (Protokoll, nirgends angezeigt;
+    die Kind-Texte kommen aus dem Ereignis ``serienbonus.gebucht``)."""
+    return f"Serienbonus +{satz} % (Serie {serie})"
+
+
 @transaction.atomic
 def serienbonus_buchen(
     kind,
@@ -202,7 +212,7 @@ def serienbonus_buchen(
         quelle_modul=quelle_modul,
         bezugsdatum=wirksam,  # wie Aktivität und Grundpunkte (Review AP31)
         referenz=referenz,
-        begruendung=f"Serienbonus +{satz} % (Serie {serie})",
+        begruendung=_serienbonus_grund(satz, serie),
         von=von,
     )
     ereignisse.veroeffentlichen(
@@ -224,16 +234,36 @@ def serienbonus_buchen(
 # --- Pausen ---------------------------------------------------------------------------------
 
 
-def _datum_text(tag: date) -> str:
-    return tag.strftime("%d.%m.%Y")
+def _datum_text(tag: date, sprache: str = "de") -> str:
+    """Kurzes Datum in einer festen Sprache (de: 30.10.2026, en: 10/30/2026)."""
+    with translation.override(sprache):
+        return formats.date_format(tag, "SHORT_DATE_FORMAT")
+
+
+def datum_parameter(name: str, tag: date) -> dict:
+    """Datum für msgid-Parameter: ``name`` deutsch, ``name_en`` englisch. Der Empfänger-Text
+    wählt den Platzhalter seiner Sprache (die .po-Einträge tragen ``no-python-format``)."""
+    return {f"{name}_{code}" if code != "de" else name: _datum_text(tag, code) for code in CODES}
+
+
+def _zeitraum_msgid(von: date, bis: date | None) -> tuple[str, dict]:
+    if bis is None:
+        # xgettext:no-python-format
+        return gettext_noop("ab %(von)s"), datum_parameter("von", von)
+    if bis == von:
+        # xgettext:no-python-format
+        return gettext_noop("am %(von)s"), datum_parameter("von", von)
+    # xgettext:no-python-format
+    return gettext_noop("vom %(von)s bis %(bis)s"), {
+        **datum_parameter("von", von),
+        **datum_parameter("bis", bis),
+    }
 
 
 def _zeitraum_text(von: date, bis: date | None) -> str:
-    if bis is None:
-        return f"ab {_datum_text(von)}"
-    if bis == von:
-        return f"am {_datum_text(von)}"
-    return f"vom {_datum_text(von)} bis {_datum_text(bis)}"
+    """Deutscher Rückfall für ältere Leser von ``daten["zeitraum"]``."""
+    msgid, parameter = _zeitraum_msgid(von, bis)
+    return msgid % parameter
 
 
 def _betroffene(pause):
@@ -247,13 +277,15 @@ def _pause_daten(pause, **extra):
         "von": pause.von.isoformat(),
         "bis": pause.bis.isoformat() if pause.bis else "",
         "zeitraum": _zeitraum_text(pause.von, pause.bis),
+        "zeitraum_msgid": _zeitraum_msgid(pause.von, pause.bis)[0],
+        "zeitraum_parameter": _zeitraum_msgid(pause.von, pause.bis)[1],
         **extra,
     }
 
 
 def _akteur_pruefen(von, quelle):
     if quelle == PauseQuelle.ELTERN and getattr(von, "rolle", None) != "eltern":
-        raise SpielregelnFehler("Pausen setzen nur Eltern.")
+        raise SpielregelnFehler(_("Pausen setzen nur Eltern."))
 
 
 def _audit(aktion, pause, von, **details):
@@ -298,12 +330,17 @@ def pause_setzen(
     ab = ab or heute
     grund = (grund or "").strip()
     if len(grund) > GRUND_MAX:
-        raise SpielregelnFehler(f"Grund ist zu lang (höchstens {GRUND_MAX} Zeichen).")
+        raise SpielregelnFehler(
+            _("Grund ist zu lang (höchstens %(max)s Zeichen).") % {"max": GRUND_MAX}
+        )
     if bis is not None and bis < ab:
-        raise SpielregelnFehler("Das Ende liegt vor dem Beginn.")
+        raise SpielregelnFehler(_("Das Ende liegt vor dem Beginn."))
     if ab <= heute and laufende_pausen(kind, heute).exists():
-        wer = kind.anzeigename if kind is not None else "Die Familie"
-        raise SpielregelnFehler(f"{wer} hat schon eine laufende Pause.")
+        if kind is not None:
+            msg = _("%(wer)s hat schon eine laufende Pause.") % {"wer": kind.anzeigename}
+        else:
+            msg = _("Die Familie hat schon eine laufende Pause.")
+        raise SpielregelnFehler(msg)
     pause = Pause.objects.create(
         kind=kind,
         von=ab,
@@ -337,18 +374,20 @@ def pause_beenden(pause, *, von, bis: date | None = None, jetzt=None):
     if pause.von > heute:
         return pause_loeschen(pause, von=von, jetzt=jetzt)
     if pause.bis is not None and pause.bis < heute:
-        raise SpielregelnFehler("Diese Pause ist schon vorbei.")
+        raise SpielregelnFehler(_("Diese Pause ist schon vorbei."))
     neues_bis = bis if bis is not None else max(pause.von, heute - timedelta(days=1))
     if neues_bis < pause.von:
-        raise SpielregelnFehler("Das Ende liegt vor dem Beginn.")
+        raise SpielregelnFehler(_("Das Ende liegt vor dem Beginn."))
     if not Pause.objects.filter(pk=pause.pk, bis=pause.bis).update(bis=neues_bis):
-        raise SpielregelnFehler("Die Pause wurde gerade geändert. Bitte neu laden.")
+        raise SpielregelnFehler(_("Die Pause wurde gerade geändert. Bitte neu laden."))
     alt, pause.bis = pause.bis, neues_bis
     _audit("pause.beendet", pause, von, bis_vorher=alt.isoformat() if alt else "")
-    hinweis = f"Deine Pause endet am {_datum_text(neues_bis)}."
+    # xgettext:no-python-format
+    hinweis = gettext_noop("Deine Pause endet am %(datum)s.")
     if pause.familie:
-        hinweis = f"Die Familienpause endet am {_datum_text(neues_bis)}."
-    _pause_ende_melden(pause, von, hinweis, jetzt=jetzt)
+        # xgettext:no-python-format
+        hinweis = gettext_noop("Die Familienpause endet am %(datum)s.")
+    _pause_ende_melden(pause, von, (hinweis, datum_parameter("datum", neues_bis)), jetzt=jetzt)
     return pause
 
 
@@ -359,7 +398,7 @@ def pause_loeschen(pause, *, von, jetzt=None):
     jetzt = jetzt or zeit.jetzt()
     pause = Pause.objects.select_related("kind").get(pk=pause.pk)
     if pause.von <= zeit.heute(jetzt):
-        raise SpielregelnFehler("Begonnene Pausen werden beendet, nicht gelöscht.")
+        raise SpielregelnFehler(_("Begonnene Pausen werden beendet, nicht gelöscht."))
     _akteur_pruefen(von, PauseQuelle.ELTERN if getattr(von, "pk", None) else "hausautomation")
     _audit("pause.geloescht", pause, von)
     betroffene = _betroffene(pause)
@@ -367,18 +406,28 @@ def pause_loeschen(pause, *, von, jetzt=None):
     pause.delete()
     pause.pk = pk
     _pause_ende_melden(
-        pause, von, "Die geplante Pause entfällt.", betroffene=betroffene, jetzt=jetzt
+        pause,
+        von,
+        (gettext_noop("Die geplante Pause entfällt."), {}),
+        betroffene=betroffene,
+        jetzt=jetzt,
     )
     return None
 
 
 def _pause_ende_melden(pause, von, hinweis, *, betroffene=None, jetzt=None):
+    msgid, parameter = hinweis
     for betroffen in betroffene if betroffene is not None else _betroffene(pause):
         ereignisse.veroeffentlichen(
             events.PAUSE_BEENDET,
             kind=betroffen,
             akteur=von if getattr(von, "pk", None) else None,
-            daten=_pause_daten(pause, hinweis=hinweis),
+            daten=_pause_daten(
+                pause,
+                hinweis=msgid % parameter,  # deutscher Rückfall
+                hinweis_msgid=msgid,
+                hinweis_parameter=parameter,
+            ),
             schluessel=f"{events.PAUSE_BEENDET}:{pause.pk}:{betroffen.pk}:{pause.bis or 'x'}",
         )
         _nachfuehren(betroffen, jetzt)
@@ -620,7 +669,7 @@ def abweichungen(kind) -> list[Abweichung]:
                     name, wo, "finalisiert", zeile.finalisiert_am is not None, i < a.finalisiert
                 )
             )
-    for (jahr, woche), _ in sorted(zeilen.items()):
+    for (jahr, woche), _anzahl in sorted(zeilen.items()):
         ergebnis.append(Abweichung(name, f"{jahr}-W{woche:02d}", "vorhanden", True, False))
     # AP22: Stand-Rang = höchster Fakt; fehlende Fakten (Bedingungen erfüllt, nie geprüft)
     rang = raenge.aktueller_rang(kind)

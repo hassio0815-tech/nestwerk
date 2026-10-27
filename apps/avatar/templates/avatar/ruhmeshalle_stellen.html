@@ -1,27 +1,27 @@
 {% extends "basis/kind.html" %}
-{% load static avatar_tags %}
-{% block titel %}In die Ruhmeshalle stellen{% endblock %}
+{% load i18n static avatar_tags %}
+{% block titel %}{% translate "In die Ruhmeshalle stellen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}"><link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">{% endblock %}
 {% block kopf_rechts %}
   {% url "avatar:halle_kind" as zurueck_url %}
-  {% include "komponenten/button.html" with href=zurueck_url variante="geist" klein=True icon="pfeil-links" text="Ruhmeshalle" %}
+  {% include "komponenten/button.html" with href=zurueck_url variante="geist" klein=True icon="pfeil-links" text=_("Ruhmeshalle") %}
 {% endblock %}
 {% block inhalt %}
-  <h1>In die Ruhmeshalle stellen</h1>
+  <h1>{% translate "In die Ruhmeshalle stellen" %}</h1>
   {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
   <section class="karte halle-dialog" role="dialog" aria-labelledby="halle-titel" data-selten="{{ stand.rang_selten }}"><div class="karte__inhalt stapel">
-    <h2 id="halle-titel">Deinen Helden verewigen?</h2>
+    <h2 id="halle-titel">{% translate "Deinen Helden verewigen?" %}</h2>
     <div class="halle-held halle-held--klein" data-selten="{{ stand.rang_selten }}"><div class="halle-held__buehne">
-      {% svg_roh svg "gross" avatar.thema.name %}<div class="halle-held__sockel" aria-hidden="true"><span></span></div></div></div>
+      {% svg_roh svg "gross" avatar.thema.name|uebersetzt %}<div class="halle-held__sockel" aria-hidden="true"><span></span></div></div></div>
     <ul class="halle-dialog__liste">
-      <li><strong>{{ avatar.thema.name }}</strong> im Rang {{ stand.rang_name }} zieht für immer in die Ruhmeshalle ein.</li>
-      <li>Du <strong>verlierst nichts</strong>: Rang, Punkte, Abzeichen und Sondertage bleiben.</li>
-      <li>Danach wählst du ein neues Thema und baust mit leeren Slots neu.</li>
+      <li>{% blocktranslate with thema=avatar.thema.name|uebersetzt rang=stand.rang_name %}<strong>{{ thema }}</strong> im Rang {{ rang }} zieht für immer in die Ruhmeshalle ein.{% endblocktranslate %}</li>
+      <li>{% blocktranslate %}Du <strong>verlierst nichts</strong>: Rang, Punkte, Abzeichen und Sondertage bleiben.{% endblocktranslate %}</li>
+      <li>{% translate "Danach wählst du ein neues Thema und baust mit leeren Slots neu." %}</li>
     </ul>
-    <h3>Dein nächstes Thema</h3>
+    <h3>{% translate "Dein nächstes Thema" %}</h3>
     <div class="mod-themen">
       {% for t in karten %}
-        <a class="kachel kachel--avatar mod-thema{% if t.gewaehlt %} mod-thema--gewaehlt{% endif %}" href="?thema={{ t.thema.schluessel }}#bestaetigen" aria-current="{{ t.gewaehlt|yesno:'true,false' }}">{% svg_roh t.svg "mittel" t.thema.name %}<span class="kachel__titel">{{ t.thema.name }}</span></a>
+        <a class="kachel kachel--avatar mod-thema{% if t.gewaehlt %} mod-thema--gewaehlt{% endif %}" href="?thema={{ t.thema.schluessel }}#bestaetigen" aria-current="{{ t.gewaehlt|yesno:'true,false' }}">{% svg_roh t.svg "mittel" t.thema.name|uebersetzt %}<span class="kachel__titel">{{ t.thema.name|uebersetzt }}</span></a>
       {% endfor %}
     </div>
     <form method="post" id="bestaetigen" class="stapel">{% csrf_token %}
@@ -29,11 +29,11 @@
       <input type="hidden" name="thema" value="{{ gewaehlt }}">
       <div class="reihe halle-dialog__aktionen">
         {% url "avatar:halle_kind" as abbrechen_url %}
-        {% include "komponenten/button.html" with href=abbrechen_url variante="geist" icon="x" text="Abbrechen" %}
+        {% include "komponenten/button.html" with href=abbrechen_url variante="geist" icon="x" text=_("Abbrechen") %}
         {% if gewaehlt %}
-          {% include "komponenten/button.html" with typ="submit" icon="stern" text="Ja, in die Ruhmeshalle stellen" %}
+          {% include "komponenten/button.html" with typ="submit" icon="stern" text=_("Ja, in die Ruhmeshalle stellen") %}
         {% else %}
-          <span class="kachel__text">Wähle zuerst dein neues Thema.</span>
+          <span class="kachel__text">{% translate "Wähle zuerst dein neues Thema." %}</span>
         {% endif %}
       </div>
     </form>

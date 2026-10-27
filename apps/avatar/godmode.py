@@ -23,8 +23,9 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext, gettext_noop
 
-from apps.kern import einstellungen, zeit
+from apps.kern import einstellungen, sprache, zeit
 from apps.kern.zeit import IsoWoche
 from apps.spielregeln import selectors as spielregeln
 
@@ -136,6 +137,17 @@ def teile_variieren(teile: list, nummer: int, palette: dict, slot: str) -> list:
     return ergebnis
 
 
+# Erzeugte Namen bleiben deutsch in der Datenbank und werden beim Anzeigen übersetzt
+sprache.muster_registrieren(
+    r"(?P<thema>.+): God-Mode-Set (?P<n>\d+)", gettext_noop("%(thema)s: God-Mode-Set %(n)s")
+)
+sprache.muster_registrieren(r"(?P<mod>.+) · Set (?P<n>\d+)", gettext_noop("%(mod)s · Set %(n)s"))
+sprache.muster_registrieren(
+    r"God-Mode-Set (?P<n>\d+): (?P<beschreibung>.+)",
+    gettext_noop("God-Mode-Set %(n)s: %(beschreibung)s"),
+)
+
+
 def _set_name(thema, nummer) -> str:
     return f"{thema.name}: God-Mode-Set {nummer}"[:60]
 
@@ -217,7 +229,10 @@ def metrik_zyklus(kind) -> int:
 
 def metrik_zyklus_bereiche(kind) -> dict[str, tuple[int, str]]:
     z = zyklus(kind)
-    return {f"zyklus-{n}": (int(n <= z.geschafft), f"Zyklus {n}") for n in range(1, z.aktuell + 1)}
+    return {
+        f"zyklus-{n}": (int(n <= z.geschafft), gettext("Zyklus %(n)s") % {"n": n})
+        for n in range(1, z.aktuell + 1)
+    }
 
 
 def metrik_set_bereiche(kind) -> dict[str, tuple[int, str]]:
@@ -227,7 +242,10 @@ def metrik_set_bereiche(kind) -> dict[str, tuple[int, str]]:
     if not z.godmode:
         return {}
     je_set = ausbaustufe(kind).je_set
-    return {f"zyklus-{n}": (je_set.get(n, 0), f"Set {n}") for n in range(1, z.aktuell + 1)}
+    return {
+        f"zyklus-{n}": (je_set.get(n, 0), gettext("Set %(n)s") % {"n": n})
+        for n in range(1, z.aktuell + 1)
+    }
 
 
 def metrik_set_vollstaendig(kind) -> int:

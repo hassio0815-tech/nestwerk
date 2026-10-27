@@ -1,6 +1,7 @@
 {% extends "basis/huelle.html" %}
+{% load i18n %}
 {% comment %}PIN-Eingabe für ein Kind im Marken-Look. Der Ring nutzt die Akzentfarbe des Kindes (data-akzent).{% endcomment %}
-{% block titel %}PIN{% endblock %}
+{% block titel %}{% translate "PIN" %}{% endblock %}
 {% block buehne %}
   <div class="huelle-buehne">
     <div class="nw-profile nw-profile--eins">
@@ -9,12 +10,12 @@
     <form method="post" class="stapel nw-voll" autocomplete="off">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ next }}">
-      <h1 class="nw-begruessung">Hallo {{ kind.anzeigename }}!</h1>
-      <p class="nw-leise">Gib deine PIN ein.</p>
+      <h1 class="nw-begruessung">{% blocktranslate with name=kind.anzeigename %}Hallo {{ name }}!{% endblocktranslate %}</h1>
+      <p class="nw-leise">{% translate "Gib deine PIN ein." %}</p>
       {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
       {% include "komponenten/pin_pad.html" with feld="pin" %}
     </form>
     {% url "konten:start" as start_url %}
-    {% include "komponenten/button.html" with href=start_url variante="geist" icon="pfeil-links" text="Zurück zur Auswahl" %}
+    {% include "komponenten/button.html" with href=start_url variante="geist" icon="pfeil-links" text=_("Zurück zur Auswahl") %}
   </div>
 {% endblock %}

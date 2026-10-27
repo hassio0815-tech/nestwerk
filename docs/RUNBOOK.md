@@ -1,5 +1,7 @@
 # Nestwerk Runbook (Betrieb)
 
+🇬🇧 [English](en/RUNBOOK.md) · 🇩🇪 **Deutsch**
+
 Zielsystem: Debian-13-VM (2 vCPU, 4 GB, 46 GB) mit Docker Compose. Davor Nginx Proxy Manager (NPM, TLS), lokaler DNS per AdGuard. Alle Befehle auf der VM im Ordner `/opt/nestwerk`, als Benutzer `nestwerk` (Gruppe `docker`) oder root.
 
 ## 1. VM vorbereiten

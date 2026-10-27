@@ -1,23 +1,24 @@
-{% extends "oberflaeche/eltern_basis.html" %}
+{% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
 {% comment %}Generischer Einstellungen-Editor: ein Formular je Modul, Felder aus den Definitionen.{% endcomment %}
-{% block titel %}Einstellungen{% endblock %}
+{% block titel %}{% translate "Einstellungen" %}{% endblock %}
 {% block seite %}
-  <h1>Einstellungen</h1>
+  <h1>{% translate "Einstellungen" %}</h1>
   {% include "komponenten/darstellung.html" %}
+  {% include "konten/_sprache_einstellung.html" %}
   {% include "oberflaeche/_wappen_karte.html" %}
   <section class="karte" id="dungeon-anzeige"><div class="karte__inhalt stapel">
-    <h2>Dungeon-Bereich</h2>
-    <p class="feld__hinweis">Ränge, Mods, Abzeichen, Ruhmeshalle und Sondertage der Kinder. Aus: Eintrag im Menü und Start-Auswahl verschwinden, die Seiten bleiben per Adresse erreichbar. Das Spiel der Kinder bleibt unberührt.</p>
+    <h2>{% translate "Dungeon-Bereich" %}</h2>
+    <p class="feld__hinweis">{% translate "Ränge, Mods, Abzeichen, Ruhmeshalle und Sondertage der Kinder. Aus: Eintrag im Menü und Start-Auswahl verschwinden, die Seiten bleiben per Adresse erreichbar. Das Spiel der Kinder bleibt unberührt." %}</p>
     <form method="post" action="{% url 'oberflaeche:dungeon_anzeige' %}" class="stapel">{% csrf_token %}
-      <label class="reihe"><input type="checkbox" name="dungeon_anzeigen" value="1"{% if request.user.dungeon_anzeigen %} checked{% endif %}><span>Dungeon-Bereich anzeigen</span></label>
-      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+      <label class="reihe"><input type="checkbox" name="dungeon_anzeigen" value="1"{% if request.user.dungeon_anzeigen %} checked{% endif %}><span>{% translate "Dungeon-Bereich anzeigen" %}</span></label>
+      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
     </form>
   </div></section>
-  <p class="feld__hinweis">Abschnitt antippen, um ihn auf- oder zuzuklappen.</p>
+  <p class="feld__hinweis">{% translate "Abschnitt antippen, um ihn auf- oder zuzuklappen." %}</p>
   {% for g in gruppen %}
     <section class="karte" id="modul-{{ g.modul }}"><details class="einstellungen-gruppe karte__inhalt stapel"{% if gespeichert == g.modul or offen == g.modul %} open{% endif %}>
       <summary><h2>{{ g.titel }}</h2></summary>
-      {% if gespeichert == g.modul %}<p class="feld__hinweis" role="status">Gespeichert.</p>{% endif %}
+      {% if gespeichert == g.modul %}<p class="feld__hinweis" role="status">{% translate "Gespeichert." %}</p>{% endif %}
       <form method="post" action="{% url 'oberflaeche:einstellungen_speichern' g.modul %}" class="stapel">
         {% csrf_token %}
         {% for f in g.felder %}
@@ -44,11 +45,11 @@
               {% endif %}
             {% endif %}
             {% if f.fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ f.fehler }}</p>
-            {% elif f.definition.beschreibung %}<p class="feld__hinweis">{{ f.definition.beschreibung }}{% if f.art == "liste" %} Ein Eintrag pro Zeile.{% endif %}</p>{% endif %}
-            {% if f.fehlt and not f.fehler %}<p class="feld__hinweis">Noch kein Wert gesetzt.</p>{% endif %}
+            {% elif f.definition.beschreibung %}<p class="feld__hinweis">{{ f.definition.beschreibung }}{% if f.art == "liste" %} {% translate "Ein Eintrag pro Zeile." %}{% endif %}</p>{% endif %}
+            {% if f.fehlt and not f.fehler %}<p class="feld__hinweis">{% translate "Noch kein Wert gesetzt." %}</p>{% endif %}
           </div>
         {% endfor %}
-        {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
+        {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
       </form>
     </details></section>
   {% endfor %}

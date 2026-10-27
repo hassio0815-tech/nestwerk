@@ -32,7 +32,7 @@ def zustand(html, slot):
 
 def test_slots_leer_im_bau_und_gefuellt(kind, kind_client, uhr):
     html = seite(kind_client)
-    assert 'data-charakter' in html and 'data-ziel' in html
+    assert "data-charakter" in html and "data-ziel" in html
     assert {zustand(html, s) for s in ("kopf", "koerper", "hand")} == {"leer"}
     services.mod_kaufen(kind, mod("ritter", "kopf"))
     html = seite(kind_client)
@@ -78,7 +78,9 @@ def test_eltern_setzen_zurueck_mit_protokoll(kind, kind_client, eltern_client):
     assert Avatar.objects.get(pk=kind.pk).name == ""
     eintrag = AuditEintrag.objects.get(aktion="avatar.name_zurueckgesetzt")
     assert eintrag.details["alt"] == "Doofname"
-    assert "Doofname" not in eltern_client.get(reverse("oberflaeche:eltern_dungeon")).content.decode()
+    assert (
+        "Doofname" not in eltern_client.get(reverse("oberflaeche:eltern_dungeon")).content.decode()
+    )
 
 
 def test_ruhmeshalle_speichert_namens_snapshot(held, uhr):

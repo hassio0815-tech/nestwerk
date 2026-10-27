@@ -1,4 +1,4 @@
-{% extends "basis/eltern.html" %}
+{% extends "basis/eltern.html" %}{% load i18n %}
 {% load static %}
 {% comment %}
   Gemeinsames Einstellungs-/Eltern-Layout: Seitenleiste (Desktop), scrollende Tabs (mobil).
@@ -7,24 +7,24 @@
 {% endcomment %}
 {% block kopf_rechts %}
   {% url "oberflaeche:module" as module_url %}
-  {% include "komponenten/button.html" with href=module_url variante="geist" klein=True icon="home" text="Start" %}
+  {% include "komponenten/button.html" with href=module_url variante="geist" klein=True icon="home" text=_("Start") %}
   {% url "benachrichtigung:liste" as benachrichtigungen_url %}
-  {% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text="Benachrichtigungen" %}
+  {% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text=_("Benachrichtigungen") %}
   <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Abmelden" %}
+    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
   </form>
 {% endblock %}
 {% block inhalt %}
   <div class="nw-schale">
-    <nav class="nw-schale__nav" aria-label="Eltern-Bereich">
+    <nav class="nw-schale__nav" aria-label="{% translate "Eltern-Bereich" %}">
       <div class="nw-tabs">
         {% block menue %}
           {% url "oberflaeche:eltern_heim" as u1 %}{% url "oberflaeche:einstellungen" as u2 %}{% url "oberflaeche:familie" as u3 %}{% url "konten:geraete" as u4 %}
-          <a class="nw-tab" href="{{ u1 }}"{% if request.path == u1 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="home" %}<span>Übersicht</span></a>
-          <a class="nw-tab" href="{{ u2 }}"{% if request.path == u2 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="einstellungen" %}<span>Einstellungen</span></a>
-          <a class="nw-tab" href="{{ u3 }}"{% if request.path == u3 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="person" %}<span>Familie</span></a>
-          <a class="nw-tab" href="{{ u4 }}"{% if request.path == u4 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="schloss" %}<span>Geräte</span></a>
-          {% if request.user.dungeon_anzeigen %}{% url "oberflaeche:eltern_dungeon" as u5 %}<a class="nw-tab" href="{{ u5 }}"{% if request.path == u5 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="pokal" %}<span>Dungeon</span></a>{% endif %}
+          <a class="nw-tab" href="{{ u1 }}"{% if request.path == u1 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="home" %}<span>{% translate "Übersicht" %}</span></a>
+          <a class="nw-tab" href="{{ u2 }}"{% if request.path == u2 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="einstellungen" %}<span>{% translate "Einstellungen" %}</span></a>
+          <a class="nw-tab" href="{{ u3 }}"{% if request.path == u3 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="person" %}<span>{% translate "Familie" %}</span></a>
+          <a class="nw-tab" href="{{ u4 }}"{% if request.path == u4 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="schloss" %}<span>{% translate "Geräte" %}</span></a>
+          {% if request.user.dungeon_anzeigen %}{% url "oberflaeche:eltern_dungeon" as u5 %}<a class="nw-tab" href="{{ u5 }}"{% if request.path == u5 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="pokal" %}<span>{% translate "Dungeon" %}</span></a>{% endif %}
         {% endblock %}
       </div>
     </nav>

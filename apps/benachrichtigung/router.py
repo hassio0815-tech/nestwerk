@@ -16,8 +16,11 @@ Regeln (ARCHITECTURE 5.3, 13.2 K7/K13):
 
 import logging
 
+from django.utils import translation
+
 from apps.ereignisse import selectors as ereignis_selectors
 from apps.ereignisse.models import Zielgruppe
+from apps.kern import sprache as kern_sprache
 from apps.kern import zeit
 from apps.konten import selectors as konten_selectors
 from apps.konten.models import Rolle
@@ -75,12 +78,17 @@ def router(ereignis):
         return 0
     kanaele_synchronisieren()
     jetzt = zeit.jetzt()
-    titel, text = texte.rendern(ereignis, typ.bezeichnung)
+    gerendert = {}  # Titel/Text je Sprache (Worker: kein Request, Sprache des Empfängers)
     link = texte.link_fuer(ereignis, typ.deep_link_muster)
     abgeschaltet = set(Kanal.objects.filter(aktiv=False).values_list("slug", flat=True))
     entscheidung = selectors.ist_entscheidung(typ)
     anzahl = 0
     for empfaenger in empfaenger_fuer(typ, ereignis):
+        sprache = kern_sprache.fuer(empfaenger)
+        if sprache not in gerendert:
+            with translation.override(sprache):
+                gerendert[sprache] = texte.rendern(ereignis, typ.bezeichnung)
+        titel, text = gerendert[sprache]
         eintrag, _ = Benachrichtigung.objects.get_or_create(
             empfaenger=empfaenger,
             ereignis=ereignis,

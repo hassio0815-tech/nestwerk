@@ -18,25 +18,37 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, time
 
+from django.utils.formats import date_format
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy, ngettext, pgettext_lazy
+
 EINMALIG = "einmalig"
 WOECHENTLICH = "woechentlich"
 INTERVALL = "intervall"
 ARTEN = (
-    (EINMALIG, "Einmalig"),
-    (WOECHENTLICH, "Wöchentlich an bestimmten Wochentagen"),
-    (INTERVALL, "Alle paar Tage (Intervall)"),
+    (EINMALIG, gettext_lazy("Einmalig")),
+    (WOECHENTLICH, gettext_lazy("Wöchentlich an bestimmten Wochentagen")),
+    (INTERVALL, gettext_lazy("Alle paar Tage (Intervall)")),
 )
-ZEITRAEUME = (("tag", "Tag"), ("woche", "Woche"), ("monat", "Monat"))
-ZEITRAUM_WOERTER = {"tag": "Tag", "woche": "Woche", "monat": "Monat"}
+ZEITRAEUME = (
+    ("tag", gettext_lazy("Tag")),
+    ("woche", gettext_lazy("Woche")),
+    ("monat", gettext_lazy("Monat")),
+)
+ZEITRAUM_WOERTER = {
+    "tag": gettext_lazy("Tag"),
+    "woche": gettext_lazy("Woche"),
+    "monat": gettext_lazy("Monat"),
+}
 
 WOCHENTAGE = (
-    (0, "Mo", "Montag"),
-    (1, "Di", "Dienstag"),
-    (2, "Mi", "Mittwoch"),
-    (3, "Do", "Donnerstag"),
-    (4, "Fr", "Freitag"),
-    (5, "Sa", "Samstag"),
-    (6, "So", "Sonntag"),
+    (0, pgettext_lazy("Wochentag kurz", "Mo"), gettext_lazy("Montag")),
+    (1, pgettext_lazy("Wochentag kurz", "Di"), gettext_lazy("Dienstag")),
+    (2, pgettext_lazy("Wochentag kurz", "Mi"), gettext_lazy("Mittwoch")),
+    (3, pgettext_lazy("Wochentag kurz", "Do"), gettext_lazy("Donnerstag")),
+    (4, pgettext_lazy("Wochentag kurz", "Fr"), gettext_lazy("Freitag")),
+    (5, pgettext_lazy("Wochentag kurz", "Sa"), gettext_lazy("Samstag")),
+    (6, pgettext_lazy("Wochentag kurz", "So"), gettext_lazy("Sonntag")),
 )
 ALLE_TAGE_MASKE = 0b1111111
 
@@ -125,74 +137,101 @@ class Plan:
         """Verständliche Kurzbeschreibung, z. B. 'Jeden Mi · bis 20:00 Uhr · max. 1x pro Woche'."""
         if self.art == WOECHENTLICH:
             namen = [WOCHENTAGE[t][1] for t in self.wochentage_liste]
-            teile = ["Jede Woche: " + ", ".join(namen) if namen else "Wöchentlich"]
+            teile = [
+                _("Jede Woche: %(tage)s") % {"tage": ", ".join(str(n) for n in namen)}
+                if namen
+                else _("Wöchentlich")
+            ]
         elif self.art == INTERVALL:
             n = self.intervall_tage
-            teile = ["Jeden Tag"] if n == 1 else [f"Alle {n} Tage" if n else "Intervall"]
+            teile = (
+                [_("Jeden Tag")]
+                if n == 1
+                else [_("Alle %(n)s Tage") % {"n": n} if n else _("Intervall")]
+            )
         else:
-            teile = ["Einmalig" + (f" am {self.start_datum:%d.%m.%Y}" if self.start_datum else "")]
+            if self.start_datum:
+                teile = [
+                    _("Einmalig am %(datum)s")
+                    % {"datum": date_format(self.start_datum, "SHORT_DATE_FORMAT")}
+                ]
+            else:
+                teile = [_("Einmalig")]
         if self.fenster_bis:
-            fenster = f"bis {self.fenster_bis:%H:%M} Uhr"
+            bis = f"{self.fenster_bis:%H:%M}"
+            fenster = _("bis %(bis)s Uhr") % {"bis": bis}
             if self.fenster_von:
-                fenster = f"{self.fenster_von:%H:%M} bis {self.fenster_bis:%H:%M} Uhr"
+                fenster = _("%(von)s bis %(bis)s Uhr") % {
+                    "von": f"{self.fenster_von:%H:%M}",
+                    "bis": bis,
+                }
             if self.fenster_tage:
-                fenster += f" (+{self.fenster_tage} Tag{'e' if self.fenster_tage != 1 else ''})"
+                fenster += " " + ngettext("(+%(n)s Tag)", "(+%(n)s Tage)", self.fenster_tage) % {
+                    "n": self.fenster_tage
+                }
             teile.append(fenster)
         if self.limit_anzahl and self.limit_zeitraum:
             teile.append(
-                f"max. {self.limit_anzahl}x pro {ZEITRAUM_WOERTER.get(self.limit_zeitraum, '?')}"
-                " und Kind"
+                _("max. %(n)sx pro %(zeitraum)s und Kind")
+                % {
+                    "n": self.limit_anzahl,
+                    "zeitraum": ZEITRAUM_WOERTER.get(self.limit_zeitraum, "?"),
+                }
             )
         if self.art != EINMALIG and self.end_datum:
-            teile.append(f"bis {self.end_datum:%d.%m.%Y}")
+            teile.append(
+                _("bis %(datum)s") % {"datum": date_format(self.end_datum, "SHORT_DATE_FORMAT")}
+            )
         return " · ".join(teile)
 
 
 def pruefen(plan: Plan) -> dict[str, str]:
     """Konsistenzprüfung. Rückgabe: ``{feldname: Meldung}`` (leer = gültig)."""
     fehler: dict[str, str] = {}
-    arten = {a for a, _ in ARTEN}
+    arten = {a for a, _label in ARTEN}
     if plan.art not in arten:
-        fehler["wiederholungsart"] = "Unbekannte Wiederholungsart."
+        fehler["wiederholungsart"] = _("Unbekannte Wiederholungsart.")
         return fehler
 
     if plan.art == WOECHENTLICH:
         if not plan.wochentage:
-            fehler["wochentage"] = "Bitte mindestens einen Wochentag wählen."
+            fehler["wochentage"] = _("Bitte mindestens einen Wochentag wählen.")
         elif not 0 < plan.wochentage <= ALLE_TAGE_MASKE:
-            fehler["wochentage"] = "Ungültige Wochentage."
+            fehler["wochentage"] = _("Ungültige Wochentage.")
     elif plan.wochentage:
-        fehler["wochentage"] = "Wochentage gibt es nur bei wöchentlicher Wiederholung."
+        fehler["wochentage"] = _("Wochentage gibt es nur bei wöchentlicher Wiederholung.")
 
     if plan.art == INTERVALL:
         if plan.intervall_tage is None or plan.intervall_tage < 1:
-            fehler["intervall_tage"] = "Bitte einen Abstand von mindestens 1 Tag angeben."
+            fehler["intervall_tage"] = _("Bitte einen Abstand von mindestens 1 Tag angeben.")
     elif plan.intervall_tage is not None:
-        fehler["intervall_tage"] = "Ein Intervall gibt es nur bei der Wiederholungsart Intervall."
+        fehler["intervall_tage"] = _(
+            "Ein Intervall gibt es nur bei der Wiederholungsart Intervall."
+        )
 
     if plan.start_datum and plan.end_datum and plan.end_datum < plan.start_datum:
-        fehler["end_datum"] = "Das Ende darf nicht vor dem Start liegen."
+        fehler["end_datum"] = _("Das Ende darf nicht vor dem Start liegen.")
 
     if plan.fenster_von and not plan.fenster_bis:
-        fehler["fenster_bis"] = "Für ein Zeitfenster fehlt die Frist (Ende)."
+        fehler["fenster_bis"] = _("Für ein Zeitfenster fehlt die Frist (Ende).")
     if plan.fenster_tage is not None:
         if plan.fenster_tage < 0:
-            fehler["fenster_tage"] = "Die Tage dürfen nicht negativ sein."
+            fehler["fenster_tage"] = _("Die Tage dürfen nicht negativ sein.")
         elif plan.fenster_tage and not plan.fenster_bis:
-            fehler["fenster_tage"] = "Mehrere Tage gehen nur mit einer Frist."
+            fehler["fenster_tage"] = _("Mehrere Tage gehen nur mit einer Frist.")
     if (
         plan.fenster_von
         and plan.fenster_bis
         and not plan.fenster_tage
         and plan.fenster_bis <= plan.fenster_von
     ):
-        fehler["fenster_bis"] = "Das Ende muss nach dem Beginn liegen (oder Tage > 0 wählen)."
+        fehler["fenster_bis"] = _("Das Ende muss nach dem Beginn liegen (oder Tage > 0 wählen).")
 
     if (plan.limit_anzahl is None) != (not plan.limit_zeitraum):
-        fehler["limit_anzahl"] = "Limit braucht Anzahl und Zeitraum zusammen."
+        fehler["limit_anzahl"] = _("Limit braucht Anzahl und Zeitraum zusammen.")
     elif plan.limit_anzahl is not None:
         if plan.limit_anzahl < 1:
-            fehler["limit_anzahl"] = "Das Limit muss mindestens 1 sein."
+            fehler["limit_anzahl"] = _("Das Limit muss mindestens 1 sein.")
         elif plan.limit_zeitraum not in ZEITRAUM_WOERTER:
-            fehler["limit_zeitraum"] = "Unbekannter Zeitraum."
+            fehler["limit_zeitraum"] = _("Unbekannter Zeitraum.")
     return fehler

@@ -1,0 +1,1675 @@
+# English translation for Nestwerk.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 04:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ablauf.py:153
+msgid "Text"
+msgstr "Text"
+
+#: ablauf.py:157
+#, python-format
+msgid "%(name)s ist zu lang (höchstens %(grenze)s Zeichen)."
+msgstr "%(name)s is too long (at most %(grenze)s characters)."
+
+#: ablauf.py:165
+msgid "Nur Kinder können Aufgaben übernehmen."
+msgstr "Only kids can take on tasks."
+
+#: ablauf.py:170
+msgid "Nur Eltern können das entscheiden."
+msgstr "Only parents can decide this."
+
+#: ablauf.py:176
+msgid "Diese Aufgabe ist gerade pausiert oder beendet."
+msgstr "This task is paused or finished right now."
+
+#: ablauf.py:178
+msgid "Diese Aufgabe ist für ein anderes Kind."
+msgstr "This task is for another child."
+
+#: ablauf.py:180
+msgid "Die Zeit für diese Aufgabe ist vorbei."
+msgstr "Time is up for this task."
+
+#: ablauf.py:194
+msgid "Zu dieser Aufgabe gibt es keine offene Meldung."
+msgstr "There is no open report for this task."
+
+#: ablauf.py:244
+msgid "pro Tag"
+msgstr "per day"
+
+#: ablauf.py:245
+msgid "pro Woche"
+msgstr "per week"
+
+#: ablauf.py:246
+msgid "pro Monat"
+msgstr "per month"
+
+#: ablauf.py:254
+#, python-format
+msgid ""
+"„%(titel)s“ geht höchstens %(n)s× %(zeitraum)s. Such dir eine andere Aufgabe "
+"aus!"
+msgstr "“%(titel)s” can only be done %(n)s× %(zeitraum)s. Pick another task!"
+
+#: ablauf.py:280
+msgid "Du hast diese Aufgabe schon gewählt."
+msgstr "You have already picked this task."
+
+#: ablauf.py:329
+msgid "Diese Aufgabe ist nicht mehr frei."
+msgstr "This task is not free any more."
+
+#: ablauf.py:342
+msgid "Diese Aufgabe hast du nicht gewählt."
+msgstr "You did not pick this task."
+
+#: ablauf.py:368
+msgid "Diese Aufgabe kannst du nicht mehr zurückgeben."
+msgstr "You can't give this task back any more."
+
+#: ablauf.py:408
+msgid "Hier gibt es nichts mehr zuzuteilen."
+msgstr "There is nothing left to assign here."
+
+#: ablauf.py:411 views_ablauf.py:152
+msgid "Dieses Kind hat die Aufgabe nicht gewählt."
+msgstr "This child did not pick the task."
+
+#: ablauf.py:424
+msgid "Diese Aufgabe ist nicht (mehr) reserviert."
+msgstr "This task is not (or no longer) reserved."
+
+#: ablauf.py:453
+msgid "Fotos können noch nicht hochgeladen werden."
+msgstr "Photos can't be uploaded yet."
+
+#: ablauf.py:471
+msgid "Diese Aufgabe ist nicht (mehr) für dich reserviert."
+msgstr "This task is not (or no longer) reserved for you."
+
+#: ablauf.py:477
+msgid "Die Frist zum Nachbessern ist vorbei."
+msgstr "The time to fix it is over."
+
+#: ablauf.py:479
+msgid "Diese Aufgabe ist für ein anderes Kind reserviert."
+msgstr "This task is reserved for another child."
+
+#: ablauf.py:509
+msgid "Schreib kurz, was du gemacht hast, oder füge ein Foto hinzu."
+msgstr "Write a few words about what you did, or add a photo."
+
+#: ablauf.py:540
+msgid "Das ist nicht deine Aufgabe."
+msgstr "This is not your task."
+
+#: ablauf.py:653
+msgid "Diese Meldung ist schon entschieden."
+msgstr "This report has already been decided."
+
+#: ablauf.py:681 ablauf.py:740 ablauf.py:752 ablauf.py:806
+#: templates/aufgaben/_entscheidungen.html:83
+msgid "Begründung"
+msgstr "Reason"
+
+#: ablauf.py:700 models.py:220 models.py:408
+#: templates/aufgaben/_entscheidungen.html:52
+#: templates/aufgaben/_kind_bereich.html:19
+msgid "Rückfrage"
+msgstr "Question"
+
+#: ablauf.py:702
+msgid "Bitte die Rückfrage eingeben."
+msgstr "Please enter your question."
+
+#: ablauf.py:739
+msgid "Sonderpunkte: bitte eine ganze Zahl größer 0."
+msgstr "Bonus points: please enter a whole number greater than 0."
+
+#: ablauf.py:741
+msgid "Sonderpunkte brauchen eine kurze Begründung."
+msgstr "Bonus points need a short reason."
+
+#: ablauf.py:743 ablauf.py:756
+msgid "Für diese Aufgabe gab es schon Sonderpunkte."
+msgstr "This task already got bonus points."
+
+#: ablauf.py:747
+#, python-format
+msgid "Höchstens %(deckel)s Sonderpunkte für diese Aufgabe."
+msgstr "At most %(deckel)s bonus points for this task."
+
+#: ablauf.py:786
+msgid "Sonderpunkte gibt es nur für bestätigte Aufgaben."
+msgstr "Bonus points are only given for approved tasks."
+
+#: ablauf.py:808
+msgid "Bitte kurz begründen, warum korrigiert wird."
+msgstr "Please say briefly why it is being corrected."
+
+#: ablauf.py:917
+msgid "Diese Aufgabe ist schon geprüft oder wurde geändert."
+msgstr "This task has already been checked or was changed."
+
+#: einstellungen.py:37
+msgid "Vorlauf für Aufgaben mit Zeitfenster"
+msgstr "Lead time for tasks with a time window"
+
+#: einstellungen.py:38
+msgid "So viele Tage im Voraus werden Termine mit Zeitfenster angelegt."
+msgstr "Dates with a time window are created this many days ahead."
+
+#: einstellungen.py:39 einstellungen.py:121
+msgid "Tage"
+msgstr "days"
+
+#: einstellungen.py:46
+msgid "Vorwarnung an Eltern vor 'nicht übernommen'"
+msgstr "Warning to parents before 'not taken on'"
+
+#: einstellungen.py:48
+msgid ""
+"Stunden vor Fensterende, wenn noch kein Kind die Aufgabe übernommen hat. 0 = "
+"keine Vorwarnung."
+msgstr ""
+"Hours before the window ends if no child has taken the task yet. 0 = no "
+"warning."
+
+#: einstellungen.py:51 einstellungen.py:63 einstellungen.py:75
+#: einstellungen.py:83
+msgid "Stunden"
+msgstr "hours"
+
+#: einstellungen.py:58
+msgid "Frist zum Nachbessern"
+msgstr "Time to fix a task"
+
+#: einstellungen.py:60
+msgid ""
+"So lange hat ein Kind Zeit, eine zurückgegebene Aufgabe zu verbessern. "
+"Danach verfällt sie ohne Punkte."
+msgstr ""
+"How long a child has to improve a task that was sent back. After that it "
+"expires without points."
+
+#: einstellungen.py:70
+msgid "Reservierung ohne Frist läuft ab nach"
+msgstr "Reservation without deadline expires after"
+
+#: einstellungen.py:72
+msgid ""
+"Gilt für Aufgaben ohne Zeitfenster. Mit Zeitfenster endet die Reservierung "
+"mit der Frist."
+msgstr ""
+"Applies to tasks without a time window. With a time window, the reservation "
+"ends at the deadline."
+
+#: einstellungen.py:82
+msgid "Erinnerung an das Kind vor Reservierungsablauf"
+msgstr "Reminder to the child before the reservation expires"
+
+#: einstellungen.py:90
+msgid "Obergrenze für Sonderpunkte"
+msgstr "Limit for bonus points"
+
+#: einstellungen.py:91
+msgid "Aus = keine Obergrenze (außer eine Aufgabe hat einen eigenen Wert)."
+msgstr "Off = no limit (unless a task has its own value)."
+
+#: einstellungen.py:96
+msgid "Sonderpunkte höchstens"
+msgstr "Bonus points at most"
+
+#: einstellungen.py:98
+msgid ""
+"Anteil am Punktwert der Aufgabe (aufgerundet). Eine Aufgabe kann einen "
+"eigenen Wert haben."
+msgstr ""
+"Share of the task's points (rounded up). A task can have its own value."
+
+#: einstellungen.py:108
+msgid "Mehrere Kinder dürfen dieselbe Aufgabe wählen"
+msgstr "Several kids may pick the same task"
+
+#: einstellungen.py:110
+msgid ""
+"An: Ein weiteres Kind kann eine schon reservierte Aufgabe auch wählen, dann "
+"entscheiden die Eltern (Konflikt). Aus: Wer zuerst wählt, bekommt sie."
+msgstr ""
+"On: Another child can also pick a task that is already reserved, and the "
+"parents decide (conflict). Off: Whoever picks first gets it."
+
+#: einstellungen.py:117
+msgid "Kinder sehen Termine im Voraus"
+msgstr "Kids see dates in advance"
+
+#: einstellungen.py:119
+msgid ""
+"0 = nur heute, 1 = heute und morgen usw. Aufgaben ohne Termin sind immer "
+"sichtbar."
+msgstr ""
+"0 = today only, 1 = today and tomorrow, and so on. Tasks without a date are "
+"always visible."
+
+#: einstellungen.py:128
+msgid "Nachweis-Foto höchstens"
+msgstr "Proof photo at most"
+
+#: einstellungen.py:130
+msgid ""
+"Größe eines hochgeladenen Fotos. Gespeichert wird es verkleinert und ohne "
+"Metadaten (GPS)."
+msgstr ""
+"Size of an uploaded photo. It is saved smaller and without metadata (GPS)."
+
+#: einstellungen.py:140
+msgid "Fotos je Meldung höchstens"
+msgstr "Photos per report at most"
+
+#: einstellungen.py:147
+msgid "Nachweis-Foto wird verkleinert auf"
+msgstr "Proof photo is shrunk to"
+
+#: einstellungen.py:148
+msgid "Längste Kante des gespeicherten Fotos."
+msgstr "Longest edge of the saved photo."
+
+#: einstellungen.py:149
+msgid "Pixel"
+msgstr "pixels"
+
+#: events.py:42
+msgid "Die Aufgabe gehört dir!"
+msgstr "The task is yours!"
+
+#: events.py:43
+#, python-brace-format
+msgid "„{aufgabe}“ ist für dich reserviert."
+msgstr "“{aufgabe}” is reserved for you."
+
+#: events.py:46
+msgid "Aufgabe vergeben"
+msgstr "Task given to someone else"
+
+#: events.py:47
+#, python-brace-format
+msgid "„{aufgabe}“ macht diesmal jemand anderes."
+msgstr "Someone else is doing “{aufgabe}” this time."
+
+#: events.py:50
+msgid "Reservierung aufgehoben"
+msgstr "Reservation cancelled"
+
+#: events.py:51 events.py:55
+#, python-brace-format
+msgid "„{aufgabe}“ ist wieder frei."
+msgstr "“{aufgabe}” is free again."
+
+#: events.py:54
+#, python-brace-format
+msgid "{kind} hat eine Aufgabe zurückgegeben"
+msgstr "{kind} gave a task back"
+
+#: events.py:58
+#, python-brace-format
+msgid "{kind} hat geantwortet"
+msgstr "{kind} answered"
+
+#: events.py:59
+#, python-brace-format
+msgid "„{aufgabe}“ wartet auf Bestätigung."
+msgstr "“{aufgabe}” is waiting for approval."
+
+#: events.py:62
+#, python-brace-format
+msgid "{kind} hat eine Aufgabe erledigt"
+msgstr "{kind} finished a task"
+
+#: events.py:63
+#, python-brace-format
+msgid "„{aufgabe}“: {punkte} Punkte gutgeschrieben (Vertrauen)."
+msgstr "“{aufgabe}”: {punkte} points credited (trust)."
+
+#: events.py:66
+msgid "Sonderpunkte!"
+msgstr "Bonus points!"
+
+#: events.py:67
+#, python-brace-format
+msgid "+{punkte} für „{aufgabe}“: {begruendung}"
+msgstr "+{punkte} for “{aufgabe}”: {begruendung}"
+
+#: events.py:70 templates/aufgaben/_kind_bereich.html:22
+msgid "Punkte korrigiert"
+msgstr "Points corrected"
+
+#: events.py:71
+#, python-brace-format
+msgid "„{aufgabe}“: {punkte} Punkte abgezogen. {begruendung}"
+msgstr "“{aufgabe}”: {punkte} points taken off. {begruendung}"
+
+#: events.py:73
+msgid "Bitte nachbessern"
+msgstr "Please fix it"
+
+#: events.py:73
+#, python-brace-format
+msgid "„{aufgabe}“: {begruendung}"
+msgstr "“{aufgabe}”: {begruendung}"
+
+#: events.py:75
+msgid "Nachbessern nicht erledigt"
+msgstr "Fix not done"
+
+#: events.py:76
+#, python-brace-format
+msgid "{kind} hat „{aufgabe}“ nicht rechtzeitig nachgebessert. Keine Punkte."
+msgstr "{kind} did not fix “{aufgabe}” in time. No points."
+
+#: events.py:92
+msgid "Aufgabe läuft bald ab (noch nicht übernommen)"
+msgstr "Task ends soon (nobody has taken it yet)"
+
+#: events.py:94
+msgid "Aufgabe nicht übernommen"
+msgstr "Task not taken on"
+
+#: events.py:97
+msgid "Erinnerung: Reservierung läuft bald ab"
+msgstr "Reminder: reservation ends soon"
+
+#: events.py:103
+msgid "Reservierung abgelaufen"
+msgstr "Reservation expired"
+
+#: events.py:107
+msgid "Kind wählt eine Aufgabe"
+msgstr "Child picks a task"
+
+#: events.py:110
+msgid "Mehrere Kinder wollen dieselbe Aufgabe"
+msgstr "Several kids want the same task"
+
+#: events.py:115
+msgid "Aufgabe zugeteilt"
+msgstr "Task assigned"
+
+#: events.py:118
+msgid "Aufgabe an ein anderes Kind vergeben"
+msgstr "Task given to another child"
+
+#: events.py:125
+msgid "Reservierung von Eltern aufgehoben"
+msgstr "Reservation cancelled by parents"
+
+#: events.py:130
+msgid "Kind gibt eine Aufgabe zurück"
+msgstr "Child gives a task back"
+
+#: events.py:133
+msgid "Aufgabe als erledigt gemeldet"
+msgstr "Task reported as done"
+
+#: events.py:138
+msgid "Antwort auf Rückfrage"
+msgstr "Answer to a question"
+
+#: events.py:139
+msgid "Aufgabe mit Vertrauen gutgeschrieben"
+msgstr "Task credited on trust"
+
+#: events.py:140
+msgid "Aufgabe bestätigt"
+msgstr "Task approved"
+
+#: events.py:141
+msgid "Aufgabe abgelehnt"
+msgstr "Task declined"
+
+#: events.py:142
+msgid "Rückfrage zur Aufgabe"
+msgstr "Question about the task"
+
+#: events.py:143
+msgid "Sonderpunkte erhalten"
+msgstr "Bonus points received"
+
+#: events.py:146
+msgid "Punkte einer Aufgabe korrigiert"
+msgstr "Task points corrected"
+
+#: events.py:153
+msgid "Aufgabe zum Nachbessern zurück"
+msgstr "Task sent back to fix"
+
+#: events.py:160
+msgid "Nachbessern nicht rechtzeitig erledigt"
+msgstr "Fix not done in time"
+
+#: events.py:164
+msgid "Aufgabe erledigt (Aktivität)"
+msgstr "Task done (activity)"
+
+#: forms.py:29
+msgid "Wiederholung"
+msgstr "Repeat"
+
+#: forms.py:35
+msgid "An diesen Wochentagen"
+msgstr "On these weekdays"
+
+#: forms.py:41
+msgid "Alle ... Tage"
+msgstr "Every ... days"
+
+#: forms.py:44
+msgid "Frühestens ab (Uhrzeit)"
+msgstr "Earliest from (time)"
+
+#: forms.py:49
+msgid "Erledigt bis (Uhrzeit)"
+msgstr "Done by (time)"
+
+#: forms.py:51
+msgid "Gesetzt = zeitgebunden: nach dieser Frist verfällt der Termin."
+msgstr "If set, the task is timed: after this deadline the date expires."
+
+#: forms.py:55
+msgid "Frist liegt ... Tage später"
+msgstr "Deadline is ... days later"
+
+#: forms.py:59
+msgid "Zum Beispiel Mi 18:00 bis Do 07:00 = 1 Tag später."
+msgstr "For example Wed 18:00 to Thu 07:00 = 1 day later."
+
+#: forms.py:62
+msgid "Höchstens ... mal"
+msgstr "At most ... times"
+
+#: forms.py:65
+msgid "pro"
+msgstr "per"
+
+#: forms.py:67
+msgid "(kein Limit)"
+msgstr "(no limit)"
+
+#: forms.py:76 templates/aufgaben/kind.html:8
+msgid "Start"
+msgstr "Start"
+
+#: forms.py:81
+msgid "Ende (optional)"
+msgstr "End (optional)"
+
+#: forms.py:110 forms.py:148
+msgid "Punkte"
+msgstr "Points"
+
+#: forms.py:111 forms.py:149 models.py:49
+msgid "Kategorie"
+msgstr "Category"
+
+#: forms.py:112 forms.py:150
+msgid "Freigabeart"
+msgstr "Approval type"
+
+#: forms.py:113 forms.py:147
+msgid "Titel"
+msgstr "Title"
+
+#: forms.py:114 forms.py:146
+msgid "Beschreibung (optional)"
+msgstr "Description (optional)"
+
+#: forms.py:115
+msgid "Nur für dieses Kind (optional)"
+msgstr "Only for this child (optional)"
+
+#: forms.py:117
+msgid "Deckel für Sonderpunkte in % (leer = Standard)"
+msgstr "Limit for bonus points in % (empty = default)"
+
+#: forms.py:128 forms.py:163
+msgid "(keine)"
+msgstr "(none)"
+
+#: forms.py:130
+msgid "Alle Kinder"
+msgstr "All kids"
+
+#: forms.py:151 forms.py:214 models.py:32
+msgid "Aktiv"
+msgstr "Active"
+
+#: forms.py:205
+msgid "Symbol"
+msgstr "Icon"
+
+#: forms.py:211
+msgid "Farbe (#rrggbb, optional)"
+msgstr "Colour (#rrggbb, optional)"
+
+#: forms.py:212
+msgid "Name"
+msgstr "Name"
+
+#: forms.py:213
+msgid "Reihenfolge"
+msgstr "Order"
+
+#: forms.py:224
+msgid "Alle Kategorien"
+msgstr "All categories"
+
+#: forms.py:227
+msgid "Alle (ohne beendete)"
+msgstr "All (except finished)"
+
+#: instanzen.py:211
+msgid "Instanz wurde zwischenzeitlich geändert"
+msgstr "The task was changed in the meantime"
+
+#: middleware.py:18
+msgid "Die Fotos sind zu groß. Bitte ein kleineres Foto nehmen."
+msgstr "The photos are too big. Please use a smaller photo."
+
+#: migrations/0002_startwerte.py:8 migrations/0002_startwerte.py:18
+#: migrations/0002_startwerte.py:19 migrations/0002_startwerte.py:20
+#: migrations/0002_startwerte.py:21 migrations/0002_startwerte.py:29
+#: migrations/0002_startwerte.py:30 migrations/0002_startwerte.py:31
+msgid "Haushalt"
+msgstr "Household"
+
+#: migrations/0002_startwerte.py:9 migrations/0002_startwerte.py:22
+#: migrations/0002_startwerte.py:23 migrations/0002_startwerte.py:24
+#: migrations/0002_startwerte.py:25 symbole.py:7
+msgid "Küche"
+msgstr "Kitchen"
+
+#: migrations/0002_startwerte.py:10 migrations/0002_startwerte.py:26
+#: migrations/0002_startwerte.py:27 migrations/0002_startwerte.py:28
+#: symbole.py:8
+msgid "Wäsche"
+msgstr "Laundry"
+
+#: migrations/0002_startwerte.py:11 migrations/0002_startwerte.py:32
+#: symbole.py:9
+msgid "Garten"
+msgstr "Garden"
+
+#: migrations/0002_startwerte.py:12 migrations/0002_startwerte.py:34
+#: symbole.py:10
+msgid "Schule"
+msgstr "School"
+
+#: migrations/0002_startwerte.py:13 migrations/0002_startwerte.py:33
+msgid "Sonstiges"
+msgstr "Other"
+
+#: migrations/0002_startwerte.py:18
+msgid "Müll rausbringen"
+msgstr "Take out the rubbish"
+
+#: migrations/0002_startwerte.py:19
+msgid "Mülltonnen rausstellen"
+msgstr "Put the bins out"
+
+#: migrations/0002_startwerte.py:20
+msgid "Leergut"
+msgstr "Return empty bottles"
+
+#: migrations/0002_startwerte.py:21
+msgid "Altglas"
+msgstr "Recycle glass"
+
+#: migrations/0002_startwerte.py:22
+msgid "Spülmaschine ausräumen"
+msgstr "Empty the dishwasher"
+
+#: migrations/0002_startwerte.py:23
+msgid "Spülmaschine einräumen"
+msgstr "Load the dishwasher"
+
+#: migrations/0002_startwerte.py:24
+msgid "Tisch decken/abräumen"
+msgstr "Set/clear the table"
+
+#: migrations/0002_startwerte.py:25
+msgid "Einkaufsliste"
+msgstr "Shopping list"
+
+#: migrations/0002_startwerte.py:26
+msgid "Wäsche waschen"
+msgstr "Do the laundry"
+
+#: migrations/0002_startwerte.py:27
+msgid "Wäsche aufhängen"
+msgstr "Hang up the laundry"
+
+#: migrations/0002_startwerte.py:28
+msgid "Wäsche zusammenlegen & einräumen"
+msgstr "Fold and put away the laundry"
+
+#: migrations/0002_startwerte.py:29
+msgid "Flur saugen"
+msgstr "Vacuum the hallway"
+
+#: migrations/0002_startwerte.py:30
+msgid "Zimmer gründlich"
+msgstr "Clean your room thoroughly"
+
+#: migrations/0002_startwerte.py:31
+msgid "Bad putzen"
+msgstr "Clean the bathroom"
+
+#: migrations/0002_startwerte.py:32
+msgid "Rasen mähen"
+msgstr "Mow the lawn"
+
+#: migrations/0002_startwerte.py:33
+msgid "Auto aussaugen"
+msgstr "Vacuum the car"
+
+#: migrations/0002_startwerte.py:34
+msgid "Vokabeln lernen 15 Min"
+msgstr "Learn vocabulary for 15 min"
+
+#: models.py:26
+msgid "Vertrauen (sofort gutgeschrieben)"
+msgstr "Trust (points credited right away)"
+
+#: models.py:27
+msgid "Eltern bestätigen"
+msgstr "Parents approve"
+
+#: models.py:28
+msgid "Foto-/Text-Nachweis"
+msgstr "Photo/text proof"
+
+#: models.py:33
+msgid "Pausiert"
+msgstr "Paused"
+
+#: models.py:34
+msgid "Beendet"
+msgstr "Finished"
+
+#: models.py:42
+msgid "Feste Kennung, z. B. 'schule' (Brücke zum Lernmodul)."
+msgstr "Fixed key, e.g. 'schule' (link to the learning module)."
+
+#: models.py:50 templates/aufgaben/basis.html:12
+#: templates/aufgaben/kategorien.html:3 templates/aufgaben/kategorien.html:6
+msgid "Kategorien"
+msgstr "Categories"
+
+#: models.py:64
+msgid "Farbe im Format #rrggbb angeben."
+msgstr "Enter the colour as #rrggbb."
+
+#: models.py:80
+msgid "Vorlage"
+msgstr "Template"
+
+#: models.py:81
+msgid "Vorlagen"
+msgstr "Templates"
+
+#: models.py:99
+#, python-format
+msgid "Ungültige Wiederholung: %(fehler)s"
+msgstr "Invalid repeat: %(fehler)s"
+
+#: models.py:126
+msgid ""
+"Leer = offen für alle Kinder. Gesetzt = nur dieses Kind sieht die Aufgabe."
+msgstr "Empty = open to all kids. Set = only this child sees the task."
+
+#: models.py:148
+msgid "Leer = globaler Wert (Einstellungen)"
+msgstr "Empty = global value (settings)"
+
+#: models.py:159
+msgid "Aufgabe"
+msgstr "Task"
+
+#: models.py:160 templates/aufgaben/basis.html:6
+#: templates/aufgaben/basis.html:9 templates/aufgaben/kind.html:4
+#: templates/aufgaben/liste.html:3 templates/aufgaben/liste.html:6
+msgid "Aufgaben"
+msgstr "Tasks"
+
+#: models.py:208
+msgid "Zuweisung nur an ein Kind möglich."
+msgstr "A task can only be assigned to a child."
+
+#: models.py:210
+msgid "Wert zu hoch."
+msgstr "Value too high."
+
+#: models.py:216
+msgid "Offen"
+msgstr "Open"
+
+#: models.py:217
+msgid "Mehrere Interessenten"
+msgstr "Several interested"
+
+#: models.py:218 templates/aufgaben/_entscheidungen.html:60
+msgid "Reserviert"
+msgstr "Reserved"
+
+#: models.py:219 templates/aufgaben/_entscheidungen.html:26
+msgid "Gemeldet"
+msgstr "Reported"
+
+#: models.py:221 models.py:409
+msgid "Bestätigt"
+msgstr "Approved"
+
+#: models.py:222 models.py:410
+msgid "Abgelehnt"
+msgstr "Declined"
+
+#: models.py:223
+msgid "Nicht übernommen"
+msgstr "Not taken on"
+
+#: models.py:224
+msgid "Storniert"
+msgstr "Cancelled"
+
+#: models.py:225
+msgid "Zum Nachbessern"
+msgstr "To fix"
+
+#: models.py:312
+msgid "Aufgaben-Instanz"
+msgstr "Task instance"
+
+#: models.py:313
+msgid "Aufgaben-Instanzen"
+msgstr "Task instances"
+
+#: models.py:341 templates/aufgaben/_kind_bereich.html:66
+msgid "ohne Termin"
+msgstr "no date"
+
+#: models.py:354
+msgid "Wartet auf Entscheidung"
+msgstr "Waiting for a decision"
+
+#: models.py:355
+msgid "Zugeteilt"
+msgstr "Assigned"
+
+#: models.py:356
+msgid "Vergeben/gelöst"
+msgstr "Given away/released"
+
+#: models.py:357
+msgid "Zurückgegeben"
+msgstr "Given back"
+
+#: models.py:358
+msgid "Abgelaufen"
+msgstr "Expired"
+
+#: models.py:391
+msgid "Interesse"
+msgstr "Interest"
+
+#: models.py:392
+msgid "Interessen"
+msgstr "Interests"
+
+#: models.py:407
+msgid "Wartet auf Bestätigung"
+msgstr "Waiting for approval"
+
+#: models.py:443
+msgid "Meldung"
+msgstr "Report"
+
+#: models.py:444 templates/aufgaben/basis.html:8
+#: templates/aufgaben/entscheidungen.html:4
+msgid "Meldungen"
+msgstr "Reports"
+
+#: nachweise.py:48
+msgid ""
+"Das ist kein Foto, das wir verwenden können. Bitte nimm ein neues Foto auf."
+msgstr "We can't use this as a photo. Please take a new one."
+
+#: nachweise.py:132
+msgid "Bitte ein Foto als JPEG, PNG, WebP oder HEIC senden."
+msgstr "Please send a photo as JPEG, PNG, WebP or HEIC."
+
+#: nachweise.py:134
+msgid "Bitte ein Foto als JPEG, PNG oder WebP senden."
+msgstr "Please send a photo as JPEG, PNG or WebP."
+
+#: nachweise.py:138 nachweise.py:158
+msgid "Das Foto hat zu viele Pixel. Bitte ein kleineres nehmen."
+msgstr "The photo has too many pixels. Please use a smaller one."
+
+#: nachweise.py:202
+msgid "Das Foto konnte nicht gespeichert werden."
+msgstr "The photo could not be saved."
+
+#: services.py:142
+msgid "Unbekannter Status."
+msgstr "Unknown status."
+
+#: services.py:144
+msgid "Eine beendete Aufgabe kann nicht fortgesetzt werden."
+msgstr "A finished task can't be resumed."
+
+#: symbole.py:6
+msgid "Haus"
+msgstr "House"
+
+#: symbole.py:11
+msgid "Liste"
+msgstr "List"
+
+#: symbole.py:12
+msgid "Stern"
+msgstr "Star"
+
+#: symbole.py:13
+msgid "Geschenk"
+msgstr "Gift"
+
+#: symbole.py:14
+msgid "Kalender"
+msgstr "Calendar"
+
+#: symbole.py:15
+msgid "Münze"
+msgstr "Coin"
+
+#: templates/aufgaben/_entscheidungen.html:5
+msgid "Meldungen und Entscheidungen"
+msgstr "Reports and decisions"
+
+#: templates/aufgaben/_entscheidungen.html:7
+msgid "Konflikte"
+msgstr "Conflicts"
+
+#: templates/aufgaben/_entscheidungen.html:10
+msgid "Mehrere Kinder wollen diese Aufgabe."
+msgstr "Several kids want this task."
+
+#: templates/aufgaben/_entscheidungen.html:19
+msgid "Keinem (wieder frei)"
+msgstr "Nobody (free again)"
+
+#: templates/aufgaben/_entscheidungen.html:23
+msgid "Keine Konflikte."
+msgstr "No conflicts."
+
+#: templates/aufgaben/_entscheidungen.html:31
+#: templates/aufgaben/_entscheidungen.html:63
+#: templates/aufgaben/_entscheidungen.html:76
+msgctxt "Datum mit Wochentag und Uhrzeit"
+msgid "D d.m. H:i"
+msgstr "D m/d, H:i"
+
+#: templates/aufgaben/_entscheidungen.html:31
+msgid "gemeldet"
+msgstr "reported"
+
+#: templates/aufgaben/_entscheidungen.html:36
+#, python-format
+msgid "Rückfrage: %(frage)s – wartet auf Antwort."
+msgstr "Question: %(frage)s – waiting for an answer."
+
+#: templates/aufgaben/_entscheidungen.html:37
+#, python-format
+msgid "Antwort: „%(antwort)s“"
+msgstr "Answer: “%(antwort)s”"
+
+#: templates/aufgaben/_entscheidungen.html:40
+#: templates/aufgaben/_entscheidungen.html:82
+#: templates/aufgaben/_entscheidungen.html:84
+msgid "Sonderpunkte"
+msgstr "Bonus points"
+
+#: templates/aufgaben/_entscheidungen.html:40
+#, python-format
+msgid "(max. %(deckel)s)"
+msgstr "(max. %(deckel)s)"
+
+#: templates/aufgaben/_entscheidungen.html:42
+msgid "Begründung (für Sonderpunkte/Ablehnung)"
+msgstr "Reason (for bonus points/declining)"
+
+#: templates/aufgaben/_entscheidungen.html:46
+msgid "Bestätigen"
+msgstr "Approve"
+
+#: templates/aufgaben/_entscheidungen.html:47
+msgid "Ablehnen? Es gibt keine Punkte."
+msgstr "Decline? There will be no points."
+
+#: templates/aufgaben/_entscheidungen.html:47
+#: templates/aufgaben/_pruefen.html:21
+msgid "Ablehnen"
+msgstr "Decline"
+
+#: templates/aufgaben/_entscheidungen.html:53
+msgid "Nachfragen"
+msgstr "Ask"
+
+#: templates/aufgaben/_entscheidungen.html:57
+msgid "Keine offenen Meldungen."
+msgstr "No open reports."
+
+#: templates/aufgaben/_entscheidungen.html:63
+#: templates/aufgaben/_kind_bereich.html:15
+#: templates/aufgaben/_kind_bereich.html:17
+#: templates/aufgaben/_kind_bereich.html:66
+#: templates/aufgaben/_wochenplan_karte.html:10
+msgid "bis"
+msgstr "until"
+
+#: templates/aufgaben/_entscheidungen.html:64
+msgid "Reservierung lösen? Die Aufgabe wird wieder frei."
+msgstr "Release the reservation? The task becomes free again."
+
+#: templates/aufgaben/_entscheidungen.html:65
+msgid "Lösen"
+msgstr "Release"
+
+#: templates/aufgaben/_entscheidungen.html:68
+msgid "Nichts reserviert."
+msgstr "Nothing reserved."
+
+#: templates/aufgaben/_entscheidungen.html:71
+msgid "Zuletzt bestätigt"
+msgstr "Recently approved"
+
+#: templates/aufgaben/_entscheidungen.html:76
+#, python-format
+msgid "bestätigt von %(name)s"
+msgstr "approved by %(name)s"
+
+#: templates/aufgaben/_entscheidungen.html:76
+msgid "Vertrauen (automatisch)"
+msgstr "Trust (automatic)"
+
+#: templates/aufgaben/_entscheidungen.html:76
+#, python-format
+msgid "+%(punkte)s Bonus (%(grund)s)"
+msgstr "+%(punkte)s bonus (%(grund)s)"
+
+#: templates/aufgaben/_entscheidungen.html:82
+msgid "Bonus"
+msgstr "Bonus"
+
+#: templates/aufgaben/_entscheidungen.html:87
+msgid "Alle Punkte dieser Aufgabe zurückbuchen?"
+msgstr "Take back all points for this task?"
+
+#: templates/aufgaben/_entscheidungen.html:88
+msgid "Grund der Korrektur"
+msgstr "Reason for the correction"
+
+#: templates/aufgaben/_entscheidungen.html:89
+msgid "Korrigieren"
+msgstr "Correct"
+
+#: templates/aufgaben/_entscheidungen.html:93
+msgid "In den letzten 7 Tagen nichts bestätigt."
+msgstr "Nothing approved in the last 7 days."
+
+#: templates/aufgaben/_formular.html:10
+msgid "Wann und wie oft?"
+msgstr "When and how often?"
+
+#: templates/aufgaben/_formular.html:23
+msgid "Limit gilt je Kind und Aufgabe."
+msgstr "The limit applies per child and task."
+
+#: templates/aufgaben/_formular.html:32
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/aufgaben/_formular.html:33
+msgid "Abbrechen"
+msgstr "Cancel"
+
+#: templates/aufgaben/_kind_bereich.html:7
+msgid "Meine Aufgaben"
+msgstr "My tasks"
+
+#: templates/aufgaben/_kind_bereich.html:15
+msgid "Deine Aufgabe"
+msgstr "Your task"
+
+#: templates/aufgaben/_kind_bereich.html:16
+msgid "Mehrere wollen sie – Eltern entscheiden"
+msgstr "Several want it – parents decide"
+
+#: templates/aufgaben/_kind_bereich.html:17
+#, python-format
+msgid "Bitte nachbessern: %(grund)s"
+msgstr "Please fix it: %(grund)s"
+
+#: templates/aufgaben/_kind_bereich.html:18
+msgid "Gemeldet – wartet auf Bestätigung"
+msgstr "Reported – waiting for approval"
+
+#: templates/aufgaben/_kind_bereich.html:20
+msgid "Geschafft!"
+msgstr "Done!"
+
+#: templates/aufgaben/_kind_bereich.html:20
+#, python-format
+msgid "+%(punkte)s Bonus: %(grund)s"
+msgstr "+%(punkte)s bonus: %(grund)s"
+
+#: templates/aufgaben/_kind_bereich.html:21
+msgid "Nicht angenommen"
+msgstr "Not accepted"
+
+#: templates/aufgaben/_kind_bereich.html:23
+msgid "Vergeben"
+msgstr "Taken"
+
+#: templates/aufgaben/_kind_bereich.html:28
+msgid "Was hast du gemacht? (Pflicht)"
+msgstr "What did you do? (required)"
+
+#: templates/aufgaben/_kind_bereich.html:28
+msgid "Nachricht (optional)"
+msgstr "Message (optional)"
+
+#: templates/aufgaben/_kind_bereich.html:31
+#: templates/aufgaben/_kind_bereich.html:47
+msgid "Foto (optional)"
+msgstr "Photo (optional)"
+
+#: templates/aufgaben/_kind_bereich.html:32
+msgid "Erledigt melden"
+msgstr "Report as done"
+
+#: templates/aufgaben/_kind_bereich.html:35
+msgid "Aufgabe wirklich zurückgeben?"
+msgstr "Really give this task back?"
+
+#: templates/aufgaben/_kind_bereich.html:36
+msgid "Zurückgeben"
+msgstr "Give back"
+
+#: templates/aufgaben/_kind_bereich.html:41
+msgid "Doch nicht"
+msgstr "Never mind"
+
+#: templates/aufgaben/_kind_bereich.html:46
+msgid "Deine Antwort"
+msgstr "Your answer"
+
+#: templates/aufgaben/_kind_bereich.html:48
+msgid "Antworten"
+msgstr "Answer"
+
+#: templates/aufgaben/_kind_bereich.html:53
+msgid "Noch nichts gewählt"
+msgstr "Nothing picked yet"
+
+#: templates/aufgaben/_kind_bereich.html:53
+msgid "Such dir unten eine Aufgabe aus."
+msgstr "Pick a task below."
+
+#: templates/aufgaben/_kind_bereich.html:58
+msgid "Offene Aufgaben"
+msgstr "Open tasks"
+
+#: templates/aufgaben/_kind_bereich.html:61
+msgid ""
+"Ein anderes Kind hat sie schon gewählt. Trotzdem wollen? Dann entscheiden "
+"Mama oder Papa."
+msgstr ""
+"Another child already picked it. Still want it? Then Mum or Dad will decide."
+
+#: templates/aufgaben/_kind_bereich.html:66
+msgid "Limit erreicht"
+msgstr "Limit reached"
+
+#: templates/aufgaben/_kind_bereich.html:66
+msgid "schon gewählt"
+msgstr "already picked"
+
+#: templates/aufgaben/_kind_bereich.html:70
+msgid "Alles erledigt"
+msgstr "All done"
+
+#: templates/aufgaben/_kind_bereich.html:70
+msgid "Gerade gibt es keine freien Aufgaben."
+msgstr "There are no free tasks right now."
+
+#: templates/aufgaben/_nachweis_feld.html:4
+msgid "Foto"
+msgstr "Photo"
+
+#: templates/aufgaben/_nachweis_feld.html:6
+msgid "Vorschau deines Fotos"
+msgstr "Preview of your photo"
+
+#: templates/aufgaben/_nachweis_fotos.html:1
+msgid "Foto zur Meldung"
+msgstr "Photo for the report"
+
+#: templates/aufgaben/_pruefen.html:5
+msgid "Erledigt – kurz prüfen"
+msgstr "Done – quick check"
+
+#: templates/aufgaben/_pruefen.html:16
+msgid "Grund (für Nachbessern und Ablehnen nötig)"
+msgstr "Reason (needed to send back or decline)"
+
+#: templates/aufgaben/_pruefen.html:19
+msgid "Passt"
+msgstr "Looks good"
+
+#: templates/aufgaben/_pruefen.html:20
+msgid "Zurück ans Kind? Die Punkte werden abgezogen."
+msgstr "Send back to the child? The points will be taken off."
+
+#: templates/aufgaben/_pruefen.html:20
+msgid "Nachbessern"
+msgstr "Fix it"
+
+#: templates/aufgaben/_pruefen.html:21
+msgid "Ablehnen? Die Punkte werden abgezogen."
+msgstr "Decline? The points will be taken off."
+
+#: templates/aufgaben/_pruefen.html:26
+msgid "Alles geprüft. Nichts offen."
+msgstr "All checked. Nothing open."
+
+#: templates/aufgaben/_pruefen.html:30
+msgid "Alle passen"
+msgstr "All look good"
+
+#: templates/aufgaben/_wochenplan.html:3 templates/aufgaben/basis.html:10
+#: templates/aufgaben/wochenplan.html:4
+msgid "Wochenplan"
+msgstr "Weekly plan"
+
+#: templates/aufgaben/_wochenplan.html:3
+msgctxt "Datum ohne Jahr"
+msgid "d.m."
+msgstr "m/d"
+
+#: templates/aufgaben/_wochenplan.html:3
+msgctxt "Datum"
+msgid "d.m.Y"
+msgstr "m/d/Y"
+
+#: templates/aufgaben/_wochenplan.html:3
+#, python-format
+msgid "KW %(kw)s"
+msgstr "week %(kw)s"
+
+#: templates/aufgaben/_wochenplan.html:4
+msgid "Woche wählen"
+msgstr "Choose week"
+
+#: templates/aufgaben/_wochenplan.html:6
+msgid "Vorherige"
+msgstr "Previous"
+
+#: templates/aufgaben/_wochenplan.html:7
+msgid "Heute"
+msgstr "Today"
+
+#: templates/aufgaben/_wochenplan.html:8
+msgid "Nächste"
+msgstr "Next"
+
+#: templates/aufgaben/_wochenplan.html:13
+msgid ""
+"Karten per Ziehen (Handy: gedrückt halten) auf einen anderen Tag legen oder "
+"mit „Verschieben“ ein Datum wählen."
+msgstr ""
+"Drag cards (on a phone: press and hold) to another day, or use “Move” to "
+"pick a date."
+
+#: templates/aufgaben/_wochenplan.html:18
+msgctxt "Datum mit Wochentag"
+msgid "D j.n."
+msgstr "D m/d"
+
+#: templates/aufgaben/_wochenplan.html:20
+msgctxt "Datum ohne Jahr kurz"
+msgid "j.n."
+msgstr "m/d"
+
+#: templates/aufgaben/_wochenplan.html:20
+#, python-format
+msgid "Neue Aufgabe am %(datum)s"
+msgstr "New task on %(datum)s"
+
+#: templates/aufgaben/_wochenplan.html:30
+msgid "Ohne Termin"
+msgstr "No date"
+
+#: templates/aufgaben/_wochenplan_karte.html:16
+msgid "Verschieben nach"
+msgstr "Move to"
+
+#: templates/aufgaben/_wochenplan_karte.html:17
+msgid "Verschieben"
+msgstr "Move"
+
+#: templates/aufgaben/_wochenplan_karte.html:20
+msgid "Nicht verschiebbar"
+msgstr "Can't be moved"
+
+#: templates/aufgaben/_zeile.html:4
+#, python-format
+msgid "nur %(name)s"
+msgstr "only %(name)s"
+
+#: templates/aufgaben/_zeile.html:14 templates/aufgaben/kategorien.html:16
+#: templates/aufgaben/vorlagen.html:28
+msgid "Bearbeiten"
+msgstr "Edit"
+
+#: templates/aufgaben/_zeile.html:16
+msgid "Pausieren"
+msgstr "Pause"
+
+#: templates/aufgaben/_zeile.html:18
+msgid "Fortsetzen"
+msgstr "Resume"
+
+#: templates/aufgaben/_zeile.html:21
+msgid ""
+"Aufgabe beenden? Das kann nicht rückgängig gemacht werden. Vergebene Punkte "
+"bleiben."
+msgstr "Finish this task? This can't be undone. Points already given stay."
+
+#: templates/aufgaben/_zeile.html:21
+msgid "Beenden"
+msgstr "Finish"
+
+#: templates/aufgaben/basis.html:11 templates/aufgaben/vorlagen.html:3
+msgid "Bibliothek"
+msgstr "Library"
+
+#: templates/aufgaben/kategorien.html:8 views.py:224
+msgid "Neue Kategorie"
+msgstr "New category"
+
+#: templates/aufgaben/kategorien.html:14 templates/aufgaben/vorlagen.html:20
+msgid "Inaktiv"
+msgstr "Inactive"
+
+#: templates/aufgaben/liste.html:9 views.py:82
+msgid "Neue Aufgabe"
+msgstr "New task"
+
+#: templates/aufgaben/liste.html:11
+msgid "Aus Vorlage"
+msgstr "From template"
+
+#: templates/aufgaben/liste.html:18
+msgid "Filtern"
+msgstr "Filter"
+
+#: templates/aufgaben/vorlagen.html:6
+msgid "Aufgabenbibliothek"
+msgstr "Task library"
+
+#: templates/aufgaben/vorlagen.html:8 views.py:142
+msgid "Neue Vorlage"
+msgstr "New template"
+
+#: templates/aufgaben/vorlagen.html:26
+msgid "Als Aufgabe"
+msgstr "Use as task"
+
+#: templates/aufgaben/vorlagen.html:29
+#, python-format
+msgid ""
+"Vorlage „%(titel)s“ löschen? Bereits angelegte Aufgaben bleiben erhalten."
+msgstr "Delete template “%(titel)s”? Tasks already created are kept."
+
+#: templates/aufgaben/vorlagen.html:29
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/aufgaben/vorlagen.html:32
+msgid "Noch keine Vorlagen."
+msgstr "No templates yet."
+
+#: views.py:99
+msgid "Aufgabe bearbeiten"
+msgstr "Edit task"
+
+#: views.py:159
+msgid "Vorlage bearbeiten"
+msgstr "Edit template"
+
+#: views.py:200
+#, python-format
+msgid "Aufgabe aus Vorlage „%(titel)s“"
+msgstr "Task from template “%(titel)s”"
+
+#: views.py:241
+msgid "Kategorie bearbeiten"
+msgstr "Edit category"
+
+#: views_ablauf.py:61
+msgid "Die Aufgabe gehört dir. Los geht's!"
+msgstr "The task is yours. Let's go!"
+
+#: views_ablauf.py:65
+msgid "Auch andere wollen diese Aufgabe. Mama oder Papa entscheiden."
+msgstr "Others want this task too. Mum or Dad will decide."
+
+#: views_ablauf.py:75
+msgid "Zurückgegeben. Keine Sorge, das ist okay."
+msgstr "Given back. Don't worry, that's okay."
+
+#: views_ablauf.py:90
+msgid "Super! Die Punkte sind schon gutgeschrieben."
+msgstr "Great! The points are already yours."
+
+#: views_ablauf.py:92
+msgid "Gemeldet! Mama oder Papa schauen bald drauf."
+msgstr "Reported! Mum or Dad will take a look soon."
+
+#: views_ablauf.py:106
+msgid "Antwort gesendet!"
+msgstr "Answer sent!"
+
+#: views_ablauf.py:133
+msgid "Sonderpunkte: bitte eine ganze Zahl."
+msgstr "Bonus points: please enter a whole number."
+
+#: views_ablauf.py:155
+msgid "Zugeteilt."
+msgstr "Assigned."
+
+#: views_ablauf.py:165
+msgid "Reservierung gelöst, die Aufgabe ist wieder frei."
+msgstr "Reservation released, the task is free again."
+
+#: views_ablauf.py:180
+msgid "Bestätigt, Punkte gebucht."
+msgstr "Approved, points booked."
+
+#: views_ablauf.py:189
+msgid "Abgelehnt."
+msgstr "Declined."
+
+#: views_ablauf.py:198
+msgid "Rückfrage gesendet."
+msgstr "Question sent."
+
+#: views_ablauf.py:208
+msgid "Sonderpunkte vergeben."
+msgstr "Bonus points given."
+
+#: views_ablauf.py:217
+msgid "Korrigiert, Punkte zurückgebucht."
+msgstr "Corrected, points taken back."
+
+#: views_ablauf.py:244
+msgid "Passt, danke."
+msgstr "Looks good, thanks."
+
+#: views_ablauf.py:252
+#, python-format
+msgid "%(n)s als „passt“ markiert."
+msgstr "%(n)s marked as “looks good”."
+
+#: views_ablauf.py:262
+msgid "Zurück ans Kind: Punkte abgezogen, es soll nachbessern."
+msgstr "Sent back to the child: points taken off, they should fix it."
+
+#: views_ablauf.py:273
+msgid "Abgelehnt, Punkte zurückgebucht."
+msgstr "Declined, points taken back."
+
+#: views_wochenplan.py:37
+msgid "Bitte ein gültiges Datum wählen."
+msgstr "Please choose a valid date."
+
+#: views_wochenplan.py:47
+#, python-format
+msgid "„%(titel)s“ verschoben."
+msgstr "“%(titel)s” moved."
+
+#: wiederholung.py:29 wiederholung.py:159
+msgid "Einmalig"
+msgstr "Once"
+
+#: wiederholung.py:30
+msgid "Wöchentlich an bestimmten Wochentagen"
+msgstr "Weekly on certain weekdays"
+
+#: wiederholung.py:31
+msgid "Alle paar Tage (Intervall)"
+msgstr "Every few days (interval)"
+
+#: wiederholung.py:34 wiederholung.py:39
+msgid "Tag"
+msgstr "Day"
+
+#: wiederholung.py:35 wiederholung.py:40
+msgid "Woche"
+msgstr "Week"
+
+#: wiederholung.py:36 wiederholung.py:41
+msgid "Monat"
+msgstr "Month"
+
+#: wiederholung.py:45
+msgctxt "Wochentag kurz"
+msgid "Mo"
+msgstr "Mon"
+
+#: wiederholung.py:45
+msgid "Montag"
+msgstr "Monday"
+
+#: wiederholung.py:46
+msgctxt "Wochentag kurz"
+msgid "Di"
+msgstr "Tue"
+
+#: wiederholung.py:46
+msgid "Dienstag"
+msgstr "Tuesday"
+
+#: wiederholung.py:47
+msgctxt "Wochentag kurz"
+msgid "Mi"
+msgstr "Wed"
+
+#: wiederholung.py:47
+msgid "Mittwoch"
+msgstr "Wednesday"
+
+#: wiederholung.py:48
+msgctxt "Wochentag kurz"
+msgid "Do"
+msgstr "Thu"
+
+#: wiederholung.py:48
+msgid "Donnerstag"
+msgstr "Thursday"
+
+#: wiederholung.py:49
+msgctxt "Wochentag kurz"
+msgid "Fr"
+msgstr "Fri"
+
+#: wiederholung.py:49
+msgid "Freitag"
+msgstr "Friday"
+
+#: wiederholung.py:50
+msgctxt "Wochentag kurz"
+msgid "Sa"
+msgstr "Sat"
+
+#: wiederholung.py:50
+msgid "Samstag"
+msgstr "Saturday"
+
+#: wiederholung.py:51
+msgctxt "Wochentag kurz"
+msgid "So"
+msgstr "Sun"
+
+#: wiederholung.py:51
+msgid "Sonntag"
+msgstr "Sunday"
+
+#: wiederholung.py:141
+#, python-format
+msgid "Jede Woche: %(tage)s"
+msgstr "Every week: %(tage)s"
+
+#: wiederholung.py:143
+msgid "Wöchentlich"
+msgstr "Weekly"
+
+#: wiederholung.py:148
+msgid "Jeden Tag"
+msgstr "Every day"
+
+#: wiederholung.py:150
+#, python-format
+msgid "Alle %(n)s Tage"
+msgstr "Every %(n)s days"
+
+#: wiederholung.py:150
+msgid "Intervall"
+msgstr "Interval"
+
+#: wiederholung.py:155
+#, python-format
+msgid "Einmalig am %(datum)s"
+msgstr "Once on %(datum)s"
+
+#: wiederholung.py:162
+#, python-format
+msgid "bis %(bis)s Uhr"
+msgstr "until %(bis)s"
+
+#: wiederholung.py:164
+#, python-format
+msgid "%(von)s bis %(bis)s Uhr"
+msgstr "%(von)s to %(bis)s"
+
+#: wiederholung.py:169
+#, python-format
+msgid "(+%(n)s Tag)"
+msgid_plural "(+%(n)s Tage)"
+msgstr[0] "(+%(n)s day)"
+msgstr[1] "(+%(n)s days)"
+
+#: wiederholung.py:175
+#, python-format
+msgid "max. %(n)sx pro %(zeitraum)s und Kind"
+msgstr "max. %(n)sx %(zeitraum)s per child"
+
+#: wiederholung.py:183
+#, python-format
+msgid "bis %(datum)s"
+msgstr "until %(datum)s"
+
+#: wiederholung.py:193
+msgid "Unbekannte Wiederholungsart."
+msgstr "Unknown repeat type."
+
+#: wiederholung.py:198
+msgid "Bitte mindestens einen Wochentag wählen."
+msgstr "Please choose at least one weekday."
+
+#: wiederholung.py:200
+msgid "Ungültige Wochentage."
+msgstr "Invalid weekdays."
+
+#: wiederholung.py:202
+msgid "Wochentage gibt es nur bei wöchentlicher Wiederholung."
+msgstr "Weekdays only apply to weekly repeats."
+
+#: wiederholung.py:206
+msgid "Bitte einen Abstand von mindestens 1 Tag angeben."
+msgstr "Please enter a gap of at least 1 day."
+
+#: wiederholung.py:209
+msgid "Ein Intervall gibt es nur bei der Wiederholungsart Intervall."
+msgstr "An interval only applies to the interval repeat type."
+
+#: wiederholung.py:213
+msgid "Das Ende darf nicht vor dem Start liegen."
+msgstr "The end can't be before the start."
+
+#: wiederholung.py:216
+msgid "Für ein Zeitfenster fehlt die Frist (Ende)."
+msgstr "A time window needs a deadline (end)."
+
+#: wiederholung.py:219
+msgid "Die Tage dürfen nicht negativ sein."
+msgstr "The days can't be negative."
+
+#: wiederholung.py:221
+msgid "Mehrere Tage gehen nur mit einer Frist."
+msgstr "Several days only work with a deadline."
+
+#: wiederholung.py:228
+msgid "Das Ende muss nach dem Beginn liegen (oder Tage > 0 wählen)."
+msgstr "The end must be after the start (or choose days > 0)."
+
+#: wiederholung.py:231
+msgid "Limit braucht Anzahl und Zeitraum zusammen."
+msgstr "A limit needs both a number and a period."
+
+#: wiederholung.py:234
+msgid "Das Limit muss mindestens 1 sein."
+msgstr "The limit must be at least 1."
+
+#: wiederholung.py:236
+msgid "Unbekannter Zeitraum."
+msgstr "Unknown period."
+
+#: wochenplan.py:63 wochenplan.py:65
+msgid "Ungültige Reihenfolge"
+msgstr "Invalid order"
+
+#: wochenplan.py:79
+msgid "Aufgabe nicht gefunden"
+msgstr "Task not found"
+
+#: zustand.py:82 zustand.py:89
+msgid "Die Aufgabe wurde inzwischen geändert."
+msgstr "The task was changed in the meantime."

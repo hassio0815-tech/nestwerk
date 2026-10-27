@@ -6,6 +6,7 @@ URL-Name (noch) nicht existiert, werden ausgelassen."""
 from dataclasses import dataclass
 
 from django.urls import NoReverseMatch, reverse
+from django.utils.translation import gettext_lazy as _
 
 from apps.konten.models import Rolle
 
@@ -23,30 +24,36 @@ class Modul:
 MODULE = (
     Modul(
         "aufgaben",
-        "Aufgaben & Belohnungen",
-        "Meldungen prüfen, Wochenplan und Aufgaben",
+        _("Aufgaben & Belohnungen"),
+        _("Meldungen prüfen, Wochenplan und Aufgaben"),
         "stern",
         "aufgaben:entscheidungen",
     ),
     Modul(
         "eltern",
-        "Eltern-Bereich",
-        "Übersicht, Ranking und Familienziel",
+        _("Eltern-Bereich"),
+        _("Übersicht, Ranking und Familienziel"),
         "home",
         "oberflaeche:eltern_heim",
     ),
     Modul(
         "dungeon",
-        "Dungeon",
-        "Ränge, Mods, Abzeichen und Sondertage der Kinder",
+        _("Dungeon"),
+        _("Ränge, Mods, Abzeichen und Sondertage der Kinder"),
         "pokal",
         "oberflaeche:eltern_dungeon",
     ),
-    Modul("familie", "Familie", "Kinder, Eltern und Passwort", "person", "oberflaeche:familie"),
+    Modul(
+        "familie",
+        _("Familie"),
+        _("Kinder, Eltern und Passwort"),
+        "person",
+        "oberflaeche:familie",
+    ),
     Modul(
         "einstellungen",
-        "Einstellungen",
-        "Regeln, Darstellung und Benachrichtigungen",
+        _("Einstellungen"),
+        _("Regeln, Darstellung und Benachrichtigungen"),
         "einstellungen",
         "oberflaeche:einstellungen",
     ),

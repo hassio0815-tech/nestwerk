@@ -1,0 +1,811 @@
+# Nestwerk English translation.
+# This file is distributed under the same license as the PACKAGE package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 05:19+0000\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: einstellungen.py:21
+msgid "Familien-Ranking: Ansicht"
+msgstr "Family ranking: view"
+
+#: einstellungen.py:23
+msgid ""
+"Schaufenster (Avatare mit Rang, Serie, Abzeichen), Held der Woche oder "
+"Rohpunkte. Gilt für Tablet und Kinder-Seite."
+msgstr ""
+"Showcase (avatars with rank, streak, badges), hero of the week or raw "
+"points. Applies to the tablet and the kids' page."
+
+#: einstellungen.py:31
+msgid "Tablet: Aktualisierung"
+msgstr "Tablet: refresh"
+
+#: einstellungen.py:33
+msgid ""
+"Abstand, in dem die Tablet-Startseite sich selbst aktualisiert. Das "
+"verlängert keine Sitzung."
+msgstr ""
+"How often the tablet start page refreshes itself. This does not extend a "
+"session."
+
+#: einstellungen.py:36
+msgid "Sekunden"
+msgstr "seconds"
+
+#: einstellungen.py:43
+msgid "Tablet: vollständiges Neuladen"
+msgstr "Tablet: full reload"
+
+#: einstellungen.py:45
+msgid ""
+"Die Tablet-Startseite lädt sich in diesem Abstand komplett neu (gegen "
+"Speicherlecks im Kiosk-Browser)."
+msgstr ""
+"The tablet start page reloads completely at this interval (to prevent memory "
+"leaks in the kiosk browser)."
+
+#: einstellungen.py:48
+msgid "Stunden"
+msgstr "hours"
+
+#: einstellungen_editor.py:13
+msgid "Allgemein"
+msgstr "General"
+
+#: einstellungen_editor.py:14
+msgid "Anmeldung und Geräte"
+msgstr "Login and devices"
+
+#: einstellungen_editor.py:15
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:5
+msgid "Aufgaben"
+msgstr "Tasks"
+
+#: einstellungen_editor.py:16
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:8
+msgid "Belohnungen"
+msgstr "Rewards"
+
+#: einstellungen_editor.py:17
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:12
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+#: einstellungen_editor.py:18
+msgid "Einrichtung"
+msgstr "Setup"
+
+#: einstellungen_editor.py:19
+msgid "Oberfläche und Tablet"
+msgstr "Interface and tablet"
+
+#: einstellungen_editor.py:20
+msgid "Punkte"
+msgstr "Points"
+
+#: einstellungen_editor.py:21
+msgid "Ereignisse und Betrieb"
+msgstr "Events and operation"
+
+#: einstellungen_editor.py:22
+msgid "Spielregeln"
+msgstr "Game rules"
+
+#: einstellungen_editor.py:23
+msgid "Avatar"
+msgstr "Avatar"
+
+#: einstellungen_editor.py:24
+msgid "Familienziel"
+msgstr "Family goal"
+
+#: einstellungen_editor.py:25
+msgctxt "Einstellungen-Abschnitt"
+msgid "Sondertage"
+msgstr "Special days"
+
+#: einstellungen_editor.py:123
+msgid "Bitte eine ganze Zahl eingeben."
+msgstr "Please enter a whole number."
+
+#: einstellungen_editor.py:186
+msgid "Ungültiger Wert."
+msgstr "Invalid value."
+
+#: module.py:27
+msgid "Aufgaben & Belohnungen"
+msgstr "Tasks & rewards"
+
+#: module.py:28
+msgid "Meldungen prüfen, Wochenplan und Aufgaben"
+msgstr "Check reports, weekly plan and tasks"
+
+#: module.py:34
+msgid "Eltern-Bereich"
+msgstr "Parents' area"
+
+#: module.py:35
+msgid "Übersicht, Ranking und Familienziel"
+msgstr "Overview, ranking and family goal"
+
+#: module.py:41 templates/oberflaeche/eltern_dungeon.html:4
+#: templates/oberflaeche/eltern_dungeon.html:6
+#: templates/oberflaeche/eltern_dungeon.html:8
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:13
+#: templates/oberflaeche/kind_dungeon.html:5
+#: templates/oberflaeche/kind_dungeon.html:12
+msgid "Dungeon"
+msgstr "Dungeon"
+
+#: module.py:42
+msgid "Ränge, Mods, Abzeichen und Sondertage der Kinder"
+msgstr "Kids' ranks, mods, badges and special days"
+
+#: module.py:48 registry.py:184 templates/oberflaeche/familie.html:4
+#: templates/oberflaeche/familie.html:6
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:10
+#: templates/oberflaeche/kacheln/kind_ranking.html:3
+msgid "Familie"
+msgstr "Family"
+
+#: module.py:49
+msgid "Kinder, Eltern und Passwort"
+msgstr "Kids, parents and password"
+
+#: module.py:55 templates/oberflaeche/einstellungen.html:4
+#: templates/oberflaeche/einstellungen.html:6
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:9
+msgid "Einstellungen"
+msgstr "Settings"
+
+#: module.py:56
+msgid "Regeln, Darstellung und Benachrichtigungen"
+msgstr "Rules, appearance and notifications"
+
+#: ranking.py:31
+msgid "Schaufenster"
+msgstr "Showcase"
+
+#: ranking.py:32 templates/oberflaeche/kacheln/eltern_ranking.html:14
+#: templates/oberflaeche/ranking/_held.html:1
+#: templates/oberflaeche/ranking/_karte.html:3
+msgid "Held der Woche"
+msgstr "Hero of the week"
+
+#: ranking.py:33
+msgid "Rohpunkte"
+msgstr "Raw points"
+
+#: registry.py:86
+msgid "Guthaben und XP"
+msgstr "Balance and XP"
+
+#: registry.py:95 templates/oberflaeche/kacheln/kind_offene.html:2
+msgid "Offene Aufgaben"
+msgstr "Open tasks"
+
+#: registry.py:104 templates/oberflaeche/kacheln/kind_laufende.html:2
+msgid "Meine Aufgaben"
+msgstr "My tasks"
+
+#: registry.py:113
+msgid "Punkte einlösen"
+msgstr "Spend points"
+
+#: registry.py:122 templates/oberflaeche/kacheln/kind_akzent.html:2
+msgid "Meine Farbe"
+msgstr "My colour"
+
+#: registry.py:131
+msgid "Entscheidungen"
+msgstr "Decisions"
+
+#: registry.py:140 templates/oberflaeche/familie.html:10
+#: templates/oberflaeche/kacheln/eltern_kinder.html:2
+msgid "Kinder"
+msgstr "Kids"
+
+#: registry.py:149 templates/oberflaeche/kacheln/eltern_ereignisse.html:2
+msgid "Ereignisse"
+msgstr "Events"
+
+#: registry.py:158 templates/oberflaeche/kacheln/eltern_system.html:2
+msgid "Systemstatus"
+msgstr "System status"
+
+#: registry.py:167 templates/oberflaeche/kacheln/eltern_schnellzugriff.html:2
+msgid "Schnellzugriff"
+msgstr "Quick access"
+
+#: registry.py:175 templates/oberflaeche/kacheln/tablet_ranking.html:2
+msgid "Ranking"
+msgstr "Ranking"
+
+#: registry.py:193
+msgid "Erledigt – kurz prüfen"
+msgstr "Done – quick check"
+
+#: registry.py:202 templates/oberflaeche/kacheln/eltern_ranking.html:3
+msgid "Familien-Ranking"
+msgstr "Family ranking"
+
+#: templates/oberflaeche/_tablet_teil.html:9
+#: templates/oberflaeche/tablet.html:7
+msgid "Wer bist du?"
+msgstr "Who are you?"
+
+#: templates/oberflaeche/_tablet_teil.html:17
+#, python-format
+msgid "%(n)s offen"
+msgstr "%(n)s open"
+
+#: templates/oberflaeche/_tablet_teil.html:21
+#: templates/oberflaeche/kacheln/eltern_kinder.html:13
+msgid "Noch keine Kinder"
+msgstr "No kids yet"
+
+#: templates/oberflaeche/_tablet_teil.html:21
+msgid "Die Eltern legen die Kinder in der Einrichtung an."
+msgstr "The parents add the kids during setup."
+
+#: templates/oberflaeche/_wappen_karte.html:2
+msgid "Mein Wappen und meine Rolle"
+msgstr "My crest and role"
+
+#: templates/oberflaeche/_wappen_karte.html:3
+msgid ""
+"Erscheint bei der Anmeldung, im Eltern-Bereich und in Nachrichten an die "
+"Kinder."
+msgstr "Shown at login, in the parents' area and in messages to the kids."
+
+#: templates/oberflaeche/_wappen_karte.html:6
+#: templates/oberflaeche/einstellungen.html:15
+#: templates/oberflaeche/einstellungen.html:53
+#: templates/oberflaeche/familie.html:71
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/oberflaeche/_wappen_karte.html:8
+#: templates/oberflaeche/einstellungen.html:22
+msgid "Gespeichert."
+msgstr "Saved."
+
+#: templates/oberflaeche/einstellungen.html:11
+msgid "Dungeon-Bereich"
+msgstr "Dungeon area"
+
+#: templates/oberflaeche/einstellungen.html:12
+msgid ""
+"Ränge, Mods, Abzeichen, Ruhmeshalle und Sondertage der Kinder. Aus: Eintrag "
+"im Menü und Start-Auswahl verschwinden, die Seiten bleiben per Adresse "
+"erreichbar. Das Spiel der Kinder bleibt unberührt."
+msgstr ""
+"Kids' ranks, mods, badges, hall of fame and special days. Off: the menu "
+"entry and start choice disappear, but the pages can still be opened by "
+"address. The kids' game is not affected."
+
+#: templates/oberflaeche/einstellungen.html:14
+msgid "Dungeon-Bereich anzeigen"
+msgstr "Show dungeon area"
+
+#: templates/oberflaeche/einstellungen.html:18
+msgid "Abschnitt antippen, um ihn auf- oder zuzuklappen."
+msgstr "Tap a section to open or close it."
+
+#: templates/oberflaeche/einstellungen.html:49
+msgid "Ein Eintrag pro Zeile."
+msgstr "One entry per line."
+
+#: templates/oberflaeche/einstellungen.html:50
+msgid "Noch kein Wert gesetzt."
+msgstr "No value set yet."
+
+#: templates/oberflaeche/eltern_dungeon.html:7
+msgid ""
+"Hier steht alles zum Spiel der Kinder. Der Alltag läuft über die Übersicht."
+msgstr ""
+"Everything about the kids' game is here. Daily life runs through the "
+"overview."
+
+#: templates/oberflaeche/eltern_dungeon.html:10
+msgid "Ränge"
+msgstr "Ranks"
+
+#: templates/oberflaeche/eltern_dungeon.html:11
+#: templates/oberflaeche/ranking/_karte.html:10
+msgid "Abzeichen"
+msgstr "Badges"
+
+#: templates/oberflaeche/eltern_dungeon.html:12
+msgid "Meilensteine"
+msgstr "Milestones"
+
+#: templates/oberflaeche/eltern_dungeon.html:13
+msgid "Mods"
+msgstr "Mods"
+
+#: templates/oberflaeche/eltern_dungeon.html:14
+msgid "Ruhmeshalle"
+msgstr "Hall of fame"
+
+#: templates/oberflaeche/eltern_dungeon.html:15
+msgid "Sondertage"
+msgstr "Special days"
+
+#: templates/oberflaeche/eltern_dungeon.html:16
+msgid "Prognose"
+msgstr "Forecast"
+
+#: templates/oberflaeche/eltern_dungeon.html:20
+msgid "Figurennamen"
+msgstr "Character names"
+
+#: templates/oberflaeche/eltern_dungeon.html:21
+msgid ""
+"Bei unpassenden Namen: zurücksetzen. Dann zeigt die App wieder den Namen des "
+"Kindes."
+msgstr ""
+"If a name is not suitable, reset it. The app then shows the child's name "
+"again."
+
+#: templates/oberflaeche/eltern_dungeon.html:25
+msgid "Zurücksetzen"
+msgstr "Reset"
+
+#: templates/oberflaeche/eltern_heim.html:4
+#: templates/oberflaeche/familie.html:57 templates/oberflaeche/tablet.html:11
+msgid "Eltern"
+msgstr "Parents"
+
+#: templates/oberflaeche/eltern_heim.html:7
+#: templates/oberflaeche/kind_heim.html:5
+msgid "Hallo"
+msgstr "Hello"
+
+#: templates/oberflaeche/eltern_heim.html:7
+#: templates/oberflaeche/kind_heim.html:13
+#, python-format
+msgid "Hallo %(name)s!"
+msgstr "Hello %(name)s!"
+
+#: templates/oberflaeche/eltern_heim.html:10
+msgid "Gesperrte PINs"
+msgstr "Locked PINs"
+
+#: templates/oberflaeche/eltern_heim.html:14
+msgid "Entsperren"
+msgstr "Unlock"
+
+#: templates/oberflaeche/familie.html:14
+msgid "PIN gesperrt"
+msgstr "PIN locked"
+
+#: templates/oberflaeche/familie.html:17 templates/oberflaeche/familie.html:48
+#: templates/oberflaeche/familie.html:49 templates/oberflaeche/familie.html:63
+msgid "Name"
+msgstr "Name"
+
+#: templates/oberflaeche/familie.html:19
+msgid "Umbenennen"
+msgstr "Rename"
+
+#: templates/oberflaeche/familie.html:22 templates/oberflaeche/familie.html:23
+msgid "Neue PIN"
+msgstr "New PIN"
+
+#: templates/oberflaeche/familie.html:24
+msgid "PIN zurücksetzen"
+msgstr "Reset PIN"
+
+#: templates/oberflaeche/familie.html:29
+msgid "Sperre aufheben"
+msgstr "Remove lock"
+
+#: templates/oberflaeche/familie.html:33
+msgid "Deaktivieren"
+msgstr "Deactivate"
+
+#: templates/oberflaeche/familie.html:35
+#, python-format
+msgid ""
+"%(name)s kann sich dann nicht mehr anmelden. Die Punkte bleiben erhalten."
+msgstr "%(name)s can no longer log in after this. The points are kept."
+
+#: templates/oberflaeche/familie.html:36
+msgid "Ja, deaktivieren"
+msgstr "Yes, deactivate"
+
+#: templates/oberflaeche/familie.html:43
+msgid "Noch keine Kinder."
+msgstr "No kids yet."
+
+#: templates/oberflaeche/familie.html:45
+msgid "Kind anlegen"
+msgstr "Add a child"
+
+#: templates/oberflaeche/familie.html:50
+msgid "PIN"
+msgstr "PIN"
+
+#: templates/oberflaeche/familie.html:51
+msgid "PIN (4 Ziffern)"
+msgstr "PIN (4 digits)"
+
+#: templates/oberflaeche/familie.html:52
+msgid "Anlegen"
+msgstr "Add"
+
+#: templates/oberflaeche/familie.html:65
+msgid "Rolle"
+msgstr "Role"
+
+#: templates/oberflaeche/familie.html:69 templates/oberflaeche/familie.html:70
+msgid "E-Mail"
+msgstr "Email"
+
+#: templates/oberflaeche/familie.html:79
+msgid "Familien-Passwort"
+msgstr "Family password"
+
+#: templates/oberflaeche/familie.html:82 templates/oberflaeche/familie.html:83
+msgid "Neues Passwort"
+msgstr "New password"
+
+#: templates/oberflaeche/familie.html:84 templates/oberflaeche/familie.html:85
+msgid "Wiederholen"
+msgstr "Repeat"
+
+#: templates/oberflaeche/familie.html:86
+msgid "Passwort ändern"
+msgstr "Change password"
+
+#: templates/oberflaeche/familie.html:91
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:11
+msgid "Geräte"
+msgstr "Devices"
+
+#: templates/oberflaeche/familie.html:93
+msgid "Geräte verwalten"
+msgstr "Manage devices"
+
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:2
+msgid "Offene Entscheidungen"
+msgstr "Open decisions"
+
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:4
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:6
+msgid "Meldungen"
+msgstr "Reports"
+
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:5
+msgid "Konflikte"
+msgstr "Conflicts"
+
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:6
+msgid "Einlöseanträge"
+msgstr "Redeem requests"
+
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:8
+msgid "Nichts zu entscheiden."
+msgstr "Nothing to decide."
+
+#: templates/oberflaeche/kacheln/eltern_ereignisse.html:2
+#, python-format
+msgid "%(n)s neu"
+msgstr "%(n)s new"
+
+#: templates/oberflaeche/kacheln/eltern_ereignisse.html:10
+msgid "Noch keine Ereignisse."
+msgstr "No events yet."
+
+#: templates/oberflaeche/kacheln/eltern_ereignisse.html:14
+msgid "Alle Ereignisse"
+msgstr "All events"
+
+#: templates/oberflaeche/kacheln/eltern_kinder.html:8
+#, python-format
+msgid "%(n)s laufend"
+msgstr "%(n)s in progress"
+
+#: templates/oberflaeche/kacheln/eltern_kinder.html:9
+#, python-format
+msgid "%(n)s heute erledigt"
+msgstr "%(n)s done today"
+
+#: templates/oberflaeche/kacheln/eltern_kinder.html:13
+msgid "Kinder legst du unter Familie an."
+msgstr "You add kids under Family."
+
+#: templates/oberflaeche/kacheln/eltern_ranking.html:4
+msgid "Ansicht auf dem Tablet"
+msgstr "View on the tablet"
+
+#: templates/oberflaeche/kacheln/eltern_ranking.html:9
+msgid "Gilt für das Flur-Tablet und die Kinder-Seite."
+msgstr "Applies to the hallway tablet and the kids' page."
+
+#: templates/oberflaeche/kacheln/eltern_ranking.html:11
+#, python-format
+msgid "Woche %(woche)s: Zuwachs gegenüber dem eigenen Schnitt"
+msgstr "Week %(woche)s: growth compared to their own average"
+
+#: templates/oberflaeche/kacheln/eltern_ranking.html:14
+#, python-format
+msgid "%(xp)s Punkte,"
+msgstr "%(xp)s points,"
+
+#: templates/oberflaeche/kacheln/eltern_ranking.html:18
+msgid "Noch keine bewertete Woche."
+msgstr "No rated week yet."
+
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:7
+msgid "Wochenplan"
+msgstr "Weekly plan"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:2
+msgid "in Ordnung"
+msgstr "all good"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:2
+msgid "Achtung"
+msgstr "Attention"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:4
+msgid "Worker"
+msgstr "Worker"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:4
+msgid "läuft"
+msgstr "running"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:4
+msgid "keine Rückmeldung"
+msgstr "no response"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:4
+#, python-format
+msgid "zuletzt %(zeit)s"
+msgstr "last seen %(zeit)s"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:5
+msgid "Offene Zustellungen"
+msgstr "Pending deliveries"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:5
+#, python-format
+msgid "%(offen)s offen, %(fehler)s Fehler, %(aufgegeben)s aufgegeben"
+msgstr "%(offen)s pending, %(fehler)s failed, %(aufgegeben)s given up"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:6
+msgid "Datensicherung"
+msgstr "Data backup"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:6
+#: templates/oberflaeche/kacheln/eltern_system.html:7
+msgid "noch nie gelaufen"
+msgstr "never run"
+
+#: templates/oberflaeche/kacheln/eltern_system.html:7
+msgid "Sicherungsprüfung"
+msgstr "Backup check"
+
+#: templates/oberflaeche/kacheln/kind_akzent.html:5
+#, python-format
+msgid "Farbe %(farbe)s"
+msgstr "Colour %(farbe)s"
+
+#: templates/oberflaeche/kacheln/kind_konto.html:2
+msgid "Zum Dungeon: Avatar, Mods, Shop, Ränge"
+msgstr "To the dungeon: avatar, mods, shop, ranks"
+
+#: templates/oberflaeche/kacheln/kind_konto.html:9
+#: templates/oberflaeche/ranking/_karte.html:8
+#, python-format
+msgid "%(n)s Woche"
+msgid_plural "%(n)s Wochen"
+msgstr[0] "%(n)s week"
+msgstr[1] "%(n)s weeks"
+
+#: templates/oberflaeche/kacheln/kind_konto.html:11
+#, python-format
+msgid "%(n)s davon für Anträge reserviert"
+msgstr "%(n)s of that reserved for requests"
+
+#: templates/oberflaeche/kacheln/kind_konto.html:14
+msgid "⚔️ Ab in den Dungeon"
+msgstr "⚔️ Off to the dungeon"
+
+#: templates/oberflaeche/kacheln/kind_laufende.html:6
+msgid "Deine Aufgabe"
+msgstr "Your task"
+
+#: templates/oberflaeche/kacheln/kind_laufende.html:7
+msgid "Gemeldet"
+msgstr "Reported"
+
+#: templates/oberflaeche/kacheln/kind_laufende.html:8
+msgid "Rückfrage"
+msgstr "Question"
+
+#: templates/oberflaeche/kacheln/kind_laufende.html:9
+msgid "Eltern entscheiden"
+msgstr "Parents decide"
+
+#: templates/oberflaeche/kacheln/kind_laufende.html:12
+msgid "Du hast gerade nichts am Laufen."
+msgstr "You have nothing going on right now."
+
+#: templates/oberflaeche/kacheln/kind_laufende.html:14
+msgid "Zu meinen Aufgaben"
+msgstr "Go to my tasks"
+
+#: templates/oberflaeche/kacheln/kind_offene.html:9
+msgid "Alles erledigt"
+msgstr "All done"
+
+#: templates/oberflaeche/kacheln/kind_offene.html:9
+msgid "Gerade gibt es keine freien Aufgaben."
+msgstr "There are no free tasks right now."
+
+#: templates/oberflaeche/kacheln/kind_offene.html:12
+msgid "Alle Aufgaben"
+msgstr "All tasks"
+
+#: templates/oberflaeche/kacheln/kind_offene.html:13
+#, python-format
+msgid "%(n)s offen insgesamt"
+msgstr "%(n)s open in total"
+
+#: templates/oberflaeche/kind_dungeon.html:9
+#: templates/oberflaeche/module.html:4
+msgid "Start"
+msgstr "Home"
+
+#: templates/oberflaeche/kind_heim.html:9 templates/oberflaeche/module.html:22
+msgid "Abmelden"
+msgstr "Log out"
+
+#: templates/oberflaeche/module.html:10
+msgid "Wohin soll es gehen?"
+msgstr "Where to?"
+
+#: templates/oberflaeche/module.html:12
+msgid "Bereiche"
+msgstr "Areas"
+
+#: templates/oberflaeche/ranking/_ansicht.html:5
+msgid "Noch kein Ranking"
+msgstr "No ranking yet"
+
+#: templates/oberflaeche/ranking/_ansicht.html:5
+msgid "Sobald die erste Woche läuft, erscheint hier die Familie."
+msgstr "As soon as the first week is under way, your family shows up here."
+
+#: templates/oberflaeche/ranking/_held.html:3
+msgid "Held der letzten Woche"
+msgstr "Hero of last week"
+
+#: templates/oberflaeche/ranking/_held.html:7
+msgid "Mehr geschafft als sonst. Stark!"
+msgstr "Did more than usual. Awesome!"
+
+#: templates/oberflaeche/ranking/_held.html:9
+msgid "Noch kein Held der letzten Woche"
+msgstr "No hero of last week yet"
+
+#: templates/oberflaeche/ranking/_held.html:10
+msgid ""
+"In dieser Woche ist jeder dran: Wer mehr schafft als sonst, wird Held der "
+"Woche."
+msgstr ""
+"Everyone can do it this week: whoever does more than usual becomes hero of "
+"the week."
+
+#: templates/oberflaeche/ranking/_held.html:13
+msgid "Woche davor:"
+msgstr "Week before:"
+
+#: templates/oberflaeche/ranking/_held.html:15
+msgid "Wie oft Held der Woche"
+msgstr "How often hero of the week"
+
+#: templates/oberflaeche/ranking/_held.html:16
+#, python-format
+msgid "%(name)s: %(n)sx Held"
+msgstr "%(name)s: hero %(n)s times"
+
+#: templates/oberflaeche/ranking/_karte.html:8
+msgid "Serie"
+msgstr "Streak"
+
+#: templates/oberflaeche/ranking/_karte.html:8
+#: templates/oberflaeche/ranking/_roh.html:7
+msgid "Pause"
+msgstr "Break"
+
+#: templates/oberflaeche/ranking/_karte.html:9
+msgid "Ausbau"
+msgstr "Upgrade"
+
+#: templates/oberflaeche/ranking/_karte.html:9
+#, python-format
+msgid "%(aktuell)s von %(slots)s"
+msgstr "%(aktuell)s of %(slots)s"
+
+#: templates/oberflaeche/ranking/_karte.html:13
+#, python-format
+msgid "Abzeichen von %(name)s"
+msgstr "Badges of %(name)s"
+
+#: templates/oberflaeche/ranking/_karte.html:17
+#, python-format
+msgid "%(n)s Punkte diese Woche"
+msgstr "%(n)s points this week"
+
+#: templates/oberflaeche/ranking/_roh.html:2
+msgid "Punkte der Kinder"
+msgstr "Kids' points"
+
+#: templates/oberflaeche/ranking/_roh.html:3
+msgid "Kind"
+msgstr "Child"
+
+#: templates/oberflaeche/ranking/_roh.html:3
+msgid "Diese Woche"
+msgstr "This week"
+
+#: templates/oberflaeche/ranking/_roh.html:3
+msgid "Gesamt"
+msgstr "Total"
+
+#: templates/oberflaeche/ranking/_roh.html:14
+msgid ""
+"Punkte zeigen, was geschafft wurde. Der Weg zählt: Rang, Serie und Abzeichen "
+"findest du im Schaufenster."
+msgstr ""
+"Points show what got done. The journey counts too: you can find rank, streak "
+"and badges in the showcase."
+
+#: views.py:225 views.py:240
+msgid "Die Tablet-Ansicht gibt es nur im Heimnetz."
+msgstr "The tablet view is only available on the home network."
+
+#: views_familie.py:17
+msgid "Kind angelegt."
+msgstr "Child added."
+
+#: views_familie.py:18
+msgid "Name geändert."
+msgstr "Name changed."
+
+#: views_familie.py:19
+msgid "PIN zurückgesetzt."
+msgstr "PIN reset."
+
+#: views_familie.py:20
+msgid "PIN-Sperre aufgehoben."
+msgstr "PIN lock removed."
+
+#: views_familie.py:21
+msgid "Kind deaktiviert."
+msgstr "Child deactivated."
+
+#: views_familie.py:22
+msgid "Angaben gespeichert."
+msgstr "Details saved."
+
+#: views_familie.py:23
+msgid "Familien-Passwort geändert."
+msgstr "Family password changed."
+
+#: views_familie.py:135
+msgid "Die beiden Eingaben sind verschieden."
+msgstr "The two entries do not match."

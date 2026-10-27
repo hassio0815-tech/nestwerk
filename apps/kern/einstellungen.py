@@ -16,6 +16,8 @@ from typing import Any
 
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.db import transaction
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from . import audit
 from .models import Einstellung
@@ -75,7 +77,7 @@ class Definition:
         """Validiert ``wert`` (Python- oder JSON-Form) und liefert die JSON-Form."""
         if self.typ is Typ.LISTE:
             if not isinstance(wert, list | tuple):
-                raise self._fehler(wert, "Liste erwartet")
+                raise self._fehler(wert, _("Liste erwartet"))
             json_wert = [self._einzeln(self.element_typ, e) for e in wert]
         else:
             json_wert = self._einzeln(self.typ, wert)
@@ -99,56 +101,67 @@ class Definition:
         match typ:
             case Typ.GANZZAHL:
                 if isinstance(wert, bool) or not isinstance(wert, int):
-                    raise self._fehler(wert, "Ganzzahl erwartet")
+                    raise self._fehler(wert, _("Ganzzahl erwartet"))
                 if self.minimum is not None and wert < self.minimum:
-                    raise self._fehler(wert, f"kleiner als Minimum {self.minimum}")
+                    raise self._fehler(
+                        wert, _("kleiner als Minimum %(min)s") % {"min": self.minimum}
+                    )
                 if self.maximum is not None and wert > self.maximum:
-                    raise self._fehler(wert, f"größer als Maximum {self.maximum}")
+                    raise self._fehler(
+                        wert, _("größer als Maximum %(max)s") % {"max": self.maximum}
+                    )
                 json_wert = wert
             case Typ.BOOL:
                 if not isinstance(wert, bool):
-                    raise self._fehler(wert, "Ja/Nein erwartet")
+                    raise self._fehler(wert, _("Ja/Nein erwartet"))
                 json_wert = wert
             case Typ.TEXT:
                 if not isinstance(wert, str):
-                    raise self._fehler(wert, "Text erwartet")
+                    raise self._fehler(wert, _("Text erwartet"))
                 if len(wert) > self.max_laenge:
-                    raise self._fehler(wert, f"länger als {self.max_laenge} Zeichen")
+                    raise self._fehler(
+                        wert, _("länger als %(max)s Zeichen") % {"max": self.max_laenge}
+                    )
                 json_wert = wert
             case Typ.DATUM:
                 if isinstance(wert, datetime) or not isinstance(wert, date | str):
-                    raise self._fehler(wert, "Datum erwartet")
+                    raise self._fehler(wert, _("Datum erwartet"))
                 if isinstance(wert, str):
                     try:
                         wert = date.fromisoformat(wert)
                     except ValueError:
-                        raise self._fehler(wert, "Datum im Format JJJJ-MM-TT erwartet") from None
+                        raise self._fehler(wert, _("Datum im Format JJJJ-MM-TT erwartet")) from None
                 json_wert = wert.isoformat()
             case Typ.UHRZEIT:
                 if isinstance(wert, str):
                     if not re.fullmatch(r"\d{2}:\d{2}", wert):
-                        raise self._fehler(wert, "Uhrzeit im Format HH:MM erwartet")
+                        raise self._fehler(wert, _("Uhrzeit im Format HH:MM erwartet"))
                     try:
                         wert = time.fromisoformat(wert)
                     except ValueError:
-                        raise self._fehler(wert, "ungültige Uhrzeit") from None
+                        raise self._fehler(wert, _("ungültige Uhrzeit")) from None
                 if not isinstance(wert, time) or wert.tzinfo is not None:
-                    raise self._fehler(wert, "Uhrzeit ohne Zeitzone erwartet")
+                    raise self._fehler(wert, _("Uhrzeit ohne Zeitzone erwartet"))
                 if wert.second or wert.microsecond:
-                    raise self._fehler(wert, "Uhrzeit nur minutengenau")
+                    raise self._fehler(wert, _("Uhrzeit nur minutengenau"))
                 json_wert = wert.strftime("%H:%M")
             case Typ.ZEITZONE:
                 if not isinstance(wert, str) or wert not in _zeitzonen():
-                    raise self._fehler(wert, "unbekannte Zeitzone")
+                    raise self._fehler(wert, _("unbekannte Zeitzone"))
                 json_wert = wert
             case _:
                 raise ImproperlyConfigured(f"{self.schluessel}: Typ {typ} nicht als Element")
         if self.auswahl is not None and json_wert not in self.auswahl:
-            raise self._fehler(wert, f"nicht in Auswahl {list(self.auswahl)}")
+            raise self._fehler(
+                wert, _("nicht in Auswahl %(auswahl)s") % {"auswahl": list(self.auswahl)}
+            )
         return json_wert
 
     def _fehler(self, wert, grund):
-        return UngueltigerWert(f"Einstellung '{self.schluessel}': {wert!r} ungültig ({grund})")
+        return UngueltigerWert(
+            _("Einstellung '%(schluessel)s': %(wert)r ungültig (%(grund)s)")
+            % {"schluessel": self.schluessel, "wert": wert, "grund": grund}
+        )
 
 
 def _umwandeln(typ, json_wert):
@@ -286,29 +299,44 @@ def startwerte_schreiben(einstellung_modell, startwerte):
 
 def kern_einstellungen_definieren():
     """Einstellungen, die kern selbst braucht (Gruppe ``allgemein``, DATA_MODEL 15.2)."""
-    definieren("allgemein.anzeigename", Typ.TEXT, "Name der Installation", max_laenge=40)
+    definieren(
+        "allgemein.anzeigename", Typ.TEXT, gettext_lazy("Name der Installation"), max_laenge=40
+    )
     definieren(
         "allgemein.zeitzone",
         Typ.ZEITZONE,
-        "Zeitzone",
-        beschreibung="Fachliche Tage und Wochen werden in dieser Zeitzone gerechnet.",
+        gettext_lazy("Zeitzone"),
+        beschreibung=gettext_lazy("Fachliche Tage und Wochen werden in dieser Zeitzone gerechnet."),
     )
     definieren(
         "allgemein.go_live_datum",
         Typ.DATUM,
-        "Go-live-Datum",
-        beschreibung="Beginn des ersten App-Jahres.",
+        gettext_lazy("Go-live-Datum"),
+        beschreibung=gettext_lazy("Beginn des ersten App-Jahres."),
     )
-    definieren("allgemein.sprache", Typ.TEXT, "Sprache", auswahl=("de",))
+    definieren(
+        "allgemein.sprache",
+        Typ.TEXT,
+        gettext_lazy("Familien-Sprache"),
+        beschreibung=gettext_lazy(
+            "Für Benachrichtigungen und Mails an alle ohne eigene Sprache (de oder en)."
+        ),
+        auswahl=("de", "en"),
+    )
     definieren(
         "allgemein.joblauf_aufbewahrung_tage",
         Typ.GANZZAHL,
-        "Aufbewahrung der Job-Läufe",
-        beschreibung="Protokoll der geplanten Jobs (Systemstatus) wird danach gelöscht.",
-        einheit="Tage",
+        gettext_lazy("Aufbewahrung der Job-Läufe"),
+        beschreibung=gettext_lazy(
+            "Protokoll der geplanten Jobs (Systemstatus) wird danach gelöscht."
+        ),
+        einheit=gettext_lazy("Tage"),
         minimum=7,
         maximum=3650,
     )
     definieren(
-        "allgemein.einrichtung_abgeschlossen", Typ.BOOL, "Einrichtung abgeschlossen", intern=True
+        "allgemein.einrichtung_abgeschlossen",
+        Typ.BOOL,
+        gettext_lazy("Einrichtung abgeschlossen"),
+        intern=True,
     )

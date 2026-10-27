@@ -6,6 +6,7 @@ vollen Seite. Fachliche Fehler (``AblaufFehler``) erscheinen als Hinweis, nie al
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.konten.zugriff import aktueller_elternteil, aktuelles_kind, nur_eltern, nur_kind
@@ -57,11 +58,11 @@ def kind_waehlen(request, pk):
     def aktion(instanz, kind):
         ergebnis["status"] = services.interesse_zeigen(instanz, kind).status
 
-    antwort = _kind_aktion(request, pk, aktion, "Die Aufgabe gehört dir. Los geht's!")
+    antwort = _kind_aktion(request, pk, aktion, _("Die Aufgabe gehört dir. Los geht's!"))
     if ergebnis.get("status") == "konflikt":
         return _kind_seite(
             request,
-            hinweis="Auch andere wollen diese Aufgabe. Mama oder Papa entscheiden.",
+            hinweis=_("Auch andere wollen diese Aufgabe. Mama oder Papa entscheiden."),
             art="info",
         )
     return antwort
@@ -71,7 +72,7 @@ def kind_waehlen(request, pk):
 @require_POST
 def kind_zurueckgeben(request, pk):
     return _kind_aktion(
-        request, pk, services.zurueckgeben, "Zurückgegeben. Keine Sorge, das ist okay."
+        request, pk, services.zurueckgeben, _("Zurückgegeben. Keine Sorge, das ist okay.")
     )
 
 
@@ -86,9 +87,9 @@ def kind_melden(request, pk):
 
     instanz = get_object_or_404(AufgabenInstanz, pk=pk)
     erfolg = (
-        "Super! Die Punkte sind schon gutgeschrieben."
+        _("Super! Die Punkte sind schon gutgeschrieben.")
         if instanz.freigabeart_snapshot == Freigabeart.VERTRAUEN
-        else "Gemeldet! Mama oder Papa schauen bald drauf."
+        else _("Gemeldet! Mama oder Papa schauen bald drauf.")
     )
     return _kind_aktion(request, pk, aktion, erfolg)
 
@@ -102,7 +103,7 @@ def kind_antworten(request, pk):
     def aktion(instanz, kind):
         services.rueckfrage_beantworten(instanz, kind, text=text, fotos=fotos)
 
-    return _kind_aktion(request, pk, aktion, "Antwort gesendet!")
+    return _kind_aktion(request, pk, aktion, _("Antwort gesendet!"))
 
 
 # --- Eltern -----------------------------------------------------------------------------------
@@ -129,7 +130,7 @@ def _zahl(wert):
     try:
         return int(wert)
     except ValueError:
-        raise services.AblaufFehler("Sonderpunkte: bitte eine ganze Zahl.") from None
+        raise services.AblaufFehler(_("Sonderpunkte: bitte eine ganze Zahl.")) from None
 
 
 def _eltern_aktion(request, pk, aktion, erfolg):
@@ -148,10 +149,10 @@ def eltern_zuteilen(request, pk, kind_id):
     def aktion(instanz, von, daten):
         interesse = instanz.interessen.filter(kind_id=kind_id).select_related("kind").first()
         if interesse is None:
-            raise services.AblaufFehler("Dieses Kind hat die Aufgabe nicht gewählt.")
+            raise services.AblaufFehler(_("Dieses Kind hat die Aufgabe nicht gewählt."))
         services.zuteilen(instanz, interesse.kind, von=von)
 
-    return _eltern_aktion(request, pk, aktion, "Zugeteilt.")
+    return _eltern_aktion(request, pk, aktion, _("Zugeteilt."))
 
 
 @nur_eltern
@@ -161,7 +162,7 @@ def eltern_loesen(request, pk):
         request,
         pk,
         lambda instanz, von, daten: services.reservierung_loesen(instanz, von=von),
-        "Reservierung gelöst, die Aufgabe ist wieder frei.",
+        _("Reservierung gelöst, die Aufgabe ist wieder frei."),
     )
 
 
@@ -176,7 +177,7 @@ def eltern_bestaetigen(request, pk):
             begruendung=daten.get("begruendung", ""),
         )
 
-    return _eltern_aktion(request, pk, aktion, "Bestätigt, Punkte gebucht.")
+    return _eltern_aktion(request, pk, aktion, _("Bestätigt, Punkte gebucht."))
 
 
 @nur_eltern
@@ -185,7 +186,7 @@ def eltern_ablehnen(request, pk):
     def aktion(instanz, von, daten):
         services.ablehnen(instanz, von=von, begruendung=daten.get("begruendung", ""))
 
-    return _eltern_aktion(request, pk, aktion, "Abgelehnt.")
+    return _eltern_aktion(request, pk, aktion, _("Abgelehnt."))
 
 
 @nur_eltern
@@ -194,7 +195,7 @@ def eltern_rueckfrage(request, pk):
     def aktion(instanz, von, daten):
         services.rueckfrage_stellen(instanz, von=von, text=daten.get("frage", ""))
 
-    return _eltern_aktion(request, pk, aktion, "Rückfrage gesendet.")
+    return _eltern_aktion(request, pk, aktion, _("Rückfrage gesendet."))
 
 
 @nur_eltern
@@ -204,7 +205,7 @@ def eltern_sonderpunkte(request, pk):
         punkte = _zahl(daten.get("sonderpunkte"))
         services.sonderpunkte_vergeben(instanz, punkte, daten.get("begruendung", ""), von=von)
 
-    return _eltern_aktion(request, pk, aktion, "Sonderpunkte vergeben.")
+    return _eltern_aktion(request, pk, aktion, _("Sonderpunkte vergeben."))
 
 
 @nur_eltern
@@ -213,7 +214,7 @@ def eltern_korrigieren(request, pk):
     def aktion(instanz, von, daten):
         services.korrigieren(instanz, von=von, begruendung=daten.get("begruendung", ""))
 
-    return _eltern_aktion(request, pk, aktion, "Korrigiert, Punkte zurückgebucht.")
+    return _eltern_aktion(request, pk, aktion, _("Korrigiert, Punkte zurückgebucht."))
 
 
 # --- Vertrauen prüfen (Dashboard-Karte "Erledigt – kurz prüfen") -----------------------------------
@@ -240,7 +241,7 @@ def _pruefen_aktion(request, pk, aktion, erfolg):
 @require_POST
 def pruefen_passt(request, pk):
     return _pruefen_aktion(
-        request, pk, lambda i, von, _g: services.passt(i, von=von), "Passt, danke."
+        request, pk, lambda i, von, _g: services.passt(i, von=von), _("Passt, danke.")
     )
 
 
@@ -248,7 +249,7 @@ def pruefen_passt(request, pk):
 @require_POST
 def pruefen_alle(request):
     anzahl = services.alle_passen(von=aktueller_elternteil(request))
-    return _pruefen_antwort(request, f"{anzahl} als „passt“ markiert.")
+    return _pruefen_antwort(request, _("%(n)s als „passt“ markiert.") % {"n": anzahl})
 
 
 @nur_eltern
@@ -258,7 +259,7 @@ def pruefen_nachbessern(request, pk):
         request,
         pk,
         lambda i, von, grund: services.korrigieren(i, von=von, begruendung=grund, nachbessern=True),
-        "Zurück ans Kind: Punkte abgezogen, es soll nachbessern.",
+        _("Zurück ans Kind: Punkte abgezogen, es soll nachbessern."),
     )
 
 
@@ -269,5 +270,5 @@ def pruefen_ablehnen(request, pk):
         request,
         pk,
         lambda i, von, grund: services.korrigieren(i, von=von, begruendung=grund),
-        "Abgelehnt, Punkte zurückgebucht.",
+        _("Abgelehnt, Punkte zurückgebucht."),
     )

@@ -1,31 +1,31 @@
 {% extends "basis/kind.html" %}
-{% load static avatar_tags %}
-{% block titel %}Ruhmeshalle{% endblock %}
+{% load i18n static avatar_tags %}
+{% block titel %}{% translate "Ruhmeshalle" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}"><link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">{% endblock %}
 {% block kopf_rechts %}
   {% url "konten:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Start" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
 {% endblock %}
 {% block inhalt %}
-  <h1>Meine Ruhmeshalle</h1>
+  <h1>{% translate "Meine Ruhmeshalle" %}</h1>
   {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung icon="check" %}{% endif %}
   {% if stand.bereit %}
     <section class="karte halle-aufruf" data-selten="{{ stand.rang_selten }}"><div class="karte__inhalt stapel">
-      <h2>Dein Held ist fertig ausgebaut!</h2>
-      <p>Stell ihn für immer in die Ruhmeshalle und starte mit einem neuen Thema. Du verlierst nichts.</p>
+      <h2>{% translate "Dein Held ist fertig ausgebaut!" %}</h2>
+      <p>{% translate "Stell ihn für immer in die Ruhmeshalle und starte mit einem neuen Thema. Du verlierst nichts." %}</p>
       {% url "avatar:halle_stellen" as stellen_url %}
-      {% include "komponenten/button.html" with href=stellen_url gross=True icon="stern" text="In die Ruhmeshalle stellen" %}
+      {% include "komponenten/button.html" with href=stellen_url gross=True icon="stern" text=_("In die Ruhmeshalle stellen") %}
     </div></section>
   {% elif stand.ausgebaut and stand.bau_laeuft %}
     <section class="karte halle-aufruf" data-selten="{{ stand.rang_selten }}"><div class="karte__inhalt stapel">
-      <h2>Dein Held ist fast so weit!</h2>
+      <h2>{% translate "Dein Held ist fast so weit!" %}</h2>
       <p>{{ stand.bau_hinweis }}</p>
     </div></section>
   {% endif %}
   <div class="halle-raster">
     {% for e in eintraege %}{% include "avatar/_held.html" %}
     {% empty %}
-      {% include "komponenten/leer.html" with titel="Noch kein Held" text="Baue alle Slots deines Avatars aus. Dann darf er hier einziehen." icon="pokal" %}
+      {% include "komponenten/leer.html" with titel=_("Noch kein Held") text=_("Baue alle Slots deines Avatars aus. Dann darf er hier einziehen.") icon="pokal" %}
     {% endfor %}
   </div>
 {% endblock %}

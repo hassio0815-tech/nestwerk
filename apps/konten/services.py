@@ -4,15 +4,18 @@ gilt der angemeldete Benutzer der Anfrage (``kern.audit``-Kontext)."""
 
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.sessions.backends.db import SessionStore
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from apps.kern import audit
 
-from . import sperre, wappen as wappen_katalog
+from . import sperre
+from . import wappen as wappen_katalog
 from .backends import PIN_MUSTER
 from .models import (
     AnmeldeVersuch,
@@ -31,7 +34,7 @@ VERSUCHE_AUFBEWAHRUNG = timedelta(days=30)
 
 def _pin_pruefen(pin):
     if not PIN_MUSTER.match(str(pin)):
-        raise ValidationError("Die PIN besteht aus genau 4 Ziffern.")
+        raise ValidationError(_("Die PIN besteht aus genau 4 Ziffern."))
 
 
 def _freies_wappen(ausser=None):
@@ -41,8 +44,16 @@ def _freies_wappen(ausser=None):
     return wappen_katalog.zufaellig(belegt.values_list("wappen", flat=True))
 
 
-def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0, wappen="",
-                  wappen_rolle="", wappen_rolle_eigen=""):
+def eltern_anlegen(
+    anzeigename,
+    *,
+    rolle_label="andere",
+    email="",
+    reihenfolge=0,
+    wappen="",
+    wappen_rolle="",
+    wappen_rolle_eigen="",
+):
     """Ohne ``wappen`` wird zufällig eines vergeben (möglichst anders als bei den anderen Eltern)."""
     with transaction.atomic():
         benutzer = Benutzer(
@@ -61,8 +72,16 @@ def eltern_anlegen(anzeigename, *, rolle_label="andere", email="", reihenfolge=0
     return benutzer
 
 
-def eltern_aendern(benutzer, anzeigename, *, rolle_label, email, wappen=None,
-                  wappen_rolle=None, wappen_rolle_eigen=None):
+def eltern_aendern(
+    benutzer,
+    anzeigename,
+    *,
+    rolle_label,
+    email,
+    wappen=None,
+    wappen_rolle=None,
+    wappen_rolle_eigen=None,
+):
     """Ändert Name, Rolle (Mama/Papa/andere), E-Mail und optional das Wappen eines Elternteils."""
     with transaction.atomic():
         benutzer.anzeigename = anzeigename
@@ -91,7 +110,7 @@ def wappen_setzen(benutzer, schluessel=None, rolle=None, eigen=None):
     felder = []
     if schluessel is not None:
         if schluessel not in wappen_katalog.NACH_SCHLUESSEL:
-            raise ValidationError("Unbekanntes Wappen.")
+            raise ValidationError(_("Unbekanntes Wappen."))
         benutzer.wappen = schluessel
         felder.append("wappen")
     if rolle is not None:
@@ -105,6 +124,15 @@ def wappen_setzen(benutzer, schluessel=None, rolle=None, eigen=None):
     audit.protokollieren(
         "konten.wappen_gesetzt", objekt=benutzer, details={"wappen": benutzer.wappen}
     )
+
+
+def sprache_setzen(benutzer, sprache):
+    """Eigene Sprache (``""`` = automatisch, sonst ein Code aus ``settings.LANGUAGES``)."""
+    if sprache not in {""} | {code for code, _name in settings.LANGUAGES}:
+        raise ValidationError(_("Unbekannte Sprache."))
+    benutzer.sprache = sprache
+    benutzer.save(update_fields=["sprache"])
+    audit.protokollieren("konten.sprache_gesetzt", objekt=benutzer, details={"sprache": sprache})
 
 
 def kind_umbenennen(kind, anzeigename):
@@ -167,7 +195,9 @@ def eltern_passwort_setzen(passwort, *, von=audit.AKTUELL):
     """Setzt das gemeinsame Eltern-Passwort (Argon2). Das Passwort selbst wird nie
     protokolliert."""
     if len(passwort) < PASSWORT_MINDESTLAENGE:
-        raise ValidationError(f"Das Passwort braucht mindestens {PASSWORT_MINDESTLAENGE} Zeichen.")
+        raise ValidationError(
+            _("Das Passwort braucht mindestens %(n)s Zeichen.") % {"n": PASSWORT_MINDESTLAENGE}
+        )
     akteur = audit.aktueller_akteur() if von is audit.AKTUELL else von
     with transaction.atomic():
         ElternZugang.objects.update_or_create(
@@ -191,9 +221,9 @@ def benutzer_deaktivieren(benutzer, *, von=audit.AKTUELL):
 
 def geraet_registrieren(bezeichnung, typ, *, registriert_von):
     if typ not in GeraeteTyp.values:
-        raise ValidationError("Unbekannter Gerätetyp.")
+        raise ValidationError(_("Unbekannter Gerätetyp."))
     if registriert_von.rolle != Rolle.ELTERN:
-        raise ValidationError("Nur Eltern registrieren Geräte.")
+        raise ValidationError(_("Nur Eltern registrieren Geräte."))
     with transaction.atomic():
         geraet = Geraet(bezeichnung=bezeichnung.strip(), typ=typ, registriert_von=registriert_von)
         geraet.full_clean()

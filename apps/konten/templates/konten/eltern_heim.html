@@ -1,26 +1,27 @@
 {% extends "basis/eltern.html" %}
+{% load i18n %}
 {% comment %}Platzhalter, bis das Eltern-Dashboard (oberflaeche) ihn ersetzt.{% endcomment %}
-{% block titel %}Eltern{% endblock %}
+{% block titel %}{% translate "Eltern" %}{% endblock %}
 {% block kopf_rechts %}
   {% url "benachrichtigung:liste" as benachrichtigungen_url %}
-  {% if benachrichtigungen_url %}{% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text="Benachrichtigungen" %}{% endif %}
+  {% if benachrichtigungen_url %}{% include "komponenten/button.html" with href=benachrichtigungen_url variante="geist" klein=True icon="glocke" text=_("Benachrichtigungen") %}{% endif %}
   {% url "aufgaben:entscheidungen" as meldungen_url %}
-  {% if meldungen_url %}{% include "komponenten/button.html" with href=meldungen_url variante="geist" klein=True icon="check" text="Meldungen" %}{% endif %}
+  {% if meldungen_url %}{% include "komponenten/button.html" with href=meldungen_url variante="geist" klein=True icon="check" text=_("Meldungen") %}{% endif %}
   {% url "konten:geraete" as geraete_url %}
-  {% include "komponenten/button.html" with href=geraete_url variante="geist" klein=True icon="einstellungen" text="Geräte" %}
+  {% include "komponenten/button.html" with href=geraete_url variante="geist" klein=True icon="einstellungen" text=_("Geräte") %}
   <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Abmelden" %}
+    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
   </form>
 {% endblock %}
 {% block inhalt %}
-  <h1>{% if request.user.wappen_info and request.user.rolle_anzeige %}Hallo <span class="wappen-rolle-gross">{{ request.user.wappen_info.emoji }} {{ request.user.rolle_anzeige }}</span>!<br><span class="wappen-zeile">{{ request.user.wappen_info.titel }}</span>{% else %}Hallo {{ request.user.anzeigename }}!{% if request.user.wappen_info %} <span class="wappen-zeile">{{ request.user.wappen_info.emoji }} {{ request.user.wappen_info.titel }}</span>{% endif %}{% endif %}</h1>
+  <h1>{% if request.user.wappen_info and request.user.rolle_anzeige %}{% translate "Hallo" %} <span class="wappen-rolle-gross">{{ request.user.wappen_info.emoji }} {{ request.user.rolle_anzeige }}</span>!<br><span class="wappen-zeile">{{ request.user.wappen_info.titel }}</span>{% else %}{% blocktranslate with name=request.user.anzeigename %}Hallo {{ name }}!{% endblocktranslate %}{% if request.user.wappen_info %} <span class="wappen-zeile">{{ request.user.wappen_info.emoji }} {{ request.user.wappen_info.titel }}</span>{% endif %}{% endif %}</h1>
   {% if gesperrte_kinder %}
     <section class="karte"><div class="karte__inhalt stapel">
-      <h2>Gesperrte PINs</h2>
+      <h2>{% translate "Gesperrte PINs" %}</h2>
       {% for k in gesperrte_kinder %}
         <form method="post" action="{% url 'konten:kind_entsperren' k.pk %}" class="reihe">{% csrf_token %}
           <span>{{ k.anzeigename }}</span>
-          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="schloss" text="Entsperren" %}
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="schloss" text=_("Entsperren") %}
         </form>
       {% endfor %}
     </div></section>

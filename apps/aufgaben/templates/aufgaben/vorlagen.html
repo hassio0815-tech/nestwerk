@@ -1,33 +1,34 @@
 {% extends "aufgaben/basis.html" %}
-{% block titel %}Bibliothek{% endblock %}
+{% load i18n sprache %}
+{% block titel %}{% translate "Bibliothek" %}{% endblock %}
 {% block seite %}
   <div class="zeile">
-    <h1>Aufgabenbibliothek</h1>
+    <h1>{% translate "Aufgabenbibliothek" %}</h1>
     {% url "aufgaben:vorlage_neu" as neu_url %}
-    <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>Neue Vorlage</span></a>
+    <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neue Vorlage" %}</span></a>
   </div>
   <div id="formular"></div>
   <div class="stapel">
     {% for v in vorlagen %}
       <article class="karte" id="vorlage-{{ v.pk }}"><div class="karte__inhalt zeile">
         <div class="zeile__text stapel">
-          <strong>{{ v.titel }}</strong>
+          <strong>{{ v.titel|uebersetzt }}</strong>
           {% if v.wiederholung %}<span class="zeile__plan">{{ v.plan.beschreiben }}</span>{% endif %}
           <span class="reihe">
-            {% if v.kategorie %}{% include "komponenten/chip.html" with text=v.kategorie.name %}{% endif %}
+            {% if v.kategorie %}{% include "komponenten/chip.html" with text=v.kategorie.name|uebersetzt %}{% endif %}
             {% include "komponenten/chip.html" with text=v.get_freigabeart_display %}
-            {% if not v.aktiv %}{% include "komponenten/chip.html" with text="Inaktiv" %}{% endif %}
+            {% if not v.aktiv %}{% include "komponenten/chip.html" with text=_("Inaktiv") %}{% endif %}
           </span>
         </div>
         {% include "komponenten/punkte.html" with wert=v.punkte %}
         <div class="reihe">
           {% url "aufgaben:vorlage_als_aufgabe" v.pk as als_url %}
-          <a class="knopf knopf--primaer knopf--klein" href="{{ als_url }}" hx-get="{{ als_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>Als Aufgabe</span></a>
+          <a class="knopf knopf--primaer knopf--klein" href="{{ als_url }}" hx-get="{{ als_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Als Aufgabe" %}</span></a>
           {% url "aufgaben:vorlage_bearbeiten" v.pk as bearbeiten_url %}
-          <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>Bearbeiten</span></a>
-          <button class="knopf knopf--gefahr knopf--klein" hx-post="{% url 'aufgaben:vorlage_loeschen' v.pk %}" hx-target="#vorlage-{{ v.pk }}" hx-swap="outerHTML" hx-confirm="Vorlage „{{ v.titel }}“ löschen? Bereits angelegte Aufgaben bleiben erhalten.">Löschen</button>
+          <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>{% translate "Bearbeiten" %}</span></a>
+          <button class="knopf knopf--gefahr knopf--klein" hx-post="{% url 'aufgaben:vorlage_loeschen' v.pk %}" hx-target="#vorlage-{{ v.pk }}" hx-swap="outerHTML" hx-confirm="{% blocktranslate with titel=v.titel|uebersetzt %}Vorlage „{{ titel }}“ löschen? Bereits angelegte Aufgaben bleiben erhalten.{% endblocktranslate %}">{% translate "Löschen" %}</button>
         </div>
       </div></article>
-    {% empty %}{% include "komponenten/leer.html" with icon="stern" text="Noch keine Vorlagen." %}{% endfor %}
+    {% empty %}{% include "komponenten/leer.html" with icon="stern" text=_("Noch keine Vorlagen.") %}{% endfor %}
   </div>
 {% endblock %}

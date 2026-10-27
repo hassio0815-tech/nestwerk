@@ -1,5 +1,7 @@
 """Dashboard-Kacheln von sondertag (Registry in ``kern``): Kind (Fortschritt), Eltern."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern.registry import ELTERN, KIND, Kachel, kachel_registrieren
 
 MODUL = "sondertag"
@@ -26,7 +28,7 @@ def kacheln_registrieren():
         Kachel(
             "sondertag.kind",
             MODUL,
-            "Sondertag",
+            _("Sondertag"),
             "sondertag/kacheln/kind_sondertag.html",
             {KIND},
             _kind,
@@ -37,7 +39,7 @@ def kacheln_registrieren():
         Kachel(
             "sondertag.eltern",
             MODUL,
-            "Sondertage",
+            _("Sondertage"),
             "sondertag/kacheln/eltern_sondertag.html",
             {ELTERN},
             _eltern,

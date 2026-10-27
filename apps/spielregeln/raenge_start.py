@@ -1,13 +1,15 @@
 """Startwerte der Ränge (Entscheidung 14, SPEC 18.1; Bauzeiten O4 in Tagen x 24)."""
 
+from django.utils.translation import gettext_noop as _
+
 # (stufe, schluessel, name, xp_schwelle, min_aktive_wochen, mod_preis, bauzeit_tage, farbe)
 RAENGE = (
-    (1, "common", "Common", 0, 0, 40, 2, "#9ca3af"),
-    (2, "uncommon", "Uncommon", 2000, 20, 60, 3, "#34d670"),
-    (3, "rare", "Rare", 5000, 42, 90, 4, "#3b82f6"),
-    (4, "epic", "Epic", 9000, 64, 130, 5, "#a855f7"),
-    (5, "legendary", "Legendary", 14000, 90, 180, 7, "#facc15"),
-    (6, "godmode", "God Mode", 20000, 120, 250, 7, "#ff6bd6"),
+    (1, "common", _("Common"), 0, 0, 40, 2, "#9ca3af"),
+    (2, "uncommon", _("Uncommon"), 2000, 20, 60, 3, "#34d670"),
+    (3, "rare", _("Rare"), 5000, 42, 90, 4, "#3b82f6"),
+    (4, "epic", _("Epic"), 9000, 64, 130, 5, "#a855f7"),
+    (5, "legendary", _("Legendary"), 14000, 90, 180, 7, "#facc15"),
+    (6, "godmode", _("God Mode"), 20000, 120, 250, 7, "#ff6bd6"),
 )
 
 

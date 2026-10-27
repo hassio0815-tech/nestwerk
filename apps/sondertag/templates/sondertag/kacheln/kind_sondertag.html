@@ -1,25 +1,25 @@
-{% load static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+{% load i18n static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
 {% with f=k.f %}
 <article class="karte st-karte{% if f.art == 'einloesbar' %} st-karte--fest{% endif %}" data-sondertag="{{ f.art }}"><div class="karte__inhalt stapel">
   {% if f.art == "einloesbar" %}<span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>{% endif %}
-  <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} Sondertag</h2>
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} {% translate "Sondertag" %}</h2>
   {% if f.bestaetigt %}
-    <p class="st-bestaetigt" data-sondertag-bestaetigt>{% include "komponenten/icon.html" with name="check" %} Dein Wunsch ist angenommen!{% if f.bestaetigt.begleitung %} {{ f.bestaetigt.begleitung.name_mit_wappen }} plant den Tag mit dir.{% endif %}</p>
+    <p class="st-bestaetigt" data-sondertag-bestaetigt>{% include "komponenten/icon.html" with name="check" %} {% translate "Dein Wunsch ist angenommen!" %}{% if f.bestaetigt.begleitung %} {% blocktranslate with name=f.bestaetigt.begleitung.name_mit_wappen %}{{ name }} plant den Tag mit dir.{% endblocktranslate %}{% endif %}</p>
   {% endif %}
   <p class="st-status">{{ f.text }}</p>
   {% if f.art == "unterwegs" and f.mods_ziel %}
-    {% include "komponenten/fortschritt.html" with label="Gebaute Slots" wert=f.mods_ist max=f.mods_ziel selten="legendary" %}
+    {% include "komponenten/fortschritt.html" with label=_("Gebaute Slots") wert=f.mods_ist max=f.mods_ziel selten="legendary" %}
   {% endif %}
   {% if f.eintrag and k.wunsch_erlaubt %}
     {% url "sondertag:wunsch" as wunsch_url %}
     {% if f.eintrag.wunsch_offen %}
-      <p class="kachel__text">Dein Wunsch: „{{ f.eintrag.anspruch.wunsch }}“</p>
-      {% include "komponenten/button.html" with href=wunsch_url variante="geist" klein=True icon="geschenk" text="Wunsch ändern" %}
+      <p class="kachel__text">{% blocktranslate with wunsch=f.eintrag.anspruch.wunsch %}Dein Wunsch: „{{ wunsch }}“{% endblocktranslate %}</p>
+      {% include "komponenten/button.html" with href=wunsch_url variante="geist" klein=True icon="geschenk" text=_("Wunsch ändern") %}
     {% else %}
-      {% include "komponenten/button.html" with href=wunsch_url icon="geschenk" text="Wunsch abschicken" %}
+      {% include "komponenten/button.html" with href=wunsch_url icon="geschenk" text=_("Wunsch abschicken") %}
     {% endif %}
   {% endif %}
-  {% if f.warten %}<p class="kachel__text">{{ f.warten }} weitere{% if f.warten == 1 %}r Sondertag wartet{% else %} Sondertage warten{% endif %} schon auf dich.</p>{% endif %}
-  {% if f.weiter %}<p class="kachel__text">Danach: {{ f.weiter }}</p>{% endif %}
+  {% if f.warten %}<p class="kachel__text">{% blocktranslate count anzahl=f.warten %}{{ anzahl }} weiterer Sondertag wartet schon auf dich.{% plural %}{{ anzahl }} weitere Sondertage warten schon auf dich.{% endblocktranslate %}</p>{% endif %}
+  {% if f.weiter %}<p class="kachel__text">{% blocktranslate with weiter=f.weiter %}Danach: {{ weiter }}{% endblocktranslate %}</p>{% endif %}
 </div></article>
 {% endwith %}

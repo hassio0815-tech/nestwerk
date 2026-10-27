@@ -1,9 +1,9 @@
-{% load akzent_tags %}{% akzent_palette as farben %}{% url "oberflaeche:akzent" as akzent_url %}{% if akzent_url %}
+{% load i18n %}{% load akzent_tags %}{% akzent_palette as farben %}{% url "oberflaeche:akzent" as akzent_url %}{% if akzent_url %}
 <details class="akzent-pop">
-  <summary class="knopf knopf--geist knopf--klein" aria-label="Meine Farbe wählen"><span class="akzent-pop__punkt"></span></summary>
+  <summary class="knopf knopf--geist knopf--klein" aria-label="{% translate "Meine Farbe wählen" %}"><span class="akzent-pop__punkt"></span></summary>
   <form method="post" action="{{ akzent_url }}" class="akzent-pop__feld">{% csrf_token %}
     <input type="hidden" name="next" value="{{ request.path }}">
-    {% for name in farben %}<span data-akzent="{{ name }}"><button type="submit" name="akzent" value="{{ name }}" class="akzent-pop__farbe{% if name == akzent %} akzent-pop__farbe--aktiv{% endif %}" aria-label="Farbe {{ name }}"></button></span>{% endfor %}
+    {% for name in farben %}<span data-akzent="{{ name }}"><button type="submit" name="akzent" value="{{ name }}" class="akzent-pop__farbe{% if name == akzent %} akzent-pop__farbe--aktiv{% endif %}" aria-label="{% blocktranslate with farbe=name %}Farbe {{ farbe }}{% endblocktranslate %}"></button></span>{% endfor %}
   </form>
 </details>
 {% endif %}

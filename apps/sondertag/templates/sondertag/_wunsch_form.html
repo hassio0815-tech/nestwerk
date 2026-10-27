@@ -1,21 +1,21 @@
-<div class="st-wunsch" data-st-wunsch>
+{% load i18n %}<div class="st-wunsch" data-st-wunsch>
 {% if gesendet %}
-  <p class="st-wunsch__danke">{% include "komponenten/icon.html" with name="check" %} Dein Wunsch ist unterwegs zu Mama und Papa!</p>
-  {% if eintrag and not eintrag.einloesbar %}<p class="kachel__text">Einlösen könnt ihr ihn ab {{ einloesbar_ab }}.</p>{% endif %}
+  <p class="st-wunsch__danke">{% include "komponenten/icon.html" with name="check" %} {% translate "Dein Wunsch ist unterwegs zu Mama und Papa!" %}</p>
+  {% if eintrag and not eintrag.einloesbar %}<p class="kachel__text">{% blocktranslate with ab=einloesbar_ab %}Einlösen könnt ihr ihn ab {{ ab }}.{% endblocktranslate %}</p>{% endif %}
 {% elif not eintrag %}
-  <p class="kachel__text">Gerade ist kein Sondertag offen.</p>
+  <p class="kachel__text">{% translate "Gerade ist kein Sondertag offen." %}</p>
 {% elif not erlaubt %}
-  <p class="kachel__text">Wünschen kannst du dir etwas ab {{ einloesbar_ab }}.</p>
+  <p class="kachel__text">{% blocktranslate with ab=einloesbar_ab %}Wünschen kannst du dir etwas ab {{ ab }}.{% endblocktranslate %}</p>
 {% else %}
   <form method="post" action="{% url 'sondertag:wunsch' %}" class="stapel" hx-post="{% url 'sondertag:wunsch' %}" hx-target="closest [data-st-wunsch]" hx-swap="outerHTML">{% csrf_token %}
     {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
-    {% if not eintrag.einloesbar and not teil %}<p class="kachel__text">Einlösbar ab <strong>{{ einloesbar_ab }}</strong>. Deinen Wunsch kannst du schon jetzt schicken.</p>{% endif %}
+    {% if not eintrag.einloesbar and not teil %}<p class="kachel__text">{% blocktranslate with ab=einloesbar_ab %}Einlösbar ab <strong>{{ ab }}</strong>. Deinen Wunsch kannst du schon jetzt schicken.{% endblocktranslate %}</p>{% endif %}
     <div class="feld">
-      <label class="feld__label" for="st-wunsch-text">Was wünschst du dir für deinen Sondertag?</label>
-      <textarea class="feld__eingabe" id="st-wunsch-text" name="wunsch" rows="3" maxlength="{{ max_zeichen }}" required placeholder="Zum Beispiel: Kletterhalle und danach Pizza">{{ werte.wunsch }}</textarea>
+      <label class="feld__label" for="st-wunsch-text">{% translate "Was wünschst du dir für deinen Sondertag?" %}</label>
+      <textarea class="feld__eingabe" id="st-wunsch-text" name="wunsch" rows="3" maxlength="{{ max_zeichen }}" required placeholder="{% translate "Zum Beispiel: Kletterhalle und danach Pizza" %}">{{ werte.wunsch }}</textarea>
     </div>
     <fieldset class="st-begleitung">
-      <legend class="feld__label">Mit wem möchtest du den Tag verbringen?</legend>
+      <legend class="feld__label">{% translate "Mit wem möchtest du den Tag verbringen?" %}</legend>
       <div class="st-begleitung__wahl">
         {% for o in optionen %}
           <label class="st-begleitung__option"><input type="radio" name="begleitung" value="{{ o.wert }}"{% if werte.begleitung == o.wert %} checked{% endif %} required>
@@ -23,8 +23,8 @@
         {% endfor %}
       </div>
     </fieldset>
-    {% include "komponenten/button.html" with typ="submit" icon="geschenk" text="Wunsch abschicken" gross=True %}
-    {% if eintrag.wunsch_offen %}<p class="kachel__text">Du hast schon einen Wunsch geschickt. Du kannst ihn ändern, bis er angenommen ist.</p>{% endif %}
+    {% include "komponenten/button.html" with typ="submit" icon="geschenk" text=_("Wunsch abschicken") gross=True %}
+    {% if eintrag.wunsch_offen %}<p class="kachel__text">{% translate "Du hast schon einen Wunsch geschickt. Du kannst ihn ändern, bis er angenommen ist." %}</p>{% endif %}
   </form>
 {% endif %}
 </div>

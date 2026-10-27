@@ -1,14 +1,16 @@
 """Symbol-Schlüssel für Belohnungen (Icons aus templates/komponenten/_sprite.html)."""
 
+from django.utils.translation import gettext_lazy as _
+
 SYMBOLE = (
-    ("geschenk", "Geschenk"),
-    ("tv", "Fernseher"),
-    ("controller", "Spielcontroller"),
-    ("uhr", "Uhr"),
-    ("funke", "Funke"),
-    ("muenze", "Münze"),
-    ("stern", "Stern"),
-    ("pokal", "Pokal"),
-    ("sonne", "Sonne"),
-    ("mond", "Mond"),
+    ("geschenk", _("Geschenk")),
+    ("tv", _("Fernseher")),
+    ("controller", _("Spielcontroller")),
+    ("uhr", _("Uhr")),
+    ("funke", _("Funke")),
+    ("muenze", _("Münze")),
+    ("stern", _("Stern")),
+    ("pokal", _("Pokal")),
+    ("sonne", _("Sonne")),
+    ("mond", _("Mond")),
 )

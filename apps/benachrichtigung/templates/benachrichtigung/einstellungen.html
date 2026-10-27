@@ -1,8 +1,9 @@
 {% extends "basis/einstellungen.html" %}
-{% block titel %}Benachrichtigungen einstellen{% endblock %}
+{% load i18n %}
+{% block titel %}{% translate "Benachrichtigungen einstellen" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "benachrichtigung:liste" as liste_url %}
-  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
+  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text=_("Zurück") %}
 {% endblock %}
 {% block seite %}
   {% include "benachrichtigung/_einstellungen.html" %}

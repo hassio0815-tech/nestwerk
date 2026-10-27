@@ -10,18 +10,16 @@
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.utils.translation import gettext as _
 
 from apps.kern import audit
 
 from .ablauf import (
-    nachbessern_pruefen,
-    alle_passen,
-    passt,
-    zu_pruefen,
     Erledigung,
     LimitErreicht,
     NichtErlaubt,
     ablehnen,
+    alle_passen,
     bestaetigen,
     erledigt_melden,
     erledigung_hook_registrieren,
@@ -29,14 +27,17 @@ from .ablauf import (
     kind_darf_sehen,
     korrigieren,
     limit_stand,
+    nachbessern_pruefen,
     nachweis_loescher_registrieren,
     nachweis_speicher_registrieren,
+    passt,
     reservierung_loesen,
     rueckfrage_beantworten,
     rueckfrage_stellen,
     sonderpunkte_deckel,
     sonderpunkte_vergeben,
     storno_hook_registrieren,
+    zu_pruefen,
     zurueckgeben,
     zuteilen,
 )
@@ -138,9 +139,9 @@ def aufgabe_speichern(form, *, von) -> Aufgabe:
 def aufgabe_status_setzen(aufgabe, status, *, von) -> Aufgabe:
     """pausieren / fortsetzen / beenden. 'Beendet' ist endgültig; Punkte bleiben unberührt."""
     if status not in Status.values:
-        raise ValidationError("Unbekannter Status.")
+        raise ValidationError(_("Unbekannter Status."))
     if aufgabe.status == Status.BEENDET and status != Status.BEENDET:
-        raise ValidationError("Eine beendete Aufgabe kann nicht fortgesetzt werden.")
+        raise ValidationError(_("Eine beendete Aufgabe kann nicht fortgesetzt werden."))
     alt = aufgabe.status
     if alt == status:
         return aufgabe

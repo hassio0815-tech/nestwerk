@@ -1,4 +1,4 @@
-{% extends "basis/basis.html" %}{% load static %}
+{% extends "basis/basis.html" %}{% load i18n %}{% load static %}
 {% comment %}Tablet-Startseite (Flur-Tablet, Kiosk): dunkel, Avatar-Kacheln als Platzhalter.
   Ohne Anmeldung nur Lesen. Blöcke familienziel_abschnitt, avatare, ranking werden später gefüllt.{% endcomment %}
 {% block layout %}tablet{% endblock %}
@@ -15,7 +15,7 @@
   {% block familienziel_abschnitt %}{% endblock %}
 
   <section class="tablet-abschnitt" aria-labelledby="tablet-avatare">
-    <h2 id="tablet-avatare" class="tablet-abschnitt__titel">Wer bist du?</h2>
+    <h2 id="tablet-avatare" class="tablet-abschnitt__titel">{% translate "Wer bist du?" %}</h2>
     <div class="avatar-raster">
       {% block avatare %}
         {% include "komponenten/avatar_kachel.html" with name="Kind 1" initial="1" href="#" %}
@@ -26,9 +26,9 @@
   </section>
 
   <section class="tablet-abschnitt" aria-labelledby="tablet-ranking">
-    <h2 id="tablet-ranking" class="tablet-abschnitt__titel">Ranking</h2>
+    <h2 id="tablet-ranking" class="tablet-abschnitt__titel">{% translate "Ranking" %}</h2>
     {% block ranking %}
-      {% include "komponenten/leer.html" with titel="Noch kein Ranking" text="Sobald die erste Woche läuft, erscheint hier die Familie." icon="pokal" %}
+      {% include "komponenten/leer.html" with titel=_("Noch kein Ranking") text=_("Sobald die erste Woche läuft, erscheint hier die Familie.") icon="pokal" %}
     {% endblock %}
   </section>
 {% endblock %}

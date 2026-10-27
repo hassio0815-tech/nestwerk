@@ -3,21 +3,26 @@ Definitionen der Registry (``kern.einstellungen``). Neue Einstellungen erscheine
 Änderung hier. Gespeichert wird über ``einstellungen.setzen`` (Validierung + Audit)."""
 
 from django.db import transaction
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy, pgettext_lazy
 
 from apps.kern import einstellungen
 from apps.kern.einstellungen import Typ
 
 MODUL_TITEL = {
-    "allgemein": "Allgemein",
-    "konten": "Anmeldung und Geräte",
-    "aufgaben": "Aufgaben",
-    "belohnung": "Belohnungen",
-    "benachrichtigung": "Benachrichtigungen",
-    "einrichtung": "Einrichtung",
-    "oberflaeche": "Oberfläche und Tablet",
-    "punkte": "Punkte",
-    "ereignisse": "Ereignisse und Betrieb",
-    "spielregeln": "Spielregeln",
+    "allgemein": gettext_lazy("Allgemein"),
+    "konten": gettext_lazy("Anmeldung und Geräte"),
+    "aufgaben": gettext_lazy("Aufgaben"),
+    "belohnung": gettext_lazy("Belohnungen"),
+    "benachrichtigung": gettext_lazy("Benachrichtigungen"),
+    "einrichtung": gettext_lazy("Einrichtung"),
+    "oberflaeche": gettext_lazy("Oberfläche und Tablet"),
+    "punkte": gettext_lazy("Punkte"),
+    "ereignisse": gettext_lazy("Ereignisse und Betrieb"),
+    "spielregeln": gettext_lazy("Spielregeln"),
+    "avatar": gettext_lazy("Avatar"),
+    "familienziel": gettext_lazy("Familienziel"),
+    "sondertag": pgettext_lazy("Einstellungen-Abschnitt", "Sondertage"),
 }
 ZUERST = ("allgemein",)
 
@@ -115,7 +120,7 @@ def _einzeln(typ, text):
         try:
             return int(text.strip())
         except ValueError:
-            raise FeldFehler("Bitte eine ganze Zahl eingeben.") from None
+            raise FeldFehler(_("Bitte eine ganze Zahl eingeben.")) from None
     return text.strip() if typ in (Typ.DATUM, Typ.UHRZEIT, Typ.ZEITZONE) else text
 
 
@@ -178,4 +183,4 @@ def _meldung(exc):
     if "(" in text and text.endswith(")"):
         grund = text[text.rindex("(") + 1 : -1]
         return grund[:1].upper() + grund[1:] + "."
-    return "Ungültiger Wert."
+    return _("Ungültiger Wert.")

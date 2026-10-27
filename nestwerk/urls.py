@@ -4,6 +4,7 @@ from nestwerk.gesundheit import gesundheit
 
 urlpatterns = [
     path("gesundheit/", gesundheit, name="gesundheit"),
+    path("i18n/", include("django.conf.urls.i18n")),
     path("", include("apps.einrichtung.urls")),
     path("", include("apps.oberflaeche.urls")),
     path("", include("apps.konten.urls")),

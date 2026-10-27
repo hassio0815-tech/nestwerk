@@ -406,6 +406,26 @@
 
 .nw-leise { color: var(--text-leise); }
 
+/* Begrüßung im Sprachwechsel (static/js/huelle.js): kurzes Überblenden; ohne Bewegung hart. */
+.nw-begruessung[data-gruss-wechsel] { transition: opacity 0.4s ease; }
+.nw-begruessung.ist-ausgeblendet { opacity: 0; }
+
+/* Sprachwahl: DE/EN oben rechts auf der Bühne; Segment-Knöpfe auch in den Einstellungen */
+.nw-sprache-wahl { position: absolute; top: 0; right: 0; z-index: 1; }
+.nw-segment button {
+  min-height: var(--tap-min);
+  padding: 0 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text-leise);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.nw-segment button.ist-aktiv { color: var(--akzent-text); background: var(--akzent); }
+.nw-segment button:focus-visible { outline: 3px solid var(--akzent); outline-offset: 2px; }
+
 /* Splash-Overlay: blendet sich nach ~2 s aus. Ohne Bewegung (reduced motion) entfällt es. */
 .nw-splash {
   position: fixed;
@@ -442,6 +462,7 @@
   .nw-splash { display: none; }
   .nw-splash .nw-logo,
   .nw-splash .nw-lauf::after { animation: none; }
+  .nw-begruessung[data-gruss-wechsel] { transition: none; }
 }
 
 /* --- Profil-Kacheln --------------------------------------------------------------------------- */

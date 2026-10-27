@@ -1,4 +1,4 @@
-<button type="button" class="knopf knopf--geist knopf--klein" data-modus-umschalter>
-  <span class="umschalter__auf-hell">{% include "komponenten/icon.html" with name="sonne" %}<span>Hell</span></span>
-  <span class="umschalter__auf-dunkel">{% include "komponenten/icon.html" with name="mond" %}<span>Dunkel</span></span>
+{% load i18n %}<button type="button" class="knopf knopf--geist knopf--klein" data-modus-umschalter>
+  <span class="umschalter__auf-hell">{% include "komponenten/icon.html" with name="sonne" %}<span>{% translate "Hell" %}</span></span>
+  <span class="umschalter__auf-dunkel">{% include "komponenten/icon.html" with name="mond" %}<span>{% translate "Dunkel" %}</span></span>
 </button>

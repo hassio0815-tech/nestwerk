@@ -1,53 +1,53 @@
 {% extends "basis/einstellungen.html" %}
-{% load static %}
-{% block titel %}Sondertage{% endblock %}
+{% load i18n static sprache %}
+{% block titel %}{% translate "Sondertage" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
 {% endblock %}
 {% block seite %}
-  <h1>Sondertage</h1>
-  <p>Höchstens {{ regeln.max_pro_jahr }} Sondertage je Kind und App-Jahr (ab {{ regeln.go_live|date:"d.m.Y" }}), mindestens {{ regeln.abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.</p>
+  <h1>{% translate "Sondertage" %}</h1>
+  <p>{% blocktranslate with max=regeln.max_pro_jahr start=regeln.go_live|date:"SHORT_DATE_FORMAT" abstand=regeln.abstand %}Höchstens {{ max }} Sondertage je Kind und App-Jahr (ab {{ start }}), mindestens {{ abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.{% endblocktranslate %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Offene Wünsche</h2>
+    <h2>{% translate "Offene Wünsche" %}</h2>
     {% for e in wuensche %}
       <div class="st-wunschkarte" data-st-wunsch="{{ e.anspruch.pk }}">
-        <p><strong>{{ e.anspruch.kind.anzeigename }}</strong> wünscht sich: „{{ e.anspruch.wunsch }}“</p>
-        <p class="kachel__text">Begleitung: {{ e.anspruch.get_begleitung_wunsch_display }} · gesendet {{ e.anspruch.wunsch_am|date:"d.m.Y" }} · {{ e.anspruch.titel }}</p>
+        <p>{% blocktranslate with kind=e.anspruch.kind.anzeigename wunsch=e.anspruch.wunsch %}<strong>{{ kind }}</strong> wünscht sich: „{{ wunsch }}“{% endblocktranslate %}</p>
+        <p class="kachel__text">{% blocktranslate with begleitung=e.anspruch.get_begleitung_wunsch_display am=e.anspruch.wunsch_am|date:"SHORT_DATE_FORMAT" titel=e.anspruch.titel|uebersetzt %}Begleitung: {{ begleitung }} · gesendet {{ am }} · {{ titel }}{% endblocktranslate %}</p>
         <form method="post" action="{% url 'sondertag:annehmen' e.anspruch.pk %}" class="reihe">{% csrf_token %}
           {% if e.einloesbar %}
-            {% include "komponenten/button.html" with typ="submit" icon="check" text="Wunsch angenommen" %}
-            <span class="kachel__text">Wer annimmt, begleitet. Übergeben geht danach.</span>
+            {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Wunsch angenommen") %}
+            <span class="kachel__text">{% translate "Wer annimmt, begleitet. Übergeben geht danach." %}</span>
           {% else %}
-            {% include "komponenten/button.html" with typ="submit" icon="schloss" text="Wunsch angenommen" disabled=True %}
-            <span class="kachel__text" data-st-ab>Annehmen ab {{ e.einloesbar_ab|date:"d.m.Y" }} (noch {{ e.tage_bis }} Tage).</span>
+            {% include "komponenten/button.html" with typ="submit" icon="schloss" text=_("Wunsch angenommen") disabled=True %}
+            <span class="kachel__text" data-st-ab>{% blocktranslate with ab=e.einloesbar_ab|date:"SHORT_DATE_FORMAT" tage=e.tage_bis %}Annehmen ab {{ ab }} (noch {{ tage }} Tage).{% endblocktranslate %}</span>
           {% endif %}
         </form>
       </div>
     {% empty %}
-      <p class="kachel__text">Keine offenen Wünsche.</p>
+      <p class="kachel__text">{% translate "Keine offenen Wünsche." %}</p>
     {% endfor %}
   </div></section>
 
   {% if angenommen %}
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Angenommen, noch nicht erledigt</h2>
+    <h2>{% translate "Angenommen, noch nicht erledigt" %}</h2>
     {% for a in angenommen %}
       <div class="st-wunschkarte" data-st-angenommen="{{ a.pk }}">
-        <p><strong>{{ a.kind.anzeigename }}</strong>: „{{ a.wunsch }}“ · angenommen {{ a.annahme_datum|date:"d.m.Y" }} von {{ a.angenommen_von.anzeigename }}</p>
-        <p>Begleitung: <strong>{{ a.begleitung.anzeigename|default:"offen" }}</strong></p>
+        <p>{% blocktranslate with kind=a.kind.anzeigename wunsch=a.wunsch am=a.annahme_datum|date:"SHORT_DATE_FORMAT" von=a.angenommen_von.anzeigename %}<strong>{{ kind }}</strong>: „{{ wunsch }}“ · angenommen {{ am }} von {{ von }}{% endblocktranslate %}</p>
+        <p>{% translate "Begleitung:" %} <strong>{{ a.begleitung.anzeigename|default:_("offen") }}</strong></p>
         <div class="reihe">
           <form method="post" action="{% url 'sondertag:uebergeben' a.pk %}" class="reihe">{% csrf_token %}
-            <label class="feld"><span class="feld__label">Übergeben an</span>
+            <label class="feld"><span class="feld__label">{% translate "Übergeben an" %}</span>
               <select class="nw-eingabe" name="an">{% for e in eltern %}{% if e.pk != a.begleitung_id %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endif %}{% endfor %}</select></label>
-            {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="person" text="Übergeben" %}
+            {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="person" text=_("Übergeben") %}
           </form>
           <form method="post" action="{% url 'sondertag:stattgefunden' a.pk %}" class="reihe">{% csrf_token %}
-            <label class="feld"><span class="feld__label">Tag war am</span><input class="nw-eingabe" type="date" name="datum"></label>
-            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text="Hat stattgefunden" %}
+            <label class="feld"><span class="feld__label">{% translate "Tag war am" %}</span><input class="nw-eingabe" type="date" name="datum"></label>
+            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text=_("Hat stattgefunden") %}
           </form>
         </div>
       </div>
@@ -59,51 +59,51 @@
   <section class="nw-karte" data-st-kind="{{ z.kind.pk }}"><div class="karte__inhalt stapel">
     <h2>{{ z.kind.anzeigename }}</h2>
     <dl class="st-fakten">
-      <div><dt>Letzter Sondertag</dt><dd>{% if z.letzter %}{{ z.letzter.annahme_datum|date:"d.m.Y" }}{% if z.letzter.begleitung %} mit {{ z.letzter.begleitung.anzeigename }}{% endif %}{% else %}noch keiner{% endif %}</dd></div>
-      <div><dt>Nächster möglicher</dt><dd>{% if z.warteschlange %}{% if z.warteschlange.0.einloesbar %}jetzt{% else %}{{ z.warteschlange.0.einloesbar_ab|date:"d.m.Y" }}{% endif %} (verdient){% else %}frühestens {{ z.naechster_moeglich|date:"d.m.Y" }}{% endif %}</dd></div>
-      <div><dt>Zuletzt mit</dt><dd>{% for m in z.mit_wem %}{{ m.eltern.anzeigename }}: {% if m.datum %}{{ m.datum|date:"d.m.Y" }}{% else %}noch nie{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</dd></div>
-      <div><dt>Fortschritt</dt><dd>{{ z.fortschritt.text }}{% if z.fortschritt.weiter %} Danach: {{ z.fortschritt.weiter }}{% endif %}</dd></div>
+      <div><dt>{% translate "Letzter Sondertag" %}</dt><dd>{% if z.letzter %}{{ z.letzter.annahme_datum|date:"SHORT_DATE_FORMAT" }}{% if z.letzter.begleitung %} {% blocktranslate with name=z.letzter.begleitung.anzeigename %}mit {{ name }}{% endblocktranslate %}{% endif %}{% else %}{% translate "noch keiner" %}{% endif %}</dd></div>
+      <div><dt>{% translate "Nächster möglicher" %}</dt><dd>{% if z.warteschlange %}{% if z.warteschlange.0.einloesbar %}{% translate "jetzt" %}{% else %}{{ z.warteschlange.0.einloesbar_ab|date:"SHORT_DATE_FORMAT" }}{% endif %} {% translate "(verdient)" %}{% else %}{% blocktranslate with datum=z.naechster_moeglich|date:"SHORT_DATE_FORMAT" %}frühestens {{ datum }}{% endblocktranslate %}{% endif %}</dd></div>
+      <div><dt>{% translate "Zuletzt mit" %}</dt><dd>{% for m in z.mit_wem %}{{ m.eltern.anzeigename }}: {% if m.datum %}{{ m.datum|date:"SHORT_DATE_FORMAT" }}{% else %}{% translate "noch nie" %}{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</dd></div>
+      <div><dt>{% translate "Fortschritt" %}</dt><dd>{{ z.fortschritt.text }}{% if z.fortschritt.weiter %} {% blocktranslate with weiter=z.fortschritt.weiter %}Danach: {{ weiter }}{% endblocktranslate %}{% endif %}</dd></div>
     </dl>
     {% if z.warteschlange %}
-      <h3>Verdient (Warteschlange)</h3>
+      <h3>{% translate "Verdient (Warteschlange)" %}</h3>
       <ol class="st-liste">
         {% for e in z.warteschlange %}
-          <li data-st-anspruch="{{ e.anspruch.pk }}">{{ e.anspruch.titel }} · verdient {{ e.anspruch.verdient_am|date:"d.m.Y" }} · {% if e.einloesbar %}<strong>einlösbar</strong>{% else %}einlösbar ab {{ e.einloesbar_ab|date:"d.m.Y" }}{% endif %}{% if e.wunsch_offen %} · Wunsch offen{% endif %}</li>
+          <li data-st-anspruch="{{ e.anspruch.pk }}">{% blocktranslate with titel=e.anspruch.titel|uebersetzt am=e.anspruch.verdient_am|date:"SHORT_DATE_FORMAT" %}{{ titel }} · verdient {{ am }}{% endblocktranslate %} · {% if e.einloesbar %}<strong>{% translate "einlösbar" %}</strong>{% else %}{% blocktranslate with ab=e.einloesbar_ab|date:"SHORT_DATE_FORMAT" %}einlösbar ab {{ ab }}{% endblocktranslate %}{% endif %}{% if e.wunsch_offen %} · {% translate "Wunsch offen" %}{% endif %}</li>
         {% endfor %}
       </ol>
     {% endif %}
-    <h3>Historie</h3>
+    <h3>{% translate "Historie" %}</h3>
     {% for h in z.historie %}
       <form method="post" action="{% url 'sondertag:aendern' h.pk %}" class="zeile st-historie" data-st-historie="{{ h.pk }}">{% csrf_token %}
-        <label class="feld"><span class="feld__label">Bezugsdatum</span><input class="nw-eingabe" type="date" name="annahme_datum" value="{{ h.annahme_datum|date:'Y-m-d' }}" required></label>
-        <label class="feld"><span class="feld__label">Begleitung</span>
-          <select class="nw-eingabe" name="begleitung"><option value="">offen</option>{% for e in eltern %}<option value="{{ e.pk }}"{% if e.pk == h.begleitung_id %} selected{% endif %}>{{ e.anzeigename }}</option>{% endfor %}</select></label>
-        <label class="feld"><span class="feld__label">Tag war am</span><input class="nw-eingabe" type="date" name="stattgefunden_am" value="{{ h.stattgefunden_am|date:'Y-m-d' }}"></label>
-        <label class="feld"><span class="feld__label">Notiz</span><input class="nw-eingabe" name="notiz" value="{{ h.notiz }}"{% if h.wunsch %} placeholder="{{ h.wunsch|truncatechars:60 }}"{% endif %} maxlength="200"></label>
-        <span class="kachel__text">{{ h.get_status_display }}{% if h.quelle == "manuell" %} · manuell{% endif %}</span>
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+        <label class="feld"><span class="feld__label">{% translate "Bezugsdatum" %}</span><input class="nw-eingabe" type="date" name="annahme_datum" value="{{ h.annahme_datum|date:'Y-m-d' }}" required></label>
+        <label class="feld"><span class="feld__label">{% translate "Begleitung" %}</span>
+          <select class="nw-eingabe" name="begleitung"><option value="">{% translate "offen" %}</option>{% for e in eltern %}<option value="{{ e.pk }}"{% if e.pk == h.begleitung_id %} selected{% endif %}>{{ e.anzeigename }}</option>{% endfor %}</select></label>
+        <label class="feld"><span class="feld__label">{% translate "Tag war am" %}</span><input class="nw-eingabe" type="date" name="stattgefunden_am" value="{{ h.stattgefunden_am|date:'Y-m-d' }}"></label>
+        <label class="feld"><span class="feld__label">{% translate "Notiz" %}</span><input class="nw-eingabe" name="notiz" value="{{ h.notiz }}"{% if h.wunsch %} placeholder="{{ h.wunsch|truncatechars:60 }}"{% endif %} maxlength="200"></label>
+        <span class="kachel__text">{{ h.get_status_display }}{% if h.quelle == "manuell" %} · {% translate "manuell" %}{% endif %}</span>
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
       </form>
-      {% if h.quelle == "manuell" %}<form method="post" action="{% url 'sondertag:loeschen' h.pk %}" class="zeile">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Eintrag löschen" %}</form>{% endif %}
+      {% if h.quelle == "manuell" %}<form method="post" action="{% url 'sondertag:loeschen' h.pk %}" class="zeile">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Eintrag löschen") %}</form>{% endif %}
     {% empty %}
-      <p class="kachel__text">Noch keine Sondertage.</p>
+      <p class="kachel__text">{% translate "Noch keine Sondertage." %}</p>
     {% endfor %}
   </div></section>
   {% endfor %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Sondertag nachtragen</h2>
-    <p class="kachel__text">Zum Beispiel einen Sondertag vor dem Start der App. Er zählt für Abstand und App-Jahr.</p>
+    <h2>{% translate "Sondertag nachtragen" %}</h2>
+    <p class="kachel__text">{% translate "Zum Beispiel einen Sondertag vor dem Start der App. Er zählt für Abstand und App-Jahr." %}</p>
     <form method="post" action="{% url 'sondertag:manuell' %}" class="st-historie">{% csrf_token %}
-      <label class="feld"><span class="feld__label">Kind</span><select class="nw-eingabe" name="kind" required>{% for kd in kinder %}<option value="{{ kd.pk }}">{{ kd.anzeigename }}</option>{% endfor %}</select></label>
-      <label class="feld"><span class="feld__label">Datum</span><input class="nw-eingabe" type="date" name="datum" required></label>
-      <label class="feld"><span class="feld__label">Begleitung</span><select class="nw-eingabe" name="begleitung"><option value="">–</option>{% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}</select></label>
-      <label class="feld"><span class="feld__label">Notiz</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
-      {% include "komponenten/button.html" with typ="submit" klein=True icon="plus" text="Nachtragen" %}
+      <label class="feld"><span class="feld__label">{% translate "Kind" %}</span><select class="nw-eingabe" name="kind" required>{% for kd in kinder %}<option value="{{ kd.pk }}">{{ kd.anzeigename }}</option>{% endfor %}</select></label>
+      <label class="feld"><span class="feld__label">{% translate "Datum" %}</span><input class="nw-eingabe" type="date" name="datum" required></label>
+      <label class="feld"><span class="feld__label">{% translate "Begleitung" %}</span><select class="nw-eingabe" name="begleitung"><option value="">–</option>{% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}</select></label>
+      <label class="feld"><span class="feld__label">{% translate "Notiz" %}</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
+      {% include "komponenten/button.html" with typ="submit" klein=True icon="plus" text=_("Nachtragen") %}
     </form>
   </div></section>
 
   <section class="nw-karte"><div class="karte__inhalt reihe">
     {% url "spielregeln:meilensteine" as ms_url %}
-    {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text="Meilensteine verwalten" %}
+    {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text=_("Meilensteine verwalten") %}
   </div></section>
 {% endblock %}

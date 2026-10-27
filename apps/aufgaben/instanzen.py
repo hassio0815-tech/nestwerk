@@ -15,6 +15,7 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
@@ -158,7 +159,7 @@ def offene_entfernen(aufgabe, *, verschobene_behalten=False) -> int:
             if instanz.verschoben and instanz.zeitgebunden == aufgabe.zeitgebunden:
                 _an_plan_anpassen(instanz, aufgabe)
                 offene = offene.exclude(pk=instanz.pk)
-    anzahl, _ = offene.delete()
+    anzahl, _geloescht = offene.delete()
     return anzahl
 
 
@@ -207,7 +208,7 @@ def instanz_verschieben(instanz, neues_datum: date, *, von, sortierung=None) -> 
         **felder
     )
     if not aktualisiert:
-        raise ValueError("Instanz wurde zwischenzeitlich geändert")
+        raise ValueError(_("Instanz wurde zwischenzeitlich geändert"))
     instanz.refresh_from_db()
     audit.protokollieren(
         "aufgabe.instanz_verschoben",

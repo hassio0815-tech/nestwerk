@@ -1,45 +1,47 @@
-{% comment %}
+{% load i18n %}{% comment %}
   Push-Karte für dieses Gerät. Zustände schaltet static/benachrichtigung/push.js (data-push-zustand).
   Auf dem Tablet (Kiosk, WebView) gibt es kein Web-Push: dort wird nichts angezeigt.
 {% endcomment %}
 {% if not push_kiosk %}
 <section class="karte" data-push data-push-schluessel="{{ push_schluessel|default:'' }}" data-push-csrf="{{ csrf_token }}"
   data-push-abo-url="{% url 'benachrichtigung:push_abo' %}" data-push-abmelden-url="{% url 'benachrichtigung:push_abmelden' %}"
-  data-push-bezeichnung="{{ request.user.anzeigename }}">
+  data-push-bezeichnung="{{ request.user.anzeigename }}"
+  data-push-text-aktivieren-fehler="{% translate "Das hat nicht geklappt. Bitte noch einmal versuchen." %}"
+  data-push-text-abmelden-fehler="{% translate "Abmelden hat nicht geklappt. Bitte noch einmal versuchen." %}">
   <div class="karte__inhalt stapel">
-    <h2>Push auf diesem Gerät</h2>
-    <p data-push-zustand="pruefen">Einen Moment, ich prüfe dieses Gerät …</p>
+    <h2>{% translate "Push auf diesem Gerät" %}</h2>
+    <p data-push-zustand="pruefen">{% translate "Einen Moment, ich prüfe dieses Gerät …" %}</p>
 
-    <p data-push-zustand="kein-schluessel" hidden>Push ist auf dem Server noch nicht eingerichtet.</p>
-    <p data-push-zustand="nicht-unterstuetzt" hidden>Dieses Gerät oder dieser Browser kann keine Push-Nachrichten empfangen.</p>
+    <p data-push-zustand="kein-schluessel" hidden>{% translate "Push ist auf dem Server noch nicht eingerichtet." %}</p>
+    <p data-push-zustand="nicht-unterstuetzt" hidden>{% translate "Dieses Gerät oder dieser Browser kann keine Push-Nachrichten empfangen." %}</p>
 
     <div data-push-zustand="ios-installieren" class="stapel" hidden>
-      <p><strong>iPhone und iPad:</strong> Push geht nur, wenn Nestwerk als Web-App auf dem Home-Bildschirm liegt.</p>
+      <p>{% blocktranslate %}<strong>iPhone und iPad:</strong> Push geht nur, wenn Nestwerk als Web-App auf dem Home-Bildschirm liegt.{% endblocktranslate %}</p>
       <ol>
-        <li>In Safari unten auf <strong>Teilen</strong> tippen.</li>
-        <li><strong>Zum Home-Bildschirm</strong> wählen.</li>
-        <li>Den Schalter <strong>Als Web-App öffnen</strong> eingeschaltet lassen (iOS 26).</li>
-        <li>Nestwerk über das neue Symbol auf dem Home-Bildschirm öffnen. Dann hier den Knopf zum Aktivieren antippen.</li>
+        <li>{% blocktranslate %}In Safari unten auf <strong>Teilen</strong> tippen.{% endblocktranslate %}</li>
+        <li>{% blocktranslate %}<strong>Zum Home-Bildschirm</strong> wählen.{% endblocktranslate %}</li>
+        <li>{% blocktranslate %}Den Schalter <strong>Als Web-App öffnen</strong> eingeschaltet lassen (iOS 26).{% endblocktranslate %}</li>
+        <li>{% translate "Nestwerk über das neue Symbol auf dem Home-Bildschirm öffnen. Dann hier den Knopf zum Aktivieren antippen." %}</li>
       </ol>
     </div>
 
     <div data-push-zustand="bereit" class="stapel" hidden>
-      <p>Du bekommst Meldungen direkt auf dieses Gerät.</p>
-      <button type="button" class="knopf knopf--primaer" data-push-aktion="aktivieren"><span>Benachrichtigungen aktivieren</span></button>
+      <p>{% translate "Du bekommst Meldungen direkt auf dieses Gerät." %}</p>
+      <button type="button" class="knopf knopf--primaer" data-push-aktion="aktivieren"><span>{% translate "Benachrichtigungen aktivieren" %}</span></button>
     </div>
 
     <div data-push-zustand="aktiv" class="stapel" hidden>
-      <p>Push ist auf diesem Gerät <strong>aktiv</strong>.</p>
+      <p>{% blocktranslate %}Push ist auf diesem Gerät <strong>aktiv</strong>.{% endblocktranslate %}</p>
       <div class="reihe">
         {% if push_ist_eltern %}
-        <button type="button" class="knopf knopf--sekundaer knopf--klein" hx-post="{% url 'benachrichtigung:push_test' %}" hx-target="#push-test-ergebnis" hx-swap="innerHTML"><span>Test-Push senden</span></button>
+        <button type="button" class="knopf knopf--sekundaer knopf--klein" hx-post="{% url 'benachrichtigung:push_test' %}" hx-target="#push-test-ergebnis" hx-swap="innerHTML"><span>{% translate "Test-Push senden" %}</span></button>
         {% endif %}
-        <button type="button" class="knopf knopf--geist knopf--klein" data-push-aktion="abmelden"><span>Auf diesem Gerät abmelden</span></button>
+        <button type="button" class="knopf knopf--geist knopf--klein" data-push-aktion="abmelden"><span>{% translate "Auf diesem Gerät abmelden" %}</span></button>
       </div>
       <div id="push-test-ergebnis" aria-live="polite"></div>
     </div>
 
-    <p data-push-zustand="blockiert" hidden>Benachrichtigungen sind für Nestwerk blockiert. Erlaube sie in den Einstellungen des Geräts (iPhone: Einstellungen, Mitteilungen, Nestwerk) und lade die Seite neu.</p>
+    <p data-push-zustand="blockiert" hidden>{% translate "Benachrichtigungen sind für Nestwerk blockiert. Erlaube sie in den Einstellungen des Geräts (iPhone: Einstellungen, Mitteilungen, Nestwerk) und lade die Seite neu." %}</p>
     <p class="feld__hinweis feld__hinweis--fehler" role="alert" data-push-fehler hidden></p>
   </div>
 </section>

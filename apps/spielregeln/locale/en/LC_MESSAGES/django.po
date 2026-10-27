@@ -1,0 +1,1233 @@
+# English translation (Nestwerk).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 05:02+0000\n"
+"PO-Revision-Date: 2026-10-26 20:00+0000\n"
+"Last-Translator: Nestwerk\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: abzeichen.py:99
+msgid "Bedingung: Objekt mit metrik, vergleich, wert erwartet."
+msgstr "Condition: expected an object with metrik, vergleich and wert."
+
+#: abzeichen.py:104
+#, python-format
+msgid "Unbekannte Metrik: %(wert)r."
+msgstr "Unknown metric: %(wert)r."
+
+#: abzeichen.py:106
+#, python-format
+msgid "Unbekannter Vergleich: %(wert)r."
+msgstr "Unknown comparison: %(wert)r."
+
+#: abzeichen.py:108
+msgid "Wert: ganze Zahl ab 0 erwartet."
+msgstr "Value: please enter a whole number, 0 or more."
+
+#: abzeichen.py:262
+#, python-format
+msgid "%(titel)s (+%(n)s weitere)"
+msgstr "%(titel)s (+%(n)s more)"
+
+#: abzeichen.py:264
+msgid "Neue Abzeichen:"
+msgstr "New badges:"
+
+#: abzeichen.py:265
+msgid "Neu in der Vitrine."
+msgstr "New in your display case."
+
+#: abzeichen.py:567
+msgid "Abzeichen ändern nur Eltern."
+msgstr "Only parents can change badges."
+
+#: abzeichen.py:575
+#, python-format
+msgid "%(feld)s: bitte eine ganze Zahl von 0 bis %(max)s."
+msgstr "%(feld)s: please enter a whole number from 0 to %(max)s."
+
+#: abzeichen.py:613 raenge.py:338
+#, python-format
+msgid "Name: 1 bis %(max)s Zeichen."
+msgstr "Name: 1 to %(max)s characters."
+
+#: abzeichen.py:616 abzeichen.py:717
+#, python-format
+msgid "Beschreibung: höchstens %(max)s Zeichen."
+msgstr "Description: at most %(max)s characters."
+
+#: abzeichen.py:619 abzeichen.py:630
+#: templates/spielregeln/_abzeichen_regelfelder.html:7
+msgid "Schwelle"
+msgstr "Threshold"
+
+#: abzeichen.py:622 abzeichen.py:792
+msgid "Wiederholung: einmalig oder je Bereich."
+msgstr "Repeat: once or per scope."
+
+#: abzeichen.py:624
+msgid "Diese Metrik hat keine Bereiche – bitte „einmalig“ wählen."
+msgstr "This metric has no scopes. Please choose \"once\"."
+
+#: abzeichen.py:635
+msgid "Reihenfolge"
+msgstr "Order"
+
+#: abzeichen.py:698
+#, python-format
+msgid "%(metrik)s (Modul fehlt)"
+msgstr "%(metrik)s (module missing)"
+
+#: abzeichen.py:714
+msgid "Name: 1 bis 80 Zeichen."
+msgstr "Name: 1 to 80 characters."
+
+#: abzeichen.py:720 abzeichen.py:789
+msgid "Mindestens eine Bedingung."
+msgstr "At least one condition."
+
+#: abzeichen.py:722 templates/spielregeln/_abzeichen_regelfelder.html:1
+#: templates/spielregeln/meilensteine.html:28
+msgid "Wert"
+msgstr "Value"
+
+#: abzeichen.py:727 abzeichen.py:794
+msgid "„Je Bereich“ braucht mindestens eine Metrik mit Bereichen."
+msgstr "\"Per scope\" needs at least one metric with scopes."
+
+#: abzeichen.py:796
+msgid "Schlüssel: Kleinbuchstaben, Ziffern, Bindestrich (max. 60)."
+msgstr "Key: lowercase letters, digits, hyphen (max. 60)."
+
+#: abzeichen_start.py:17
+msgid "Tagesserie 7"
+msgstr "Daily streak 7"
+
+#: abzeichen_start.py:18
+msgid "Tagesserie 14"
+msgstr "Daily streak 14"
+
+#: abzeichen_start.py:19
+msgid "Tagesserie 30"
+msgstr "Daily streak 30"
+
+#: abzeichen_start.py:22
+msgid "7 Tage in Folge mit einer bestätigten Aufgabe."
+msgstr "7 days in a row with a confirmed task."
+
+#: abzeichen_start.py:23
+msgid "14 Tage in Folge mit einer bestätigten Aufgabe."
+msgstr "14 days in a row with a confirmed task."
+
+#: abzeichen_start.py:24
+msgid "30 Tage in Folge mit einer bestätigten Aufgabe."
+msgstr "30 days in a row with a confirmed task."
+
+#: abzeichen_start.py:27
+msgid "Wochenserie 1"
+msgstr "Weekly streak 1"
+
+#: abzeichen_start.py:28
+msgid "Wochenserie 2"
+msgstr "Weekly streak 2"
+
+#: abzeichen_start.py:29
+msgid "Wochenserie 4"
+msgstr "Weekly streak 4"
+
+#: abzeichen_start.py:30
+msgid "Wochenserie 8"
+msgstr "Weekly streak 8"
+
+#: abzeichen_start.py:31
+msgid "Wochenserie 12"
+msgstr "Weekly streak 12"
+
+#: abzeichen_start.py:32
+msgid "Wochenserie 24"
+msgstr "Weekly streak 24"
+
+#: abzeichen_start.py:33
+msgid "Wochenserie 48"
+msgstr "Weekly streak 48"
+
+#: abzeichen_start.py:36
+msgid "Eine aktive Woche geschafft."
+msgstr "One active week done."
+
+#: abzeichen_start.py:37
+msgid "2 aktive Wochen in Folge."
+msgstr "2 active weeks in a row."
+
+#: abzeichen_start.py:38
+msgid "4 aktive Wochen in Folge."
+msgstr "4 active weeks in a row."
+
+#: abzeichen_start.py:39
+msgid "8 aktive Wochen in Folge."
+msgstr "8 active weeks in a row."
+
+#: abzeichen_start.py:40
+msgid "12 aktive Wochen in Folge."
+msgstr "12 active weeks in a row."
+
+#: abzeichen_start.py:41
+msgid "24 aktive Wochen in Folge."
+msgstr "24 active weeks in a row."
+
+#: abzeichen_start.py:42
+msgid "48 aktive Wochen in Folge."
+msgstr "48 active weeks in a row."
+
+#: abzeichen_start.py:80
+msgid "Volles Quartal"
+msgstr "Full quarter"
+
+#: abzeichen_start.py:81
+msgid "Ein ganzes Quartal lang jede Woche aktiv (Pausen zählen nicht)."
+msgstr "Active every week for a whole quarter (pauses don't break it)."
+
+#: abzeichen_start.py:93 events.py:44
+msgid "Rangaufstieg"
+msgstr "Rank up"
+
+#: abzeichen_start.py:94
+msgid "Einen neuen Rang erreicht."
+msgstr "Reached a new rank."
+
+#: abzeichen_start.py:111
+msgid "Erster Held"
+msgstr "First hero"
+
+#: abzeichen_start.py:112
+msgid "Den ersten Helden in die Ruhmeshalle gestellt."
+msgstr "Put your first hero in the Hall of Fame."
+
+#: abzeichen_start.py:118
+msgid "Heldentrio"
+msgstr "Hero trio"
+
+#: abzeichen_start.py:119
+msgid "Drei Helden in der Ruhmeshalle."
+msgstr "Three heroes in the Hall of Fame."
+
+#: abzeichen_start.py:125
+msgid "Sammler"
+msgstr "Collector"
+
+#: abzeichen_start.py:126
+msgid "In jedem der 10 Themen einen Helden in der Ruhmeshalle."
+msgstr "A hero from each of the 10 themes in the Hall of Fame."
+
+#: abzeichen_start.py:132
+msgid "Legende"
+msgstr "Legend"
+
+#: abzeichen_start.py:133
+msgid "Einen Helden auf höchstem Rang in die Ruhmeshalle gestellt."
+msgstr "Put a hero of the highest rank in the Hall of Fame."
+
+#: einstellungen.py:39
+msgid "Prognose: Basis in Wochen"
+msgstr "Forecast: basis in weeks"
+
+#: einstellungen.py:41
+msgid ""
+"Die Prognose rechnet mit dem Durchschnitt der letzten so vielen "
+"abgeschlossenen Wochen (Pausenwochen zählen nicht)."
+msgstr ""
+"The forecast uses the average of this many recently completed weeks (paused "
+"weeks do not count)."
+
+#: einstellungen.py:44 einstellungen.py:55 einstellungen.py:85
+#: einstellungen.py:97 einstellungen.py:146 registry.py:61 registry.py:66
+#: registry.py:74
+msgid "Wochen"
+msgstr "weeks"
+
+#: einstellungen.py:51
+msgid "Prognose: Mindestzahl an Wochen"
+msgstr "Forecast: minimum number of weeks"
+
+#: einstellungen.py:53
+msgid ""
+"Mit weniger abgeschlossenen Wochen gibt es keine Prognose, nur einen Hinweis."
+msgstr "With fewer completed weeks there is no forecast, only a note."
+
+#: einstellungen.py:62
+msgid "Prognose: Ziel Sondertage je App-Jahr"
+msgstr "Forecast: target special days per app year"
+
+#: einstellungen.py:63
+msgid "Daran misst die Eltern-Ansicht die Abweichung (Ampel)."
+msgstr "The parents view measures the difference against this (traffic light)."
+
+#: einstellungen.py:64
+msgid "Sondertage"
+msgstr "special days"
+
+#: einstellungen.py:71
+msgid "Kind sieht Rang-Prognose"
+msgstr "Child sees rank forecast"
+
+#: einstellungen.py:73
+msgid ""
+"Ja: Die Rang-Kachel zeigt „Nächster Rang voraussichtlich in ca. X Wochen“. "
+"Nein: keine Prognose beim Kind."
+msgstr ""
+"Yes: the rank tile shows \"Next rank expected in about X weeks\". No: the "
+"child sees no forecast."
+
+#: einstellungen.py:80
+msgid "Held der Woche: Vergleich mit den letzten Wochen"
+msgstr "Hero of the week: compare with the last weeks"
+
+#: einstellungen.py:82
+msgid ""
+"Das eigene Wochen-Mittel aus so vielen letzten aktiven Wochen dient als "
+"Vergleich. Wer in der Woche am meisten über seinem eigenen Mittel liegt, ist "
+"Held."
+msgstr ""
+"Each child's own weekly average over this many recent active weeks is the "
+"benchmark. Whoever beats their own average by the most this week is the hero."
+
+#: einstellungen.py:92
+msgid "Held der Woche: Mindestwochen Historie"
+msgstr "Hero of the week: minimum weeks of history"
+
+#: einstellungen.py:94
+msgid ""
+"Ab so vielen aktiven Wochen zählt das echte eigene Mittel. Davor gilt die "
+"einfache Regel: Vergleich mit dem Mindestwert unten."
+msgstr ""
+"From this many active weeks on, the real personal average counts. Before "
+"that, the simple rule applies: compare with the minimum value below."
+
+#: einstellungen.py:104
+msgid "Held der Woche: Mindestwert als Vergleich"
+msgstr "Hero of the week: minimum benchmark value"
+
+#: einstellungen.py:106
+msgid ""
+"Das Mittel wird nach unten auf diesen Wert begrenzt, damit sehr kleine "
+"Mittelwerte keine riesigen Zuwächse ergeben."
+msgstr ""
+"The average is never lower than this value, so very small averages do not "
+"produce huge gains."
+
+#: einstellungen.py:109
+msgid "Punkte"
+msgstr "points"
+
+#: einstellungen.py:116
+msgid "Wochenabschluss wartet nach Wochenende"
+msgstr "Week close waits after the weekend"
+
+#: einstellungen.py:118
+msgid ""
+"So lange nach Sonntag 24 Uhr zählen noch bestätigte Aufgaben, die in der "
+"alten Woche gemeldet wurden. Danach ist die Woche abgeschlossen; spätere "
+"Bestätigungen zählen für die Woche der Bestätigung."
+msgstr ""
+"For this long after Sunday midnight, confirmed tasks that were reported in "
+"the old week still count. After that the week is closed; later confirmations "
+"count for the week of the confirmation."
+
+#: einstellungen.py:122
+msgid "Stunden"
+msgstr "hours"
+
+#: einstellungen.py:129
+msgid "Woche ohne Aufgabe ist neutral ab"
+msgstr "Week without a task is neutral from"
+
+#: einstellungen.py:131
+msgid ""
+"Pausentage in der Woche, ab denen eine Woche ohne Aufgabe die Serie nicht "
+"bricht. Gilt rückwirkend für alle Wochen (Ränge und Abzeichen bleiben)."
+msgstr ""
+"Pause days in the week from which a week without a task does not break the "
+"streak. Applies to all past weeks (ranks and badges stay)."
+
+#: einstellungen.py:134
+msgid "Pausentage"
+msgstr "pause days"
+
+#: einstellungen.py:141
+msgid "Serienbonus ab Serie"
+msgstr "Streak bonus from streak"
+
+#: einstellungen.py:143
+msgid ""
+"Ab so vielen aktiven Wochen in Folge gibt es Bonus auf Aufgabenpunkte "
+"(Sonderpunkte bekommen keinen Bonus)."
+msgstr ""
+"From this many active weeks in a row, task points get a bonus (special "
+"points get no bonus)."
+
+#: einstellungen.py:153
+msgid "Serienbonus je Serienwoche"
+msgstr "Streak bonus per streak week"
+
+#: einstellungen.py:154
+msgid "So viel Prozent mehr gibt es mit jeder weiteren Woche der Serie."
+msgstr "This many percent more with each further week of the streak."
+
+#: einstellungen.py:162
+msgid "Serienbonus höchstens"
+msgstr "Streak bonus at most"
+
+#: einstellungen.py:163
+msgid ""
+"Obergrenze des Serienbonus. Der Bonus wird auf ganze Punkte aufgerundet."
+msgstr ""
+"Upper limit of the streak bonus. The bonus is rounded up to whole points."
+
+#: events.py:36
+msgid "Aktivität erfasst"
+msgstr "Activity recorded"
+
+#: events.py:37
+msgid "Woche ausgewertet"
+msgstr "Week evaluated"
+
+#: events.py:39
+msgid "Wochenserie gestiegen"
+msgstr "Weekly streak went up"
+
+#: events.py:40
+msgid "Wochenserie beendet"
+msgstr "Weekly streak ended"
+
+#: events.py:41
+msgid "Pause eingetragen"
+msgstr "Pause added"
+
+#: events.py:42
+msgid "Pause beendet"
+msgstr "Pause ended"
+
+#: events.py:43
+msgid "Serienbonus gebucht"
+msgstr "Streak bonus credited"
+
+#: events.py:45 templates/spielregeln/abzeichen.html:58
+msgid "Neues Abzeichen"
+msgstr "New badge"
+
+#: events.py:46
+msgid "Meilenstein erreicht"
+msgstr "Milestone reached"
+
+#: events.py:47
+msgid "Held der Woche"
+msgstr "Hero of the week"
+
+#: events.py:48
+msgid "Held der Woche (Kind)"
+msgstr "Hero of the week (child)"
+
+#: forms.py:12
+msgid "Für wen?"
+msgstr "For whom?"
+
+#: forms.py:14
+msgid "Ab"
+msgstr "From"
+
+#: forms.py:17
+msgid "Bis (einschließlich)"
+msgstr "Until (inclusive)"
+
+#: forms.py:20
+msgid "Leer lassen = offen, bis ihr die Pause ausschaltet."
+msgstr "Leave empty = open-ended, until you switch the pause off."
+
+#: forms.py:22
+msgid "Grund (optional)"
+msgstr "Reason (optional)"
+
+#: forms.py:27 templates/spielregeln/kacheln/eltern_pausen.html:5
+#: templates/spielregeln/pausen.html:36
+msgid "Ganze Familie"
+msgstr "Whole family"
+
+#: forms.py:36 services.py:337 services.py:380
+msgid "Das Ende liegt vor dem Beginn."
+msgstr "The end is before the start."
+
+#: models.py:121
+msgid "Eltern"
+msgstr "Parents"
+
+#: models.py:122
+msgid "Hausautomation"
+msgstr "Home automation"
+
+#: models.py:272
+msgid "mindestens (≥)"
+msgstr "at least (≥)"
+
+#: models.py:273
+msgid "mehr als (>)"
+msgstr "more than (>)"
+
+#: models.py:274
+msgid "genau (=)"
+msgstr "exactly (=)"
+
+#: models.py:281
+msgid "einmalig"
+msgstr "once"
+
+#: models.py:282
+msgid "je Bereich (z. B. Quartal, Rang)"
+msgstr "per scope (e.g. quarter, rank)"
+
+#: prognose.py:50
+#, python-format
+msgid ""
+"Zu wenig Verlauf für eine Prognose: %(n)s abgeschlossene Woche (nötig sind "
+"mehr)."
+msgid_plural ""
+"Zu wenig Verlauf für eine Prognose: %(n)s abgeschlossene Wochen (nötig sind "
+"mehr)."
+msgstr[0] ""
+"Not enough history for a forecast: %(n)s completed week (more are needed)."
+msgstr[1] ""
+"Not enough history for a forecast: %(n)s completed weeks (more are needed)."
+
+#: raenge.py:320
+#, python-format
+msgid "%(feld)s: bitte eine ganze Zahl ab 0."
+msgstr "%(feld)s: please enter a whole number, 0 or more."
+
+#: raenge.py:326
+msgid "Ränge ändern nur Eltern."
+msgstr "Only parents can change ranks."
+
+#: raenge.py:339 raenge.py:350
+msgid "XP-Schwelle"
+msgstr "XP threshold"
+
+#: raenge.py:340 raenge.py:351 registry.py:64
+msgid "Aktive Wochen"
+msgstr "Active weeks"
+
+#: raenge.py:342
+msgid "Aktive Wochen: höchstens 32767."
+msgstr "Active weeks: at most 32767."
+
+#: raenge.py:356
+#, python-format
+msgid "%(text)s muss mit dem Rang steigen: %(name)s hat %(wert)s."
+msgstr "%(text)s must increase with the rank: %(name)s has %(wert)s."
+
+#: raenge.py:383
+msgid "Mod-Preis"
+msgstr "Mod price"
+
+#: raenge.py:384
+msgid "Bauzeit"
+msgstr "Build time"
+
+#: raenge.py:387
+msgid "Mod-Preis: mindestens 1 Punkt."
+msgstr "Mod price: at least 1 point."
+
+#: raenge.py:389
+msgid "Bauzeit: höchstens ein Jahr."
+msgstr "Build time: at most one year."
+
+#: raenge.py:409 raenge.py:459 raenge.py:515
+msgid "Kalibrierung gibt es nur global oder für Kinder."
+msgstr "Calibration exists only globally or for children."
+
+#: raenge.py:441
+msgid "Faktor: bitte eine Zahl wie 1,0 oder 0,8."
+msgstr "Factor: please enter a number like 1.0 or 0.8."
+
+#: raenge.py:444
+#, python-format
+msgid "Faktor: zwischen %(min)s und %(max)s."
+msgstr "Factor: between %(min)s and %(max)s."
+
+#: raenge.py:468
+msgid "Der globale Faktor ist Pflicht."
+msgstr "The global factor is required."
+
+#: raenge_start.py:7
+msgid "Common"
+msgstr "Common"
+
+#: raenge_start.py:8
+msgid "Uncommon"
+msgstr "Uncommon"
+
+#: raenge_start.py:9
+msgid "Rare"
+msgstr "Rare"
+
+#: raenge_start.py:10
+msgid "Epic"
+msgstr "Epic"
+
+#: raenge_start.py:11
+msgid "Legendary"
+msgstr "Legendary"
+
+#: raenge_start.py:12
+msgid "God Mode"
+msgstr "God Mode"
+
+#: registry.py:61
+msgid "Wochenserie"
+msgstr "Weekly streak"
+
+#: registry.py:61
+msgid "Aktive Wochen in Folge (Pausen neutral)"
+msgstr "Active weeks in a row (pauses are neutral)"
+
+#: registry.py:65
+msgid "Aktive Wochen insgesamt, nie zurückgesetzt"
+msgstr "Active weeks in total, never reset"
+
+#: registry.py:70
+msgid "Tagesserie"
+msgstr "Daily streak"
+
+#: registry.py:71
+msgid "Tage in Folge mit bestätigter Aufgabe (Pausen neutral)"
+msgstr "Days in a row with a confirmed task (pauses are neutral)"
+
+#: registry.py:72 registry.py:75
+msgid "Tage"
+msgstr "days"
+
+#: registry.py:74
+msgid "Rekord Wochenserie"
+msgstr "Weekly streak record"
+
+#: registry.py:74
+msgid "Längste Wochenserie bisher"
+msgstr "Longest weekly streak so far"
+
+#: registry.py:75
+msgid "Rekord Tagesserie"
+msgstr "Daily streak record"
+
+#: registry.py:75
+msgid "Längste Tagesserie bisher"
+msgstr "Longest daily streak so far"
+
+#: registry.py:106
+msgid "Rang"
+msgstr "Rank"
+
+#: registry.py:107
+msgid "Stufe des höchsten erreichten Rangs (1 = Startrang)"
+msgstr "Level of the highest rank reached (1 = starting rank)"
+
+#: registry.py:108
+msgid "Stufe"
+msgstr "Level"
+
+#: registry.py:120
+msgid "Volle Quartale"
+msgstr "Full quarters"
+
+#: registry.py:121
+msgid "Abgeschlossene Quartale, in denen jede Woche aktiv oder pausiert war"
+msgstr "Completed quarters in which every week was active or paused"
+
+#: registry.py:122
+msgid "Quartale"
+msgstr "quarters"
+
+#: registry.py:205 templates/spielregeln/kacheln/kind_abzeichen.html:2
+msgid "Meine Abzeichen"
+msgstr "My badges"
+
+#: registry.py:216 templates/spielregeln/abzeichen.html:3
+#: templates/spielregeln/abzeichen.html:11
+#: templates/spielregeln/kacheln/eltern_abzeichen.html:2
+msgid "Abzeichen"
+msgstr "Badges"
+
+#: registry.py:227 templates/spielregeln/kacheln/kind_rang.html:2
+msgid "Mein Rang"
+msgstr "My rank"
+
+#: registry.py:238 templates/spielregeln/kacheln/eltern_raenge.html:2
+#: templates/spielregeln/raenge.html:3 templates/spielregeln/raenge.html:11
+msgid "Ränge"
+msgstr "Ranks"
+
+#: registry.py:249 templates/spielregeln/kacheln/kind_serie.html:2
+msgid "Meine Serie"
+msgstr "My streak"
+
+#: registry.py:260 templates/spielregeln/kacheln/eltern_pausen.html:2
+#: templates/spielregeln/pausen.html:3 templates/spielregeln/pausen.html:9
+msgid "Pausen"
+msgstr "Pauses"
+
+#: services.py:99
+msgid "Aktivitäten und Pausen gibt es nur für Kinder."
+msgstr "Activities and pauses exist only for children."
+
+#: services.py:252
+#, no-python-format
+msgid "ab %(von)s"
+msgstr "from %(von_en)s"
+
+#: services.py:255
+#, no-python-format
+msgid "am %(von)s"
+msgstr "on %(von_en)s"
+
+#: services.py:257
+#, no-python-format
+msgid "vom %(von)s bis %(bis)s"
+msgstr "from %(von_en)s to %(bis_en)s"
+
+#: services.py:288
+msgid "Pausen setzen nur Eltern."
+msgstr "Only parents can set pauses."
+
+#: services.py:334
+#, python-format
+msgid "Grund ist zu lang (höchstens %(max)s Zeichen)."
+msgstr "The reason is too long (at most %(max)s characters)."
+
+#: services.py:340
+#, python-format
+msgid "%(wer)s hat schon eine laufende Pause."
+msgstr "%(wer)s already has a running pause."
+
+#: services.py:342
+msgid "Die Familie hat schon eine laufende Pause."
+msgstr "The family already has a running pause."
+
+#: services.py:377
+msgid "Diese Pause ist schon vorbei."
+msgstr "This pause is already over."
+
+#: services.py:382
+msgid "Die Pause wurde gerade geändert. Bitte neu laden."
+msgstr "The pause was just changed. Please reload."
+
+#: services.py:386
+#, no-python-format
+msgid "Deine Pause endet am %(datum)s."
+msgstr "Your break ends on %(datum_en)s."
+
+#: services.py:389
+#, no-python-format
+msgid "Die Familienpause endet am %(datum)s."
+msgstr "The family break ends on %(datum_en)s."
+
+#: services.py:401
+msgid "Begonnene Pausen werden beendet, nicht gelöscht."
+msgstr "Pauses that have started are ended, not deleted."
+
+#: services.py:411
+msgid "Die geplante Pause entfällt."
+msgstr "The planned break is cancelled."
+
+#: templates/spielregeln/_abzeichen_galerie_raster.html:6
+msgid "inaktiv"
+msgstr "inactive"
+
+#: templates/spielregeln/_abzeichen_regelfelder.html:4
+#: templates/spielregeln/meilensteine.html:32
+#: templates/spielregeln/meilensteine.html:43
+msgid "Vergleich"
+msgstr "Comparison"
+
+#: templates/spielregeln/_abzeichen_regelfelder.html:8
+msgid "Wiederholung"
+msgstr "Repeat"
+
+#: templates/spielregeln/abzeichen.html:6
+#: templates/spielregeln/meilensteine.html:6
+#: templates/spielregeln/pausen.html:6 templates/spielregeln/raenge.html:6
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/spielregeln/abzeichen.html:8
+#: templates/spielregeln/meilensteine.html:3
+#: templates/spielregeln/meilensteine.html:9
+msgid "Meilensteine"
+msgstr "Milestones"
+
+#: templates/spielregeln/abzeichen.html:12
+msgid ""
+"Abzeichen geben keine Punkte. Ein verdientes Abzeichen bleibt, auch wenn ihr "
+"die Schwelle später erhöht oder es ausschaltet."
+msgstr ""
+"Badges give no points. A badge that was earned stays, even if you raise the "
+"threshold later or switch it off."
+
+#: templates/spielregeln/abzeichen.html:16
+msgid "Je Kind"
+msgstr "Per child"
+
+#: templates/spielregeln/abzeichen.html:30
+msgid "Noch keine Abzeichen."
+msgstr "No badges yet."
+
+#: templates/spielregeln/abzeichen.html:31
+msgid "Als Nächstes:"
+msgstr "Next up:"
+
+#: templates/spielregeln/abzeichen.html:34
+#: templates/spielregeln/kacheln/eltern_abzeichen.html:10
+#: templates/spielregeln/kacheln/eltern_pausen.html:32
+#: templates/spielregeln/kacheln/eltern_raenge.html:10
+msgid "Noch keine Kinder"
+msgstr "No children yet"
+
+#: templates/spielregeln/abzeichen.html:34
+#: templates/spielregeln/kacheln/eltern_abzeichen.html:10
+#: templates/spielregeln/kacheln/eltern_pausen.html:32
+#: templates/spielregeln/kacheln/eltern_raenge.html:10
+msgid "Kinder legst du unter Familie an."
+msgstr "You add children under Family."
+
+#: templates/spielregeln/abzeichen.html:39
+msgid "Regeln"
+msgstr "Rules"
+
+#: templates/spielregeln/abzeichen.html:40
+msgid ""
+"Ein Abzeichen gibt es, sobald der Wert die Schwelle erreicht. „Je Bereich“ "
+"verleiht es mehrfach, z. B. je Quartal oder je Rang."
+msgstr ""
+"A badge is awarded as soon as the value reaches the threshold. \"Per scope\" "
+"awards it several times, e.g. per quarter or per rank."
+
+#: templates/spielregeln/abzeichen.html:44
+#: templates/spielregeln/abzeichen.html:60
+#: templates/spielregeln/meilensteine.html:22
+#: templates/spielregeln/raenge.html:22
+msgid "Name"
+msgstr "Name"
+
+#: templates/spielregeln/abzeichen.html:45
+#: templates/spielregeln/abzeichen.html:61
+#: templates/spielregeln/meilensteine.html:23
+msgid "Beschreibung"
+msgstr "Description"
+
+#: templates/spielregeln/abzeichen.html:47
+#, python-format
+msgid "%(anzahl)s× verliehen"
+msgstr "awarded %(anzahl)s×"
+
+#: templates/spielregeln/abzeichen.html:47
+#: templates/spielregeln/meilensteine.html:17
+msgid "aus"
+msgstr "off"
+
+#: templates/spielregeln/abzeichen.html:48
+#: templates/spielregeln/meilensteine.html:48
+#: templates/spielregeln/raenge.html:26 templates/spielregeln/raenge.html:39
+#: templates/spielregeln/raenge.html:47
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/spielregeln/abzeichen.html:52
+#: templates/spielregeln/meilensteine.html:52
+msgid "Ausschalten"
+msgstr "Switch off"
+
+#: templates/spielregeln/abzeichen.html:52
+#: templates/spielregeln/meilensteine.html:52
+msgid "Einschalten"
+msgstr "Switch on"
+
+#: templates/spielregeln/abzeichen.html:63
+msgid "Anlegen"
+msgstr "Create"
+
+#: templates/spielregeln/abzeichen_galerie.html:5
+#: templates/spielregeln/abzeichen_galerie.html:7
+msgid "Abzeichen-Galerie"
+msgstr "Badge gallery"
+
+#: templates/spielregeln/abzeichen_galerie.html:8
+msgid "Alle Grafiken, je Rang eine Variante. Nur im Entwicklungsmodus."
+msgstr "All graphics, one variant per rank. Development mode only."
+
+#: templates/spielregeln/abzeichen_galerie.html:9
+msgid "Heller Hintergrund"
+msgstr "Light background"
+
+#: templates/spielregeln/abzeichen_galerie.html:10
+msgid "Hell"
+msgstr "Light"
+
+#: templates/spielregeln/abzeichen_galerie.html:13
+msgid "Dunkler Hintergrund"
+msgstr "Dark background"
+
+#: templates/spielregeln/abzeichen_galerie.html:15
+msgid "Dunkel"
+msgstr "Dark"
+
+#: templates/spielregeln/kacheln/eltern_abzeichen.html:7
+#, python-format
+msgid "zuletzt: %(titel)s"
+msgstr "latest: %(titel)s"
+
+#: templates/spielregeln/kacheln/eltern_abzeichen.html:7
+#, python-format
+msgid "nächstes: %(name)s (%(wert)s/%(ziel)s)"
+msgstr "next: %(name)s (%(wert)s/%(ziel)s)"
+
+#: templates/spielregeln/kacheln/eltern_abzeichen.html:13
+msgid "Abzeichen verwalten"
+msgstr "Manage badges"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:7
+#: templates/spielregeln/kacheln/eltern_pausen.html:23
+msgid "Pause"
+msgstr "Pause"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:7
+#: templates/spielregeln/kacheln/eltern_pausen.html:23
+msgctxt "Datum ohne Jahr"
+msgid "d.m."
+msgstr "m/d"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:7
+#: templates/spielregeln/kacheln/eltern_pausen.html:23
+#, python-format
+msgid "bis %(datum)s"
+msgstr "until %(datum)s"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:8
+#: templates/spielregeln/kacheln/eltern_pausen.html:24
+msgid "Pause aus"
+msgstr "Pause off"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:10
+#: templates/spielregeln/kacheln/eltern_pausen.html:28
+msgid "Pause an"
+msgstr "Pause on"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:18
+#, python-format
+msgid "%(w)s W Serie"
+msgstr "%(w)s w streak"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:19
+#: templates/spielregeln/kacheln/kind_rang.html:8
+#: templates/spielregeln/kacheln/kind_rang.html:10
+#: templates/spielregeln/kacheln/kind_serie.html:9
+#, python-format
+msgid "%(n)s aktive Woche"
+msgid_plural "%(n)s aktive Wochen"
+msgstr[0] "%(n)s active week"
+msgstr[1] "%(n)s active weeks"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:20
+#: templates/spielregeln/kacheln/kind_serie.html:10
+#, python-format
+msgid "%(n)s Tag in Folge"
+msgid_plural "%(n)s Tage in Folge"
+msgstr[0] "%(n)s day in a row"
+msgstr[1] "%(n)s days in a row"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:26
+msgid "Familienpause"
+msgstr "Family pause"
+
+#: templates/spielregeln/kacheln/eltern_pausen.html:35
+msgid "Pause mit Zeitraum planen"
+msgstr "Plan a pause with dates"
+
+#: templates/spielregeln/kacheln/eltern_raenge.html:7
+#, python-format
+msgid "%(name)s: noch %(xp)s XP / %(wochen)s Wochen"
+msgstr "%(name)s: %(xp)s XP / %(wochen)s weeks to go"
+
+#: templates/spielregeln/kacheln/eltern_raenge.html:7
+msgid "Endstufe"
+msgstr "Top level"
+
+#: templates/spielregeln/kacheln/eltern_raenge.html:7
+#, python-format
+msgid "Faktor %(faktor)s"
+msgstr "factor %(faktor)s"
+
+#: templates/spielregeln/kacheln/eltern_raenge.html:13
+msgid "Ränge verwalten"
+msgstr "Manage ranks"
+
+#: templates/spielregeln/kacheln/kind_abzeichen.html:13
+msgid "Noch keine Abzeichen. Schon eine Woche mit Aufgaben bringt dein erstes!"
+msgstr "No badges yet. Just one week with tasks gets you your first!"
+
+#: templates/spielregeln/kacheln/kind_abzeichen.html:16
+msgid "Als Nächstes"
+msgstr "Up next"
+
+#: templates/spielregeln/kacheln/kind_abzeichen.html:24
+#, python-format
+msgid "Rekord: %(w)s Woche"
+msgid_plural "Rekord: %(w)s Wochen"
+msgstr[0] "Record: %(w)s week"
+msgstr[1] "Record: %(w)s weeks"
+
+#: templates/spielregeln/kacheln/kind_abzeichen.html:24
+#, python-format
+msgid "%(t)s Tag in Folge"
+msgid_plural "%(t)s Tage in Folge"
+msgstr[0] "%(t)s day in a row"
+msgstr[1] "%(t)s days in a row"
+
+#: templates/spielregeln/kacheln/kind_rang.html:6
+#, python-format
+msgid "Bis %(name)s"
+msgstr "To %(name)s"
+
+#: templates/spielregeln/kacheln/kind_rang.html:8
+msgid "Noch"
+msgstr "You still need"
+
+#: templates/spielregeln/kacheln/kind_rang.html:8
+msgid "und"
+msgstr "and"
+
+#: templates/spielregeln/kacheln/kind_rang.html:8
+#, python-format
+msgid "bis %(name)s."
+msgstr "to reach %(name)s."
+
+#: templates/spielregeln/kacheln/kind_rang.html:9
+#, python-format
+msgid "Nächster Rang voraussichtlich in ca. %(n)s Woche."
+msgid_plural "Nächster Rang voraussichtlich in ca. %(n)s Wochen."
+msgstr[0] "Next rank expected in about %(n)s week."
+msgstr[1] "Next rank expected in about %(n)s weeks."
+
+#: templates/spielregeln/kacheln/kind_rang.html:12
+msgid "Höchster Rang erreicht!"
+msgstr "Top rank reached!"
+
+#: templates/spielregeln/kacheln/kind_serie.html:4
+msgid "Pause – deine Serie ist sicher"
+msgstr "Pause – your streak is safe"
+
+#: templates/spielregeln/kacheln/kind_serie.html:5
+#, python-format
+msgid "Pause bis %(datum)s."
+msgstr "Pause until %(datum)s."
+
+#: templates/spielregeln/kacheln/kind_serie.html:5
+msgid "Pause, bis Mama oder Papa sie ausschalten."
+msgstr "Pause until Mum or Dad switch it off."
+
+#: templates/spielregeln/kacheln/kind_serie.html:5
+msgid "Aufgaben zählen trotzdem."
+msgstr "Tasks still count."
+
+#: templates/spielregeln/kacheln/kind_serie.html:8
+#, python-format
+msgid "%(n)s Woche Serie"
+msgid_plural "%(n)s Wochen Serie"
+msgstr[0] "%(n)s week streak"
+msgstr[1] "%(n)s week streak"
+
+#: templates/spielregeln/kacheln/kind_serie.html:12
+msgid "Diese Woche zählt schon für deine Serie."
+msgstr "This week already counts for your streak."
+
+#: templates/spielregeln/kacheln/kind_serie.html:12
+msgid "Eine Aufgabe diese Woche hält deine Serie am Laufen."
+msgstr "One task this week keeps your streak going."
+
+#: templates/spielregeln/kacheln/kind_serie.html:13
+#, python-format
+msgid "Rekord: %(w)s Wochen · %(t)s Tage"
+msgstr "Record: %(w)s weeks · %(t)s days"
+
+#: templates/spielregeln/meilensteine.html:10
+msgid ""
+"Ein Meilenstein ist erreicht, wenn alle Bedingungen gelten. Er löst eine "
+"Belohnung aus, zum Beispiel einen Sondertag. Erreichte Meilensteine bleiben, "
+"auch wenn ihr Bedingungen später verschärft oder den Meilenstein ausschaltet."
+msgstr ""
+"A milestone is reached when all conditions hold. It triggers a reward, for "
+"example a special day. Milestones that were reached stay, even if you "
+"tighten the conditions later or switch the milestone off."
+
+#: templates/spielregeln/meilensteine.html:17
+msgid "an"
+msgstr "on"
+
+#: templates/spielregeln/meilensteine.html:19
+msgid "keine"
+msgstr "none"
+
+#: templates/spielregeln/meilensteine.html:19
+#, python-format
+msgid "Belohnung: %(art)s · %(wdh)s · Modul %(modul)s · %(anzahl)s× erreicht"
+msgstr "Reward: %(art)s · %(wdh)s · module %(modul)s · reached %(anzahl)s×"
+
+#: templates/spielregeln/meilensteine.html:25
+msgid "Bedingungen (alle müssen gelten)"
+msgstr "Conditions (all must hold)"
+
+#: templates/spielregeln/meilensteine.html:29
+msgid "– entfernen –"
+msgstr "– remove –"
+
+#: templates/spielregeln/meilensteine.html:35
+#: templates/spielregeln/meilensteine.html:46
+msgid "Ziel"
+msgstr "Target"
+
+#: templates/spielregeln/meilensteine.html:39
+msgid "Neue Bedingung"
+msgstr "New condition"
+
+#: templates/spielregeln/meilensteine.html:56
+msgid "Noch keine Meilensteine"
+msgstr "No milestones yet"
+
+#: templates/spielregeln/meilensteine.html:56
+msgid "Meilensteine legen Module wie Sondertag an."
+msgstr "Modules such as Special day create milestones."
+
+#: templates/spielregeln/pausen.html:10
+msgid ""
+"Pausierte Tage und Wochen sind neutral: Die Serie bricht nicht. Aufgaben in "
+"der Pause zählen normal."
+msgstr ""
+"Paused days and weeks are neutral: the streak does not break. Tasks during a "
+"pause count as normal."
+
+#: templates/spielregeln/pausen.html:16 templates/spielregeln/pausen.html:27
+msgid "Pause eintragen"
+msgstr "Add a pause"
+
+#: templates/spielregeln/pausen.html:37
+msgid "offen"
+msgstr "open"
+
+#: templates/spielregeln/pausen.html:39
+#, python-format
+msgid "von %(name)s"
+msgstr "by %(name)s"
+
+#: templates/spielregeln/pausen.html:39
+#, python-format
+msgid "von %(quelle)s"
+msgstr "by %(quelle)s"
+
+#: templates/spielregeln/pausen.html:42
+msgid "Beenden"
+msgstr "End"
+
+#: templates/spielregeln/pausen.html:45
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/spielregeln/pausen.html:49
+msgid "Keine."
+msgstr "None."
+
+#: templates/spielregeln/raenge.html:8
+msgid "Prognose"
+msgstr "Forecast"
+
+#: templates/spielregeln/raenge.html:12
+msgid ""
+"Aufstieg braucht beides: genug XP <strong>und</strong> genug aktive Wochen. "
+"Ein erreichter Rang bleibt, auch wenn ihr Schwellen später erhöht."
+msgstr ""
+"Moving up needs both: enough XP <strong>and</strong> enough active weeks. A "
+"rank that was reached stays, even if you raise the thresholds later."
+
+#: templates/spielregeln/raenge.html:18
+msgid "Stufen"
+msgstr "Levels"
+
+#: templates/spielregeln/raenge.html:21
+#, python-format
+msgid "Stufe %(stufe)s"
+msgstr "Level %(stufe)s"
+
+#: templates/spielregeln/raenge.html:23
+msgid "XP ab"
+msgstr "XP from"
+
+#: templates/spielregeln/raenge.html:24
+msgid "Aktive Wochen ab"
+msgstr "Active weeks from"
+
+#: templates/spielregeln/raenge.html:25
+#, python-format
+msgid "mit Faktor: %(xp)s XP"
+msgstr "with factor: %(xp)s XP"
+
+#: templates/spielregeln/raenge.html:32
+msgid "Kalibrierung"
+msgstr "Calibration"
+
+#: templates/spielregeln/raenge.html:33
+#, python-format
+msgid ""
+"Der Faktor wirkt auf die XP-Schwellen (1,0 = Startwerte, 0,8 = 20 %% "
+"leichter). Standard ist ein gemeinsamer Faktor für alle. Ein eigener Faktor "
+"je Kind ist möglich, aber nur hier für Eltern sichtbar – im Familien-Ranking "
+"gelten dann ungleiche Schwellen."
+msgstr ""
+"The factor scales the XP thresholds (1.0 = starting values, 0.8 = 20 %% "
+"easier). By default one shared factor applies to everyone. A separate factor "
+"per child is possible, but only parents can see it here – the family ranking "
+"then uses unequal thresholds."
+
+#: templates/spielregeln/raenge.html:36
+msgid "Alle Kinder"
+msgstr "All children"
+
+#: templates/spielregeln/raenge.html:37
+msgid "Faktor"
+msgstr "Factor"
+
+#: templates/spielregeln/raenge.html:38 templates/spielregeln/raenge.html:46
+msgid "Notiz"
+msgstr "Note"
+
+#: templates/spielregeln/raenge.html:45
+msgid "Eigener Faktor (leer = keiner)"
+msgstr "Own factor (empty = none)"
+
+#: views.py:60
+msgid "Laufend"
+msgstr "Running"
+
+#: views.py:61
+msgid "Geplant"
+msgstr "Planned"
+
+#: views.py:62
+msgid "Vorbei"
+msgstr "Past"
+
+#: views.py:298
+#, python-format
+msgid "Rang %(n)s"
+msgstr "Rank %(n)s"

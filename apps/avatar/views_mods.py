@@ -6,8 +6,11 @@ from decimal import Decimal, InvalidOperation
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.formats import get_format
+from django.utils.translation import gettext, gettext_lazy
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import nur_eltern, nur_kind
 from apps.punkte import selectors as punkte_selectors
 from apps.spielregeln import selectors as raenge
@@ -18,13 +21,13 @@ from .models import Slot
 
 # Feste Erfolgsmeldungen (kein frei wählbarer Text in der URL)
 MELDUNGEN = {
-    "gekauft": "Gekauft! Dein Mod ist jetzt im Bau.",
-    "fertig": "Dein Mod ist fertig und angelegt.",
-    "angelegt": "Angelegt!",
-    "abgelegt": "Slot ist jetzt leer.",
-    "thema": "Neues Thema! Deine Slots sind leer – auf zu neuen Mods.",
-    "sofort": "Bau fertiggestellt.",
-    "standard": "Gespeichert.",
+    "gekauft": gettext_lazy("Gekauft! Dein Mod ist jetzt im Bau."),
+    "fertig": gettext_lazy("Dein Mod ist fertig und angelegt."),
+    "angelegt": gettext_lazy("Angelegt!"),
+    "abgelegt": gettext_lazy("Slot ist jetzt leer."),
+    "thema": gettext_lazy("Neues Thema! Deine Slots sind leer – auf zu neuen Mods."),
+    "sofort": gettext_lazy("Bau fertiggestellt."),
+    "standard": gettext_lazy("Gespeichert."),
 }
 
 
@@ -68,7 +71,7 @@ def _mit_rang(besitze):
     for b in besitze:
         rang = raenge_map.get(b.mod.seltenheit)
         b.selten = rang.selten if rang else "common"
-        b.rang_name = rang.name if rang else str(b.mod.seltenheit)
+        b.rang_name = uebersetzt(rang.name) if rang else str(b.mod.seltenheit)
     return besitze
 
 
@@ -112,9 +115,9 @@ def _mod_kontext(request, mod, fehler=""):
         "ort": ort,
         "taetigkeit": taetigkeit,
         "fehler": fehler,
-        "kauf_text": f"Kaufen für {karte.konditionen.preis} Punkte",
-        "fehlt_text": f"Dir fehlen noch {karte.fehlt} Punkte",
-        "gesperrt_text": f"Ab Rang {karte.konditionen.rang_name}",
+        "kauf_text": gettext("Kaufen für %(preis)s Punkte") % {"preis": karte.konditionen.preis},
+        "fehlt_text": gettext("Dir fehlen noch %(fehlt)s Punkte") % {"fehlt": karte.fehlt},
+        "gesperrt_text": gettext("Ab Rang %(rang)s") % {"rang": karte.konditionen.rang_name},
     }
 
 
@@ -225,7 +228,7 @@ def _eltern_kontext(request, fehler=""):
 
 
 def _faktor_text(wert):
-    return f"{wert:.2f}".replace(".", ",")
+    return f"{wert:.2f}".replace(".", get_format("DECIMAL_SEPARATOR"))
 
 
 @nur_eltern
@@ -271,7 +274,12 @@ def _stunden(tage, rang):
     try:
         wert = Decimal(tage.replace(",", "."))
     except InvalidOperation:
-        raise RangFehler(f"{rang.name}: Bauzeit bitte in Tagen, z. B. 3 oder 1,5.") from None
+        raise RangFehler(
+            gettext("%(rang)s: Bauzeit bitte in Tagen, z. B. 3 oder 1,5.")
+            % {"rang": uebersetzt(rang.name)}
+        ) from None
     if wert < 0:
-        raise RangFehler(f"{rang.name}: Bauzeit darf nicht negativ sein.")
+        raise RangFehler(
+            gettext("%(rang)s: Bauzeit darf nicht negativ sein.") % {"rang": uebersetzt(rang.name)}
+        )
     return int((wert * 24).to_integral_value())

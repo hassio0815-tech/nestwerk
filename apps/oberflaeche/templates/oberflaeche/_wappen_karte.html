@@ -1,10 +1,10 @@
-<section class="karte" id="wappen-karte"><div class="karte__inhalt stapel">
-  <h2>Mein Wappen und meine Rolle</h2>
-  <p class="feld__hinweis">Erscheint bei der Anmeldung, im Eltern-Bereich und in Nachrichten an die Kinder.</p>
+{% load i18n %}<section class="karte" id="wappen-karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Mein Wappen und meine Rolle" %}</h2>
+  <p class="feld__hinweis">{% translate "Erscheint bei der Anmeldung, im Eltern-Bereich und in Nachrichten an die Kinder." %}</p>
   <form method="post" action="{% url 'oberflaeche:wappen' %}" hx-post="{% url 'oberflaeche:wappen' %}" hx-trigger="change" hx-target="#wappen-karte" hx-swap="outerHTML" class="stapel">{% csrf_token %}
     {% include "komponenten/wappen_wahl.html" with name="wappen" gewaehlt=request.user.wappen rolle_name="wappen_rolle" rolle_wert=request.user.wappen_rolle eigen_name="wappen_rolle_eigen" eigen_wert=request.user.wappen_rolle_eigen %}
-    <noscript>{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}</noscript>
+    <noscript>{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}</noscript>
   </form>
-  {% if wappen_gespeichert %}<p class="feld__hinweis" role="status">Gespeichert.</p>{% endif %}
+  {% if wappen_gespeichert %}<p class="feld__hinweis" role="status">{% translate "Gespeichert." %}</p>{% endif %}
   {% if wappen_fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ wappen_fehler }}</p>{% endif %}
 </div></section>

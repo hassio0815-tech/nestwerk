@@ -1,21 +1,21 @@
-{% load static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+{% load i18n static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
 <article class="karte"><div class="karte__inhalt stapel">
-  <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} Sondertage</h2>
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} {% translate "Sondertage" %}</h2>
   {% if k.wuensche %}
-    <p class="st-hinweis" data-st-wuensche>{{ k.wuensche|length }} offene{% if k.wuensche|length == 1 %}r Wunsch{% else %} Wünsche{% endif %}:
-      {% for e in k.wuensche %}{{ e.anspruch.kind.anzeigename }}{% if not e.einloesbar %} (ab {{ e.einloesbar_ab|date:"d.m." }}){% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p class="st-hinweis" data-st-wuensche>{% blocktranslate count anzahl=k.wuensche|length %}{{ anzahl }} offener Wunsch{% plural %}{{ anzahl }} offene Wünsche{% endblocktranslate %}:
+      {% for e in k.wuensche %}{{ e.anspruch.kind.anzeigename }}{% if not e.einloesbar %} {% translate "d.m." context "Datum ohne Jahr" as dfmt %}{% blocktranslate with ab=e.einloesbar_ab|date:dfmt %}(ab {{ ab }}){% endblocktranslate %}{% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
   {% endif %}
   {% for z in k.zeilen %}
     <div class="zeile st-zeile" data-st-kind="{{ z.kind.pk }}">
       <strong>{{ z.kind.anzeigename }}</strong>
-      <span class="kachel__text">{% if z.letzter %}zuletzt {{ z.letzter.annahme_datum|date:"d.m.Y" }}{% if z.letzter.begleitung %} mit {{ z.letzter.begleitung.anzeigename }}{% endif %}{% else %}noch keiner{% endif %}
-        · {% if z.warteschlange %}{{ z.warteschlange|length }} verdient, {% if z.warteschlange.0.einloesbar %}einlösbar{% else %}ab {{ z.warteschlange.0.einloesbar_ab|date:"d.m.Y" }}{% endif %}{% else %}nächster frühestens {{ z.naechster_moeglich|date:"d.m.Y" }}{% endif %}</span>
+      <span class="kachel__text">{% if z.letzter %}{% blocktranslate with am=z.letzter.annahme_datum|date:"SHORT_DATE_FORMAT" %}zuletzt {{ am }}{% endblocktranslate %}{% if z.letzter.begleitung %} {% blocktranslate with name=z.letzter.begleitung.anzeigename %}mit {{ name }}{% endblocktranslate %}{% endif %}{% else %}{% translate "noch keiner" %}{% endif %}
+        · {% if z.warteschlange %}{% blocktranslate with anzahl=z.warteschlange|length %}{{ anzahl }} verdient,{% endblocktranslate %} {% if z.warteschlange.0.einloesbar %}{% translate "einlösbar" %}{% else %}{% blocktranslate with ab=z.warteschlange.0.einloesbar_ab|date:"SHORT_DATE_FORMAT" %}ab {{ ab }}{% endblocktranslate %}{% endif %}{% else %}{% blocktranslate with datum=z.naechster_moeglich|date:"SHORT_DATE_FORMAT" %}nächster frühestens {{ datum }}{% endblocktranslate %}{% endif %}</span>
     </div>
   {% empty %}
-    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+    {% include "komponenten/leer.html" with icon="person" titel=_("Noch keine Kinder") text=_("Kinder legst du unter Familie an.") %}
   {% endfor %}
   {% url "sondertag:eltern" as st_url %}
-  {% include "komponenten/button.html" with href=st_url variante="geist" klein=True icon="geschenk" text="Sondertage verwalten" %}
+  {% include "komponenten/button.html" with href=st_url variante="geist" klein=True icon="geschenk" text=_("Sondertage verwalten") %}
   {% url "sondertag:prognose" as pg_url %}
-  {% include "komponenten/button.html" with href=pg_url variante="geist" klein=True icon="stern" text="Prognose" %}
+  {% include "komponenten/button.html" with href=pg_url variante="geist" klein=True icon="stern" text=_("Prognose") %}
 </div></article>

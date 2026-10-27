@@ -1,32 +1,32 @@
-{% comment %}Dashboard-Karte "Erledigt – kurz prüfen": Vertrauens-Aufgaben, die noch niemand durchgesehen hat.{% endcomment %}
+{% comment %}Dashboard-Karte "Erledigt – kurz prüfen": Vertrauens-Aufgaben, die noch niemand durchgesehen hat.{% endcomment %}{% load i18n sprache %}
 <article class="karte" id="pruefen" hx-target="#pruefen" hx-swap="outerHTML"><div class="karte__inhalt stapel">
   <div class="zeile">
-    <h2>Erledigt – kurz prüfen</h2>
+    <h2>{% translate "Erledigt – kurz prüfen" %}</h2>
     {% if k.liste %}<span class="chip">{{ k.liste|length }}</span>{% endif %}
   </div>
   {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art|default:"erfolg" text=hinweis %}{% endif %}
   {% for i in k.liste %}
     <div class="stapel pruef-eintrag" id="pruef-{{ i.pk }}">
       <div class="zeile">
-        <span class="reihe"><strong>{{ i.titel_snapshot }}</strong><span class="kachel__text">{{ i.kind.anzeigename }} · {{ i.bestaetigt_am|date:"D H:i" }}</span></span>
+        <span class="reihe"><strong>{{ i.titel_snapshot|uebersetzt }}</strong><span class="kachel__text">{{ i.kind.anzeigename }} · {{ i.bestaetigt_am|date:"D H:i" }}</span></span>
         {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
       </div>
       <form method="post" class="stapel" hx-disabled-elt="find button">{% csrf_token %}
-        <label class="feld"><span class="feld__label">Grund (für Nachbessern und Ablehnen nötig)</span>
+        <label class="feld"><span class="feld__label">{% translate "Grund (für Nachbessern und Ablehnen nötig)" %}</span>
           <input class="feld__eingabe" type="text" name="begruendung" maxlength="200"></label>
         <div class="reihe">
-          <button type="submit" class="knopf knopf--primaer knopf--klein" formaction="{% url 'aufgaben:pruefen_passt' i.pk %}" hx-post="{% url 'aufgaben:pruefen_passt' i.pk %}">{% include "komponenten/icon.html" with name="check" %}<span>Passt</span></button>
-          <button type="submit" class="knopf knopf--sekundaer knopf--klein" formaction="{% url 'aufgaben:pruefen_nachbessern' i.pk %}" hx-post="{% url 'aufgaben:pruefen_nachbessern' i.pk %}" hx-confirm="Zurück ans Kind? Die Punkte werden abgezogen.">{% include "komponenten/icon.html" with name="hammer" %}<span>Nachbessern</span></button>
-          <button type="submit" class="knopf knopf--sanft knopf--klein" formaction="{% url 'aufgaben:pruefen_ablehnen' i.pk %}" hx-post="{% url 'aufgaben:pruefen_ablehnen' i.pk %}" hx-confirm="Ablehnen? Die Punkte werden abgezogen.">{% include "komponenten/icon.html" with name="x" %}<span>Ablehnen</span></button>
+          <button type="submit" class="knopf knopf--primaer knopf--klein" formaction="{% url 'aufgaben:pruefen_passt' i.pk %}" hx-post="{% url 'aufgaben:pruefen_passt' i.pk %}">{% include "komponenten/icon.html" with name="check" %}<span>{% translate "Passt" %}</span></button>
+          <button type="submit" class="knopf knopf--sekundaer knopf--klein" formaction="{% url 'aufgaben:pruefen_nachbessern' i.pk %}" hx-post="{% url 'aufgaben:pruefen_nachbessern' i.pk %}" hx-confirm="{% translate "Zurück ans Kind? Die Punkte werden abgezogen." %}">{% include "komponenten/icon.html" with name="hammer" %}<span>{% translate "Nachbessern" %}</span></button>
+          <button type="submit" class="knopf knopf--sanft knopf--klein" formaction="{% url 'aufgaben:pruefen_ablehnen' i.pk %}" hx-post="{% url 'aufgaben:pruefen_ablehnen' i.pk %}" hx-confirm="{% translate "Ablehnen? Die Punkte werden abgezogen." %}">{% include "komponenten/icon.html" with name="x" %}<span>{% translate "Ablehnen" %}</span></button>
         </div>
       </form>
     </div>
   {% empty %}
-    <p class="kachel__text">Alles geprüft. Nichts offen.</p>
+    <p class="kachel__text">{% translate "Alles geprüft. Nichts offen." %}</p>
   {% endfor %}
   {% if k.liste|length > 1 %}
     <form method="post" action="{% url 'aufgaben:pruefen_alle' %}" hx-post="{% url 'aufgaben:pruefen_alle' %}">{% csrf_token %}
-      <button type="submit" class="knopf knopf--geist knopf--klein">{% include "komponenten/icon.html" with name="check" %}<span>Alle passen</span></button>
+      <button type="submit" class="knopf knopf--geist knopf--klein">{% include "komponenten/icon.html" with name="check" %}<span>{% translate "Alle passen" %}</span></button>
     </form>
   {% endif %}
 </div></article>

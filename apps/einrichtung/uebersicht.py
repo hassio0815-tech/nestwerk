@@ -7,17 +7,20 @@ behandeln einzelne Schlüssel; sie fehlen hier.
 import re
 from collections import defaultdict
 
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
+
 from apps.kern import einstellungen
 from apps.kern.einstellungen import Typ
 
 MODUL_TITEL = {
-    "allgemein": "Allgemein",
-    "konten": "Anmeldung und Sicherheit",
-    "punkte": "Punkte",
-    "aufgaben": "Aufgaben",
-    "belohnung": "Belohnungen und Taschengeld",
-    "benachrichtigung": "Benachrichtigungen",
-    "spielregeln": "Spielregeln",
+    "allgemein": gettext_lazy("Allgemein"),
+    "konten": gettext_lazy("Anmeldung und Sicherheit"),
+    "punkte": gettext_lazy("Punkte"),
+    "aufgaben": gettext_lazy("Aufgaben"),
+    "belohnung": gettext_lazy("Belohnungen und Taschengeld"),
+    "benachrichtigung": gettext_lazy("Benachrichtigungen"),
+    "spielregeln": gettext_lazy("Spielregeln"),
 }
 AUSGEBLENDETE_MODULE = {"einrichtung"}
 BEHANDELT = {
@@ -124,17 +127,17 @@ def _lesen(d, roh):
             try:
                 return [int(e) for e in eintraege]
             except ValueError:
-                raise ValueError("Ganze Zahlen erwartet") from None
+                raise ValueError(_("Ganze Zahlen erwartet")) from None
         return eintraege
     if d.typ is Typ.GANZZAHL:
         if not roh:
-            raise ValueError("Bitte ausfüllen")
+            raise ValueError(_("Bitte ausfüllen"))
         try:
             return int(roh)
         except ValueError:
-            raise ValueError("Ganze Zahl erwartet") from None
+            raise ValueError(_("Ganze Zahl erwartet")) from None
     if not roh and d.typ is not Typ.TEXT:
-        raise ValueError("Bitte ausfüllen")
+        raise ValueError(_("Bitte ausfüllen"))
     return roh
 
 

@@ -1,12 +1,14 @@
-{% comment %}Figurenname mit kleinem Stift zum Ändern (HTMX, ohne Skript: details/summary).{% endcomment %}
+{% load i18n %}{% comment %}Figurenname mit kleinem Stift zum Ändern (HTMX, ohne Skript: details/summary).{% endcomment %}
 <div class="avatar-name" id="avatar-name">
   <span class="avatar-name__text" data-avatar-name><strong>{{ name }}</strong></span>
   <details class="avatar-name__bearbeiten"{% if fehler %} open{% endif %}>
-    <summary class="knopf knopf--geist knopf--klein" aria-label="Namen ändern">{% include "komponenten/icon.html" with name="stift" %}</summary>
+    <summary class="knopf knopf--geist knopf--klein" aria-label="{% translate "Namen ändern" %}">{% include "komponenten/icon.html" with name="stift" %}</summary>
     <form method="post" action="{% url 'avatar:name' %}" hx-post="{% url 'avatar:name' %}" hx-target="#avatar-name" hx-swap="outerHTML" class="reihe">{% csrf_token %}
-      <label class="sr-only" for="avatar-name-eingabe">Name deiner Figur</label>
-      <input id="avatar-name-eingabe" class="feld__eingabe nw-eingabe" type="text" name="name" maxlength="20" value="{{ eingabe|default:'' }}" placeholder="Name (leer = {{ standard|default:'dein Name' }})" autocomplete="off">
-      {% include "komponenten/button.html" with typ="submit" variante="primaer" klein=True icon="check" text="Speichern" %}
+      <label class="sr-only" for="avatar-name-eingabe">{% translate "Name deiner Figur" %}</label>
+      {% translate "dein Name" as dein_name %}
+      {% blocktranslate with std=standard|default:dein_name asvar platzhalter %}Name (leer = {{ std }}){% endblocktranslate %}
+      <input id="avatar-name-eingabe" class="feld__eingabe nw-eingabe" type="text" name="name" maxlength="20" value="{{ eingabe|default:'' }}" placeholder="{{ platzhalter }}" autocomplete="off">
+      {% include "komponenten/button.html" with typ="submit" variante="primaer" klein=True icon="check" text=_("Speichern") %}
     </form>
     {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
   </details>

@@ -1,13 +1,13 @@
 {% extends "basis/einstellungen.html" %}
-{% load static avatar_tags %}
-{% block titel %}Ruhmeshalle{% endblock %}
+{% load i18n static avatar_tags %}
+{% block titel %}{% translate "Ruhmeshalle" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}"><link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
 {% endblock %}
 {% block seite %}
-  <h1>Ruhmeshalle</h1>
+  <h1>{% translate "Ruhmeshalle" %}</h1>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
   {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung icon="check" %}{% endif %}
   {% for g in gruppen %}
@@ -18,15 +18,15 @@
           <div class="stapel">
             {% include "avatar/_held.html" %}
             <form method="post" action="{% url 'avatar:halle_widmung' e.pk %}" class="halle-widmung">{% csrf_token %}
-              <label for="widmung-{{ e.pk }}">Widmung (höchstens 140 Zeichen)</label>
+              <label for="widmung-{{ e.pk }}">{% translate "Widmung (höchstens 140 Zeichen)" %}</label>
               <textarea id="widmung-{{ e.pk }}" name="widmung" maxlength="140" rows="2">{{ e.widmung }}</textarea>
-              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Widmung speichern" %}
+              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Widmung speichern") %}
             </form>
           </div>
         {% endfor %}
       </div>
     </section>
   {% empty %}
-    {% include "komponenten/leer.html" with titel="Noch kein Held" text="Sobald ein Kind seinen Avatar fertig ausgebaut hat, erscheint er hier." icon="pokal" %}
+    {% include "komponenten/leer.html" with titel=_("Noch kein Held") text=_("Sobald ein Kind seinen Avatar fertig ausgebaut hat, erscheint er hier.") icon="pokal" %}
   {% endfor %}
 {% endblock %}

@@ -1,0 +1,457 @@
+# English translation for Nestwerk.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 04:59+0000\n"
+"PO-Revision-Date: 2026-10-26 00:00+0000\n"
+"Last-Translator: Nestwerk\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: einstellungen.py:14
+msgid "Taschengeld-Limit pro Monat und Kind"
+msgstr "Pocket money limit per month and child"
+
+#: einstellungen.py:16
+msgid ""
+"Gilt für alle Kinder ohne eigenes Limit. Bestätigte und offene Anträge des "
+"Kalendermonats zählen."
+msgstr ""
+"Applies to all kids without their own limit. Approved and pending requests "
+"in the calendar month count."
+
+#: events.py:17
+msgid "Belohnung beantragt"
+msgstr "Reward requested"
+
+#: events.py:26
+msgid "Belohnung bestätigt"
+msgstr "Reward approved"
+
+#: events.py:34
+msgid "Belohnung abgelehnt"
+msgstr "Reward declined"
+
+#: events.py:45
+msgid "Belohnung bestätigt!"
+msgstr "Reward approved!"
+
+#: events.py:46
+#, python-brace-format
+msgid "„{belohnung}“ wurde bestätigt. Viel Spaß!"
+msgstr "“{belohnung}” was approved. Have fun!"
+
+#: events.py:50
+msgid "Belohnung nicht bewilligt"
+msgstr "Reward not granted"
+
+#: events.py:51
+#, python-brace-format
+msgid "„{belohnung}“ wurde diesmal abgelehnt. Deine Punkte bleiben."
+msgstr "“{belohnung}” was declined this time. You keep your points."
+
+#: forms.py:40
+msgid "Bitte einen Betrag wie 2,50 eingeben."
+msgstr "Please enter an amount like 2.50."
+
+#: forms.py:44
+#, python-format
+msgid "Betrag zwischen 0 und %(max)s € in Cent-Schritten."
+msgstr "Amount between 0 and %(max)s € in steps of one cent."
+
+#: forms.py:51
+msgid "Betrag in €"
+msgstr "Amount in €"
+
+#: forms.py:51
+msgid "Nur bei Taschengeld."
+msgstr "Only for pocket money."
+
+#: forms.py:53
+msgid "wie Kategorie"
+msgstr "same as category"
+
+#: forms.py:53 forms.py:93
+msgid "Symbol"
+msgstr "Icon"
+
+#: forms.py:59
+msgid "Preis in Punkten"
+msgstr "Price in points"
+
+#: forms.py:59
+msgid "Reihenfolge"
+msgstr "Order"
+
+#: forms.py:75
+msgid "Der Preis muss mindestens 1 Punkt sein."
+msgstr "The price must be at least 1 point."
+
+#: forms.py:84 models.py:84
+msgid "Nur Taschengeld hat einen Betrag."
+msgstr "Only pocket money has an amount."
+
+#: forms.py:86 models.py:81
+msgid "Taschengeld braucht einen Betrag."
+msgstr "Pocket money needs an amount."
+
+#: forms.py:108
+msgid "Standard-Limit pro Monat und Kind (€)"
+msgstr "Default limit per month and child (€)"
+
+#: forms.py:119
+msgid "Eigenes Limit (€)"
+msgstr "Own limit (€)"
+
+#: models.py:17
+#, python-format
+msgid "%(euro)s,%(cent)02d €"
+msgstr "€%(euro)s.%(cent)02d"
+
+#: models.py:24
+msgid "Feste Kennung; 'taschengeld' aktiviert die Limit-Logik."
+msgstr "Fixed key; 'taschengeld' turns on the limit logic."
+
+#: models.py:30
+msgid "Belohnungskategorie"
+msgstr "Reward category"
+
+#: models.py:31
+msgid "Belohnungskategorien"
+msgstr "Reward categories"
+
+#: models.py:55
+msgid "Nur Taschengeld: Betrag in Cent."
+msgstr "Pocket money only: amount in cents."
+
+#: models.py:63
+msgid "Belohnung"
+msgstr "Reward"
+
+#: models.py:64 templates/belohnung/_kind_inhalt.html:2
+#: templates/belohnung/basis.html:6 templates/belohnung/kind.html:4
+msgid "Belohnungen"
+msgstr "Rewards"
+
+#: models.py:88
+msgid "Offen"
+msgstr "Pending"
+
+#: models.py:89
+msgid "Bestätigt"
+msgstr "Approved"
+
+#: models.py:90
+msgid "Abgelehnt"
+msgstr "Declined"
+
+#: models.py:91
+msgid "Zurückgezogen"
+msgstr "Withdrawn"
+
+#: models.py:119
+msgid "Einlöseantrag"
+msgstr "Redeem request"
+
+#: models.py:120
+msgid "Einlöseanträge"
+msgstr "Redeem requests"
+
+#: models.py:149 templates/belohnung/katalog.html:15
+msgid "Taschengeld-Limit"
+msgstr "Pocket money limit"
+
+#: models.py:150
+msgid "Taschengeld-Limits"
+msgstr "Pocket money limits"
+
+#: services.py:76
+msgid "Diese Belohnung gibt es gerade nicht."
+msgstr "This reward is not available right now."
+
+#: services.py:82
+#, python-format
+msgid "Dafür fehlt dir noch %(punkte)s Punkt."
+msgid_plural "Dafür fehlen dir noch %(punkte)s Punkte."
+msgstr[0] "You still need %(punkte)s more point for that."
+msgstr[1] "You still need %(punkte)s more points for that."
+
+#: services.py:92
+#, python-format
+msgid ""
+"Das Taschengeld-Limit für diesen Monat ist erreicht (noch frei: %(frei)s)."
+msgstr ""
+"The pocket money limit for this month is reached (still free: %(frei)s)."
+
+#: services.py:144
+#, python-format
+msgid "%(name)s hat nicht mehr genug Punkte für diese Belohnung."
+msgstr "%(name)s does not have enough points for this reward any more."
+
+#: services.py:243
+#, python-format
+msgid "Der Antrag ist schon %(status)s."
+msgstr "The request is already %(status)s."
+
+#: startwerte.py:10 startwerte.py:19 startwerte.py:20
+msgid "Süßes"
+msgstr "Sweets"
+
+#: startwerte.py:11 startwerte.py:21
+msgid "Fernsehzeit"
+msgstr "TV time"
+
+#: startwerte.py:12 startwerte.py:22 startwerte.py:23
+msgid "Gaming/Computer"
+msgstr "Gaming/Computer"
+
+#: startwerte.py:13 startwerte.py:24
+msgid "Taschengeld"
+msgstr "Pocket money"
+
+#: startwerte.py:14
+msgid "Sonstiges"
+msgstr "Other"
+
+#: startwerte.py:19
+msgid "Süßes klein"
+msgstr "Sweets (small)"
+
+#: startwerte.py:20
+msgid "Süßes groß"
+msgstr "Sweets (big)"
+
+#: startwerte.py:21
+msgid "30 Min Fernsehen"
+msgstr "30 min TV"
+
+#: startwerte.py:22
+msgid "30 Min Konsole"
+msgstr "30 min console"
+
+#: startwerte.py:23
+msgid "30 Min PC"
+msgstr "30 min PC"
+
+#: startwerte.py:24
+msgid "1 € Taschengeld"
+msgstr "€1 pocket money"
+
+#: symbole.py:6
+msgid "Geschenk"
+msgstr "Gift"
+
+#: symbole.py:7
+msgid "Fernseher"
+msgstr "TV"
+
+#: symbole.py:8
+msgid "Spielcontroller"
+msgstr "Game controller"
+
+#: symbole.py:9
+msgid "Uhr"
+msgstr "Clock"
+
+#: symbole.py:10
+msgid "Funke"
+msgstr "Spark"
+
+#: symbole.py:11
+msgid "Münze"
+msgstr "Coin"
+
+#: symbole.py:12
+msgid "Stern"
+msgstr "Star"
+
+#: symbole.py:13
+msgid "Pokal"
+msgstr "Trophy"
+
+#: symbole.py:14
+msgid "Sonne"
+msgstr "Sun"
+
+#: symbole.py:15
+msgid "Mond"
+msgstr "Moon"
+
+#: templates/belohnung/_antrag_zeile.html:7
+#, python-format
+msgid "Guthaben: %(guthaben)s P"
+msgstr "Balance: %(guthaben)s pts"
+
+#: templates/belohnung/_antrag_zeile.html:17
+msgid "Bestätigen"
+msgstr "Approve"
+
+#: templates/belohnung/_antrag_zeile.html:21
+msgid "Grund (optional)"
+msgstr "Reason (optional)"
+
+#: templates/belohnung/_antrag_zeile.html:21
+msgid "Grund"
+msgstr "Reason"
+
+#: templates/belohnung/_antrag_zeile.html:22
+msgid "Ablehnen"
+msgstr "Decline"
+
+#: templates/belohnung/_einloesen.html:4
+msgid "Punkte einlösen"
+msgstr "Redeem points"
+
+#: templates/belohnung/_einloesen.html:11
+#, python-format
+msgid "%(titel)s für %(preis)s Punkt beantragen?"
+msgid_plural "%(titel)s für %(preis)s Punkte beantragen?"
+msgstr[0] "Ask for %(titel)s for %(preis)s point?"
+msgstr[1] "Ask for %(titel)s for %(preis)s points?"
+
+#: templates/belohnung/_einloesen.html:17
+#: templates/belohnung/_kind_inhalt.html:18
+#, python-format
+msgid "%(n)s Punkt"
+msgid_plural "%(n)s Punkte"
+msgstr[0] "%(n)s point"
+msgstr[1] "%(n)s points"
+
+#: templates/belohnung/_einloesen.html:21
+#: templates/belohnung/_kind_inhalt.html:22
+msgid "Noch keine Belohnungen"
+msgstr "No rewards yet"
+
+#: templates/belohnung/_einloesen.html:21
+#: templates/belohnung/_kind_inhalt.html:22
+msgid "Mama und Papa legen sie an."
+msgstr "Mum and Dad add them."
+
+#: templates/belohnung/_einloesen.html:25
+msgid "Alle Belohnungen und Anträge"
+msgstr "All rewards and requests"
+
+#: templates/belohnung/_formular.html:8 templates/belohnung/katalog.html:19
+#: templates/belohnung/katalog.html:26
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/belohnung/_formular.html:9
+msgid "Abbrechen"
+msgstr "Cancel"
+
+#: templates/belohnung/_kind_inhalt.html:4
+msgid "Verfügbar"
+msgstr "Available"
+
+#: templates/belohnung/_kind_inhalt.html:26
+msgid "Meine Anträge"
+msgstr "My requests"
+
+#: templates/belohnung/_kind_inhalt.html:41
+msgid "Zurückziehen"
+msgstr "Withdraw"
+
+#: templates/belohnung/_kind_inhalt.html:46
+msgid "Noch nichts beantragt."
+msgstr "Nothing requested yet."
+
+#: templates/belohnung/_zeile.html:6
+msgid "Inaktiv"
+msgstr "Inactive"
+
+#: templates/belohnung/_zeile.html:12
+msgid "Bearbeiten"
+msgstr "Edit"
+
+#: templates/belohnung/_zeile.html:16
+msgid "Deaktivieren"
+msgstr "Turn off"
+
+#: templates/belohnung/_zeile.html:16
+msgid "Aktivieren"
+msgstr "Turn on"
+
+#: templates/belohnung/antraege.html:3
+msgid "Belohnungs-Anträge"
+msgstr "Reward requests"
+
+#: templates/belohnung/antraege.html:5
+msgid "Offene Anträge"
+msgstr "Pending requests"
+
+#: templates/belohnung/antraege.html:8
+msgid "Nichts offen"
+msgstr "Nothing pending"
+
+#: templates/belohnung/antraege.html:8
+msgid "Alle Anträge sind entschieden."
+msgstr "All requests have been decided."
+
+#: templates/belohnung/antraege.html:12
+msgid "Zuletzt entschieden"
+msgstr "Decided recently"
+
+#: templates/belohnung/basis.html:8
+msgid "Anträge"
+msgstr "Requests"
+
+#: templates/belohnung/basis.html:9 templates/belohnung/katalog.html:6
+msgid "Katalog"
+msgstr "Catalog"
+
+#: templates/belohnung/katalog.html:3
+msgid "Belohnungskatalog"
+msgstr "Reward catalog"
+
+#: templates/belohnung/katalog.html:8 views.py:207
+msgid "Neue Belohnung"
+msgstr "New reward"
+
+#: templates/belohnung/katalog.html:24
+#, python-format
+msgid "aktuell %(limit)s"
+msgstr "now %(limit)s"
+
+#: templates/belohnung/katalog.html:29
+msgid ""
+"Eigenes Limit leer lassen = Standard. Bestätigte und offene Anträge des "
+"Kalendermonats zählen."
+msgstr ""
+"Leave the own limit empty = default. Approved and pending requests in the "
+"calendar month count."
+
+#: templates/belohnung/kind.html:8
+msgid "Start"
+msgstr "Home"
+
+#: views.py:37
+#, python-format
+msgid "Noch %(punkte)s Punkt"
+msgid_plural "Noch %(punkte)s Punkte"
+msgstr[0] "%(punkte)s more point needed"
+msgstr[1] "%(punkte)s more points needed"
+
+#: views.py:41
+msgid "Monatslimit erreicht"
+msgstr "Monthly limit reached"
+
+#: views.py:84
+#, python-format
+msgid "Antrag für „%(titel)s“ ist raus. Mama oder Papa schauen drauf."
+msgstr ""
+"Your request for “%(titel)s” is on its way. Mum or Dad will take a look."
+
+#: views.py:102
+msgid "Antrag zurückgezogen."
+msgstr "Request withdrawn."
+
+#: views.py:221
+msgid "Belohnung bearbeiten"
+msgstr "Edit reward"

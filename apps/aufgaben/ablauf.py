@@ -31,8 +31,10 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from django.db.models import Q
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
@@ -147,31 +149,35 @@ def _protokoll(aktion, instanz, *, akteur, kind=None, **details):
     )
 
 
-def _text(wert, grenze, name="Text") -> str:
+def _text(wert, grenze, name=None) -> str:
+    name = name or _("Text")
     wert = (wert or "").strip()
     if len(wert) > grenze:
-        raise AblaufFehler(f"{name} ist zu lang (höchstens {grenze} Zeichen).")
+        raise AblaufFehler(
+            _("%(name)s ist zu lang (höchstens %(grenze)s Zeichen).")
+            % {"name": name, "grenze": grenze}
+        )
     return wert
 
 
 def _ist_kind(kind):
     if getattr(kind, "rolle", None) != "kind":
-        raise NichtErlaubt("Nur Kinder können Aufgaben übernehmen.")
+        raise NichtErlaubt(_("Nur Kinder können Aufgaben übernehmen."))
 
 
 def _ist_eltern(von):
     if getattr(von, "rolle", None) != "eltern":
-        raise NichtErlaubt("Nur Eltern können das entscheiden.")
+        raise NichtErlaubt(_("Nur Eltern können das entscheiden."))
 
 
 def _sichtbar_fuer(instanz, kind, jetzt) -> None:
     aufgabe = instanz.aufgabe
     if aufgabe.status != Status.AKTIV:
-        raise AblaufFehler("Diese Aufgabe ist gerade pausiert oder beendet.")
+        raise AblaufFehler(_("Diese Aufgabe ist gerade pausiert oder beendet."))
     if aufgabe.zugewiesen_an_id and aufgabe.zugewiesen_an_id != kind.pk:
-        raise NichtErlaubt("Diese Aufgabe ist für ein anderes Kind.")
+        raise NichtErlaubt(_("Diese Aufgabe ist für ein anderes Kind."))
     if instanz.fenster_ende is not None and instanz.fenster_ende <= jetzt:
-        raise AblaufFehler("Die Zeit für diese Aufgabe ist vorbei.")
+        raise AblaufFehler(_("Die Zeit für diese Aufgabe ist vorbei."))
 
 
 def _interessen(instanz, *status):
@@ -185,7 +191,7 @@ def _interesse_setzen(qs, status, *, von=None, jetzt):
 def _offene_meldung(instanz) -> Meldung:
     meldung = Meldung.objects.filter(instanz=instanz, status__in=MELDUNG_LAUFEND).first()
     if meldung is None:  # pragma: no cover - Konsistenz: gemeldet ohne Meldung
-        raise UngueltigerUebergang("Zu dieser Aufgabe gibt es keine offene Meldung.")
+        raise UngueltigerUebergang(_("Zu dieser Aufgabe gibt es keine offene Meldung."))
     return meldung
 
 
@@ -234,15 +240,23 @@ def limit_stand(aufgabe, kind, *, jetzt=None) -> tuple[int, int] | None:
     return laufend + erledigt, aufgabe.limit_anzahl
 
 
-_ZEITRAUM_TEXT = {"tag": "pro Tag", "woche": "pro Woche", "monat": "pro Monat"}
+_ZEITRAUM_TEXT = {
+    "tag": gettext_lazy("pro Tag"),
+    "woche": gettext_lazy("pro Woche"),
+    "monat": gettext_lazy("pro Monat"),
+}
 
 
 def _limit_pruefen(aufgabe, kind, jetzt):
     stand = limit_stand(aufgabe, kind, jetzt=jetzt)
     if stand is not None and stand[0] >= stand[1]:
         raise LimitErreicht(
-            f"„{aufgabe.titel}“ geht höchstens {stand[1]}× "
-            f"{_ZEITRAUM_TEXT[aufgabe.limit_zeitraum]}. Such dir eine andere Aufgabe aus!"
+            _("„%(titel)s“ geht höchstens %(n)s× %(zeitraum)s. Such dir eine andere Aufgabe aus!")
+            % {
+                "titel": aufgabe.titel,
+                "n": stand[1],
+                "zeitraum": _ZEITRAUM_TEXT[aufgabe.limit_zeitraum],
+            }
         )
 
 
@@ -263,7 +277,7 @@ def interesse_zeigen(instanz, kind, *, jetzt=None) -> AufgabenInstanz:
     instanz = _laden(instanz)
     _sichtbar_fuer(instanz, kind, jetzt)
     if _interessen(instanz).filter(kind=kind).exists():
-        raise AblaufFehler("Du hast diese Aufgabe schon gewählt.")
+        raise AblaufFehler(_("Du hast diese Aufgabe schon gewählt."))
     _limit_pruefen(instanz.aufgabe, kind, jetzt)
 
     if instanz.status == S.OFFEN:
@@ -312,7 +326,7 @@ def interesse_zeigen(instanz, kind, *, jetzt=None) -> AufgabenInstanz:
         _protokoll("aufgabe.interesse", instanz, akteur=kind, kind=kind, ergebnis="konflikt")
         return instanz
 
-    raise UngueltigerUebergang("Diese Aufgabe ist nicht mehr frei.")
+    raise UngueltigerUebergang(_("Diese Aufgabe ist nicht mehr frei."))
 
 
 @transaction.atomic
@@ -325,7 +339,7 @@ def zurueckgeben(instanz, kind, *, jetzt=None) -> AufgabenInstanz:
     instanz = _laden(instanz)
     eigenes = _interessen(instanz).filter(kind=kind)
     if not eigenes.exists():
-        raise NichtErlaubt("Diese Aufgabe hast du nicht gewählt.")
+        raise NichtErlaubt(_("Diese Aufgabe hast du nicht gewählt."))
 
     if instanz.status == S.RESERVIERT:
         uebergang(
@@ -351,7 +365,7 @@ def zurueckgeben(instanz, kind, *, jetzt=None) -> AufgabenInstanz:
             _reservieren_nach_konflikt(instanz, uebrig[0], von=None, jetzt=jetzt)
         return instanz
 
-    raise UngueltigerUebergang("Diese Aufgabe kannst du nicht mehr zurückgeben.")
+    raise UngueltigerUebergang(_("Diese Aufgabe kannst du nicht mehr zurückgeben."))
 
 
 def _reservieren_nach_konflikt(instanz, interesse, *, von, jetzt):
@@ -391,10 +405,10 @@ def zuteilen(instanz, kind, *, von, jetzt=None) -> AufgabenInstanz:
     _ist_eltern(von)
     instanz = _laden(instanz)
     if instanz.status != S.KONFLIKT:
-        raise UngueltigerUebergang("Hier gibt es nichts mehr zuzuteilen.")
+        raise UngueltigerUebergang(_("Hier gibt es nichts mehr zuzuteilen."))
     interesse = _interessen(instanz, I.AKTIV).filter(kind=kind).select_related("kind").first()
     if interesse is None:
-        raise AblaufFehler("Dieses Kind hat die Aufgabe nicht gewählt.")
+        raise AblaufFehler(_("Dieses Kind hat die Aufgabe nicht gewählt."))
     _reservieren_nach_konflikt(instanz, interesse, von=von, jetzt=jetzt)
     _protokoll("aufgabe.zugeteilt", instanz, akteur=von, kind=kind)
     return instanz
@@ -407,7 +421,7 @@ def reservierung_loesen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
     _ist_eltern(von)
     instanz = _laden(instanz)
     if instanz.status not in (S.RESERVIERT, S.KONFLIKT):
-        raise UngueltigerUebergang("Diese Aufgabe ist nicht (mehr) reserviert.")
+        raise UngueltigerUebergang(_("Diese Aufgabe ist nicht (mehr) reserviert."))
     betroffene = [i.kind for i in _interessen(instanz).select_related("kind")]
     uebergang(instanz, S.OFFEN, kind=None, reserviert_bis=None, erinnert_am=None)
     _interesse_setzen(_interessen(instanz), I.VERDRAENGT, von=von, jetzt=jetzt)
@@ -436,7 +450,7 @@ def _nachweise_speichern(meldung, fotos, *, neu=False):
     if not fotos and not neu:
         return
     if fotos and not _nachweis_speicher:
-        raise AblaufFehler("Fotos können noch nicht hochgeladen werden.")
+        raise AblaufFehler(_("Fotos können noch nicht hochgeladen werden."))
     for speicher in _nachweis_speicher:
         speicher(meldung, fotos, neu=neu)
 
@@ -454,11 +468,15 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
     text = _text(text, MELDUNG_TEXT_MAX)
     instanz = _laden(instanz)
     if instanz.status not in (S.RESERVIERT, S.NACHBESSERN):
-        raise UngueltigerUebergang("Diese Aufgabe ist nicht (mehr) für dich reserviert.")
-    if instanz.status == S.NACHBESSERN and instanz.nachbessern_bis and instanz.nachbessern_bis <= jetzt:
-        raise UngueltigerUebergang("Die Frist zum Nachbessern ist vorbei.")
+        raise UngueltigerUebergang(_("Diese Aufgabe ist nicht (mehr) für dich reserviert."))
+    if (
+        instanz.status == S.NACHBESSERN
+        and instanz.nachbessern_bis
+        and instanz.nachbessern_bis <= jetzt
+    ):
+        raise UngueltigerUebergang(_("Die Frist zum Nachbessern ist vorbei."))
     if instanz.kind_id != kind.pk:
-        raise NichtErlaubt("Diese Aufgabe ist für ein anderes Kind reserviert.")
+        raise NichtErlaubt(_("Diese Aufgabe ist für ein anderes Kind reserviert."))
     gemeldet_am = instanz.gemeldet_am or jetzt
 
     nachbessern = instanz.status == S.NACHBESSERN  # einmal Bestätigung, auch bei Vertrauen
@@ -488,7 +506,7 @@ def erledigt_melden(instanz, kind, *, text="", fotos: Sequence = (), jetzt=None)
         return instanz
 
     if instanz.freigabeart_snapshot == Freigabeart.NACHWEIS and not (text or fotos):
-        raise AblaufFehler("Schreib kurz, was du gemacht hast, oder füge ein Foto hinzu.")
+        raise AblaufFehler(_("Schreib kurz, was du gemacht hast, oder füge ein Foto hinzu."))
     uebergang(
         instanz,
         S.GEMELDET,
@@ -519,7 +537,7 @@ def rueckfrage_beantworten(instanz, kind, *, text="", fotos: Sequence = (), jetz
     text = _text(text, MELDUNG_TEXT_MAX, "Antwort")
     instanz = _laden(instanz)
     if instanz.kind_id != kind.pk:
-        raise NichtErlaubt("Das ist nicht deine Aufgabe.")
+        raise NichtErlaubt(_("Das ist nicht deine Aufgabe."))
     uebergang(instanz, S.GEMELDET, von=S.RUECKFRAGE, bedingung={"kind": kind})
     meldung = _offene_meldung(instanz)
     meldung.status = MeldungStatus.OFFEN
@@ -632,7 +650,7 @@ def bestaetigen(instanz, *, von, sonderpunkte=0, begruendung="", jetzt=None):
     _ist_eltern(von)
     instanz = _laden(instanz)
     if instanz.status not in (S.GEMELDET, S.RUECKFRAGE):
-        raise UngueltigerUebergang("Diese Meldung ist schon entschieden.")
+        raise UngueltigerUebergang(_("Diese Meldung ist schon entschieden."))
     if sonderpunkte:
         _sonderpunkte_pruefen(instanz, sonderpunkte, begruendung)
     uebergang(
@@ -660,7 +678,7 @@ def ablehnen(instanz, *, von, begruendung="", jetzt=None):
     """Eltern lehnen ab (Endzustand, keine Punkte, keine Strafe); Nachweis gelöscht."""
     jetzt = jetzt or zeit.jetzt()
     _ist_eltern(von)
-    begruendung = _text(begruendung, BEGRUENDUNG_MAX, "Begründung")
+    begruendung = _text(begruendung, BEGRUENDUNG_MAX, _("Begründung"))
     instanz = _laden(instanz)
     uebergang(instanz, S.ABGELEHNT, von=(S.GEMELDET, S.RUECKFRAGE), abgeschlossen_am=jetzt)
     _meldung_abschliessen(instanz, MeldungStatus.ABGELEHNT, von=von, jetzt=jetzt)
@@ -679,9 +697,9 @@ def rueckfrage_stellen(instanz, *, von, text, jetzt=None):
     """Eltern fragen nach (``gemeldet`` -> ``rueckfrage``). Der Text ist Teil der Meldung und
     wird beim Abschluss gelöscht (nicht im Ereignis/Audit)."""
     _ist_eltern(von)
-    text = _text(text, RUECKFRAGE_MAX, "Rückfrage")
+    text = _text(text, RUECKFRAGE_MAX, _("Rückfrage"))
     if not text:
-        raise AblaufFehler("Bitte die Rückfrage eingeben.")
+        raise AblaufFehler(_("Bitte die Rückfrage eingeben."))
     instanz = _laden(instanz)
     uebergang(instanz, S.RUECKFRAGE, von=S.GEMELDET)
     meldung = _offene_meldung(instanz)
@@ -718,22 +736,24 @@ def sonderpunkte_deckel(instanz) -> int | None:
 
 def _sonderpunkte_pruefen(instanz, punktzahl, begruendung):
     if isinstance(punktzahl, bool) or not isinstance(punktzahl, int) or punktzahl <= 0:
-        raise AblaufFehler("Sonderpunkte: bitte eine ganze Zahl größer 0.")
-    if not _text(begruendung, BEGRUENDUNG_MAX, "Begründung"):
-        raise AblaufFehler("Sonderpunkte brauchen eine kurze Begründung.")
+        raise AblaufFehler(_("Sonderpunkte: bitte eine ganze Zahl größer 0."))
+    if not _text(begruendung, BEGRUENDUNG_MAX, _("Begründung")):
+        raise AblaufFehler(_("Sonderpunkte brauchen eine kurze Begründung."))
     if instanz.sonderpunkte:
-        raise AblaufFehler("Für diese Aufgabe gab es schon Sonderpunkte.")
+        raise AblaufFehler(_("Für diese Aufgabe gab es schon Sonderpunkte."))
     deckel = sonderpunkte_deckel(instanz)
     if deckel is not None and punktzahl > deckel:
-        raise AblaufFehler(f"Höchstens {deckel} Sonderpunkte für diese Aufgabe.")
+        raise AblaufFehler(
+            _("Höchstens %(deckel)s Sonderpunkte für diese Aufgabe.") % {"deckel": deckel}
+        )
 
 
 def _sonderpunkte_buchen(instanz, punktzahl, begruendung, *, von):
-    begruendung = _text(begruendung, BEGRUENDUNG_MAX, "Begründung")
+    begruendung = _text(begruendung, BEGRUENDUNG_MAX, _("Begründung"))
     if not AufgabenInstanz.objects.filter(
         pk=instanz.pk, status=S.BESTAETIGT, sonderpunkte=0
     ).update(sonderpunkte=punktzahl, sonderpunkte_begruendung=begruendung):
-        raise UngueltigerUebergang("Für diese Aufgabe gab es schon Sonderpunkte.")
+        raise UngueltigerUebergang(_("Für diese Aufgabe gab es schon Sonderpunkte."))
     instanz.sonderpunkte, instanz.sonderpunkte_begruendung = punktzahl, begruendung
     punkte.buchen(
         instanz.kind,
@@ -763,7 +783,7 @@ def sonderpunkte_vergeben(instanz, punktzahl, begruendung, *, von):
     _ist_eltern(von)
     instanz = _laden(instanz)
     if instanz.status != S.BESTAETIGT:
-        raise UngueltigerUebergang("Sonderpunkte gibt es nur für bestätigte Aufgaben.")
+        raise UngueltigerUebergang(_("Sonderpunkte gibt es nur für bestätigte Aufgaben."))
     _sonderpunkte_pruefen(instanz, punktzahl, begruendung)
     _sonderpunkte_buchen(instanz, punktzahl, begruendung, von=von)
     return instanz
@@ -783,9 +803,9 @@ def korrigieren(instanz, *, von, begruendung, jetzt=None, nachbessern=False):
       braucht Bestätigung; die Punkte werden mit neuen Schlüsseln (Runde +1) erneut gebucht."""
     jetzt = jetzt or zeit.jetzt()
     _ist_eltern(von)
-    begruendung = _text(begruendung, BEGRUENDUNG_MAX, "Begründung")
+    begruendung = _text(begruendung, BEGRUENDUNG_MAX, _("Begründung"))
     if not begruendung:
-        raise AblaufFehler("Bitte kurz begründen, warum korrigiert wird.")
+        raise AblaufFehler(_("Bitte kurz begründen, warum korrigiert wird."))
     instanz = _laden(instanz)
     runde = instanz.nachbessern_anzahl
     if nachbessern:
@@ -844,7 +864,13 @@ def nachbessern_pruefen(*, jetzt=None) -> dict:
     for pk in list(faellige.values_list("pk", flat=True)):
         instanz = AufgabenInstanz.objects.select_related("aufgabe", "kind").get(pk=pk)
         try:
-            uebergang(instanz, S.STORNIERT, von=S.NACHBESSERN, abgeschlossen_am=jetzt, nachbessern_bis=None)
+            uebergang(
+                instanz,
+                S.STORNIERT,
+                von=S.NACHBESSERN,
+                abgeschlossen_am=jetzt,
+                nachbessern_bis=None,
+            )
         except UngueltigerUebergang:
             continue
         ereignisse.veroeffentlichen(
@@ -863,17 +889,21 @@ def nachbessern_pruefen(*, jetzt=None) -> dict:
 
 def zu_pruefen():
     """Vertrauens-Erledigungen, die noch niemand durchgesehen hat (neueste zuletzt)."""
-    return AufgabenInstanz.objects.filter(
-        status=S.BESTAETIGT,
-        freigabeart_snapshot=Freigabeart.VERTRAUEN,
-        bestaetigt_von__isnull=True,
-        geprueft_am__isnull=True,
-    ).select_related("kind", "aufgabe").order_by("bestaetigt_am", "pk")
+    return (
+        AufgabenInstanz.objects.filter(
+            status=S.BESTAETIGT,
+            freigabeart_snapshot=Freigabeart.VERTRAUEN,
+            bestaetigt_von__isnull=True,
+            geprueft_am__isnull=True,
+        )
+        .select_related("kind", "aufgabe")
+        .order_by("bestaetigt_am", "pk")
+    )
 
 
 @transaction.atomic
 def passt(instanz, *, von, jetzt=None):
-    """"Passt": als geprüft markieren, Punkte bleiben."""
+    """ "Passt": als geprüft markieren, Punkte bleiben."""
     jetzt = jetzt or zeit.jetzt()
     _ist_eltern(von)
     instanz = _laden(instanz)
@@ -884,14 +914,14 @@ def passt(instanz, *, von, jetzt=None):
         geprueft_am__isnull=True,
     ).update(geprueft_am=jetzt, geprueft_von=von)
     if not treffer:
-        raise UngueltigerUebergang("Diese Aufgabe ist schon geprüft oder wurde geändert.")
+        raise UngueltigerUebergang(_("Diese Aufgabe ist schon geprüft oder wurde geändert."))
     _protokoll("aufgabe.geprueft", instanz, akteur=von)
     return instanz
 
 
 @transaction.atomic
 def alle_passen(*, von, jetzt=None):
-    """"Alle passen": jede offene Vertrauens-Erledigung als geprüft markieren. Gibt die Anzahl."""
+    """ "Alle passen": jede offene Vertrauens-Erledigung als geprüft markieren. Gibt die Anzahl."""
     anzahl = 0
     for instanz in list(zu_pruefen()):
         try:

@@ -9,6 +9,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
 from apps.konten import selectors as konten_selectors
@@ -162,9 +163,9 @@ def ruhezeit_speichern(request):
             if nr.isdigit() and 0 <= int(nr) <= 6:
                 maske |= 1 << int(nr)
         if von is None or bis is None:
-            fehler = "Bitte Uhrzeiten wie 21:00 eingeben."
+            fehler = _("Bitte Uhrzeiten wie 21:00 eingeben.")
         elif maske == 0:
-            fehler = "Bitte mindestens einen Wochentag wählen."
+            fehler = _("Bitte mindestens einen Wochentag wählen.")
         else:
             services.ruhezeit_setzen(
                 request.user,

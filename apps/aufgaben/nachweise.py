@@ -20,6 +20,8 @@ from pathlib import Path
 
 from django.conf import settings
 from django.db import transaction
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from apps.kern import audit, einstellungen
 
@@ -42,7 +44,9 @@ try:  # HEIC (iPhone) ist optional; ohne pillow-heif gibt es einen klaren Hinwei
 except ImportError:  # pragma: no cover - pillow-heif ist Abhängigkeit
     HEIC_MOEGLICH = False
 
-MELDUNG_KEIN_BILD = "Das ist kein Foto, das wir verwenden können. Bitte nimm ein neues Foto auf."
+MELDUNG_KEIN_BILD = gettext_lazy(
+    "Das ist kein Foto, das wir verwenden können. Bitte nimm ein neues Foto auf."
+)
 
 
 def wurzel() -> Path:
@@ -125,12 +129,14 @@ def bild_verarbeiten(datei) -> bytes:
                 breite, hoehe = probe.size
                 if format_ not in ERLAUBTE_FORMATE:
                     raise AblaufFehler(
-                        "Bitte ein Foto als JPEG, PNG, WebP oder HEIC senden."
+                        _("Bitte ein Foto als JPEG, PNG, WebP oder HEIC senden.")
                         if HEIC_MOEGLICH
-                        else "Bitte ein Foto als JPEG, PNG oder WebP senden."
+                        else _("Bitte ein Foto als JPEG, PNG oder WebP senden.")
                     )
                 if breite * hoehe > MAX_PIXEL:
-                    raise AblaufFehler("Das Foto hat zu viele Pixel. Bitte ein kleineres nehmen.")
+                    raise AblaufFehler(
+                        _("Das Foto hat zu viele Pixel. Bitte ein kleineres nehmen.")
+                    )
                 probe.verify()
             with Image.open(io.BytesIO(daten)) as bild:
                 bild.load()
@@ -149,7 +155,7 @@ def bild_verarbeiten(datei) -> bytes:
     except AblaufFehler:
         raise
     except (Image.DecompressionBombError, Image.DecompressionBombWarning):
-        raise AblaufFehler("Das Foto hat zu viele Pixel. Bitte ein kleineres nehmen.") from None
+        raise AblaufFehler(_("Das Foto hat zu viele Pixel. Bitte ein kleineres nehmen.")) from None
     except Exception:  # alles, was Pillow nicht als Bild akzeptiert (kaputt, Fremdformat)
         raise AblaufFehler(MELDUNG_KEIN_BILD) from None
     return ziel.getvalue()
@@ -193,7 +199,7 @@ def speichern(meldung, fotos, *, neu=False) -> None:
     except OSError:
         for datei in geschrieben:
             datei.unlink(missing_ok=True)
-        raise AblaufFehler("Das Foto konnte nicht gespeichert werden.") from None
+        raise AblaufFehler(_("Das Foto konnte nicht gespeichert werden.")) from None
 
 
 def _ordner_entfernen(meldung_id) -> int:

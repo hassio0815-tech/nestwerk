@@ -6,12 +6,14 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 
 class SmtpSicherheit(models.TextChoices):
-    STARTTLS = "starttls", "STARTTLS (Port 587)"
-    SSL = "ssl", "SSL/TLS (Port 465)"
-    KEINE = "keine", "Unverschlüsselt"
+    STARTTLS = "starttls", _("STARTTLS (Port 587)")
+    SSL = "ssl", _("SSL/TLS (Port 465)")
+    KEINE = "keine", _("Unverschlüsselt")
 
 
 class SmtpKonto(models.Model):
@@ -28,8 +30,8 @@ class SmtpKonto(models.Model):
     zuletzt_getestet_am = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "SMTP-Konto"
-        verbose_name_plural = "SMTP-Konto"
+        verbose_name = _("SMTP-Konto")
+        verbose_name_plural = _("SMTP-Konto")
         constraints = [models.CheckConstraint(condition=Q(id=1), name="benachr_smtp_id1")]
 
     def __str__(self):
@@ -43,11 +45,16 @@ class Kanal(models.Model):
     konfig = models.JSONField(default=dict, blank=True)
 
     class Meta:
-        verbose_name = "Kanal"
-        verbose_name_plural = "Kanäle"
+        verbose_name = _("Kanal")
+        verbose_name_plural = _("Kanäle")
 
     def __str__(self):
         return self.slug
+
+    @property
+    def anzeigename(self):
+        """Deutsche Bezeichnung als Msgid in der aktiven Sprache; geänderte Namen bleiben."""
+        return gettext(self.bezeichnung)
 
 
 class Praeferenz(models.Model):
@@ -64,8 +71,8 @@ class Praeferenz(models.Model):
     aktiv = models.BooleanField()
 
     class Meta:
-        verbose_name = "Präferenz"
-        verbose_name_plural = "Präferenzen"
+        verbose_name = _("Präferenz")
+        verbose_name_plural = _("Präferenzen")
         constraints = [
             models.UniqueConstraint(
                 fields=["benutzer", "ereignistyp", "kanal"], name="benachr_praeferenz_uniq"
@@ -81,14 +88,14 @@ class Ruhezeit(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+"
     )
     von = models.TimeField()
-    bis = models.TimeField(help_text="Kleiner als 'von' = über Mitternacht")
-    wochentage = models.SmallIntegerField(default=127, help_text="Bitmaske Mo=1 … So=64")
+    bis = models.TimeField(help_text=_("Kleiner als 'von' = über Mitternacht"))
+    wochentage = models.SmallIntegerField(default=127, help_text=_("Bitmaske Mo=1 … So=64"))
     gilt_fuer_email = models.BooleanField(default=False)
     aktiv = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Ruhezeit"
-        verbose_name_plural = "Ruhezeiten"
+        verbose_name = _("Ruhezeit")
+        verbose_name_plural = _("Ruhezeiten")
         constraints = [
             models.CheckConstraint(
                 condition=Q(wochentage__gte=1, wochentage__lte=127), name="benachr_ruhe_tage"
@@ -108,8 +115,8 @@ class BenachrichtigungsProfil(models.Model):
     mail_nur_entscheidungen = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = "Benachrichtigungsprofil"
-        verbose_name_plural = "Benachrichtigungsprofile"
+        verbose_name = _("Benachrichtigungsprofil")
+        verbose_name_plural = _("Benachrichtigungsprofile")
 
     def __str__(self):
         return f"Profil {self.benutzer_id}"
@@ -130,8 +137,8 @@ class Benachrichtigung(models.Model):
     gelesen_am = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Benachrichtigung"
-        verbose_name_plural = "Benachrichtigungen"
+        verbose_name = _("Benachrichtigung")
+        verbose_name_plural = _("Benachrichtigungen")
         ordering = ["-erstellt_am", "-id"]
         indexes = [
             models.Index(fields=["empfaenger", "gelesen_am"], name="benachr_empf_gelesen_idx")
@@ -166,21 +173,21 @@ class PushAbo(models.Model):
     aktiv = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Push-Abo"
-        verbose_name_plural = "Push-Abos"
+        verbose_name = _("Push-Abo")
+        verbose_name_plural = _("Push-Abos")
 
     def __str__(self):
         return f"{self.benutzer}: {self.bezeichnung or self.endpoint_hash[:8]}"
 
 
 class ZustellStatus(models.TextChoices):
-    OFFEN = "offen", "offen"
-    GESENDET = "gesendet", "gesendet"
-    UNTERDRUECKT_RUHEZEIT = "unterdrueckt_ruhezeit", "stumm (Ruhezeit)"
-    UNTERDRUECKT_PRAEFERENZ = "unterdrueckt_praeferenz", "abgeschaltet"
-    FEHLER = "fehler", "Fehler (Wiederholung geplant)"
-    AUFGEGEBEN = "aufgegeben", "aufgegeben"
-    NICHT_KONFIGURIERT = "nicht_konfiguriert", "Kanal nicht eingerichtet"
+    OFFEN = "offen", _("offen")
+    GESENDET = "gesendet", _("gesendet")
+    UNTERDRUECKT_RUHEZEIT = "unterdrueckt_ruhezeit", _("stumm (Ruhezeit)")
+    UNTERDRUECKT_PRAEFERENZ = "unterdrueckt_praeferenz", _("abgeschaltet")
+    FEHLER = "fehler", _("Fehler (Wiederholung geplant)")
+    AUFGEGEBEN = "aufgegeben", _("aufgegeben")
+    NICHT_KONFIGURIERT = "nicht_konfiguriert", _("Kanal nicht eingerichtet")
 
 
 class Zustellung(models.Model):
@@ -198,8 +205,8 @@ class Zustellung(models.Model):
     fehler = models.TextField(blank=True, default="")
 
     class Meta:
-        verbose_name = "Zustellung"
-        verbose_name_plural = "Zustellungen"
+        verbose_name = _("Zustellung")
+        verbose_name_plural = _("Zustellungen")
         indexes = [
             models.Index(fields=["status", "naechster_versuch"], name="benachr_zust_faellig")
         ]
@@ -228,15 +235,15 @@ class Popup(models.Model):
     benachrichtigung = models.OneToOneField(
         Benachrichtigung, on_delete=models.CASCADE, related_name="popup"
     )
-    art = models.CharField(max_length=80, help_text="Ereignistyp, steuert die Darstellung")
+    art = models.CharField(max_length=80, help_text=_("Ereignistyp, steuert die Darstellung"))
     titel = models.CharField(max_length=120)
     text = models.CharField(max_length=400, blank=True, default="")
     erstellt_am = models.DateTimeField(default=timezone.now)
     gesehen_am = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Pop-up"
-        verbose_name_plural = "Pop-ups"
+        verbose_name = _("Pop-up")
+        verbose_name_plural = _("Pop-ups")
         indexes = [models.Index(fields=["empfaenger", "gesehen_am"], name="benachr_popup_offen")]
 
     def __str__(self):

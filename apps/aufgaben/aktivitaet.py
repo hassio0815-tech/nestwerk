@@ -23,7 +23,9 @@ def erfassen(erledigung):
         erledigung.kind,
         erledigung.bezugsdatum,
         modul=MODUL,
-        referenz=schluessel.aktivitaet(erledigung.instanz.pk, erledigung.instanz.nachbessern_anzahl),
+        referenz=schluessel.aktivitaet(
+            erledigung.instanz.pk, erledigung.instanz.nachbessern_anzahl
+        ),
         erfasst_am=erledigung.bestaetigt_am,
     )
 

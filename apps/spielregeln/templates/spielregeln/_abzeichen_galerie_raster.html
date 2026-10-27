@@ -1,8 +1,9 @@
+{% load i18n sprache %}
 <ul class="abzeichen-liste">
   {% for z in zeilen %}{% for name, s in z.varianten %}
     <li class="abzeichen" data-galerie="{{ z.d.schluessel }}{% if name %}-{{ name|slugify }}{% endif %}">
       {% include "spielregeln/_abzeichen_symbol.html" with s=s %}
-      <span class="abzeichen__name">{{ z.d.name }}{% if name %} · {{ name }}{% endif %}{% if not z.d.aktiv %} (inaktiv){% endif %}</span>
+      <span class="abzeichen__name">{{ z.d.name|uebersetzt }}{% if name %} · {{ name }}{% endif %}{% if not z.d.aktiv %} ({% translate "inaktiv" %}){% endif %}</span>
     </li>
   {% endfor %}{% endfor %}
 </ul>

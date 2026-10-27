@@ -13,9 +13,13 @@ import math
 from dataclasses import dataclass, field
 from datetime import date
 
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
+
 from apps.kern import einstellungen, zeit
 from apps.kern.einstellungen import EinstellungFehler
 from apps.kern.registry import UnbekannterEintrag
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 from apps.spielregeln import registry as metriken
 from apps.spielregeln import selectors as spielregeln
@@ -96,7 +100,7 @@ def begleitung_optionen() -> list[dict]:
     for wert in (BegleitungWunsch.MAMA, BegleitungWunsch.PAPA):
         e = services.eltern_mit_label(wert)
         optionen.append({"wert": wert, "label": wert.label, "name": e.anzeigename if e else ""})
-    optionen.append({"wert": BegleitungWunsch.EGAL, "label": "egal", "name": ""})
+    optionen.append({"wert": BegleitungWunsch.EGAL, "label": _("egal"), "name": ""})
     return optionen
 
 
@@ -145,23 +149,21 @@ def _einstellung(schluessel, standard):
         return standard
 
 
-def _mehrzahl(n, eins, viele):
-    return f"{n} {eins if n == 1 else viele}"
-
-
 def noch_text(mods: int, wochen: int) -> str:
     teile = []
     if mods:
-        teile.append(_mehrzahl(mods, "Mod", "Mods"))
+        teile.append(ngettext("%(n)s Mod", "%(n)s Mods", mods) % {"n": mods})
     if wochen:
-        teile.append(_mehrzahl(wochen, "Woche", "Wochen"))
+        teile.append(ngettext("%(n)s Woche", "%(n)s Wochen", wochen) % {"n": wochen})
     if not teile:
-        return "Fast geschafft: dein nächster Sondertag kommt gleich!"
-    return "Noch " + " und ".join(teile) + " bis zum Sondertag"
+        return _("Fast geschafft: dein nächster Sondertag kommt gleich!")
+    if len(teile) == 2:
+        teile = [_("%(a)s und %(b)s") % {"a": teile[0], "b": teile[1]}]
+    return _("Noch %(teile)s bis zum Sondertag") % {"teile": teile[0]}
 
 
 def _rang_namen() -> dict[int, str]:
-    return {r.stufe: r.name for r in spielregeln.raenge()}
+    return {r.stufe: uebersetzt(r.name) for r in spielregeln.raenge()}
 
 
 def _kandidat_rang(kind, regel, namen) -> dict | None:
@@ -264,8 +266,11 @@ def _schritt_text(k, kind, heute) -> tuple[str, int]:
     """Text und Wochen für einen Kandidaten (inkl. Zeitbremse und Grenzen)."""
     if k["rang_ziel"]:
         return (
-            f"Ab Rang {k['rang_name']}: alle 6 Slots mit {k['rang_name']}-Mods bauen "
-            "bringt deinen nächsten Sondertag.",
+            _(
+                "Ab Rang %(rang)s: alle 6 Slots mit %(rang)s-Mods bauen "
+                "bringt deinen nächsten Sondertag."
+            )
+            % {"rang": k["rang_name"]},
             0,
         )
     pro_woche = max(1, int(_einstellung("avatar.max_zaehlende_mods_woche", 1)))
@@ -293,17 +298,19 @@ def fortschritt(kind, heute: date | None = None) -> Fortschritt:
     if liste:
         e = liste[0]
         if e.einloesbar and e.wunsch_offen:
-            art, text = "wunsch_offen", "Dein Wunsch ist bei Mama und Papa. Sie melden sich!"
+            art, text = "wunsch_offen", _("Dein Wunsch ist bei Mama und Papa. Sie melden sich!")
         elif e.einloesbar:
-            art, text = "einloesbar", "Sondertag verdient! Wünsch dir etwas."
+            art, text = "einloesbar", _("Sondertag verdient! Wünsch dir etwas.")
         elif e.wunsch_offen:
             art = "wunsch_offen"
-            text = (
-                f"Wunsch gesendet. Verdient, einlösbar ab {services.datum_text(e.einloesbar_ab)}."
-            )
+            text = _("Wunsch gesendet. Verdient, einlösbar ab %(datum)s.") % {
+                "datum": services.datum_text(e.einloesbar_ab)
+            }
         else:
             art = "verdient"
-            text = f"Sondertag verdient, einlösbar ab {services.datum_text(e.einloesbar_ab)}."
+            text = _("Sondertag verdient, einlösbar ab %(datum)s.") % {
+                "datum": services.datum_text(e.einloesbar_ab)
+            }
         weiter = ""
         if k is not None:
             weiter = _schritt_text(k, kind, heute)[0]
@@ -311,7 +318,7 @@ def fortschritt(kind, heute: date | None = None) -> Fortschritt:
             art, text, eintrag=e, warten=len(liste) - 1, bestaetigt=bestaetigt, weiter=weiter
         )
     if k is None:
-        return Fortschritt("keiner", "Alle Sondertage verdient. Stark!", bestaetigt=bestaetigt)
+        return Fortschritt("keiner", _("Alle Sondertage verdient. Stark!"), bestaetigt=bestaetigt)
     text, wochen = _schritt_text(k, kind, heute)
     return Fortschritt(
         "ab_rang" if k["rang_ziel"] else "unterwegs",
@@ -321,7 +328,7 @@ def fortschritt(kind, heute: date | None = None) -> Fortschritt:
         mods_ziel=k["mods_ziel"],
         mods_ist=k["mods_ist"],
         bestaetigt=bestaetigt,
-        extra={"zyklus": k.get("zyklus"), "regel": k["regel"].name},
+        extra={"zyklus": k.get("zyklus"), "regel": uebersetzt(k["regel"].name)},
     )
 
 

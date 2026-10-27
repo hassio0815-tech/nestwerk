@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
 from apps.kern import einstellungen, zeit
@@ -221,7 +222,7 @@ def _tablet_erlaubt(request):
 def tablet(request):
     """Tablet-Startseite ohne Anmeldung (nur Lesen, nur aus dem Heimnetz)."""
     if not _tablet_erlaubt(request):
-        return HttpResponseForbidden("Die Tablet-Ansicht gibt es nur im Heimnetz.")
+        return HttpResponseForbidden(_("Die Tablet-Ansicht gibt es nur im Heimnetz."))
     werte = einstellungen.werte(
         "oberflaeche.tablet_aktualisierung_sekunden", "oberflaeche.tablet_neuladen_stunden"
     )
@@ -236,7 +237,7 @@ def tablet(request):
 def tablet_teil(request):
     """Polling-Ausschnitt der Tablet-Startseite. ``@passiv``: verlängert keine Sitzung."""
     if not _tablet_erlaubt(request):
-        return HttpResponseForbidden("Die Tablet-Ansicht gibt es nur im Heimnetz.")
+        return HttpResponseForbidden(_("Die Tablet-Ansicht gibt es nur im Heimnetz."))
     return render(request, "oberflaeche/_tablet_teil.html", _tablet_kontext(request))
 
 

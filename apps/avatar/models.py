@@ -152,7 +152,10 @@ class Avatar(models.Model):
         default=dict, help_text="{slot: mod-schluessel}; nur fertige, eigene Mods (AP26)"
     )
     name = models.CharField(
-        max_length=20, blank=True, default="", help_text="Name der Figur (optional, höchstens 20 Zeichen)"
+        max_length=20,
+        blank=True,
+        default="",
+        help_text="Name der Figur (optional, höchstens 20 Zeichen)",
     )
     render_hash = models.CharField(max_length=64, blank=True)
     thema_gewaehlt_am = models.DateTimeField(default=zeit.jetzt)
@@ -243,7 +246,10 @@ class RuhmeshallenEintrag(models.Model):
     )
     figur = models.JSONField(default=dict)
     avatar_name = models.CharField(
-        max_length=20, blank=True, default="", help_text="Snapshot des Figurennamens beim Einfrieren"
+        max_length=20,
+        blank=True,
+        default="",
+        help_text="Snapshot des Figurennamens beim Einfrieren",
     )
     rang_stufe = models.PositiveSmallIntegerField()
     rang_name = models.CharField(max_length=40)

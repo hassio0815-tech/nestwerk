@@ -1,0 +1,15 @@
+{% load i18n %}{% comment %}Sprachwahl Deutsch/Englisch (Entscheidung 45). Setzt das Geräte-Cookie über Djangos set_language;
+eine eigene Sprache im Benutzerprofil hat danach weiter Vorrang. Ohne JavaScript.{% endcomment %}
+{% get_current_language as aktuelle_sprache %}{% get_available_languages as sprachen %}
+<form class="nw-sprache-wahl" action="{% url 'set_language' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <div class="nw-segment" role="group" aria-label="{% translate 'Sprache' %}">
+    {% for code, name in sprachen %}
+      <button type="submit" name="language" value="{{ code }}" lang="{{ code }}"
+              class="{% if code == aktuelle_sprache %}ist-aktiv{% endif %}"
+              {% if code == aktuelle_sprache %}aria-pressed="true"{% else %}aria-pressed="false"{% endif %}
+              title="{{ name }}">{{ code|upper }}</button>
+    {% endfor %}
+  </div>
+</form>

@@ -1,23 +1,23 @@
-<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
   {% csrf_token %}
-  <h1>Eltern</h1>
+  <h1>{% translate "Eltern" %}</h1>
   {% include "einrichtung/_fehler.html" %}
-  <h2>Familien-Passwort</h2>
-  <p>Mit diesem gemeinsamen Passwort melden sich beide Eltern an.{% if passwort_gesetzt %} Es ist schon gesetzt. Leer lassen, um es zu behalten.{% endif %}</p>
-  {% include "komponenten/feld.html" with name="passwort" label="Passwort" typ="password" autocomplete="new-password" fehler=form.passwort.errors.0 pflicht=passwort_pflicht hilfe="Mindestens 10 Zeichen, Buchstaben mit Ziffern oder Sonderzeichen mischen." %}
-  {% include "komponenten/feld.html" with name="passwort2" label="Passwort wiederholen" typ="password" autocomplete="new-password" fehler=form.passwort2.errors.0 %}
-  <h2>Erstes Elternteil</h2>
-  {% include "komponenten/feld.html" with name="eltern1_name" label="Name" wert=form.eltern1_name.value fehler=form.eltern1_name.errors.0 pflicht=True %}
-  <div class="feld"><label class="feld__label" for="eltern1_rolle">Rolle</label>
+  <h2>{% translate "Familien-Passwort" %}</h2>
+  <p>{% translate "Mit diesem gemeinsamen Passwort melden sich beide Eltern an." %}{% if passwort_gesetzt %} {% translate "Es ist schon gesetzt. Leer lassen, um es zu behalten." %}{% endif %}</p>
+  {% include "komponenten/feld.html" with name="passwort" label=_("Passwort") typ="password" autocomplete="new-password" fehler=form.passwort.errors.0 pflicht=passwort_pflicht hilfe=_("Mindestens 10 Zeichen, Buchstaben mit Ziffern oder Sonderzeichen mischen.") %}
+  {% include "komponenten/feld.html" with name="passwort2" label=_("Passwort wiederholen") typ="password" autocomplete="new-password" fehler=form.passwort2.errors.0 %}
+  <h2>{% translate "Erstes Elternteil" %}</h2>
+  {% include "komponenten/feld.html" with name="eltern1_name" label=_("Name") wert=form.eltern1_name.value fehler=form.eltern1_name.errors.0 pflicht=True %}
+  <div class="feld"><label class="feld__label" for="eltern1_rolle">{% translate "Rolle" %}</label>
     <select class="feld__eingabe" id="eltern1_rolle" name="eltern1_rolle">{% for k, t in rollen %}<option value="{{ k }}"{% if form.eltern1_rolle.value == k %} selected{% endif %}>{{ t }}</option>{% endfor %}</select></div>
-  {% include "komponenten/feld.html" with name="eltern1_email" label="E-Mail" typ="email" wert=form.eltern1_email.value fehler=form.eltern1_email.errors.0 pflicht=True %}
+  {% include "komponenten/feld.html" with name="eltern1_email" label=_("E-Mail") typ="email" wert=form.eltern1_email.value fehler=form.eltern1_email.errors.0 pflicht=True %}
   {% include "komponenten/wappen_wahl.html" with name="eltern1_wappen" gewaehlt=form.eltern1_wappen.value rolle_name="eltern1_wappen_rolle" rolle_wert=form.eltern1_wappen_rolle.value eigen_name="eltern1_wappen_rolle_eigen" eigen_wert=form.eltern1_wappen_rolle_eigen.value %}
-  <h2>Zweites Elternteil</h2>
-  {% include "komponenten/feld.html" with name="eltern2_name" label="Name" wert=form.eltern2_name.value fehler=form.eltern2_name.errors.0 pflicht=True %}
-  <div class="feld{% if form.eltern2_rolle.errors %} feld--fehler{% endif %}"><label class="feld__label" for="eltern2_rolle">Rolle</label>
+  <h2>{% translate "Zweites Elternteil" %}</h2>
+  {% include "komponenten/feld.html" with name="eltern2_name" label=_("Name") wert=form.eltern2_name.value fehler=form.eltern2_name.errors.0 pflicht=True %}
+  <div class="feld{% if form.eltern2_rolle.errors %} feld--fehler{% endif %}"><label class="feld__label" for="eltern2_rolle">{% translate "Rolle" %}</label>
     <select class="feld__eingabe" id="eltern2_rolle" name="eltern2_rolle">{% for k, t in rollen %}<option value="{{ k }}"{% if form.eltern2_rolle.value == k %} selected{% endif %}>{{ t }}</option>{% endfor %}</select>
     {% if form.eltern2_rolle.errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ form.eltern2_rolle.errors.0 }}</p>{% endif %}</div>
-  {% include "komponenten/feld.html" with name="eltern2_email" label="E-Mail" typ="email" wert=form.eltern2_email.value fehler=form.eltern2_email.errors.0 pflicht=True %}
+  {% include "komponenten/feld.html" with name="eltern2_email" label=_("E-Mail") typ="email" wert=form.eltern2_email.value fehler=form.eltern2_email.errors.0 pflicht=True %}
   {% include "komponenten/wappen_wahl.html" with name="eltern2_wappen" gewaehlt=form.eltern2_wappen.value rolle_name="eltern2_wappen_rolle" rolle_wert=form.eltern2_wappen_rolle.value eigen_name="eltern2_wappen_rolle_eigen" eigen_wert=form.eltern2_wappen_rolle_eigen.value fehler=form.eltern2_wappen.errors.0 %}
   {% include "einrichtung/_navigation.html" %}
 </form>

@@ -19,6 +19,8 @@ from datetime import date, timedelta
 from decimal import Decimal
 from fractions import Fraction
 
+from django.utils.translation import ngettext
+
 from apps.kern import einstellungen, zeit
 from apps.kern.zeit import IsoWoche
 
@@ -44,10 +46,11 @@ class Basis:
     def hinweis(self) -> str:
         if self.genug:
             return ""
-        return (
-            f"Zu wenig Verlauf für eine Prognose: {self.wochen} abgeschlossene "
-            f"{'Woche' if self.wochen == 1 else 'Wochen'} (nötig sind mehr)."
-        )
+        return ngettext(
+            "Zu wenig Verlauf für eine Prognose: %(n)s abgeschlossene Woche (nötig sind mehr).",
+            "Zu wenig Verlauf für eine Prognose: %(n)s abgeschlossene Wochen (nötig sind mehr).",
+            self.wochen,
+        ) % {"n": self.wochen}
 
 
 @dataclass(frozen=True)

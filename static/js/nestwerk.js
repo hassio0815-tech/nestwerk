@@ -218,12 +218,12 @@
     toast.setAttribute("data-dauer", "9000");
     var text = document.createElement("span");
     text.className = "toast__text";
-    text.textContent = xhr.responseText || "Die Datei ist zu groß.";
+    text.textContent = xhr.responseText || document.body.getAttribute("data-text-zu-gross") || "Die Datei ist zu groß.";
     var knopf = document.createElement("button");
     knopf.type = "button";
     knopf.className = "knopf knopf--geist knopf--klein";
     knopf.setAttribute("data-schliessen", "");
-    knopf.textContent = "Schließen";
+    knopf.textContent = document.body.getAttribute("data-text-schliessen") || "Schließen";
     toast.appendChild(text);
     toast.appendChild(knopf);
     bereich.appendChild(toast);

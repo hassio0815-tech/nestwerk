@@ -1,50 +1,50 @@
 {% extends "basis/kind.html" %}
-{% load static avatar_tags %}
+{% load i18n static avatar_tags %}
 {% comment %}Entwickler-Galerie (nur DEBUG): alle Themen-Grundfiguren, dunkel und hell, plus Mods.{% endcomment %}
-{% block titel %}Avatar-Galerie{% endblock %}
+{% block titel %}{% translate "Avatar-Galerie" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
 {% block inhalt %}
-  <h1>Avatar-Galerie</h1>
-  <p class="kachel__text">Grundfiguren aller Themen, je mit anderem Hautton, Haar und Frisur. Nur im Entwicklungsmodus.</p>
-  <section class="avatar-galerie" data-layout="kind" data-modus="dunkel" aria-label="Dunkler Hintergrund">
-    <h2>Dunkler Hintergrund</h2>
+  <h1>{% translate "Avatar-Galerie" %}</h1>
+  <p class="kachel__text">{% translate "Grundfiguren aller Themen, je mit anderem Hautton, Haar und Frisur. Nur im Entwicklungsmodus." %}</p>
+  <section class="avatar-galerie" data-layout="kind" data-modus="dunkel" aria-label="{% translate "Dunkler Hintergrund" %}">
+    <h2>{% translate "Dunkler Hintergrund" %}</h2>
     <div class="avatar-galerie__raster">
       {% for e in themen %}
         <figure class="avatar-galerie__eintrag">
-          {% svg_roh e.svg "gross" e.thema.name %}
-          <figcaption>{{ e.thema.name }}</figcaption>
+          {% svg_roh e.svg "gross" e.thema.name|uebersetzt %}
+          <figcaption>{{ e.thema.name|uebersetzt }}</figcaption>
         </figure>
       {% endfor %}
     </div>
   </section>
-  <section class="avatar-galerie" data-layout="kind" data-modus="hell" aria-label="Heller Hintergrund">
-    <h2>Heller Hintergrund</h2>
+  <section class="avatar-galerie" data-layout="kind" data-modus="hell" aria-label="{% translate "Heller Hintergrund" %}">
+    <h2>{% translate "Heller Hintergrund" %}</h2>
     <div class="avatar-galerie__raster">
       {% for e in themen %}
         <figure class="avatar-galerie__eintrag">
-          {% svg_roh e.svg "gross" e.thema.name %}
-          <figcaption>{{ e.thema.name }}</figcaption>
+          {% svg_roh e.svg "gross" e.thema.name|uebersetzt %}
+          <figcaption>{{ e.thema.name|uebersetzt }}</figcaption>
         </figure>
       {% endfor %}
     </div>
   </section>
-  <section aria-label="Mods je Thema">
-    <h2>Mods je Thema</h2>
-    <p class="kachel__text">Je Thema 36 Mods: 6 Slots x Seltenheit 1 bis 6.</p>
+  <section aria-label="{% translate "Mods je Thema" %}">
+    <h2>{% translate "Mods je Thema" %}</h2>
+    <p class="kachel__text">{% translate "Je Thema 36 Mods: 6 Slots x Seltenheit 1 bis 6." %}</p>
     <nav>
       {% for t in mod_themen %}
-        <a href="?thema={{ t.schluessel }}"{% if t.schluessel == gewaehlt %} aria-current="true"{% endif %}>{{ t.name }}</a>
+        <a href="?thema={{ t.schluessel }}"{% if t.schluessel == gewaehlt %} aria-current="true"{% endif %}>{{ t.name|uebersetzt }}</a>
       {% endfor %}
     </nav>
   </section>
   {% if gewaehlt %}
-    <section class="avatar-galerie" data-layout="kind" data-modus="dunkel" aria-label="Mods {{ gewaehlt_name }}">
-      <h2>{{ gewaehlt_name }} ({{ mods|length }} Mods)</h2>
+    <section class="avatar-galerie" data-layout="kind" data-modus="dunkel" aria-label="{% blocktranslate with thema=gewaehlt_name|uebersetzt %}Mods {{ thema }}{% endblocktranslate %}">
+      <h2>{% blocktranslate with thema=gewaehlt_name|uebersetzt anzahl=mods|length %}{{ thema }} ({{ anzahl }} Mods){% endblocktranslate %}</h2>
       <div class="avatar-galerie__raster">
         {% for e in mods %}
           <figure class="avatar-galerie__eintrag">
-            {% svg_roh e.svg "mittel" e.mod.name %}
-            <figcaption>{{ e.mod.seltenheit }} · {{ e.mod.name }}</figcaption>
+            {% svg_roh e.svg "mittel" e.mod.name|uebersetzt %}
+            <figcaption>{{ e.mod.seltenheit }} · {{ e.mod.name|uebersetzt }}</figcaption>
           </figure>
         {% endfor %}
       </div>

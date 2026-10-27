@@ -1,20 +1,20 @@
-{% load static %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">
+{% load i18n %}{% load static %}<link rel="stylesheet" href="{% static 'css/ranking.css' %}">
 <article class="karte"><div class="karte__inhalt stapel" data-eltern-ranking>
-  <h2>Familien-Ranking</h2>
-  <form method="post" action="{% url 'oberflaeche:ranking_modus' %}" class="reihe rk-modus" aria-label="Ansicht auf dem Tablet">{% csrf_token %}
+  <h2>{% translate "Familien-Ranking" %}</h2>
+  <form method="post" action="{% url 'oberflaeche:ranking_modus' %}" class="reihe rk-modus" aria-label="{% translate "Ansicht auf dem Tablet" %}">{% csrf_token %}
     {% for wert, text in k.modi %}
       <button type="submit" name="modus" value="{{ wert }}" class="knopf {% if wert == k.a.modus %}knopf--primaer{% else %}knopf--sekundaer{% endif %} knopf--klein"{% if wert == k.a.modus %} aria-pressed="true"{% else %} aria-pressed="false"{% endif %}>{{ text }}</button>
     {% endfor %}
   </form>
-  <p class="kachel__text">Gilt für das Flur-Tablet und die Kinder-Seite.</p>
+  <p class="kachel__text">{% translate "Gilt für das Flur-Tablet und die Kinder-Seite." %}</p>
   {% if k.zuwaechse %}
-    <h3>Woche {{ k.woche.woche }}: Zuwachs gegenüber dem eigenen Schnitt</h3>
+    <h3>{% blocktranslate with woche=k.woche.woche %}Woche {{ woche }}: Zuwachs gegenüber dem eigenen Schnitt{% endblocktranslate %}</h3>
     <ul class="rk-zuwachs" data-zuwaechse>
       {% for z in k.zuwaechse %}
-        <li><strong>{{ z.kind.anzeigename }}</strong> {{ z.xp }} Punkte, {% if z.prozent >= 0 %}+{% endif %}{{ z.prozent }} %{% if z.held %} {% include "komponenten/chip.html" with text="Held der Woche" stufe="legendary" %}{% endif %}</li>
+        <li><strong>{{ z.kind.anzeigename }}</strong> {% blocktranslate with xp=z.xp %}{{ xp }} Punkte,{% endblocktranslate %} {% if z.prozent >= 0 %}+{% endif %}{{ z.prozent }} %{% if z.held %} {% include "komponenten/chip.html" with text=_("Held der Woche") stufe="legendary" %}{% endif %}</li>
       {% endfor %}
     </ul>
   {% else %}
-    <p class="kachel__text">Noch keine bewertete Woche.</p>
+    <p class="kachel__text">{% translate "Noch keine bewertete Woche." %}</p>
   {% endif %}
 </div></article>

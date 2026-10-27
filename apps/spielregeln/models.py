@@ -12,6 +12,7 @@ from django.db import models
 from django.db.models import F, Q, Value
 from django.db.models.functions import Coalesce
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 class Rang(models.Model):
@@ -117,8 +118,8 @@ class RangAufstieg(models.Model):
 
 
 class PauseQuelle(models.TextChoices):
-    ELTERN = "eltern", "Eltern"
-    HAUSAUTOMATION = "hausautomation", "Hausautomation"
+    ELTERN = "eltern", _("Eltern")
+    HAUSAUTOMATION = "hausautomation", _("Hausautomation")
 
 
 class Pause(models.Model):
@@ -268,17 +269,17 @@ class KindStand(models.Model):
 
 
 class Vergleich(models.TextChoices):
-    MIN = ">=", "mindestens (≥)"
-    MEHR = ">", "mehr als (>)"
-    GLEICH = "==", "genau (=)"
+    MIN = ">=", _("mindestens (≥)")
+    MEHR = ">", _("mehr als (>)")
+    GLEICH = "==", _("genau (=)")
 
 
 class Wiederholbar(models.TextChoices):
     """``einmalig``: Bereich ``""``. ``bereich``: je Bereich der Metrik einmal (z. B. je Quartal
     ``2027-Q1`` oder je Rang ``rang-3``); die Metrik liefert ihre Bereiche selbst."""
 
-    EINMALIG = "einmalig", "einmalig"
-    BEREICH = "bereich", "je Bereich (z. B. Quartal, Rang)"
+    EINMALIG = "einmalig", _("einmalig")
+    BEREICH = "bereich", _("je Bereich (z. B. Quartal, Rang)")
 
 
 class AbzeichenDefinition(models.Model):

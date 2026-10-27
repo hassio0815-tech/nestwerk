@@ -1,14 +1,14 @@
-<article class="karte"><div class="karte__inhalt stapel">
-  <h2>Offene Aufgaben</h2>
+{% load i18n sprache %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Offene Aufgaben" %}</h2>
   {% for i in k.aufgaben %}
     <div class="zeile">
-      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>
+      <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot|uebersetzt }}</strong></span>
       {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
     </div>
   {% empty %}
-    {% include "komponenten/leer.html" with icon="stern" titel="Alles erledigt" text="Gerade gibt es keine freien Aufgaben." %}
+    {% include "komponenten/leer.html" with icon="stern" titel=_("Alles erledigt") text=_("Gerade gibt es keine freien Aufgaben.") %}
   {% endfor %}
   {% url "aufgaben:kind" as aufgaben_url %}
-  {% include "komponenten/button.html" with href=aufgaben_url icon="liste" gross=True voll=True text="Alle Aufgaben" %}
-  {% if k.gesamt > k.aufgaben|length %}<span class="kachel__text">{{ k.gesamt }} offen insgesamt</span>{% endif %}
+  {% include "komponenten/button.html" with href=aufgaben_url icon="liste" gross=True voll=True text=_("Alle Aufgaben") %}
+  {% if k.gesamt > k.aufgaben|length %}<span class="kachel__text">{% blocktranslate with n=k.gesamt %}{{ n }} offen insgesamt{% endblocktranslate %}</span>{% endif %}
 </div></article>

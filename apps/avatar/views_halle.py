@@ -3,6 +3,7 @@
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from apps.konten.zugriff import nur_eltern, nur_kind
@@ -10,8 +11,10 @@ from apps.konten.zugriff import nur_eltern, nur_kind
 from . import ruhmeshalle, selectors, services
 
 MELDUNGEN = {
-    "gestellt": "Dein Held steht jetzt in der Ruhmeshalle! Such dir ein neues Thema aus.",
-    "widmung": "Widmung gespeichert.",
+    "gestellt": gettext_lazy(
+        "Dein Held steht jetzt in der Ruhmeshalle! Such dir ein neues Thema aus."
+    ),
+    "widmung": gettext_lazy("Widmung gespeichert."),
 }
 
 

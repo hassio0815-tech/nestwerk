@@ -31,9 +31,12 @@ from datetime import datetime, timedelta
 
 from django.db import transaction
 from django.db.models import Sum
+from django.utils.formats import get_format
+from django.utils.translation import gettext, gettext_noop, ngettext
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
+from apps.kern.sprache import uebersetzt
 from apps.kern.zeit import IsoWoche
 from apps.konten import selectors as konten
 from apps.punkte import selectors as punkte_selectors
@@ -57,47 +60,74 @@ class ModFehler(ValueError):
 
 # bau_inszenierung -> (Ort, Tätigkeit im Bau)
 INSZENIERUNG = {
-    "schmiede": ("Schmiede", "wird geschmiedet"),
-    "raumdock": ("Raumdock", "wird montiert"),
-    "dojo": ("Dojo-Werkstatt", "wird gefertigt"),
-    "werkstatt": ("Roboter-Werkstatt", "wird zusammengeschraubt"),
-    "werft": ("Werft", "wird gezimmert"),
-    "langhaus": ("Langhaus-Schmiede", "wird geschmiedet"),
-    "trainingsplatz": ("Zeugwart-Kabine", "wird vorbereitet"),
-    "trainingshalle": ("Ausrüster", "wird vorbereitet"),
-    "boxengasse": ("Boxengasse", "wird geschraubt"),
-    "basislager": ("Basislager", "wird gebastelt"),
+    "schmiede": (gettext_noop("Schmiede"), gettext_noop("wird geschmiedet")),
+    "raumdock": (gettext_noop("Raumdock"), gettext_noop("wird montiert")),
+    "dojo": (gettext_noop("Dojo-Werkstatt"), gettext_noop("wird gefertigt")),
+    "werkstatt": (gettext_noop("Roboter-Werkstatt"), gettext_noop("wird zusammengeschraubt")),
+    "werft": (gettext_noop("Werft"), gettext_noop("wird gezimmert")),
+    "langhaus": (gettext_noop("Langhaus-Schmiede"), gettext_noop("wird geschmiedet")),
+    "trainingsplatz": (gettext_noop("Zeugwart-Kabine"), gettext_noop("wird vorbereitet")),
+    "trainingshalle": (gettext_noop("Ausrüster"), gettext_noop("wird vorbereitet")),
+    "boxengasse": (gettext_noop("Boxengasse"), gettext_noop("wird geschraubt")),
+    "basislager": (gettext_noop("Basislager"), gettext_noop("wird gebastelt")),
 }
-STANDARD_INSZENIERUNG = ("Werkstatt", "wird gebaut")
+STANDARD_INSZENIERUNG = (gettext_noop("Werkstatt"), gettext_noop("wird gebaut"))
+
+
+def inszenierung_msgids(thema) -> tuple[str, str]:
+    """Ort und Tätigkeit als deutsche Msgids (für Ereignisse: erst beim Rendern übersetzen)."""
+    return INSZENIERUNG.get(getattr(thema, "bau_inszenierung", ""), STANDARD_INSZENIERUNG)
 
 
 def inszenierung(thema) -> tuple[str, str]:
-    return INSZENIERUNG.get(getattr(thema, "bau_inszenierung", ""), STANDARD_INSZENIERUNG)
+    ort, tun = inszenierung_msgids(thema)
+    return gettext(ort), gettext(tun)
+
+
+def dauer_msgids(stunden: int) -> tuple[str, str | None, int]:
+    """Bauzeit als (Msgid, Plural-Msgid oder None, n). Die Msgids stehen in ``dauer_text``
+    (``ngettext``), dort werden sie für ``makemessages`` gefunden."""
+    if stunden <= 0:
+        return "sofort", None, 0
+    if stunden >= 36 or stunden % 24 == 0:
+        return "%(n)s Tag", "%(n)s Tage", max(1, round(stunden / 24))
+    return "%(n)s Stunde", "%(n)s Stunden", stunden
 
 
 def dauer_text(stunden: int) -> str:
     """Bauzeit lesbar: "3 Tage", "1 Tag", "5 Stunden", "sofort"."""
     if stunden <= 0:
-        return "sofort"
+        return gettext("sofort")
     if stunden >= 36 or stunden % 24 == 0:
         tage = max(1, round(stunden / 24))
-        return "1 Tag" if tage == 1 else f"{tage} Tage"
-    return "1 Stunde" if stunden == 1 else f"{stunden} Stunden"
+        return ngettext("%(n)s Tag", "%(n)s Tage", tage) % {"n": tage}
+    return ngettext("%(n)s Stunde", "%(n)s Stunden", stunden) % {"n": stunden}
+
+
+def dauer_daten(stunden: int, feld: str = "bauzeit") -> dict:
+    """Ereignis-Daten für eine Dauer: ``<feld>_msgid``, ``<feld>_msgid_plural``,
+    ``<feld>_parameter`` (siehe ``benachrichtigung.texte.werte_aus``)."""
+    einzahl, mehrzahl, n = dauer_msgids(stunden)
+    daten = {f"{feld}_msgid": einzahl, f"{feld}_parameter": {"n": n}}
+    if mehrzahl:
+        daten[f"{feld}_msgid_plural"] = mehrzahl
+    return daten
 
 
 def rest_text(bis: datetime, jetzt: datetime | None = None) -> str:
     """ "fertig in 2 Tagen" ohne "fertig": "in 2 Tagen", "in 5 Stunden", "gleich"."""
     sekunden = (bis - (jetzt or zeit.jetzt())).total_seconds()
     if sekunden <= 0:
-        return "gleich"
+        return gettext("gleich")
     stunden = math.ceil(sekunden / 3600)
     if stunden >= 36:
-        return f"in {round(stunden / 24)} Tagen"
+        tage = round(stunden / 24)
+        return ngettext("in %(n)s Tag", "in %(n)s Tagen", tage) % {"n": tage}
     if stunden >= 24:
-        return "in 1 Tag"
+        return gettext("in 1 Tag")
     if sekunden < 3600:
-        return "in weniger als 1 Stunde"
-    return "in 1 Stunde" if stunden == 1 else f"in {stunden} Stunden"
+        return gettext("in weniger als 1 Stunde")
+    return ngettext("in %(n)s Stunde", "in %(n)s Stunden", stunden) % {"n": stunden}
 
 
 # --- Preise und Bauzeiten -------------------------------------------------------------------
@@ -125,13 +155,13 @@ def konditionen(mod: ModDefinition, kind=None, *, raenge_map=None) -> Konditione
     raenge_map = raenge_map if raenge_map is not None else _raenge_nach_stufe()
     rang = raenge_map.get(mod.seltenheit)
     if rang is None:
-        raise ModFehler("Für diese Seltenheit gibt es keinen Rang.")
+        raise ModFehler(gettext("Für diese Seltenheit gibt es keinen Rang."))
     grund_preis = mod.preis if mod.preis is not None else rang.mod_preis
     grund_bauzeit = mod.bauzeit_stunden if mod.bauzeit_stunden is not None else rang.bauzeit_stunden
     return Konditionen(
         preis=spielregeln.mod_preis(grund_preis, kind),
         bauzeit_stunden=spielregeln.mod_bauzeit_stunden(grund_bauzeit, kind),
-        rang_name=rang.name,
+        rang_name=uebersetzt(rang.name),
         rang_selten=rang.selten,
     )
 
@@ -195,7 +225,7 @@ def ausbaustufe(kind, jetzt=None) -> Ausbaustufe:
     ergebnis = Ausbaustufe(
         thema=avatar.thema if avatar else None,
         rang_stufe=stufe,
-        rang_name=rang.name if rang else "",
+        rang_name=uebersetzt(rang.name) if rang else "",
         rang_selten=rang.selten if rang else "common",
         slots=Slot.objects.count(),
         je_seltenheit=dict.fromkeys(raenge_map, 0),
@@ -231,7 +261,7 @@ def metrik_ausbaustufe(kind) -> int:
 def metrik_ausbaustufe_bereiche(kind) -> dict[str, tuple[int, str]]:
     """``{"seltenheit-<n>": (zählende Slots, Rangname)}`` je Seltenheit."""
     a = ausbaustufe(kind)
-    namen = {r.stufe: r.name for r in spielregeln.raenge()}
+    namen = {r.stufe: uebersetzt(r.name) for r in spielregeln.raenge()}
     return {f"seltenheit-{n}": (wert, namen.get(n, str(n))) for n, wert in a.je_seltenheit.items()}
 
 
@@ -299,7 +329,7 @@ def shop(kind) -> list[ShopGruppe]:
             mod.seltenheit,
             ShopGruppe(
                 mod.seltenheit,
-                rang.name,
+                uebersetzt(rang.name),
                 rang.selten,
                 mod.seltenheit > stufe,
                 [],
@@ -335,7 +365,7 @@ def _set_gruppen(kind, avatar, raenge_map, besitz, verfuegbar, stand) -> list[Sh
         gruppen.append(
             ShopGruppe(
                 6,
-                rang.name if rang else "God Mode",
+                uebersetzt(rang.name) if rang else gettext("God Mode"),
                 rang.selten if rang else "godmode",
                 False,
                 karten,
@@ -397,39 +427,42 @@ def _mod_laden(mod) -> ModDefinition:
         .first()
     )
     if gefunden is None:
-        raise ModFehler("Diesen Mod gibt es nicht.")
+        raise ModFehler(gettext("Diesen Mod gibt es nicht."))
     return gefunden
 
 
 def kaufen(kind, mod, *, jetzt=None) -> ModBesitz:
     """Kauft einen Mod: genau eine Buchung ``modkauf`` + Bauauftrag. Fehler -> ``ModFehler``."""
     if getattr(kind, "rolle", None) != "kind":
-        raise ModFehler("Nur Kinder kaufen Mods.")
+        raise ModFehler(gettext("Nur Kinder kaufen Mods."))
     jetzt = jetzt or zeit.jetzt()
     with transaction.atomic():
         punkte_services.schreibsperre(kind)
         avatar = Avatar.objects.select_related("thema").filter(pk=kind.pk).first()
         if avatar is None:
-            raise ModFehler("Wähle zuerst deinen Avatar.")
+            raise ModFehler(gettext("Wähle zuerst deinen Avatar."))
         mod = _mod_laden(mod)
         if mod.thema_id != avatar.thema_id:
-            raise ModFehler("Dieser Mod gehört zu einem anderen Thema.")
+            raise ModFehler(gettext("Dieser Mod gehört zu einem anderen Thema."))
         if not mod.aktiv:
-            raise ModFehler("Diesen Mod gibt es gerade nicht.")
+            raise ModFehler(gettext("Diesen Mod gibt es gerade nicht."))
         if ModBesitz.objects.filter(kind=kind, mod=mod, status__in=AKTIV).exists():
-            raise ModFehler("Diesen Mod hast du schon.")
+            raise ModFehler(gettext("Diesen Mod hast du schon."))
         k = konditionen(mod, kind)
         stufe = rang_stufe(kind)
         if mod.seltenheit > stufe:
-            raise ModFehler(f"Diesen Mod gibt es ab Rang {k.rang_name}.")
+            raise ModFehler(gettext("Diesen Mod gibt es ab Rang %(rang)s.") % {"rang": k.rang_name})
         if mod.modset_id is not None:
             from . import godmode
 
             if not godmode.zyklus(kind, jetzt).freigeschaltet(mod.modset.nummer):
-                raise ModFehler("Dieses God-Mode-Set ist noch nicht freigeschaltet.")
+                raise ModFehler(gettext("Dieses God-Mode-Set ist noch nicht freigeschaltet."))
         verfuegbar = punkte_selectors.verfuegbar(kind)
         if k.preis > verfuegbar:
-            raise ModFehler(f"Dafür fehlen dir noch {k.preis - verfuegbar} Punkte.")
+            raise ModFehler(
+                gettext("Dafür fehlen dir noch %(punkte)s Punkte.")
+                % {"punkte": k.preis - verfuegbar}
+            )
         nummer = ModBesitz.objects.filter(kind=kind, mod=mod).count() + 1
         try:
             buchung = punkte_services.buchen(
@@ -444,7 +477,7 @@ def kaufen(kind, mod, *, jetzt=None) -> ModBesitz:
                 verfuegbar_pruefen=True,
             )
         except punkte_services.GuthabenUnzureichend:
-            raise ModFehler("Dafür reichen deine Punkte nicht.") from None
+            raise ModFehler(gettext("Dafür reichen deine Punkte nicht.")) from None
         besitz = ModBesitz.objects.create(
             kind=kind,
             mod=mod,
@@ -467,7 +500,7 @@ def kaufen(kind, mod, *, jetzt=None) -> ModBesitz:
                 "besitz": besitz.pk,
                 "mod": mod.name,
                 "preis": k.preis,
-                "bauzeit": k.bauzeit_text,
+                **dauer_daten(k.bauzeit_stunden),
             },
             schluessel=f"{events.MOD_GEKAUFT}:{besitz.pk}",
             kind=kind,
@@ -528,7 +561,7 @@ def _fertig_setzen(besitz_id, fertig_am, *, von=None, sofort=False):
             from .services import slot_belegen
 
             slot_belegen(kind, besitz.mod.slot.schluessel, besitz.mod)
-        ort, _ = inszenierung(besitz.mod.thema)
+        ort, _ = inszenierung_msgids(besitz.mod.thema)
         if sofort:
             audit.protokollieren(
                 "avatar.bau_sofort_fertig",
@@ -600,11 +633,11 @@ def fertigstellen(jetzt=None) -> dict:
 def sofort_fertigstellen(besitz, *, von, jetzt=None) -> ModBesitz:
     """Eltern: Bau sofort fertigstellen (Audit). Die Zeitbremse gilt weiter."""
     if getattr(von, "rolle", None) != "eltern":
-        raise ModFehler("Nur Eltern können einen Bau sofort fertigstellen.")
+        raise ModFehler(gettext("Nur Eltern können einen Bau sofort fertigstellen."))
     pk = besitz.pk if isinstance(besitz, ModBesitz) else besitz
     ergebnis = _fertig_setzen(pk, jetzt or zeit.jetzt(), von=von, sofort=True)
     if ergebnis is None:
-        raise ModFehler("Dieser Bau ist schon fertig.")
+        raise ModFehler(gettext("Dieser Bau ist schon fertig."))
     _abzeichen_pruefen([ergebnis.kind])
     return ergebnis
 
@@ -618,7 +651,7 @@ def anlegen(kind, mod):
 
     mod = _mod_laden(mod)
     if not ModBesitz.objects.filter(kind=kind, mod=mod, status=BesitzStatus.FERTIG).exists():
-        raise ModFehler("Diesen Mod hast du noch nicht fertig.")
+        raise ModFehler(gettext("Diesen Mod hast du noch nicht fertig."))
     try:
         return slot_belegen(kind, mod.slot.schluessel, mod)
     except AvatarFehler as exc:
@@ -650,7 +683,7 @@ class Themenwechsel:
 def _neues_thema(schluessel) -> Thema:
     thema = Thema.objects.filter(schluessel=schluessel, aktiv=True, nur_eltern=False).first()
     if thema is None:
-        raise ModFehler("Bitte wähle ein Thema.")
+        raise ModFehler(gettext("Bitte wähle ein Thema."))
     return thema
 
 
@@ -658,10 +691,10 @@ def themenwechsel_vorschau(kind, thema_schluessel) -> Themenwechsel:
     """Konkrete Zahlen für den Warn-Dialog."""
     avatar = Avatar.objects.select_related("thema").filter(pk=kind.pk).first()
     if avatar is None:
-        raise ModFehler("Wähle zuerst deinen Avatar.")
+        raise ModFehler(gettext("Wähle zuerst deinen Avatar."))
     neu = _neues_thema(thema_schluessel)
     if neu.pk == avatar.thema_id:
-        raise ModFehler("Das ist schon dein Thema.")
+        raise ModFehler(gettext("Das ist schon dein Thema."))
     besitz = ModBesitz.objects.filter(kind=kind, status__in=AKTIV, mod__thema=avatar.thema)
     stand = ausbaustufe(kind)
     benoetigt = (
@@ -692,13 +725,15 @@ def thema_wechseln(kind, thema_schluessel, *, pruefwert, jetzt=None) -> Themenwe
     from .services import AvatarFehler, figur_pruefen, hash_aktualisieren
 
     if getattr(kind, "rolle", None) != "kind":
-        raise ModFehler("Nur Kinder wechseln ihr Thema.")
+        raise ModFehler(gettext("Nur Kinder wechseln ihr Thema."))
     jetzt = jetzt or zeit.jetzt()
     with transaction.atomic():
         punkte_services.schreibsperre(kind)
         vorschau = themenwechsel_vorschau(kind, thema_schluessel)
         if pruefwert != vorschau.pruefwert:
-            raise ModFehler("Deine Mods haben sich geändert. Bitte lies die Warnung noch einmal.")
+            raise ModFehler(
+                gettext("Deine Mods haben sich geändert. Bitte lies die Warnung noch einmal.")
+            )
         avatar = Avatar.objects.select_related("thema").get(pk=kind.pk)
         verloren = ModBesitz.objects.filter(
             kind=kind, status__in=AKTIV, mod__thema=avatar.thema
@@ -764,7 +799,7 @@ def eltern_uebersicht(jetzt=None) -> list[dict]:
 def _tage_text(stunden: int) -> str:
     """Stunden als Tage für das Eingabefeld ("3", "1,5", "0,04")."""
     text = f"{stunden / 24:.2f}".rstrip("0").rstrip(".")
-    return text.replace(".", ",")
+    return text.replace(".", get_format("DECIMAL_SEPARATOR"))
 
 
 def standards() -> list[dict]:

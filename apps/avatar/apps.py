@@ -21,7 +21,7 @@ class AvatarConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self):
-        from . import registry
+        from . import godmode, registry  # noqa: F401 (godmode: Namensmuster registrieren)
         from .einstellungen import einstellungen_definieren
         from .events import texte_registrieren, typen_deklarieren
 

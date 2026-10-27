@@ -1,14 +1,15 @@
 {% extends "belohnung/basis.html" %}
-{% block titel %}Belohnungs-Anträge{% endblock %}
+{% load i18n %}
+{% block titel %}{% translate "Belohnungs-Anträge" %}{% endblock %}
 {% block seite %}
-  <h1>Offene Anträge</h1>
+  <h1>{% translate "Offene Anträge" %}</h1>
   <div class="stapel">
     {% for a in offene %}{% include "belohnung/_antrag_zeile.html" %}
-    {% empty %}{% include "komponenten/leer.html" with icon="check" titel="Nichts offen" text="Alle Anträge sind entschieden." %}
+    {% empty %}{% include "komponenten/leer.html" with icon="check" titel=_("Nichts offen") text=_("Alle Anträge sind entschieden.") %}
     {% endfor %}
   </div>
   {% if erledigt %}
-    <h2>Zuletzt entschieden</h2>
+    <h2>{% translate "Zuletzt entschieden" %}</h2>
     <div class="stapel">{% for a in erledigt %}{% include "belohnung/_antrag_zeile.html" %}{% endfor %}</div>
   {% endif %}
 {% endblock %}

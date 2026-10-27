@@ -1,0 +1,907 @@
+# English translation for Nestwerk.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 04:59+0000\n"
+"PO-Revision-Date: 2026-10-26 00:00+0000\n"
+"Last-Translator: Nestwerk\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: kachel.py:22 models.py:141 templates/benachrichtigung/_kachel.html:2
+#: templates/benachrichtigung/liste.html:3
+#: templates/benachrichtigung/liste.html:12
+#: templates/benachrichtigung/push_geraet.html:6
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+#: kanaele.py:27
+msgid "E-Mail"
+msgstr "Email"
+
+#: kanaele.py:59
+msgid "Pop-up in der App"
+msgstr "Pop-up in the app"
+
+#: models.py:14
+msgid "STARTTLS (Port 587)"
+msgstr "STARTTLS (port 587)"
+
+#: models.py:15
+msgid "SSL/TLS (Port 465)"
+msgstr "SSL/TLS (port 465)"
+
+#: models.py:16
+msgid "Unverschlüsselt"
+msgstr "Not encrypted"
+
+#: models.py:33 models.py:34
+msgid "SMTP-Konto"
+msgstr "SMTP account"
+
+#: models.py:48
+msgid "Kanal"
+msgstr "Channel"
+
+#: models.py:49
+msgid "Kanäle"
+msgstr "Channels"
+
+#: models.py:74
+msgid "Präferenz"
+msgstr "Preference"
+
+#: models.py:75
+msgid "Präferenzen"
+msgstr "Preferences"
+
+#: models.py:91
+msgid "Kleiner als 'von' = über Mitternacht"
+msgstr "Earlier than 'from' = past midnight"
+
+#: models.py:92
+msgid "Bitmaske Mo=1 … So=64"
+msgstr "Bitmask Mon=1 … Sun=64"
+
+#: models.py:97 templates/benachrichtigung/_einstellungen.html:31
+msgid "Ruhezeit"
+msgstr "Quiet hours"
+
+#: models.py:98
+msgid "Ruhezeiten"
+msgstr "Quiet hours"
+
+#: models.py:118
+msgid "Benachrichtigungsprofil"
+msgstr "Notification profile"
+
+#: models.py:119
+msgid "Benachrichtigungsprofile"
+msgstr "Notification profiles"
+
+#: models.py:140
+msgid "Benachrichtigung"
+msgstr "Notification"
+
+#: models.py:176
+msgid "Push-Abo"
+msgstr "Push subscription"
+
+#: models.py:177
+msgid "Push-Abos"
+msgstr "Push subscriptions"
+
+#: models.py:184
+msgid "offen"
+msgstr "pending"
+
+#: models.py:185
+msgid "gesendet"
+msgstr "sent"
+
+#: models.py:186
+msgid "stumm (Ruhezeit)"
+msgstr "silent (quiet hours)"
+
+#: models.py:187
+msgid "abgeschaltet"
+msgstr "turned off"
+
+#: models.py:188
+msgid "Fehler (Wiederholung geplant)"
+msgstr "error (will retry)"
+
+#: models.py:189
+msgid "aufgegeben"
+msgstr "given up"
+
+#: models.py:190
+msgid "Kanal nicht eingerichtet"
+msgstr "channel not set up"
+
+#: models.py:208 templates/benachrichtigung/_liste.html:17
+msgid "Zustellung"
+msgstr "Delivery"
+
+#: models.py:209
+msgid "Zustellungen"
+msgstr "Deliveries"
+
+#: models.py:238
+msgid "Ereignistyp, steuert die Darstellung"
+msgstr "Event type, controls how it looks"
+
+#: models.py:245
+msgid "Pop-up"
+msgstr "Pop-up"
+
+#: models.py:246
+msgid "Pop-ups"
+msgstr "Pop-ups"
+
+#: push.py:161
+msgid "Basis-URL fehlt: Push braucht absolute Links"
+msgstr "Base URL is missing: push needs absolute links"
+
+#: push.py:221
+msgid "Push"
+msgstr "Push"
+
+#: push.py:260
+msgid "Nestwerk Test"
+msgstr "Nestwerk test"
+
+#: push.py:261
+msgid "Benachrichtigungen funktionieren auf diesem Gerät."
+msgstr "Notifications work on this device."
+
+#: ruhezeit.py:20
+msgid "Mo"
+msgstr "Mon"
+
+#: ruhezeit.py:20
+msgid "Di"
+msgstr "Tue"
+
+#: ruhezeit.py:20
+msgid "Mi"
+msgstr "Wed"
+
+#: ruhezeit.py:20
+msgid "Do"
+msgstr "Thu"
+
+#: ruhezeit.py:20
+msgid "Fr"
+msgstr "Fri"
+
+#: ruhezeit.py:20
+msgid "Sa"
+msgstr "Sat"
+
+#: ruhezeit.py:20
+msgid "So"
+msgstr "Sun"
+
+#: services.py:39
+#, python-format
+msgid "'%(host)s' ist keine gültige Host-Endung (z. B. push.apple.com)"
+msgstr "'%(host)s' is not a valid host suffix (e.g. push.apple.com)"
+
+#: services.py:49
+msgid "Standard-Lebensdauer einer Push-Nachricht"
+msgstr "Default lifetime of a push message"
+
+#: services.py:57
+msgid "Max. Versuche je Zustellung"
+msgstr "Max. attempts per delivery"
+
+#: services.py:58
+msgid "Danach gilt die Zustellung als aufgegeben."
+msgstr "After that, the delivery counts as given up."
+
+#: services.py:65
+msgid "Aufbewahrung gelesener Benachrichtigungen"
+msgstr "How long to keep read notifications"
+
+#: services.py:66 services.py:75 services.py:87
+msgid "Tage"
+msgstr "days"
+
+#: services.py:73
+msgid "Aufbewahrung ungelesener Benachrichtigungen"
+msgstr "How long to keep unread notifications"
+
+#: services.py:74
+msgid "Auch ungelesene Benachrichtigungen werden danach gelöscht."
+msgstr "Unread notifications are deleted after this time, too."
+
+#: services.py:82
+msgid "Aufbewahrung der Zustell-Protokolle"
+msgstr "How long to keep delivery logs"
+
+#: services.py:84
+msgid ""
+"Protokoll je Kanal (gesendet, stumm, Fehler) wird danach gelöscht; die "
+"Benachrichtigung selbst bleibt nach ihrer eigenen Frist."
+msgstr ""
+"The log for each channel (sent, silent, error) is deleted after this time; "
+"the notification itself stays for its own period."
+
+#: services.py:94
+msgid "Erlaubte Push-Dienste (Host-Endungen)"
+msgstr "Allowed push services (host suffixes)"
+
+#: services.py:96
+msgid ""
+"Web-Push-Endpunkte werden nur an diese Hosts gesendet (Endung auf Label-"
+"Grenze, z. B. push.apple.com). IP-Adressen und nicht öffentliche Ziele sind "
+"immer gesperrt."
+msgstr ""
+"Web push endpoints are only sent to these hosts (suffix on a label boundary, "
+"e.g. push.apple.com). IP addresses and non-public targets are always blocked."
+
+#: services.py:300
+msgid "Server und Benutzername sind Pflicht"
+msgstr "Server and user name are required"
+
+#: services.py:302
+msgid "Port muss zwischen 1 und 65535 liegen"
+msgstr "Port must be between 1 and 65535"
+
+#: services.py:304
+msgid "Unbekannte Verschlüsselung"
+msgstr "Unknown encryption"
+
+#: services.py:322
+msgid "Passwort fehlt"
+msgstr "Password is missing"
+
+#: services.py:368
+msgid "Die E-Mail-Adresse ist ungültig."
+msgstr "The email address is not valid."
+
+#: services.py:373
+msgid "Der Postausgang ist noch nicht eingerichtet."
+msgstr "Outgoing mail is not set up yet."
+
+#: services.py:379
+msgid ""
+"Das gespeicherte Passwort passt nicht zum Schlüssel. Bitte neu eingeben."
+msgstr "The saved password does not match the key. Please enter it again."
+
+#: services.py:385
+msgid "Testnachricht"
+msgstr "Test message"
+
+#: services.py:387
+msgid ""
+"Das ist eine Testnachricht von Nestwerk.\n"
+"\n"
+"Wenn du sie liest, funktioniert der E-Mail-Versand."
+msgstr ""
+"This is a test message from Nestwerk.\n"
+"\n"
+"If you can read it, sending email works."
+
+#: services.py:399
+#, python-format
+msgid "Der Versand hat nicht geklappt (%(grund)s)."
+msgstr "Sending did not work (%(grund)s)."
+
+#: services.py:407
+#, python-format
+msgid "Testnachricht an %(empfaenger)s gesendet."
+msgstr "Test message sent to %(empfaenger)s."
+
+#: templates/benachrichtigung/_einstellungen.html:2
+#: templates/benachrichtigung/einstellungen.html:3
+#: templates/benachrichtigung/email.html:7
+#: templates/benachrichtigung/email.txt:9
+msgid "Benachrichtigungen einstellen"
+msgstr "Notification settings"
+
+#: templates/benachrichtigung/_einstellungen.html:5
+msgid "Für wen"
+msgstr "For whom"
+
+#: templates/benachrichtigung/_einstellungen.html:7
+msgid "Für mich"
+msgstr "For me"
+
+#: templates/benachrichtigung/_einstellungen.html:15
+msgid "Profil"
+msgstr "Profile"
+
+#: templates/benachrichtigung/_einstellungen.html:17
+msgid "E-Mails kommen nur, wenn du etwas entscheiden musst."
+msgstr "You only get emails when you need to decide something."
+
+#: templates/benachrichtigung/_einstellungen.html:17
+msgid "Du bekommst zu jedem eingestellten Ereignis eine E-Mail."
+msgstr "You get an email for every event you have turned on."
+
+#: templates/benachrichtigung/_einstellungen.html:20
+msgid "Wieder alle E-Mails"
+msgstr "All emails again"
+
+#: templates/benachrichtigung/_einstellungen.html:22
+msgid "Mail nur bei Entscheidungen"
+msgstr "Email only for decisions"
+
+#: templates/benachrichtigung/_einstellungen.html:25
+msgid "Der E-Mail-Postausgang ist noch nicht eingerichtet."
+msgstr "Outgoing email is not set up yet."
+
+#: templates/benachrichtigung/_einstellungen.html:32
+msgid ""
+"In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste."
+msgstr ""
+"During this time, push stays silent. The message still shows up in the list."
+
+#: templates/benachrichtigung/_einstellungen.html:35
+msgctxt "Uhrzeit"
+msgid "Von"
+msgstr "From"
+
+#: templates/benachrichtigung/_einstellungen.html:37
+msgctxt "Uhrzeit"
+msgid "Bis"
+msgstr "To"
+
+#: templates/benachrichtigung/_einstellungen.html:40
+msgid "Wochentage"
+msgstr "Days of the week"
+
+#: templates/benachrichtigung/_einstellungen.html:43
+msgid "E-Mail ebenfalls pausieren"
+msgstr "Pause email as well"
+
+#: templates/benachrichtigung/_einstellungen.html:45
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/benachrichtigung/_einstellungen.html:47
+msgid "Entfernen"
+msgstr "Remove"
+
+#: templates/benachrichtigung/_einstellungen.html:55
+msgid "Was du bekommst"
+msgstr "What you get"
+
+#: templates/benachrichtigung/_einstellungen.html:55
+#, python-format
+msgid "Was %(name)s bekommt"
+msgstr "What %(name)s gets"
+
+#: templates/benachrichtigung/_einstellungen.html:56
+msgid "Kinder erhalten Push und Pop-ups. Die Eltern stellen das hier ein."
+msgstr "Kids get push and pop-ups. Parents set this up here."
+
+#: templates/benachrichtigung/_einstellungen.html:59
+msgid "Ereignis"
+msgstr "Event"
+
+#: templates/benachrichtigung/_einstellungen.html:66
+msgid "nur Entscheidungen"
+msgstr "decisions only"
+
+#: templates/benachrichtigung/_einstellungen.html:68
+#, python-format
+msgid "%(typ)s per %(kanal)s"
+msgstr "%(typ)s by %(kanal)s"
+
+#: templates/benachrichtigung/_einstellungen.html:71
+msgid "An"
+msgstr "On"
+
+#: templates/benachrichtigung/_einstellungen.html:71
+msgid "Aus"
+msgstr "Off"
+
+#: templates/benachrichtigung/_einstellungen.html:81
+msgid "Keine Ereignisse"
+msgstr "No events"
+
+#: templates/benachrichtigung/_einstellungen.html:81
+msgid "Sobald Module Ereignisse melden, erscheinen sie hier."
+msgstr "As soon as modules report events, they show up here."
+
+#: templates/benachrichtigung/_kachel.html:4
+msgid "Noch nichts passiert."
+msgstr "Nothing has happened yet."
+
+#: templates/benachrichtigung/_kachel.html:7
+msgid "Alle ansehen"
+msgstr "See all"
+
+#: templates/benachrichtigung/_liste.html:3
+#, python-format
+msgid "%(ungelesen)s ungelesen"
+msgstr "%(ungelesen)s unread"
+
+#: templates/benachrichtigung/_liste.html:3
+msgid "Alles gelesen"
+msgstr "All read"
+
+#: templates/benachrichtigung/_liste.html:6
+msgid "Alle gelesen"
+msgstr "Mark all as read"
+
+#: templates/benachrichtigung/_liste.html:13
+msgid "neu"
+msgstr "new"
+
+#: templates/benachrichtigung/_liste.html:14
+msgid "d.m. H:i"
+msgstr "M j, H:i"
+
+#: templates/benachrichtigung/_liste.html:25
+#: templates/benachrichtigung/email.html:6
+#: templates/benachrichtigung/email.txt:6
+msgid "Öffnen"
+msgstr "Open"
+
+#: templates/benachrichtigung/_liste.html:29
+msgid "Gelesen"
+msgstr "Mark as read"
+
+#: templates/benachrichtigung/_liste.html:35
+msgid "Noch nichts passiert"
+msgstr "Nothing has happened yet"
+
+#: templates/benachrichtigung/_liste.html:35
+msgid "Neue Ereignisse erscheinen hier."
+msgstr "New events show up here."
+
+#: templates/benachrichtigung/_push_karte.html:9
+msgid "Das hat nicht geklappt. Bitte noch einmal versuchen."
+msgstr "That did not work. Please try again."
+
+#: templates/benachrichtigung/_push_karte.html:10
+msgid "Abmelden hat nicht geklappt. Bitte noch einmal versuchen."
+msgstr "Signing out did not work. Please try again."
+
+#: templates/benachrichtigung/_push_karte.html:12
+#: templates/benachrichtigung/push_geraet.html:3
+msgid "Push auf diesem Gerät"
+msgstr "Push on this device"
+
+#: templates/benachrichtigung/_push_karte.html:13
+msgid "Einen Moment, ich prüfe dieses Gerät …"
+msgstr "One moment, I am checking this device …"
+
+#: templates/benachrichtigung/_push_karte.html:15
+msgid "Push ist auf dem Server noch nicht eingerichtet."
+msgstr "Push is not set up on the server yet."
+
+#: templates/benachrichtigung/_push_karte.html:16
+msgid "Dieses Gerät oder dieser Browser kann keine Push-Nachrichten empfangen."
+msgstr "This device or browser cannot receive push messages."
+
+#: templates/benachrichtigung/_push_karte.html:19
+msgid ""
+"<strong>iPhone und iPad:</strong> Push geht nur, wenn Nestwerk als Web-App "
+"auf dem Home-Bildschirm liegt."
+msgstr ""
+"<strong>iPhone and iPad:</strong> Push only works if Nestwerk is on your "
+"home screen as a web app."
+
+#: templates/benachrichtigung/_push_karte.html:21
+msgid "In Safari unten auf <strong>Teilen</strong> tippen."
+msgstr "In Safari, tap <strong>Share</strong> at the bottom."
+
+#: templates/benachrichtigung/_push_karte.html:22
+msgid "<strong>Zum Home-Bildschirm</strong> wählen."
+msgstr "Choose <strong>Add to Home Screen</strong>."
+
+#: templates/benachrichtigung/_push_karte.html:23
+msgid ""
+"Den Schalter <strong>Als Web-App öffnen</strong> eingeschaltet lassen (iOS "
+"26)."
+msgstr "Leave the <strong>Open as Web App</strong> switch turned on (iOS 26)."
+
+#: templates/benachrichtigung/_push_karte.html:24
+msgid ""
+"Nestwerk über das neue Symbol auf dem Home-Bildschirm öffnen. Dann hier den "
+"Knopf zum Aktivieren antippen."
+msgstr ""
+"Open Nestwerk from the new icon on your home screen. Then tap the button to "
+"turn it on here."
+
+#: templates/benachrichtigung/_push_karte.html:29
+msgid "Du bekommst Meldungen direkt auf dieses Gerät."
+msgstr "You get messages right on this device."
+
+#: templates/benachrichtigung/_push_karte.html:30
+msgid "Benachrichtigungen aktivieren"
+msgstr "Turn on notifications"
+
+#: templates/benachrichtigung/_push_karte.html:34
+msgid "Push ist auf diesem Gerät <strong>aktiv</strong>."
+msgstr "Push is <strong>on</strong> for this device."
+
+#: templates/benachrichtigung/_push_karte.html:37
+msgid "Test-Push senden"
+msgstr "Send test push"
+
+#: templates/benachrichtigung/_push_karte.html:39
+msgid "Auf diesem Gerät abmelden"
+msgstr "Sign out on this device"
+
+#: templates/benachrichtigung/_push_karte.html:44
+msgid ""
+"Benachrichtigungen sind für Nestwerk blockiert. Erlaube sie in den "
+"Einstellungen des Geräts (iPhone: Einstellungen, Mitteilungen, Nestwerk) und "
+"lade die Seite neu."
+msgstr ""
+"Notifications are blocked for Nestwerk. Allow them in your device settings "
+"(iPhone: Settings, Notifications, Nestwerk) and reload the page."
+
+#: templates/benachrichtigung/_zaehler.html:1
+#, python-format
+msgid "%(ungelesen)s neu"
+msgstr "%(ungelesen)s new"
+
+#: templates/benachrichtigung/einstellungen.html:6
+#: templates/benachrichtigung/liste.html:8
+msgid "Zurück"
+msgstr "Back"
+
+#: templates/benachrichtigung/email.html:3
+#: templates/benachrichtigung/email.txt:1
+#, python-format
+msgid "Hallo %(name)s,"
+msgstr "Hi %(name)s,"
+
+#: templates/benachrichtigung/liste.html:6
+msgid "Einstellungen"
+msgstr "Settings"
+
+#: templates/benachrichtigung/offline.html:7
+msgid "Offline"
+msgstr "Offline"
+
+#: templates/benachrichtigung/offline.html:20
+msgid "Keine Verbindung"
+msgstr "No connection"
+
+#: templates/benachrichtigung/offline.html:21
+msgid ""
+"Nestwerk erreicht den Server gerade nicht. Prüfe das WLAN und versuche es "
+"noch einmal."
+msgstr ""
+"Nestwerk cannot reach the server right now. Check your Wi-Fi and try again."
+
+#: templates/benachrichtigung/offline.html:22
+msgid "Neu laden"
+msgstr "Reload"
+
+#: templates/benachrichtigung/push_geraet.html:8
+msgid ""
+"Auf dem Tablet gibt es keine Push-Nachrichten. Die Anzeige aktualisiert sich "
+"von selbst."
+msgstr "The tablet does not get push messages. The screen updates by itself."
+
+#: texte.py:41
+msgid "Datensicherung fehlgeschlagen"
+msgstr "Backup failed"
+
+#: texte.py:42
+msgid "Bitte Job-Läufe und Backup-Ordner prüfen (Runbook)."
+msgstr "Please check the job runs and the backup folder (runbook)."
+
+#: texte.py:45
+#, python-brace-format
+msgid "{kind} möchte eine Aufgabe machen"
+msgstr "{kind} wants to do a task"
+
+#: texte.py:45
+#, python-brace-format
+msgid "„{aufgabe}“"
+msgstr "“{aufgabe}”"
+
+#: texte.py:48
+msgid "Mehrere möchten dieselbe Aufgabe"
+msgstr "Several people want the same task"
+
+#: texte.py:49
+#, python-brace-format
+msgid "„{aufgabe}“ braucht eine Zuteilung."
+msgstr "“{aufgabe}” needs to be assigned."
+
+#: texte.py:52
+#, python-brace-format
+msgid "{kind} hat eine Aufgabe gemeldet"
+msgstr "{kind} reported a task"
+
+#: texte.py:53
+#, python-brace-format
+msgid "„{aufgabe}“ wartet auf Bestätigung."
+msgstr "“{aufgabe}” is waiting for approval."
+
+#: texte.py:56
+msgid "Aufgabe bestätigt!"
+msgstr "Task approved!"
+
+#: texte.py:56
+#, python-brace-format
+msgid "„{aufgabe}“ ist geschafft. Gut gemacht!"
+msgstr "“{aufgabe}” is done. Well done!"
+
+#: texte.py:59
+msgid "Aufgabe nicht angenommen"
+msgstr "Task not accepted"
+
+#: texte.py:59
+#, python-brace-format
+msgid "„{aufgabe}“ wurde abgelehnt."
+msgstr "“{aufgabe}” was turned down."
+
+#: texte.py:62
+msgid "Rückfrage zur Aufgabe"
+msgstr "Question about the task"
+
+#: texte.py:63
+#, python-brace-format
+msgid "Zu „{aufgabe}“ gibt es eine Rückfrage."
+msgstr "There is a question about “{aufgabe}”."
+
+#: texte.py:66
+msgid "Deine Aufgabe wartet"
+msgstr "Your task is waiting"
+
+#: texte.py:66
+#, python-brace-format
+msgid "„{aufgabe}“ läuft bald ab."
+msgstr "“{aufgabe}” runs out soon."
+
+#: texte.py:69
+msgid "Reservierung abgelaufen"
+msgstr "Reservation expired"
+
+#: texte.py:70
+#, python-brace-format
+msgid "{kind} hat „{aufgabe}“ nicht gemacht."
+msgstr "{kind} did not do “{aufgabe}”."
+
+#: texte.py:73
+msgid "Aufgabe läuft bald ab"
+msgstr "Task runs out soon"
+
+#: texte.py:74
+#, python-brace-format
+msgid "„{aufgabe}“ wurde noch nicht übernommen."
+msgstr "“{aufgabe}” has not been taken yet."
+
+#: texte.py:77
+msgid "Aufgabe nicht übernommen"
+msgstr "Task not taken"
+
+#: texte.py:78
+#, python-brace-format
+msgid "„{aufgabe}“ hat niemand übernommen."
+msgstr "Nobody took “{aufgabe}”."
+
+#: texte.py:81
+#, python-brace-format
+msgid "{kind} möchte eine Belohnung"
+msgstr "{kind} wants a reward"
+
+#: texte.py:82
+#, python-brace-format
+msgid "„{belohnung}“ wartet auf Entscheidung."
+msgstr "“{belohnung}” is waiting for a decision."
+
+#: texte.py:85
+msgid "Entscheidung zu deiner Belohnung"
+msgstr "Decision about your reward"
+
+#: texte.py:85
+#, python-brace-format
+msgid "„{belohnung}“: {ergebnis}"
+msgstr "“{belohnung}”: {ergebnis}"
+
+#: texte.py:88
+msgid "Dein Mod ist fertig!"
+msgstr "Your mod is ready!"
+
+#: texte.py:88
+#, python-brace-format
+msgid "„{mod}“ kann jetzt eingebaut werden."
+msgstr "“{mod}” can be installed now."
+
+#: texte.py:91
+#, python-brace-format
+msgid "Serie: {wochenserie} Wochen!"
+msgstr "Streak: {wochenserie} weeks!"
+
+#: texte.py:92
+#, python-brace-format
+msgid "Woche {woche} geschafft. Weiter so!"
+msgstr "Week {woche} done. Keep it up!"
+
+#: texte.py:95
+msgid "Neue Woche, neue Serie"
+msgstr "New week, new streak"
+
+#: texte.py:97
+msgid ""
+"Letzte Woche gab es keine Aufgabe. Schon eine Aufgabe startet deine Serie "
+"neu."
+msgstr "There was no task last week. Just one task starts your streak again."
+
+#: texte.py:101
+msgid "Pause – deine Serie ist sicher"
+msgstr "Break – your streak is safe"
+
+#: texte.py:102
+#, python-brace-format
+msgid "Pause {zeitraum}. Aufgaben zählen trotzdem."
+msgstr "Break {zeitraum}. Tasks still count."
+
+#: texte.py:104
+msgid "Pause vorbei"
+msgstr "Break is over"
+
+#: texte.py:104 texte.py:153
+#, python-brace-format
+msgid "{hinweis}"
+msgstr "{hinweis}"
+
+#: texte.py:106
+#, python-brace-format
+msgid "Serienbonus +{prozent} %"
+msgstr "Streak bonus +{prozent} %"
+
+#: texte.py:107
+#, python-brace-format
+msgid "+{punkte} Punkte für {serie} Wochen in Folge."
+msgstr "+{punkte} points for {serie} weeks in a row."
+
+#: texte.py:110 texte.py:116
+#, python-brace-format
+msgid "Neuer Rang: {rang}!"
+msgstr "New rank: {rang}!"
+
+#: texte.py:110 texte.py:116
+#, python-brace-format
+msgid "{kind} ist aufgestiegen."
+msgstr "{kind} moved up."
+
+#: texte.py:113 texte.py:119
+#, python-brace-format
+msgid "Neues Abzeichen: {abzeichen}"
+msgstr "New badge: {abzeichen}"
+
+#: texte.py:113
+#, python-brace-format
+msgid "{kind}: {beschreibung}"
+msgstr "{kind}: {beschreibung}"
+
+#: texte.py:120
+#, python-brace-format
+msgid "{kind} hat ein Abzeichen verdient."
+msgstr "{kind} earned a badge."
+
+#: texte.py:123
+#, python-brace-format
+msgid "{kind} ist Held der Woche"
+msgstr "{kind} is hero of the week"
+
+#: texte.py:125
+#, no-python-format, python-brace-format
+msgid "{xp} Punkte, deutlich mehr als sonst ({prozent} % darüber)."
+msgstr "{xp} points, a lot more than usual ({prozent} % above)."
+
+#: texte.py:128
+msgid "Du bist Held der Woche!"
+msgstr "You are hero of the week!"
+
+#: texte.py:129
+#, python-brace-format
+msgid "{xp} Punkte: mehr als sonst. Stark gemacht!"
+msgstr "{xp} points: more than usual. Great job!"
+
+#: texte.py:132
+msgid "Sondertag freigeschaltet"
+msgstr "Special day unlocked"
+
+#: texte.py:132
+msgid "Du darfst dir etwas wünschen!"
+msgstr "You get to make a wish!"
+
+#: texte.py:135
+#, python-brace-format
+msgid "Sondertag-Wunsch von {kind}"
+msgstr "Special day wish from {kind}"
+
+#: texte.py:135 texte.py:138
+#, python-brace-format
+msgid "{wunsch}"
+msgstr "{wunsch}"
+
+#: texte.py:138
+msgid "Dein Wunsch wurde angenommen"
+msgstr "Your wish was accepted"
+
+#: texte.py:141
+#, python-brace-format
+msgid "{belohnung} freigeschaltet!"
+msgstr "{belohnung} unlocked!"
+
+#: texte.py:142
+#, python-brace-format
+msgid "Die Familie hat {ziel} Punkte geschafft."
+msgstr "The family reached {ziel} points."
+
+#: texte.py:145
+#, python-brace-format
+msgid "Geschafft! {belohnung}"
+msgstr "You did it! {belohnung}"
+
+#: texte.py:146
+msgid "Ihr habt das Familienziel erreicht. Super gemacht!"
+msgstr "You reached the family goal. Great job!"
+
+#: texte.py:149
+msgid "Abstimmung läuft"
+msgstr "Voting is open"
+
+#: texte.py:150
+msgid "Wähle jetzt die Belohnung für nächste Woche."
+msgstr "Pick the reward for next week now."
+
+#: texte.py:153
+msgid "Familienziel: Eltern entscheiden"
+msgstr "Family goal: parents decide"
+
+#: texte.py:156
+#, python-brace-format
+msgid "Großes Ziel freigeschaltet: {grossziel}!"
+msgstr "Big goal unlocked: {grossziel}!"
+
+#: texte.py:157
+msgid "Mehrere Wochenziele in Folge geschafft."
+msgstr "Several weekly goals reached in a row."
+
+#: texte.py:160
+#, python-brace-format
+msgid "Großes Ziel: {grossziel}!"
+msgstr "Big goal: {grossziel}!"
+
+#: texte.py:161
+msgid "Ihr habt mehrere Wochenziele in Folge geschafft!"
+msgstr "You reached several weekly goals in a row!"
+
+#: views.py:166
+msgid "Bitte Uhrzeiten wie 21:00 eingeben."
+msgstr "Please enter times like 21:00."
+
+#: views.py:168
+msgid "Bitte mindestens einen Wochentag wählen."
+msgstr "Please choose at least one day."
+
+#: views_push.py:70
+msgid "Das Familien-Dashboard"
+msgstr "The family dashboard"
+
+#: views_push.py:207
+msgid "Noch kein Gerät angemeldet. Zuerst Benachrichtigungen aktivieren."
+msgstr "No device signed up yet. Turn on notifications first."
+
+#: views_push.py:212
+#, python-format
+msgid "%(gesendet)s gesendet, %(fehler)s fehlgeschlagen."
+msgstr "%(gesendet)s sent, %(fehler)s failed."
+
+#: views_push.py:218
+#, python-format
+msgid "Test an %(anzahl)s Gerät(e) gesendet."
+msgstr "Test sent to %(anzahl)s device(s)."

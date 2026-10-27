@@ -23,6 +23,8 @@ from dataclasses import dataclass
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 
 from django.db import transaction
+from django.utils.formats import localize
+from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
@@ -315,13 +317,13 @@ def _ganzzahl(wert, feld):
     if isinstance(wert, str) and wert.strip().isdigit():
         wert = int(wert.strip())
     if isinstance(wert, bool) or not isinstance(wert, int) or wert < 0:
-        raise RangFehler(f"{feld}: bitte eine ganze Zahl ab 0.")
+        raise RangFehler(_("%(feld)s: bitte eine ganze Zahl ab 0.") % {"feld": feld})
     return wert
 
 
 def _eltern_pruefen(von):
     if getattr(von, "rolle", None) != "eltern":
-        raise RangFehler("Ränge ändern nur Eltern.")
+        raise RangFehler(_("Ränge ändern nur Eltern."))
 
 
 @transaction.atomic
@@ -333,21 +335,27 @@ def rang_aendern(rang, *, von, name, xp_schwelle, min_aktive_wochen, jetzt=None)
     rang = Rang.objects.select_for_update().get(pk=rang.pk)
     name = (name or "").strip()
     if not name or len(name) > NAME_MAX:
-        raise RangFehler(f"Name: 1 bis {NAME_MAX} Zeichen.")
-    xp_schwelle = _ganzzahl(xp_schwelle, "XP-Schwelle")
-    min_aktive_wochen = _ganzzahl(min_aktive_wochen, "Aktive Wochen")
+        raise RangFehler(_("Name: 1 bis %(max)s Zeichen.") % {"max": NAME_MAX})
+    xp_schwelle = _ganzzahl(xp_schwelle, _("XP-Schwelle"))
+    min_aktive_wochen = _ganzzahl(min_aktive_wochen, _("Aktive Wochen"))
     if min_aktive_wochen > 32767:
-        raise RangFehler("Aktive Wochen: höchstens 32767.")
+        raise RangFehler(_("Aktive Wochen: höchstens 32767."))
     neu = {"name": name, "xp_schwelle": xp_schwelle, "min_aktive_wochen": min_aktive_wochen}
     vorher = Rang.objects.filter(stufe__lt=rang.stufe).order_by("-stufe").first()
     nachher = Rang.objects.filter(stufe__gt=rang.stufe).order_by("stufe").first()
     for nachbar, unten in ((vorher, True), (nachher, False)):
         if nachbar is None:
             continue
-        for feld, text in (("xp_schwelle", "XP-Schwelle"), ("min_aktive_wochen", "Aktive Wochen")):
+        for feld, text in (
+            ("xp_schwelle", _("XP-Schwelle")),
+            ("min_aktive_wochen", _("Aktive Wochen")),
+        ):
             wert = getattr(nachbar, feld)
             if (wert > neu[feld]) if unten else (neu[feld] > wert):
-                raise RangFehler(f"{text} muss mit dem Rang steigen: {nachbar.name} hat {wert}.")
+                raise RangFehler(
+                    _("%(text)s muss mit dem Rang steigen: %(name)s hat %(wert)s.")
+                    % {"text": text, "name": nachbar.name, "wert": wert}
+                )
     alt = {f: getattr(rang, f) for f in neu}
     geaendert = {f: v for f, v in neu.items() if alt[f] != v}
     if not geaendert:
@@ -372,13 +380,13 @@ def mod_standard_aendern(rang, *, von, mod_preis, bauzeit_stunden):
     _eltern_pruefen(von)
     rang = Rang.objects.select_for_update().get(pk=rang.pk)
     neu = {
-        "mod_preis": _ganzzahl(mod_preis, "Mod-Preis"),
-        "bauzeit_stunden": _ganzzahl(bauzeit_stunden, "Bauzeit"),
+        "mod_preis": _ganzzahl(mod_preis, _("Mod-Preis")),
+        "bauzeit_stunden": _ganzzahl(bauzeit_stunden, _("Bauzeit")),
     }
     if neu["mod_preis"] < 1:
-        raise RangFehler("Mod-Preis: mindestens 1 Punkt.")
+        raise RangFehler(_("Mod-Preis: mindestens 1 Punkt."))
     if neu["bauzeit_stunden"] > 24 * 365:
-        raise RangFehler("Bauzeit: höchstens ein Jahr.")
+        raise RangFehler(_("Bauzeit: höchstens ein Jahr."))
     alt = {f: getattr(rang, f) for f in neu}
     geaendert = {f: v for f, v in neu.items() if alt[f] != v}
     if geaendert:
@@ -398,7 +406,7 @@ def mod_faktoren_setzen(*, von, faktor_preis, faktor_bauzeit, jetzt=None, kind=N
     """AP26: Kalibrierung von Mod-Preisen und Bauzeiten (Audit, K3), global oder (AP32) je Kind."""
     _eltern_pruefen(von)
     if kind is not None and getattr(kind, "rolle", None) != "kind":
-        raise RangFehler("Kalibrierung gibt es nur global oder für Kinder.")
+        raise RangFehler(_("Kalibrierung gibt es nur global oder für Kinder."))
     neu = {
         "faktor_preis": faktor_lesen(faktor_preis),
         "faktor_bauzeit": faktor_lesen(faktor_bauzeit),
@@ -430,9 +438,12 @@ def faktor_lesen(wert) -> Decimal:
     try:
         faktor = Decimal(str(wert).replace(",", ".")).quantize(Decimal("0.01"), ROUND_HALF_UP)
     except (InvalidOperation, ValueError):
-        raise RangFehler("Faktor: bitte eine Zahl wie 1,0 oder 0,8.") from None
+        raise RangFehler(_("Faktor: bitte eine Zahl wie 1,0 oder 0,8.")) from None
     if not FAKTOR_MIN <= faktor <= FAKTOR_MAX:
-        raise RangFehler(f"Faktor: zwischen {FAKTOR_MIN} und {FAKTOR_MAX}.".replace(".", ","))
+        raise RangFehler(
+            _("Faktor: zwischen %(min)s und %(max)s.")
+            % {"min": localize(FAKTOR_MIN), "max": localize(FAKTOR_MAX)}
+        )
     return faktor
 
 
@@ -445,7 +456,7 @@ def kalibrierung_setzen(kind, faktor, *, von, notiz="", jetzt=None):
     jetzt = jetzt or zeit.jetzt()
     notiz = (notiz or "").strip()[:NOTIZ_MAX]
     if kind is not None and getattr(kind, "rolle", None) != "kind":
-        raise RangFehler("Kalibrierung gibt es nur global oder für Kinder.")
+        raise RangFehler(_("Kalibrierung gibt es nur global oder für Kinder."))
     zeile = (
         Kalibrierung.objects.filter(kind=kind).first()
         if kind
@@ -454,7 +465,7 @@ def kalibrierung_setzen(kind, faktor, *, von, notiz="", jetzt=None):
     alt = str(zeile.faktor_schwelle) if zeile else None
     if faktor is None:
         if kind is None:
-            raise RangFehler("Der globale Faktor ist Pflicht.")
+            raise RangFehler(_("Der globale Faktor ist Pflicht."))
         if zeile is None:
             return None
         if zeile.faktor_wochen != 1 or zeile.faktor_preis != 1 or zeile.faktor_bauzeit != 1:
@@ -501,7 +512,7 @@ def wochen_faktor_setzen(kind, faktor, *, von, notiz="", jetzt=None):
     jetzt = jetzt or zeit.jetzt()
     notiz = (notiz or "").strip()[:NOTIZ_MAX]
     if kind is not None and getattr(kind, "rolle", None) != "kind":
-        raise RangFehler("Kalibrierung gibt es nur global oder für Kinder.")
+        raise RangFehler(_("Kalibrierung gibt es nur global oder für Kinder."))
     neu = Decimal("1.00") if faktor is None else faktor_lesen(faktor)
     zeile = Kalibrierung.objects.filter(kind=kind).first()
     alt = zeile.faktor_wochen if zeile else Decimal("1.00")

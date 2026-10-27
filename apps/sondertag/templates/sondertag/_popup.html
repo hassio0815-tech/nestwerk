@@ -1,23 +1,23 @@
-{% load static %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
+{% load i18n static sprache %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
 <div class="st-popup" role="dialog" aria-modal="true" aria-labelledby="st-popup-titel-{{ p.pk }}" data-schliessbar data-festhalten data-popup-art="sondertag">
   <div class="st-popup__karte">
     <span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>
     <div class="st-popup__kopf">
       <span class="st-popup__symbol" aria-hidden="true">{% include "komponenten/icon.html" with name="geschenk" %}</span>
-      <h2 class="st-popup__titel" id="st-popup-titel-{{ p.pk }}">{{ p.titel }}</h2>
-      {% if p.text %}<p class="st-popup__text">{{ p.text }}</p>{% endif %}
+      <h2 class="st-popup__titel" id="st-popup-titel-{{ p.pk }}">{{ p.titel|uebersetzt }}</h2>
+      {% if p.text %}<p class="st-popup__text">{{ p.text|uebersetzt }}</p>{% endif %}
     </div>
     {% if p.art == "sondertag.freigeschaltet" %}
       {% url "sondertag:wunsch" as wunsch_url %}
       <div class="st-popup__inhalt" hx-get="{{ wunsch_url }}" hx-trigger="load" hx-swap="innerHTML">
-        <p class="kachel__text">Einen Moment …</p>
+        <p class="kachel__text">{% translate "Einen Moment …" %}</p>
       </div>
     {% else %}
-      <p class="st-popup__text">Den Termin macht ihr zusammen aus. Viel Spaß!</p>
+      <p class="st-popup__text">{% translate "Den Termin macht ihr zusammen aus. Viel Spaß!" %}</p>
     {% endif %}
     <div class="st-popup__fuss">
-      {% if p.art == "sondertag.freigeschaltet" %}<span class="kachel__text">Du kannst den Wunsch auch später auf deiner Startseite schicken.</span>{% endif %}
-      <button type="button" class="knopf knopf--geist" data-schliessen>{% include "komponenten/icon.html" with name="x" %}<span>{% if p.art == "sondertag.freigeschaltet" %}Später{% else %}Schließen{% endif %}</span></button>
+      {% if p.art == "sondertag.freigeschaltet" %}<span class="kachel__text">{% translate "Du kannst den Wunsch auch später auf deiner Startseite schicken." %}</span>{% endif %}
+      <button type="button" class="knopf knopf--geist" data-schliessen>{% include "komponenten/icon.html" with name="x" %}<span>{% if p.art == "sondertag.freigeschaltet" %}{% translate "Später" %}{% else %}{% translate "Schließen" %}{% endif %}</span></button>
     </div>
   </div>
 </div>

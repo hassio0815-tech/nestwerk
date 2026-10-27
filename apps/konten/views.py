@@ -1,12 +1,16 @@
 """Anmelde- und Geräteseiten (ARCHITECTURE 4). Die Dashboards selbst liefert ``oberflaeche``;
 ``kind_heim`` und ``eltern_heim`` sind Platzhalter, bis diese Schicht sie ersetzt."""
 
+from django.conf import settings
 from django.contrib import auth
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse
+from django.utils import translation
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy, ngettext
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from apps.kern import audit, zeit
@@ -14,9 +18,9 @@ from apps.kern import audit, zeit
 from . import akzent, begruessung, netz, selectors, services, sitzung, sperre
 from .geraet import cookie_loeschen, cookie_setzen
 from .models import Benutzer, Geraet, GeraeteTyp, Rolle
-from .zugriff import nur_eltern, nur_kind
+from .zugriff import angemeldet, nur_eltern, nur_kind
 
-MELDUNG_FALSCH = "Das hat nicht gepasst. Versuch es noch einmal."
+MELDUNG_FALSCH = gettext_lazy("Das hat nicht gepasst. Versuch es noch einmal.")
 
 
 def _heim(user):
@@ -45,7 +49,7 @@ def _weiter(request, user):
 def _minuten_text(bis):
     rest = max(int((bis - zeit.jetzt()).total_seconds()), 0)
     minuten = -(-rest // 60)  # aufrunden
-    return f"{minuten} Minute{'n' if minuten != 1 else ''}"
+    return ngettext("%(n)s Minute", "%(n)s Minuten", minuten) % {"n": minuten}
 
 
 @require_GET
@@ -65,7 +69,12 @@ def start(request):
     return render(
         request,
         "konten/start.html",
-        {"kinder": kinder, "eltern": selectors.aktive_eltern(), "gruss": begruessung.gruss()},
+        {
+            "kinder": kinder,
+            "eltern": selectors.aktive_eltern(),
+            "gruss": begruessung.gruss(),
+            "gruesse": begruessung.gruesse(),
+        },
     )
 
 
@@ -81,13 +90,15 @@ def kind_pin(request, kind_id):
     }
 
     if not netz.kind_login_erlaubt(request):
-        kontext["fehler"] = "Die Anmeldung geht nur im Heimnetz."
+        kontext["fehler"] = _("Die Anmeldung geht nur im Heimnetz.")
         return render(request, "konten/pin.html", kontext, status=403)
 
     gesperrt_bis = selectors.kind_gesperrt_bis(kind)
     if request.method == "GET" or gesperrt_bis:
         if gesperrt_bis:
-            kontext["fehler"] = f"Gesperrt. Versuch es in {_minuten_text(gesperrt_bis)} wieder."
+            kontext["fehler"] = _("Gesperrt. Versuch es in %(zeit)s wieder.") % {
+                "zeit": _minuten_text(gesperrt_bis)
+            }
         return render(request, "konten/pin.html", kontext, status=429 if gesperrt_bis else 200)
 
     benutzer = auth.authenticate(request, kind=kind, pin=request.POST.get("pin", ""))
@@ -100,7 +111,9 @@ def kind_pin(request, kind_id):
                 kind=kind,
                 details={"bis": gesperrt_bis.isoformat()},
             )
-            kontext["fehler"] = f"Gesperrt. Versuch es in {_minuten_text(gesperrt_bis)} wieder."
+            kontext["fehler"] = _("Gesperrt. Versuch es in %(zeit)s wieder.") % {
+                "zeit": _minuten_text(gesperrt_bis)
+            }
             return render(request, "konten/pin.html", kontext, status=429)
         kontext["fehler"] = MELDUNG_FALSCH
         return render(request, "konten/pin.html", kontext, status=401)
@@ -122,7 +135,9 @@ def eltern_login(request):
     ip = netz.client_ip_text(request)
     gesperrt_bis = sperre.eltern_gesperrt_bis(ip, zeit.jetzt())
     if gesperrt_bis:
-        kontext["fehler"] = f"Zu viele Versuche. Bitte in {_minuten_text(gesperrt_bis)} wieder."
+        kontext["fehler"] = _("Zu viele Versuche. Bitte in %(zeit)s wieder.") % {
+            "zeit": _minuten_text(gesperrt_bis)
+        }
         return render(request, "konten/eltern_login.html", kontext, status=429)
 
     elternteil = selectors.aktive_eltern().filter(pk=_uuid(request.POST.get("eltern"))).first()
@@ -159,6 +174,26 @@ def aktiv(request):
     """Aktiver Herzschlag des Leerlauf-Timers im Browser (Touch/Klick): zählt als Aktivität.
     Im Gegensatz zum Polling ist diese View **nicht** ``@passiv``."""
     return HttpResponse(status=204)
+
+
+@angemeldet
+@require_POST
+def sprache_setzen(request):
+    """Eigene Sprache des angemeldeten Benutzers: ``""`` (automatisch), ``de`` oder ``en``."""
+    try:
+        services.sprache_setzen(request.user, request.POST.get("sprache", ""))
+    except ValidationError:
+        return HttpResponseBadRequest()
+    translation.activate(request.user.sprache or settings.LANGUAGE_CODE)
+    ziel = request.POST.get("next") or ""
+    if not (
+        ziel
+        and url_has_allowed_host_and_scheme(
+            ziel, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+        )
+    ):
+        ziel = _heim(request.user)
+    return redirect(ziel)
 
 
 @nur_kind

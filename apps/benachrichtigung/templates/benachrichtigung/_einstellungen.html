@@ -1,10 +1,10 @@
-<div id="einstellungen-inhalt" class="stapel">
-  <h1>Benachrichtigungen einstellen</h1>
+{% load i18n %}<div id="einstellungen-inhalt" class="stapel">
+  <h1>{% translate "Benachrichtigungen einstellen" %}</h1>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
-  <nav class="reihe" aria-label="Für wen">
+  <nav class="reihe" aria-label="{% translate "Für wen" %}">
     {% url "benachrichtigung:einstellungen" as eigene_url %}
-    {% include "komponenten/button.html" with href=eigene_url variante=eigene|yesno:"primaer,geist" klein=True text="Für mich" %}
+    {% include "komponenten/button.html" with href=eigene_url variante=eigene|yesno:"primaer,geist" klein=True text=_("Für mich") %}
     {% for k in kinder %}
       <a class="knopf knopf--klein knopf--{% if ziel.pk == k.pk %}primaer{% else %}geist{% endif %}" href="{{ eigene_url }}?fuer={{ k.pk }}"><span>{{ k.anzeigename }}</span></a>
     {% endfor %}
@@ -12,39 +12,39 @@
 
   {% if eigene %}
   <section class="karte"><div class="karte__inhalt stapel">
-    <h2>Profil</h2>
+    <h2>{% translate "Profil" %}</h2>
     <form class="stapel" hx-post="{% url 'benachrichtigung:profil' %}" hx-target="#einstellungen-inhalt" hx-swap="outerHTML">
-      <p>{% if nur_entscheidungen %}E-Mails kommen nur, wenn du etwas entscheiden musst.{% else %}Du bekommst zu jedem eingestellten Ereignis eine E-Mail.{% endif %}</p>
+      <p>{% if nur_entscheidungen %}{% translate "E-Mails kommen nur, wenn du etwas entscheiden musst." %}{% else %}{% translate "Du bekommst zu jedem eingestellten Ereignis eine E-Mail." %}{% endif %}</p>
       <input type="hidden" name="nur_entscheidungen" value="{% if nur_entscheidungen %}0{% else %}1{% endif %}">
       {% if nur_entscheidungen %}
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text="Wieder alle E-Mails" %}
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text=_("Wieder alle E-Mails") %}
       {% else %}
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text="Mail nur bei Entscheidungen" %}
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text=_("Mail nur bei Entscheidungen") %}
       {% endif %}
     </form>
-    {% if not smtp_da %}<p class="feld__hinweis">Der E-Mail-Postausgang ist noch nicht eingerichtet.</p>{% endif %}
+    {% if not smtp_da %}<p class="feld__hinweis">{% translate "Der E-Mail-Postausgang ist noch nicht eingerichtet." %}</p>{% endif %}
   </div></section>
 
   {% include "benachrichtigung/_push_karte.html" %}
 
   <section class="karte"><div class="karte__inhalt stapel">
-    <h2>Ruhezeit</h2>
-    <p>In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste.</p>
+    <h2>{% translate "Ruhezeit" %}</h2>
+    <p>{% translate "In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste." %}</p>
     <form class="stapel" hx-post="{% url 'benachrichtigung:ruhezeit' %}" hx-target="#einstellungen-inhalt" hx-swap="outerHTML">
       <div class="reihe">
-        <div class="feld"><label class="feld__label" for="rz-von">Von</label>
+        <div class="feld"><label class="feld__label" for="rz-von">{% translate "Von" context "Uhrzeit" %}</label>
           <input class="feld__eingabe" id="rz-von" type="time" name="von" value="{{ ruhezeit.von|time:'H:i'|default:'21:00' }}"></div>
-        <div class="feld"><label class="feld__label" for="rz-bis">Bis</label>
+        <div class="feld"><label class="feld__label" for="rz-bis">{% translate "Bis" context "Uhrzeit" %}</label>
           <input class="feld__eingabe" id="rz-bis" type="time" name="bis" value="{{ ruhezeit.bis|time:'H:i'|default:'07:00' }}"></div>
       </div>
-      <fieldset class="reihe"><legend>Wochentage</legend>
+      <fieldset class="reihe"><legend>{% translate "Wochentage" %}</legend>
         {% for t in tage %}<label><input type="checkbox" name="tage" value="{{ t.nr }}"{% if t.an %} checked{% endif %}> {{ t.name }}</label>{% endfor %}
       </fieldset>
-      <label><input type="checkbox" name="email" value="1"{% if ruhezeit.gilt_fuer_email %} checked{% endif %}> E-Mail ebenfalls pausieren</label>
+      <label><input type="checkbox" name="email" value="1"{% if ruhezeit.gilt_fuer_email %} checked{% endif %}> {% translate "E-Mail ebenfalls pausieren" %}</label>
       <div class="reihe">
-        {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
+        {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
         {% if ruhezeit %}
-          {% include "komponenten/button.html" with typ="submit" name="aktion" wert="entfernen" variante="geist" text="Entfernen" %}
+          {% include "komponenten/button.html" with typ="submit" name="aktion" wert="entfernen" variante="geist" text=_("Entfernen") %}
         {% endif %}
       </div>
     </form>
@@ -52,23 +52,23 @@
   {% endif %}
 
   <section class="karte"><div class="karte__inhalt stapel">
-    <h2>Was {% if eigene %}du{% else %}{{ ziel.anzeigename }}{% endif %} bekommst</h2>
-    {% if not eigene %}<p>Kinder erhalten Push und Pop-ups. Die Eltern stellen das hier ein.</p>{% endif %}
+    <h2>{% if eigene %}{% translate "Was du bekommst" %}{% else %}{% blocktranslate with name=ziel.anzeigename %}Was {{ name }} bekommt{% endblocktranslate %}{% endif %}</h2>
+    {% if not eigene %}<p>{% translate "Kinder erhalten Push und Pop-ups. Die Eltern stellen das hier ein." %}</p>{% endif %}
     {% if matrix %}
     <table class="praeferenzen">
-      <thead><tr><th scope="col">Ereignis</th>{% for k in kanaele %}<th scope="col">{{ k.bezeichnung }}</th>{% endfor %}</tr></thead>
+      <thead><tr><th scope="col">{% translate "Ereignis" %}</th>{% for k in kanaele %}<th scope="col">{{ k.anzeigename }}</th>{% endfor %}</tr></thead>
       <tbody>
         {% for zeile in matrix %}
-          <tr><th scope="row">{{ zeile.typ.bezeichnung }}</th>
+          <tr><th scope="row">{% translate zeile.typ.bezeichnung %}</th>
             {% for z in zeile.zellen %}
               <td>
                 {% if z.durch_profil_aus %}
-                  <span class="chip">nur Entscheidungen</span>
+                  <span class="chip">{% translate "nur Entscheidungen" %}</span>
                 {% else %}
-                  <button type="button" class="knopf knopf--klein knopf--{% if z.aktiv %}primaer{% else %}geist{% endif %}" role="switch" aria-checked="{% if z.aktiv %}true{% else %}false{% endif %}" aria-label="{{ zeile.typ.bezeichnung }} per {{ z.kanal.bezeichnung }}"
+                  <button type="button" class="knopf knopf--klein knopf--{% if z.aktiv %}primaer{% else %}geist{% endif %}" role="switch" aria-checked="{% if z.aktiv %}true{% else %}false{% endif %}" aria-label="{% translate zeile.typ.bezeichnung as typname %}{% blocktranslate with typ=typname kanal=z.kanal.anzeigename %}{{ typ }} per {{ kanal }}{% endblocktranslate %}"
                     hx-post="{% url 'benachrichtigung:praeferenz' %}" hx-target="#einstellungen-inhalt" hx-swap="outerHTML"
                     hx-vals='{"typ": "{{ z.typ.slug }}", "kanal": "{{ z.kanal.slug }}", "aktiv": "{% if z.aktiv %}0{% else %}1{% endif %}", "fuer": "{{ fuer }}"}'>
-                    <span>{% if z.aktiv %}An{% else %}Aus{% endif %}</span>
+                    <span>{% if z.aktiv %}{% translate "An" %}{% else %}{% translate "Aus" %}{% endif %}</span>
                   </button>
                 {% endif %}
               </td>
@@ -78,7 +78,7 @@
       </tbody>
     </table>
     {% else %}
-      {% include "komponenten/leer.html" with icon="glocke" titel="Keine Ereignisse" text="Sobald Module Ereignisse melden, erscheinen sie hier." %}
+      {% include "komponenten/leer.html" with icon="glocke" titel=_("Keine Ereignisse") text=_("Sobald Module Ereignisse melden, erscheinen sie hier.") %}
     {% endif %}
   </div></section>
 </div>

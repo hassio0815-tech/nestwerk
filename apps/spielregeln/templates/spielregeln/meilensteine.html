@@ -1,57 +1,58 @@
 {% extends "basis/einstellungen.html" %}
-{% block titel %}Meilensteine{% endblock %}
+{% load i18n sprache %}
+{% block titel %}{% translate "Meilensteine" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
 {% endblock %}
 {% block seite %}
-  <h1>Meilensteine</h1>
-  <p>Ein Meilenstein ist erreicht, wenn alle Bedingungen gelten. Er löst eine Belohnung aus, zum Beispiel einen Sondertag. Erreichte Meilensteine bleiben, auch wenn ihr Bedingungen später verschärft oder den Meilenstein ausschaltet.</p>
+  <h1>{% translate "Meilensteine" %}</h1>
+  <p>{% translate "Ein Meilenstein ist erreicht, wenn alle Bedingungen gelten. Er löst eine Belohnung aus, zum Beispiel einen Sondertag. Erreichte Meilensteine bleiben, auch wenn ihr Bedingungen später verschärft oder den Meilenstein ausschaltet." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   {% for z in zeilen %}
     <section class="nw-karte" data-meilenstein="{{ z.regel.schluessel }}"{% if not z.regel.aktiv %} data-inaktiv{% endif %}><div class="karte__inhalt stapel">
       <div class="zeile">
-        <h2>{{ z.regel.name }}</h2>
-        {% if z.regel.aktiv %}<span class="chip" data-selten="uncommon">an</span>{% else %}<span class="chip" data-selten="common">aus</span>{% endif %}
+        <h2>{{ z.regel.name|uebersetzt }}</h2>
+        {% if z.regel.aktiv %}<span class="chip" data-selten="uncommon">{% translate "an" %}</span>{% else %}<span class="chip" data-selten="common">{% translate "aus" %}</span>{% endif %}
       </div>
-      <p class="kachel__text">Belohnung: {{ z.regel.belohnungsart|default:"keine" }} · {{ z.regel.get_wiederholbar_display }} · Modul {{ z.regel.modul }} · {{ z.anzahl }}× erreicht</p>
+      <p class="kachel__text">{% translate "keine" as keine %}{% blocktranslate with art=z.regel.belohnungsart|default:keine wdh=z.regel.get_wiederholbar_display modul=z.regel.modul anzahl=z.anzahl %}Belohnung: {{ art }} · {{ wdh }} · Modul {{ modul }} · {{ anzahl }}× erreicht{% endblocktranslate %}</p>
       <form method="post" action="{% url 'spielregeln:meilenstein_aendern' z.regel.pk %}" class="stapel">{% csrf_token %}
         <div class="zeile">
-          <label class="feld"><span class="feld__label">Name</span><input class="nw-eingabe" name="name" value="{{ z.regel.name }}" maxlength="80" required></label>
-          <label class="feld"><span class="feld__label">Beschreibung</span><input class="nw-eingabe" name="beschreibung" value="{{ z.regel.beschreibung }}" maxlength="200"></label>
+          <label class="feld"><span class="feld__label">{% translate "Name" %}</span><input class="nw-eingabe" name="name" value="{{ z.regel.name }}" maxlength="80" required></label>
+          <label class="feld"><span class="feld__label">{% translate "Beschreibung" %}</span><input class="nw-eingabe" name="beschreibung" value="{{ z.regel.beschreibung }}" maxlength="200"></label>
         </div>
-        <h3>Bedingungen (alle müssen gelten)</h3>
+        <h3>{% translate "Bedingungen (alle müssen gelten)" %}</h3>
         {% for b in z.bedingungen %}
           <div class="zeile" data-bedingung="{{ b.metrik }}">
-            <label class="feld"><span class="feld__label">Wert</span><select class="nw-eingabe" name="metrik">
-              <option value="">– entfernen –</option>
+            <label class="feld"><span class="feld__label">{% translate "Wert" %}</span><select class="nw-eingabe" name="metrik">
+              <option value="">{% translate "– entfernen –" %}</option>
               {% for e in metriken %}<option value="{{ e.m.schluessel }}"{% if b.metrik == e.m.schluessel %} selected{% endif %}>{{ e.m.bezeichnung }}{% if e.m.einheit %} ({{ e.m.einheit }}){% endif %}</option>{% endfor %}
             </select></label>
-            <label class="feld"><span class="feld__label">Vergleich</span><select class="nw-eingabe" name="vergleich">
+            <label class="feld"><span class="feld__label">{% translate "Vergleich" %}</span><select class="nw-eingabe" name="vergleich">
               {% for wert, text in vergleiche %}<option value="{{ wert }}"{% if b.vergleich == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
             </select></label>
-            <label class="feld"><span class="feld__label">Ziel</span><input class="nw-eingabe" type="number" min="0" name="wert" value="{{ b.wert }}"></label>
+            <label class="feld"><span class="feld__label">{% translate "Ziel" %}</span><input class="nw-eingabe" type="number" min="0" name="wert" value="{{ b.wert }}"></label>
           </div>
         {% endfor %}
         <div class="zeile" data-bedingung-neu>
-          <label class="feld"><span class="feld__label">Neue Bedingung</span><select class="nw-eingabe" name="metrik">
+          <label class="feld"><span class="feld__label">{% translate "Neue Bedingung" %}</span><select class="nw-eingabe" name="metrik">
             <option value="" selected>–</option>
             {% for e in metriken %}<option value="{{ e.m.schluessel }}">{{ e.m.bezeichnung }}{% if e.m.einheit %} ({{ e.m.einheit }}){% endif %}</option>{% endfor %}
           </select></label>
-          <label class="feld"><span class="feld__label">Vergleich</span><select class="nw-eingabe" name="vergleich">
+          <label class="feld"><span class="feld__label">{% translate "Vergleich" %}</span><select class="nw-eingabe" name="vergleich">
             {% for wert, text in vergleiche %}<option value="{{ wert }}">{{ text }}</option>{% endfor %}
           </select></label>
-          <label class="feld"><span class="feld__label">Ziel</span><input class="nw-eingabe" type="number" min="0" name="wert" value="0"></label>
+          <label class="feld"><span class="feld__label">{% translate "Ziel" %}</span><input class="nw-eingabe" type="number" min="0" name="wert" value="0"></label>
         </div>
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
       </form>
       <form method="post" action="{% url 'spielregeln:meilenstein_aktiv' z.regel.pk %}" class="zeile">{% csrf_token %}
         <input type="hidden" name="aktiv" value="{% if z.regel.aktiv %}0{% else %}1{% endif %}">
-        {% if z.regel.aktiv %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text="Ausschalten" %}{% else %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text="Einschalten" %}{% endif %}
+        {% if z.regel.aktiv %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text=_("Ausschalten") %}{% else %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text=_("Einschalten") %}{% endif %}
       </form>
     </div></section>
   {% empty %}
-    {% include "komponenten/leer.html" with icon="pokal" titel="Noch keine Meilensteine" text="Meilensteine legen Module wie Sondertag an." %}
+    {% include "komponenten/leer.html" with icon="pokal" titel=_("Noch keine Meilensteine") text=_("Meilensteine legen Module wie Sondertag an.") %}
   {% endfor %}
 {% endblock %}

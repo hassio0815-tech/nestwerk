@@ -1,14 +1,14 @@
-<article class="karte"><div class="karte__inhalt stapel">
-  <h2>Abzeichen</h2>
+{% load i18n sprache %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Abzeichen" %}</h2>
   {% for z in k.zeilen %}
     <div class="zeile" data-abzeichen-kind="{{ z.kind.pk }}">
       <strong>{{ z.kind.anzeigename }}</strong>
       <span class="chip">{% include "komponenten/icon.html" with name="stern" %} {{ z.verdient|length }}</span>
-      <span class="kachel__text">{% if z.verdient %}{% with letzt=z.verdient|last %}zuletzt: {{ letzt.titel }}{% endwith %}{% endif %}{% if z.naechste %}{% if z.verdient %} · {% endif %}nächstes: {{ z.naechste.0.abzeichen.name }} ({{ z.naechste.0.wert }}/{{ z.naechste.0.ziel }}){% endif %}</span>
+      <span class="kachel__text">{% if z.verdient %}{% with letzt=z.verdient|last %}{% blocktranslate with titel=letzt.titel|uebersetzt %}zuletzt: {{ titel }}{% endblocktranslate %}{% endwith %}{% endif %}{% if z.naechste %}{% if z.verdient %} · {% endif %}{% with n=z.naechste.0 %}{% blocktranslate with name=n.abzeichen.name|uebersetzt wert=n.wert ziel=n.ziel %}nächstes: {{ name }} ({{ wert }}/{{ ziel }}){% endblocktranslate %}{% endwith %}{% endif %}</span>
     </div>
   {% empty %}
-    {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+    {% include "komponenten/leer.html" with icon="person" titel=_("Noch keine Kinder") text=_("Kinder legst du unter Familie an.") %}
   {% endfor %}
   {% url "spielregeln:abzeichen" as abzeichen_url %}
-  {% include "komponenten/button.html" with href=abzeichen_url variante="geist" klein=True icon="stern" text="Abzeichen verwalten" %}
+  {% include "komponenten/button.html" with href=abzeichen_url variante="geist" klein=True icon="stern" text=_("Abzeichen verwalten") %}
 </div></article>

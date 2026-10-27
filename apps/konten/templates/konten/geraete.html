@@ -1,36 +1,37 @@
 {% extends "basis/einstellungen.html" %}
-{% block titel %}Geräte{% endblock %}
+{% load i18n %}
+{% block titel %}{% translate "Geräte" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="pfeil-links" text="Zurück" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="pfeil-links" text=_("Zurück") %}
 {% endblock %}
 {% block seite %}
   <div class="stapel">
-    <h1>Geräte</h1>
+    <h1>{% translate "Geräte" %}</h1>
     {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
     <section class="nw-karte"><div class="karte__inhalt stapel">
-      <h2>Dieses Gerät registrieren</h2>
-      {% if dieses %}<p>Dieses Gerät ist registriert als <strong>{{ dieses }}</strong>.</p>{% endif %}
+      <h2>{% translate "Dieses Gerät registrieren" %}</h2>
+      {% if dieses %}<p>{% blocktranslate with name=dieses %}Dieses Gerät ist registriert als <strong>{{ name }}</strong>.{% endblocktranslate %}</p>{% endif %}
       <form method="post" class="stapel">{% csrf_token %}
-        {% include "komponenten/feld.html" with name="bezeichnung" label="Bezeichnung" pflicht=True hilfe="z. B. Flur-Tablet" %}
+        {% include "komponenten/feld.html" with name="bezeichnung" label=_("Bezeichnung") pflicht=True hilfe=_("z. B. Flur-Tablet") %}
         <div class="feld">
-          <label class="feld__label" for="typ">Art</label>
+          <label class="feld__label" for="typ">{% translate "Art" %}</label>
           <select class="nw-eingabe" id="typ" name="typ">
             {% for wert, label in typen %}<option value="{{ wert }}">{{ label }}</option>{% endfor %}
           </select>
         </div>
-        {% include "komponenten/button.html" with typ="submit" text="Registrieren" icon="check" %}
+        {% include "komponenten/button.html" with typ="submit" text=_("Registrieren") icon="check" %}
       </form>
     </div></section>
     <section class="nw-karte"><div class="karte__inhalt stapel">
-      <h2>Registrierte Geräte</h2>
+      <h2>{% translate "Registrierte Geräte" %}</h2>
       {% for g in geraete %}
         <form method="post" action="{% url 'konten:geraet_widerrufen' g.pk %}" class="reihe">{% csrf_token %}
           <span>{{ g }}</span>
-          {% include "komponenten/button.html" with typ="submit" variante="gefahr" klein=True icon="x" text="Widerrufen" %}
+          {% include "komponenten/button.html" with typ="submit" variante="gefahr" klein=True icon="x" text=_("Widerrufen") %}
         </form>
       {% empty %}
-        <p>Noch kein Gerät registriert.</p>
+        <p>{% translate "Noch kein Gerät registriert." %}</p>
       {% endfor %}
     </div></section>
   </div>

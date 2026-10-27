@@ -11,6 +11,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 
 class Familienbelohnung(models.Model):
@@ -21,33 +23,33 @@ class Familienbelohnung(models.Model):
     reihenfolge = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
-        verbose_name = "Familienbelohnung"
-        verbose_name_plural = "Familienbelohnungen"
+        verbose_name = _("Familienbelohnung")
+        verbose_name_plural = _("Familienbelohnungen")
         ordering = ["reihenfolge", "id"]
 
     def __str__(self):
-        return self.titel
+        return gettext(self.titel) if self.titel else ""  # Start-Titel in der aktiven Sprache
 
 
 class AbstimmungStatus(models.TextChoices):
-    OFFEN = "offen", "offen"
-    GESCHLOSSEN = "geschlossen", "geschlossen"
-    GLEICHSTAND = "gleichstand", "Eltern entscheiden"
-    ELTERN_ENTSCHIEDEN = "eltern_entschieden", "von den Eltern entschieden"
+    OFFEN = "offen", _("offen")
+    GESCHLOSSEN = "geschlossen", _("geschlossen")
+    GLEICHSTAND = "gleichstand", _("Eltern entscheiden")
+    ELTERN_ENTSCHIEDEN = "eltern_entschieden", _("von den Eltern entschieden")
 
 
 class WochenStatus(models.TextChoices):
-    LAUFEND = "laufend", "laufend"
-    ERREICHT = "erreicht", "erreicht"
-    VERFEHLT = "verfehlt", "verfehlt"
-    NEUTRAL = "neutral", "neutral"
+    LAUFEND = "laufend", _("laufend")
+    ERREICHT = "erreicht", _("erreicht")
+    VERFEHLT = "verfehlt", _("verfehlt")
+    NEUTRAL = "neutral", _("neutral")
 
 
 class Familienwoche(models.Model):
     iso_jahr = models.PositiveSmallIntegerField()
     iso_woche = models.PositiveSmallIntegerField()
     montag = models.DateField()
-    ziel_punkte = models.PositiveIntegerField(help_text="Snapshot aus der Einstellung")
+    ziel_punkte = models.PositiveIntegerField(help_text=_("Snapshot aus der Einstellung"))
     belohnung = models.ForeignKey(
         Familienbelohnung,
         null=True,
@@ -66,8 +68,8 @@ class Familienwoche(models.Model):
     finalisiert_am = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Familienwoche"
-        verbose_name_plural = "Familienwochen"
+        verbose_name = _("Familienwoche")
+        verbose_name_plural = _("Familienwochen")
         ordering = ["iso_jahr", "iso_woche"]
         constraints = [
             models.UniqueConstraint(
@@ -94,8 +96,8 @@ class Stimme(models.Model):
     abgegeben_am = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        verbose_name = "Stimme"
-        verbose_name_plural = "Stimmen"
+        verbose_name = _("Stimme")
+        verbose_name_plural = _("Stimmen")
         constraints = [
             models.UniqueConstraint(fields=["woche", "kind"], name="familienziel_stimme_je_kind")
         ]
@@ -116,9 +118,9 @@ class Grossziel(models.Model):
     eingeloest_am = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Großziel"
-        verbose_name_plural = "Großziele"
+        verbose_name = _("Großziel")
+        verbose_name_plural = _("Großziele")
         ordering = ["-freigeschaltet_am", "-id"]
 
     def __str__(self):
-        return f"Großziel nach {self.ausloesende_woche}"
+        return gettext("Großziel nach %(woche)s") % {"woche": self.ausloesende_woche}
