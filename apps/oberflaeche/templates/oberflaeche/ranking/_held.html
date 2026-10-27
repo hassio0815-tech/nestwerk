@@ -1,18 +1,18 @@
-<section class="rk-held" aria-label="Held der Woche">
+{% load i18n %}<section class="rk-held" aria-label="{% translate "Held der Woche" %}">
   {% if a.helden %}
-    <p class="rk-held__titel">{% include "komponenten/icon.html" with name="pokal" %} Held der letzten Woche</p>
+    <p class="rk-held__titel">{% include "komponenten/icon.html" with name="pokal" %} {% translate "Held der letzten Woche" %}</p>
     <ul class="rk-raster" data-ranking-liste>
       {% for e in a.helden %}{% include "oberflaeche/ranking/_karte.html" %}{% endfor %}
     </ul>
-    <p class="rk-held__text">Mehr geschafft als sonst. Stark!</p>
+    <p class="rk-held__text">{% translate "Mehr geschafft als sonst. Stark!" %}</p>
   {% else %}
-    <p class="rk-held__titel">{% include "komponenten/icon.html" with name="stern" %} Noch kein Held der letzten Woche</p>
-    <p class="rk-held__text">In dieser Woche ist jeder dran: Wer mehr schafft als sonst, wird Held der Woche.</p>
+    <p class="rk-held__titel">{% include "komponenten/icon.html" with name="stern" %} {% translate "Noch kein Held der letzten Woche" %}</p>
+    <p class="rk-held__text">{% translate "In dieser Woche ist jeder dran: Wer mehr schafft als sonst, wird Held der Woche." %}</p>
   {% endif %}
   {% if a.vorwoche_helden %}
-    <p class="rk-held__vor" data-vorwoche>Woche davor: {% for e in a.vorwoche_helden %}<strong>{{ e.kind.anzeigename }}</strong>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p class="rk-held__vor" data-vorwoche>{% translate "Woche davor:" %} {% for e in a.vorwoche_helden %}<strong>{{ e.kind.anzeigename }}</strong>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
   {% endif %}
-  <ul class="rk-titel" aria-label="Wie oft Held der Woche">
-    {% for e in a.eintraege %}{% if e.held_titel %}<li>{% include "komponenten/icon.html" with name="pokal" %} {{ e.kind.anzeigename }}: {{ e.held_titel }}x Held</li>{% endif %}{% endfor %}
+  <ul class="rk-titel" aria-label="{% translate "Wie oft Held der Woche" %}">
+    {% for e in a.eintraege %}{% if e.held_titel %}<li>{% include "komponenten/icon.html" with name="pokal" %} {% blocktranslate with name=e.kind.anzeigename n=e.held_titel %}{{ name }}: {{ n }}x Held{% endblocktranslate %}</li>{% endif %}{% endfor %}
   </ul>
 </section>

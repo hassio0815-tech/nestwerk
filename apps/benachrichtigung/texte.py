@@ -1,4 +1,4 @@
-"""Texte der Benachrichtigungen je Ereignistyp (deutsch) und Deep-Links.
+"""Texte der Benachrichtigungen je Ereignistyp (deutsch, Msgids) und Deep-Links.
 
 Module registrieren ihre Texte in ``AppConfig.ready()``:
 
@@ -19,6 +19,9 @@ import string
 from dataclasses import dataclass
 
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import gettext, gettext_noop, ngettext
+
+from apps.kern import sprache
 
 TITEL_MAX = 120
 TEXT_MAX = 400
@@ -35,83 +38,127 @@ _registriert = {}
 
 _STANDARD = {
     "system.backup_fehler": TypText(
-        "Datensicherung fehlgeschlagen", "Bitte Job-Läufe und Backup-Ordner prüfen (Runbook)."
+        gettext_noop("Datensicherung fehlgeschlagen"),
+        gettext_noop("Bitte Job-Läufe und Backup-Ordner prüfen (Runbook)."),
     ),
-    "aufgabe.interesse": TypText("{kind} möchte eine Aufgabe machen", "„{aufgabe}“"),
+    "aufgabe.interesse": TypText(
+        gettext_noop("{kind} möchte eine Aufgabe machen"), gettext_noop("„{aufgabe}“")
+    ),
     "aufgabe.konflikt": TypText(
-        "Mehrere möchten dieselbe Aufgabe", "„{aufgabe}“ braucht eine Zuteilung."
+        gettext_noop("Mehrere möchten dieselbe Aufgabe"),
+        gettext_noop("„{aufgabe}“ braucht eine Zuteilung."),
     ),
     "aufgabe.gemeldet": TypText(
-        "{kind} hat eine Aufgabe gemeldet", "„{aufgabe}“ wartet auf Bestätigung."
+        gettext_noop("{kind} hat eine Aufgabe gemeldet"),
+        gettext_noop("„{aufgabe}“ wartet auf Bestätigung."),
     ),
-    "aufgabe.bestaetigt": TypText("Aufgabe bestätigt!", "„{aufgabe}“ ist geschafft. Gut gemacht!"),
-    "aufgabe.abgelehnt": TypText("Aufgabe nicht angenommen", "„{aufgabe}“ wurde abgelehnt."),
+    "aufgabe.bestaetigt": TypText(
+        gettext_noop("Aufgabe bestätigt!"), gettext_noop("„{aufgabe}“ ist geschafft. Gut gemacht!")
+    ),
+    "aufgabe.abgelehnt": TypText(
+        gettext_noop("Aufgabe nicht angenommen"), gettext_noop("„{aufgabe}“ wurde abgelehnt.")
+    ),
     "aufgabe.rueckfrage": TypText(
-        "Rückfrage zur Aufgabe", "Zu „{aufgabe}“ gibt es eine Rückfrage."
+        gettext_noop("Rückfrage zur Aufgabe"),
+        gettext_noop("Zu „{aufgabe}“ gibt es eine Rückfrage."),
     ),
-    "reservierung.erinnerung": TypText("Deine Aufgabe wartet", "„{aufgabe}“ läuft bald ab."),
+    "reservierung.erinnerung": TypText(
+        gettext_noop("Deine Aufgabe wartet"), gettext_noop("„{aufgabe}“ läuft bald ab.")
+    ),
     "reservierung.abgelaufen": TypText(
-        "Reservierung abgelaufen", "{kind} hat „{aufgabe}“ nicht gemacht."
+        gettext_noop("Reservierung abgelaufen"),
+        gettext_noop("{kind} hat „{aufgabe}“ nicht gemacht."),
     ),
     "aufgabe.verfall_vorwarnung": TypText(
-        "Aufgabe läuft bald ab", "„{aufgabe}“ wurde noch nicht übernommen."
+        gettext_noop("Aufgabe läuft bald ab"),
+        gettext_noop("„{aufgabe}“ wurde noch nicht übernommen."),
     ),
     "aufgabe.nicht_uebernommen": TypText(
-        "Aufgabe nicht übernommen", "„{aufgabe}“ hat niemand übernommen."
+        gettext_noop("Aufgabe nicht übernommen"),
+        gettext_noop("„{aufgabe}“ hat niemand übernommen."),
     ),
     "belohnung.antrag": TypText(
-        "{kind} möchte eine Belohnung", "„{belohnung}“ wartet auf Entscheidung."
+        gettext_noop("{kind} möchte eine Belohnung"),
+        gettext_noop("„{belohnung}“ wartet auf Entscheidung."),
     ),
     "belohnung.entschieden": TypText(
-        "Entscheidung zu deiner Belohnung", "„{belohnung}“: {ergebnis}"
+        gettext_noop("Entscheidung zu deiner Belohnung"), gettext_noop("„{belohnung}“: {ergebnis}")
     ),
-    "avatar.mod_fertig": TypText("Dein Mod ist fertig!", "„{mod}“ kann jetzt eingebaut werden."),
+    "avatar.mod_fertig": TypText(
+        gettext_noop("Dein Mod ist fertig!"), gettext_noop("„{mod}“ kann jetzt eingebaut werden.")
+    ),
     "serie.gestiegen": TypText(
-        "Serie: {wochenserie} Wochen!", "Woche {woche} geschafft. Weiter so!"
+        gettext_noop("Serie: {wochenserie} Wochen!"),
+        gettext_noop("Woche {woche} geschafft. Weiter so!"),
     ),
     "serie.gerissen": TypText(
-        "Neue Woche, neue Serie",
-        "Letzte Woche gab es keine Aufgabe. Schon eine Aufgabe startet deine Serie neu.",
+        gettext_noop("Neue Woche, neue Serie"),
+        gettext_noop(
+            "Letzte Woche gab es keine Aufgabe. Schon eine Aufgabe startet deine Serie neu."
+        ),
     ),
     "pause.gestartet": TypText(
-        "Pause – deine Serie ist sicher", "Pause {zeitraum}. Aufgaben zählen trotzdem."
+        gettext_noop("Pause – deine Serie ist sicher"),
+        gettext_noop("Pause {zeitraum}. Aufgaben zählen trotzdem."),
     ),
-    "pause.beendet": TypText("Pause vorbei", "{hinweis}"),
+    "pause.beendet": TypText(gettext_noop("Pause vorbei"), gettext_noop("{hinweis}")),
     "serienbonus.gebucht": TypText(
-        "Serienbonus +{prozent} %", "+{punkte} Punkte für {serie} Wochen in Folge."
+        gettext_noop("Serienbonus +{prozent} %"),
+        gettext_noop("+{punkte} Punkte für {serie} Wochen in Folge."),
     ),
-    "rang.aufgestiegen": TypText("Neuer Rang: {rang}!", "{kind} ist aufgestiegen."),
-    "abzeichen.verliehen": TypText("Neues Abzeichen: {abzeichen}", "{kind}: {beschreibung}"),
-    "spielregeln.rang_aufstieg": TypText("Neuer Rang: {rang}!", "{kind} ist aufgestiegen."),
+    "rang.aufgestiegen": TypText(
+        gettext_noop("Neuer Rang: {rang}!"), gettext_noop("{kind} ist aufgestiegen.")
+    ),
+    "abzeichen.verliehen": TypText(
+        gettext_noop("Neues Abzeichen: {abzeichen}"), gettext_noop("{kind}: {beschreibung}")
+    ),
+    "spielregeln.rang_aufstieg": TypText(
+        gettext_noop("Neuer Rang: {rang}!"), gettext_noop("{kind} ist aufgestiegen.")
+    ),
     "spielregeln.abzeichen": TypText(
-        "Neues Abzeichen: {abzeichen}", "{kind} hat ein Abzeichen verdient."
+        gettext_noop("Neues Abzeichen: {abzeichen}"),
+        gettext_noop("{kind} hat ein Abzeichen verdient."),
     ),
     "spielregeln.held": TypText(
-        "{kind} ist Held der Woche", "{xp} Punkte, deutlich mehr als sonst ({prozent} % darüber)."
+        gettext_noop("{kind} ist Held der Woche"),
+        # xgettext:no-python-format
+        gettext_noop("{xp} Punkte, deutlich mehr als sonst ({prozent} % darüber)."),
     ),
     "spielregeln.held_kind": TypText(
-        "Du bist Held der Woche!", "{xp} Punkte: mehr als sonst. Stark gemacht!"
+        gettext_noop("Du bist Held der Woche!"),
+        gettext_noop("{xp} Punkte: mehr als sonst. Stark gemacht!"),
     ),
     "sondertag.freigeschaltet": TypText(
-        "Sondertag freigeschaltet", "Du darfst dir etwas wünschen!"
+        gettext_noop("Sondertag freigeschaltet"), gettext_noop("Du darfst dir etwas wünschen!")
     ),
-    "sondertag.wunsch": TypText("Sondertag-Wunsch von {kind}", "{wunsch}"),
-    "sondertag.angenommen": TypText("Dein Wunsch wurde angenommen", "{wunsch}"),
+    "sondertag.wunsch": TypText(
+        gettext_noop("Sondertag-Wunsch von {kind}"), gettext_noop("{wunsch}")
+    ),
+    "sondertag.angenommen": TypText(
+        gettext_noop("Dein Wunsch wurde angenommen"), gettext_noop("{wunsch}")
+    ),
     "familienziel.erreicht": TypText(
-        "{belohnung} freigeschaltet!", "Die Familie hat {ziel} Punkte geschafft."
+        gettext_noop("{belohnung} freigeschaltet!"),
+        gettext_noop("Die Familie hat {ziel} Punkte geschafft."),
     ),
     "familienziel.erreicht_kind": TypText(
-        "Geschafft! {belohnung}", "Ihr habt das Familienziel erreicht. Super gemacht!"
+        gettext_noop("Geschafft! {belohnung}"),
+        gettext_noop("Ihr habt das Familienziel erreicht. Super gemacht!"),
     ),
     "familienziel.abstimmung_offen": TypText(
-        "Abstimmung läuft", "Wähle jetzt die Belohnung für nächste Woche."
+        gettext_noop("Abstimmung läuft"),
+        gettext_noop("Wähle jetzt die Belohnung für nächste Woche."),
     ),
-    "familienziel.abstimmung_gleichstand": TypText("Familienziel: Eltern entscheiden", "{hinweis}"),
+    "familienziel.abstimmung_gleichstand": TypText(
+        gettext_noop("Familienziel: Eltern entscheiden"), gettext_noop("{hinweis}")
+    ),
     "familienziel.grossziel": TypText(
-        "Großes Ziel freigeschaltet: {grossziel}!", "Mehrere Wochenziele in Folge geschafft."
+        gettext_noop("Großes Ziel freigeschaltet: {grossziel}!"),
+        gettext_noop("Mehrere Wochenziele in Folge geschafft."),
     ),
     "familienziel.grossziel_kind": TypText(
-        "Großes Ziel: {grossziel}!", "Ihr habt mehrere Wochenziele in Folge geschafft!"
+        gettext_noop("Großes Ziel: {grossziel}!"),
+        gettext_noop("Ihr habt mehrere Wochenziele in Folge geschafft!"),
     ),
 }
 
@@ -160,7 +207,40 @@ def _fuellen(vorlage, werte):
 
 
 def werte_aus(ereignis):
-    werte = {k: v for k, v in (ereignis.daten or {}).items() if isinstance(v, str | int | float)}
+    """Platzhalter-Werte in der aktiven Sprache (docs/i18n.md, „Texte in Ereignissen“).
+
+    - Texte sind gespeicherte deutsche Start-Inhalte (Mod-, Rang-, Abzeichen-Namen) und werden
+      per msgid übersetzt; Unbekanntes (Eingaben der Familie) bleibt unverändert.
+    - ``<feld>_msgid`` + optional ``<feld>_parameter`` (dict) bilden ``<feld>`` neu; mit
+      ``<feld>_msgid_plural`` wird nach ``parameter["n"]`` die Mehrzahl gewählt.
+    """
+    daten = ereignis.daten or {}
+    werte = {
+        k: sprache.uebersetzt(v) if isinstance(v, str) else v
+        for k, v in daten.items()
+        if isinstance(v, str | int | float)
+    }
+    for schluessel, msgid in daten.items():
+        if not schluessel.endswith("_msgid") or not msgid:
+            continue
+        feld = schluessel.removesuffix("_msgid")
+        parameter = daten.get(f"{feld}_parameter")
+        parameter = dict(parameter) if isinstance(parameter, dict) else {}
+        if feld == "hinweis" and "titel" not in parameter:
+            parameter["titel"] = daten.get("hinweis_titel", "")  # ältere Ereignisse (Gleichstand)
+        parameter = {
+            k: sprache.uebersetzt(v) if isinstance(v, str) else v for k, v in parameter.items()
+        }
+        plural = daten.get(f"{feld}_msgid_plural")
+        try:
+            if plural:
+                werte[feld] = (
+                    ngettext(str(msgid), str(plural), int(parameter.get("n", 0))) % parameter
+                )
+            else:
+                werte[feld] = gettext(str(msgid)) % parameter
+        except (KeyError, TypeError, ValueError):
+            werte[feld] = gettext(str(msgid))
     if ereignis.kind_id:
         werte["kind"] = ereignis.kind.anzeigename
     if ereignis.akteur_id:
@@ -174,10 +254,16 @@ def rendern(ereignis, typ_bezeichnung):
     vorlage = text_fuer(ereignis.typ_id)
     titel = text = None
     if vorlage is not None:
-        titel = _fuellen(vorlage.titel, werte)
-        text = _fuellen(vorlage.text, werte) if titel is not None else None
+        # Vorlagen sind deutsche Msgids; übersetzt wird in der aktiven Sprache (Router:
+        # Sprache des Empfängers). Fremde Module markieren ihre Texte mit gettext_noop.
+        titel = _fuellen(gettext(str(vorlage.titel)), werte)
+        text = (
+            _fuellen(gettext(str(vorlage.text)) if vorlage.text else "", werte)
+            if titel is not None
+            else None
+        )
     if titel is None or text is None:
-        titel = typ_bezeichnung
+        titel = gettext(typ_bezeichnung)
         rueckfall = werte.get("text")
         text = str(rueckfall) if rueckfall else (werte.get("kind") or "")
     return _kuerzen(titel, TITEL_MAX), _kuerzen(text, TEXT_MAX)

@@ -1,10 +1,11 @@
 {% extends layout %}
-{% block titel %}Push auf diesem Gerät{% endblock %}
+{% load i18n %}
+{% block titel %}{% translate "Push auf diesem Gerät" %}{% endblock %}
 {% block inhalt %}
   <div class="stapel">
-    <h1>Benachrichtigungen</h1>
+    <h1>{% translate "Benachrichtigungen" %}</h1>
     {% if push_kiosk %}
-      <p>Auf dem Tablet gibt es keine Push-Nachrichten. Die Anzeige aktualisiert sich von selbst.</p>
+      <p>{% translate "Auf dem Tablet gibt es keine Push-Nachrichten. Die Anzeige aktualisiert sich von selbst." %}</p>
     {% else %}
       {% include "benachrichtigung/_push_karte.html" %}
     {% endif %}

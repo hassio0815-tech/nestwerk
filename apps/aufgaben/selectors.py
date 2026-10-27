@@ -139,10 +139,14 @@ def kind_eigene(kind, *, jetzt=None):
         )
     )
     boni = punkte_selectors.buchungen_zu_schluesseln(
-        schluessel.buchung(i.pk, "serienbonus", i.nachbessern_anzahl) for i in instanzen if i.status == InstanzStatus.BESTAETIGT
+        schluessel.buchung(i.pk, "serienbonus", i.nachbessern_anzahl)
+        for i in instanzen
+        if i.status == InstanzStatus.BESTAETIGT
     )
     for instanz in instanzen:
-        instanz.serienbonus = boni.get(schluessel.buchung(instanz.pk, "serienbonus", instanz.nachbessern_anzahl))
+        instanz.serienbonus = boni.get(
+            schluessel.buchung(instanz.pk, "serienbonus", instanz.nachbessern_anzahl)
+        )
         if instanz.kind_id != kind.pk and instanz.status != InstanzStatus.KONFLIKT:
             instanz.anzeige_status = "vergeben"
         else:

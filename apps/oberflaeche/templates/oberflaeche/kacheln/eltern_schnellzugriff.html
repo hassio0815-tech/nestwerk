@@ -1,15 +1,15 @@
-<article class="karte"><div class="karte__inhalt stapel">
-  <h2>Schnellzugriff</h2>
+{% load i18n %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Schnellzugriff" %}</h2>
   <div class="reihe">
     {% url "aufgaben:entscheidungen" as u1 %}{% url "aufgaben:wochenplan" as u2 %}{% url "belohnung:katalog" as u3 %}{% url "oberflaeche:einstellungen" as u4 %}{% url "oberflaeche:familie" as u5 %}{% url "konten:geraete" as u6 %}{% url "benachrichtigung:liste" as u7 %}{% url "aufgaben:liste" as u8 %}
-    {% include "komponenten/button.html" with href=u8 variante="sekundaer" klein=True icon="liste" text="Aufgaben" %}
-    {% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="check" text="Meldungen" %}
-    {% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="kalender" text="Wochenplan" %}
-    {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="geschenk" text="Belohnungen" %}
-    {% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="einstellungen" text="Einstellungen" %}
-    {% include "komponenten/button.html" with href=u5 variante="sekundaer" klein=True icon="person" text="Familie" %}
-    {% include "komponenten/button.html" with href=u6 variante="sekundaer" klein=True icon="schloss" text="Geräte" %}
-    {% include "komponenten/button.html" with href=u7 variante="sekundaer" klein=True icon="glocke" text="Benachrichtigungen" %}
-    {% if request.user.dungeon_anzeigen %}{% url "oberflaeche:eltern_dungeon" as u9 %}{% include "komponenten/button.html" with href=u9 variante="sekundaer" klein=True icon="pokal" text="Dungeon" %}{% endif %}
+    {% include "komponenten/button.html" with href=u8 variante="sekundaer" klein=True icon="liste" text=_("Aufgaben") %}
+    {% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="check" text=_("Meldungen") %}
+    {% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="kalender" text=_("Wochenplan") %}
+    {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="geschenk" text=_("Belohnungen") %}
+    {% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="einstellungen" text=_("Einstellungen") %}
+    {% include "komponenten/button.html" with href=u5 variante="sekundaer" klein=True icon="person" text=_("Familie") %}
+    {% include "komponenten/button.html" with href=u6 variante="sekundaer" klein=True icon="schloss" text=_("Geräte") %}
+    {% include "komponenten/button.html" with href=u7 variante="sekundaer" klein=True icon="glocke" text=_("Benachrichtigungen") %}
+    {% if request.user.dungeon_anzeigen %}{% url "oberflaeche:eltern_dungeon" as u9 %}{% include "komponenten/button.html" with href=u9 variante="sekundaer" klein=True icon="pokal" text=_("Dungeon") %}{% endif %}
   </div>
 </div></article>

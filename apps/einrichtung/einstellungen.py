@@ -1,5 +1,7 @@
 """Einstellungen des Einrichtungs-Assistenten (Zwischenstand, kein eigenes Modell)."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern.einstellungen import Typ, definieren
 
 LETZTER_SCHRITT = 8
@@ -24,9 +26,11 @@ def einstellungen_definieren():
     definieren(
         "einrichtung.basis_url",
         Typ.TEXT,
-        "Öffentliche Adresse (Basis-URL)",
-        beschreibung="Adresse der App, z. B. https://nestwerk.example.org. "
-        "Links in E-Mails und Push nutzen diesen Wert (Rückfall: Umgebungsvariable BASIS_URL).",
+        _("Öffentliche Adresse (Basis-URL)"),
+        beschreibung=_(
+            "Adresse der App, z. B. https://nestwerk.example.org. "
+            "Links in E-Mails und Push nutzen diesen Wert (Rückfall: Umgebungsvariable BASIS_URL)."
+        ),
         max_laenge=200,
     )
     definieren(

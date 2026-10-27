@@ -8,6 +8,9 @@ Größen: klein, mittel, gross, riesig.
 from django import template
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext
+
+from apps.kern import sprache
 
 from .. import services
 
@@ -31,9 +34,9 @@ def avatar_bild(benutzer, groesse="mittel"):
     _, svg = services.svg_fuer(benutzer)
     svg = _ausschnitt(svg, groesse)
     return format_html(
-        '<span class="avatar-bild avatar-bild--{}" role="img" aria-label="Avatar von {}">{}</span>',
+        '<span class="avatar-bild avatar-bild--{}" role="img" aria-label="{}">{}</span>',
         groesse,
-        benutzer.anzeigename,
+        gettext("Avatar von %(name)s") % {"name": benutzer.anzeigename},
         mark_safe(svg),  # noqa: S308  (eigener, deterministischer Renderer-Output)
     )
 
@@ -58,3 +61,10 @@ def svg_roh(svg, groesse="mittel", beschriftung=""):
 def avatar_name(benutzer):
     """``{{ kind|avatar_name }}``: Figurenname, sonst Name des Kindes."""
     return services.avatar_name(benutzer)
+
+
+@register.filter
+def uebersetzt(text):
+    """``{{ mod.name|uebersetzt }}``: Namen aus den Avatar-Daten (JSON/DB) in der Sprache des
+    Benutzers. Unbekannte Texte (z. B. von Eltern geänderte Namen) bleiben unverändert."""
+    return sprache.uebersetzt(text)

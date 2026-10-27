@@ -1,8 +1,8 @@
-<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel">
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel">
   {% csrf_token %}
-  <h1>Startwerte prüfen</h1>
-  <p>Alle Werte sind vorausgefüllt und lassen sich später im Eltern-Dashboard ändern.</p>
-  {% if fehler_anzahl %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler_anzahl }} Wert{{ fehler_anzahl|pluralize:"e" }} korrigieren.</p>{% endif %}
+  <h1>{% translate "Startwerte prüfen" %}</h1>
+  <p>{% translate "Alle Werte sind vorausgefüllt und lassen sich später im Eltern-Dashboard ändern." %}</p>
+  {% if fehler_anzahl %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{% blocktranslate count anzahl=fehler_anzahl %}{{ anzahl }} Wert korrigieren.{% plural %}{{ anzahl }} Werte korrigieren.{% endblocktranslate %}</p>{% endif %}
   {% for titel, modul, felder in gruppen %}
     <details class="karte"{% for f in felder %}{% if f.fehler %} open{% endif %}{% endfor %}>
       <summary class="karte__inhalt"><strong>{{ titel }}</strong> ({{ felder|length }})</summary>
@@ -38,7 +38,7 @@
       <summary class="karte__inhalt"><strong>{{ liste.titel }}</strong> ({{ liste.zeilen|length }})</summary>
       <div class="karte__inhalt">
         <ul>{% for titel, wert in liste.zeilen %}<li>{{ titel }}: {{ wert }}</li>{% endfor %}</ul>
-        <p class="feld__hinweis">Nur Ansicht. <a href="/eltern/" target="_blank" rel="noopener">Später im Eltern-Dashboard anpassen.</a></p>
+        <p class="feld__hinweis">{% translate "Nur Ansicht." %} <a href="/eltern/" target="_blank" rel="noopener">{% translate "Später im Eltern-Dashboard anpassen." %}</a></p>
       </div>
     </details>
   {% endfor %}

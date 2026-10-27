@@ -1,24 +1,26 @@
-{% comment %}Ein Slot im Charakter-Bildschirm (s = avatar.charakter.SlotKachel).{% endcomment %}
+{% load i18n avatar_tags %}{% comment %}Ein Slot im Charakter-Bildschirm (s = avatar.charakter.SlotKachel).{% endcomment %}
 {% if s.zustand == "leer" %}
   <a class="slot slot--leer" data-slot="{{ s.slot.schluessel }}" data-zustand="leer" href="{{ s.link }}">
-    <span class="slot__name">{{ s.slot.name }}</span><span class="slot__plus" aria-hidden="true">+</span><span class="sr-only">Leer, zum Shop</span>
+    <span class="slot__name">{{ s.slot.name|uebersetzt }}</span><span class="slot__plus" aria-hidden="true">+</span><span class="sr-only">{% translate "Leer, zum Shop" %}</span>
   </a>
 {% else %}
+  {% with modname=s.mod.name|uebersetzt %}
   <details class="slot slot--{{ s.zustand }}" data-slot="{{ s.slot.schluessel }}" data-zustand="{{ s.zustand }}" data-selten="{{ s.selten }}">
     <summary class="slot__kopf">
-      <span class="slot__name">{{ s.slot.name }}</span>
-      <strong class="slot__mod">{% include "komponenten/icon.html" with name="funke" %} {{ s.mod.name }}</strong>
-      {% if s.zustand == "im_bau" %}<progress class="fortschritt" value="{{ s.bau.prozent }}" max="100" aria-label="{{ s.mod.name }} im Bau">{{ s.bau.prozent }} %</progress>{% endif %}
+      <span class="slot__name">{{ s.slot.name|uebersetzt }}</span>
+      <strong class="slot__mod">{% include "komponenten/icon.html" with name="funke" %} {{ modname }}</strong>
+      {% if s.zustand == "im_bau" %}<progress class="fortschritt" value="{{ s.bau.prozent }}" max="100" aria-label="{% blocktranslate with mod=modname %}{{ mod }} im Bau{% endblocktranslate %}">{{ s.bau.prozent }} %</progress>{% endif %}
     </summary>
     <div class="slot__detail">
       {% if s.zustand == "gefuellt" %}
-        <p><strong>{{ s.mod.name }}</strong></p>
-        <p><span class="chip" data-selten="{{ s.selten }}">{{ s.mod.slot.name }}</span></p>
-        <p class="kachel__text">Fertig seit {{ s.besitz.fertig_am|date:"d.m.Y" }}</p>
+        <p><strong>{{ modname }}</strong></p>
+        <p><span class="chip" data-selten="{{ s.selten }}">{{ s.mod.slot.name|uebersetzt }}</span></p>
+        <p class="kachel__text">{% blocktranslate with datum=s.besitz.fertig_am|date:"SHORT_DATE_FORMAT" %}Fertig seit {{ datum }}{% endblocktranslate %}</p>
       {% else %}
-        <p><strong>{{ s.mod.name }}</strong></p>
-        <p class="kachel__text">{% include "komponenten/icon.html" with name="uhr" %} fertig {{ s.bau.rest }}</p>
+        <p><strong>{{ modname }}</strong></p>
+        <p class="kachel__text">{% include "komponenten/icon.html" with name="uhr" %} {% blocktranslate with rest=s.bau.rest %}fertig {{ rest }}{% endblocktranslate %}</p>
       {% endif %}
     </div>
   </details>
+  {% endwith %}
 {% endif %}

@@ -1,5 +1,7 @@
 """Ereignistypen und Texte von belohnung (ARCHITECTURE 5.2)."""
 
+from django.utils.translation import gettext_noop
+
 from apps.benachrichtigung import texte
 from apps.ereignisse import registry
 
@@ -12,7 +14,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         ANTRAG,
         modul="belohnung",
-        bezeichnung="Belohnung beantragt",
+        bezeichnung=gettext_noop("Belohnung beantragt"),
         zielgruppe="eltern",
         standard_kanaele=["push", "email"],
         deep_link_muster="/eltern/belohnungen/",
@@ -21,7 +23,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         BESTAETIGT,
         modul="belohnung",
-        bezeichnung="Belohnung bestätigt",
+        bezeichnung=gettext_noop("Belohnung bestätigt"),
         zielgruppe="kind",
         standard_kanaele=["push"],
         deep_link_muster="/kind/belohnungen/",
@@ -29,7 +31,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         ABGELEHNT,
         modul="belohnung",
-        bezeichnung="Belohnung abgelehnt",
+        bezeichnung=gettext_noop("Belohnung abgelehnt"),
         zielgruppe="kind",
         standard_kanaele=["push"],
         deep_link_muster="/kind/belohnungen/",
@@ -40,11 +42,11 @@ def texte_registrieren():
     # Text für ANTRAG: Standardtext aus benachrichtigung.texte
     texte.text_registrieren(
         BESTAETIGT,
-        titel="Belohnung bestätigt!",
-        text="„{belohnung}“ wurde bestätigt. Viel Spaß!",
+        titel=gettext_noop("Belohnung bestätigt!"),
+        text=gettext_noop("„{belohnung}“ wurde bestätigt. Viel Spaß!"),
     )
     texte.text_registrieren(
         ABGELEHNT,
-        titel="Belohnung nicht bewilligt",
-        text="„{belohnung}“ wurde diesmal abgelehnt. Deine Punkte bleiben.",
+        titel=gettext_noop("Belohnung nicht bewilligt"),
+        text=gettext_noop("„{belohnung}“ wurde diesmal abgelehnt. Deine Punkte bleiben."),
     )

@@ -1,7 +1,8 @@
-"""Middleware von konten, Reihenfolge in den Settings: Session, Auth, dann diese drei."""
+"""Middleware von konten, Reihenfolge in den Settings: Session, Locale, Auth, dann diese."""
 
 from django.http import HttpResponse
 from django.shortcuts import redirect, resolve_url
+from django.utils import translation
 
 from apps.kern import audit, zeit
 
@@ -18,6 +19,21 @@ class GeraetMiddleware:
 
     def __call__(self, request):
         request.geraet = geraet_modul.geraet_aus_cookie(request)
+        return self.get_response(request)
+
+
+class BenutzerSprache:
+    """Eigene Sprache des angemeldeten Benutzers schlägt Geräte-Cookie und Browser-Sprache."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        user = getattr(request, "user", None)
+        sprache = getattr(user, "sprache", "") if user and user.is_authenticated else ""
+        if sprache:
+            translation.activate(sprache)
+            request.LANGUAGE_CODE = sprache
         return self.get_response(request)
 
 

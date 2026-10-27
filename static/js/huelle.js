@@ -30,7 +30,45 @@
     }
   });
 
+  /* Startbildschirm: Begrüßung wechselt alle paar Sekunden die Sprache (data-gruss-<code>).
+     Nur der Text wechselt, die Seitensprache bleibt; Screenreader lesen den ersten Gruß. */
+  var GRUSS_TAKT = 4000;
+
+  function grussWechsel(h1) {
+    var texte = [];
+    Array.prototype.forEach.call(h1.attributes, function (a) {
+      if (a.name.indexOf("data-gruss-") === 0 && a.name !== "data-gruss-wechsel") {
+        texte.push({ code: a.name.slice(11), text: a.value });
+      }
+    });
+    if (texte.length < 2) {
+      return;
+    }
+    var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var i = 0;
+    window.setInterval(function () {
+      i = (i + 1) % texte.length;
+      var naechster = texte[i];
+      if (ruhig) {
+        h1.textContent = naechster.text;
+        h1.setAttribute("lang", naechster.code);
+        return;
+      }
+      h1.classList.add("ist-ausgeblendet");
+      window.setTimeout(function () {
+        h1.textContent = naechster.text;
+        h1.setAttribute("lang", naechster.code);
+        h1.classList.remove("ist-ausgeblendet");
+      }, 400);
+    }, GRUSS_TAKT);
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-gruss-wechsel]").forEach(function (h1) {
+      h1.setAttribute("aria-live", "off");
+      grussWechsel(h1);
+    });
+
     var aktuell = aktuellerModus();
     document.querySelectorAll("[data-modus-wahl]").forEach(function (eingabe) {
       eingabe.checked = eingabe.value === aktuell;

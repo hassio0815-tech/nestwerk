@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.kern import registry as kern_registry
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import abzeichen as engine
@@ -58,7 +59,7 @@ def meilenstein_aendern(request, pk):
             bedingungen=_bedingungen(request),
         )
     except engine.AbzeichenFehler as fehler:
-        return _seite(request, status=400, fehler=f"{regel.name}: {fehler}")
+        return _seite(request, status=400, fehler=f"{uebersetzt(regel.name)}: {fehler}")
     return redirect("spielregeln:meilensteine")
 
 

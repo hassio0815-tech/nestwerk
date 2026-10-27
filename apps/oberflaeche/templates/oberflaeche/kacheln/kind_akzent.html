@@ -1,8 +1,8 @@
-<article class="karte"><div class="karte__inhalt stapel">
-  <h2>Meine Farbe</h2>
+{% load i18n %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Meine Farbe" %}</h2>
   <form method="post" action="{% url 'oberflaeche:akzent' %}" class="reihe akzent-wahl">{% csrf_token %}
     {% for name in k.palette %}
-      <span data-akzent="{{ name }}"><button type="submit" name="akzent" value="{{ name }}" class="akzent-wahl__knopf{% if name == k.aktuell %} akzent-wahl__knopf--aktiv{% endif %}" aria-label="Farbe {{ name }}"{% if name == k.aktuell %} aria-pressed="true"{% endif %}></button></span>
+      <span data-akzent="{{ name }}"><button type="submit" name="akzent" value="{{ name }}" class="akzent-wahl__knopf{% if name == k.aktuell %} akzent-wahl__knopf--aktiv{% endif %}" aria-label="{% blocktranslate with farbe=name %}Farbe {{ farbe }}{% endblocktranslate %}"{% if name == k.aktuell %} aria-pressed="true"{% endif %}></button></span>
     {% endfor %}
   </form>
 </div></article>

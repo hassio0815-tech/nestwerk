@@ -77,6 +77,11 @@ def nur_kind(view):
     return _rolle_verlangen({Rolle.KIND}, "konten:start")(view)
 
 
+def angemeldet(view):
+    """Eltern und Kinder (z. B. eigene Einstellungen); sonst zurück zur Startseite."""
+    return _rolle_verlangen({Rolle.ELTERN, Rolle.KIND}, "konten:start")(view)
+
+
 def eigenes_kind(parameter="kind_id"):
     """Kind nur für das eigene Konto (URL-Parameter ``parameter`` = Benutzer-UUID); Eltern
     dürfen jedes Kind sehen."""

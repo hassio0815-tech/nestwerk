@@ -1,49 +1,50 @@
 {% extends "basis/einstellungen.html" %}
-{% block titel %}Ränge{% endblock %}
+{% load i18n %}
+{% block titel %}{% translate "Ränge" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
   {% url "sondertag:prognose" as prognose_url %}
-  {% if prognose_url %}{% include "komponenten/button.html" with href=prognose_url variante="geist" klein=True icon="stern" text="Prognose" %}{% endif %}
+  {% if prognose_url %}{% include "komponenten/button.html" with href=prognose_url variante="geist" klein=True icon="stern" text=_("Prognose") %}{% endif %}
 {% endblock %}
 {% block seite %}
-  <h1>Ränge</h1>
-  <p>Aufstieg braucht beides: genug XP <strong>und</strong> genug aktive Wochen. Ein erreichter Rang bleibt, auch wenn ihr Schwellen später erhöht.</p>
+  <h1>{% translate "Ränge" %}</h1>
+  <p>{% blocktranslate %}Aufstieg braucht beides: genug XP <strong>und</strong> genug aktive Wochen. Ein erreichter Rang bleibt, auch wenn ihr Schwellen später erhöht.{% endblocktranslate %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   {% include "spielregeln/kacheln/eltern_raenge.html" with k=raenge_kachel %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Stufen</h2>
+    <h2>{% translate "Stufen" %}</h2>
     {% for z in raenge %}
       <form method="post" action="{% url 'spielregeln:rang_aendern' z.rang.pk %}" class="zeile" data-rang="{{ z.rang.schluessel }}">{% csrf_token %}
-        <span class="chip" data-selten="{{ z.rang.selten }}">Stufe {{ z.rang.stufe }}</span>
-        <label class="feld"><span class="feld__label">Name</span><input class="nw-eingabe" name="name" value="{{ z.rang.name }}" maxlength="40" required></label>
-        <label class="feld"><span class="feld__label">XP ab</span><input class="nw-eingabe" type="number" min="0" name="xp_schwelle" value="{{ z.rang.xp_schwelle }}" required></label>
-        <label class="feld"><span class="feld__label">Aktive Wochen ab</span><input class="nw-eingabe" type="number" min="0" name="min_aktive_wochen" value="{{ z.rang.min_aktive_wochen }}" required></label>
-        {% if z.schwelle != z.rang.xp_schwelle %}<span class="kachel__text">mit Faktor: {{ z.schwelle }} XP</span>{% endif %}
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+        <span class="chip" data-selten="{{ z.rang.selten }}">{% blocktranslate with stufe=z.rang.stufe %}Stufe {{ stufe }}{% endblocktranslate %}</span>
+        <label class="feld"><span class="feld__label">{% translate "Name" %}</span><input class="nw-eingabe" name="name" value="{{ z.rang.name }}" maxlength="40" required></label>
+        <label class="feld"><span class="feld__label">{% translate "XP ab" %}</span><input class="nw-eingabe" type="number" min="0" name="xp_schwelle" value="{{ z.rang.xp_schwelle }}" required></label>
+        <label class="feld"><span class="feld__label">{% translate "Aktive Wochen ab" %}</span><input class="nw-eingabe" type="number" min="0" name="min_aktive_wochen" value="{{ z.rang.min_aktive_wochen }}" required></label>
+        {% if z.schwelle != z.rang.xp_schwelle %}<span class="kachel__text">{% blocktranslate with xp=z.schwelle %}mit Faktor: {{ xp }} XP{% endblocktranslate %}</span>{% endif %}
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
       </form>
     {% endfor %}
   </div></section>
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Kalibrierung</h2>
-    <p class="kachel__text">Der Faktor wirkt auf die XP-Schwellen (1,0 = Startwerte, 0,8 = 20 % leichter). Standard ist ein gemeinsamer Faktor für alle. Ein eigener Faktor je Kind ist möglich, aber nur hier für Eltern sichtbar – im Familien-Ranking gelten dann ungleiche Schwellen.</p>
+    <h2>{% translate "Kalibrierung" %}</h2>
+    <p class="kachel__text">{% blocktranslate %}Der Faktor wirkt auf die XP-Schwellen (1,0 = Startwerte, 0,8 = 20 % leichter). Standard ist ein gemeinsamer Faktor für alle. Ein eigener Faktor je Kind ist möglich, aber nur hier für Eltern sichtbar – im Familien-Ranking gelten dann ungleiche Schwellen.{% endblocktranslate %}</p>
     <form method="post" action="{% url 'spielregeln:kalibrierung' %}" class="zeile">{% csrf_token %}
       <input type="hidden" name="ziel" value="global">
-      <strong>Alle Kinder</strong>
-      <label class="feld"><span class="feld__label">Faktor</span><input class="nw-eingabe" name="faktor" value="{{ globaler_faktor }}" inputmode="decimal" required></label>
-      <label class="feld"><span class="feld__label">Notiz</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
-      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+      <strong>{% translate "Alle Kinder" %}</strong>
+      <label class="feld"><span class="feld__label">{% translate "Faktor" %}</span><input class="nw-eingabe" name="faktor" value="{{ globaler_faktor }}" inputmode="decimal" required></label>
+      <label class="feld"><span class="feld__label">{% translate "Notiz" %}</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
+      {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
     </form>
     {% for z in raenge_kachel.zeilen %}
       <form method="post" action="{% url 'spielregeln:kalibrierung' %}" class="zeile">{% csrf_token %}
         <input type="hidden" name="ziel" value="{{ z.kind.pk }}">
         <strong>{{ z.kind.anzeigename }}</strong>
-        <label class="feld"><span class="feld__label">Eigener Faktor (leer = keiner)</span><input class="nw-eingabe" name="faktor" value="{{ z.faktor|default_if_none:'' }}" inputmode="decimal"></label>
-        <label class="feld"><span class="feld__label">Notiz</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+        <label class="feld"><span class="feld__label">{% translate "Eigener Faktor (leer = keiner)" %}</span><input class="nw-eingabe" name="faktor" value="{{ z.faktor|default_if_none:'' }}" inputmode="decimal"></label>
+        <label class="feld"><span class="feld__label">{% translate "Notiz" %}</span><input class="nw-eingabe" name="notiz" maxlength="200"></label>
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
       </form>
     {% endfor %}
   </div></section>

@@ -21,6 +21,7 @@ Rückkehr gilt die Zustellung als gesendet; Ausnahmen steuern den Status:
 from contextlib import contextmanager
 
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import gettext
 
 from apps.kern.registry import UnbekannterEintrag
 
@@ -53,6 +54,11 @@ class ZustellKanal:
     bezeichnung = ""
     rollen = ("eltern", "kind")  # Empfänger-Rollen, für die der Kanal gilt
     ruhezeit = IMMER
+
+    @property
+    def anzeigename(self):
+        """Bezeichnung in der aktiven Sprache (``bezeichnung`` ist die deutsche Msgid)."""
+        return gettext(self.bezeichnung)
 
     def ziele(self, benutzer):
         """Ziele je Empfänger: eine Zustellung je Eintrag (``None`` = ohne Ziel-Objekt).

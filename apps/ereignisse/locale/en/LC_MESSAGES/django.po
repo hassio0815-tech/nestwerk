@@ -1,0 +1,118 @@
+# English translation for Nestwerk.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-26 19:48+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: events.py:14
+msgid "Datensicherung fehlgeschlagen"
+msgstr "Backup failed"
+
+#: models.py:13
+msgid "Eltern"
+msgstr "Parents"
+
+#: models.py:14
+msgid "Kind"
+msgstr "Child"
+
+#: models.py:15
+msgid "Eltern und Kind"
+msgstr "Parents and child"
+
+#: models.py:16
+msgid "intern"
+msgstr "internal"
+
+#: models.py:34
+msgid "Ereignistyp"
+msgstr "Event type"
+
+#: models.py:35
+msgid "Ereignistypen"
+msgstr "Event types"
+
+#: models.py:68
+msgid "Ereignis"
+msgstr "Event"
+
+#: models.py:69
+msgid "Ereignisse"
+msgstr "Events"
+
+#: models.py:90
+msgid "offen"
+msgstr "open"
+
+#: models.py:91
+msgid "ok"
+msgstr "ok"
+
+#: models.py:92
+msgid "Fehler (Retry geplant)"
+msgstr "Error (retry planned)"
+
+#: models.py:93
+msgid "aufgegeben"
+msgstr "given up"
+
+#: models.py:108
+msgid "Ereignis-Verarbeitung"
+msgstr "Event processing"
+
+#: models.py:109
+msgid "Ereignis-Verarbeitungen"
+msgstr "Event processings"
+
+#: models.py:129
+msgid "Worker-Herzschlag"
+msgstr "Worker heartbeat"
+
+#: models.py:130
+msgid "Worker-Herzschläge"
+msgstr "Worker heartbeats"
+
+#: services.py:177
+msgid "Aufbewahrung verarbeiteter Ereignisse"
+msgstr "Keeping processed events"
+
+#: services.py:179
+msgid ""
+"Erfolgreich verarbeitete Ereignisse (internes Protokoll) werden danach "
+"gelöscht. Punkte, Protokoll (Audit) und Spielstände bleiben immer."
+msgstr ""
+"Successfully processed events (internal log) are deleted after this. Points, "
+"the audit log and scores are always kept."
+
+#: services.py:182
+msgid "Tage"
+msgstr "days"
+
+#: services.py:189
+msgid "Max. Versuche je Ereignis-Handler"
+msgstr "Max. attempts per event handler"
+
+#: services.py:190
+msgid "Danach gilt die Verarbeitung als aufgegeben (Systemstatus)."
+msgstr "After that the processing counts as given up (system status)."
+
+#: services.py:197
+msgid "Wartezeit vor dem 1. Wiederholversuch"
+msgstr "Wait before the 1st retry"
+
+#: services.py:205
+msgid "Max. Wartezeit zwischen Versuchen"
+msgstr "Max. wait between attempts"

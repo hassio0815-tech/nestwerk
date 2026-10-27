@@ -1,5 +1,7 @@
 """Dashboard-Kacheln von familienziel (Registry in ``kern``): Tablet-Leiste, Kinder, Eltern."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern import zeit
 from apps.kern.registry import ELTERN, KIND, TABLET, Kachel, kachel_registrieren
 
@@ -37,7 +39,7 @@ def kacheln_registrieren():
         Kachel(
             "familienziel.leiste",
             MODUL,
-            "Familienziel",
+            _("Familienziel"),
             "familienziel/kacheln/tablet_leiste.html",
             {TABLET},
             _tablet,
@@ -48,7 +50,7 @@ def kacheln_registrieren():
         Kachel(
             "familienziel.kind",
             MODUL,
-            "Familienziel",
+            _("Familienziel"),
             "familienziel/kacheln/kind_familienziel.html",
             {KIND},
             _kind,
@@ -59,7 +61,7 @@ def kacheln_registrieren():
         Kachel(
             "familienziel.eltern",
             MODUL,
-            "Familienziel",
+            _("Familienziel"),
             "familienziel/kacheln/eltern_familienziel.html",
             {ELTERN},
             _eltern,

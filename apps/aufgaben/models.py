@@ -10,8 +10,11 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from apps.kern import zeit
+from apps.kern.sprache import uebersetzt
 
 from . import wiederholung
 from .wiederholung import Plan
@@ -20,15 +23,15 @@ HEX_FARBE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
 class Freigabeart(models.TextChoices):
-    VERTRAUEN = "vertrauen", "Vertrauen (sofort gutgeschrieben)"
-    ELTERN = "eltern", "Eltern bestätigen"
-    NACHWEIS = "nachweis", "Foto-/Text-Nachweis"
+    VERTRAUEN = "vertrauen", gettext_lazy("Vertrauen (sofort gutgeschrieben)")
+    ELTERN = "eltern", gettext_lazy("Eltern bestätigen")
+    NACHWEIS = "nachweis", gettext_lazy("Foto-/Text-Nachweis")
 
 
 class Status(models.TextChoices):
-    AKTIV = "aktiv", "Aktiv"
-    PAUSIERT = "pausiert", "Pausiert"
-    BEENDET = "beendet", "Beendet"
+    AKTIV = "aktiv", gettext_lazy("Aktiv")
+    PAUSIERT = "pausiert", gettext_lazy("Pausiert")
+    BEENDET = "beendet", gettext_lazy("Beendet")
 
 
 class Kategorie(models.Model):
@@ -36,15 +39,15 @@ class Kategorie(models.Model):
     symbol = models.CharField(max_length=60)
     farbe = models.CharField(max_length=7, blank=True)
     systemschluessel = models.SlugField(
-        blank=True, help_text="Feste Kennung, z. B. 'schule' (Brücke zum Lernmodul)."
+        blank=True, help_text=gettext_lazy("Feste Kennung, z. B. 'schule' (Brücke zum Lernmodul).")
     )
     reihenfolge = models.SmallIntegerField(default=0)
     aktiv = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["reihenfolge", "name"]
-        verbose_name = "Kategorie"
-        verbose_name_plural = "Kategorien"
+        verbose_name = gettext_lazy("Kategorie")
+        verbose_name_plural = gettext_lazy("Kategorien")
         constraints = [
             models.UniqueConstraint(
                 fields=["systemschluessel"],
@@ -54,11 +57,11 @@ class Kategorie(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return uebersetzt(self.name)
 
     def clean(self):
         if self.farbe and not HEX_FARBE.match(self.farbe):
-            raise ValidationError({"farbe": "Farbe im Format #rrggbb angeben."})
+            raise ValidationError({"farbe": _("Farbe im Format #rrggbb angeben.")})
 
 
 class Vorlage(models.Model):
@@ -74,14 +77,14 @@ class Vorlage(models.Model):
 
     class Meta:
         ordering = ["kategorie__reihenfolge", "titel"]
-        verbose_name = "Vorlage"
-        verbose_name_plural = "Vorlagen"
+        verbose_name = gettext_lazy("Vorlage")
+        verbose_name_plural = gettext_lazy("Vorlagen")
         constraints = [
             models.CheckConstraint(condition=Q(punkte__gt=0), name="aufgaben_vorlage_punkte_pos"),
         ]
 
     def __str__(self):
-        return self.titel
+        return uebersetzt(self.titel)
 
     @property
     def plan(self) -> Plan:
@@ -92,7 +95,9 @@ class Vorlage(models.Model):
             try:
                 fehler = wiederholung.pruefen(self.plan)
             except (ValueError, TypeError, AttributeError) as exc:
-                raise ValidationError({"wiederholung": f"Ungültige Wiederholung: {exc}"}) from exc
+                raise ValidationError(
+                    {"wiederholung": _("Ungültige Wiederholung: %(fehler)s") % {"fehler": exc}}
+                ) from exc
             if fehler:
                 raise ValidationError({"wiederholung": " ".join(fehler.values())})
 
@@ -117,7 +122,9 @@ class Aufgabe(models.Model):
         on_delete=models.PROTECT,
         related_name="zugewiesene_aufgaben",
         limit_choices_to={"rolle": "kind"},
-        help_text="Leer = offen für alle Kinder. Gesetzt = nur dieses Kind sieht die Aufgabe.",
+        help_text=gettext_lazy(
+            "Leer = offen für alle Kinder. Gesetzt = nur dieses Kind sieht die Aufgabe."
+        ),
     )
     status = models.CharField(
         max_length=10, choices=Status.choices, default=Status.AKTIV, db_index=True
@@ -138,7 +145,7 @@ class Aufgabe(models.Model):
     limit_anzahl = models.PositiveSmallIntegerField(null=True, blank=True)
     limit_zeitraum = models.CharField(max_length=5, blank=True, choices=wiederholung.ZEITRAEUME)
     sonderpunkte_deckel_prozent = models.PositiveSmallIntegerField(
-        null=True, blank=True, help_text="Leer = globaler Wert (Einstellungen)"
+        null=True, blank=True, help_text=gettext_lazy("Leer = globaler Wert (Einstellungen)")
     )
 
     erstellt_von = models.ForeignKey(
@@ -149,8 +156,8 @@ class Aufgabe(models.Model):
 
     class Meta:
         ordering = ["titel", "id"]
-        verbose_name = "Aufgabe"
-        verbose_name_plural = "Aufgaben"
+        verbose_name = gettext_lazy("Aufgabe")
+        verbose_name_plural = gettext_lazy("Aufgaben")
         constraints = [
             models.CheckConstraint(condition=Q(punkte__gt=0), name="aufgaben_aufgabe_punkte_pos"),
             models.CheckConstraint(
@@ -173,7 +180,7 @@ class Aufgabe(models.Model):
         ]
 
     def __str__(self):
-        return self.titel
+        return uebersetzt(self.titel)
 
     @property
     def plan(self) -> Plan:
@@ -198,24 +205,24 @@ class Aufgabe(models.Model):
     def clean(self):
         fehler = wiederholung.pruefen(self.plan)
         if self.zugewiesen_an_id and self.zugewiesen_an.rolle != "kind":
-            fehler["zugewiesen_an"] = "Zuweisung nur an ein Kind möglich."
+            fehler["zugewiesen_an"] = _("Zuweisung nur an ein Kind möglich.")
         if self.sonderpunkte_deckel_prozent is not None and self.sonderpunkte_deckel_prozent > 1000:
-            fehler["sonderpunkte_deckel_prozent"] = "Wert zu hoch."
+            fehler["sonderpunkte_deckel_prozent"] = _("Wert zu hoch.")
         if fehler:
             raise ValidationError(fehler)
 
 
 class InstanzStatus(models.TextChoices):
-    OFFEN = "offen", "Offen"
-    KONFLIKT = "konflikt", "Mehrere Interessenten"
-    RESERVIERT = "reserviert", "Reserviert"
-    GEMELDET = "gemeldet", "Gemeldet"
-    RUECKFRAGE = "rueckfrage", "Rückfrage"
-    BESTAETIGT = "bestaetigt", "Bestätigt"
-    ABGELEHNT = "abgelehnt", "Abgelehnt"
-    NICHT_UEBERNOMMEN = "nicht_uebernommen", "Nicht übernommen"
-    STORNIERT = "storniert", "Storniert"
-    NACHBESSERN = "nachbessern", "Zum Nachbessern"
+    OFFEN = "offen", gettext_lazy("Offen")
+    KONFLIKT = "konflikt", gettext_lazy("Mehrere Interessenten")
+    RESERVIERT = "reserviert", gettext_lazy("Reserviert")
+    GEMELDET = "gemeldet", gettext_lazy("Gemeldet")
+    RUECKFRAGE = "rueckfrage", gettext_lazy("Rückfrage")
+    BESTAETIGT = "bestaetigt", gettext_lazy("Bestätigt")
+    ABGELEHNT = "abgelehnt", gettext_lazy("Abgelehnt")
+    NICHT_UEBERNOMMEN = "nicht_uebernommen", gettext_lazy("Nicht übernommen")
+    STORNIERT = "storniert", gettext_lazy("Storniert")
+    NACHBESSERN = "nachbessern", gettext_lazy("Zum Nachbessern")
 
 
 # Nicht abgeschlossene Zustände ("offen" im Sinne von K9: kein Stapel)
@@ -282,7 +289,7 @@ class AufgabenInstanz(models.Model):
     geprueft_am = models.DateTimeField(
         null=True,
         blank=True,
-        help_text="Vertrauens-Aufgabe: von den Eltern durchgesehen (\"Passt\").",
+        help_text='Vertrauens-Aufgabe: von den Eltern durchgesehen ("Passt").',
     )
     geprueft_von = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -302,8 +309,8 @@ class AufgabenInstanz(models.Model):
 
     class Meta:
         ordering = ["faellig_am", "sortierung", "id"]
-        verbose_name = "Aufgaben-Instanz"
-        verbose_name_plural = "Aufgaben-Instanzen"
+        verbose_name = gettext_lazy("Aufgaben-Instanz")
+        verbose_name_plural = gettext_lazy("Aufgaben-Instanzen")
         constraints = [
             models.UniqueConstraint(
                 fields=["aufgabe", "plan_datum"],
@@ -312,7 +319,9 @@ class AufgabenInstanz(models.Model):
             ),
             models.UniqueConstraint(
                 fields=["aufgabe"],
-                condition=Q(fenster_ende__isnull=True, status__in=LAUFENDE_STATUS, nachbessern_anzahl=0),
+                condition=Q(
+                    fenster_ende__isnull=True, status__in=LAUFENDE_STATUS, nachbessern_anzahl=0
+                ),
                 name="aufgaben_instanz_ungebunden_ein_laufend",
             ),
             models.CheckConstraint(
@@ -329,7 +338,7 @@ class AufgabenInstanz(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.titel_snapshot} ({self.faellig_am or 'ohne Termin'})"
+        return f"{self.titel_snapshot} ({self.faellig_am or _('ohne Termin')})"
 
     @property
     def zeitgebunden(self) -> bool:
@@ -342,11 +351,11 @@ class AufgabenInstanz(models.Model):
 
 
 class InteresseStatus(models.TextChoices):
-    AKTIV = "aktiv", "Wartet auf Entscheidung"
-    ZUGETEILT = "zugeteilt", "Zugeteilt"
-    VERDRAENGT = "verdraengt", "Vergeben/gelöst"
-    ZURUECKGEZOGEN = "zurueckgezogen", "Zurückgegeben"
-    ABGELAUFEN = "abgelaufen", "Abgelaufen"
+    AKTIV = "aktiv", gettext_lazy("Wartet auf Entscheidung")
+    ZUGETEILT = "zugeteilt", gettext_lazy("Zugeteilt")
+    VERDRAENGT = "verdraengt", gettext_lazy("Vergeben/gelöst")
+    ZURUECKGEZOGEN = "zurueckgezogen", gettext_lazy("Zurückgegeben")
+    ABGELAUFEN = "abgelaufen", gettext_lazy("Abgelaufen")
 
 
 # Interesse zählt noch (Eindeutigkeit je Instanz und Kind)
@@ -379,8 +388,8 @@ class Interesse(models.Model):
 
     class Meta:
         ordering = ["erstellt_am", "id"]
-        verbose_name = "Interesse"
-        verbose_name_plural = "Interessen"
+        verbose_name = gettext_lazy("Interesse")
+        verbose_name_plural = gettext_lazy("Interessen")
         constraints = [
             models.UniqueConstraint(
                 fields=["instanz", "kind"],
@@ -395,10 +404,10 @@ class Interesse(models.Model):
 
 
 class MeldungStatus(models.TextChoices):
-    OFFEN = "offen", "Wartet auf Bestätigung"
-    RUECKFRAGE = "rueckfrage", "Rückfrage"
-    BESTAETIGT = "bestaetigt", "Bestätigt"
-    ABGELEHNT = "abgelehnt", "Abgelehnt"
+    OFFEN = "offen", gettext_lazy("Wartet auf Bestätigung")
+    RUECKFRAGE = "rueckfrage", gettext_lazy("Rückfrage")
+    BESTAETIGT = "bestaetigt", gettext_lazy("Bestätigt")
+    ABGELEHNT = "abgelehnt", gettext_lazy("Abgelehnt")
 
 
 MELDUNG_LAUFEND = (MeldungStatus.OFFEN, MeldungStatus.RUECKFRAGE)
@@ -431,8 +440,8 @@ class Meldung(models.Model):
 
     class Meta:
         ordering = ["gemeldet_am", "id"]
-        verbose_name = "Meldung"
-        verbose_name_plural = "Meldungen"
+        verbose_name = gettext_lazy("Meldung")
+        verbose_name_plural = gettext_lazy("Meldungen")
         constraints = [
             models.UniqueConstraint(
                 fields=["instanz"],

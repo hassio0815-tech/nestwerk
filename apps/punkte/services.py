@@ -16,6 +16,7 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.db import IntegrityError, connection, models, transaction
+from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
@@ -119,7 +120,12 @@ def buchen(
             stand = verfuegbar(kind) if pruefe_verfuegbar else guthaben(kind)
             if stand < punkte:
                 raise GuthabenUnzureichend(
-                    f"{'Verfügbar' if pruefe_verfuegbar else 'Guthaben'} {stand}, benötigt {punkte}"
+                    (
+                        _("Verfügbar %(stand)s, benötigt %(punkte)s")
+                        if pruefe_verfuegbar
+                        else _("Guthaben %(stand)s, benötigt %(punkte)s")
+                    )
+                    % {"stand": stand, "punkte": punkte}
                 )
         buchung = Buchung(
             kind=kind,

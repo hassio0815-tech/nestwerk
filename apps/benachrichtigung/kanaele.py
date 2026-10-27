@@ -4,9 +4,11 @@ import logging
 
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import gettext_noop
 
 from apps.kern import adressen
+from apps.kern import sprache as kern_sprache
 from apps.konten import selectors as konten_selectors
 
 from . import mail, registry
@@ -22,7 +24,7 @@ def absolute_url(pfad):
 
 class EmailKanal(registry.ZustellKanal):
     slug = "email"
-    bezeichnung = "E-Mail"
+    bezeichnung = gettext_noop("E-Mail")
     rollen = ("eltern",)
     ruhezeit = registry.OPTIONAL  # läuft in Ruhezeiten weiter, außer die Ruhezeit verlangt es (K7)
 
@@ -42,8 +44,10 @@ class EmailKanal(registry.ZustellKanal):
             "einstellungen": absolute_url(reverse("benachrichtigung:einstellungen")),
             "empfaenger": b.empfaenger,
         }
-        text = render_to_string("benachrichtigung/email.txt", kontext)
-        html = render_to_string("benachrichtigung/email.html", kontext)
+        # Worker ohne Request: Mail in der Sprache des Empfängers
+        with translation.override(kern_sprache.fuer(b.empfaenger)):
+            text = render_to_string("benachrichtigung/email.txt", kontext)
+            html = render_to_string("benachrichtigung/email.html", kontext)
         try:
             mail.senden(daten, adresse, f"Nestwerk: {b.titel}", text, html)
         except Exception as exc:
@@ -52,7 +56,7 @@ class EmailKanal(registry.ZustellKanal):
 
 class PopupKanal(registry.ZustellKanal):
     slug = "popup"
-    bezeichnung = "Pop-up in der App"
+    bezeichnung = gettext_noop("Pop-up in der App")
     rollen = ("kind",)
     ruhezeit = registry.NIE
 

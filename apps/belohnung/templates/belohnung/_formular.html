@@ -1,12 +1,12 @@
-<section class="karte" id="formular-karte"><div class="karte__inhalt stapel">
+{% load i18n %}<section class="karte" id="formular-karte"><div class="karte__inhalt stapel">
   <h2>{{ titel }}</h2>
   <form method="post" action="{{ aktion }}" class="stapel" hx-post="{{ aktion }}" hx-target="#formular" hx-swap="innerHTML">
     {% csrf_token %}
     {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
     {% for f in form.visible_fields %}{% include "belohnung/_feld.html" with f=f %}{% endfor %}
     <div class="reihe">
-      {% include "komponenten/button.html" with typ="submit" icon="check" text="Speichern" %}
-      {% include "komponenten/button.html" with href=zurueck variante="geist" text="Abbrechen" %}
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
+      {% include "komponenten/button.html" with href=zurueck variante="geist" text=_("Abbrechen") %}
     </div>
   </form>
 </div></section>

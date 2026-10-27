@@ -1,18 +1,19 @@
 {% extends "basis/einstellungen.html" %}
-{% block titel %}Abzeichen{% endblock %}
+{% load i18n sprache %}
+{% block titel %}{% translate "Abzeichen" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
   {% url "spielregeln:meilensteine" as ms_url %}
-  {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text="Meilensteine" %}
+  {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text=_("Meilensteine") %}
 {% endblock %}
 {% block seite %}
-  <h1>Abzeichen</h1>
-  <p>Abzeichen geben keine Punkte. Ein verdientes Abzeichen bleibt, auch wenn ihr die Schwelle später erhöht oder es ausschaltet.</p>
+  <h1>{% translate "Abzeichen" %}</h1>
+  <p>{% translate "Abzeichen geben keine Punkte. Ein verdientes Abzeichen bleibt, auch wenn ihr die Schwelle später erhöht oder es ausschaltet." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Je Kind</h2>
+    <h2>{% translate "Je Kind" %}</h2>
     {% for z in zeilen %}
       <div class="stapel" data-abzeichen-kind="{{ z.kind.pk }}">
         <strong>{{ z.kind.anzeigename }} ({{ z.verdient|length }})</strong>
@@ -21,45 +22,45 @@
             {% for a in z.verdient %}
               <li class="abzeichen" data-abzeichen="{{ a.verleihung.abzeichen.schluessel }}">
                 {% include "spielregeln/_abzeichen_symbol.html" with s=a.symbol %}
-                <span class="abzeichen__name">{{ a.titel }}</span>
-                <span class="kachel__text">{{ a.verleihung.verliehen_am|date:"d.m.Y" }}</span>
+                <span class="abzeichen__name">{{ a.titel|uebersetzt }}</span>
+                <span class="kachel__text">{{ a.verleihung.verliehen_am|date:"SHORT_DATE_FORMAT" }}</span>
               </li>
             {% endfor %}
           </ul>
-        {% else %}<p class="kachel__text">Noch keine Abzeichen.</p>{% endif %}
-        {% if z.naechste %}<p class="kachel__text">Als Nächstes: {% for n in z.naechste %}{{ n.abzeichen.name }} ({{ n.wert }}/{{ n.ziel }}){% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+        {% else %}<p class="kachel__text">{% translate "Noch keine Abzeichen." %}</p>{% endif %}
+        {% if z.naechste %}<p class="kachel__text">{% translate "Als Nächstes:" %} {% for n in z.naechste %}{{ n.abzeichen.name|uebersetzt }} ({{ n.wert }}/{{ n.ziel }}){% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
       </div>
     {% empty %}
-      {% include "komponenten/leer.html" with icon="person" titel="Noch keine Kinder" text="Kinder legst du unter Familie an." %}
+      {% include "komponenten/leer.html" with icon="person" titel=_("Noch keine Kinder") text=_("Kinder legst du unter Familie an.") %}
     {% endfor %}
   </div></section>
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Regeln</h2>
-    <p class="kachel__text">Ein Abzeichen gibt es, sobald der Wert die Schwelle erreicht. „Je Bereich“ verleiht es mehrfach, z. B. je Quartal oder je Rang.</p>
+    <h2>{% translate "Regeln" %}</h2>
+    <p class="kachel__text">{% translate "Ein Abzeichen gibt es, sobald der Wert die Schwelle erreicht. „Je Bereich“ verleiht es mehrfach, z. B. je Quartal oder je Rang." %}</p>
     {% for z in definitionen %}
       <form method="post" action="{% url 'spielregeln:abzeichen_aendern' z.d.pk %}" class="zeile" data-abzeichen-regel="{{ z.d.schluessel }}"{% if not z.d.aktiv %} data-inaktiv{% endif %}>{% csrf_token %}
         {% include "spielregeln/_abzeichen_symbol.html" with s=z.symbol %}
-        <label class="feld"><span class="feld__label">Name</span><input class="nw-eingabe" name="name" value="{{ z.d.name }}" maxlength="60" required></label>
-        <label class="feld"><span class="feld__label">Beschreibung</span><input class="nw-eingabe" name="beschreibung" value="{{ z.d.beschreibung }}" maxlength="200"></label>
+        <label class="feld"><span class="feld__label">{% translate "Name" %}</span><input class="nw-eingabe" name="name" value="{{ z.d.name }}" maxlength="60" required></label>
+        <label class="feld"><span class="feld__label">{% translate "Beschreibung" %}</span><input class="nw-eingabe" name="beschreibung" value="{{ z.d.beschreibung }}" maxlength="200"></label>
         {% include "spielregeln/_abzeichen_regelfelder.html" with d=z.d %}
-        <span class="kachel__text">{{ z.anzahl }}× verliehen{% if not z.d.aktiv %} · aus{% endif %}</span>
-        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Speichern" %}
+        <span class="kachel__text">{% blocktranslate with anzahl=z.anzahl %}{{ anzahl }}× verliehen{% endblocktranslate %}{% if not z.d.aktiv %} · {% translate "aus" %}{% endif %}</span>
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
       </form>
       <form method="post" action="{% url 'spielregeln:abzeichen_aktiv' z.d.pk %}" class="zeile">{% csrf_token %}
         <input type="hidden" name="aktiv" value="{% if z.d.aktiv %}0{% else %}1{% endif %}">
-        {% if z.d.aktiv %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text="Ausschalten" %}{% else %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text="Einschalten" %}{% endif %}
+        {% if z.d.aktiv %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text=_("Ausschalten") %}{% else %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text=_("Einschalten") %}{% endif %}
       </form>
     {% endfor %}
   </div></section>
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Neues Abzeichen</h2>
+    <h2>{% translate "Neues Abzeichen" %}</h2>
     <form method="post" action="{% url 'spielregeln:abzeichen_neu' %}" class="zeile">{% csrf_token %}
-      <label class="feld"><span class="feld__label">Name</span><input class="nw-eingabe" name="name" maxlength="60" required></label>
-      <label class="feld"><span class="feld__label">Beschreibung</span><input class="nw-eingabe" name="beschreibung" maxlength="200"></label>
+      <label class="feld"><span class="feld__label">{% translate "Name" %}</span><input class="nw-eingabe" name="name" maxlength="60" required></label>
+      <label class="feld"><span class="feld__label">{% translate "Beschreibung" %}</span><input class="nw-eingabe" name="beschreibung" maxlength="200"></label>
       {% include "spielregeln/_abzeichen_regelfelder.html" with d=None %}
-      {% include "komponenten/button.html" with typ="submit" variante="primaer" klein=True icon="plus" text="Anlegen" %}
+      {% include "komponenten/button.html" with typ="submit" variante="primaer" klein=True icon="plus" text=_("Anlegen") %}
     </form>
   </div></section>
 {% endblock %}

@@ -1,2 +1,2 @@
-{% comment %}Belohnung mit Symbol (b = Familienbelohnung oder None, titel = Rückfall).{% endcomment %}
-<span class="fz-belohnung">{% include "komponenten/icon.html" with name=b.symbol|default:"geschenk" klasse="fz-belohnung__icon" %}<strong>{% if b %}{{ b.titel }}{% else %}{{ titel|default:"Wochenziel" }}{% endif %}</strong></span>
+{% load i18n sprache %}{% comment %}Belohnung mit Symbol (b = Familienbelohnung oder None, titel = Rückfall).{% endcomment %}
+<span class="fz-belohnung">{% include "komponenten/icon.html" with name=b.symbol|default:"geschenk" klasse="fz-belohnung__icon" %}<strong>{% if b %}{{ b.titel|uebersetzt }}{% else %}{{ titel|default:_("Wochenziel") }}{% endif %}</strong></span>

@@ -6,13 +6,14 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext_lazy
 
 
 class Zielgruppe(models.TextChoices):
-    ELTERN = "eltern", "Eltern"
-    KIND = "kind", "Kind"
-    BEIDE = "beide", "Eltern und Kind"
-    INTERN = "intern", "intern"
+    ELTERN = "eltern", gettext_lazy("Eltern")
+    KIND = "kind", gettext_lazy("Kind")
+    BEIDE = "beide", gettext_lazy("Eltern und Kind")
+    INTERN = "intern", gettext_lazy("intern")
 
 
 class EreignisTyp(models.Model):
@@ -30,8 +31,8 @@ class EreignisTyp(models.Model):
     aktiv = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Ereignistyp"
-        verbose_name_plural = "Ereignistypen"
+        verbose_name = gettext_lazy("Ereignistyp")
+        verbose_name_plural = gettext_lazy("Ereignistypen")
 
     def __str__(self):
         return self.slug
@@ -64,8 +65,8 @@ class Ereignis(models.Model):
     verteilt = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = "Ereignis"
-        verbose_name_plural = "Ereignisse"
+        verbose_name = gettext_lazy("Ereignis")
+        verbose_name_plural = gettext_lazy("Ereignisse")
         indexes = [
             models.Index(fields=["typ", "zeit"], name="ereignisse_typ_zeit_idx"),
             models.Index(fields=["kind"], name="ereignisse_kind_idx"),
@@ -86,10 +87,10 @@ class Ereignis(models.Model):
 
 
 class Status(models.TextChoices):
-    OFFEN = "offen", "offen"
-    OK = "ok", "ok"
-    FEHLER = "fehler", "Fehler (Retry geplant)"
-    AUFGEGEBEN = "aufgegeben", "aufgegeben"
+    OFFEN = "offen", gettext_lazy("offen")
+    OK = "ok", gettext_lazy("ok")
+    FEHLER = "fehler", gettext_lazy("Fehler (Retry geplant)")
+    AUFGEGEBEN = "aufgegeben", gettext_lazy("aufgegeben")
 
 
 class EreignisVerarbeitung(models.Model):
@@ -104,8 +105,8 @@ class EreignisVerarbeitung(models.Model):
     erledigt_am = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Ereignis-Verarbeitung"
-        verbose_name_plural = "Ereignis-Verarbeitungen"
+        verbose_name = gettext_lazy("Ereignis-Verarbeitung")
+        verbose_name_plural = gettext_lazy("Ereignis-Verarbeitungen")
         indexes = [
             models.Index(fields=["status", "naechster_versuch"], name="ereignisse_vera_faellig_idx")
         ]
@@ -125,8 +126,8 @@ class WorkerHerzschlag(models.Model):
     zuletzt = models.DateTimeField()
 
     class Meta:
-        verbose_name = "Worker-Herzschlag"
-        verbose_name_plural = "Worker-Herzschläge"
+        verbose_name = gettext_lazy("Worker-Herzschlag")
+        verbose_name_plural = gettext_lazy("Worker-Herzschläge")
 
     def __str__(self):
         return f"{self.name} ({self.inhaber}, {self.zuletzt:%Y-%m-%d %H:%M:%S})"

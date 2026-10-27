@@ -1,6 +1,7 @@
 {% extends "aufgaben/basis.html" %}
+{% load i18n %}
 {% load static %}
-{% block titel %}Wochenplan{% endblock %}
+{% block titel %}{% translate "Wochenplan" %}{% endblock %}
 {% block seite %}
   {% include "aufgaben/_wochenplan.html" %}
   <script src="{% static 'vendor/Sortable.min.js' %}" defer></script>

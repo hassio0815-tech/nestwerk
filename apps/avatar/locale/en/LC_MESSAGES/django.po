@@ -1,0 +1,3936 @@
+# English translation for Nestwerk (app avatar).
+# German is the source language (msgid), see docs/i18n.md.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 05:36+0000\n"
+"PO-Revision-Date: 2026-10-26 20:00+0000\n"
+"Last-Translator: Nestwerk\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: charakter.py:38
+#, python-format
+msgid "Noch %(n)s Slot bis zur vollen Ausbaustufe!"
+msgid_plural "Noch %(n)s Slots bis zur vollen Ausbaustufe!"
+msgstr[0] "Just %(n)s slot to go until fully built!"
+msgstr[1] "Just %(n)s slots to go until fully built!"
+
+#: charakter.py:44
+#, python-format
+msgid "Alle Slots voll! Als Nächstes: Rang %(rang)s."
+msgstr "All slots full! Next up: rank %(rang)s."
+
+#: charakter.py:45
+msgid "Alles ausgebaut. Höchster Rang erreicht!"
+msgstr "Everything built. Top rank reached!"
+
+#: charakter.py:79
+#, python-format
+msgid "Ausbaustufe %(aktuell)s/%(slots)s"
+msgstr "Build level %(aktuell)s/%(slots)s"
+
+#: daten_texte.py:11
+msgid "Hallenboden"
+msgstr "Gym floor"
+
+#: daten_texte.py:12
+msgid "Ein Hallenboden mit Gitter."
+msgstr "A gym floor with a grid."
+
+#: daten_texte.py:13
+msgid "Sporttasche"
+msgstr "Sports bag"
+
+#: daten_texte.py:14
+msgid "Tasche für den Hallentag."
+msgstr "A bag for game day."
+
+#: daten_texte.py:15
+msgid "Trikot"
+msgstr "Jersey"
+
+#: daten_texte.py:16
+msgid "Das lila Trikot der Mannschaft."
+msgstr "The team's purple jersey."
+
+#: daten_texte.py:17
+msgid "Stirnband"
+msgstr "Headband"
+
+#: daten_texte.py:18
+msgid "Ein Stirnband in Gelb."
+msgstr "A yellow headband."
+
+#: daten_texte.py:19
+msgid "Basketball"
+msgstr "Basketball"
+
+#: daten_texte.py:20
+msgid "Der Ball für den Korb."
+msgstr "The ball for the hoop."
+
+#: daten_texte.py:21
+msgid "Hallenhund"
+msgstr "Gym dog"
+
+#: daten_texte.py:22
+msgid "Ein Hund für die Halle."
+msgstr "A dog for the gym."
+
+#: daten_texte.py:23
+msgid "Arena"
+msgstr "Arena"
+
+#: daten_texte.py:24
+msgid "Eine Arena mit Kante."
+msgstr "An arena with an edge."
+
+#: daten_texte.py:25
+msgid "Umhang mit Kante"
+msgstr "Edged cape"
+
+#: daten_texte.py:26
+msgid "Umhang mit hellem Rand."
+msgstr "A cape with a light edge."
+
+#: daten_texte.py:27
+msgid "Weste mit Kante"
+msgstr "Edged vest"
+
+#: daten_texte.py:28
+msgid "Weste mit hellem Rand."
+msgstr "A vest with a light edge."
+
+#: daten_texte.py:29
+msgid "Kappe mit Kante"
+msgstr "Edged cap"
+
+#: daten_texte.py:30
+msgid "Kappe mit hellem Rand."
+msgstr "A cap with a light edge."
+
+#: daten_texte.py:31
+msgid "Pokal"
+msgstr "Trophy"
+
+#: daten_texte.py:32
+msgid "Ein Pokal mit Rand."
+msgstr "A trophy with an edge."
+
+#: daten_texte.py:33
+msgid "Katze mit Kante"
+msgstr "Edged cat"
+
+#: daten_texte.py:34
+msgid "Katze mit hellem Rand."
+msgstr "A cat with a light edge."
+
+#: daten_texte.py:35
+msgid "Halle mit Streifen"
+msgstr "Striped gym"
+
+#: daten_texte.py:36
+msgid "Halle mit blauen Streifen."
+msgstr "A gym with blue stripes."
+
+#: daten_texte.py:37
+msgid "Blauer Rucksack"
+msgstr "Blue backpack"
+
+#: daten_texte.py:38
+msgid "Rucksack mit blauen Streifen."
+msgstr "A backpack with blue stripes."
+
+#: daten_texte.py:39
+msgid "Blaues Trikot"
+msgstr "Blue jersey"
+
+#: daten_texte.py:40
+msgid "Trikot mit blauen Streifen."
+msgstr "A jersey with blue stripes."
+
+#: daten_texte.py:41
+msgid "Blaues Stirnband"
+msgstr "Blue headband"
+
+#: daten_texte.py:42
+msgid "Stirnband mit blauen Streifen."
+msgstr "A headband with blue stripes."
+
+#: daten_texte.py:43
+msgid "Wimpel"
+msgstr "Pennant"
+
+#: daten_texte.py:44
+msgid "Wimpel mit blauen Streifen."
+msgstr "A pennant with blue stripes."
+
+#: daten_texte.py:45
+msgid "Blauer Vogel"
+msgstr "Blue bird"
+
+#: daten_texte.py:46
+msgid "Vogel mit blauen Streifen."
+msgstr "A bird with blue stripes."
+
+#: daten_texte.py:47
+msgid "Halle mit Punkten"
+msgstr "Dotted gym"
+
+#: daten_texte.py:48
+msgid "Halle mit lila Punkten."
+msgstr "A gym with purple dots."
+
+#: daten_texte.py:49
+msgid "Umhang mit Punkten"
+msgstr "Dotted cape"
+
+#: daten_texte.py:50
+msgid "Umhang mit lila Punkten."
+msgstr "A cape with purple dots."
+
+#: daten_texte.py:51
+msgid "Anzug mit Punkten"
+msgstr "Dotted suit"
+
+#: daten_texte.py:52
+msgid "Anzug mit lila Punkten."
+msgstr "A suit with purple dots."
+
+#: daten_texte.py:53
+msgid "Kappe mit Punkten"
+msgstr "Dotted cap"
+
+#: daten_texte.py:54
+msgid "Lila Kappe mit Punkten."
+msgstr "A purple cap with dots."
+
+#: daten_texte.py:55
+msgid "Ball mit Punkten"
+msgstr "Dotted ball"
+
+#: daten_texte.py:56
+msgid "Ball mit lila Punkten."
+msgstr "A ball with purple dots."
+
+#: daten_texte.py:57
+msgid "Hund mit Punkten"
+msgstr "Dotted dog"
+
+#: daten_texte.py:58
+msgid "Hund mit lila Punkten."
+msgstr "A dog with purple dots."
+
+#: daten_texte.py:59
+msgid "Goldhalle"
+msgstr "Gold gym"
+
+#: daten_texte.py:60
+msgid "Halle mit goldenem Karo."
+msgstr "A gym with a golden check pattern."
+
+#: daten_texte.py:61
+msgid "Goldtasche"
+msgstr "Gold bag"
+
+#: daten_texte.py:62
+msgid "Goldene Tasche mit Karo."
+msgstr "A golden bag with a check pattern."
+
+#: daten_texte.py:63
+msgid "Goldtrikot"
+msgstr "Gold jersey"
+
+#: daten_texte.py:64
+msgid "Goldenes Trikot mit Karo."
+msgstr "A golden jersey with a check pattern."
+
+#: daten_texte.py:65
+msgid "Goldkappe"
+msgstr "Gold cap"
+
+#: daten_texte.py:66
+msgid "Goldene Kappe mit Karo."
+msgstr "A golden cap with a check pattern."
+
+#: daten_texte.py:67
+msgid "Goldpokal"
+msgstr "Gold trophy"
+
+#: daten_texte.py:68
+msgid "Goldener Pokal mit Karo."
+msgstr "A golden trophy with a check pattern."
+
+#: daten_texte.py:69
+msgid "Goldkatze"
+msgstr "Gold cat"
+
+#: daten_texte.py:70
+msgid "Goldene Katze mit Karo."
+msgstr "A golden cat with a check pattern."
+
+#: daten_texte.py:71
+msgid "Lichtkranz-Halle"
+msgstr "Halo gym"
+
+#: daten_texte.py:72
+msgid "Halle mit pinkem Lichtkranz."
+msgstr "A gym with a pink halo."
+
+#: daten_texte.py:73
+msgid "Aura der Halle"
+msgstr "Gym aura"
+
+#: daten_texte.py:74
+msgid "Ein Leuchten für die Halle."
+msgstr "A glow for the gym."
+
+#: daten_texte.py:75
+msgid "Starspieler-Trikot"
+msgstr "Star player jersey"
+
+#: daten_texte.py:76
+msgid "Glänzend mit pinker Weste."
+msgstr "Shiny with a pink vest."
+
+#: daten_texte.py:77
+msgid "Königskrone"
+msgstr "King's crown"
+
+#: daten_texte.py:78
+msgid "Eine Krone für den besten Werfer."
+msgstr "A crown for the best shooter."
+
+#: daten_texte.py:79
+msgid "Goldball"
+msgstr "Gold ball"
+
+#: daten_texte.py:80
+msgid "Glänzender Ball mit Wimpel."
+msgstr "A shiny ball with a pennant."
+
+#: daten_texte.py:81
+msgid "Goldvogel"
+msgstr "Gold bird"
+
+#: daten_texte.py:82
+msgid "Goldener Vogel mit Glanz."
+msgstr "A golden bird with a sparkle."
+
+#: daten_texte.py:83
+msgid "Hügel im Grünen"
+msgstr "Green hills"
+
+#: daten_texte.py:84
+msgid "Grüne Hügel im Sonnenschein."
+msgstr "Green hills in the sunshine."
+
+#: daten_texte.py:85
+msgid "Entdeckerrucksack"
+msgstr "Explorer backpack"
+
+#: daten_texte.py:86
+msgid "Ein Rucksack für Expeditionen."
+msgstr "A backpack for expeditions."
+
+#: daten_texte.py:87
+msgid "Entdeckerweste"
+msgstr "Explorer vest"
+
+#: daten_texte.py:88
+msgid "Weste mit vielen Taschen."
+msgstr "A vest with lots of pockets."
+
+#: daten_texte.py:89
+msgid "Entdeckerkappe"
+msgstr "Explorer cap"
+
+#: daten_texte.py:90
+msgid "Eine Kappe für Entdecker."
+msgstr "A cap for explorers."
+
+#: daten_texte.py:91
+msgid "Entdeckerstab"
+msgstr "Explorer staff"
+
+#: daten_texte.py:92
+msgid "Ein Stab für den Weg."
+msgstr "A staff for the trail."
+
+#: daten_texte.py:93
+msgid "Papagei"
+msgstr "Parrot"
+
+#: daten_texte.py:94
+msgid "Ein bunter Papagei."
+msgstr "A colourful parrot."
+
+#: daten_texte.py:95
+msgid "Urwald"
+msgstr "Jungle"
+
+#: daten_texte.py:96
+msgid "Dichter Urwald mit Rand."
+msgstr "A thick jungle with an edge."
+
+#: daten_texte.py:97
+msgid "Schmetterlingsflügel"
+msgstr "Butterfly wings"
+
+#: daten_texte.py:98
+msgid "Flügel mit hellem Rand."
+msgstr "Wings with a light edge."
+
+#: daten_texte.py:99
+msgid "Tuch mit Mustern"
+msgstr "Patterned cloth"
+
+#: daten_texte.py:100
+msgid "Tuch mit hellem Rand."
+msgstr "A cloth with a light edge."
+
+#: daten_texte.py:101
+msgid "Fackel"
+msgstr "Torch"
+
+#: daten_texte.py:102
+msgid "Eine Fackel mit hellem Rand."
+msgstr "A torch with a light edge."
+
+#: daten_texte.py:103
+msgid "Äffchen"
+msgstr "Little monkey"
+
+#: daten_texte.py:104
+msgid "Ein Äffchen mit hellem Rand."
+msgstr "A little monkey with a light edge."
+
+#: daten_texte.py:105
+msgid "Fluss"
+msgstr "River"
+
+#: daten_texte.py:106
+msgid "Ein Fluss mit blauen Streifen."
+msgstr "A river with blue stripes."
+
+#: daten_texte.py:107
+msgid "Blauer Umhang"
+msgstr "Blue cape"
+
+#: daten_texte.py:108
+msgid "Umhang mit blauen Streifen."
+msgstr "A cape with blue stripes."
+
+#: daten_texte.py:109
+msgid "Blauer Expeditionsmantel"
+msgstr "Blue expedition coat"
+
+#: daten_texte.py:110
+msgid "Mantel mit blauen Streifen."
+msgstr "A coat with blue stripes."
+
+#: daten_texte.py:111
+msgid "Blauer Tropenhelm"
+msgstr "Blue pith helmet"
+
+#: daten_texte.py:112
+msgid "Tropenhelm mit blauen Streifen."
+msgstr "A pith helmet with blue stripes."
+
+#: daten_texte.py:113
+msgid "Lupe"
+msgstr "Magnifying glass"
+
+#: daten_texte.py:114
+msgid "Eine Lupe mit blauen Streifen."
+msgstr "A magnifying glass with blue stripes."
+
+#: daten_texte.py:115
+msgid "Schildkröte"
+msgstr "Turtle"
+
+#: daten_texte.py:116
+msgid "Schildkröte mit blauen Streifen."
+msgstr "A turtle with blue stripes."
+
+#: daten_texte.py:117
+msgid "Sonniger Urwald"
+msgstr "Sunny jungle"
+
+#: daten_texte.py:118
+msgid "Urwald unter hellem Himmel."
+msgstr "A jungle under a bright sky."
+
+#: daten_texte.py:119
+msgid "Rucksack mit Punkten"
+msgstr "Dotted backpack"
+
+#: daten_texte.py:120
+msgid "Rucksack mit lila Punkten."
+msgstr "A backpack with purple dots."
+
+#: daten_texte.py:121
+msgid "Safari-Anzug"
+msgstr "Safari suit"
+
+#: daten_texte.py:122
+msgid "Tropenhelm mit Feder"
+msgstr "Feathered pith helmet"
+
+#: daten_texte.py:123
+msgid "Tropenhelm mit lila Punkten und Feder."
+msgstr "A pith helmet with purple dots and a feather."
+
+#: daten_texte.py:124
+msgid "Karte mit Punkten"
+msgstr "Dotted map"
+
+#: daten_texte.py:125
+msgid "Karte mit lila Punkten."
+msgstr "A map with purple dots."
+
+#: daten_texte.py:126
+msgid "Papagei mit Punkten"
+msgstr "Dotted parrot"
+
+#: daten_texte.py:127
+msgid "Papagei mit lila Punkten."
+msgstr "A parrot with purple dots."
+
+#: daten_texte.py:128
+msgid "Goldener Urwald"
+msgstr "Golden jungle"
+
+#: daten_texte.py:129
+msgid "Urwald im goldenen Licht."
+msgstr "A jungle in golden light."
+
+#: daten_texte.py:130
+msgid "Goldflügel"
+msgstr "Gold wings"
+
+#: daten_texte.py:131
+msgid "Goldene Flügel mit Karo."
+msgstr "Golden wings with a check pattern."
+
+#: daten_texte.py:132
+msgid "Goldweste"
+msgstr "Gold vest"
+
+#: daten_texte.py:133
+msgid "Goldene Weste mit Karo."
+msgstr "A golden vest with a check pattern."
+
+#: daten_texte.py:134
+msgid "Goldener Tropenhelm"
+msgstr "Golden pith helmet"
+
+#: daten_texte.py:135
+msgid "Goldener Helm mit Feder."
+msgstr "A golden helmet with a feather."
+
+#: daten_texte.py:136
+msgid "Goldlupe"
+msgstr "Gold magnifying glass"
+
+#: daten_texte.py:137
+msgid "Goldene Lupe mit Karo."
+msgstr "A golden magnifying glass with a check pattern."
+
+#: daten_texte.py:138
+msgid "Goldäffchen"
+msgstr "Gold monkey"
+
+#: daten_texte.py:139
+msgid "Goldenes Äffchen mit Karo."
+msgstr "A golden little monkey with a check pattern."
+
+#: daten_texte.py:140
+msgid "Urwaldtempel"
+msgstr "Jungle temple"
+
+#: daten_texte.py:141
+msgid "Urwald mit goldenem Lichtkranz."
+msgstr "A jungle with a golden halo."
+
+#: daten_texte.py:142
+msgid "Regenbogenflügel"
+msgstr "Rainbow wings"
+
+#: daten_texte.py:143
+msgid "Flügel mit Glanz und Lichtkranz."
+msgstr "Wings with sparkle and a halo."
+
+#: daten_texte.py:144
+msgid "Goldmantel"
+msgstr "Gold coat"
+
+#: daten_texte.py:145
+msgid "Glänzender Mantel mit pinker Weste."
+msgstr "A shiny coat with a pink vest."
+
+#: daten_texte.py:146
+msgid "Dschungelkrone"
+msgstr "Jungle crown"
+
+#: daten_texte.py:147
+msgid "Eine Krone mit Glanz und Feder."
+msgstr "A crown with sparkle and a feather."
+
+#: daten_texte.py:148
+msgid "Goldkarte"
+msgstr "Gold map"
+
+#: daten_texte.py:149
+msgid "Glänzende Karte mit Stab."
+msgstr "A shiny map with a staff."
+
+#: daten_texte.py:150
+msgid "Goldschildkröte"
+msgstr "Gold turtle"
+
+#: daten_texte.py:151
+msgid "Schildkröte mit Glanz."
+msgstr "A turtle with a sparkle."
+
+#: daten_texte.py:152
+msgid "Rasenplatz"
+msgstr "Grass pitch"
+
+#: daten_texte.py:153
+msgid "Ein grüner Platz mit Streifen."
+msgstr "A green pitch with stripes."
+
+#: daten_texte.py:154
+msgid "Eine Tasche für das Training."
+msgstr "A bag for training."
+
+#: daten_texte.py:155
+msgid "Teamtrikot"
+msgstr "Team jersey"
+
+#: daten_texte.py:156
+msgid "Das rote Trikot der Mannschaft."
+msgstr "The team's red jersey."
+
+#: daten_texte.py:157
+msgid "Ein Stirnband für lange Spiele."
+msgstr "A headband for long games."
+
+#: daten_texte.py:158
+msgid "Fußball"
+msgstr "Football"
+
+#: daten_texte.py:159
+msgid "Der Ball für jedes Spiel."
+msgstr "The ball for every game."
+
+#: daten_texte.py:160
+msgid "Teamhund"
+msgstr "Team dog"
+
+#: daten_texte.py:161
+msgid "Ein Hund im Teamtrikot."
+msgstr "A dog in a team jersey."
+
+#: daten_texte.py:162
+msgid "Himmel"
+msgstr "Sky"
+
+#: daten_texte.py:163
+msgid "Blauer Himmel über dem Platz."
+msgstr "Blue sky over the pitch."
+
+#: daten_texte.py:164
+msgid "Team-Umhang"
+msgstr "Team cape"
+
+#: daten_texte.py:165
+msgid "Trikot mit Kante"
+msgstr "Edged jersey"
+
+#: daten_texte.py:166
+msgid "Trikot mit hellem Rand."
+msgstr "A jersey with a light edge."
+
+#: daten_texte.py:167
+msgid "Kappe mit Schirm"
+msgstr "Peaked cap"
+
+#: daten_texte.py:168
+msgid "Maskottchen-Vogel"
+msgstr "Mascot bird"
+
+#: daten_texte.py:169
+msgid "Ein Vogel mit hellem Rand."
+msgstr "A bird with a light edge."
+
+#: daten_texte.py:170
+msgid "Stadion"
+msgstr "Stadium"
+
+#: daten_texte.py:171
+msgid "Ein Stadion mit Tribünen."
+msgstr "A stadium with stands."
+
+#: daten_texte.py:172
+msgid "Blaue Tasche"
+msgstr "Blue bag"
+
+#: daten_texte.py:173
+msgid "Tasche mit blauen Streifen."
+msgstr "A bag with blue stripes."
+
+#: daten_texte.py:174
+msgid "Blau gestreiftes Trikot."
+msgstr "A jersey with blue stripes."
+
+#: daten_texte.py:175
+msgid "Kappe mit Streifen"
+msgstr "Striped cap"
+
+#: daten_texte.py:176
+msgid "Kappe mit blauen Streifen."
+msgstr "A cap with blue stripes."
+
+#: daten_texte.py:177
+msgid "Ein Wimpel mit blauen Streifen."
+msgstr "A pennant with blue stripes."
+
+#: daten_texte.py:178
+msgid "Torwart-Katze"
+msgstr "Goalie cat"
+
+#: daten_texte.py:179
+msgid "Katze mit blauen Streifen."
+msgstr "A cat with blue stripes."
+
+#: daten_texte.py:180
+msgid "Stadion mit Punkten"
+msgstr "Dotted stadium"
+
+#: daten_texte.py:181
+msgid "Stadion mit lila Punkten."
+msgstr "A stadium with purple dots."
+
+#: daten_texte.py:182
+msgid "Kapitäns-Umhang"
+msgstr "Captain's cape"
+
+#: daten_texte.py:183
+msgid "Trikot mit Punkten"
+msgstr "Dotted jersey"
+
+#: daten_texte.py:184
+msgid "Trikot mit lila Punkten."
+msgstr "A jersey with purple dots."
+
+#: daten_texte.py:185
+msgid "Lorbeer mit Band"
+msgstr "Laurel headband"
+
+#: daten_texte.py:186
+msgid "Stirnband mit Lorbeerkranz."
+msgstr "A headband with a laurel wreath."
+
+#: daten_texte.py:187
+msgid "Goldstadion"
+msgstr "Gold stadium"
+
+#: daten_texte.py:188
+msgid "Stadion mit goldenem Lichtkranz."
+msgstr "A stadium with a golden halo."
+
+#: daten_texte.py:189
+msgid "Goldene Tasche mit Umhang."
+msgstr "A golden bag with a cape."
+
+#: daten_texte.py:190
+msgid "Goldener Lorbeer"
+msgstr "Golden laurel"
+
+#: daten_texte.py:191
+msgid "Goldener Siegerkranz."
+msgstr "A golden winner's wreath."
+
+#: daten_texte.py:192
+msgid "Traumstadion"
+msgstr "Dream stadium"
+
+#: daten_texte.py:193
+msgid "Stadion mit pinkem Lichtkranz."
+msgstr "A stadium with a pink halo."
+
+#: daten_texte.py:194
+msgid "Aura des Stars"
+msgstr "Star aura"
+
+#: daten_texte.py:195
+msgid "Ein Leuchten für den Star."
+msgstr "A glow for the star."
+
+#: daten_texte.py:196
+msgid "Pokaltrikot"
+msgstr "Cup jersey"
+
+#: daten_texte.py:197
+msgid "Glänzendes Trikot in Gold."
+msgstr "A shiny jersey in gold."
+
+#: daten_texte.py:198
+msgid "Eine Krone für den besten Spieler."
+msgstr "A crown for the best player."
+
+#: daten_texte.py:199
+msgid "Goldfuchs"
+msgstr "Gold fox"
+
+#: daten_texte.py:200
+msgid "Goldener Fuchs mit Glanz."
+msgstr "A golden fox with a sparkle."
+
+#: daten_texte.py:201
+msgid "Nachthimmel"
+msgstr "Night sky"
+
+#: daten_texte.py:202
+msgid "Dunkler Himmel über dem Dojo."
+msgstr "A dark sky over the dojo."
+
+#: daten_texte.py:203
+msgid "Pfeilköcher"
+msgstr "Arrow quiver"
+
+#: daten_texte.py:204
+msgid "Ein Köcher für den Rücken."
+msgstr "A quiver for your back."
+
+#: daten_texte.py:205
+msgid "Dojo-Anzug"
+msgstr "Dojo suit"
+
+#: daten_texte.py:206
+msgid "Ein dunkler Anzug für das Training."
+msgstr "A dark suit for training."
+
+#: daten_texte.py:207
+msgid "Rotes Stirnband"
+msgstr "Red headband"
+
+#: daten_texte.py:208
+msgid "Ein Stirnband für schnelle Sprünge."
+msgstr "A headband for quick jumps."
+
+#: daten_texte.py:209
+msgid "Holzschwert"
+msgstr "Wooden sword"
+
+#: daten_texte.py:210
+msgid "Ein Holzschwert für das Dojo."
+msgstr "A wooden sword for the dojo."
+
+#: daten_texte.py:211
+msgid "Schattenkatze"
+msgstr "Shadow cat"
+
+#: daten_texte.py:212
+msgid "Eine schwarze Katze mit hellen Augen."
+msgstr "A black cat with bright eyes."
+
+#: daten_texte.py:213
+msgid "Hügel bei Nacht"
+msgstr "Hills at night"
+
+#: daten_texte.py:214
+msgid "Hügel im dunklen Blau."
+msgstr "Hills in dark blue."
+
+#: daten_texte.py:215
+msgid "Schattenumhang"
+msgstr "Shadow cape"
+
+#: daten_texte.py:216
+msgid "Schatten-Kapuze"
+msgstr "Shadow hood"
+
+#: daten_texte.py:217
+msgid "Eine Kapuze mit Kante."
+msgstr "A hood with an edge."
+
+#: daten_texte.py:218
+msgid "Dojo-Stab"
+msgstr "Dojo staff"
+
+#: daten_texte.py:219
+msgid "Ein Stab mit hellem Rand."
+msgstr "A staff with a light edge."
+
+#: daten_texte.py:220
+msgid "Fuchs der Nacht"
+msgstr "Night fox"
+
+#: daten_texte.py:221
+msgid "Ein Fuchs mit hellem Rand."
+msgstr "A fox with a light edge."
+
+#: daten_texte.py:222
+msgid "Dojo-Halle"
+msgstr "Dojo hall"
+
+#: daten_texte.py:223
+msgid "Eine Halle mit Streifen."
+msgstr "A hall with stripes."
+
+#: daten_texte.py:224
+msgid "Blauer Ninja-Anzug"
+msgstr "Blue ninja suit"
+
+#: daten_texte.py:225
+msgid "Dunkler Anzug mit blauen Streifen."
+msgstr "A dark suit with blue stripes."
+
+#: daten_texte.py:226
+msgid "Blaue Kapuze"
+msgstr "Blue hood"
+
+#: daten_texte.py:227
+msgid "Kapuze mit blauen Streifen."
+msgstr "A hood with blue stripes."
+
+#: daten_texte.py:228
+msgid "Blaue Fackel"
+msgstr "Blue torch"
+
+#: daten_texte.py:229
+msgid "Fackel mit blauen Streifen."
+msgstr "A torch with blue stripes."
+
+#: daten_texte.py:230
+msgid "Blaue Katze"
+msgstr "Blue cat"
+
+#: daten_texte.py:231
+msgid "Mondnacht"
+msgstr "Moonlit night"
+
+#: daten_texte.py:232
+msgid "Nachthimmel mit lila Leuchten."
+msgstr "A night sky with a purple glow."
+
+#: daten_texte.py:233
+msgid "Köcher und Umhang"
+msgstr "Quiver and cape"
+
+#: daten_texte.py:234
+msgid "Lila Umhang mit Köcher."
+msgstr "A purple cape with a quiver."
+
+#: daten_texte.py:235
+msgid "Schattenmantel"
+msgstr "Shadow coat"
+
+#: daten_texte.py:236
+msgid "Lila Mantel mit Punkten."
+msgstr "A purple coat with dots."
+
+#: daten_texte.py:237
+msgid "Kapuze mit Stirnband"
+msgstr "Hood with headband"
+
+#: daten_texte.py:238
+msgid "Lila Kapuze mit rotem Band."
+msgstr "A purple hood with a red band."
+
+#: daten_texte.py:239
+msgid "Stab mit Punkten"
+msgstr "Dotted staff"
+
+#: daten_texte.py:240
+msgid "Lila Stab mit Punktemuster."
+msgstr "A purple staff with a dot pattern."
+
+#: daten_texte.py:241
+msgid "Eulen-Vogel"
+msgstr "Owl bird"
+
+#: daten_texte.py:242
+msgid "Ein Vogel mit lila Punkten."
+msgstr "A bird with purple dots."
+
+#: daten_texte.py:243
+msgid "Goldener Mond"
+msgstr "Golden moon"
+
+#: daten_texte.py:244
+msgid "Hügel unter goldenem Mond."
+msgstr "Hills under a golden moon."
+
+#: daten_texte.py:245
+msgid "Goldköcher"
+msgstr "Gold quiver"
+
+#: daten_texte.py:246
+msgid "Goldener Köcher mit Umhang."
+msgstr "A golden quiver with a cape."
+
+#: daten_texte.py:247
+msgid "Mantel mit goldenem Karo."
+msgstr "A coat with a golden check pattern."
+
+#: daten_texte.py:248
+msgid "Goldband-Kapuze"
+msgstr "Gold band hood"
+
+#: daten_texte.py:249
+msgid "Kapuze mit goldenem Stirnband."
+msgstr "A hood with a golden headband."
+
+#: daten_texte.py:250
+msgid "Goldschwert"
+msgstr "Gold sword"
+
+#: daten_texte.py:251
+msgid "Goldenes Holzschwert mit Karo."
+msgstr "A golden wooden sword with a check pattern."
+
+#: daten_texte.py:252
+msgid "Goldener Fuchs mit Karo."
+msgstr "A golden fox with a check pattern."
+
+#: daten_texte.py:253
+msgid "Himmelstor"
+msgstr "Sky gate"
+
+#: daten_texte.py:254
+msgid "Ein Tor aus Licht unter dem Sternenhimmel."
+msgstr "A gate of light under the starry sky."
+
+#: daten_texte.py:255
+msgid "Mond-Aura"
+msgstr "Moon aura"
+
+#: daten_texte.py:256
+msgid "Ein Leuchten aus Mondlicht."
+msgstr "A glow of moonlight."
+
+#: daten_texte.py:257
+msgid "Mondmantel"
+msgstr "Moon coat"
+
+#: daten_texte.py:258
+msgid "Mond-Ninja"
+msgstr "Moon ninja"
+
+#: daten_texte.py:259
+msgid "Glänzende Kapuze mit Mondband."
+msgstr "A shiny hood with a moon band."
+
+#: daten_texte.py:260
+msgid "Mondstab"
+msgstr "Moon staff"
+
+#: daten_texte.py:261
+msgid "Ein Stab aus Mondlicht."
+msgstr "A staff made of moonlight."
+
+#: daten_texte.py:262
+msgid "Schattendrache"
+msgstr "Shadow dragon"
+
+#: daten_texte.py:263
+msgid "Ein Drache mit goldenen Akzenten."
+msgstr "A dragon with golden accents."
+
+#: daten_texte.py:264
+msgid "Meerblick"
+msgstr "Sea view"
+
+#: daten_texte.py:265
+msgid "Wellen unter blauem Himmel."
+msgstr "Waves under a blue sky."
+
+#: daten_texte.py:266
+msgid "Piratenumhang"
+msgstr "Pirate cape"
+
+#: daten_texte.py:267
+msgid "Ein Umhang für stürmische Tage."
+msgstr "A cape for stormy days."
+
+#: daten_texte.py:268
+msgid "Piratenweste"
+msgstr "Pirate vest"
+
+#: daten_texte.py:269
+msgid "Dunkle Weste mit Goldknöpfen."
+msgstr "A dark vest with gold buttons."
+
+#: daten_texte.py:270
+msgid "Piratentuch"
+msgstr "Pirate scarf"
+
+#: daten_texte.py:271
+msgid "Ein weißes Tuch auf dem Kopf."
+msgstr "A white scarf on the head."
+
+#: daten_texte.py:272
+msgid "Ein Holzschwert für Abenteuer."
+msgstr "A wooden sword for adventures."
+
+#: daten_texte.py:273
+msgid "Ein bunter Papagei auf der Schulter."
+msgstr "A colourful parrot on your shoulder."
+
+#: daten_texte.py:274
+msgid "Schiffswellen"
+msgstr "Ship waves"
+
+#: daten_texte.py:275
+msgid "Wellen mit Rand."
+msgstr "Waves with an edge."
+
+#: daten_texte.py:276
+msgid "Schatzrucksack"
+msgstr "Treasure backpack"
+
+#: daten_texte.py:277
+msgid "Rucksack mit Rand."
+msgstr "A backpack with an edge."
+
+#: daten_texte.py:278
+msgid "Mantel mit Kante"
+msgstr "Edged coat"
+
+#: daten_texte.py:279
+msgid "Mantel mit hellem Rand."
+msgstr "A coat with a light edge."
+
+#: daten_texte.py:280
+msgid "Tuch mit Kante"
+msgstr "Edged scarf"
+
+#: daten_texte.py:281
+msgid "Tuch mit dunklem Rand."
+msgstr "A scarf with a dark edge."
+
+#: daten_texte.py:282
+msgid "Eine Fackel mit Rand."
+msgstr "A torch with an edge."
+
+#: daten_texte.py:283
+msgid "Schiffskatze"
+msgstr "Ship's cat"
+
+#: daten_texte.py:284
+msgid "Inselhimmel"
+msgstr "Island sky"
+
+#: daten_texte.py:285
+msgid "Himmel über blauen Wellen."
+msgstr "Sky over blue waves."
+
+#: daten_texte.py:286
+msgid "Blauer Kapitänsmantel"
+msgstr "Blue captain's coat"
+
+#: daten_texte.py:287
+msgid "Blaue Piratenkappe"
+msgstr "Blue pirate cap"
+
+#: daten_texte.py:288
+msgid "Schatzkarte"
+msgstr "Treasure map"
+
+#: daten_texte.py:289
+msgid "Eine Karte mit blauen Linien."
+msgstr "A map with blue lines."
+
+#: daten_texte.py:290
+msgid "Blaue Schildkröte"
+msgstr "Blue turtle"
+
+#: daten_texte.py:291
+msgid "Sternenmeer"
+msgstr "Sea of stars"
+
+#: daten_texte.py:292
+msgid "Sterne über lila Wellen."
+msgstr "Stars over purple waves."
+
+#: daten_texte.py:293
+msgid "Schatzsack mit Punkten"
+msgstr "Dotted treasure sack"
+
+#: daten_texte.py:294
+msgid "Schatzweste"
+msgstr "Treasure vest"
+
+#: daten_texte.py:295
+msgid "Weste mit lila Punkten."
+msgstr "A vest with purple dots."
+
+#: daten_texte.py:296
+msgid "Dreispitz"
+msgstr "Tricorn"
+
+#: daten_texte.py:297
+msgid "Ein Hut mit drei Ecken."
+msgstr "A hat with three corners."
+
+#: daten_texte.py:298
+msgid "Schatzpokal"
+msgstr "Treasure trophy"
+
+#: daten_texte.py:299
+msgid "Pokal mit lila Punkten."
+msgstr "A trophy with purple dots."
+
+#: daten_texte.py:300
+msgid "Goldmeer"
+msgstr "Gold sea"
+
+#: daten_texte.py:301
+msgid "Goldene Wellen mit Karo."
+msgstr "Golden waves with a check pattern."
+
+#: daten_texte.py:302
+msgid "Goldsack"
+msgstr "Gold sack"
+
+#: daten_texte.py:303
+msgid "Goldener Sack mit Umhang."
+msgstr "A golden sack with a cape."
+
+#: daten_texte.py:304
+msgid "Goldener Dreispitz"
+msgstr "Golden tricorn"
+
+#: daten_texte.py:305
+msgid "Goldener Hut mit Feder."
+msgstr "A golden hat with a feather."
+
+#: daten_texte.py:306
+msgid "Schatzinsel"
+msgstr "Treasure island"
+
+#: daten_texte.py:307
+msgid "Goldene Wellen unter Lichtkranz."
+msgstr "Golden waves under a halo."
+
+#: daten_texte.py:308
+msgid "Aura des Kapitäns"
+msgstr "Captain's aura"
+
+#: daten_texte.py:309
+msgid "Ein Leuchten über dem Schatz."
+msgstr "A glow over the treasure."
+
+#: daten_texte.py:310
+msgid "Sternenmantel"
+msgstr "Star coat"
+
+#: daten_texte.py:311
+msgid "Kapitänskrone"
+msgstr "Captain's crown"
+
+#: daten_texte.py:312
+msgid "Dreispitz mit Glanz und pinker Feder."
+msgstr "A tricorn with sparkle and a pink feather."
+
+#: daten_texte.py:313
+msgid "Goldene Schatzkarte"
+msgstr "Golden treasure map"
+
+#: daten_texte.py:314
+msgid "Karte mit Glanz und Pokal."
+msgstr "A map with sparkle and a trophy."
+
+#: daten_texte.py:315
+msgid "Rennstrecke"
+msgstr "Race track"
+
+#: daten_texte.py:316
+msgid "Eine Strecke unter blauem Himmel."
+msgstr "A track under a blue sky."
+
+#: daten_texte.py:317
+msgid "Rucksack"
+msgstr "Backpack"
+
+#: daten_texte.py:318
+msgid "Ein Rucksack für die Boxengasse."
+msgstr "A backpack for the pit lane."
+
+#: daten_texte.py:319
+msgid "Rennanzug"
+msgstr "Racing suit"
+
+#: daten_texte.py:320
+msgid "Ein Anzug für die Rennstrecke."
+msgstr "A suit for the race track."
+
+#: daten_texte.py:321
+msgid "Rennkappe"
+msgstr "Racing cap"
+
+#: daten_texte.py:322
+msgid "Eine Kappe für den Start."
+msgstr "A cap for the start."
+
+#: daten_texte.py:323
+msgid "Zielflagge"
+msgstr "Finish flag"
+
+#: daten_texte.py:324
+msgid "Die Flagge für das Ziel."
+msgstr "The flag for the finish line."
+
+#: daten_texte.py:325
+msgid "Fuchs-Co-Pilot"
+msgstr "Fox co-driver"
+
+#: daten_texte.py:326
+msgid "Ein Fuchs als Beifahrer."
+msgstr "A fox riding shotgun."
+
+#: daten_texte.py:327
+msgid "Himmel mit Kante"
+msgstr "Edged sky"
+
+#: daten_texte.py:328
+msgid "Himmel mit hellem Rand."
+msgstr "A sky with a light edge."
+
+#: daten_texte.py:329
+msgid "Turbo-Rucksack"
+msgstr "Turbo backpack"
+
+#: daten_texte.py:330
+msgid "Turbo mit Rand."
+msgstr "A turbo with an edge."
+
+#: daten_texte.py:331
+msgid "Anzug mit Kante"
+msgstr "Edged suit"
+
+#: daten_texte.py:332
+msgid "Anzug mit rotem Rand."
+msgstr "A suit with a red edge."
+
+#: daten_texte.py:333
+msgid "Rennhelm"
+msgstr "Racing helmet"
+
+#: daten_texte.py:334
+msgid "Runder Helm mit Rand."
+msgstr "A round helmet with an edge."
+
+#: daten_texte.py:335
+msgid "Werkzeughammer"
+msgstr "Tool hammer"
+
+#: daten_texte.py:336
+msgid "Ein Hammer mit Rand."
+msgstr "A hammer with an edge."
+
+#: daten_texte.py:337
+msgid "Drohnen-Kamera"
+msgstr "Drone camera"
+
+#: daten_texte.py:338
+msgid "Drohne mit Rand."
+msgstr "A drone with an edge."
+
+#: daten_texte.py:339 mods.py:71
+msgid "Boxengasse"
+msgstr "Pit lane"
+
+#: daten_texte.py:340
+msgid "Boxengasse mit Streifen."
+msgstr "A pit lane with stripes."
+
+#: daten_texte.py:341
+msgid "Blauer Turbo"
+msgstr "Blue turbo"
+
+#: daten_texte.py:342
+msgid "Turbo mit blauen Streifen."
+msgstr "A turbo with blue stripes."
+
+#: daten_texte.py:343
+msgid "Blauer Rennanzug"
+msgstr "Blue racing suit"
+
+#: daten_texte.py:344
+msgid "Anzug mit blauen Streifen."
+msgstr "A suit with blue stripes."
+
+#: daten_texte.py:345
+msgid "Blauer Rennhelm"
+msgstr "Blue racing helmet"
+
+#: daten_texte.py:346
+msgid "Helm mit blauen Streifen."
+msgstr "A helmet with blue stripes."
+
+#: daten_texte.py:347
+msgid "Blaue Flagge"
+msgstr "Blue flag"
+
+#: daten_texte.py:348
+msgid "Flagge mit blauen Streifen."
+msgstr "A flag with blue stripes."
+
+#: daten_texte.py:349
+msgid "Abendrennen"
+msgstr "Evening race"
+
+#: daten_texte.py:350
+msgid "Strecke im lila Abendlicht."
+msgstr "A track in purple evening light."
+
+#: daten_texte.py:351
+msgid "Turbo mit Punkten"
+msgstr "Dotted turbo"
+
+#: daten_texte.py:352
+msgid "Turbo mit lila Punkten."
+msgstr "A turbo with purple dots."
+
+#: daten_texte.py:353
+msgid "Glas-Visier"
+msgstr "Glass visor"
+
+#: daten_texte.py:354
+msgid "Glashelm mit lila Punkten."
+msgstr "A glass helmet with purple dots."
+
+#: daten_texte.py:355
+msgid "Pokal mit Punkten"
+msgstr "Dotted trophy"
+
+#: daten_texte.py:356
+msgid "Fuchs mit Punkten"
+msgstr "Dotted fox"
+
+#: daten_texte.py:357
+msgid "Fuchs mit lila Punkten."
+msgstr "A fox with purple dots."
+
+#: daten_texte.py:358
+msgid "Goldpodest"
+msgstr "Gold podium"
+
+#: daten_texte.py:359
+msgid "Podest mit goldenem Karo."
+msgstr "A podium with a golden check pattern."
+
+#: daten_texte.py:360
+msgid "Goldturbo"
+msgstr "Gold turbo"
+
+#: daten_texte.py:361
+msgid "Goldener Turbo mit Karo."
+msgstr "A golden turbo with a check pattern."
+
+#: daten_texte.py:362
+msgid "Goldanzug"
+msgstr "Gold suit"
+
+#: daten_texte.py:363
+msgid "Goldener Anzug mit Karo."
+msgstr "A golden suit with a check pattern."
+
+#: daten_texte.py:364
+msgid "Goldhelm"
+msgstr "Gold helmet"
+
+#: daten_texte.py:365
+msgid "Goldener Helm mit Karo."
+msgstr "A golden helmet with a check pattern."
+
+#: daten_texte.py:366
+msgid "Goldflagge"
+msgstr "Gold flag"
+
+#: daten_texte.py:367
+msgid "Goldene Flagge mit Karo."
+msgstr "A golden flag with a check pattern."
+
+#: daten_texte.py:368
+msgid "Regenbogen-Ziel"
+msgstr "Rainbow finish"
+
+#: daten_texte.py:369
+msgid "Strecke mit pinkem Lichtkranz."
+msgstr "A track with a pink halo."
+
+#: daten_texte.py:370
+msgid "Aura der Rennlegende"
+msgstr "Racing legend aura"
+
+#: daten_texte.py:371
+msgid "Ein Leuchten für den Sieg."
+msgstr "A glow for victory."
+
+#: daten_texte.py:372
+msgid "Sonnen-Anzug"
+msgstr "Sun suit"
+
+#: daten_texte.py:373
+msgid "Glänzender Anzug mit pinker Weste."
+msgstr "A shiny suit with a pink vest."
+
+#: daten_texte.py:374
+msgid "Champion-Krone"
+msgstr "Champion's crown"
+
+#: daten_texte.py:375
+msgid "Eine Krone mit Glanz."
+msgstr "A crown with sparkle."
+
+#: daten_texte.py:376
+msgid "Glänzender Pokal mit Zielflagge."
+msgstr "A shiny trophy with a finish flag."
+
+#: daten_texte.py:377
+msgid "Glanz-Drohne"
+msgstr "Sparkle drone"
+
+#: daten_texte.py:378
+msgid "Drohne mit goldenem Glanz."
+msgstr "A drone with a golden sparkle."
+
+#: daten_texte.py:379
+msgid "Burgwiese"
+msgstr "Castle meadow"
+
+#: daten_texte.py:380
+msgid "Blauer Himmel und frisches Gras."
+msgstr "Blue sky and fresh grass."
+
+#: daten_texte.py:381
+msgid "Roter Umhang"
+msgstr "Red cape"
+
+#: daten_texte.py:382
+msgid "Flattert hinter jedem Helden her."
+msgstr "Flutters behind every hero."
+
+#: daten_texte.py:383
+msgid "Wappenrock"
+msgstr "Tabard"
+
+#: daten_texte.py:384
+msgid "Roter Rock über dem Hemd, mit goldenem Kragen."
+msgstr "A red tunic over the shirt, with a golden collar."
+
+#: daten_texte.py:385
+msgid "Eisenhelm"
+msgstr "Iron helmet"
+
+#: daten_texte.py:386
+msgid "Solider Helm mit Nasenschutz."
+msgstr "A sturdy helmet with a nose guard."
+
+#: daten_texte.py:387
+msgid "Übungsschwert"
+msgstr "Practice sword"
+
+#: daten_texte.py:388
+msgid "Stumpf, aber gut für den Anfang."
+msgstr "Blunt, but good for beginners."
+
+#: daten_texte.py:389
+msgid "Treuer Hund"
+msgstr "Loyal dog"
+
+#: daten_texte.py:390
+msgid "Folgt dir auf Schritt und Tritt."
+msgstr "Follows you everywhere."
+
+#: daten_texte.py:391
+msgid "Hügelland"
+msgstr "Hill country"
+
+#: daten_texte.py:392
+msgid "Grüne Hügel unter weitem Himmel."
+msgstr "Green hills under a wide sky."
+
+#: daten_texte.py:393
+msgid "Wappenumhang"
+msgstr "Crest cape"
+
+#: daten_texte.py:394
+msgid "Umhang mit Wappen-Schild."
+msgstr "A cape with a crest shield."
+
+#: daten_texte.py:395
+msgid "Kettenhemd"
+msgstr "Chain mail"
+
+#: daten_texte.py:396
+msgid "Silbernes Kettenhemd mit Muster."
+msgstr "Silver chain mail with a pattern."
+
+#: daten_texte.py:397
+msgid "Helm mit Feder"
+msgstr "Feathered helmet"
+
+#: daten_texte.py:398
+msgid "Ein Helm mit roter Feder."
+msgstr "A helmet with a red feather."
+
+#: daten_texte.py:399
+msgid "Schwert mit Kante"
+msgstr "Edged sword"
+
+#: daten_texte.py:400
+msgid "Ein Schwert mit schönem Rand."
+msgstr "A sword with a nice edge."
+
+#: daten_texte.py:401
+msgid "Falke"
+msgstr "Falcon"
+
+#: daten_texte.py:402
+msgid "Schnell und treu an deiner Seite."
+msgstr "Fast and loyal by your side."
+
+#: daten_texte.py:403
+msgid "Burg auf dem Hügel"
+msgstr "Castle on the hill"
+
+#: daten_texte.py:404
+msgid "Eine Burg über dem Land."
+msgstr "A castle above the land."
+
+#: daten_texte.py:405
+msgid "Blauer Schildumhang"
+msgstr "Blue shield cape"
+
+#: daten_texte.py:406
+msgid "Blauer Umhang mit Rückenschild."
+msgstr "A blue cape with a back shield."
+
+#: daten_texte.py:407
+msgid "Blaue Rüstung"
+msgstr "Blue armour"
+
+#: daten_texte.py:408
+msgid "Blau gestreifte Rüstung mit Goldnaht."
+msgstr "Blue striped armour with golden stitching."
+
+#: daten_texte.py:409
+msgid "Visierhelm"
+msgstr "Visor helmet"
+
+#: daten_texte.py:410
+msgid "Blauer Helm mit Sehschlitz."
+msgstr "A blue helmet with a visor slit."
+
+#: daten_texte.py:411
+msgid "Blaues Schwert"
+msgstr "Blue sword"
+
+#: daten_texte.py:412
+msgid "Schwert mit blau gestreiftem Griff."
+msgstr "A sword with a blue striped hilt."
+
+#: daten_texte.py:413
+msgid "Hund mit Halsband"
+msgstr "Dog with collar"
+
+#: daten_texte.py:414
+msgid "Ein Hund mit blauem Halsband."
+msgstr "A dog with a blue collar."
+
+#: daten_texte.py:415
+msgid "Burg bei Nacht"
+msgstr "Castle at night"
+
+#: daten_texte.py:416
+msgid "Die Burg mit leuchtendem Tor."
+msgstr "The castle with a glowing gate."
+
+#: daten_texte.py:417
+msgid "Lila Umhang"
+msgstr "Purple cape"
+
+#: daten_texte.py:418
+msgid "Lila Umhang mit Punktemuster."
+msgstr "A purple cape with a dot pattern."
+
+#: daten_texte.py:419
+msgid "Wappenpanzer"
+msgstr "Crest armour"
+
+#: daten_texte.py:420
+msgid "Lila Panzer mit Punkten und Gold."
+msgstr "Purple armour with dots and gold."
+
+#: daten_texte.py:421
+msgid "Wächterhelm"
+msgstr "Guardian helmet"
+
+#: daten_texte.py:422
+msgid "Lila Helm mit Muster und Lorbeer."
+msgstr "A purple helmet with a pattern and laurel."
+
+#: daten_texte.py:423
+msgid "Turnierpokal"
+msgstr "Tournament trophy"
+
+#: daten_texte.py:424
+msgid "Pokal vom großen Ritterturnier."
+msgstr "A trophy from the great knights' tournament."
+
+#: daten_texte.py:425
+msgid "Mini-Drache"
+msgstr "Mini dragon"
+
+#: daten_texte.py:426
+msgid "Ein kleiner Drache mit Punkten."
+msgstr "A little dragon with dots."
+
+#: daten_texte.py:427
+msgid "Goldene Burg"
+msgstr "Golden castle"
+
+#: daten_texte.py:428
+msgid "Eine Burg im goldenen Abendlicht."
+msgstr "A castle in golden evening light."
+
+#: daten_texte.py:429
+msgid "Goldumhang"
+msgstr "Gold cape"
+
+#: daten_texte.py:430
+msgid "Golden glänzender Umhang mit Schild."
+msgstr "A shiny golden cape with a shield."
+
+#: daten_texte.py:431
+msgid "Goldrüstung"
+msgstr "Gold armour"
+
+#: daten_texte.py:432
+msgid "Glänzende Rüstung aus Gold."
+msgstr "Shiny armour made of gold."
+
+#: daten_texte.py:433
+msgid "Kronhelm"
+msgstr "Crown helmet"
+
+#: daten_texte.py:434
+msgid "Goldener Helm mit kleiner Krone."
+msgstr "A golden helmet with a little crown."
+
+#: daten_texte.py:435
+msgid "Goldenes Schwert mit Karomuster."
+msgstr "A golden sword with a check pattern."
+
+#: daten_texte.py:436
+msgid "Goldene Katze"
+msgstr "Golden cat"
+
+#: daten_texte.py:437
+msgid "Eine Katze, die golden glänzt."
+msgstr "A cat that shines like gold."
+
+#: daten_texte.py:438
+msgid "Burg der Legenden"
+msgstr "Castle of legends"
+
+#: daten_texte.py:439
+msgid "Burg im Sternenlicht mit Lichtkranz."
+msgstr "A castle in starlight with a halo."
+
+#: daten_texte.py:440
+msgid "Aura der Legenden"
+msgstr "Aura of legends"
+
+#: daten_texte.py:441
+msgid "Ein Leuchten aus Gold und Regenbogen."
+msgstr "A glow of gold and rainbow."
+
+#: daten_texte.py:442
+msgid "Sonnenrüstung"
+msgstr "Sun armour"
+
+#: daten_texte.py:443
+msgid "Strahlende Rüstung mit Glanz und Pink."
+msgstr "Gleaming armour with sparkle and pink."
+
+#: daten_texte.py:444
+msgid "Goldene Krone"
+msgstr "Golden crown"
+
+#: daten_texte.py:445
+msgid "Die prächtigste Krone der Legenden."
+msgstr "The most splendid crown of legends."
+
+#: daten_texte.py:446
+msgid "Sonnenklinge"
+msgstr "Sun blade"
+
+#: daten_texte.py:447
+msgid "Ein leuchtendes Schwert der Sonne."
+msgstr "A glowing sword of the sun."
+
+#: daten_texte.py:448
+msgid "Goldener Drache"
+msgstr "Golden dragon"
+
+#: daten_texte.py:449
+msgid "Ein Drache der Legenden mit Glanz."
+msgstr "A dragon of legends with sparkle."
+
+#: daten_texte.py:450 mods.py:74
+msgid "Werkstatt"
+msgstr "Workshop"
+
+#: daten_texte.py:451
+msgid "Eine Werkstatt mit Gitternetz."
+msgstr "A workshop with a grid."
+
+#: daten_texte.py:452
+msgid "Werkzeugrucksack"
+msgstr "Tool backpack"
+
+#: daten_texte.py:453
+msgid "Rucksack voller Werkzeug."
+msgstr "A backpack full of tools."
+
+#: daten_texte.py:454
+msgid "Metallweste"
+msgstr "Metal vest"
+
+#: daten_texte.py:455
+msgid "Weste aus Metall."
+msgstr "A vest made of metal."
+
+#: daten_texte.py:456
+msgid "Antennenkopf"
+msgstr "Antenna head"
+
+#: daten_texte.py:457
+msgid "Ein Kopf mit Antenne."
+msgstr "A head with an antenna."
+
+#: daten_texte.py:458
+msgid "Ein Hammer für jede Reparatur."
+msgstr "A hammer for every repair."
+
+#: daten_texte.py:459
+msgid "Späh-Drohne"
+msgstr "Scout drone"
+
+#: daten_texte.py:460
+msgid "Eine Drohne mit Lampe."
+msgstr "A drone with a lamp."
+
+#: daten_texte.py:461
+msgid "Nachtbaustelle"
+msgstr "Night site"
+
+#: daten_texte.py:462
+msgid "Nacht mit Rand."
+msgstr "Night with an edge."
+
+#: daten_texte.py:463
+msgid "Schildrücken"
+msgstr "Shield back"
+
+#: daten_texte.py:464
+msgid "Schild mit Rand am Rücken."
+msgstr "A shield with an edge on the back."
+
+#: daten_texte.py:465
+msgid "Panzerplatten"
+msgstr "Armour plates"
+
+#: daten_texte.py:466
+msgid "Panzer mit Rand."
+msgstr "Armour with an edge."
+
+#: daten_texte.py:467
+msgid "Stahlhelm mit Kante"
+msgstr "Edged steel helmet"
+
+#: daten_texte.py:468
+msgid "Schweißbrenner"
+msgstr "Welding torch"
+
+#: daten_texte.py:469
+msgid "Fackel mit Rand."
+msgstr "A torch with an edge."
+
+#: daten_texte.py:470
+msgid "Roboter-Hund"
+msgstr "Robot dog"
+
+#: daten_texte.py:471
+msgid "Hund mit Rand."
+msgstr "A dog with an edge."
+
+#: daten_texte.py:472
+msgid "Teal-Raster"
+msgstr "Teal grid"
+
+#: daten_texte.py:473
+msgid "Gitternetz mit Streifen."
+msgstr "A grid with stripes."
+
+#: daten_texte.py:474
+msgid "Teal-Düsen"
+msgstr "Teal jets"
+
+#: daten_texte.py:475
+msgid "Düsen mit teal Streifen."
+msgstr "Jets with teal stripes."
+
+#: daten_texte.py:476
+msgid "Teal-Anzug"
+msgstr "Teal suit"
+
+#: daten_texte.py:477
+msgid "Anzug mit teal Streifen."
+msgstr "A suit with teal stripes."
+
+#: daten_texte.py:478
+msgid "Teal-Funkkopf"
+msgstr "Teal radio head"
+
+#: daten_texte.py:479
+msgid "Antenne mit Streifen."
+msgstr "An antenna with stripes."
+
+#: daten_texte.py:480
+msgid "Teal-Schild"
+msgstr "Teal shield"
+
+#: daten_texte.py:481
+msgid "Schild mit teal Streifen."
+msgstr "A shield with teal stripes."
+
+#: daten_texte.py:482
+msgid "Funkdrohne"
+msgstr "Radio drone"
+
+#: daten_texte.py:483
+msgid "Drohne mit blauen Streifen."
+msgstr "A drone with blue stripes."
+
+#: daten_texte.py:484
+msgid "Lichterhalle"
+msgstr "Hall of lights"
+
+#: daten_texte.py:485
+msgid "Halle mit lila Lichtkranz."
+msgstr "A hall with a purple halo."
+
+#: daten_texte.py:486
+msgid "Doppel-Düse"
+msgstr "Double jet"
+
+#: daten_texte.py:487
+msgid "Düse mit lila Punkten und Rucksack."
+msgstr "A jet with purple dots and a backpack."
+
+#: daten_texte.py:488
+msgid "Zahnrad-Panzer"
+msgstr "Gear armour"
+
+#: daten_texte.py:489
+msgid "Panzer mit lila Punkten."
+msgstr "Armour with purple dots."
+
+#: daten_texte.py:490
+msgid "Glaskopf mit Antenne"
+msgstr "Glass head with antenna"
+
+#: daten_texte.py:491
+msgid "Glaskopf mit lila Punkten."
+msgstr "A glass head with purple dots."
+
+#: daten_texte.py:492
+msgid "Zahnrad-Stab"
+msgstr "Gear staff"
+
+#: daten_texte.py:493
+msgid "Stab mit lila Punkten."
+msgstr "A staff with purple dots."
+
+#: daten_texte.py:494
+msgid "Robo-Vogel"
+msgstr "Robo bird"
+
+#: daten_texte.py:495
+msgid "Vogel mit lila Punkten."
+msgstr "A bird with purple dots."
+
+#: daten_texte.py:496
+msgid "Goldfabrik"
+msgstr "Gold factory"
+
+#: daten_texte.py:497
+msgid "Fabrik mit goldenem Karo."
+msgstr "A factory with a golden check pattern."
+
+#: daten_texte.py:498
+msgid "Goldene Düse"
+msgstr "Golden jet"
+
+#: daten_texte.py:499
+msgid "Goldene Düse mit Schild."
+msgstr "A golden jet with a shield."
+
+#: daten_texte.py:500
+msgid "Goldene Rüstung mit Karo."
+msgstr "Golden armour with a check pattern."
+
+#: daten_texte.py:501
+msgid "Goldhelm mit Antenne"
+msgstr "Gold helmet with antenna"
+
+#: daten_texte.py:502
+msgid "Goldhammer"
+msgstr "Gold hammer"
+
+#: daten_texte.py:503
+msgid "Goldener Hammer mit Karo."
+msgstr "A golden hammer with a check pattern."
+
+#: daten_texte.py:504
+msgid "Goldhund"
+msgstr "Gold dog"
+
+#: daten_texte.py:505
+msgid "Goldener Hund mit Karo."
+msgstr "A golden dog with a check pattern."
+
+#: daten_texte.py:506
+msgid "Funkenhimmel"
+msgstr "Spark sky"
+
+#: daten_texte.py:507
+msgid "Nacht mit goldenem Lichtkranz."
+msgstr "Night with a golden halo."
+
+#: daten_texte.py:508
+msgid "Sternen-Aura"
+msgstr "Star aura"
+
+#: daten_texte.py:509
+msgid "Ein Leuchten aus Licht und Gold."
+msgstr "A glow of light and gold."
+
+#: daten_texte.py:510
+msgid "Sonnen-Panzer"
+msgstr "Sun armour plates"
+
+#: daten_texte.py:511
+msgid "Glänzender Panzer mit pinker Weste."
+msgstr "Shiny armour with a pink vest."
+
+#: daten_texte.py:512
+msgid "Robo-Krone"
+msgstr "Robo crown"
+
+#: daten_texte.py:513
+msgid "Eine Krone mit Glanz und Antenne."
+msgstr "A crown with sparkle and an antenna."
+
+#: daten_texte.py:514
+msgid "Funkenhammer"
+msgstr "Spark hammer"
+
+#: daten_texte.py:515
+msgid "Hammer mit Glanz und Fackel."
+msgstr "A hammer with sparkle and a torch."
+
+#: daten_texte.py:516
+msgid "Funken-Drohne"
+msgstr "Spark drone"
+
+#: daten_texte.py:517
+msgid "Sternennacht"
+msgstr "Starry night"
+
+#: daten_texte.py:518
+msgid "Nachthimmel voller Sterne."
+msgstr "A night sky full of stars."
+
+#: daten_texte.py:519
+msgid "Forscher-Rucksack"
+msgstr "Explorer backpack"
+
+#: daten_texte.py:520
+msgid "Rucksack für den Weg zu den Sternen."
+msgstr "A backpack for the way to the stars."
+
+#: daten_texte.py:521
+msgid "Raumanzug"
+msgstr "Space suit"
+
+#: daten_texte.py:522
+msgid "Ein hellblauer Anzug für Expeditionen."
+msgstr "A light blue suit for expeditions."
+
+#: daten_texte.py:523
+msgid "Glashelm"
+msgstr "Glass helmet"
+
+#: daten_texte.py:524
+msgid "Ein Helm aus klarem Glas."
+msgstr "A helmet made of clear glass."
+
+#: daten_texte.py:525
+msgid "Leuchtstab"
+msgstr "Glow stick"
+
+#: daten_texte.py:526
+msgid "Ein Stab, der im Dunkeln leuchtet."
+msgstr "A staff that glows in the dark."
+
+#: daten_texte.py:527
+msgid "Schwebe-Drohne"
+msgstr "Hover drone"
+
+#: daten_texte.py:528
+msgid "Eine Drohne, die um dich schwebt."
+msgstr "A drone that floats around you."
+
+#: daten_texte.py:529
+msgid "Raster-Labor"
+msgstr "Grid lab"
+
+#: daten_texte.py:530
+msgid "Ein Labor mit Gitternetz."
+msgstr "A lab with a grid."
+
+#: daten_texte.py:531
+msgid "Düsenrucksack"
+msgstr "Jet backpack"
+
+#: daten_texte.py:532
+msgid "Ein Rucksack mit kleiner Düse."
+msgstr "A backpack with a little jet."
+
+#: daten_texte.py:533
+msgid "Raumanzug mit orangenem Rand."
+msgstr "A space suit with an orange edge."
+
+#: daten_texte.py:534
+msgid "Funkkopf"
+msgstr "Radio head"
+
+#: daten_texte.py:535
+msgid "Mit Antenne für Signale aus dem All."
+msgstr "With an antenna for signals from space."
+
+#: daten_texte.py:536
+msgid "Forscher-Lupe"
+msgstr "Explorer magnifier"
+
+#: daten_texte.py:537
+msgid "Eine Lupe für kleine Entdeckungen."
+msgstr "A magnifying glass for small discoveries."
+
+#: daten_texte.py:538
+msgid "Raumkatze"
+msgstr "Space cat"
+
+#: daten_texte.py:539
+msgid "Eine Katze mit Weltraum-Fell."
+msgstr "A cat with space fur."
+
+#: daten_texte.py:540
+msgid "Mondlandschaft"
+msgstr "Moonscape"
+
+#: daten_texte.py:541
+msgid "Hügel auf dem Mond unter Sternen."
+msgstr "Hills on the moon under the stars."
+
+#: daten_texte.py:542
+msgid "Blauer Düsenrucksack"
+msgstr "Blue jet backpack"
+
+#: daten_texte.py:543
+msgid "Düsen-Rucksack mit blauen Streifen."
+msgstr "A jet backpack with blue stripes."
+
+#: daten_texte.py:544
+msgid "Blauer Raumanzug"
+msgstr "Blue space suit"
+
+#: daten_texte.py:545
+msgid "Sternen-Helm"
+msgstr "Star helmet"
+
+#: daten_texte.py:546
+msgid "Blauer Helm mit Streifen."
+msgstr "A blue helmet with stripes."
+
+#: daten_texte.py:547
+msgid "Signalfackel"
+msgstr "Signal flare"
+
+#: daten_texte.py:548
+msgid "Galaxie"
+msgstr "Galaxy"
+
+#: daten_texte.py:549
+msgid "Sterne mit lila Leuchten."
+msgstr "Stars with a purple glow."
+
+#: daten_texte.py:550
+msgid "Sternen-Düse"
+msgstr "Star jet"
+
+#: daten_texte.py:551
+msgid "Lila Düse mit Rucksack darunter."
+msgstr "A purple jet with a backpack underneath."
+
+#: daten_texte.py:552
+msgid "Forscherpanzer"
+msgstr "Explorer armour"
+
+#: daten_texte.py:553
+msgid "Planeten-Helm"
+msgstr "Planet helmet"
+
+#: daten_texte.py:554
+msgid "Glashelm mit lila Punkten und Antenne."
+msgstr "A glass helmet with purple dots and an antenna."
+
+#: daten_texte.py:555
+msgid "Sternen-Lupe"
+msgstr "Star magnifier"
+
+#: daten_texte.py:556
+msgid "Lila Lupe mit Punkten."
+msgstr "A purple magnifier with dots."
+
+#: daten_texte.py:557
+msgid "Lila Drohne"
+msgstr "Purple drone"
+
+#: daten_texte.py:558
+msgid "Drohne mit lila Punkten."
+msgstr "A drone with purple dots."
+
+#: daten_texte.py:559
+msgid "Raumstation"
+msgstr "Space station"
+
+#: daten_texte.py:560
+msgid "Eine goldene Raumstation."
+msgstr "A golden space station."
+
+#: daten_texte.py:561
+msgid "Goldene Düse mit Flügeln."
+msgstr "A golden jet with wings."
+
+#: daten_texte.py:562
+msgid "Goldener Anzug mit Weste."
+msgstr "A golden suit with a vest."
+
+#: daten_texte.py:563
+msgid "Goldener Glashelm mit Karo und Antenne."
+msgstr "A golden glass helmet with a check pattern and an antenna."
+
+#: daten_texte.py:564
+msgid "Goldene Lupe mit Stab."
+msgstr "A golden magnifier with a staff."
+
+#: daten_texte.py:565
+msgid "Sternenfuchs"
+msgstr "Star fox"
+
+#: daten_texte.py:566
+msgid "Ein goldener Fuchs mit Karo."
+msgstr "A golden fox with a check pattern."
+
+#: daten_texte.py:567
+msgid "Sternenkreis"
+msgstr "Star circle"
+
+#: daten_texte.py:568
+msgid "Ein goldener Kreis aus Licht."
+msgstr "A golden circle of light."
+
+#: daten_texte.py:569
+msgid "Galaxie-Flügel"
+msgstr "Galaxy wings"
+
+#: daten_texte.py:570
+msgid "Flügel aus Licht vor dem Sternenhimmel."
+msgstr "Wings of light in front of the starry sky."
+
+#: daten_texte.py:571
+msgid "Galaxie-Anzug"
+msgstr "Galaxy suit"
+
+#: daten_texte.py:572
+msgid "Glänzend mit pinken Akzenten."
+msgstr "Shiny with pink accents."
+
+#: daten_texte.py:573
+msgid "Sternenkrone"
+msgstr "Star crown"
+
+#: daten_texte.py:574
+msgid "Eine Krone aus Sternenlicht."
+msgstr "A crown made of starlight."
+
+#: daten_texte.py:575
+msgid "Sternenstab"
+msgstr "Star staff"
+
+#: daten_texte.py:576
+msgid "Ein Stab aus funkelndem Licht."
+msgstr "A staff of twinkling light."
+
+#: daten_texte.py:577
+msgid "Lichtdrache"
+msgstr "Light dragon"
+
+#: daten_texte.py:578
+msgid "Ein Drache aus Sternenlicht."
+msgstr "A dragon made of starlight."
+
+#: daten_texte.py:579
+msgid "Hügel unter winterlichem Himmel."
+msgstr "Hills under a wintry sky."
+
+#: daten_texte.py:580
+msgid "Rundschild"
+msgstr "Round shield"
+
+#: daten_texte.py:581
+msgid "Ein Rundschild am Rücken."
+msgstr "A round shield on your back."
+
+#: daten_texte.py:582
+msgid "Lederweste"
+msgstr "Leather vest"
+
+#: daten_texte.py:583
+msgid "Weste aus braunem Leder."
+msgstr "A vest made of brown leather."
+
+#: daten_texte.py:584
+msgid "Hörnerhelm"
+msgstr "Horned helmet"
+
+#: daten_texte.py:585
+msgid "Ein Helm mit kleinen Hörnern."
+msgstr "A helmet with little horns."
+
+#: daten_texte.py:586
+msgid "Ein Holzschwert aus dem Langhaus."
+msgstr "A wooden sword from the longhouse."
+
+#: daten_texte.py:587
+msgid "Jagdhund"
+msgstr "Hunting dog"
+
+#: daten_texte.py:588
+msgid "Ein treuer Hund aus dem Norden."
+msgstr "A loyal dog from the north."
+
+#: daten_texte.py:589
+msgid "Meer"
+msgstr "Sea"
+
+#: daten_texte.py:590
+msgid "Bärenfell"
+msgstr "Bearskin"
+
+#: daten_texte.py:591
+msgid "Fell über den Schultern."
+msgstr "Fur over the shoulders."
+
+#: daten_texte.py:592
+msgid "Kettenhemd mit Muster."
+msgstr "Chain mail with a pattern."
+
+#: daten_texte.py:593
+msgid "Helm mit Kante"
+msgstr "Edged helmet"
+
+#: daten_texte.py:594
+msgid "Trinkhorn"
+msgstr "Drinking horn"
+
+#: daten_texte.py:595
+msgid "Ein Horn mit Rand."
+msgstr "A horn with an edge."
+
+#: daten_texte.py:596
+msgid "Rabe"
+msgstr "Raven"
+
+#: daten_texte.py:597
+msgid "Ein Rabe mit hellem Rand."
+msgstr "A raven with a light edge."
+
+#: daten_texte.py:598
+msgid "Nordlicht"
+msgstr "Northern lights"
+
+#: daten_texte.py:599
+msgid "Nacht mit blauem Lichtkranz."
+msgstr "Night with a blue halo."
+
+#: daten_texte.py:600
+msgid "Blauer Schild"
+msgstr "Blue shield"
+
+#: daten_texte.py:601
+msgid "Schild mit blauen Streifen."
+msgstr "A shield with blue stripes."
+
+#: daten_texte.py:602
+msgid "Blauer Mantel"
+msgstr "Blue coat"
+
+#: daten_texte.py:603
+msgid "Blauer Hörnerhelm"
+msgstr "Blue horned helmet"
+
+#: daten_texte.py:604
+msgid "Hörnerhelm mit blauen Streifen."
+msgstr "A horned helmet with blue stripes."
+
+#: daten_texte.py:605
+msgid "Blauer Handschild"
+msgstr "Blue hand shield"
+
+#: daten_texte.py:606
+msgid "Kleiner Schild mit blauen Streifen."
+msgstr "A small shield with blue stripes."
+
+#: daten_texte.py:607
+msgid "Drachenjunges"
+msgstr "Baby dragon"
+
+#: daten_texte.py:608
+msgid "Drache mit blauen Streifen."
+msgstr "A dragon with blue stripes."
+
+#: daten_texte.py:609
+msgid "Fjord"
+msgstr "Fjord"
+
+#: daten_texte.py:610
+msgid "Hügel über blauem Wasser."
+msgstr "Hills above blue water."
+
+#: daten_texte.py:611
+msgid "Fellumhang"
+msgstr "Fur cape"
+
+#: daten_texte.py:612
+msgid "Fell mit lila Umhang."
+msgstr "Fur with a purple cape."
+
+#: daten_texte.py:613
+msgid "Schuppenpanzer"
+msgstr "Scale armour"
+
+#: daten_texte.py:614
+msgid "Hörnerhelm mit Feder"
+msgstr "Feathered horned helmet"
+
+#: daten_texte.py:615
+msgid "Hörnerhelm mit lila Punkten und Feder."
+msgstr "A horned helmet with purple dots and a feather."
+
+#: daten_texte.py:616
+msgid "Schwert mit Knauf"
+msgstr "Pommel sword"
+
+#: daten_texte.py:617
+msgid "Schwert mit lila Punkten."
+msgstr "A sword with purple dots."
+
+#: daten_texte.py:618
+msgid "Schwarzer Rabe"
+msgstr "Black raven"
+
+#: daten_texte.py:619
+msgid "Rabe mit lila Punkten."
+msgstr "A raven with purple dots."
+
+#: daten_texte.py:620
+msgid "Goldhimmel"
+msgstr "Gold sky"
+
+#: daten_texte.py:621
+msgid "Goldener Himmel über Wellen."
+msgstr "A golden sky over waves."
+
+#: daten_texte.py:622
+msgid "Goldschild"
+msgstr "Gold shield"
+
+#: daten_texte.py:623
+msgid "Goldener Schild mit Fell."
+msgstr "A golden shield with fur."
+
+#: daten_texte.py:624
+msgid "Goldhorn"
+msgstr "Gold horn"
+
+#: daten_texte.py:625
+msgid "Goldenes Horn mit Karo."
+msgstr "A golden horn with a check pattern."
+
+#: daten_texte.py:626
+msgid "Goldener Drache mit Karo."
+msgstr "A golden dragon with a check pattern."
+
+#: daten_texte.py:627
+msgid "Nordlicht-Pracht"
+msgstr "Northern lights glory"
+
+#: daten_texte.py:628
+msgid "Grünes und pinkes Nordlicht über Hügeln."
+msgstr "Green and pink northern lights over the hills."
+
+#: daten_texte.py:629
+msgid "Aura der Wikinger"
+msgstr "Viking aura"
+
+#: daten_texte.py:630
+msgid "Glanz über dem Bärenfell."
+msgstr "A sparkle over the bearskin."
+
+#: daten_texte.py:631
+msgid "Sonnenkönig"
+msgstr "Sun king"
+
+#: daten_texte.py:632
+msgid "Glänzende Rüstung über braunem Mantel."
+msgstr "Shiny armour over a brown coat."
+
+#: daten_texte.py:633
+msgid "Sonnenhelm"
+msgstr "Sun helmet"
+
+#: daten_texte.py:634
+msgid "Glänzender Helm mit Feder."
+msgstr "A shiny helmet with a feather."
+
+#: daten_texte.py:635
+msgid "Sonnenschild"
+msgstr "Sun shield"
+
+#: daten_texte.py:636
+msgid "Glänzender Schild mit Horn."
+msgstr "A shiny shield with a horn."
+
+#: daten_texte.py:637
+msgid "Sturmdrache"
+msgstr "Storm dragon"
+
+#: daten_texte.py:638
+msgid "Drache mit Glanz und Gold."
+msgstr "A dragon with sparkle and gold."
+
+#: daten_texte.py:639
+msgid "Hell"
+msgstr "Light"
+
+#: daten_texte.py:640
+msgid "Sand"
+msgstr "Sand"
+
+#: daten_texte.py:641
+msgid "Honig"
+msgstr "Honey"
+
+#: daten_texte.py:642
+msgid "Bronze"
+msgstr "Bronze"
+
+#: daten_texte.py:643
+msgid "Braun"
+msgstr "Brown"
+
+#: daten_texte.py:644
+msgid "Dunkel"
+msgstr "Dark"
+
+#: daten_texte.py:645
+msgid "Schwarz"
+msgstr "Black"
+
+#: daten_texte.py:646
+msgid "Dunkelbraun"
+msgstr "Dark brown"
+
+#: daten_texte.py:647
+msgid "Blond"
+msgstr "Blond"
+
+#: daten_texte.py:648
+msgid "Rot"
+msgstr "Red"
+
+#: daten_texte.py:649
+msgid "Silber"
+msgstr "Silver"
+
+#: daten_texte.py:650
+msgid "Blau"
+msgstr "Blue"
+
+#: daten_texte.py:651
+msgid "Pink"
+msgstr "Pink"
+
+#: daten_texte.py:652
+msgid "Kurz"
+msgstr "Short"
+
+#: daten_texte.py:653
+msgid "Struppig"
+msgstr "Spiky"
+
+#: daten_texte.py:654
+msgid "Lang"
+msgstr "Long"
+
+#: daten_texte.py:655
+msgid "Hund"
+msgstr "Dog"
+
+#: daten_texte.py:656
+msgid "Katze"
+msgstr "Cat"
+
+#: daten_texte.py:657
+msgid "Schwebe-Roboter"
+msgstr "Hover robot"
+
+#: daten_texte.py:658
+msgid "Fuchs"
+msgstr "Fox"
+
+#: daten_texte.py:659
+msgid "Affe"
+msgstr "Monkey"
+
+#: daten_texte.py:660
+msgid "Schwert"
+msgstr "Sword"
+
+#: daten_texte.py:661
+msgid "Zauberstab"
+msgstr "Magic wand"
+
+#: daten_texte.py:662
+msgid "Hammer"
+msgstr "Hammer"
+
+#: daten_texte.py:663
+msgid "Ball"
+msgstr "Ball"
+
+#: daten_texte.py:664
+msgid "Handschild"
+msgstr "Hand shield"
+
+#: daten_texte.py:665
+msgid "Flagge"
+msgstr "Flag"
+
+#: daten_texte.py:666
+msgid "Karte"
+msgstr "Map"
+
+#: daten_texte.py:667
+msgid "Hügel"
+msgstr "Hill"
+
+#: daten_texte.py:668
+msgid "Rasterhalle"
+msgstr "Grid hall"
+
+#: daten_texte.py:669
+msgid "Burg"
+msgstr "Castle"
+
+#: daten_texte.py:670
+msgid "Lichtkranz"
+msgstr "Halo"
+
+#: daten_texte.py:671
+msgid "Rüstung"
+msgstr "Armour"
+
+#: daten_texte.py:672
+msgid "Weste"
+msgstr "Vest"
+
+#: daten_texte.py:673
+msgid "Overall"
+msgstr "Overalls"
+
+#: daten_texte.py:674
+msgid "Mantel"
+msgstr "Coat"
+
+#: daten_texte.py:675
+msgid "Rundhelm"
+msgstr "Round helmet"
+
+#: daten_texte.py:676
+msgid "Kappe"
+msgstr "Cap"
+
+#: daten_texte.py:677
+msgid "Krone"
+msgstr "Crown"
+
+#: daten_texte.py:678
+msgid "Kapuze"
+msgstr "Hood"
+
+#: daten_texte.py:679
+msgid "Kopftuch"
+msgstr "Headscarf"
+
+#: daten_texte.py:680
+msgid "Tropenhelm"
+msgstr "Pith helmet"
+
+#: daten_texte.py:681
+msgid "Feder"
+msgstr "Feather"
+
+#: daten_texte.py:682
+msgid "Lorbeerkranz"
+msgstr "Laurel wreath"
+
+#: daten_texte.py:683
+msgid "Umhang"
+msgstr "Cape"
+
+#: daten_texte.py:684
+msgid "Rückenschild"
+msgstr "Back shield"
+
+#: daten_texte.py:685
+msgid "Flügel"
+msgstr "Wings"
+
+#: daten_texte.py:686
+msgid "Köcher"
+msgstr "Quiver"
+
+#: daten_texte.py:687
+msgid "Aura"
+msgstr "Aura"
+
+#: daten_texte.py:688
+msgid "Hintergrund"
+msgstr "Background"
+
+#: daten_texte.py:689
+msgid "Rücken"
+msgstr "Back"
+
+#: daten_texte.py:690
+msgid "Körper"
+msgstr "Body"
+
+#: daten_texte.py:691
+msgid "Kopf"
+msgstr "Head"
+
+#: daten_texte.py:692
+msgid "Hand"
+msgstr "Hand"
+
+#: daten_texte.py:693
+msgid "Begleiter"
+msgstr "Companion"
+
+#: daten_texte.py:694 tests/test_i18n.py:33 tests/test_i18n.py:35
+msgid "Ritter"
+msgstr "Knight"
+
+#: daten_texte.py:695
+msgid "Mutig, ehrenhaft und immer bereit für ein Abenteuer."
+msgstr "Brave, honourable and always ready for an adventure."
+
+#: daten_texte.py:696
+msgid "Weltraum-Forscher"
+msgstr "Space Explorer"
+
+#: daten_texte.py:697
+msgid "Auf zu den Sternen: Planeten entdecken und Rätsel lösen."
+msgstr "Off to the stars: discover planets and solve puzzles."
+
+#: daten_texte.py:698
+msgid "Ninja"
+msgstr "Ninja"
+
+#: daten_texte.py:699
+msgid "Leise, schnell und geschickt, kaum zu sehen."
+msgstr "Quiet, quick and clever, hard to spot."
+
+#: daten_texte.py:700
+msgid "Roboter"
+msgstr "Robot"
+
+#: daten_texte.py:701
+msgid "Zahnräder, Funken und jede Menge Technik."
+msgstr "Gears, sparks and lots of tech."
+
+#: daten_texte.py:702
+msgid "Pirat"
+msgstr "Pirate"
+
+#: daten_texte.py:703
+msgid "Ahoi! Auf der Suche nach Schätzen auf hoher See."
+msgstr "Ahoy! Hunting for treasure on the high seas."
+
+#: daten_texte.py:704
+msgid "Wikinger"
+msgstr "Viking"
+
+#: daten_texte.py:705
+msgid "Stark wie ein Bär und mutig auf allen Meeren."
+msgstr "Strong as a bear and brave on every sea."
+
+#: daten_texte.py:706
+msgid "Fußballer"
+msgstr "Footballer"
+
+#: daten_texte.py:707
+msgid "Tore schießen, Teamgeist und Fairplay."
+msgstr "Scoring goals, team spirit and fair play."
+
+#: daten_texte.py:708
+msgid "Basketballer"
+msgstr "Basketball player"
+
+#: daten_texte.py:709
+msgid "Springen, passen, punkten: ab in den Korb!"
+msgstr "Jump, pass, score: into the hoop!"
+
+#: daten_texte.py:710
+msgid "Rennfahrer"
+msgstr "Racing driver"
+
+#: daten_texte.py:711
+msgid "Vollgas auf der Rennstrecke, Zielflagge im Blick."
+msgstr "Full throttle on the track, eyes on the finish flag."
+
+#: daten_texte.py:712
+msgid "Dschungel-Entdecker"
+msgstr "Jungle Explorer"
+
+#: daten_texte.py:713
+msgid "Zwischen Lianen und Wasserfällen auf Entdeckungstour."
+msgstr "Out exploring between vines and waterfalls."
+
+#: daten_texte.py:714
+msgid "Eltern"
+msgstr "Parents"
+
+#: daten_texte.py:715
+msgid "Schlichte Figur für Mama und Papa."
+msgstr "A simple character for Mum and Dad."
+
+#: einstellungen.py:23
+msgid "Zählende Mods pro Woche"
+msgstr "Counting mods per week"
+
+#: einstellungen.py:25
+msgid ""
+"So viele neu fertige Mods zählen je Woche für die Ausbaustufe. Weitere Mods "
+"sind sofort nutzbar und zählen ab der nächsten freien Woche (Warteschlange)."
+msgstr ""
+"This many newly finished mods count towards the build level each week. Extra "
+"mods can be used right away and count from the next free week (queue)."
+
+#: einstellungen.py:28 templates/avatar/_held.html:16
+msgid "Mods"
+msgstr "Mods"
+
+#: einstellungen.py:35
+msgid "God-Mode-Zyklus"
+msgstr "God Mode cycle"
+
+#: einstellungen.py:37
+msgid ""
+"Nach dem Aufstieg in God Mode gibt es alle so viele aktiven Wochen ein neues "
+"Mod-Set. Wer das Set des Zyklus fertig baut, verdient einen Sondertag."
+msgstr ""
+"After reaching God Mode, a new mod set arrives every this many active weeks. "
+"Finish the set of the cycle to earn a special day."
+
+#: einstellungen.py:40
+msgid "aktive Wochen"
+msgstr "active weeks"
+
+#: einstellungen.py:47
+msgid "Ruhmeshalle ab Ausbaustufe"
+msgstr "Hall of Fame from build level"
+
+#: einstellungen.py:49
+msgid ""
+"Ab dieser Ausbaustufe im aktuellen Rang kann ein Kind seinen Helden in die "
+"Ruhmeshalle stellen und mit einem neuen Thema von vorn beginnen."
+msgstr ""
+"From this build level in the current rank, a child can put their hero in the "
+"Hall of Fame and start over with a new theme."
+
+#: einstellungen.py:52
+msgid "Slots"
+msgstr "Slots"
+
+#: events.py:24
+msgid "Mod gekauft"
+msgstr "Mod bought"
+
+#: events.py:32
+msgid "Mod fertig"
+msgstr "Mod finished"
+
+#: events.py:40
+msgid "Thema gewechselt"
+msgstr "Theme changed"
+
+#: events.py:48
+msgid "Held in der Ruhmeshalle"
+msgstr "Hero in the Hall of Fame"
+
+#: events.py:56
+msgid "Neuer Held in der Ruhmeshalle"
+msgstr "New hero in the Hall of Fame"
+
+#: events.py:66
+#, python-brace-format
+msgid "{kind} hat einen Mod gekauft"
+msgstr "{kind} bought a mod"
+
+#: events.py:67
+#, python-brace-format
+msgid "„{mod}“ für {preis} Punkte, fertig in {bauzeit}."
+msgstr "“{mod}” for {preis} points, ready in {bauzeit}."
+
+#: events.py:71
+msgid "Dein Mod ist fertig!"
+msgstr "Your mod is ready!"
+
+#: events.py:72
+#, python-brace-format
+msgid "„{mod}“ ist aus der {werkstatt} gekommen."
+msgstr "“{mod}” just came out of the {werkstatt}."
+
+#: events.py:76
+#, python-brace-format
+msgid "{kind} hat das Thema gewechselt"
+msgstr "{kind} changed theme"
+
+#: events.py:77
+#, python-brace-format
+msgid "Neu: {thema}. {verloren} Mods ({wert} Punkte) sind verfallen."
+msgstr "New: {thema}. {verloren} mods ({wert} points) were lost."
+
+#: events.py:81
+msgid "Dein Held steht in der Ruhmeshalle!"
+msgstr "Your hero is in the Hall of Fame!"
+
+#: events.py:83
+#, python-brace-format
+msgid ""
+"{thema} im Rang {rang} ist jetzt für immer dort. Auf zu einem neuen "
+"Abenteuer!"
+msgstr "{thema} at rank {rang} is there forever now. On to a new adventure!"
+
+#: events.py:88
+#, python-brace-format
+msgid "{kind} hat einen Helden in die Ruhmeshalle gestellt"
+msgstr "{kind} put a hero in the Hall of Fame"
+
+#: events.py:89
+#, python-brace-format
+msgid "{thema} im Rang {rang}. Du kannst eine Widmung dazuschreiben."
+msgstr "{thema} at rank {rang}. You can add a dedication."
+
+#: godmode.py:142
+#, python-format
+msgid "%(thema)s: God-Mode-Set %(n)s"
+msgstr "%(thema)s: God Mode set %(n)s"
+
+#: godmode.py:144
+#, python-format
+msgid "%(mod)s · Set %(n)s"
+msgstr "%(mod)s · Set %(n)s"
+
+#: godmode.py:147
+#, python-format
+msgid "God-Mode-Set %(n)s: %(beschreibung)s"
+msgstr "God Mode set %(n)s: %(beschreibung)s"
+
+#: godmode.py:233
+#, python-format
+msgid "Zyklus %(n)s"
+msgstr "Cycle %(n)s"
+
+#: godmode.py:246
+#, python-format
+msgid "Set %(n)s"
+msgstr "Set %(n)s"
+
+#: mods.py:63
+msgid "Schmiede"
+msgstr "Forge"
+
+#: mods.py:63 mods.py:68
+msgid "wird geschmiedet"
+msgstr "is being forged"
+
+#: mods.py:64
+msgid "Raumdock"
+msgstr "Space dock"
+
+#: mods.py:64
+msgid "wird montiert"
+msgstr "is being assembled"
+
+#: mods.py:65
+msgid "Dojo-Werkstatt"
+msgstr "Dojo workshop"
+
+#: mods.py:65
+msgid "wird gefertigt"
+msgstr "is being crafted"
+
+#: mods.py:66
+msgid "Roboter-Werkstatt"
+msgstr "Robot workshop"
+
+#: mods.py:66
+msgid "wird zusammengeschraubt"
+msgstr "is being bolted together"
+
+#: mods.py:67
+msgid "Werft"
+msgstr "Shipyard"
+
+#: mods.py:67
+msgid "wird gezimmert"
+msgstr "is being built"
+
+#: mods.py:68
+msgid "Langhaus-Schmiede"
+msgstr "Longhouse forge"
+
+#: mods.py:69
+msgid "Zeugwart-Kabine"
+msgstr "Equipment room"
+
+#: mods.py:69 mods.py:70
+msgid "wird vorbereitet"
+msgstr "is being prepared"
+
+#: mods.py:70
+msgid "Ausrüster"
+msgstr "Outfitter"
+
+#: mods.py:71
+msgid "wird geschraubt"
+msgstr "is being tuned"
+
+#: mods.py:72
+msgid "Basislager"
+msgstr "Base camp"
+
+#: mods.py:72
+msgid "wird gebastelt"
+msgstr "is being crafted"
+
+#: mods.py:74
+msgid "wird gebaut"
+msgstr "is being built"
+
+#: mods.py:100
+msgid "sofort"
+msgstr "right away"
+
+#: mods.py:103
+#, python-format
+msgid "%(n)s Tag"
+msgid_plural "%(n)s Tage"
+msgstr[0] "%(n)s day"
+msgstr[1] "%(n)s days"
+
+#: mods.py:104
+#, python-format
+msgid "%(n)s Stunde"
+msgid_plural "%(n)s Stunden"
+msgstr[0] "%(n)s hour"
+msgstr[1] "%(n)s hours"
+
+#: mods.py:121
+msgid "gleich"
+msgstr "any moment"
+
+#: mods.py:125
+#, python-format
+msgid "in %(n)s Tag"
+msgid_plural "in %(n)s Tagen"
+msgstr[0] "in %(n)s day"
+msgstr[1] "in %(n)s days"
+
+#: mods.py:127
+msgid "in 1 Tag"
+msgstr "in 1 day"
+
+#: mods.py:129
+msgid "in weniger als 1 Stunde"
+msgstr "in less than 1 hour"
+
+#: mods.py:130
+#, python-format
+msgid "in %(n)s Stunde"
+msgid_plural "in %(n)s Stunden"
+msgstr[0] "in %(n)s hour"
+msgstr[1] "in %(n)s hours"
+
+#: mods.py:158
+msgid "Für diese Seltenheit gibt es keinen Rang."
+msgstr "There is no rank for this rarity."
+
+#: mods.py:368
+msgid "God Mode"
+msgstr "God Mode"
+
+#: mods.py:430
+msgid "Diesen Mod gibt es nicht."
+msgstr "There is no such mod."
+
+#: mods.py:437
+msgid "Nur Kinder kaufen Mods."
+msgstr "Only kids can buy mods."
+
+#: mods.py:443 mods.py:694 ruhmeshalle.py:127 services.py:336
+msgid "Wähle zuerst deinen Avatar."
+msgstr "Pick your avatar first."
+
+#: mods.py:446
+msgid "Dieser Mod gehört zu einem anderen Thema."
+msgstr "This mod belongs to a different theme."
+
+#: mods.py:448
+msgid "Diesen Mod gibt es gerade nicht."
+msgstr "This mod is not available right now."
+
+#: mods.py:450
+msgid "Diesen Mod hast du schon."
+msgstr "You already have this mod."
+
+#: mods.py:454
+#, python-format
+msgid "Diesen Mod gibt es ab Rang %(rang)s."
+msgstr "This mod unlocks at rank %(rang)s."
+
+#: mods.py:459
+msgid "Dieses God-Mode-Set ist noch nicht freigeschaltet."
+msgstr "This God Mode set is not unlocked yet."
+
+#: mods.py:463
+#, python-format
+msgid "Dafür fehlen dir noch %(punkte)s Punkte."
+msgstr "You still need %(punkte)s points for that."
+
+#: mods.py:480
+msgid "Dafür reichen deine Punkte nicht."
+msgstr "You do not have enough points for that."
+
+#: mods.py:636
+msgid "Nur Eltern können einen Bau sofort fertigstellen."
+msgstr "Only parents can finish a build right away."
+
+#: mods.py:640
+msgid "Dieser Bau ist schon fertig."
+msgstr "This build is already done."
+
+#: mods.py:654
+msgid "Diesen Mod hast du noch nicht fertig."
+msgstr "You have not finished this mod yet."
+
+#: mods.py:686
+msgid "Bitte wähle ein Thema."
+msgstr "Please pick a theme."
+
+#: mods.py:697
+msgid "Das ist schon dein Thema."
+msgstr "That is already your theme."
+
+#: mods.py:728
+msgid "Nur Kinder wechseln ihr Thema."
+msgstr "Only kids can switch their theme."
+
+#: mods.py:735
+msgid "Deine Mods haben sich geändert. Bitte lies die Warnung noch einmal."
+msgstr "Your mods have changed. Please read the warning again."
+
+#: ruhmeshalle.py:87
+msgid ""
+"Warte, bis dein Bauauftrag fertig ist. Dann darf dein Held in die "
+"Ruhmeshalle."
+msgstr ""
+"Wait until your build is done. Then your hero can enter the Hall of Fame."
+
+#: ruhmeshalle.py:90
+#, python-format
+msgid ""
+"Warte, bis deine %(n)s Bauaufträge fertig sind. Dann darf dein Held in die "
+"Ruhmeshalle."
+msgstr ""
+"Wait until your %(n)s builds are done. Then your hero can enter the Hall of "
+"Fame."
+
+#: ruhmeshalle.py:120
+msgid "Nur Kinder stellen ihren Helden in die Ruhmeshalle."
+msgstr "Only kids can put their hero in the Hall of Fame."
+
+#: ruhmeshalle.py:133
+msgid "Dein Held hat sich geändert. Bitte öffne den Dialog noch einmal."
+msgstr "Your hero has changed. Please open the dialog again."
+
+#: ruhmeshalle.py:138
+#, python-format
+msgid "Die Ruhmeshalle gibt es ab Ausbaustufe %(ab)s (du hast %(hast)s)."
+msgstr "The Hall of Fame opens at build level %(ab)s (you have %(hast)s)."
+
+#: ruhmeshalle.py:213
+msgid "Nur Eltern schreiben eine Widmung."
+msgstr "Only parents can write a dedication."
+
+#: ruhmeshalle.py:217
+#, python-format
+msgid "Die Widmung darf höchstens %(max)s Zeichen haben."
+msgstr "The dedication can have at most %(max)s characters."
+
+#: ruhmeshalle.py:223
+msgid "Diesen Eintrag gibt es nicht."
+msgstr "There is no such entry."
+
+#: services.py:63
+msgid "Unbekannter Hautton"
+msgstr "Unknown skin tone"
+
+#: services.py:65
+msgid "Unbekannte Haarfarbe"
+msgstr "Unknown hair colour"
+
+#: services.py:68
+msgid "Unbekannte Frisur"
+msgstr "Unknown hairstyle"
+
+#: services.py:239
+msgid "Nur Kinder wählen einen Avatar"
+msgstr "Only kids can pick an avatar"
+
+#: services.py:242
+msgid "Bitte wähle ein Thema"
+msgstr "Please pick a theme"
+
+#: services.py:248
+msgid "Du hast schon einen Avatar"
+msgstr "You already have an avatar"
+
+#: services.py:269
+msgid "Unbekannter Mod"
+msgstr "Unknown mod"
+
+#: services.py:279
+msgid "Der Mod passt nicht in diesen Slot"
+msgstr "The mod does not fit in this slot"
+
+#: services.py:281
+msgid "Der Mod gehört zu einem anderen Thema"
+msgstr "The mod belongs to a different theme"
+
+#: services.py:283
+msgid "Der Mod ist nicht verfügbar"
+msgstr "The mod is not available"
+
+#: services.py:326
+#, python-format
+msgid "Der Name darf höchstens %(max)s Zeichen haben."
+msgstr "The name can have at most %(max)s characters."
+
+#: templates/avatar/_ausbaustufe.html:4
+msgid "Ausbaustufe"
+msgstr "Build level"
+
+#: templates/avatar/_ausbaustufe.html:5
+#, python-format
+msgid "%(aktuell)s/%(slots)s im Rang %(rang)s"
+msgstr "%(aktuell)s/%(slots)s at rank %(rang)s"
+
+#: templates/avatar/_ausbaustufe.html:5
+msgid "– voll ausgebaut!"
+msgstr "– fully built!"
+
+#: templates/avatar/_ausbaustufe.html:9
+msgid "Held in die Ruhmeshalle stellen"
+msgstr "Put hero in the Hall of Fame"
+
+#: templates/avatar/_bauauftrag.html:7 templates/avatar/_slot.html:22
+#, python-format
+msgid "fertig %(rest)s"
+msgstr "ready %(rest)s"
+
+#: templates/avatar/_charakter.html:7
+msgid "Meine Figur"
+msgstr "My character"
+
+#: templates/avatar/_held.html:15 templates/avatar/mod.html:19
+msgid "Bauzeit"
+msgstr "Build time"
+
+#: templates/avatar/_held.html:15
+#, python-format
+msgid "%(n)s Woche"
+msgid_plural "%(n)s Wochen"
+msgstr[0] "%(n)s week"
+msgstr[1] "%(n)s weeks"
+
+#: templates/avatar/_held.html:17
+msgid "Aufgaben"
+msgstr "Tasks"
+
+#: templates/avatar/_held.html:18
+msgid "Seit"
+msgstr "Since"
+
+#: templates/avatar/_name.html:6
+msgid "Namen ändern"
+msgstr "Change name"
+
+#: templates/avatar/_name.html:8
+msgid "Name deiner Figur"
+msgstr "Your character’s name"
+
+#: templates/avatar/_name.html:9
+msgid "dein Name"
+msgstr "your name"
+
+#: templates/avatar/_name.html:10
+#, python-format
+msgid "Name (leer = %(std)s)"
+msgstr "Name (empty = %(std)s)"
+
+#: templates/avatar/_name.html:12 templates/avatar/eltern.html:50
+msgid "Speichern"
+msgstr "Save"
+
+#: templates/avatar/_slot.html:5
+msgid "Leer, zum Shop"
+msgstr "Empty, go to the shop"
+
+#: templates/avatar/_slot.html:13
+#, python-format
+msgid "%(mod)s im Bau"
+msgstr "%(mod)s under construction"
+
+#: templates/avatar/_slot.html:19
+#, python-format
+msgid "Fertig seit %(datum)s"
+msgstr "Ready since %(datum)s"
+
+#: templates/avatar/_vorschau.html:3
+msgid "Vorschau deines Avatars"
+msgstr "Preview of your avatar"
+
+#: templates/avatar/_vorschau.html:4
+msgid "Wähle unten dein Thema"
+msgstr "Pick your theme below"
+
+#: templates/avatar/_vorschau.html:7
+msgid "Dein Thema"
+msgstr "Your theme"
+
+#: templates/avatar/eltern.html:3 templates/avatar/eltern.html:10
+#: templates/avatar/kacheln/eltern_mods.html:2
+msgid "Mods und Bauaufträge"
+msgstr "Mods and builds"
+
+#: templates/avatar/eltern.html:7 templates/avatar/ruhmeshalle_eltern.html:7
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/avatar/eltern.html:18
+#, python-format
+msgid "Ausbaustufe %(aktuell)s/%(slots)s im Rang %(rang)s"
+msgstr "Build level %(aktuell)s/%(slots)s at rank %(rang)s"
+
+#: templates/avatar/eltern.html:18
+#, python-format
+msgid "%(n)s wartet auf Wertung"
+msgstr "%(n)s waiting to be counted"
+
+#: templates/avatar/eltern.html:22
+#, python-format
+msgid "%(slot)s · %(preis)s Punkte · fertig %(rest)s"
+msgstr "%(slot)s · %(preis)s points · ready %(rest)s"
+
+#: templates/avatar/eltern.html:23
+#, python-format
+msgid "Baufortschritt %(mod)s"
+msgstr "Build progress %(mod)s"
+
+#: templates/avatar/eltern.html:24
+msgid "Sofort fertigstellen"
+msgstr "Finish right away"
+
+#: templates/avatar/eltern.html:27
+msgid "Kein Bauauftrag."
+msgstr "No builds."
+
+#: templates/avatar/eltern.html:29
+msgid "Zuletzt fertig:"
+msgstr "Finished recently:"
+
+#: templates/avatar/eltern.html:32
+msgid "Noch keine Kinder"
+msgstr "No kids yet"
+
+#: templates/avatar/eltern.html:36
+msgid "Preise und Bauzeiten je Seltenheit"
+msgstr "Prices and build times by rarity"
+
+#: templates/avatar/eltern.html:37
+msgid ""
+"Standardwerte für alle Mods ohne eigenen Preis. Der Faktor wirkt auf alle "
+"Preise bzw. Bauzeiten (1,0 = wie eingetragen). Änderungen gelten für neue "
+"Käufe; laufende Bauaufträge bleiben."
+msgstr ""
+"Default values for all mods without their own price. The factor applies to "
+"all prices or build times (1.0 = as entered). Changes apply to new "
+"purchases; running builds stay as they are."
+
+#: templates/avatar/eltern.html:42
+msgid "Preis (Punkte)"
+msgstr "Price (points)"
+
+#: templates/avatar/eltern.html:43
+msgid "Bauzeit (Tage)"
+msgstr "Build time (days)"
+
+#: templates/avatar/eltern.html:44
+#, python-format
+msgid "wirksam: %(preis)s Punkte, %(zeit)s"
+msgstr "effective: %(preis)s points, %(zeit)s"
+
+#: templates/avatar/eltern.html:48
+msgid "Faktor Preise"
+msgstr "Price factor"
+
+#: templates/avatar/eltern.html:49
+msgid "Faktor Bauzeiten"
+msgstr "Build time factor"
+
+#: templates/avatar/galerie.html:5 templates/avatar/galerie.html:8
+msgid "Avatar-Galerie"
+msgstr "Avatar gallery"
+
+#: templates/avatar/galerie.html:9
+msgid ""
+"Grundfiguren aller Themen, je mit anderem Hautton, Haar und Frisur. Nur im "
+"Entwicklungsmodus."
+msgstr "Base figures of all themes, each with a different skin tone, hair and hairstyle. Development mode only."
+
+#: templates/avatar/galerie.html:10 templates/avatar/galerie.html:11
+msgid "Dunkler Hintergrund"
+msgstr "Dark background"
+
+#: templates/avatar/galerie.html:21 templates/avatar/galerie.html:22
+msgid "Heller Hintergrund"
+msgstr "Light background"
+
+#: templates/avatar/galerie.html:32 templates/avatar/galerie.html:33
+msgid "Mods je Thema"
+msgstr "Mods per theme"
+
+#: templates/avatar/galerie.html:34
+msgid "Je Thema 36 Mods: 6 Slots x Seltenheit 1 bis 6."
+msgstr "36 mods per theme: 6 slots x rarity 1 to 6."
+
+#: templates/avatar/galerie.html:42
+#, python-format
+msgid "Mods %(thema)s"
+msgstr "%(thema)s mods"
+
+#: templates/avatar/galerie.html:43
+#, python-format
+msgid "%(thema)s (%(anzahl)s Mods)"
+msgstr "%(thema)s (%(anzahl)s mods)"
+
+#: templates/avatar/kachel_kind.html:6
+msgid "Dein Avatar wartet!"
+msgstr "Your avatar is waiting!"
+
+#: templates/avatar/kachel_kind.html:7
+#, python-format
+msgid "Wähle deine Figur und eins von %(n)s Themen."
+msgstr "Pick your character and one of %(n)s themes."
+
+#: templates/avatar/kachel_kind.html:9
+msgid "Avatar bauen"
+msgstr "Build avatar"
+
+#: templates/avatar/kacheln/eltern_mods.html:6
+#, python-format
+msgid "Ausbaustufe %(aktuell)s/%(slots)s (%(rang)s)"
+msgstr "Build level %(aktuell)s/%(slots)s (%(rang)s)"
+
+#: templates/avatar/kacheln/eltern_mods.html:6
+#, python-format
+msgid "%(n)s im Bau"
+msgstr "%(n)s under construction"
+
+#: templates/avatar/kacheln/eltern_mods.html:9
+msgid "Noch keine Kinder."
+msgstr "No kids yet."
+
+#: templates/avatar/kacheln/eltern_mods.html:12
+msgid "Bauaufträge und Preise"
+msgstr "Builds and prices"
+
+#: templates/avatar/kacheln/familie_ruhmeshalle.html:3
+#: templates/avatar/kacheln/tablet_ruhmeshalle.html:2
+#, python-format
+msgid "%(n)s Held in der Ruhmeshalle"
+msgid_plural "%(n)s Helden in der Ruhmeshalle"
+msgstr[0] "%(n)s hero in the Hall of Fame"
+msgstr[1] "%(n)s heroes in the Hall of Fame"
+
+#: templates/avatar/kacheln/familie_ruhmeshalle.html:6
+msgid "Widmungen schreiben"
+msgstr "Write dedications"
+
+#: templates/avatar/kacheln/kind_ruhmeshalle.html:3
+#: templates/avatar/ruhmeshalle.html:3
+#: templates/avatar/ruhmeshalle_eltern.html:3
+#: templates/avatar/ruhmeshalle_eltern.html:10
+#: templates/avatar/ruhmeshalle_stellen.html:7
+msgid "Ruhmeshalle"
+msgstr "Hall of Fame"
+
+#: templates/avatar/kacheln/kind_ruhmeshalle.html:7
+msgid "Dein Held ist fertig!"
+msgstr "Your hero is ready!"
+
+#: templates/avatar/kacheln/kind_ruhmeshalle.html:7
+msgid "Hier ziehen deine fertigen Helden ein."
+msgstr "Your finished heroes will move in here."
+
+#: templates/avatar/kacheln/kind_ruhmeshalle.html:9
+msgid "Dein Held ist bereit für die Ruhmeshalle!"
+msgstr "Your hero is ready for the Hall of Fame!"
+
+#: templates/avatar/kacheln/kind_ruhmeshalle.html:11
+msgid "Zur Ruhmeshalle"
+msgstr "To the Hall of Fame"
+
+#: templates/avatar/kacheln/kind_werkstatt.html:2
+#, python-format
+msgid "Meine %(ort)s"
+msgstr "My %(ort)s"
+
+#: templates/avatar/kacheln/kind_werkstatt.html:5
+msgid "Gerade wird nichts gebaut."
+msgstr "Nothing is being built right now."
+
+#: templates/avatar/kacheln/kind_werkstatt.html:7
+msgid "Zum Mod-Shop"
+msgstr "To the mod shop"
+
+#: templates/avatar/mod.html:7 templates/avatar/thema.html:7
+msgid "Shop"
+msgstr "Shop"
+
+#: templates/avatar/mod.html:12
+msgid "Vorschau: dein Avatar mit dem Mod"
+msgstr "Preview: your avatar with the mod"
+
+#: templates/avatar/mod.html:18
+msgid "Preis"
+msgstr "Price"
+
+#: templates/avatar/mod.html:19
+#, python-format
+msgid "%(zeit)s in der %(ort)s"
+msgstr "%(zeit)s in the %(ort)s"
+
+#: templates/avatar/mod.html:20
+msgid "Du hast"
+msgstr "You have"
+
+#: templates/avatar/mod.html:24
+#, python-format
+msgid ""
+"Nach dem Kauf %(was)s der Mod %(zeit)s lang. Punkte gibt es nicht zurück."
+msgstr ""
+"After you buy it, the mod %(was)s for %(zeit)s. Points are not refunded."
+
+#: templates/avatar/mod.html:32
+#, python-format
+msgid "Ist gerade in der %(ort)s."
+msgstr "Is in the %(ort)s right now."
+
+#: templates/avatar/mod.html:35 templates/avatar/shop.html:43
+msgid "Anlegen"
+msgstr "Equip"
+
+#: templates/avatar/ruhmeshalle.html:7 templates/avatar/shop.html:7
+msgid "Start"
+msgstr "Home"
+
+#: templates/avatar/ruhmeshalle.html:10
+msgid "Meine Ruhmeshalle"
+msgstr "My Hall of Fame"
+
+#: templates/avatar/ruhmeshalle.html:14
+msgid "Dein Held ist fertig ausgebaut!"
+msgstr "Your hero is fully built!"
+
+#: templates/avatar/ruhmeshalle.html:15
+msgid ""
+"Stell ihn für immer in die Ruhmeshalle und starte mit einem neuen Thema. Du "
+"verlierst nichts."
+msgstr ""
+"Put them in the Hall of Fame forever and start with a new theme. You lose "
+"nothing."
+
+#: templates/avatar/ruhmeshalle.html:17
+#: templates/avatar/ruhmeshalle_stellen.html:3
+#: templates/avatar/ruhmeshalle_stellen.html:10
+msgid "In die Ruhmeshalle stellen"
+msgstr "Put in the Hall of Fame"
+
+#: templates/avatar/ruhmeshalle.html:21
+msgid "Dein Held ist fast so weit!"
+msgstr "Your hero is almost there!"
+
+#: templates/avatar/ruhmeshalle.html:28
+#: templates/avatar/ruhmeshalle_eltern.html:30
+msgid "Noch kein Held"
+msgstr "No hero yet"
+
+#: templates/avatar/ruhmeshalle.html:28
+msgid "Baue alle Slots deines Avatars aus. Dann darf er hier einziehen."
+msgstr "Build up all slots of your avatar. Then it can move in here."
+
+#: templates/avatar/ruhmeshalle_eltern.html:21
+msgid "Widmung (höchstens 140 Zeichen)"
+msgstr "Dedication (at most 140 characters)"
+
+#: templates/avatar/ruhmeshalle_eltern.html:23
+msgid "Widmung speichern"
+msgstr "Save dedication"
+
+#: templates/avatar/ruhmeshalle_eltern.html:30
+msgid "Sobald ein Kind seinen Avatar fertig ausgebaut hat, erscheint er hier."
+msgstr "As soon as a child has fully built their avatar, it shows up here."
+
+#: templates/avatar/ruhmeshalle_stellen.html:13
+msgid "Deinen Helden verewigen?"
+msgstr "Make your hero immortal?"
+
+#: templates/avatar/ruhmeshalle_stellen.html:17
+#, python-format
+msgid ""
+"<strong>%(thema)s</strong> im Rang %(rang)s zieht für immer in die "
+"Ruhmeshalle ein."
+msgstr ""
+"<strong>%(thema)s</strong> at rank %(rang)s moves into the Hall of Fame "
+"forever."
+
+#: templates/avatar/ruhmeshalle_stellen.html:18
+msgid ""
+"Du <strong>verlierst nichts</strong>: Rang, Punkte, Abzeichen und Sondertage "
+"bleiben."
+msgstr ""
+"You <strong>lose nothing</strong>: rank, points, badges and special days "
+"stay."
+
+#: templates/avatar/ruhmeshalle_stellen.html:19
+msgid "Danach wählst du ein neues Thema und baust mit leeren Slots neu."
+msgstr "Then you pick a new theme and build again with empty slots."
+
+#: templates/avatar/ruhmeshalle_stellen.html:21
+msgid "Dein nächstes Thema"
+msgstr "Your next theme"
+
+#: templates/avatar/ruhmeshalle_stellen.html:32 templates/avatar/thema.html:40
+msgid "Abbrechen"
+msgstr "Cancel"
+
+#: templates/avatar/ruhmeshalle_stellen.html:34
+msgid "Ja, in die Ruhmeshalle stellen"
+msgstr "Yes, put in the Hall of Fame"
+
+#: templates/avatar/ruhmeshalle_stellen.html:36
+msgid "Wähle zuerst dein neues Thema."
+msgstr "Pick your new theme first."
+
+#: templates/avatar/shop.html:3 templates/avatar/shop.html:11
+msgid "Mod-Shop"
+msgstr "Mod shop"
+
+#: templates/avatar/shop.html:12
+#, python-format
+msgid "Nur Slot: %(slot)s"
+msgstr "Slot only: %(slot)s"
+
+#: templates/avatar/shop.html:12
+msgid "Alle Slots zeigen"
+msgstr "Show all slots"
+
+#: templates/avatar/shop.html:13
+msgid "Verfügbar"
+msgstr "Available"
+
+#: templates/avatar/shop.html:19
+msgid "Dein Avatar"
+msgstr "Your avatar"
+
+#: templates/avatar/shop.html:23
+#, python-format
+msgid ""
+"%(n)s fertiger Mod wartet auf die Wertung: pro Woche zählt ein neuer Mod, "
+"der nächste ab KW %(kw)s."
+msgid_plural ""
+"%(n)s fertige Mods warten auf die Wertung: pro Woche zählt ein neuer Mod, "
+"der nächste ab KW %(kw)s."
+msgstr[0] ""
+"%(n)s finished mod is waiting to be counted: one new mod counts per week, "
+"the next from week %(kw)s."
+msgstr[1] ""
+"%(n)s finished mods are waiting to be counted: one new mod counts per week, "
+"the next from week %(kw)s."
+
+#: templates/avatar/shop.html:25 templates/avatar/thema.html:3
+#: templates/avatar/thema.html:10
+msgid "Thema wechseln"
+msgstr "Change theme"
+
+#: templates/avatar/shop.html:32
+msgid "Gerade wird nichts gebaut. Such dir unten einen Mod aus!"
+msgstr "Nothing is being built right now. Pick a mod below!"
+
+#: templates/avatar/shop.html:36
+msgid "Meine Mods"
+msgstr "My mods"
+
+#: templates/avatar/shop.html:41
+msgid "Ablegen"
+msgstr "Unequip"
+
+#: templates/avatar/shop.html:47
+msgid ""
+"Noch keine fertigen Mods. Gekaufte Mods landen hier, sobald sie fertig sind."
+msgstr "No finished mods yet. Mods you buy show up here once they are ready."
+
+#: templates/avatar/shop.html:55 templates/avatar/shop.html:64
+#, python-format
+msgid "ab Rang %(rang)s"
+msgstr "from rank %(rang)s"
+
+#: templates/avatar/shop.html:56
+#, python-format
+msgid "%(a)s/%(b)s gebaut"
+msgstr "%(a)s/%(b)s built"
+
+#: templates/avatar/shop.html:65
+msgid "im Bau"
+msgstr "under construction"
+
+#: templates/avatar/shop.html:66
+msgid "gehört dir"
+msgstr "yours"
+
+#: templates/avatar/thema.html:17
+#, python-format
+msgid "Wirklich zu „%(name)s“ wechseln?"
+msgstr "Really switch to “%(name)s”?"
+
+#: templates/avatar/thema.html:26
+#, python-format
+msgid "Du verlierst %(n)s Mod im Wert von %(wert)s Punkten."
+msgid_plural "Du verlierst %(n)s Mods im Wert von %(wert)s Punkten."
+msgstr[0] "You lose %(n)s mod worth %(wert)s points."
+msgstr[1] "You lose %(n)s mods worth %(wert)s points."
+
+#: templates/avatar/thema.html:26
+#, python-format
+msgid "Davon %(n)s noch im Bau."
+msgstr "%(n)s of them still under construction."
+
+#: templates/avatar/thema.html:28
+#, python-format
+msgid "Du hast noch keine Mods in %(name)s – du verlierst nichts."
+msgstr "You have no mods in %(name)s yet – you lose nothing."
+
+#: templates/avatar/thema.html:30
+#, python-format
+msgid "Deine Ausbaustufe fällt von %(vorher)s auf <strong>0</strong>."
+msgstr "Your build level drops from %(vorher)s to <strong>0</strong>."
+
+#: templates/avatar/thema.html:31
+#, python-format
+msgid ""
+"Bis zum nächsten Meilenstein (Ausbaustufe %(mods)s im Rang %(rang)s) "
+"brauchst du wieder <strong>%(mods)s Mods</strong> – das dauert mindestens "
+"%(n)s Woche."
+msgid_plural ""
+"Bis zum nächsten Meilenstein (Ausbaustufe %(mods)s im Rang %(rang)s) "
+"brauchst du wieder <strong>%(mods)s Mods</strong> – das dauert mindestens "
+"%(n)s Wochen."
+msgstr[0] ""
+"To reach the next milestone (build level %(mods)s at rank %(rang)s) you need "
+"<strong>%(mods)s mods</strong> again – that takes at least %(n)s week."
+msgstr[1] ""
+"To reach the next milestone (build level %(mods)s at rank %(rang)s) you need "
+"<strong>%(mods)s mods</strong> again – that takes at least %(n)s weeks."
+
+#: templates/avatar/thema.html:32
+#, python-format
+msgid ""
+"Es gibt <strong>keine Punkte zurück</strong>. Dein Rang %(rang)s und schon "
+"verdiente Sondertage bleiben."
+msgstr ""
+"You get <strong>no points back</strong>. Your rank %(rang)s and special days "
+"you already earned stay."
+
+#: templates/avatar/thema.html:37
+msgid "Ich habe verstanden."
+msgstr "I understand."
+
+#: templates/avatar/thema.html:41
+msgid "Ja, Thema wechseln"
+msgstr "Yes, change theme"
+
+#: templates/avatar/thema.html:46
+msgid ""
+"Wähle ein neues Thema. Vor dem Wechsel zeigen wir dir genau, was du "
+"verlierst."
+msgstr ""
+"Pick a new theme. Before you switch, we show you exactly what you lose."
+
+#: templates/avatar/thema.html:52
+msgid "dein Thema"
+msgstr "your theme"
+
+#: templates/avatar/wahl.html:6
+msgid "Avatar wählen"
+msgstr "Pick an avatar"
+
+#: templates/avatar/wahl.html:9
+msgid "Bau deinen Avatar"
+msgstr "Build your avatar"
+
+#: templates/avatar/wahl.html:15
+msgid "Hautton"
+msgstr "Skin tone"
+
+#: templates/avatar/wahl.html:27
+msgid "Haarfarbe"
+msgstr "Hair colour"
+
+#: templates/avatar/wahl.html:39
+msgid "Frisur"
+msgstr "Hairstyle"
+
+#: templates/avatar/wahl.html:54
+msgid "Das bin ich!"
+msgstr "That’s me!"
+
+#: templatetags/avatar_tags.py:39
+#, python-format
+msgid "Avatar von %(name)s"
+msgstr "Avatar of %(name)s"
+
+#: views_halle.py:15
+msgid "Dein Held steht jetzt in der Ruhmeshalle! Such dir ein neues Thema aus."
+msgstr "Your hero is now in the Hall of Fame! Pick a new theme."
+
+#: views_halle.py:17
+msgid "Widmung gespeichert."
+msgstr "Dedication saved."
+
+#: views_mods.py:24
+msgid "Gekauft! Dein Mod ist jetzt im Bau."
+msgstr "Bought! Your mod is under construction now."
+
+#: views_mods.py:25
+msgid "Dein Mod ist fertig und angelegt."
+msgstr "Your mod is ready and equipped."
+
+#: views_mods.py:26
+msgid "Angelegt!"
+msgstr "Equipped!"
+
+#: views_mods.py:27
+msgid "Slot ist jetzt leer."
+msgstr "The slot is empty now."
+
+#: views_mods.py:28
+msgid "Neues Thema! Deine Slots sind leer – auf zu neuen Mods."
+msgstr "New theme! Your slots are empty – time for new mods."
+
+#: views_mods.py:29
+msgid "Bau fertiggestellt."
+msgstr "Build finished."
+
+#: views_mods.py:30
+msgid "Gespeichert."
+msgstr "Saved."
+
+#: views_mods.py:118
+#, python-format
+msgid "Kaufen für %(preis)s Punkte"
+msgstr "Buy for %(preis)s points"
+
+#: views_mods.py:119
+#, python-format
+msgid "Dir fehlen noch %(fehlt)s Punkte"
+msgstr "You still need %(fehlt)s points"
+
+#: views_mods.py:120
+#, python-format
+msgid "Ab Rang %(rang)s"
+msgstr "From rank %(rang)s"
+
+#: views_mods.py:278
+#, python-format
+msgid "%(rang)s: Bauzeit bitte in Tagen, z. B. 3 oder 1,5."
+msgstr "%(rang)s: please enter the build time in days, e.g. 3 or 1.5."
+
+#: views_mods.py:283
+#, python-format
+msgid "%(rang)s: Bauzeit darf nicht negativ sein."
+msgstr "%(rang)s: build time cannot be negative."

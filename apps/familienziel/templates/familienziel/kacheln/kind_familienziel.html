@@ -1,19 +1,19 @@
-{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
+{% load i18n sprache %}{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
 {% with a=k.a %}
 <article class="karte fz-kind"><div class="karte__inhalt stapel">
-  <h2>Familienziel</h2>
-  <p>{% include "familienziel/_belohnung.html" with b=a.belohnung titel="Wochenziel" %}</p>
+  <h2>{% translate "Familienziel" %}</h2>
+  <p>{% include "familienziel/_belohnung.html" with b=a.belohnung titel=_("Wochenziel") %}</p>
   {% include "familienziel/kacheln/_balken.html" with a=a %}
-  {% if a.erreicht %}<p class="kachel__text">{% include "komponenten/icon.html" with name="pokal" %} Geschafft! Die Familie hat das Ziel erreicht.</p>
-  {% elif a.namen_offen %}<p class="kachel__text">Noch eine Aufgabe von: {{ a.namen_offen|join:", " }}.</p>{% endif %}
+  {% if a.erreicht %}<p class="kachel__text">{% include "komponenten/icon.html" with name="pokal" %} {% translate "Geschafft! Die Familie hat das Ziel erreicht." %}</p>
+  {% elif a.namen_offen %}<p class="kachel__text">{% blocktranslate with namen=a.namen_offen|join:", " %}Noch eine Aufgabe von: {{ namen }}.{% endblocktranslate %}</p>{% endif %}
   {% if a.abstimmung %}
     <form method="post" action="{% url 'familienziel:abstimmen' %}" class="stapel fz-wahl" data-fz-abstimmung>{% csrf_token %}
-      <h3>Wähle das Ziel für nächste Woche</h3>
+      <h3>{% translate "Wähle das Ziel für nächste Woche" %}</h3>
       {% for o in a.abstimmung.optionen %}
         <label class="fz-wahl__option"><input type="radio" name="belohnung" value="{{ o.pk }}"{% if k.stimme.belohnung_id == o.pk %} checked{% endif %} required>{% include "familienziel/_belohnung.html" with b=o %}</label>
       {% endfor %}
-      {% include "komponenten/button.html" with typ="submit" icon="check" text="Abstimmen" %}
-      {% if k.stimme %}<p class="kachel__text">Du hast {{ k.stimme.belohnung.titel }} gewählt. Du kannst bis zum Ende ändern.</p>{% endif %}
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Abstimmen") %}
+      {% if k.stimme %}<p class="kachel__text">{% blocktranslate with titel=k.stimme.belohnung.titel|uebersetzt %}Du hast {{ titel }} gewählt. Du kannst bis zum Ende ändern.{% endblocktranslate %}</p>{% endif %}
     </form>
   {% endif %}
 </div></article>

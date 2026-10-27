@@ -1,0 +1,698 @@
+# English translation (source language: German).
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-26 19:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: einstellungen.py:29
+msgid "Öffentliche Adresse (Basis-URL)"
+msgstr "Public address (base URL)"
+
+#: einstellungen.py:31
+msgid ""
+"Adresse der App, z. B. https://nestwerk.example.org. Links in E-Mails und "
+"Push nutzen diesen Wert (Rückfall: Umgebungsvariable BASIS_URL)."
+msgstr ""
+"Address of the app, e.g. https://nestwerk.example.org. Links in emails and "
+"push messages use this value (fallback: environment variable BASIS_URL)."
+
+#: forms.py:40
+#, python-format
+msgid "mindestens %(n)s Zeichen"
+msgstr "at least %(n)s characters"
+
+#: forms.py:42
+msgid "nicht nur Ziffern"
+msgstr "not only digits"
+
+#: forms.py:44
+msgid "zu wenige verschiedene Zeichen"
+msgstr "too few different characters"
+
+#: forms.py:54
+msgid "Buchstaben mit Ziffern oder Sonderzeichen mischen"
+msgstr "mix letters with digits or special characters"
+
+#: forms.py:56
+msgid "zu bekannt"
+msgstr "too common"
+
+#: forms.py:59
+msgid "enthält einen Namen aus der Familie"
+msgstr "contains a name from the family"
+
+#: forms.py:73
+#, python-format
+msgid ""
+"'%(netz)s' ist kein gültiges Netz (z. B. 192.168.1.0/24 oder 192.168.1.5)."
+msgstr ""
+"'%(netz)s' is not a valid network (e.g. 192.168.1.0/24 or 192.168.1.5)."
+
+#: forms.py:78
+msgid "Das Netz /0 würde jede Adresse freigeben und ist nicht erlaubt."
+msgstr "The network /0 would allow every address and is not permitted."
+
+#: forms.py:84 templates/einrichtung/s1.html:10
+msgid "Name der App"
+msgstr "Name of the app"
+
+#: forms.py:88 forms.py:100 templates/einrichtung/s2.html:10
+#: templates/einrichtung/s2.html:16 templates/einrichtung/s3.html:12
+msgid "Name"
+msgstr "Name"
+
+#: forms.py:89 forms.py:95 forms.py:101 forms.py:107
+#: templates/einrichtung/s2.html:11 templates/einrichtung/s2.html:17
+msgid "Rolle"
+msgstr "Role"
+
+#: forms.py:90 forms.py:102 templates/einrichtung/s2.html:13
+#: templates/einrichtung/s2.html:20 views.py:24
+msgid "E-Mail"
+msgstr "Email"
+
+#: forms.py:92 forms.py:104
+msgid "Wappen"
+msgstr "Crest"
+
+#: forms.py:98 forms.py:110
+msgid "Eigene Rolle"
+msgstr "Custom role"
+
+#: forms.py:112 templates/einrichtung/s2.html:5
+msgid "Familien-Passwort"
+msgstr "Family password"
+
+#: forms.py:114 templates/einrichtung/s2.html:8
+msgid "Passwort wiederholen"
+msgstr "Repeat password"
+
+#: forms.py:126
+msgid "Die beiden Namen müssen verschieden sein."
+msgstr "The two names must be different."
+
+#: forms.py:130
+msgid "Dieser Name ist schon für ein Kind vergeben."
+msgstr "This name is already used by a child."
+
+#: forms.py:133
+msgid "Bitte zwei verschiedene Wappen wählen."
+msgstr "Please choose two different crests."
+
+#: forms.py:136
+msgid "Mama und Papa können nur je einmal vorkommen."
+msgstr "Mum and Dad can only appear once each."
+
+#: forms.py:140
+msgid "Bitte ein Familien-Passwort festlegen."
+msgstr "Please set a family password."
+
+#: forms.py:143
+msgid "Die beiden Passwörter sind nicht gleich."
+msgstr "The two passwords do not match."
+
+#: forms.py:147
+#, python-format
+msgid "Zu schwach: %(probleme)s."
+msgstr "Too weak: %(probleme)s."
+
+#: forms.py:153 templates/einrichtung/s4.html:10
+msgid "Server"
+msgstr "Server"
+
+#: forms.py:154 templates/einrichtung/s4.html:11
+msgid "Port"
+msgstr "Port"
+
+#: forms.py:156 templates/einrichtung/s4.html:12
+msgid "Verschlüsselung"
+msgstr "Encryption"
+
+#: forms.py:158 templates/einrichtung/s4.html:14
+msgid "Benutzername"
+msgstr "Username"
+
+#: forms.py:159 templates/einrichtung/s2.html:7
+#: templates/einrichtung/s4.html:15
+msgid "Passwort"
+msgstr "Password"
+
+#: forms.py:160 templates/einrichtung/s4.html:16
+msgid "Absender-Adresse"
+msgstr "Sender address"
+
+#: forms.py:161 templates/einrichtung/s4.html:17
+msgid "Testmail an"
+msgstr "Send test email to"
+
+#: forms.py:170
+msgid "Bitte das Passwort des Postfachs eingeben."
+msgstr "Please enter the mailbox password."
+
+#: forms.py:175 templates/einrichtung/s5.html:5
+msgid "Adresse der App"
+msgstr "Address of the app"
+
+#: forms.py:176
+msgid "Heimnetz für Kinder-Login"
+msgstr "Home network for kid login"
+
+#: forms.py:177 templates/einrichtung/s5.html:9
+msgid "Vertraute Proxys"
+msgstr "Trusted proxies"
+
+#: forms.py:183
+msgid "Bitte eine Adresse wie https://nestwerk.example.org angeben."
+msgstr "Please enter an address like https://nestwerk.example.org."
+
+#: forms.py:186
+msgid "Nur die Adresse ohne Pfad, z. B. https://nestwerk.example.org."
+msgstr "Only the address without a path, e.g. https://nestwerk.example.org."
+
+#: forms.py:193
+msgid "Mindestens ein Netz angeben (z. B. 192.168.0.0/16)."
+msgstr "Enter at least one network (e.g. 192.168.0.0/16)."
+
+#: forms.py:201 templates/einrichtung/s6.html:5
+msgid "Zeitzone"
+msgstr "Time zone"
+
+#: forms.py:202 templates/einrichtung/s6.html:6
+msgid "Go-live-Datum"
+msgstr "Go-live date"
+
+#: forms.py:207
+msgid "Unbekannte Zeitzone (z. B. Europe/Berlin)."
+msgstr "Unknown time zone (e.g. Europe/Berlin)."
+
+#: forms.py:214
+msgid "Das Datum liegt mehr als ein Jahr von heute entfernt."
+msgstr "The date is more than a year away from today."
+
+#: middleware.py:36
+msgid "Die Einrichtung ist nur aus dem Heimnetz möglich."
+msgstr "Setup is only possible from the home network."
+
+#: services.py:155
+msgid "Leer lassen, um die PIN zu behalten."
+msgstr "Leave empty to keep the PIN."
+
+#: services.py:209
+msgid "Bitte einen Namen eingeben."
+msgstr "Please enter a name."
+
+#: services.py:211
+msgid "Höchstens 40 Zeichen."
+msgstr "At most 40 characters."
+
+#: services.py:213
+msgid "Dieser Name ist schon vergeben."
+msgstr "This name is already taken."
+
+#: services.py:218
+msgid "Dieses Kind gibt es nicht mehr. Bitte die Seite neu laden."
+msgstr "This child no longer exists. Please reload the page."
+
+#: services.py:221
+msgid "Die PIN besteht aus genau 4 Ziffern."
+msgstr "The PIN must be exactly 4 digits."
+
+#: services.py:223
+msgid "Die beiden PINs sind nicht gleich."
+msgstr "The two PINs do not match."
+
+#: services.py:225
+msgid "Unbekannte Farbe."
+msgstr "Unknown colour."
+
+#: services.py:228
+msgid "Bitte mindestens ein Kind eintragen."
+msgstr "Please enter at least one child."
+
+#: services.py:390
+msgid "Nicht alle Schritte sind durchlaufen."
+msgstr "Not all steps are done yet."
+
+#: services.py:392
+msgid "Eltern und Familien-Passwort fehlen (Schritt 2)."
+msgstr "Parents and family password are missing (step 2)."
+
+#: services.py:394
+msgid "Es ist kein Kind angelegt (Schritt 3)."
+msgstr "No child has been added (step 3)."
+
+#: services.py:396
+msgid "E-Mail-Versand: einrichten oder bewusst überspringen (Schritt 4)."
+msgstr "Email sending: set it up or skip it on purpose (step 4)."
+
+#: services.py:403
+#, python-format
+msgid "Einstellungen ohne Wert: %(namen)s."
+msgstr "Settings without a value: %(namen)s."
+
+#: services.py:415
+msgid " (getestet)"
+msgstr " (tested)"
+
+#: services.py:415
+msgid " (nicht getestet)"
+msgstr " (not tested)"
+
+#: templates/einrichtung/_navigation.html:5
+msgid "Zurück"
+msgstr "Back"
+
+#: templates/einrichtung/_navigation.html:8 templates/einrichtung/token.html:10
+msgid "Weiter"
+msgstr "Next"
+
+#: templates/einrichtung/fertig.html:2
+msgid "Fertig!"
+msgstr "All done!"
+
+#: templates/einrichtung/fertig.html:3
+#, python-format
+msgid "%(name)s ist eingerichtet. Der Assistent ist jetzt gesperrt."
+msgstr "%(name)s is set up. The wizard is now locked."
+
+#: templates/einrichtung/fertig.html:5
+msgid "Push-Mitteilungen:"
+msgstr "Push notifications:"
+
+#: templates/einrichtung/fertig.html:5
+msgid ""
+"Auf jedem Gerät nach der Anmeldung in den Benachrichtigungs-Einstellungen "
+"aktivieren (iPhone: erst „Zum Home-Bildschirm“)."
+msgstr ""
+"Turn them on in the notification settings on each device after logging in "
+"(iPhone: first \"Add to Home Screen\")."
+
+#: templates/einrichtung/fertig.html:6
+msgid "Tablet:"
+msgstr "Tablet:"
+
+#: templates/einrichtung/fertig.html:6
+msgid ""
+"Als Elternteil anmelden und das Tablet unter „Geräte“ als Tablet markieren."
+msgstr "Log in as a parent and mark the tablet as a tablet under \"Devices\"."
+
+#: templates/einrichtung/fertig.html:8
+msgid "Zur Anmeldung"
+msgstr "Go to login"
+
+#: templates/einrichtung/s1.html:6
+#, python-format
+msgid "Willkommen bei %(name)s"
+msgstr "Welcome to %(name)s"
+
+#: templates/einrichtung/s1.html:8
+msgid ""
+"In wenigen Schritten richten wir die App für eure Familie ein. Du kannst "
+"jederzeit zurückgehen, und dein Fortschritt bleibt gespeichert."
+msgstr ""
+"In a few steps we set up the app for your family. You can go back at any "
+"time, and your progress is saved."
+
+#: templates/einrichtung/s1.html:10
+msgid "Wird in der Oberfläche angezeigt. Standard: Nestwerk."
+msgstr "Shown in the app. Default: Nestwerk."
+
+#: templates/einrichtung/s2.html:3 views.py:22
+msgid "Eltern"
+msgstr "Parents"
+
+#: templates/einrichtung/s2.html:6
+msgid "Mit diesem gemeinsamen Passwort melden sich beide Eltern an."
+msgstr "Both parents log in with this shared password."
+
+#: templates/einrichtung/s2.html:6
+msgid "Es ist schon gesetzt. Leer lassen, um es zu behalten."
+msgstr "It is already set. Leave empty to keep it."
+
+#: templates/einrichtung/s2.html:7
+msgid ""
+"Mindestens 10 Zeichen, Buchstaben mit Ziffern oder Sonderzeichen mischen."
+msgstr "At least 10 characters; mix letters with digits or special characters."
+
+#: templates/einrichtung/s2.html:9
+msgid "Erstes Elternteil"
+msgstr "First parent"
+
+#: templates/einrichtung/s2.html:15
+msgid "Zweites Elternteil"
+msgstr "Second parent"
+
+#: templates/einrichtung/s3.html:3 views.py:23
+msgid "Kinder"
+msgstr "Kids"
+
+#: templates/einrichtung/s3.html:4
+msgid ""
+"Name, vierstellige PIN (zweimal) und optional eine Akzentfarbe. Leere Zeilen "
+"werden ignoriert."
+msgstr ""
+"Name, four-digit PIN (twice) and an optional accent colour. Empty rows are "
+"ignored."
+
+#: templates/einrichtung/s3.html:10
+#, python-format
+msgid "Kind %(nr)s"
+msgstr "Child %(nr)s"
+
+#: templates/einrichtung/s3.html:13
+msgid "PIN (4 Ziffern)"
+msgstr "PIN (4 digits)"
+
+#: templates/einrichtung/s3.html:14
+msgid "PIN wiederholen"
+msgstr "Repeat PIN"
+
+#: templates/einrichtung/s3.html:15
+msgid "Akzentfarbe"
+msgstr "Accent colour"
+
+#: templates/einrichtung/s3.html:17
+msgid "keine"
+msgstr "none"
+
+#: templates/einrichtung/s3.html:22
+msgid "Weiteres Kind"
+msgstr "Add another child"
+
+#: templates/einrichtung/s4.html:3
+msgid "E-Mail-Versand"
+msgstr "Email sending"
+
+#: templates/einrichtung/s4.html:4
+msgid ""
+"Zugang zu eurem Postfach, über das Nestwerk Mails verschickt (z. B. "
+"Benachrichtigungen an die Eltern)."
+msgstr ""
+"Access to the mailbox Nestwerk uses to send emails (e.g. notifications to "
+"the parents)."
+
+#: templates/einrichtung/s4.html:8
+msgid "Testmail gesendet."
+msgstr "Test email sent."
+
+#: templates/einrichtung/s4.html:8
+msgid "Testmail fehlgeschlagen."
+msgstr "Test email failed."
+
+#: templates/einrichtung/s4.html:10
+msgid "z. B. smtp.example.org"
+msgstr "e.g. smtp.example.org"
+
+#: templates/einrichtung/s4.html:18
+msgid "Testmail senden"
+msgstr "Send test email"
+
+#: templates/einrichtung/s4.html:19
+msgid "Überspringen?"
+msgstr "Skip?"
+
+#: templates/einrichtung/s4.html:19
+msgid ""
+"Ohne E-Mail-Versand bekommen die Eltern keine Mails (z. B. Hinweise bei "
+"Anfragen). Das lässt sich später in den Einstellungen nachholen."
+msgstr ""
+"Without email sending, parents get no emails (e.g. notes about requests). "
+"You can set this up later in the settings."
+
+#: templates/einrichtung/s4.html:20
+msgid "Ohne E-Mail fortfahren"
+msgstr "Continue without email"
+
+#: templates/einrichtung/s5.html:3 views.py:25
+msgid "Netzwerk"
+msgstr "Network"
+
+#: templates/einrichtung/s5.html:5
+msgid ""
+"z. B. https://nestwerk.example.org. Für Links in Mails und Push zusätzlich "
+"die Umgebungsvariable BASIS_URL setzen."
+msgstr ""
+"e.g. https://nestwerk.example.org. For links in emails and push messages, "
+"also set the environment variable BASIS_URL."
+
+#: templates/einrichtung/s5.html:6
+msgid "Heimnetz für den Kinder-Login"
+msgstr "Home network for kid login"
+
+#: templates/einrichtung/s5.html:8
+msgid ""
+"Eins pro Zeile (CIDR, z. B. 192.168.1.0/24). Aus diesen Netzen dürfen Kinder "
+"sich anmelden. Startwert: alle privaten Netze."
+msgstr ""
+"One per line (CIDR, e.g. 192.168.1.0/24). Kids can only log in from these "
+"networks. Default: all private networks."
+
+#: templates/einrichtung/s5.html:11
+msgid ""
+"Trage hier die IP-Adresse des Nginx Proxy Managers ein. Nur von dort wird "
+"die echte Client-Adresse (X-Forwarded-For) übernommen."
+msgstr ""
+"Enter the IP address of the Nginx Proxy Manager here. The real client "
+"address (X-Forwarded-For) is only taken from there."
+
+#: templates/einrichtung/s5.html:11
+#, python-format
+msgid "Erkannt für diese Anfrage: <strong>%(remote)s</strong>."
+msgstr "Detected for this request: <strong>%(remote)s</strong>."
+
+#: templates/einrichtung/s6.html:3 views.py:26
+msgid "Zeit"
+msgstr "Time"
+
+#: templates/einrichtung/s6.html:5
+msgid ""
+"Tage und Wochen werden in dieser Zeitzone gerechnet, z. B. Europe/Berlin."
+msgstr "Days and weeks are counted in this time zone, e.g. Europe/Berlin."
+
+#: templates/einrichtung/s6.html:6
+msgid "Das App-Jahr für Sondertage beginnt an diesem Tag."
+msgstr "The app year for special days starts on this day."
+
+#: templates/einrichtung/s7.html:3
+msgid "Startwerte prüfen"
+msgstr "Check default values"
+
+#: templates/einrichtung/s7.html:4
+msgid ""
+"Alle Werte sind vorausgefüllt und lassen sich später im Eltern-Dashboard "
+"ändern."
+msgstr ""
+"All values are pre-filled and can be changed later in the parent dashboard."
+
+#: templates/einrichtung/s7.html:5
+#, python-format
+msgid "%(anzahl)s Wert korrigieren."
+msgid_plural "%(anzahl)s Werte korrigieren."
+msgstr[0] "Fix %(anzahl)s value."
+msgstr[1] "Fix %(anzahl)s values."
+
+#: templates/einrichtung/s7.html:41
+msgid "Nur Ansicht."
+msgstr "View only."
+
+#: templates/einrichtung/s7.html:41
+msgid "Später im Eltern-Dashboard anpassen."
+msgstr "Change later in the parent dashboard."
+
+#: templates/einrichtung/s8.html:3
+msgid "Zusammenfassung"
+msgstr "Summary"
+
+#: templates/einrichtung/s8.html:6
+msgid "App:"
+msgstr "App:"
+
+#: templates/einrichtung/s8.html:7
+msgid "Eltern:"
+msgstr "Parents:"
+
+#: templates/einrichtung/s8.html:8
+msgid "Passwort:"
+msgstr "Password:"
+
+#: templates/einrichtung/s8.html:8
+msgid "gesetzt"
+msgstr "set"
+
+#: templates/einrichtung/s8.html:9
+msgid "Kinder:"
+msgstr "Kids:"
+
+#: templates/einrichtung/s8.html:10
+msgid "E-Mail-Versand:"
+msgstr "Email sending:"
+
+#: templates/einrichtung/s8.html:10
+msgid "übersprungen. Ohne Postfach gibt es keine Mails."
+msgstr "skipped. Without a mailbox there are no emails."
+
+#: templates/einrichtung/s8.html:10
+msgid "nicht eingerichtet"
+msgstr "not set up"
+
+#: templates/einrichtung/s8.html:11
+msgid "Adresse:"
+msgstr "Address:"
+
+#: templates/einrichtung/s8.html:12
+msgid "Zeitzone:"
+msgstr "Time zone:"
+
+#: templates/einrichtung/s8.html:12
+msgid "Go-live:"
+msgstr "Go-live:"
+
+#: templates/einrichtung/s8.html:14
+msgid ""
+"Danach ist der Assistent gesperrt. Weitere Änderungen machst du im Eltern-"
+"Dashboard."
+msgstr ""
+"After that the wizard is locked. You make further changes in the parent "
+"dashboard."
+
+#: templates/einrichtung/s8.html:15
+msgid "Einrichtung abschließen"
+msgstr "Finish setup"
+
+#: templates/einrichtung/token.html:6
+msgid "Setup-Token"
+msgstr "Setup token"
+
+#: templates/einrichtung/token.html:7
+msgid ""
+"Für diese Installation ist ein Setup-Token festgelegt (Umgebungsvariable "
+"<code>NESTWERK_SETUP_TOKEN</code>)."
+msgstr ""
+"A setup token is set for this installation (environment variable "
+"<code>NESTWERK_SETUP_TOKEN</code>)."
+
+#: templates/einrichtung/token.html:9
+msgid "Token"
+msgstr "Token"
+
+#: uebersicht.py:17
+msgid "Allgemein"
+msgstr "General"
+
+#: uebersicht.py:18
+msgid "Anmeldung und Sicherheit"
+msgstr "Login and security"
+
+#: uebersicht.py:19
+msgid "Punkte"
+msgstr "Points"
+
+#: uebersicht.py:20
+msgid "Aufgaben"
+msgstr "Tasks"
+
+#: uebersicht.py:21
+msgid "Belohnungen und Taschengeld"
+msgstr "Rewards and pocket money"
+
+#: uebersicht.py:22
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+#: uebersicht.py:23
+msgid "Spielregeln"
+msgstr "Game rules"
+
+#: uebersicht.py:130
+msgid "Ganze Zahlen erwartet"
+msgstr "Whole numbers expected"
+
+#: uebersicht.py:134 uebersicht.py:140
+msgid "Bitte ausfüllen"
+msgstr "Please fill in"
+
+#: uebersicht.py:138
+msgid "Ganze Zahl erwartet"
+msgstr "Whole number expected"
+
+#: views.py:21
+msgid "Willkommen"
+msgstr "Welcome"
+
+#: views.py:27
+msgid "Startwerte"
+msgstr "Defaults"
+
+#: views.py:28
+msgid "Abschluss"
+msgstr "Finish"
+
+#: views.py:33
+msgid "Blau"
+msgstr "Blue"
+
+#: views.py:34
+msgid "Rot"
+msgstr "Red"
+
+#: views.py:35
+msgid "Orange"
+msgstr "Orange"
+
+#: views.py:36
+msgid "Gelb"
+msgstr "Yellow"
+
+#: views.py:37
+msgid "Grün"
+msgstr "Green"
+
+#: views.py:38
+msgid "Türkis"
+msgstr "Turquoise"
+
+#: views.py:39
+msgid "Lila"
+msgstr "Purple"
+
+#: views.py:40
+msgid "Pink"
+msgstr "Pink"
+
+#: views.py:76
+#, python-format
+msgid "Schritt %(nr)s: %(titel)s"
+msgstr "Step %(nr)s: %(titel)s"
+
+#: views.py:208
+msgid "Bitte eine Adresse für die Testmail angeben."
+msgstr "Please enter an address for the test email."
+
+#: views.py:227
+msgid "Gespeichert. Leer lassen, um es zu behalten."
+msgstr "Saved. Leave empty to keep it."
+
+#: views.py:229
+msgid "Wird verschlüsselt gespeichert."
+msgstr "Stored encrypted."
+
+#: views.py:278
+msgid "Belohnungs-Katalog"
+msgstr "Reward catalogue"
+
+#: views.py:282
+msgid "Aufgaben-Bibliothek"
+msgstr "Task library"
+
+#: views.py:346
+msgid "Das Setup-Token stimmt nicht."
+msgstr "The setup token is wrong."

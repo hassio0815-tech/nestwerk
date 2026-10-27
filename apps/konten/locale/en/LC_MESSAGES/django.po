@@ -1,0 +1,403 @@
+# English translation (source language: German).
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-26 19:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: begruessung.py:17
+msgid "Guten Morgen"
+msgstr "Good morning"
+
+#: begruessung.py:19
+msgid "Guten Tag"
+msgstr "Good afternoon"
+
+#: begruessung.py:20
+msgid "Guten Abend"
+msgstr "Good evening"
+
+#: einstellungen.py:42
+#, python-format
+msgid "'%(netz)s' ist kein gültiges Netz (CIDR, z. B. 192.168.1.0/24)"
+msgstr "'%(netz)s' is not a valid network (CIDR, e.g. 192.168.1.0/24)"
+
+#: einstellungen.py:50
+msgid "PIN-Fehlversuche bis zur Sperre (Kind)"
+msgstr "Wrong PIN attempts before lockout (child)"
+
+#: einstellungen.py:57
+msgid "Erste PIN-Sperre (Kind)"
+msgstr "First PIN lockout (child)"
+
+#: einstellungen.py:58
+msgid "Jede weitere Sperre verdoppelt die Dauer, bis zum Höchstwert."
+msgstr "Each further lockout doubles the time, up to the maximum."
+
+#: einstellungen.py:59 einstellungen.py:67 einstellungen.py:82
+msgid "Minuten"
+msgstr "Minutes"
+
+#: einstellungen.py:66
+msgid "Höchstdauer der PIN-Sperre (Kind)"
+msgstr "Maximum PIN lockout time (child)"
+
+#: einstellungen.py:74
+msgid "Fehlversuche bis zur Sperre (Eltern-Login, je IP)"
+msgstr "Failed attempts before lockout (parent login, per IP)"
+
+#: einstellungen.py:81
+msgid "Sperre und Zählfenster (Eltern-Login)"
+msgstr "Lockout and counting window (parent login)"
+
+#: einstellungen.py:89
+msgid "Eltern-Sitzung auf vertrautem Gerät"
+msgstr "Parent session on a trusted device"
+
+#: einstellungen.py:90 einstellungen.py:107
+msgid "Gleitend: jede Nutzung verlängert."
+msgstr "Rolling: every use extends it."
+
+#: einstellungen.py:91 einstellungen.py:108
+msgid "Tage"
+msgstr "Days"
+
+#: einstellungen.py:98
+msgid "Eltern-Sitzung ohne vertrautes Gerät"
+msgstr "Parent session on an untrusted device"
+
+#: einstellungen.py:99
+msgid "Stunden"
+msgstr "Hours"
+
+#: einstellungen.py:106
+msgid "Kinder-Sitzung auf persönlichem Gerät"
+msgstr "Child session on a personal device"
+
+#: einstellungen.py:115
+msgid "Abmeldung des Kiosk-Tablets nach Leerlauf"
+msgstr "Kiosk tablet logs out when idle"
+
+#: einstellungen.py:116 einstellungen.py:124
+msgid "Sekunden"
+msgstr "Seconds"
+
+#: einstellungen.py:123
+msgid "Warnhinweis vor der Abmeldung (Kiosk)"
+msgstr "Warning before logout (kiosk)"
+
+#: einstellungen.py:131
+msgid "Netze für den Kinder-Login"
+msgstr "Networks for child login"
+
+#: einstellungen.py:133
+msgid ""
+"Kinder können sich nur aus diesen Netzen anmelden. Leer = keine Prüfung."
+msgstr "Kids can only log in from these networks. Empty = no check."
+
+#: einstellungen.py:141
+msgid "Vertrauenswürdige Proxys (X-Forwarded-For)"
+msgstr "Trusted proxies (X-Forwarded-For)"
+
+#: einstellungen.py:143
+msgid ""
+"Nur von diesen Adressen wird X-Forwarded-For ausgewertet (Nginx Proxy "
+"Manager)."
+msgstr ""
+"X-Forwarded-For is only read from these addresses (Nginx Proxy Manager)."
+
+#: models.py:30 models.py:250 templates/konten/eltern_heim.html:5
+#: templates/konten/start.html:34 templates/konten/start.html:38
+msgid "Eltern"
+msgstr "Parents"
+
+#: models.py:31 models.py:251
+msgid "Kind"
+msgstr "Child"
+
+#: models.py:221
+msgid "Kiosk (Flur-Tablet)"
+msgstr "Kiosk (hallway tablet)"
+
+#: models.py:222
+msgid "Persönlich"
+msgstr "Personal"
+
+#: services.py:37
+msgid "Die PIN besteht aus genau 4 Ziffern."
+msgstr "The PIN must be exactly 4 digits."
+
+#: services.py:113
+msgid "Unbekanntes Wappen."
+msgstr "Unknown crest."
+
+#: services.py:132
+msgid "Unbekannte Sprache."
+msgstr "Unknown language."
+
+#: services.py:199
+#, python-format
+msgid "Das Passwort braucht mindestens %(n)s Zeichen."
+msgstr "The password needs at least %(n)s characters."
+
+#: services.py:224
+msgid "Unbekannter Gerätetyp."
+msgstr "Unknown device type."
+
+#: services.py:226
+msgid "Nur Eltern registrieren Geräte."
+msgstr "Only parents can register devices."
+
+#: templates/konten/_leerlauf.html:8
+msgid "Noch da? Tippe irgendwo, sonst wirst du gleich abgemeldet."
+msgstr "Still there? Tap anywhere, or you will be logged out soon."
+
+#: templates/konten/_sprache_einstellung.html:6
+msgid "Sprache"
+msgstr "Language"
+
+#: templates/konten/_sprache_einstellung.html:7
+msgid "Gilt für dein Konto auf jedem Gerät. „Automatisch“ folgt deinem Gerät."
+msgstr ""
+"Applies to your account on every device. \"Automatic\" follows your device."
+
+#: templates/konten/_sprache_einstellung.html:12
+msgid "Automatisch"
+msgstr "Automatic"
+
+#: templates/konten/eltern_heim.html:8
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+#: templates/konten/eltern_heim.html:10
+msgid "Meldungen"
+msgstr "Messages"
+
+#: templates/konten/eltern_heim.html:12 templates/konten/geraete.html:3
+#: templates/konten/geraete.html:10
+msgid "Geräte"
+msgstr "Devices"
+
+#: templates/konten/eltern_heim.html:14 templates/konten/kind_heim.html:8
+msgid "Abmelden"
+msgstr "Log out"
+
+#: templates/konten/eltern_heim.html:18 templates/konten/kind_heim.html:5
+msgid "Hallo"
+msgstr "Hello"
+
+#: templates/konten/eltern_heim.html:18 templates/konten/eltern_login.html:12
+#: templates/konten/kind_heim.html:12 templates/konten/pin.html:14
+#, python-format
+msgid "Hallo %(name)s!"
+msgstr "Hello %(name)s!"
+
+#: templates/konten/eltern_heim.html:21
+msgid "Gesperrte PINs"
+msgstr "Locked PINs"
+
+#: templates/konten/eltern_heim.html:25
+msgid "Entsperren"
+msgstr "Unlock"
+
+#: templates/konten/eltern_login.html:5 templates/konten/eltern_login.html:12
+msgid "Eltern-Anmeldung"
+msgstr "Parent login"
+
+#: templates/konten/eltern_login.html:18 templates/konten/start.html:5
+msgid "Wer bist du?"
+msgstr "Who are you?"
+
+#: templates/konten/eltern_login.html:24
+msgid "Familien-Passwort"
+msgstr "Family password"
+
+#: templates/konten/eltern_login.html:25
+msgid "Dieses Gerät ist vertraut (angemeldet bleiben)"
+msgstr "This device is trusted (stay logged in)"
+
+#: templates/konten/eltern_login.html:26
+msgid "Anmelden"
+msgstr "Log in"
+
+#: templates/konten/eltern_login.html:29 templates/konten/pin.html:20
+msgid "Zurück zur Auswahl"
+msgstr "Back to selection"
+
+#: templates/konten/geraete.html:6
+msgid "Zurück"
+msgstr "Back"
+
+#: templates/konten/geraete.html:13
+msgid "Dieses Gerät registrieren"
+msgstr "Register this device"
+
+#: templates/konten/geraete.html:14
+#, python-format
+msgid "Dieses Gerät ist registriert als <strong>%(name)s</strong>."
+msgstr "This device is registered as <strong>%(name)s</strong>."
+
+#: templates/konten/geraete.html:16
+msgid "Bezeichnung"
+msgstr "Name"
+
+#: templates/konten/geraete.html:16
+msgid "z. B. Flur-Tablet"
+msgstr "e.g. hallway tablet"
+
+#: templates/konten/geraete.html:18
+msgid "Art"
+msgstr "Type"
+
+#: templates/konten/geraete.html:23
+msgid "Registrieren"
+msgstr "Register"
+
+#: templates/konten/geraete.html:27
+msgid "Registrierte Geräte"
+msgstr "Registered devices"
+
+#: templates/konten/geraete.html:31
+msgid "Widerrufen"
+msgstr "Revoke"
+
+#: templates/konten/geraete.html:34
+msgid "Noch kein Gerät registriert."
+msgstr "No device registered yet."
+
+#: templates/konten/kind_heim.html:14
+msgid "Aufgaben"
+msgstr "Tasks"
+
+#: templates/konten/kind_heim.html:14
+msgid "Aussuchen und erledigt melden"
+msgstr "Pick tasks and report them done"
+
+#: templates/konten/pin.html:5
+msgid "PIN"
+msgstr "PIN"
+
+#: templates/konten/pin.html:15
+msgid "Gib deine PIN ein."
+msgstr "Enter your PIN."
+
+#: templates/konten/start.html:19
+msgid "Wer ist heute dabei?"
+msgstr "Who's here today?"
+
+#: templates/konten/start.html:22
+msgid "Kinder"
+msgstr "Kids"
+
+#: templates/konten/start.html:28
+msgid "Noch keine Kinder"
+msgstr "No kids yet"
+
+#: templates/konten/start.html:28
+msgid "Die Eltern legen die Kinder in der Einrichtung an."
+msgstr "The parents add the kids during setup."
+
+#: views.py:23
+msgid "Das hat nicht gepasst. Versuch es noch einmal."
+msgstr "That didn't match. Try again."
+
+#: views.py:52
+#, python-format
+msgid "%(n)s Minute"
+msgid_plural "%(n)s Minuten"
+msgstr[0] "%(n)s minute"
+msgstr[1] "%(n)s minutes"
+
+#: views.py:93
+msgid "Die Anmeldung geht nur im Heimnetz."
+msgstr "Logging in only works on the home network."
+
+#: views.py:99 views.py:114
+#, python-format
+msgid "Gesperrt. Versuch es in %(zeit)s wieder."
+msgstr "Locked. Try again in %(zeit)s."
+
+#: views.py:138
+#, python-format
+msgid "Zu viele Versuche. Bitte in %(zeit)s wieder."
+msgstr "Too many attempts. Please try again in %(zeit)s."
+
+#: wappen.py:19
+msgid "Hausdrache"
+msgstr "House Dragon"
+
+#: wappen.py:19
+msgid "Bewacht den Kühlschrank"
+msgstr "Guards the fridge"
+
+#: wappen.py:20
+msgid "Rudelchef"
+msgstr "Pack Leader"
+
+#: wappen.py:20
+msgid "Hat das letzte Wort … meistens"
+msgstr "Has the last word … mostly"
+
+#: wappen.py:21
+msgid "Küchenchef"
+msgstr "Head Chef"
+
+#: wappen.py:21
+msgid "Heute gibt's, was auf den Tisch kommt"
+msgstr "Today you get whatever lands on the table"
+
+#: wappen.py:22
+msgid "Familien-Taxi"
+msgstr "Family Taxi"
+
+#: wappen.py:22
+msgid "24/7 im Einsatz"
+msgstr "On duty 24/7"
+
+#: wappen.py:23
+msgid "Bank of Mama/Papa"
+msgstr "Bank of Mum and Dad"
+
+#: wappen.py:23
+msgid "Kein Dispo!"
+msgstr "No overdraft!"
+
+#: wappen.py:24
+msgid "Grillmeister"
+msgstr "Grill Master"
+
+#: wappen.py:24
+msgid "Fasst die Zange nicht ab"
+msgstr "Won't let go of the tongs"
+
+#: wappen.py:25
+msgid "Nachteule"
+msgstr "Night Owl"
+
+#: wappen.py:25
+msgid "Sieht alles, auch nach 22 Uhr"
+msgstr "Sees everything, even after 10 pm"
+
+#: wappen.py:26
+msgid "Sockenfinder"
+msgstr "Sock Finder"
+
+#: wappen.py:26
+msgid "Kennt jeden verlorenen Socken"
+msgstr "Knows every lost sock"
+
+#: wappen.py:27
+msgid "Burgherr/Burgfrau"
+msgstr "Lord/Lady of the Castle"
+
+#: wappen.py:27
+msgid "Hüter des Nests"
+msgstr "Keeper of the Nest"

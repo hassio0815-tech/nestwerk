@@ -1,14 +1,14 @@
-{% extends "basis/kind.html" %}
+{% extends "basis/kind.html" %}{% load i18n %}
 {% load static %}
 {% comment %}Dungeon: alles zu Figur und Spiel (Avatar, Mods, Shop, Ränge, Ruhmeshalle, Abzeichen).{% endcomment %}
-{% block titel %}Dungeon{% endblock %}
+{% block titel %}{% translate "Dungeon" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
 {% block kopf_rechts %}
   {% url "oberflaeche:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Start" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
 {% endblock %}
 {% block inhalt %}
-  <h1>Dungeon</h1>
+  <h1>{% translate "Dungeon" %}</h1>
   {% if charakter %}{% include "avatar/_charakter.html" with c=charakter %}{% endif %}
   <div class="dashboard" id="dashboard">
     {% for eintrag in kacheln %}

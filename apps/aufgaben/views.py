@@ -6,8 +6,10 @@ from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import services
@@ -78,7 +80,7 @@ def aufgabe_neu(request):
     return _formular(
         request,
         form,
-        titel="Neue Aufgabe",
+        titel=_("Neue Aufgabe"),
         aktion=reverse("aufgaben:neu"),
         zurueck=reverse("aufgaben:liste"),
     )
@@ -95,7 +97,7 @@ def aufgabe_bearbeiten(request, pk):
     return _formular(
         request,
         form,
-        titel="Aufgabe bearbeiten",
+        titel=_("Aufgabe bearbeiten"),
         aktion=reverse("aufgaben:bearbeiten", args=[pk]),
         zurueck=reverse("aufgaben:liste"),
     )
@@ -138,7 +140,7 @@ def vorlage_neu(request):
     return _formular(
         request,
         form,
-        titel="Neue Vorlage",
+        titel=_("Neue Vorlage"),
         aktion=reverse("aufgaben:vorlage_neu"),
         zurueck=reverse("aufgaben:vorlagen"),
     )
@@ -155,7 +157,7 @@ def vorlage_bearbeiten(request, pk):
     return _formular(
         request,
         form,
-        titel="Vorlage bearbeiten",
+        titel=_("Vorlage bearbeiten"),
         aktion=reverse("aufgaben:vorlage_bearbeiten", args=[pk]),
         zurueck=reverse("aufgaben:vorlagen"),
     )
@@ -196,7 +198,7 @@ def vorlage_als_aufgabe(request, pk):
     return _formular(
         request,
         form,
-        titel=f"Aufgabe aus Vorlage „{vorlage.titel}“",
+        titel=_("Aufgabe aus Vorlage „%(titel)s“") % {"titel": uebersetzt(vorlage.titel)},
         aktion=reverse("aufgaben:neu"),
         zurueck=reverse("aufgaben:vorlagen"),
     )
@@ -220,7 +222,7 @@ def kategorie_neu(request):
     return _formular(
         request,
         form,
-        titel="Neue Kategorie",
+        titel=_("Neue Kategorie"),
         aktion=reverse("aufgaben:kategorie_neu"),
         zurueck=reverse("aufgaben:kategorien"),
     )
@@ -237,7 +239,7 @@ def kategorie_bearbeiten(request, pk):
     return _formular(
         request,
         form,
-        titel="Kategorie bearbeiten",
+        titel=_("Kategorie bearbeiten"),
         aktion=reverse("aufgaben:kategorie_bearbeiten", args=[pk]),
         zurueck=reverse("aufgaben:kategorien"),
     )

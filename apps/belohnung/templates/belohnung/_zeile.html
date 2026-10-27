@@ -1,19 +1,19 @@
-<article class="karte" id="belohnung-{{ b.pk }}"><div class="karte__inhalt zeile">
+{% load i18n sprache %}<article class="karte" id="belohnung-{{ b.pk }}"><div class="karte__inhalt zeile">
   <div class="zeile__text stapel">
-    <strong>{% include "komponenten/icon.html" with name=b.anzeige_symbol %} {{ b.titel }}</strong>
+    <strong>{% include "komponenten/icon.html" with name=b.anzeige_symbol %} {{ b.titel|uebersetzt }}</strong>
     <span class="reihe">
-      {% include "komponenten/chip.html" with text=b.kategorie.name %}
-      {% if not b.aktiv %}{% include "komponenten/chip.html" with text="Inaktiv" %}{% endif %}
+      {% include "komponenten/chip.html" with text=b.kategorie.name|uebersetzt %}
+      {% if not b.aktiv %}{% include "komponenten/chip.html" with text=_("Inaktiv") %}{% endif %}
     </span>
   </div>
   {% include "komponenten/punkte.html" with wert=b.preis_punkte %}
   <div class="reihe">
     {% url "belohnung:bearbeiten" b.pk as bearbeiten_url %}
-    <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>Bearbeiten</span></a>
+    <a class="knopf knopf--sekundaer knopf--klein" href="{{ bearbeiten_url }}" hx-get="{{ bearbeiten_url }}" hx-target="#formular" hx-swap="innerHTML"><span>{% translate "Bearbeiten" %}</span></a>
     <form method="post" action="{% url 'belohnung:aktiv' b.pk %}" hx-post="{% url 'belohnung:aktiv' b.pk %}" hx-target="#belohnung-{{ b.pk }}" hx-swap="outerHTML">
       {% csrf_token %}
       <input type="hidden" name="aktiv" value="{% if b.aktiv %}0{% else %}1{% endif %}">
-      <button type="submit" class="knopf knopf--geist knopf--klein">{% if b.aktiv %}Deaktivieren{% else %}Aktivieren{% endif %}</button>
+      <button type="submit" class="knopf knopf--geist knopf--klein">{% if b.aktiv %}{% translate "Deaktivieren" %}{% else %}{% translate "Aktivieren" %}{% endif %}</button>
     </form>
   </div>
 </div></article>

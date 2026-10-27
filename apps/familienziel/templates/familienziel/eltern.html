@@ -1,81 +1,82 @@
 {% extends "basis/einstellungen.html" %}
+{% load i18n sprache %}
 {% load static %}
-{% block titel %}Familienziel{% endblock %}
+{% block titel %}{% translate "Familienziel" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text="Übersicht" %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
 {% endblock %}
 {% block seite %}
-  <h1>Familienziel</h1>
-  <p>Gezählt werden die verdienten XP aller Kinder von Montag bis Sonntag. Jedes nicht pausierte Kind braucht mindestens eine bestätigte Aufgabe.</p>
+  <h1>{% translate "Familienziel" %}</h1>
+  <p>{% translate "Gezählt werden die verdienten XP aller Kinder von Montag bis Sonntag. Jedes nicht pausierte Kind braucht mindestens eine bestätigte Aufgabe." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Diese Woche</h2>
+    <h2>{% translate "Diese Woche" %}</h2>
     {% include "familienziel/kacheln/_balken.html" with a=a %}
-    <p class="kachel__text">Serie: {{ a.serie }} von {{ a.serie_ziel }} Wochen in Folge für das große Ziel.</p>
+    <p class="kachel__text">{% blocktranslate with serie=a.serie ziel=a.serie_ziel %}Serie: {{ serie }} von {{ ziel }} Wochen in Folge für das große Ziel.{% endblocktranslate %}</p>
   </div></section>
 
   {% for w in wochen %}
     <section class="nw-karte" data-fz-woche="{{ w.iso }}"><div class="karte__inhalt stapel">
-      <h2>{% if forloop.first %}Aktuelle Woche{% else %}Nächste Woche{% endif %} ({{ w.zeile.montag|date:"d.m." }})</h2>
-      <p class="fz-status">Ziel: <strong>{{ w.zeile.ziel_punkte }}</strong> Punkte · Belohnung: {% include "familienziel/_belohnung.html" with b=w.zeile.belohnung titel="noch nicht gewählt" %}
+      <h2>{% translate "d.m." as kurzdatum %}{% if forloop.first %}{% translate "Aktuelle Woche" %}{% else %}{% translate "Nächste Woche" %}{% endif %} ({{ w.zeile.montag|date:kurzdatum }})</h2>
+      <p class="fz-status">{% blocktranslate with ziel=w.zeile.ziel_punkte %}Ziel: <strong>{{ ziel }}</strong> Punkte{% endblocktranslate %} · {% translate "Belohnung" %}: {% include "familienziel/_belohnung.html" with b=w.zeile.belohnung titel=_("noch nicht gewählt") %}
         · <span class="chip" data-selten="common">{{ w.zeile.get_abstimmung_status_display }}</span> <span class="chip" data-selten="common">{{ w.zeile.get_status_display }}</span></p>
-      {% if w.zeile.abstimmung_status == "gleichstand" %}<p class="feld__hinweis feld__hinweis--fehler" data-fz-gleichstand>Gleichstand oder keine Stimmen: Bitte wählt die Belohnung.</p>{% endif %}
+      {% if w.zeile.abstimmung_status == "gleichstand" %}<p class="feld__hinweis feld__hinweis--fehler" data-fz-gleichstand>{% translate "Gleichstand oder keine Stimmen: Bitte wählt die Belohnung." %}</p>{% endif %}
       {% if w.zeile.status == "laufend" %}
         <form method="post" action="{% url 'familienziel:woche_setzen' w.zeile.pk %}" class="stapel">{% csrf_token %}
           {% for f in w.form %}
             <div class="feld"><label for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</div>
           {% endfor %}
-          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" icon="check" text="Speichern" %}
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" icon="check" text=_("Speichern") %}
         </form>
       {% endif %}
     </div></section>
   {% endfor %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Belohnungsliste</h2>
+    <h2>{% translate "Belohnungsliste" %}</h2>
     {% for b in belohnungen %}
       <div class="fz-zeile" data-belohnung="{{ b.pk }}">
         {% include "familienziel/_belohnung.html" with b=b %}
-        {% if b.ist_grossziel %}<span class="chip" data-selten="epic">Großes Ziel</span>{% endif %}
-        {% if not b.aktiv %}<span class="chip" data-selten="common">aus</span>{% endif %}
+        {% if b.ist_grossziel %}<span class="chip" data-selten="epic">{% translate "Großes Ziel" %}</span>{% endif %}
+        {% if not b.aktiv %}<span class="chip" data-selten="common">{% translate "aus" %}</span>{% endif %}
         <form method="post" action="{% url 'familienziel:belohnung_aktion' b.pk 'inaktiv' %}">{% csrf_token %}
-          {% if b.aktiv %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True text="Ausblenden" %}{% endif %}</form>
-        {% if not b.aktiv %}<form method="post" action="{% url 'familienziel:belohnung_aktion' b.pk 'aktiv' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True text="Einblenden" %}</form>{% endif %}
-        <form method="post" action="{% url 'familienziel:belohnung_aktion' b.pk 'loeschen' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Löschen" %}</form>
+          {% if b.aktiv %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True text=_("Ausblenden") %}{% endif %}</form>
+        {% if not b.aktiv %}<form method="post" action="{% url 'familienziel:belohnung_aktion' b.pk 'aktiv' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True text=_("Einblenden") %}</form>{% endif %}
+        <form method="post" action="{% url 'familienziel:belohnung_aktion' b.pk 'loeschen' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Löschen") %}</form>
       </div>
     {% endfor %}
     <form method="post" action="{% url 'familienziel:belohnung_neu' %}" class="stapel">{% csrf_token %}
-      <h3>Neue Belohnung</h3>
+      <h3>{% translate "Neue Belohnung" %}</h3>
       {% for e in belohnung_form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
       {% for f in belohnung_form %}
         <div class="feld{% if f.errors %} feld--fehler{% endif %}"><label for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}
           {% for e in f.errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}</div>
       {% endfor %}
-      {% include "komponenten/button.html" with typ="submit" icon="plus" text="Hinzufügen" %}
+      {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Hinzufügen") %}
     </form>
   </div></section>
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
-    <h2>Historie</h2>
+    <h2>{% translate "Historie" %}</h2>
     {% for g in grossziele %}
-      <div class="fz-zeile" data-grossziel="{{ g.pk }}"><strong>Großziel: {{ g.name|default:"Ausflug" }}</strong>
-        <span>{{ g.freigeschaltet_am|date:"d.m.Y" }}</span>
-        {% if g.eingeloest_am %}<span class="chip" data-selten="common">eingelöst</span>
-        {% else %}<form method="post" action="{% url 'familienziel:grossziel_eingeloest' g.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Eingelöst" %}</form>{% endif %}
+      <div class="fz-zeile" data-grossziel="{{ g.pk }}"><strong>{% translate "Ausflug" as ausflug %}{% blocktranslate with name=g.name|uebersetzt|default:ausflug %}Großziel: {{ name }}{% endblocktranslate %}</strong>
+        <span>{% translate "d.m.Y" as datum %}{{ g.freigeschaltet_am|date:datum }}</span>
+        {% if g.eingeloest_am %}<span class="chip" data-selten="common">{% translate "eingelöst" %}</span>
+        {% else %}<form method="post" action="{% url 'familienziel:grossziel_eingeloest' g.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Eingelöst") %}</form>{% endif %}
       </div>
     {% endfor %}
     {% for h in historie %}
       <div class="fz-zeile" data-woche="{{ h.pk }}">
-        <strong>Woche {{ h.iso_woche }}/{{ h.iso_jahr }}</strong>
+        <strong>{% blocktranslate with woche=h.iso_woche jahr=h.iso_jahr %}Woche {{ woche }}/{{ jahr }}{% endblocktranslate %}</strong>
         <span>{{ h.ziel_punkte }} P</span>
-        <span>{% if h.belohnung %}{{ h.belohnung.titel }}{% else %}ohne Belohnung{% endif %}</span>
+        <span>{% if h.belohnung %}{{ h.belohnung.titel|uebersetzt }}{% else %}{% translate "ohne Belohnung" %}{% endif %}</span>
         <span class="chip" data-selten="{% if h.status == 'erreicht' %}rare{% else %}common{% endif %}">{{ h.get_status_display }}</span>
-        {% if h.status == "erreicht" %}{% if h.eingeloest_am %}<span class="kachel__text">eingelöst</span>{% else %}
-          <form method="post" action="{% url 'familienziel:woche_eingeloest' h.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text="Eingelöst" %}</form>{% endif %}{% endif %}
+        {% if h.status == "erreicht" %}{% if h.eingeloest_am %}<span class="kachel__text">{% translate "eingelöst" %}</span>{% else %}
+          <form method="post" action="{% url 'familienziel:woche_eingeloest' h.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Eingelöst") %}</form>{% endif %}{% endif %}
       </div>
-    {% empty %}<p class="kachel__text">Noch keine Wochen.</p>{% endfor %}
+    {% empty %}<p class="kachel__text">{% translate "Noch keine Wochen." %}</p>{% endfor %}
   </div></section>
 {% endblock %}

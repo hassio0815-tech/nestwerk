@@ -1,13 +1,14 @@
 {% extends "basis/kind.html" %}
+{% load i18n %}
 {% comment %}Platzhalter, bis das Kinder-Dashboard (oberflaeche) ihn ersetzt.{% endcomment %}
-{% block titel %}Hallo{% endblock %}
+{% block titel %}{% translate "Hallo" %}{% endblock %}
 {% block kopf_rechts %}
   <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Abmelden" %}
+    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
   </form>
 {% endblock %}
 {% block inhalt %}
-  <h1>Hallo {{ request.user.anzeigename }}!</h1>
+  <h1>{% blocktranslate with name=request.user.anzeigename %}Hallo {{ name }}!{% endblocktranslate %}</h1>
   {% url "aufgaben:kind" as aufgaben_url %}
-  {% if aufgaben_url %}<div class="raster">{% include "komponenten/kachel.html" with href=aufgaben_url icon="liste" titel="Aufgaben" text="Aussuchen und erledigt melden" %}</div>{% endif %}
+  {% if aufgaben_url %}<div class="raster">{% include "komponenten/kachel.html" with href=aufgaben_url icon="liste" titel=_("Aufgaben") text=_("Aussuchen und erledigt melden") %}</div>{% endif %}
 {% endblock %}

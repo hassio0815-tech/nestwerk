@@ -1,10 +1,10 @@
-{% autoescape off %}Hallo {{ empfaenger.anzeigename }},
+{% load i18n %}{% autoescape off %}{% blocktranslate with name=empfaenger.anzeigename %}Hallo {{ name }},{% endblocktranslate %}
 
 {{ titel }}
 {% if text %}{{ text }}
 {% endif %}{% if link %}
-Öffnen: {{ link }}
+{% translate "Öffnen" %}: {{ link }}
 {% endif %}
 --
-Nestwerk · Benachrichtigungen einstellen: {{ einstellungen }}
+Nestwerk · {% translate "Benachrichtigungen einstellen" %}: {{ einstellungen }}
 {% endautoescape %}

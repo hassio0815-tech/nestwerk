@@ -1,5 +1,7 @@
 # Nestwerk: Benutzerhandbuch
 
+🇬🇧 [English](en/USER-GUIDE.md) · 🇩🇪 **Deutsch**
+
 Für **Eltern** und **Kinder**. Kurz, mit den wichtigsten Abläufen.
 
 Die Werte in diesem Handbuch sind **Startwerte**. Eltern können alle Punkte, Preise und Schwellen in den Einstellungen anpassen.

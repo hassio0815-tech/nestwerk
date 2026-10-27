@@ -1,6 +1,8 @@
 from decimal import Decimal, InvalidOperation
 
 from django import forms
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from .models import Belohnung, Belohnungskategorie
 from .symbole import SYMBOLE
@@ -35,25 +37,26 @@ class EuroFeld(forms.Field):
         try:
             betrag = Decimal(str(value).replace("€", "").replace(",", ".").strip())
         except InvalidOperation:
-            raise forms.ValidationError("Bitte einen Betrag wie 2,50 eingeben.") from None
+            raise forms.ValidationError(gettext("Bitte einen Betrag wie 2,50 eingeben.")) from None
         cent = betrag * 100
         if cent != cent.to_integral_value() or betrag < 0 or betrag > self.max_euro:
             raise forms.ValidationError(
-                f"Betrag zwischen 0 und {self.max_euro} € in Cent-Schritten."
+                gettext("Betrag zwischen 0 und %(max)s € in Cent-Schritten.")
+                % {"max": self.max_euro}
             )
         return int(cent)
 
 
 class BelohnungForm(forms.ModelForm):
-    betrag = EuroFeld(required=False, label="Betrag in €", help_text="Nur bei Taschengeld.")
+    betrag = EuroFeld(required=False, label=_("Betrag in €"), help_text=_("Nur bei Taschengeld."))
     symbol = forms.ChoiceField(
-        required=False, choices=[("", "wie Kategorie"), *SYMBOLE], label="Symbol"
+        required=False, choices=[("", _("wie Kategorie")), *SYMBOLE], label=_("Symbol")
     )
 
     class Meta:
         model = Belohnung
         fields = ["titel", "kategorie", "preis_punkte", "symbol", "reihenfolge", "aktiv"]
-        labels = {"preis_punkte": "Preis in Punkten", "reihenfolge": "Reihenfolge"}
+        labels = {"preis_punkte": _("Preis in Punkten"), "reihenfolge": _("Reihenfolge")}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -69,7 +72,7 @@ class BelohnungForm(forms.ModelForm):
     def clean_preis_punkte(self):
         preis = self.cleaned_data["preis_punkte"]
         if preis < 1:
-            raise forms.ValidationError("Der Preis muss mindestens 1 Punkt sein.")
+            raise forms.ValidationError(gettext("Der Preis muss mindestens 1 Punkt sein."))
         return preis
 
     def _post_clean(self):
@@ -78,16 +81,16 @@ class BelohnungForm(forms.ModelForm):
         cent = self.cleaned_data.get("betrag")
         self.instance.geldwert_cent = cent if kategorie and kategorie.ist_taschengeld else None
         if kategorie and not kategorie.ist_taschengeld and cent:
-            self.add_error("betrag", "Nur Taschengeld hat einen Betrag.")
+            self.add_error("betrag", gettext("Nur Taschengeld hat einen Betrag."))
         if kategorie and kategorie.ist_taschengeld and not cent:
-            self.add_error("betrag", "Taschengeld braucht einen Betrag.")
+            self.add_error("betrag", gettext("Taschengeld braucht einen Betrag."))
         if "betrag" in self.errors:
             return  # Modell-clean würde denselben Fehler auf ein Feld melden, das es nicht gibt
         super()._post_clean()
 
 
 class KategorieForm(forms.ModelForm):
-    symbol = forms.ChoiceField(choices=SYMBOLE, label="Symbol")
+    symbol = forms.ChoiceField(choices=SYMBOLE, label=_("Symbol"))
 
     class Meta:
         model = Belohnungskategorie
@@ -101,7 +104,9 @@ class KategorieForm(forms.ModelForm):
 class LimitForm(forms.Form):
     """Standard-Monatslimit in Euro."""
 
-    betrag = EuroFeld(label="Standard-Limit pro Monat und Kind (€)", max_euro=1000, required=True)
+    betrag = EuroFeld(
+        label=_("Standard-Limit pro Monat und Kind (€)"), max_euro=1000, required=True
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -111,7 +116,7 @@ class LimitForm(forms.Form):
 class KindLimitForm(forms.Form):
     """Eigenes Limit eines Kindes; leer = Standard."""
 
-    betrag = EuroFeld(label="Eigenes Limit (€)", max_euro=1000, required=False)
+    betrag = EuroFeld(label=_("Eigenes Limit (€)"), max_euro=1000, required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

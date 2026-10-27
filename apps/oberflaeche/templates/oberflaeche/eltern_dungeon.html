@@ -1,27 +1,27 @@
-{% extends "oberflaeche/eltern_basis.html" %}
+{% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
 {% comment %}Dungeon-Bereich der Eltern: alles zum Spiel der Kinder (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage, Ranking, XP). Alltag steht im Dashboard.{% endcomment %}
-{% block titel %}Dungeon{% endblock %}
+{% block titel %}{% translate "Dungeon" %}{% endblock %}
 {% block seite %}
-  <h1>Dungeon</h1>
-  <p class="kachel__text">Hier steht alles zum Spiel der Kinder. Der Alltag läuft über die Übersicht.</p>
-  <nav class="aufgaben-nav" aria-label="Dungeon">
+  <h1>{% translate "Dungeon" %}</h1>
+  <p class="kachel__text">{% translate "Hier steht alles zum Spiel der Kinder. Der Alltag läuft über die Übersicht." %}</p>
+  <nav class="aufgaben-nav" aria-label="{% translate "Dungeon" %}">
     {% url "spielregeln:raenge" as u1 %}{% url "spielregeln:abzeichen" as u2 %}{% url "spielregeln:meilensteine" as u3 %}{% url "avatar:eltern" as u4 %}{% url "avatar:halle_eltern" as u5 %}{% url "sondertag:eltern" as u6 %}{% url "sondertag:prognose" as u7 %}
-    {% if u1 %}{% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="pokal" text="Ränge" %}{% endif %}
-    {% if u2 %}{% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="stern" text="Abzeichen" %}{% endif %}
-    {% if u3 %}{% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="liste" text="Meilensteine" %}{% endif %}
-    {% if u4 %}{% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="hammer" text="Mods" %}{% endif %}
-    {% if u5 %}{% include "komponenten/button.html" with href=u5 variante="sekundaer" klein=True icon="pokal" text="Ruhmeshalle" %}{% endif %}
-    {% if u6 %}{% include "komponenten/button.html" with href=u6 variante="sekundaer" klein=True icon="kalender" text="Sondertage" %}{% endif %}
-    {% if u7 %}{% include "komponenten/button.html" with href=u7 variante="sekundaer" klein=True icon="uhr" text="Prognose" %}{% endif %}
+    {% if u1 %}{% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="pokal" text=_("Ränge") %}{% endif %}
+    {% if u2 %}{% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="stern" text=_("Abzeichen") %}{% endif %}
+    {% if u3 %}{% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="liste" text=_("Meilensteine") %}{% endif %}
+    {% if u4 %}{% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="hammer" text=_("Mods") %}{% endif %}
+    {% if u5 %}{% include "komponenten/button.html" with href=u5 variante="sekundaer" klein=True icon="pokal" text=_("Ruhmeshalle") %}{% endif %}
+    {% if u6 %}{% include "komponenten/button.html" with href=u6 variante="sekundaer" klein=True icon="kalender" text=_("Sondertage") %}{% endif %}
+    {% if u7 %}{% include "komponenten/button.html" with href=u7 variante="sekundaer" klein=True icon="uhr" text=_("Prognose") %}{% endif %}
   </nav>
   {% if namen %}
   <section class="karte" id="figurennamen"><div class="karte__inhalt stapel">
-    <h2>Figurennamen</h2>
-    <p class="feld__hinweis">Bei unpassenden Namen: zurücksetzen. Dann zeigt die App wieder den Namen des Kindes.</p>
+    <h2>{% translate "Figurennamen" %}</h2>
+    <p class="feld__hinweis">{% translate "Bei unpassenden Namen: zurücksetzen. Dann zeigt die App wieder den Namen des Kindes." %}</p>
     {% for a in namen %}
       <form method="post" action="{% url 'avatar:name_zuruecksetzen' a.benutzer.pk %}" class="zeile">{% csrf_token %}
         <span><strong>{{ a.benutzer.anzeigename }}</strong>: {{ a.name }}</span>
-        {% include "komponenten/button.html" with typ="submit" variante="sanft" klein=True icon="x" text="Zurücksetzen" %}
+        {% include "komponenten/button.html" with typ="submit" variante="sanft" klein=True icon="x" text=_("Zurücksetzen") %}
       </form>
     {% endfor %}
   </div></section>

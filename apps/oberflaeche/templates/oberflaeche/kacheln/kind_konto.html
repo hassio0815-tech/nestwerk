@@ -1,15 +1,15 @@
-{% load avatar_tags %}<article class="karte"><div class="karte__inhalt stapel"><div class="kopfkarte">
-  <a class="kopfkarte__avatar" href="{% url 'oberflaeche:dungeon' %}" aria-label="Zum Dungeon: Avatar, Mods, Shop, Ränge">{% avatar_bild request.user "gross" %}</a>
+{% load i18n sprache %}{% load avatar_tags %}<article class="karte"><div class="karte__inhalt stapel"><div class="kopfkarte">
+  <a class="kopfkarte__avatar" href="{% url 'oberflaeche:dungeon' %}" aria-label="{% translate "Zum Dungeon: Avatar, Mods, Shop, Ränge" %}">{% avatar_bild request.user "gross" %}</a>
   <div class="kopfkarte__daten">
     <strong class="chip chip--nutzer">{{ request.user.anzeigename }}</strong>
     <span class="reihe" data-punkte-ziel>{% include "komponenten/punkte.html" with wert=k.guthaben %}
       <span class="chip">{% include "komponenten/icon.html" with name="stern" %} {{ k.xp }} XP</span></span>
     <span class="reihe">
-      {% if k.rang %}<span class="chip rang-chip" data-selten="{{ k.rang.selten }}" data-rang="{{ k.rang.schluessel }}">{% include "komponenten/icon.html" with name="pokal" %} {{ k.rang.name }}</span>{% endif %}
-      {% if k.serie %}<span class="chip"><span class="flamme" data-stufe="{% if k.serie >= 12 %}4{% elif k.serie >= 6 %}3{% elif k.serie >= 3 %}2{% else %}1{% endif %}" aria-hidden="true">{% include "komponenten/icon.html" with name="funke" %}</span> {{ k.serie }} {% if k.serie == 1 %}Woche{% else %}Wochen{% endif %}</span>{% endif %}
+      {% if k.rang %}<span class="chip rang-chip" data-selten="{{ k.rang.selten }}" data-rang="{{ k.rang.schluessel }}">{% include "komponenten/icon.html" with name="pokal" %} {{ k.rang.name|uebersetzt }}</span>{% endif %}
+      {% if k.serie %}<span class="chip"><span class="flamme" data-stufe="{% if k.serie >= 12 %}4{% elif k.serie >= 6 %}3{% elif k.serie >= 3 %}2{% else %}1{% endif %}" aria-hidden="true">{% include "komponenten/icon.html" with name="funke" %}</span> {% blocktranslate count n=k.serie %}{{ n }} Woche{% plural %}{{ n }} Wochen{% endblocktranslate %}</span>{% endif %}
     </span>
-    {% if k.reserviert %}<span class="kachel__text">{{ k.reserviert }} davon für Anträge reserviert</span>{% endif %}
+    {% if k.reserviert %}<span class="kachel__text">{% blocktranslate with n=k.reserviert %}{{ n }} davon für Anträge reserviert{% endblocktranslate %}</span>{% endif %}
   </div>
 </div>
-  <a class="knopf knopf--primaer knopf--gross knopf--block" href="{% url 'oberflaeche:dungeon' %}" data-dungeon>⚔️ Ab in den Dungeon</a>
+  <a class="knopf knopf--primaer knopf--gross knopf--block" href="{% url 'oberflaeche:dungeon' %}" data-dungeon>{% translate "⚔️ Ab in den Dungeon" %}</a>
 </div></article>

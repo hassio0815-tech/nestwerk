@@ -1,6 +1,8 @@
 """Ereignistypen von spielregeln (AP20). Deutsche Texte liefert ``benachrichtigung.texte``
 (Standardtexte; spielregeln und benachrichtigung sind unabhängige Schwestern, kein Import)."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.ereignisse import registry
 
 AKTIVITAET_ERFASST = "aktivitaet.erfasst"  # intern: Abzeichen (AP23), Familienziel (AP29)
@@ -31,16 +33,16 @@ def typen_deklarieren():
             **extra,
         )
 
-    typ(AKTIVITAET_ERFASST, "Aktivität erfasst", "intern")
-    typ(WOCHE_AUSGEWERTET, "Woche ausgewertet", "intern")
+    typ(AKTIVITAET_ERFASST, _("Aktivität erfasst"), "intern")
+    typ(WOCHE_AUSGEWERTET, _("Woche ausgewertet"), "intern")
     kind = {"deep_link_muster": LINK_KIND}
-    typ(SERIE_GESTIEGEN, "Wochenserie gestiegen", "kind", ("push", "popup"), **kind)
-    typ(SERIE_GERISSEN, "Wochenserie beendet", "kind", ("push",), **kind)
-    typ(PAUSE_GESTARTET, "Pause eingetragen", "kind", ("push", "popup"), **kind)
-    typ(PAUSE_BEENDET, "Pause beendet", "kind", ("push",), **kind)
-    typ(SERIENBONUS_GEBUCHT, "Serienbonus gebucht", "kind", ("popup",), **kind)
-    typ(RANG_AUFGESTIEGEN, "Rangaufstieg", "beide", ("push", "popup", "email"))
-    typ(ABZEICHEN_VERLIEHEN, "Neues Abzeichen", "beide", ("push", "popup"))
-    typ(MEILENSTEIN_ERREICHT, "Meilenstein erreicht", "intern")
-    typ(HELD, "Held der Woche", "eltern", ("push",), deep_link_muster="/eltern/")
-    typ(HELD_KIND, "Held der Woche (Kind)", "kind", ("popup",), **kind)
+    typ(SERIE_GESTIEGEN, _("Wochenserie gestiegen"), "kind", ("push", "popup"), **kind)
+    typ(SERIE_GERISSEN, _("Wochenserie beendet"), "kind", ("push",), **kind)
+    typ(PAUSE_GESTARTET, _("Pause eingetragen"), "kind", ("push", "popup"), **kind)
+    typ(PAUSE_BEENDET, _("Pause beendet"), "kind", ("push",), **kind)
+    typ(SERIENBONUS_GEBUCHT, _("Serienbonus gebucht"), "kind", ("popup",), **kind)
+    typ(RANG_AUFGESTIEGEN, _("Rangaufstieg"), "beide", ("push", "popup", "email"))
+    typ(ABZEICHEN_VERLIEHEN, _("Neues Abzeichen"), "beide", ("push", "popup"))
+    typ(MEILENSTEIN_ERREICHT, _("Meilenstein erreicht"), "intern")
+    typ(HELD, _("Held der Woche"), "eltern", ("push",), deep_link_muster="/eltern/")
+    typ(HELD_KIND, _("Held der Woche (Kind)"), "kind", ("popup",), **kind)

@@ -1,5 +1,7 @@
 """Dashboard-Kachel "Benachrichtigungen" für Eltern (Registry von kern)."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern.registry import ELTERN, Kachel
 
 from . import selectors
@@ -17,7 +19,7 @@ def eltern_kachel():
     return Kachel(
         schluessel="benachrichtigung.liste",
         modul="benachrichtigung",
-        titel="Benachrichtigungen",
+        titel=_("Benachrichtigungen"),
         template="benachrichtigung/_kachel.html",
         zielgruppen={ELTERN},
         kontext=_kontext,

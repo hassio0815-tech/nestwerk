@@ -1,73 +1,80 @@
-# Mitwirken an Nestwerk
+# Contributing to Nestwerk
 
-Danke für dein Interesse. Nestwerk ist ein Familien-Dashboard für den eigenen Server. Beiträge sollen die Familien-Installation sicher und verständlich halten.
+🇬🇧 **English** · 🇩🇪 [Deutsch](CONTRIBUTING.de.md)
 
-## Grundregeln
+Thanks for your interest. Nestwerk is a family dashboard for your own server. Contributions should keep the family installation secure and easy to understand.
 
-- **Keine Fremddienste:** Keine Analyse, kein Tracking, keine CDN-Skripte und keine externen Requests aus der Oberfläche. Die Prüfung `tools/oberflaeche/screenshots.py` meldet jeden externen Request als Befund.
-- **Keine fremden Marken:** Grafiken und Namen sind eigene Entwürfe. Keine Figuren, Texturen oder Namen aus Spielen oder anderen Marken.
-- **Werte in der Datenbank:** Regeln und Startwerte liegen in der Datenbank, nicht fest im Code. Im Code stehen nur Definitionen und Startwerte für Datenmigrationen.
-- **Alles freiwillig:** Keine Pflichtaufgaben, keine Strafen, keine Punktabzüge.
+## Ground rules
 
-## Entwicklungsumgebung
+- **No third-party services:** No analytics, no tracking, no CDN scripts and no external requests from the interface. The check `tools/oberflaeche/screenshots.py` reports every external request as a finding.
+- **No third-party brands:** Graphics and names are our own designs. No characters, textures or names from games or other brands.
+- **Values in the database:** Rules and starting values live in the database, not in the code. The code contains only definitions and starting values for data migrations.
+- **Everything is optional:** No mandatory tasks, no penalties, no point deductions.
 
-Voraussetzung: Python 3.13 oder neuer.
+## Language
+
+- Code identifiers and code comments are in German by design.
+- UI texts use German msgids with English translations. See [docs/en/i18n.md](docs/en/i18n.md).
+
+## Development environment
+
+Requirement: Python 3.13 or newer.
 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
-python manage.py migrate          # legt data/db/nestwerk.sqlite3 an
+python manage.py migrate          # creates data/db/nestwerk.sqlite3
 python manage.py runserver        # http://127.0.0.1:8000/gesundheit/
 ```
 
-Die Konfiguration erfolgt über Umgebungsvariablen mit dem Präfix `NESTWERK_`. Eine Vorlage liegt in `.env.example`. Die Einstellungsmodule sind `nestwerk/settings/{basis,entwicklung,produktion,test}.py`.
+Configuration uses environment variables with the prefix `NESTWERK_`. A template is in `.env.example`. The settings modules are `nestwerk/settings/{basis,entwicklung,produktion,test}.py`.
 
-## Prüfungen vor jedem Commit
+## Checks before every commit
 
 ```bash
-pytest                            # Tests (inkl. Szenario-Tests in tests/szenarien)
+pytest                            # tests (incl. scenario tests in tests/szenarien)
 ruff check . && ruff format --check .
-lint-imports                      # Schichtenregeln
+lint-imports                      # layer rules
 ```
 
-Alle drei Befehle müssen grün sein. Die Schichtenregeln sind in `pyproject.toml` (Abschnitt `tool.importlinter`) hinterlegt und laufen auch in den Tests.
+All three commands must pass. The layer rules are defined in `pyproject.toml` (section `tool.importlinter`) and also run as part of the tests.
 
-## Modul-Schichten
+## Module layers
 
-Nestwerk besteht aus Django-Apps mit festen Schichten. Imports dürfen nur **nach unten** gehen:
+Nestwerk consists of Django apps with fixed layers. Imports may only point **downward**:
 
-| Schicht | Apps |
+| Layer | Apps |
 |---|---|
-| 4 Oberfläche | `oberflaeche`, `einrichtung` |
-| 3 Fach-Module | `aufgaben`, `belohnung`, `avatar`, `sondertag`, `familienziel` |
-| 2 Gemeinsame Kerne | `punkte`, `ereignisse`, `benachrichtigung`, `spielregeln` |
-| 1 Identität | `konten` |
-| 0 Basis | `kern` |
+| 4 UI | `oberflaeche`, `einrichtung` |
+| 3 Domain modules | `aufgaben`, `belohnung`, `avatar`, `sondertag`, `familienziel` |
+| 2 Shared cores | `punkte`, `ereignisse`, `benachrichtigung`, `spielregeln` |
+| 1 Identity | `konten` |
+| 0 Base | `kern` |
 
-- Fach-Module importieren einander **nicht**. Sie kommunizieren über Domain-Ereignisse und die Registry in `kern`.
-- Jede App hat nur diese öffentlichen Schnittstellen: `services.py` (schreibend), `selectors.py` (lesend), `events.py` und `registry.py`.
-- Fremde `models.py` werden nie importiert.
+- Domain modules do **not** import each other. They communicate through domain events and the registry in `kern`.
+- Each app exposes only these public interfaces: `services.py` (write), `selectors.py` (read), `events.py` and `registry.py`.
+- Other apps' `models.py` are never imported.
 
-Details: `docs/ARCHITECTURE.md`, Abschnitt 2. Eine Anleitung für neue Module steht in `docs/MODULE-ERWEITERN.md`.
+Details: `docs/ARCHITECTURE.md` (German), section 2. A guide for new modules is in [docs/en/EXTENDING-MODULES.md](docs/en/EXTENDING-MODULES.md).
 
-## Oberflächen-Screenshots
+## UI screenshots
 
-Das Werkzeug `tools/oberflaeche/` erzeugt Screenshots mit Demo-Daten (Python-Playwright). Es prüft außerdem Konsolenfehler, CSP-Verstöße und externe Requests.
+The tool in `tools/oberflaeche/` creates screenshots with demo data (Python Playwright). It also checks for console errors, CSP violations and external requests.
 
 ```bash
-.venv/bin/playwright install chromium   # nur Browser-Cache
+.venv/bin/playwright install chromium   # browser cache only
 .venv/bin/python tools/oberflaeche/screenshots.py --ziel docs/screenshots/phaseN
 ```
 
-Die Demo-Daten sind fiktiv. Vor dem Commit die PNGs ansehen. Die Heuristiken ersetzen die Sichtprüfung nicht. Details: `tools/oberflaeche/README.md`.
+The demo data is fictional. Look at the PNGs before committing. The heuristics do not replace a visual check. Details: `tools/oberflaeche/README.md`.
 
-## Commits und Pull Requests
+## Commits and pull requests
 
-- Format: [Conventional Commits](https://www.conventionalcommits.org/) mit Modul in Klammern, z. B. `feat(sondertag): Wunsch-Pop-up`, `fix(punkte): Rundung im Serienbonus`, `docs: Installationsanleitung`.
-- Ein Commit ist ein abgeschlossener Schritt mit Tests.
-- Pull Requests beschreiben, **warum** die Änderung nötig ist, und nennen die betroffenen Schichten.
+- Format: [Conventional Commits](https://www.conventionalcommits.org/) with the module in parentheses, e.g. `feat(sondertag): wish pop-up`, `fix(punkte): rounding in the streak bonus`, `docs: installation guide`.
+- A commit is one completed step, with tests.
+- Pull requests explain **why** the change is needed and name the affected layers.
 
-## Datenschutz
+## Privacy
 
-- Keine echten Namen, E-Mail-Adressen, IP-Adressen oder Domains in Code, Tests, Screenshots oder Doku. Verwende Platzhalter wie `nestwerk.example.org`, `<VM-IP>` oder `Mama`/`Papa` mit Demo-Daten.
-- Keine Zugangsdaten, Tokens oder Schlüssel ins Repository. Die `.env` gehört nie ins Git.
+- No real names, email addresses, IP addresses or domains in code, tests, screenshots or docs. Use placeholders such as `nestwerk.example.org`, `<VM-IP>` or `Mama`/`Papa` with demo data.
+- No credentials, tokens or keys in the repository. The `.env` file never belongs in Git.

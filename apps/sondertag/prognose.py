@@ -18,7 +18,12 @@ from dataclasses import dataclass, field
 from datetime import date, timedelta
 from decimal import Decimal
 
+from django.utils import formats
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
+
 from apps.kern import einstellungen, zeit
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 from apps.spielregeln import prognose as rang_prognose
 from apps.spielregeln import selectors as spielregeln
@@ -30,9 +35,9 @@ GRUEN, GELB, ROT = "gruen", "gelb", "rot"
 KANDIDATEN = tuple(Decimal(i) / 20 for i in range(8, 41))  # 0,40 … 2,00 in 0,05er-Schritten
 SCHWELLE, WOCHEN = "schwelle", "wochen"
 AMPEL_TEXT = {
-    GRUEN: "Ziel erreicht",
-    GELB: "knapp unter dem Ziel",
-    ROT: "deutlich unter dem Ziel",
+    GRUEN: gettext_lazy("Ziel erreicht"),
+    GELB: gettext_lazy("knapp unter dem Ziel"),
+    ROT: gettext_lazy("deutlich unter dem Ziel"),
 }
 MAX_ZYKLEN = 8
 
@@ -154,7 +159,13 @@ def rechnen(e: Eingabe, faktor_schwelle: Decimal, faktor_wochen: Decimal) -> Erg
                 tag = start + timedelta(weeks=wochen)
                 if tag >= jahre[-1].ende:
                     break
-                fruehe.append((tag, f"{s.name} (Zyklus {s.godmode_zyklus + i})"))
+                fruehe.append(
+                    (
+                        tag,
+                        _("%(name)s (Zyklus %(nr)s)")
+                        % {"name": uebersetzt(s.name), "nr": s.godmode_zyklus + i},
+                    )
+                )
             continue
         if s.rang_ziel:
             start = rang_datum.get(s.rang_ziel)
@@ -205,7 +216,7 @@ def _schritte(kind) -> tuple[list[Schritt], int]:
                 zyklus += 1
             ergebnis.append(
                 Schritt(
-                    regel.name,
+                    uebersetzt(regel.name),
                     0,
                     0,
                     godmode_wochen=max(0, zyklus * laenge - ist),
@@ -215,7 +226,7 @@ def _schritte(kind) -> tuple[list[Schritt], int]:
         else:
             k = selectors._kandidat_rang(kind, regel, namen)
             if k is not None:
-                ergebnis.append(Schritt(regel.name, k["rang_ziel"], k["mods_fehlen"]))
+                ergebnis.append(Schritt(uebersetzt(regel.name), k["rang_ziel"], k["mods_fehlen"]))
     return ergebnis, laenge
 
 
@@ -225,7 +236,7 @@ def eingabe(kind, heute: date | None = None) -> Eingabe:
     f = spielregeln.rang_fortschritt(kind)
     aktuell = f.rang
     offen = tuple(
-        (r.stufe, r.name, r.xp_schwelle, r.min_aktive_wochen)
+        (r.stufe, uebersetzt(r.name), r.xp_schwelle, r.min_aktive_wochen)
         for r in spielregeln.raenge()
         if aktuell is None or r.stufe > aktuell.stufe
     )
@@ -261,15 +272,16 @@ class Empfehlung:
 
     @property
     def knopf_text(self) -> str:
-        return "XP-Schwellen" if self.knopf == SCHWELLE else "Mindestwochen"
+        return _("XP-Schwellen") if self.knopf == SCHWELLE else _("Mindestwochen")
 
     @property
     def text(self) -> str:
         zahlen = " / ".join(str(j.anzahl) for j in self.jahre)
-        return (
-            f"Faktor {str(self.faktor).replace('.', ',')} auf die {self.knopf_text} "
-            f"würde {zahlen} Sondertage in den beiden App-Jahren ergeben."
-        )
+        faktor = faktor_text(self.faktor)
+        return _(
+            "Faktor %(faktor)s auf die %(knopf)s "
+            "würde %(zahlen)s Sondertage in den beiden App-Jahren ergeben."
+        ) % {"faktor": faktor, "knopf": self.knopf_text, "zahlen": zahlen}
 
 
 @dataclass
@@ -352,9 +364,11 @@ def fuer_kind(kind, heute: date | None = None) -> Zeile:
         zeile.texte.append(e.basis.hinweis)
     elif erg.ziele and not zeile.xp_bindet:
         zeile.texte.append(
-            "Die XP-Schwellen bremsen hier nie: nur die Mindest-Aktivwochen bestimmen das Tempo "
-            "(P-07). Ein Faktor auf die XP-Schwellen ändert deshalb nichts; "
-            "den Faktor auf die Mindestwochen könnt ihr stattdessen nutzen."
+            _(
+                "Die XP-Schwellen bremsen hier nie: nur die Mindest-Aktivwochen bestimmen das "
+                "Tempo (P-07). Ein Faktor auf die XP-Schwellen ändert deshalb nichts; "
+                "den Faktor auf die Mindestwochen könnt ihr stattdessen nutzen."
+            )
         )
     return zeile
 
@@ -364,4 +378,5 @@ def uebersicht(heute: date | None = None) -> list[Zeile]:
 
 
 def faktor_text(wert: Decimal | None) -> str:
-    return "" if wert is None else f"{wert:.2f}".replace(".", ",")
+    """Faktor mit Dezimalzeichen der aktiven Sprache (de: 0,85, en: 0.85)."""
+    return "" if wert is None else formats.number_format(wert, decimal_pos=2)

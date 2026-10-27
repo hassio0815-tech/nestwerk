@@ -28,6 +28,8 @@ Endzustände: ``abgelehnt``, ``nicht_uebernommen``, ``storniert``.
 
 from __future__ import annotations
 
+from django.utils.translation import gettext as _
+
 from .models import AufgabenInstanz, InstanzStatus
 
 S = InstanzStatus
@@ -77,14 +79,14 @@ def uebergang(instanz: AufgabenInstanz, nach: str, *, von=None, bedingung=None, 
     """
     ausgang = (von,) if isinstance(von, str) else tuple(von or (instanz.status,))
     if instanz.status not in ausgang:
-        raise UngueltigerUebergang("Die Aufgabe wurde inzwischen geändert.")
+        raise UngueltigerUebergang(_("Die Aufgabe wurde inzwischen geändert."))
     for status in ausgang:
         pruefen(status, nach)
     treffer = AufgabenInstanz.objects.filter(
         pk=instanz.pk, status__in=ausgang, **(bedingung or {})
     ).update(status=nach, **felder)
     if not treffer:
-        raise UngueltigerUebergang("Die Aufgabe wurde inzwischen geändert.")
+        raise UngueltigerUebergang(_("Die Aufgabe wurde inzwischen geändert."))
     instanz.status = nach
     for name, wert in felder.items():
         setattr(instanz, name, wert)

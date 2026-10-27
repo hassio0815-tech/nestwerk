@@ -1,23 +1,23 @@
-<section id="wochenplan" class="wochenplan" data-wochenplan>
+{% load i18n %}<section id="wochenplan" class="wochenplan" data-wochenplan>
   <div class="zeile">
-    <h1>Wochenplan <small>{{ woche.montag|date:"d.m." }} – {{ woche.sonntag|date:"d.m.Y" }} (KW {{ woche.woche }})</small></h1>
-    <nav class="reihe" aria-label="Woche wählen">
+    <h1>{% translate "Wochenplan" %} <small>{% translate "d.m." context "Datum ohne Jahr" as dkurz %}{% translate "d.m.Y" context "Datum" as dvoll %}{{ woche.montag|date:dkurz }} – {{ woche.sonntag|date:dvoll }} ({% blocktranslate with kw=woche.woche %}KW {{ kw }}{% endblocktranslate %})</small></h1>
+    <nav class="reihe" aria-label="{% translate "Woche wählen" %}">
       {% url "aufgaben:wochenplan" as wp_url %}
-      <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}?datum={{ vorherige|date:'Y-m-d' }}" hx-get="{{ wp_url }}?datum={{ vorherige|date:'Y-m-d' }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true">{% include "komponenten/icon.html" with name="pfeil-links" %}<span>Vorherige</span></a>
-      <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}" hx-get="{{ wp_url }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true"><span>Heute</span></a>
-      <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}?datum={{ naechste|date:'Y-m-d' }}" hx-get="{{ wp_url }}?datum={{ naechste|date:'Y-m-d' }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true"><span>Nächste</span>{% include "komponenten/icon.html" with name="pfeil-rechts" %}</a>
+      <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}?datum={{ vorherige|date:'Y-m-d' }}" hx-get="{{ wp_url }}?datum={{ vorherige|date:'Y-m-d' }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true">{% include "komponenten/icon.html" with name="pfeil-links" %}<span>{% translate "Vorherige" %}</span></a>
+      <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}" hx-get="{{ wp_url }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true"><span>{% translate "Heute" %}</span></a>
+      <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}?datum={{ naechste|date:'Y-m-d' }}" hx-get="{{ wp_url }}?datum={{ naechste|date:'Y-m-d' }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true"><span>{% translate "Nächste" %}</span>{% include "komponenten/icon.html" with name="pfeil-rechts" %}</a>
     </nav>
   </div>
   {% if fehler %}<div class="toast toast--fehler" role="alert">{% include "komponenten/icon.html" with name="warnung" %}<span class="toast__text">{{ fehler }}</span></div>{% endif %}
   {% if meldung %}<div class="toast toast--erfolg" role="status">{% include "komponenten/icon.html" with name="check" %}<span class="toast__text">{{ meldung }}</span></div>{% endif %}
-  <p class="wochenplan__hinweis">Karten per Ziehen (Handy: gedrückt halten) auf einen anderen Tag legen oder mit „Verschieben“ ein Datum wählen.</p>
+  <p class="wochenplan__hinweis">{% translate "Karten per Ziehen (Handy: gedrückt halten) auf einen anderen Tag legen oder mit „Verschieben“ ein Datum wählen." %}</p>
   <div class="wochenplan__raster">
     {% for tag in tage %}
       <section class="wochenplan__tag{% if tag.heute %} wochenplan__tag--heute{% endif %}{% if not tag.instanzen %} wochenplan__tag--leer{% endif %}" aria-labelledby="tag-{{ tag.datum|date:'Y-m-d' }}">
         <header class="wochenplan__kopf">
-          <h2 id="tag-{{ tag.datum|date:'Y-m-d' }}">{{ tag.datum|date:"D j.n." }}</h2>
+          <h2 id="tag-{{ tag.datum|date:'Y-m-d' }}">{% translate "D j.n." context "Datum mit Wochentag" as dtag %}{{ tag.datum|date:dtag }}</h2>
           {% url "aufgaben:neu" as neu_url %}
-          <a class="knopf knopf--geist knopf--klein" href="{{ neu_url }}?datum={{ tag.datum|date:'Y-m-d' }}" aria-label="Neue Aufgabe am {{ tag.datum|date:'j.n.' }}">{% include "komponenten/icon.html" with name="plus" %}</a>
+          <a class="knopf knopf--geist knopf--klein" href="{{ neu_url }}?datum={{ tag.datum|date:'Y-m-d' }}" aria-label="{% translate "j.n." context "Datum ohne Jahr kurz" as dtk %}{% blocktranslate with datum=tag.datum|date:dtk %}Neue Aufgabe am {{ datum }}{% endblocktranslate %}">{% include "komponenten/icon.html" with name="plus" %}</a>
         </header>
         <div class="wochenplan__liste" data-tag="{{ tag.datum|date:'Y-m-d' }}">
           {% for i in tag.instanzen %}{% include "aufgaben/_wochenplan_karte.html" %}{% endfor %}
@@ -27,7 +27,7 @@
   </div>
   {% if ohne_termin %}
     <section class="wochenplan__ohne">
-      <h2>Ohne Termin</h2>
+      <h2>{% translate "Ohne Termin" %}</h2>
       <div class="wochenplan__liste wochenplan__liste--info">
         {% for i in ohne_termin %}{% include "aufgaben/_wochenplan_karte.html" with ohne=True %}{% endfor %}
       </div>

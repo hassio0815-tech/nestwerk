@@ -1,73 +1,81 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nestwerk – das Familien-Dashboard für Aufgaben, Belohnungen und Lernen</title>
-  <meta name="description" content="Nestwerk: the family hub for chores, rewards &amp; learning. Selbst gehostet, werbefrei, mit Avataren, Punkten und Familienzielen.">
+  <title data-i18n="titel">Nestwerk – the family hub for chores, rewards &amp; learning</title>
+  <meta name="description" content="Nestwerk: the self-hosted family hub for chores, rewards &amp; learning. Ad-free, with avatars, points and family goals. In English and German.">
   <meta name="theme-color" content="#0E7C74">
   <link rel="icon" href="bilder/favicon.ico" sizes="48x48">
   <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32.png">
   <link rel="apple-touch-icon" href="bilder/apple-touch-icon-180.png">
+  <link rel="alternate" hreflang="en" href="https://hassio0815-tech.github.io/nestwerk/?lang=en">
+  <link rel="alternate" hreflang="de" href="https://hassio0815-tech.github.io/nestwerk/?lang=de">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Nestwerk – the family hub for chores, rewards &amp; learning">
-  <meta property="og:description" content="Aufgaben, Belohnungen und Lernen für die ganze Familie. Selbst gehostet und werbefrei.">
+  <meta property="og:description" content="Chores, rewards and learning for the whole family. Self-hosted and ad-free.">
   <meta property="og:image" content="https://hassio0815-tech.github.io/nestwerk/bilder/social-preview-1280x640.png">
   <meta property="og:url" content="https://hassio0815-tech.github.io/nestwerk/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Nestwerk – the family hub for chores, rewards &amp; learning">
-  <meta name="twitter:description" content="Aufgaben, Belohnungen und Lernen für die ganze Familie. Selbst gehostet und werbefrei.">
+  <meta name="twitter:description" content="Chores, rewards and learning for the whole family. Self-hosted and ad-free.">
   <meta name="twitter:image" content="https://hassio0815-tech.github.io/nestwerk/bilder/social-preview-1280x640.png">
   <link rel="stylesheet" href="style.css">
+  <script src="sprache.js" defer></script>
 </head>
 <body>
-  <a class="sprung" href="#inhalt">Zum Inhalt</a>
+  <a class="sprung" href="#inhalt" data-i18n="sprung">Skip to content</a>
   <header class="kopf">
     <a class="kopf__marke" href="#top"><img src="bilder/icon-klein.svg" alt="" width="32" height="32"><span>Nestwerk</span></a>
-    <nav aria-label="Hauptnavigation">
-      <a href="#funktionen">Funktionen</a>
+    <nav aria-label="Main navigation" data-i18n-aria="nav">
+      <a href="#funktionen" data-i18n="nav_funktionen">Features</a>
       <a href="#galerie">Screenshots</a>
-      <a href="#datenschutz">Datenschutz</a>
-      <a href="#technik">Technik</a>
+      <a href="#datenschutz" data-i18n="nav_datenschutz">Privacy</a>
+      <a href="#technik" data-i18n="nav_technik">Tech</a>
     </nav>
+    <div class="sprachwahl" role="group" aria-label="Language">
+      <button type="button" data-sprache="en" lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-sprache="de" lang="de" aria-pressed="false">DE</button>
+    </div>
   </header>
   <main id="inhalt">
     <section class="hero" id="top">
       <div class="huelle hero__innen">
         <img class="hero__logo" src="bilder/logo-vertikal.svg" alt="Nestwerk – the family hub for chores, rewards &amp; learning" width="320" height="320">
-        <h1>Aufgaben, Belohnungen und Lernen für die ganze Familie</h1>
+        <h1 data-i18n="h1">Chores, rewards and learning for the whole family</h1>
         <p class="hero__sub">the family hub for chores, rewards &amp; learning</p>
-        <p class="hero__text">Nestwerk ist ein freies Familien-Dashboard, das ihr auf dem eigenen Server betreibt.</p>
+        <p class="hero__text" data-i18n="hero_text">Nestwerk is a free family dashboard that you run on your own server. In English and German.</p>
         <div class="knoepfe">
-          <a class="knopf knopf--primaer" href="https://github.com/hassio0815-tech/nestwerk">Auf GitHub ansehen</a>
-          <a class="knopf knopf--sekundaer" href="https://github.com/hassio0815-tech/nestwerk/blob/main/docs/INSTALLATION.md">Installation</a>
+          <a class="knopf knopf--primaer" href="https://github.com/hassio0815-tech/nestwerk" data-i18n="knopf_github">View on GitHub</a>
+          <a class="knopf knopf--sekundaer" href="https://github.com/hassio0815-tech/nestwerk/blob/main/docs/en/INSTALLATION.md" data-i18n="knopf_installation" data-i18n-href="link_installation">Installation</a>
         </div>
       </div>
     </section>
 
     <section class="abschnitt" id="was">
       <div class="huelle schmal">
-        <h2>Was ist Nestwerk?</h2>
-        <p>Nestwerk macht Haushalt und Mithelfen zum gemeinsamen Spiel. Kinder helfen freiwillig, sammeln dafür Punkte und tauschen sie gegen Belohnungen, die die Familie selbst festlegt.</p>
-        <p>Jedes Kind baut sich einen eigenen Block-Avatar, steigt im Rang auf und sammelt Abzeichen. Als Familie arbeitet ihr gemeinsam auf ein Ziel hin.</p>
-        <p>Eltern behalten mit einem ruhigen Dashboard die Übersicht und entscheiden, was zählt. Alles läuft lokal bei euch zu Hause, ohne Cloud und ohne Konto bei Dritten.</p>
+        <h2 data-i18n="was_h">What is Nestwerk?</h2>
+        <p data-i18n="was_1">Nestwerk turns housework and helping out into a game the family plays together. Kids help voluntarily, earn points and trade them for rewards the family chooses itself.</p>
+        <p data-i18n="was_2">Every kid builds their own block avatar, climbs the ranks and collects badges. As a family you work towards a shared goal.</p>
+        <p data-i18n="was_3">Parents keep track on a calm dashboard and decide what counts. Everything runs locally at home, with no cloud and no third-party accounts.</p>
       </div>
     </section>
 
     <section class="abschnitt abschnitt--getoent" id="funktionen">
       <div class="huelle">
-        <h2>Funktionen</h2>
+        <h2 data-i18n="funktionen_h">Features</h2>
         <ul class="karten">
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12.5l3 3 5-6"/></svg></span><h3>Aufgaben &amp; Freigabe</h3><p>Aufgaben anlegen, wiederholen und abhaken. Nachweise und Freigabe durch die Eltern halten es fair.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M14.500 9.500h-3.500a1.500 1.500 0 000 3h2a1.500 1.500 0 010 3H9.500"/></svg></span><h3>Punkte &amp; Belohnungen</h3><p>Freiwillige Hilfe zählt Punkte. Dafür gibt es Belohnungen aus einem Katalog, den ihr selbst festlegt.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.900 3-6 7-6s7 2.100 7 6"/><path d="M17.500 3.500l.8 1.700 1.700.8-1.700.8-.8 1.700-.8-1.700-1.700-.8 1.700-.8z"/></svg></span><h3>Avatare &amp; Mods</h3><p>Jedes Kind baut seine Block-Figur aus Mods, die es sich im Mod-Shop erarbeitet.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.600 5.300 5.900.9-4.300 4.100 1 5.800L12 16.300 6.800 19.100l1-5.800L3.500 9.200l5.900-.9z"/></svg></span><h3>Ränge, Serien &amp; Abzeichen</h3><p>Ränge von Common bis God Mode, Serien über Tage und Wochen und Abzeichen zum Sammeln.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 01-10 0z"/><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M12 14v4M8.500 20h7"/></svg></span><h3>Familienziel &amp; Held der Woche</h3><p>Alle zusammen auf ein Ziel hin, die Kinder stimmen ab. Der Held der Woche wird gefeiert.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="5" width="17" height="15" rx="2.500"/><path d="M3.500 10h17M8 3v4M16 3v4M12 13.200l1 2 2.200.3-1.600 1.500.4 2.200-2-1.100-2 1.100.4-2.200-1.600-1.500 2.200-.3z"/></svg></span><h3>Sondertag</h3><p>Wer seine Mods komplett ausgebaut hat, verdient sich einen eigenen Sondertag.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5M5 9v9M9.500 9v9M14.500 9v9M19 9v9M3 20h18"/></svg></span><h3>Ruhmeshalle</h3><p>Besondere Momente und Rekorde der Familie bleiben dauerhaft sichtbar.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="3.500" width="7" height="9" rx="1.500"/><rect x="13.500" y="3.500" width="7" height="5" rx="1.500"/><rect x="13.500" y="11.500" width="7" height="9" rx="1.500"/><rect x="3.500" y="15.500" width="7" height="5" rx="1.500"/></svg></span><h3>Eltern-Dashboard</h3><p>Offene Entscheidungen, Kinder, Sondertage und Einstellungen auf einen Blick.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.500" width="14" height="10" rx="2"/><path d="M8 10.500V8a4 4 0 018 0v2.500M12 14.500v2.500"/></svg></span><h3>Datenschutz &amp; Selbst-gehostet</h3><p>Läuft auf eurem eigenen Server. Keine Cloud, kein Tracking, keine Werbung.</p></li>
-        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4h4v3a2 2 0 104 0h2v6h-3a2 2 0 100 4h3v3H4V4h4a2 2 0 112 0z" transform="translate(0 -1) scale(.95)"/></svg></span><h3>Modular erweiterbar</h3><p>Lernen und Forschen sind als nächste Module geplant. Neue Bausteine fügen sich in das gleiche System ein.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12.5l3 3 5-6"/></svg></span><h3 data-i18n="f1_h">Tasks &amp; approval</h3><p data-i18n="f1_p">Create, repeat and tick off tasks. Proof photos and parent approval keep it fair.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M14.500 9.500h-3.500a1.500 1.500 0 000 3h2a1.500 1.500 0 010 3H9.500"/></svg></span><h3 data-i18n="f2_h">Points &amp; rewards</h3><p data-i18n="f2_p">Voluntary help earns points. Kids redeem them for rewards from a catalogue you set up yourself.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.900 3-6 7-6s7 2.100 7 6"/><path d="M17.500 3.500l.8 1.700 1.700.8-1.700.8-.8 1.700-.8-1.700-1.700-.8 1.700-.8z"/></svg></span><h3 data-i18n="f3_h">Avatars &amp; mods</h3><p data-i18n="f3_p">Every kid builds a block figure from mods they earn in the mod shop.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.600 5.300 5.900.9-4.300 4.100 1 5.800L12 16.300 6.800 19.100l1-5.800L3.500 9.200l5.900-.9z"/></svg></span><h3 data-i18n="f4_h">Ranks, streaks &amp; badges</h3><p data-i18n="f4_p">Ranks from Common to God Mode, streaks over days and weeks, and badges to collect.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 01-10 0z"/><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M12 14v4M8.500 20h7"/></svg></span><h3 data-i18n="f5_h">Family goal &amp; hero of the week</h3><p data-i18n="f5_p">Everyone works towards one goal and the kids vote on it. The hero of the week gets celebrated.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="5" width="17" height="15" rx="2.500"/><path d="M3.500 10h17M8 3v4M16 3v4M12 13.200l1 2 2.200.3-1.600 1.500.4 2.200-2-1.100-2 1.100.4-2.200-1.600-1.500 2.200-.3z"/></svg></span><h3 data-i18n="f6_h">Special day</h3><p data-i18n="f6_p">Kids who fully upgrade their mods earn a special day of their own.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5M5 9v9M9.500 9v9M14.500 9v9M19 9v9M3 20h18"/></svg></span><h3 data-i18n="f7_h">Hall of fame</h3><p data-i18n="f7_p">Special moments and family records stay visible for good.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="3.500" width="7" height="9" rx="1.500"/><rect x="13.500" y="3.500" width="7" height="5" rx="1.500"/><rect x="13.500" y="11.500" width="7" height="9" rx="1.500"/><rect x="3.500" y="15.500" width="7" height="5" rx="1.500"/></svg></span><h3 data-i18n="f8_h">Parents' dashboard</h3><p data-i18n="f8_p">Open decisions, kids, special days and settings at a glance.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.500" width="14" height="10" rx="2"/><path d="M8 10.500V8a4 4 0 018 0v2.500M12 14.500v2.500"/></svg></span><h3 data-i18n="f9_h">Private &amp; self-hosted</h3><p data-i18n="f9_p">Runs on your own server. No cloud, no tracking, no ads.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h9M8.500 3v2M6 5c0 4 3 7 6 8M11 5c0 3-3 7-7 9"/><path d="M13 21l4-9 4 9M14.300 18h5.400"/></svg></span><h3 data-i18n="f10_h">English &amp; German</h3><p data-i18n="f10_p">Each family member picks their language; notifications arrive in their language too.</p></li>
+        <li class="karte"><span class="karte__icon"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4h4v3a2 2 0 104 0h2v6h-3a2 2 0 100 4h3v3H4V4h4a2 2 0 112 0z" transform="translate(0 -1) scale(.95)"/></svg></span><h3 data-i18n="f11_h">Modular</h3><p data-i18n="f11_p">Learning and research are planned as the next modules. New building blocks fit into the same system.</p></li>
         </ul>
       </div>
     </section>
@@ -75,39 +83,39 @@
     <section class="abschnitt" id="galerie">
       <div class="huelle">
         <h2>Screenshots</h2>
-        <p class="einleitung">Kinder-Ansichten sind dunkel und verspielt, die Eltern-Ansicht ist hell und ruhig. Ein Klick öffnet das Bild groß.</p>
+        <p class="einleitung" data-i18n="galerie_text">Kids' views are dark and playful, the parents' view is light and calm. Click to open a picture in full size.</p>
         <div class="galerie">
-        <figure><a href="bilder/kinder-dashboard.jpg"><img src="bilder/kinder-dashboard.jpg" alt="Das Dashboard eines Kindes mit Avatar, Punkten, Familienziel und offenen Aufgaben im dunklen Design." width="1280" height="880" loading="lazy"></a><figcaption>Kinder-Dashboard</figcaption></figure>
-        <figure><a href="bilder/tablet-ranking.jpg"><img src="bilder/tablet-ranking.jpg" alt="Tablet-Startseite mit Familienziel und Ranking der Kinder." width="1280" height="900" loading="lazy"></a><figcaption>Flur-Tablet</figcaption></figure>
-        <figure><a href="bilder/avatar-galerie.jpg"><img src="bilder/avatar-galerie.jpg" alt="Galerie der Block-Avatare, aus denen jedes Kind sein Thema wählt." width="1280" height="900" loading="lazy"></a><figcaption>Avatar-Galerie</figcaption></figure>
-        <figure><a href="bilder/mod-shop.jpg"><img src="bilder/mod-shop.jpg" alt="Der Mod-Shop mit Ausbaustufe, Schmiede und den Mods des Kindes." width="1280" height="900" loading="lazy"></a><figcaption>Mod-Shop</figcaption></figure>
-        <figure><a href="bilder/familienziel.jpg"><img src="bilder/familienziel.jpg" alt="Gemeinsames Familienziel mit Fortschrittsbalken und Abstimmung für die nächste Woche." width="1280" height="900" loading="lazy"></a><figcaption>Familienziel</figcaption></figure>
-        <figure><a href="bilder/eltern-dashboard.jpg"><img src="bilder/eltern-dashboard.jpg" alt="Das helle Eltern-Dashboard mit offenen Entscheidungen, Kindern und Sondertagen." width="1280" height="900" loading="lazy"></a><figcaption>Eltern-Dashboard</figcaption></figure>
+        <figure><a href="bilder/en/kinder-dashboard.jpg" data-bild="kinder-dashboard.jpg"><img src="bilder/en/kinder-dashboard.jpg" data-bild="kinder-dashboard.jpg" alt="A kid's dashboard with avatar, points and open tasks in the dark design." data-i18n-alt="b1_alt" width="1280" height="900" loading="lazy"></a><figcaption data-i18n="b1">Kids' dashboard</figcaption></figure>
+        <figure><a href="bilder/en/tablet-ranking.jpg" data-bild="tablet-ranking.jpg"><img src="bilder/en/tablet-ranking.jpg" data-bild="tablet-ranking.jpg" alt="Tablet home screen with family goal and the kids' ranking." data-i18n-alt="b2_alt" width="1280" height="900" loading="lazy"></a><figcaption data-i18n="b2">Hallway tablet</figcaption></figure>
+        <figure><a href="bilder/en/avatar-galerie.jpg" data-bild="avatar-galerie.jpg"><img src="bilder/en/avatar-galerie.jpg" data-bild="avatar-galerie.jpg" alt="Gallery of block avatars from which every kid picks a theme." data-i18n-alt="b3_alt" width="1280" height="900" loading="lazy"></a><figcaption data-i18n="b3">Avatar gallery</figcaption></figure>
+        <figure><a href="bilder/en/mod-shop.jpg" data-bild="mod-shop.jpg"><img src="bilder/en/mod-shop.jpg" data-bild="mod-shop.jpg" alt="The mod shop with build level, forge and the kid's mods." data-i18n-alt="b4_alt" width="1280" height="900" loading="lazy"></a><figcaption data-i18n="b4">Mod shop</figcaption></figure>
+        <figure><a href="bilder/en/familienziel.jpg" data-bild="familienziel.jpg"><img src="bilder/en/familienziel.jpg" data-bild="familienziel.jpg" alt="Shared family goal with progress bar and the vote for next week." data-i18n-alt="b5_alt" width="1280" height="900" loading="lazy"></a><figcaption data-i18n="b5">Family goal</figcaption></figure>
+        <figure><a href="bilder/en/eltern-dashboard.jpg" data-bild="eltern-dashboard.jpg"><img src="bilder/en/eltern-dashboard.jpg" data-bild="eltern-dashboard.jpg" alt="The light parents' dashboard with open decisions, kids and family goal." data-i18n-alt="b6_alt" width="1280" height="900" loading="lazy"></a><figcaption data-i18n="b6">Parents' dashboard</figcaption></figure>
         </div>
       </div>
     </section>
 
     <section class="abschnitt abschnitt--getoent" id="datenschutz">
       <div class="huelle schmal">
-        <h2>Datenschutz</h2>
+        <h2 data-i18n="ds_h">Privacy</h2>
         <ul class="haken">
-          <li>Alle Daten bleiben auf eurem Server.</li>
-          <li>Keine Werbung, kein Tracking, keine externen Dienste, auch keine fremden Schriften oder CDNs.</li>
-          <li>Benachrichtigungen per eigenem Web-Push und eigenem Mailserver.</li>
-          <li>Kinder haben nur Benutzernamen und PIN, keine E-Mail-Adresse.</li>
+          <li data-i18n="ds_1">All data stays on your server.</li>
+          <li data-i18n="ds_2">No ads, no tracking, no external services, not even third-party fonts or CDNs.</li>
+          <li data-i18n="ds_3">Notifications via your own web push and your own mail server.</li>
+          <li data-i18n="ds_4">Kids only have a username and PIN, no e-mail address.</li>
         </ul>
       </div>
     </section>
 
     <section class="abschnitt" id="technik">
       <div class="huelle schmal">
-        <h2>Technik</h2>
-        <p>Nestwerk basiert auf Django und läuft in Docker. Als Progressive Web App lässt es sich auf dem Handy und dem Flur-Tablet wie eine App installieren. Die Oberfläche kommt ohne externe Ressourcen aus.</p>
+        <h2 data-i18n="tech_h">Tech</h2>
+        <p data-i18n="tech_p">Nestwerk is built on Django and runs in Docker. As a progressive web app it installs like an app on phones and the hallway tablet. The interface needs no external resources.</p>
         <ul class="chips">
-          <li>Django</li><li>Docker</li><li>PWA &amp; Web-Push</li><li>SQLite</li><li>Selbst gehostet</li>
+          <li>Django</li><li>Docker</li><li>PWA &amp; Web Push</li><li>SQLite</li><li data-i18n="chip_self">Self-hosted</li><li>English · Deutsch</li>
         </ul>
-        <h3>Lizenz</h3>
-        <p>Nestwerk steht unter der <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL-3.0</a>. Der Quellcode ist offen.</p>
+        <h3 data-i18n="lizenz_h">License</h3>
+        <p data-i18n-html="lizenz_p">Nestwerk is licensed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL-3.0</a>. The source code is open.</p>
       </div>
     </section>
   </main>
@@ -115,7 +123,7 @@
     <div class="huelle fuss__innen">
       <img src="bilder/logo-horizontal-dunkel.svg" alt="Nestwerk" width="175" height="50">
       <p>the family hub for chores, rewards &amp; learning</p>
-      <p><a href="https://github.com/hassio0815-tech/nestwerk">GitHub</a> · <a href="https://github.com/hassio0815-tech/nestwerk/blob/main/docs/INSTALLATION.md">Installation</a> · Lizenz AGPL-3.0</p>
+      <p><a href="https://github.com/hassio0815-tech/nestwerk">GitHub</a> · <a href="https://github.com/hassio0815-tech/nestwerk/blob/main/docs/en/INSTALLATION.md" data-i18n-href="link_installation">Installation</a> · <span data-i18n="fuss_lizenz">License AGPL-3.0</span></p>
     </div>
   </footer>
 </body>

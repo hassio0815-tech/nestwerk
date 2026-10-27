@@ -2,6 +2,7 @@
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
 from apps.kern import einstellungen
@@ -164,7 +165,7 @@ def manuell(request):
     p = request.POST
     kind = next((k for k in konten.aktive_kinder() if str(k.pk) == p.get("kind", "")), None)
     if kind is None:
-        return _seite(request, fehler="Bitte ein Kind wählen.", status=400)
+        return _seite(request, fehler=_("Bitte ein Kind wählen."), status=400)
     return _aktion(
         request,
         lambda: services.manuell_erfassen(

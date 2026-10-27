@@ -7,6 +7,8 @@ from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db import transaction
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from apps.kern import audit, einstellungen, zeit
 from apps.kern.einstellungen import Typ
@@ -33,7 +35,10 @@ def _hosts_pruefen(hosts):
     for host in hosts:
         h = str(host).strip().lower()
         if not _HOST_MUSTER.match(h) or h.replace(".", "").isdigit():
-            raise ValidationError(f"'{host}' ist keine gültige Host-Endung (z. B. push.apple.com)")
+            raise ValidationError(
+                _("'%(host)s' ist keine gültige Host-Endung (z. B. push.apple.com)")
+                % {"host": host}
+            )
 
 
 def einstellungen_definieren():
@@ -41,7 +46,7 @@ def einstellungen_definieren():
     einstellungen.definieren(
         "benachrichtigung.push_ttl_standard_sekunden",
         Typ.GANZZAHL,
-        "Standard-Lebensdauer einer Push-Nachricht",
+        _("Standard-Lebensdauer einer Push-Nachricht"),
         einheit="s",
         minimum=60,
         maximum=2419200,
@@ -49,45 +54,49 @@ def einstellungen_definieren():
     einstellungen.definieren(
         "benachrichtigung.zustellung_max_versuche",
         Typ.GANZZAHL,
-        "Max. Versuche je Zustellung",
-        beschreibung="Danach gilt die Zustellung als aufgegeben.",
+        _("Max. Versuche je Zustellung"),
+        beschreibung=_("Danach gilt die Zustellung als aufgegeben."),
         minimum=1,
         maximum=20,
     )
     einstellungen.definieren(
         "benachrichtigung.aufbewahrung_tage",
         Typ.GANZZAHL,
-        "Aufbewahrung gelesener Benachrichtigungen",
-        einheit="Tage",
+        _("Aufbewahrung gelesener Benachrichtigungen"),
+        einheit=_("Tage"),
         minimum=7,
         maximum=3650,
     )
     einstellungen.definieren(
         "benachrichtigung.aufbewahrung_ungelesen_tage",
         Typ.GANZZAHL,
-        "Aufbewahrung ungelesener Benachrichtigungen",
-        beschreibung="Auch ungelesene Benachrichtigungen werden danach gelöscht.",
-        einheit="Tage",
+        _("Aufbewahrung ungelesener Benachrichtigungen"),
+        beschreibung=_("Auch ungelesene Benachrichtigungen werden danach gelöscht."),
+        einheit=_("Tage"),
         minimum=30,
         maximum=3650,
     )
     einstellungen.definieren(
         "benachrichtigung.zustellung_aufbewahrung_tage",
         Typ.GANZZAHL,
-        "Aufbewahrung der Zustell-Protokolle",
-        beschreibung="Protokoll je Kanal (gesendet, stumm, Fehler) wird danach gelöscht; die "
-        "Benachrichtigung selbst bleibt nach ihrer eigenen Frist.",
-        einheit="Tage",
+        _("Aufbewahrung der Zustell-Protokolle"),
+        beschreibung=_(
+            "Protokoll je Kanal (gesendet, stumm, Fehler) wird danach gelöscht; die "
+            "Benachrichtigung selbst bleibt nach ihrer eigenen Frist."
+        ),
+        einheit=_("Tage"),
         minimum=7,
         maximum=3650,
     )
     einstellungen.definieren(
         "benachrichtigung.push_erlaubte_hosts",
         Typ.LISTE,
-        "Erlaubte Push-Dienste (Host-Endungen)",
-        beschreibung="Web-Push-Endpunkte werden nur an diese Hosts gesendet (Endung auf "
-        "Label-Grenze, z. B. push.apple.com). IP-Adressen und nicht öffentliche Ziele sind "
-        "immer gesperrt.",
+        _("Erlaubte Push-Dienste (Host-Endungen)"),
+        beschreibung=_(
+            "Web-Push-Endpunkte werden nur an diese Hosts gesendet (Endung auf "
+            "Label-Grenze, z. B. push.apple.com). IP-Adressen und nicht öffentliche Ziele sind "
+            "immer gesperrt."
+        ),
         element_typ=Typ.TEXT,
         validatoren=(_hosts_pruefen,),
     )
@@ -288,11 +297,11 @@ def aufbewahrung(jetzt=None) -> dict:
 
 def _smtp_pruefen(host, port, sicherheit, benutzername, absender):
     if not host.strip() or not benutzername.strip():
-        raise ValidationError("Server und Benutzername sind Pflicht")
+        raise ValidationError(_("Server und Benutzername sind Pflicht"))
     if not (isinstance(port, int) and 1 <= port <= 65535):
-        raise ValidationError("Port muss zwischen 1 und 65535 liegen")
+        raise ValidationError(_("Port muss zwischen 1 und 65535 liegen"))
     if sicherheit not in SmtpSicherheit.values:
-        raise ValidationError("Unbekannte Verschlüsselung")
+        raise ValidationError(_("Unbekannte Verschlüsselung"))
     validate_email(absender)
 
 
@@ -310,8 +319,8 @@ def smtp_speichern(
         elif vorhanden is not None:
             token = vorhanden.passwort_verschluesselt
         else:
-            raise ValidationError("Passwort fehlt")
-        konto, _ = SmtpKonto.objects.update_or_create(
+            raise ValidationError(_("Passwort fehlt"))
+        konto, _neu = SmtpKonto.objects.update_or_create(
             pk=1,
             defaults={
                 "host": host.strip(),
@@ -356,25 +365,28 @@ def testmail_senden(empfaenger, *, daten=None, von=audit.AKTUELL):
     try:
         validate_email(empfaenger)
     except ValidationError:
-        return TestmailErgebnis(False, "Die E-Mail-Adresse ist ungültig.")
+        return TestmailErgebnis(False, gettext("Die E-Mail-Adresse ist ungültig."))
     konto = None
     if daten is None:
         konto = SmtpKonto.objects.first()
         if konto is None:
-            return TestmailErgebnis(False, "Der Postausgang ist noch nicht eingerichtet.")
+            return TestmailErgebnis(False, gettext("Der Postausgang ist noch nicht eingerichtet."))
         try:
             daten = mail.daten_aus_konto(konto)
         except crypto.SchluesselFehler:
             return TestmailErgebnis(
-                False, "Das gespeicherte Passwort passt nicht zum Schlüssel. Bitte neu eingeben."
+                False,
+                gettext("Das gespeicherte Passwort passt nicht zum Schlüssel. Bitte neu eingeben."),
             )
     try:
         mail.senden(
             daten,
             empfaenger,
-            "Nestwerk: Testnachricht",
-            "Das ist eine Testnachricht von Nestwerk.\n\nWenn du sie liest, funktioniert der "
-            "E-Mail-Versand.",
+            "Nestwerk: " + gettext("Testnachricht"),
+            gettext(
+                "Das ist eine Testnachricht von Nestwerk.\n\nWenn du sie liest, funktioniert der "
+                "E-Mail-Versand."
+            ),
         )
     except Exception as exc:
         grund = mail.bereinigen(f"{type(exc).__name__}: {exc}", daten)
@@ -383,10 +395,14 @@ def testmail_senden(empfaenger, *, daten=None, von=audit.AKTUELL):
             akteur=von,
             details={"host": daten.host, "grund": grund[:300]},
         )
-        return TestmailErgebnis(False, f"Der Versand hat nicht geklappt ({grund[:200]}).")
+        return TestmailErgebnis(
+            False, gettext("Der Versand hat nicht geklappt (%(grund)s).") % {"grund": grund[:200]}
+        )
     if konto is not None:
         SmtpKonto.objects.filter(pk=1).update(zuletzt_getestet_am=zeit.jetzt())
     audit.protokollieren(
         "benachrichtigung.testmail_gesendet", akteur=von, details={"host": daten.host}
     )
-    return TestmailErgebnis(True, f"Testnachricht an {empfaenger} gesendet.")
+    return TestmailErgebnis(
+        True, gettext("Testnachricht an %(empfaenger)s gesendet.") % {"empfaenger": empfaenger}
+    )

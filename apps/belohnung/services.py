@@ -14,6 +14,8 @@ Die Sperrregel selbst kommt aus ``punkte.services.schreibsperre`` (eine Stelle f
 
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
@@ -24,7 +26,7 @@ from apps.punkte.services import Art
 
 from . import selectors
 from .events import ABGELEHNT, ANTRAG, BESTAETIGT
-from .models import Belohnung, Einloeseantrag, Status, TaschengeldLimit
+from .models import Belohnung, Einloeseantrag, Status, TaschengeldLimit, euro_text
 
 __all__ = [
     "AntragNichtOffen",
@@ -71,18 +73,24 @@ def antrag_stellen(kind, belohnung):
         punkte_services.schreibsperre(kind)
         belohnung = Belohnung.objects.select_related("kategorie").get(pk=belohnung.pk)
         if not belohnung.aktiv:
-            raise BelohnungInaktiv("Diese Belohnung gibt es gerade nicht.")
+            raise BelohnungInaktiv(_("Diese Belohnung gibt es gerade nicht."))
         verfuegbar = punkte_selectors.verfuegbar(kind)
         if belohnung.preis_punkte > verfuegbar:
+            fehlt = belohnung.preis_punkte - verfuegbar
             raise GuthabenReichtNicht(
-                f"Dafür fehlen dir noch {belohnung.preis_punkte - verfuegbar} Punkte."
+                ngettext(
+                    "Dafür fehlt dir noch %(punkte)s Punkt.",
+                    "Dafür fehlen dir noch %(punkte)s Punkte.",
+                    fehlt,
+                )
+                % {"punkte": fehlt}
             )
         if belohnung.kategorie.ist_taschengeld:
             frei = selectors.taschengeld_frei_cent(kind)
             if (belohnung.geldwert_cent or 0) > frei:
                 raise LimitUeberschritten(
-                    f"Das Taschengeld-Limit für diesen Monat ist erreicht "
-                    f"(noch frei: {_euro(frei)})."
+                    _("Das Taschengeld-Limit für diesen Monat ist erreicht (noch frei: %(frei)s).")
+                    % {"frei": _euro(frei)}
                 )
         antrag = Einloeseantrag.objects.create(
             kind=kind,
@@ -133,7 +141,8 @@ def bestaetigen(antrag, *, von):
             )
         except punkte_services.GuthabenUnzureichend:
             raise GuthabenReichtNicht(
-                f"{antrag.kind.anzeigename} hat nicht mehr genug Punkte für diese Belohnung."
+                _("%(name)s hat nicht mehr genug Punkte für diese Belohnung.")
+                % {"name": antrag.kind.anzeigename}
             ) from None
         antrag.status = Status.BESTAETIGT
         antrag.buchung = buchung
@@ -230,7 +239,9 @@ def _sperren_und_laden(antrag):
 
 def _offen_pruefen(antrag):
     if antrag.status != Status.OFFEN:
-        raise AntragNichtOffen(f"Der Antrag ist schon {antrag.get_status_display().lower()}.")
+        raise AntragNichtOffen(
+            _("Der Antrag ist schon %(status)s.") % {"status": antrag.get_status_display().lower()}
+        )
 
 
 def _entscheiden(antrag, von):
@@ -264,7 +275,7 @@ def _eltern_pruefen(von):
 
 
 def _euro(cent):
-    return f"{cent // 100},{cent % 100:02d} €"
+    return euro_text(cent)
 
 
 # --- Katalogpflege (Eltern) --------------------------------------------------------------------

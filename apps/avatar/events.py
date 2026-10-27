@@ -1,5 +1,7 @@
 """Ereignistypen und Texte von avatar (AP26, ARCHITECTURE 5.2)."""
 
+from django.utils.translation import gettext_noop
+
 from apps.benachrichtigung import texte
 from apps.ereignisse import registry
 
@@ -19,7 +21,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         MOD_GEKAUFT,
         modul="avatar",
-        bezeichnung="Mod gekauft",
+        bezeichnung=gettext_noop("Mod gekauft"),
         zielgruppe="eltern",
         standard_kanaele=["push"],
         deep_link_muster=LINK_ELTERN,
@@ -27,7 +29,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         MOD_FERTIG,
         modul="avatar",
-        bezeichnung="Mod fertig",
+        bezeichnung=gettext_noop("Mod fertig"),
         zielgruppe="kind",
         standard_kanaele=["push", "popup"],
         deep_link_muster=LINK_KIND,
@@ -35,7 +37,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         THEMA_GEWECHSELT,
         modul="avatar",
-        bezeichnung="Thema gewechselt",
+        bezeichnung=gettext_noop("Thema gewechselt"),
         zielgruppe="eltern",
         standard_kanaele=["push"],
         deep_link_muster=LINK_ELTERN,
@@ -43,7 +45,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         RUHMESHALLE_HELD,
         modul="avatar",
-        bezeichnung="Held in der Ruhmeshalle",
+        bezeichnung=gettext_noop("Held in der Ruhmeshalle"),
         zielgruppe="kind",
         standard_kanaele=["popup"],
         deep_link_muster=LINK_KIND_HALLE,
@@ -51,7 +53,7 @@ def typen_deklarieren():
     registry.typ_deklarieren(
         RUHMESHALLE_ELTERN,
         modul="avatar",
-        bezeichnung="Neuer Held in der Ruhmeshalle",
+        bezeichnung=gettext_noop("Neuer Held in der Ruhmeshalle"),
         zielgruppe="eltern",
         standard_kanaele=["push"],
         deep_link_muster=LINK_ELTERN_HALLE,
@@ -61,26 +63,28 @@ def typen_deklarieren():
 def texte_registrieren():
     texte.text_registrieren(
         MOD_GEKAUFT,
-        titel="{kind} hat einen Mod gekauft",
-        text="„{mod}“ für {preis} Punkte, fertig in {bauzeit}.",
+        titel=gettext_noop("{kind} hat einen Mod gekauft"),
+        text=gettext_noop("„{mod}“ für {preis} Punkte, fertig in {bauzeit}."),
     )
     texte.text_registrieren(
         MOD_FERTIG,
-        titel="Dein Mod ist fertig!",
-        text="„{mod}“ ist aus der {werkstatt} gekommen.",
+        titel=gettext_noop("Dein Mod ist fertig!"),
+        text=gettext_noop("„{mod}“ ist aus der {werkstatt} gekommen."),
     )
     texte.text_registrieren(
         THEMA_GEWECHSELT,
-        titel="{kind} hat das Thema gewechselt",
-        text="Neu: {thema}. {verloren} Mods ({wert} Punkte) sind verfallen.",
+        titel=gettext_noop("{kind} hat das Thema gewechselt"),
+        text=gettext_noop("Neu: {thema}. {verloren} Mods ({wert} Punkte) sind verfallen."),
     )
     texte.text_registrieren(
         RUHMESHALLE_HELD,
-        titel="Dein Held steht in der Ruhmeshalle!",
-        text="{thema} im Rang {rang} ist jetzt für immer dort. Auf zu einem neuen Abenteuer!",
+        titel=gettext_noop("Dein Held steht in der Ruhmeshalle!"),
+        text=gettext_noop(
+            "{thema} im Rang {rang} ist jetzt für immer dort. Auf zu einem neuen Abenteuer!"
+        ),
     )
     texte.text_registrieren(
         RUHMESHALLE_ELTERN,
-        titel="{kind} hat einen Helden in die Ruhmeshalle gestellt",
-        text="{thema} im Rang {rang}. Du kannst eine Widmung dazuschreiben.",
+        titel=gettext_noop("{kind} hat einen Helden in die Ruhmeshalle gestellt"),
+        text=gettext_noop("{thema} im Rang {rang}. Du kannst eine Widmung dazuschreiben."),
     )

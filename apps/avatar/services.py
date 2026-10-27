@@ -17,6 +17,7 @@ from datetime import timedelta
 
 from django.db import IntegrityError, transaction
 from django.urls import reverse
+from django.utils.translation import gettext
 
 from apps.kern import audit, zeit
 from apps.spielregeln.services import (  # noqa: F401 (Mod-Standards, AP26)
@@ -59,12 +60,12 @@ def figur_pruefen(figur, thema=None):
     lib = bibliothek.figur()
     figur = {**bibliothek.STANDARD_FIGUR, **(figur or {})}
     if figur["haut"] not in lib["hautfarben"]:
-        raise AvatarFehler("Unbekannter Hautton")
+        raise AvatarFehler(gettext("Unbekannter Hautton"))
     if figur["haar"] not in lib["haarfarben"]:
-        raise AvatarFehler("Unbekannte Haarfarbe")
+        raise AvatarFehler(gettext("Unbekannte Haarfarbe"))
     erlaubt = (thema.figur_varianten if thema else None) or list(lib["frisuren"])
     if figur["frisur"] not in erlaubt:
-        raise AvatarFehler("Unbekannte Frisur")
+        raise AvatarFehler(gettext("Unbekannte Frisur"))
     return {k: figur[k] for k in ("haut", "haar", "frisur")}
 
 
@@ -235,16 +236,16 @@ def vorschau_mit_mod(kind, mod, basis=None):
 def avatar_waehlen(kind, thema_schluessel, figur):
     """Erstwahl von Figur und Thema. Späterer Wechsel: ``thema_wechseln`` (mit Warnung)."""
     if not kind.ist_kind:
-        raise AvatarFehler("Nur Kinder wählen einen Avatar")
+        raise AvatarFehler(gettext("Nur Kinder wählen einen Avatar"))
     thema = Thema.objects.filter(schluessel=thema_schluessel, aktiv=True, nur_eltern=False).first()
     if thema is None:
-        raise AvatarFehler("Bitte wähle ein Thema")
+        raise AvatarFehler(gettext("Bitte wähle ein Thema"))
     figur = figur_pruefen(figur, thema)
     try:
         with transaction.atomic():
             avatar = Avatar.objects.create(benutzer=kind, thema=thema, figur=figur)
     except IntegrityError:
-        raise AvatarFehler("Du hast schon einen Avatar") from None
+        raise AvatarFehler(gettext("Du hast schon einen Avatar")) from None
     hash_aktualisieren(avatar)
     return avatar
 
@@ -265,7 +266,7 @@ def _mod(mod):
     try:
         return ModDefinition.objects.select_related("slot", "thema").get(schluessel=mod)
     except ModDefinition.DoesNotExist:
-        raise AvatarFehler("Unbekannter Mod") from None
+        raise AvatarFehler(gettext("Unbekannter Mod")) from None
 
 
 @transaction.atomic
@@ -275,11 +276,11 @@ def slot_belegen(kind, slot, mod):
     avatar = Avatar.objects.select_for_update().select_related("thema").get(pk=kind.pk)
     mod = _mod(mod)
     if mod.slot.schluessel != slot:
-        raise AvatarFehler("Der Mod passt nicht in diesen Slot")
+        raise AvatarFehler(gettext("Der Mod passt nicht in diesen Slot"))
     if mod.thema_id != avatar.thema_id:
-        raise AvatarFehler("Der Mod gehört zu einem anderen Thema")
+        raise AvatarFehler(gettext("Der Mod gehört zu einem anderen Thema"))
     if not mod.aktiv:
-        raise AvatarFehler("Der Mod ist nicht verfügbar")
+        raise AvatarFehler(gettext("Der Mod ist nicht verfügbar"))
     avatar.angelegt = {**avatar.angelegt, slot: mod.schluessel}
     avatar.save(update_fields=["angelegt"])
     hash_aktualisieren(avatar)
@@ -321,7 +322,9 @@ def name_bereinigen(roh) -> str:
     text = "".join(z for z in text if unicodedata.category(z)[0] != "C")
     text = " ".join(text.split())
     if len(text) > NAME_MAX:
-        raise AvatarFehler(f"Der Name darf höchstens {NAME_MAX} Zeichen haben.")
+        raise AvatarFehler(
+            gettext("Der Name darf höchstens %(max)s Zeichen haben.") % {"max": NAME_MAX}
+        )
     return text
 
 
@@ -330,7 +333,7 @@ def avatar_name_setzen(kind, roh) -> str:
     name = name_bereinigen(roh)
     treffer = Avatar.objects.filter(pk=kind.pk).update(name=name)
     if not treffer:
-        raise AvatarFehler("Wähle zuerst deinen Avatar.")
+        raise AvatarFehler(gettext("Wähle zuerst deinen Avatar."))
     return name
 
 

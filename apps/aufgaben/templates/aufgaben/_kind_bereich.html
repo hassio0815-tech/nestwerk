@@ -1,72 +1,72 @@
-{% comment %}Kinder-Aufgaben: eigene (mit Status/Aktionen) und freie (große Kacheln). HTMX ersetzt den ganzen Bereich.{% endcomment %}
+{% comment %}Kinder-Aufgaben: eigene (mit Status/Aktionen) und freie (große Kacheln). HTMX ersetzt den ganzen Bereich.{% endcomment %}{% load i18n sprache %}
 <div id="kind-aufgaben" class="stapel" hx-target="#kind-aufgaben" hx-swap="outerHTML">
   {% include "aufgaben/_hinweis.html" %}
 
   <section class="stapel" aria-labelledby="meine-titel">
-    <h2 id="meine-titel">Meine Aufgaben</h2>
+    <h2 id="meine-titel">{% translate "Meine Aufgaben" %}</h2>
     {% for i in eigene %}
       <article class="karte aufgabe-karte" data-status="{{ i.anzeige_status }}" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
         <div class="zeile">
-          <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>
+          <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot|uebersetzt }}</strong></span>
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
         </div>
         <span class="reihe">
-          {% if i.anzeige_status == "reserviert" %}{% include "komponenten/chip.html" with text="Deine Aufgabe" stufe="uncommon" %}{% if i.reserviert_bis %}<span class="aufgabe-karte__frist">{% include "komponenten/icon.html" with name="uhr" %} bis {{ i.reserviert_bis|date:"D H:i" }}</span>{% endif %}
-          {% elif i.anzeige_status == "konflikt" %}{% include "komponenten/chip.html" with text="Mehrere wollen sie – Eltern entscheiden" %}
-          {% elif i.anzeige_status == "nachbessern" %}<span class="chip" data-nachbessern>{% include "komponenten/icon.html" with name="hammer" %} Bitte nachbessern: {{ i.nachbessern_grund }}</span>{% if i.nachbessern_bis %}<span class="aufgabe-karte__frist">{% include "komponenten/icon.html" with name="uhr" %} bis {{ i.nachbessern_bis|date:"D H:i" }}</span>{% endif %}
-          {% elif i.anzeige_status == "gemeldet" %}{% include "komponenten/chip.html" with text="Gemeldet – wartet auf Bestätigung" stufe="rare" %}
-          {% elif i.anzeige_status == "rueckfrage" %}{% include "komponenten/chip.html" with text="Rückfrage" stufe="epic" %}
-          {% elif i.anzeige_status == "bestaetigt" %}{% include "komponenten/chip.html" with text="Geschafft!" stufe="legendary" %}{% if i.sonderpunkte %}<span class="aufgabe-karte__bonus">{% include "komponenten/icon.html" with name="stern" %} +{{ i.sonderpunkte }} Bonus: {{ i.sonderpunkte_begruendung }}</span>{% endif %}{% if i.serienbonus %}<span class="aufgabe-karte__bonus" data-serienbonus>{% include "komponenten/icon.html" with name="funke" %} +{{ i.serienbonus.guthaben_delta }} {{ i.serienbonus.begruendung }}</span>{% endif %}
-          {% elif i.anzeige_status == "abgelehnt" %}{% include "komponenten/chip.html" with text="Nicht angenommen" %}
-          {% elif i.anzeige_status == "storniert" %}{% include "komponenten/chip.html" with text="Punkte korrigiert" %}
-          {% elif i.anzeige_status == "vergeben" %}{% include "komponenten/chip.html" with text="Vergeben" %}{% endif %}
+          {% if i.anzeige_status == "reserviert" %}{% include "komponenten/chip.html" with text=_("Deine Aufgabe") stufe="uncommon" %}{% if i.reserviert_bis %}<span class="aufgabe-karte__frist">{% include "komponenten/icon.html" with name="uhr" %} {% translate "bis" %} {{ i.reserviert_bis|date:"D H:i" }}</span>{% endif %}
+          {% elif i.anzeige_status == "konflikt" %}{% include "komponenten/chip.html" with text=_("Mehrere wollen sie – Eltern entscheiden") %}
+          {% elif i.anzeige_status == "nachbessern" %}<span class="chip" data-nachbessern>{% include "komponenten/icon.html" with name="hammer" %} {% blocktranslate with grund=i.nachbessern_grund %}Bitte nachbessern: {{ grund }}{% endblocktranslate %}</span>{% if i.nachbessern_bis %}<span class="aufgabe-karte__frist">{% include "komponenten/icon.html" with name="uhr" %} {% translate "bis" %} {{ i.nachbessern_bis|date:"D H:i" }}</span>{% endif %}
+          {% elif i.anzeige_status == "gemeldet" %}{% include "komponenten/chip.html" with text=_("Gemeldet – wartet auf Bestätigung") stufe="rare" %}
+          {% elif i.anzeige_status == "rueckfrage" %}{% include "komponenten/chip.html" with text=_("Rückfrage") stufe="epic" %}
+          {% elif i.anzeige_status == "bestaetigt" %}{% include "komponenten/chip.html" with text=_("Geschafft!") stufe="legendary" %}{% if i.sonderpunkte %}<span class="aufgabe-karte__bonus">{% include "komponenten/icon.html" with name="stern" %} {% blocktranslate with punkte=i.sonderpunkte grund=i.sonderpunkte_begruendung %}+{{ punkte }} Bonus: {{ grund }}{% endblocktranslate %}</span>{% endif %}{% if i.serienbonus %}<span class="aufgabe-karte__bonus" data-serienbonus>{% include "komponenten/icon.html" with name="funke" %} +{{ i.serienbonus.guthaben_delta }} {{ i.serienbonus.begruendung }}</span>{% endif %}
+          {% elif i.anzeige_status == "abgelehnt" %}{% include "komponenten/chip.html" with text=_("Nicht angenommen") %}
+          {% elif i.anzeige_status == "storniert" %}{% include "komponenten/chip.html" with text=_("Punkte korrigiert") %}
+          {% elif i.anzeige_status == "vergeben" %}{% include "komponenten/chip.html" with text=_("Vergeben") %}{% endif %}
         </span>
         {% if i.anzeige_status == "reserviert" or i.anzeige_status == "nachbessern" %}
           <form method="post" action="{% url 'aufgaben:kind_melden' i.pk %}" hx-post="{% url 'aufgaben:kind_melden' i.pk %}" enctype="multipart/form-data" hx-encoding="multipart/form-data" class="stapel">{% csrf_token %}
             {% if i.freigabeart_snapshot != "vertrauen" %}
-              <label class="feld"><span class="feld__label">{% if i.freigabeart_snapshot == "nachweis" %}Was hast du gemacht? (Pflicht){% else %}Nachricht (optional){% endif %}</span>
+              <label class="feld"><span class="feld__label">{% if i.freigabeart_snapshot == "nachweis" %}{% translate "Was hast du gemacht? (Pflicht)" %}{% else %}{% translate "Nachricht (optional)" %}{% endif %}</span>
                 <textarea class="feld__eingabe" name="text" rows="2" maxlength="1000"{% if i.freigabeart_snapshot == "nachweis" %} required{% endif %}></textarea></label>
             {% endif %}
-            {% if i.freigabeart_snapshot == "nachweis" %}{% include "aufgaben/_nachweis_feld.html" with label="Foto (optional)" %}{% endif %}
-            {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text="Erledigt melden" %}
+            {% if i.freigabeart_snapshot == "nachweis" %}{% include "aufgaben/_nachweis_feld.html" with label=_("Foto (optional)") %}{% endif %}
+            {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text=_("Erledigt melden") %}
           </form>
           {% if i.anzeige_status == "reserviert" %}
-          <form method="post" action="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-post="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-confirm="Aufgabe wirklich zurückgeben?">{% csrf_token %}
-            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Zurückgeben" %}
+          <form method="post" action="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-post="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-confirm="{% translate "Aufgabe wirklich zurückgeben?" %}">{% csrf_token %}
+            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Zurückgeben") %}
           </form>
           {% endif %}
         {% elif i.anzeige_status == "konflikt" %}
           <form method="post" action="{% url 'aufgaben:kind_zurueckgeben' i.pk %}" hx-post="{% url 'aufgaben:kind_zurueckgeben' i.pk %}">{% csrf_token %}
-            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text="Doch nicht" %}
+            {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Doch nicht") %}
           </form>
         {% elif i.anzeige_status == "rueckfrage" %}
           <p class="aufgabe-karte__frage">{% include "komponenten/icon.html" with name="info" %} {{ i.rueckfrage_text }}</p>
           <form method="post" action="{% url 'aufgaben:kind_antworten' i.pk %}" hx-post="{% url 'aufgaben:kind_antworten' i.pk %}" enctype="multipart/form-data" hx-encoding="multipart/form-data" class="stapel">{% csrf_token %}
-            <label class="feld"><span class="feld__label">Deine Antwort</span><textarea class="feld__eingabe" name="text" rows="2" maxlength="1000"></textarea></label>
-            {% include "aufgaben/_nachweis_feld.html" with label="Foto (optional)" %}
-            {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text="Antworten" %}
+            <label class="feld"><span class="feld__label">{% translate "Deine Antwort" %}</span><textarea class="feld__eingabe" name="text" rows="2" maxlength="1000"></textarea></label>
+            {% include "aufgaben/_nachweis_feld.html" with label=_("Foto (optional)") %}
+            {% include "komponenten/button.html" with typ="submit" gross=True voll=True icon="check" text=_("Antworten") %}
           </form>
         {% endif %}
       </div></article>
     {% empty %}
-      {% include "komponenten/leer.html" with icon="liste" titel="Noch nichts gewählt" text="Such dir unten eine Aufgabe aus." %}
+      {% include "komponenten/leer.html" with icon="liste" titel=_("Noch nichts gewählt") text=_("Such dir unten eine Aufgabe aus.") %}
     {% endfor %}
   </section>
 
   <section class="stapel" aria-labelledby="offen-titel">
-    <h2 id="offen-titel">Offene Aufgaben</h2>
+    <h2 id="offen-titel">{% translate "Offene Aufgaben" %}</h2>
     <div class="raster aufgaben-raster">
       {% for i in offene %}
-        <form method="post" action="{% url 'aufgaben:kind_waehlen' i.pk %}" hx-post="{% url 'aufgaben:kind_waehlen' i.pk %}"{% if i.vergeben_an_andere %} hx-confirm="Ein anderes Kind hat sie schon gewählt. Trotzdem wollen? Dann entscheiden Mama oder Papa."{% endif %}>{% csrf_token %}
+        <form method="post" action="{% url 'aufgaben:kind_waehlen' i.pk %}" hx-post="{% url 'aufgaben:kind_waehlen' i.pk %}"{% if i.vergeben_an_andere %} hx-confirm="{% translate "Ein anderes Kind hat sie schon gewählt. Trotzdem wollen? Dann entscheiden Mama oder Papa." %}"{% endif %}>{% csrf_token %}
           <button type="submit" class="kachel aufgabe-kachel{% if i.vergeben_an_andere %} aufgabe-kachel--vergeben{% endif %}"{% if i.limit_erreicht %} disabled{% endif %}>
             {% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" klasse="kachel__icon" %}
-            <span class="kachel__titel">{{ i.titel_snapshot }}</span>
+            <span class="kachel__titel">{{ i.titel_snapshot|uebersetzt }}</span>
             {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
-            <span class="kachel__text">{% if i.limit_erreicht %}Limit erreicht{% elif i.vergeben_an_andere %}schon gewählt{% elif i.fenster_ende %}bis {{ i.fenster_ende|date:"D H:i" }}{% else %}ohne Termin{% endif %}</span>
+            <span class="kachel__text">{% if i.limit_erreicht %}{% translate "Limit erreicht" %}{% elif i.vergeben_an_andere %}{% translate "schon gewählt" %}{% elif i.fenster_ende %}{% translate "bis" %} {{ i.fenster_ende|date:"D H:i" }}{% else %}{% translate "ohne Termin" %}{% endif %}</span>
           </button>
         </form>
       {% empty %}
-        {% include "komponenten/leer.html" with icon="stern" titel="Alles erledigt" text="Gerade gibt es keine freien Aufgaben." %}
+        {% include "komponenten/leer.html" with icon="stern" titel=_("Alles erledigt") text=_("Gerade gibt es keine freien Aufgaben.") %}
       {% endfor %}
     </div>
   </section>

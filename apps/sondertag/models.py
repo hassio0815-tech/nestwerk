@@ -9,26 +9,27 @@ offener Anspruch des Kindes), weil es allein vom Datum abhängt.
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 
 from apps.kern import zeit
 
 
 class Quelle(models.TextChoices):
-    MEILENSTEIN = "meilenstein", "Meilenstein"
-    MANUELL = "manuell", "manuell erfasst"
+    MEILENSTEIN = "meilenstein", _("Meilenstein")
+    MANUELL = "manuell", _("manuell erfasst")
 
 
 class Status(models.TextChoices):
-    VERDIENT = "verdient", "verdient"
-    WUNSCH_OFFEN = "wunsch_offen", "Wunsch offen"
-    ANGENOMMEN = "angenommen", "angenommen"
-    STATTGEFUNDEN = "stattgefunden", "stattgefunden"
+    VERDIENT = "verdient", _("verdient")
+    WUNSCH_OFFEN = "wunsch_offen", _("Wunsch offen")
+    ANGENOMMEN = "angenommen", _("angenommen")
+    STATTGEFUNDEN = "stattgefunden", _("stattgefunden")
 
 
 class BegleitungWunsch(models.TextChoices):
-    MAMA = "mama", "Mama"
-    PAPA = "papa", "Papa"
-    EGAL = "egal", "egal"
+    MAMA = "mama", _("Mama")
+    PAPA = "papa", _("Papa")
+    EGAL = "egal", _("egal")
 
 
 OFFEN = (Status.VERDIENT, Status.WUNSCH_OFFEN)

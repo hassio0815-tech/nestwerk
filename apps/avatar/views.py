@@ -3,9 +3,7 @@
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseNotModified
 from django.shortcuts import redirect, render
-from django.views.decorators.http import require_GET, require_http_methods
-
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 

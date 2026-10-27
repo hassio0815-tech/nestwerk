@@ -7,8 +7,11 @@ from zoneinfo import ZoneInfo
 
 from django.http import Http404
 from django.shortcuts import redirect, render, resolve_url
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_http_methods
 
+from apps.kern.sprache import uebersetzt
 from apps.konten import akzent, begruessung
 from apps.konten import selectors as konten_selectors
 
@@ -16,17 +19,27 @@ from . import forms, services, uebersicht, zustand
 from .einstellungen import LETZTER_SCHRITT
 
 SCHRITTE = [
-    (1, "Willkommen"),
-    (2, "Eltern"),
-    (3, "Kinder"),
-    (4, "E-Mail"),
-    (5, "Netzwerk"),
-    (6, "Zeit"),
-    (7, "Startwerte"),
-    (8, "Abschluss"),
+    (1, gettext_lazy("Willkommen")),
+    (2, gettext_lazy("Eltern")),
+    (3, gettext_lazy("Kinder")),
+    (4, gettext_lazy("E-Mail")),
+    (5, gettext_lazy("Netzwerk")),
+    (6, gettext_lazy("Zeit")),
+    (7, gettext_lazy("Startwerte")),
+    (8, gettext_lazy("Abschluss")),
 ]
 TITEL = dict(SCHRITTE)
 KINDER_STARTZEILEN = 3
+FARBEN = {
+    "blau": gettext_lazy("Blau"),
+    "rot": gettext_lazy("Rot"),
+    "orange": gettext_lazy("Orange"),
+    "gelb": gettext_lazy("Gelb"),
+    "gruen": gettext_lazy("Grün"),
+    "tuerkis": gettext_lazy("Türkis"),
+    "lila": gettext_lazy("Lila"),
+    "pink": gettext_lazy("Pink"),
+}
 
 
 def _zugang(view, *, mit_token):
@@ -61,7 +74,7 @@ def _darstellen(request, nr, kontext=None):
             "nr": nr,
             "schritte": LETZTER_SCHRITT,
             "schritt": nr,
-            "schritt_titel": f"Schritt {nr}: {TITEL[nr]}",
+            "schritt_titel": _("Schritt %(nr)s: %(titel)s") % {"nr": nr, "titel": TITEL[nr]},
             "schritt_liste": SCHRITTE,
             "inhalt": f"einrichtung/s{nr}.html",
             "zurueck_url": resolve_url("einrichtung:schritt", nr=nr - 1) if nr > 1 else "",
@@ -171,7 +184,7 @@ def _s3(request, post):
     return {
         "zeilen": zeilen,
         "anzahl": len(zeilen),
-        "farben": list(akzent.PALETTE),
+        "farben": [(f, FARBEN.get(f, f.capitalize())) for f in akzent.PALETTE],
         "allgemein_fehler": allgemein,
     }
 
@@ -193,7 +206,7 @@ def _s4(request, post):
             form = forms.SmtpForm(daten, passwort_gespeichert=gespeichert)
         if form.is_valid():
             if testen and not form.cleaned_data["testadresse"]:
-                form.add_error("testadresse", "Bitte eine Adresse für die Testmail angeben.")
+                form.add_error("testadresse", _("Bitte eine Adresse für die Testmail angeben."))
             else:
                 try:
                     ergebnis = services.smtp_speichern(form.cleaned_data, testen=testen)
@@ -212,9 +225,9 @@ def _s4(request, post):
         "form": form,
         "ergebnis": ergebnis,
         "passwort_gespeichert": gespeichert,
-        "passwort_hilfe": "Gespeichert. Leer lassen, um es zu behalten."
+        "passwort_hilfe": _("Gespeichert. Leer lassen, um es zu behalten.")
         if gespeichert
-        else "Wird verschlüsselt gespeichert.",
+        else _("Wird verschlüsselt gespeichert."),
         "sicherheiten": forms.SmtpForm.base_fields["sicherheit"].choices,
     }
 
@@ -263,12 +276,14 @@ def _listen():
 
     return [
         {
-            "titel": "Belohnungs-Katalog",
-            "zeilen": [(b.titel, b.preis_punkte) for b in belohnung.katalog(nur_aktive=False)],
+            "titel": _("Belohnungs-Katalog"),
+            "zeilen": [
+                (uebersetzt(b.titel), b.preis_punkte) for b in belohnung.katalog(nur_aktive=False)
+            ],
         },
         {
-            "titel": "Aufgaben-Bibliothek",
-            "zeilen": [(v.titel, v.punkte) for v in aufgaben.vorlagen()],
+            "titel": _("Aufgaben-Bibliothek"),
+            "zeilen": [(uebersetzt(v.titel), v.punkte) for v in aufgaben.vorlagen()],
         },
     ]
 
@@ -331,7 +346,7 @@ def token(request):
         if zustand.token_stimmt(request.POST.get("token")):
             request.session[zustand.SESSION_TOKEN_OK] = True
             return redirect("einrichtung:start")
-        fehler = "Das Setup-Token stimmt nicht."
+        fehler = _("Das Setup-Token stimmt nicht.")
     return render(request, "einrichtung/token.html", {"fehler": fehler, "schritte": 0})
 
 

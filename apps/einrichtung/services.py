@@ -7,6 +7,8 @@ from dataclasses import dataclass
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.utils import translation
+from django.utils.translation import gettext as _
 
 from apps.benachrichtigung import selectors as mail_selectors
 from apps.benachrichtigung import services as mail_services
@@ -48,7 +50,7 @@ def _schritt_abschliessen(nr):
 def app_name_speichern(name):
     with transaction.atomic():
         _setzen("allgemein.anzeigename", name)
-        _setzen("allgemein.sprache", "de")
+        _setzen("allgemein.sprache", (translation.get_language() or "de")[:2])
         _schritt_abschliessen(1)
 
 
@@ -85,7 +87,10 @@ def eltern_speichern(daten):
                     )
                 else:
                     konten_services.eltern_anlegen(
-                        name, rolle_label=rolle, email=email, reihenfolge=i,
+                        name,
+                        rolle_label=rolle,
+                        email=email,
+                        reihenfolge=i,
                         wappen=wappen_wahl,
                         wappen_rolle=daten.get(f"eltern{i}_wappen_rolle") or "",
                         wappen_rolle_eigen=daten.get(f"eltern{i}_wappen_rolle_eigen") or "",
@@ -148,7 +153,7 @@ class KindZeile:
 
     @property
     def pin_hilfe(self):
-        return "Leer lassen, um die PIN zu behalten." if self.kind_id else ""
+        return _("Leer lassen, um die PIN zu behalten.") if self.kind_id else ""
 
 
 def kinder_zeilen_lesen(daten, anzahl):
@@ -202,26 +207,26 @@ def kinder_pruefen(zeilen, eltern_namen=()):
         if not z.kind_id and not z.name and not z.pin and not z.pin2:
             continue
         if not z.name:
-            z.fehler["name"] = "Bitte einen Namen eingeben."
+            z.fehler["name"] = _("Bitte einen Namen eingeben.")
         elif len(z.name) > 40:
-            z.fehler["name"] = "Höchstens 40 Zeichen."
+            z.fehler["name"] = _("Höchstens 40 Zeichen.")
         elif z.name.lower() in gesehen:
-            z.fehler["name"] = "Dieser Name ist schon vergeben."
+            z.fehler["name"] = _("Dieser Name ist schon vergeben.")
         else:
             gesehen.add(z.name.lower())
         bestehend = z.kind_id in bekannte
         if z.kind_id and not bestehend:
-            z.fehler["name"] = "Dieses Kind gibt es nicht mehr. Bitte die Seite neu laden."
+            z.fehler["name"] = _("Dieses Kind gibt es nicht mehr. Bitte die Seite neu laden.")
         if z.pin or z.pin2 or not bestehend:
             if not (z.pin.isascii() and z.pin.isdigit() and len(z.pin) == 4):
-                z.fehler["pin"] = "Die PIN besteht aus genau 4 Ziffern."
+                z.fehler["pin"] = _("Die PIN besteht aus genau 4 Ziffern.")
             elif z.pin != z.pin2:
-                z.fehler["pin2"] = "Die beiden PINs sind nicht gleich."
+                z.fehler["pin2"] = _("Die beiden PINs sind nicht gleich.")
         if z.farbe and z.farbe not in akzent.PALETTE:
-            z.fehler["farbe"] = "Unbekannte Farbe."
+            z.fehler["farbe"] = _("Unbekannte Farbe.")
         aktive.append(z)
     if not aktive:
-        allgemein.append("Bitte mindestens ein Kind eintragen.")
+        allgemein.append(_("Bitte mindestens ein Kind eintragen."))
     return aktive, allgemein
 
 
@@ -383,20 +388,20 @@ def offene_punkte():
     """Was vor dem Abschluss noch fehlt (leer = fertig)."""
     offen = []
     if zustand.freigegebener_schritt() < LETZTER_SCHRITT:
-        offen.append("Nicht alle Schritte sind durchlaufen.")
+        offen.append(_("Nicht alle Schritte sind durchlaufen."))
     if len(konten_selectors.aktive_eltern()) < 2 or not passwort_gesetzt():
-        offen.append("Eltern und Familien-Passwort fehlen (Schritt 2).")
+        offen.append(_("Eltern und Familien-Passwort fehlen (Schritt 2)."))
     if not konten_selectors.aktive_kinder().exists():
-        offen.append("Es ist kein Kind angelegt (Schritt 3).")
+        offen.append(_("Es ist kein Kind angelegt (Schritt 3)."))
     if not smtp_gespeichert() and not smtp_wurde_uebersprungen():
-        offen.append("E-Mail-Versand: einrichten oder bewusst überspringen (Schritt 4).")
+        offen.append(_("E-Mail-Versand: einrichten oder bewusst überspringen (Schritt 4)."))
     muss = [
         s
         for s in einstellungen.fehlende()
         if not s.startswith("einrichtung.") and s != "allgemein.einrichtung_abgeschlossen"
     ]
     if muss:
-        offen.append("Einstellungen ohne Wert: " + ", ".join(muss) + ".")
+        offen.append(_("Einstellungen ohne Wert: %(namen)s.") % {"namen": ", ".join(muss)})
     return offen
 
 
@@ -408,7 +413,7 @@ def zusammenfassung():
         "kinder": [k.anzeigename for k in konten_selectors.aktive_kinder()],
         "smtp": (
             f"{konto.benutzername}@{konto.host}:{konto.port}"
-            + (" (getestet)" if konto.zuletzt_getestet_am else " (nicht getestet)")
+            + (_(" (getestet)") if konto.zuletzt_getestet_am else _(" (nicht getestet)"))
             if konto
             else ""
         ),

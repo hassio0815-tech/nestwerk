@@ -1,0 +1,17 @@
+{% load i18n %}{% comment %}Eigene Sprache des angemeldeten Benutzers (Eltern und Kinder). Ohne JavaScript:
+drei Knöpfe schicken ein POST an konten:sprache_setzen. Einbinden: {% include "konten/_sprache_einstellung.html" %}{% endcomment %}
+{% with aktuell=request.user.sprache %}
+<section class="nw-karte nw-darstellung" aria-labelledby="sprache-titel">
+  <h2 id="sprache-titel">{% translate "Sprache" %}</h2>
+  <p class="feld__hinweis">{% translate "Gilt für dein Konto auf jedem Gerät. „Automatisch“ folgt deinem Gerät." %}</p>
+  <form method="post" action="{% url 'konten:sprache_setzen' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    <div class="nw-segment" role="group" aria-labelledby="sprache-titel">
+      <button type="submit" name="sprache" value="" class="{% if not aktuell %}ist-aktiv{% endif %}" aria-pressed="{% if not aktuell %}true{% else %}false{% endif %}">{% translate "Automatisch" %}</button>
+      <button type="submit" name="sprache" value="de" lang="de" class="{% if aktuell == 'de' %}ist-aktiv{% endif %}" aria-pressed="{% if aktuell == 'de' %}true{% else %}false{% endif %}">Deutsch</button>
+      <button type="submit" name="sprache" value="en" lang="en" class="{% if aktuell == 'en' %}ist-aktiv{% endif %}" aria-pressed="{% if aktuell == 'en' %}true{% else %}false{% endif %}">English</button>
+    </div>
+  </form>
+</section>
+{% endwith %}

@@ -6,15 +6,18 @@ Alle Kind-Views zeigen nur Daten des angemeldeten Kindes; Eltern-Views nur für 
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from django.views.decorators.http import require_http_methods, require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten_selectors
 from apps.konten.zugriff import aktuelles_kind, nur_eltern, nur_kind
 from apps.punkte import selectors as punkte
 
 from . import selectors, services
 from .forms import BelohnungForm, KindLimitForm, LimitForm
-from .models import Belohnung, Einloeseantrag, Status, TaschengeldLimit
+from .models import Belohnung, Einloeseantrag, Status, TaschengeldLimit, euro_text
 
 
 def _htmx(request):
@@ -22,7 +25,7 @@ def _htmx(request):
 
 
 def euro(cent):
-    return f"{cent // 100},{cent % 100:02d} €"
+    return euro_text(cent)
 
 
 # --- Kind -------------------------------------------------------------------------------------
@@ -31,9 +34,12 @@ def euro(cent):
 def _kachel_zustand(kind, belohnung, verfuegbar, frei_cent):
     """(möglich, Grund) für eine Kachel; die endgültige Prüfung macht der Service."""
     if belohnung.preis_punkte > verfuegbar:
-        return False, f"Noch {belohnung.preis_punkte - verfuegbar} Punkte"
+        fehlt = belohnung.preis_punkte - verfuegbar
+        return False, ngettext("Noch %(punkte)s Punkt", "Noch %(punkte)s Punkte", fehlt) % {
+            "punkte": fehlt
+        }
     if belohnung.kategorie.ist_taschengeld and (belohnung.geldwert_cent or 0) > frei_cent:
-        return False, "Monatslimit erreicht"
+        return False, _("Monatslimit erreicht")
     return True, ""
 
 
@@ -76,7 +82,9 @@ def beantragen(request, pk):
         antrag = services.antrag_stellen(kind, belohnung)
     except services.BelohnungFehler as fehler:
         return _kind_antwort(request, kind, fehler=str(fehler))
-    meldung = f"Antrag für „{antrag.titel_snapshot}“ ist raus. Mama oder Papa schauen drauf."
+    meldung = _("Antrag für „%(titel)s“ ist raus. Mama oder Papa schauen drauf.") % {
+        "titel": uebersetzt(antrag.titel_snapshot)
+    }
     if _htmx(request):
         return _kind_antwort(request, kind, meldung=meldung)
     return redirect("belohnung:kind")
@@ -92,7 +100,7 @@ def zurueckziehen(request, pk):
     except services.BelohnungFehler as fehler:
         return _kind_antwort(request, kind, fehler=str(fehler))
     if _htmx(request):
-        return _kind_antwort(request, kind, meldung="Antrag zurückgezogen.")
+        return _kind_antwort(request, kind, meldung=_("Antrag zurückgezogen."))
     return redirect("belohnung:kind")
 
 
@@ -197,7 +205,7 @@ def belohnung_neu(request):
     if request.method == "POST" and form.is_valid():
         services.belohnung_speichern(form, von=request.user)
         return _weiter(request, "belohnung:katalog")
-    return _formular(request, form, titel="Neue Belohnung", aktion=reverse("belohnung:neu"))
+    return _formular(request, form, titel=_("Neue Belohnung"), aktion=reverse("belohnung:neu"))
 
 
 @nur_eltern
@@ -211,7 +219,7 @@ def belohnung_bearbeiten(request, pk):
     return _formular(
         request,
         form,
-        titel="Belohnung bearbeiten",
+        titel=_("Belohnung bearbeiten"),
         aktion=reverse("belohnung:bearbeiten", args=[pk]),
     )
 

@@ -8,6 +8,8 @@ importiert konten nicht, Schichtenregel).
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from .db import NurEinfuegenModell
 
@@ -37,9 +39,9 @@ class Einstellung(models.Model):
 
 
 class Rolle(models.TextChoices):
-    ELTERN = "eltern", "Eltern"
-    KIND = "kind", "Kind"
-    SYSTEM = "system", "System"
+    ELTERN = "eltern", pgettext_lazy("Rolle", "Eltern")
+    KIND = "kind", pgettext_lazy("Rolle", "Kind")
+    SYSTEM = "system", pgettext_lazy("Rolle", "System")
 
 
 OBJEKT_ID_MAX = 100
@@ -101,10 +103,10 @@ class JobSperre(models.Model):
 
 
 class JobStatus(models.TextChoices):
-    LAEUFT = "laeuft", "läuft"
-    OK = "ok", "ok"
-    FEHLER = "fehler", "Fehler"
-    UEBERSPRUNGEN = "uebersprungen", "übersprungen"
+    LAEUFT = "laeuft", _("läuft")
+    OK = "ok", _("ok")
+    FEHLER = "fehler", _("Fehler")
+    UEBERSPRUNGEN = "uebersprungen", _("übersprungen")
 
 
 class JobLauf(models.Model):

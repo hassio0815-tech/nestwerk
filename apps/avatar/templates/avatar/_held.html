@@ -1,20 +1,20 @@
-{% load avatar_tags %}{% comment %}Held auf Sockel in der Seltenheitsfarbe des Rangs (P3-A). Kontext: e = RuhmeshallenEintrag mit
+{% load i18n avatar_tags sprache %}{% comment %}Held auf Sockel in der Seltenheitsfarbe des Rangs (P3-A). Kontext: e = RuhmeshallenEintrag mit
   svg, klein = kompakte Darstellung (Kachel), mit_kind = Name des Kindes zeigen.{% endcomment %}
 <figure class="halle-held{% if klein %} halle-held--klein{% endif %}" data-selten="{{ e.rang_selten }}" id="eintrag-{{ e.pk }}">
   <div class="halle-held__buehne">
-    {% svg_roh e.svg "gross" e.thema_daten.name %}
+    {% svg_roh e.svg "gross" e.thema_daten.name|uebersetzt %}
     <div class="halle-held__sockel" aria-hidden="true"><span></span></div>
   </div>
   <figcaption class="halle-held__text">
     {% if mit_kind %}<strong class="halle-held__name">{{ e.avatar_name|default:e.kind.anzeigename }}</strong>{% elif e.avatar_name %}<strong class="halle-held__name">{{ e.avatar_name }}</strong>{% endif %}
-    <span class="halle-held__thema">{{ e.thema_daten.name }} · <span class="chip" data-selten="{{ e.rang_selten }}">{{ e.rang_name }}</span></span>
+    <span class="halle-held__thema">{{ e.thema_daten.name|uebersetzt }} · <span class="chip" data-selten="{{ e.rang_selten }}">{{ e.rang_name|uebersetzt }}</span></span>
     {% if not klein %}
       {% if e.widmung %}<blockquote class="halle-held__widmung">{{ e.widmung }}</blockquote>{% endif %}
       <dl class="halle-held__statistik">
-        <div><dt>Bauzeit</dt><dd>{{ e.bauzeit_wochen }} Woche{{ e.bauzeit_wochen|pluralize:"n" }}</dd></div>
-        <div><dt>Mods</dt><dd>{{ e.anzahl_mods }}</dd></div>
-        <div><dt>Aufgaben</dt><dd>{{ e.aufgaben_anzahl }}</dd></div>
-        <div><dt>Seit</dt><dd>{{ e.erstellt_am|date:"d.m.Y" }}</dd></div>
+        <div><dt>{% translate "Bauzeit" %}</dt><dd>{% blocktranslate count n=e.bauzeit_wochen %}{{ n }} Woche{% plural %}{{ n }} Wochen{% endblocktranslate %}</dd></div>
+        <div><dt>{% translate "Mods" %}</dt><dd>{{ e.anzahl_mods }}</dd></div>
+        <div><dt>{% translate "Aufgaben" %}</dt><dd>{{ e.aufgaben_anzahl }}</dd></div>
+        <div><dt>{% translate "Seit" %}</dt><dd>{{ e.erstellt_am|date:"SHORT_DATE_FORMAT" }}</dd></div>
       </dl>
     {% endif %}
   </figcaption>

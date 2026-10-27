@@ -3,8 +3,10 @@
 from datetime import date
 
 from django.shortcuts import render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import wochenplan
@@ -33,7 +35,7 @@ def instanz_verschieben(request, pk):
     try:
         datum = date.fromisoformat(request.POST.get("datum", ""))
     except ValueError:
-        return _antwort(request, woche, fehler="Bitte ein gültiges Datum wählen.", status=400)
+        return _antwort(request, woche, fehler=_("Bitte ein gültiges Datum wählen."), status=400)
     try:
         reihenfolge = wochenplan.reihenfolge_lesen(request.POST.get("reihenfolge"))
         inst = wochenplan.verschieben(
@@ -42,4 +44,8 @@ def instanz_verschieben(request, pk):
     except ValueError as exc:
         return _antwort(request, woche, fehler=str(exc), status=409)
     # Gezielte Woche = Woche des neuen Tages, falls aus dem Formular verschoben wurde
-    return _antwort(request, woche, meldung=f"„{inst.titel_snapshot}“ verschoben.")
+    return _antwort(
+        request,
+        woche,
+        meldung=_("„%(titel)s“ verschoben.") % {"titel": uebersetzt(inst.titel_snapshot)},
+    )

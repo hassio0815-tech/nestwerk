@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Lower
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from .wappen import CHOICES as WAPPEN_CHOICES
 
@@ -26,8 +27,8 @@ class WappenRolle(models.TextChoices):
 
 
 class Rolle(models.TextChoices):
-    ELTERN = "eltern", "Eltern"
-    KIND = "kind", "Kind"
+    ELTERN = "eltern", _("Eltern")
+    KIND = "kind", _("Kind")
 
 
 def akzentfarben_pruefen(wert):
@@ -66,7 +67,15 @@ class Benutzer(AbstractBaseUser):
     )
     wappen_rolle = models.CharField(max_length=5, blank=True, choices=WappenRolle.choices)
     wappen_rolle_eigen = models.CharField(
-        max_length=15, blank=True, help_text="Eltern: freie Rolle (z. B. Mami), ersetzt die Auswahl."
+        max_length=15,
+        blank=True,
+        help_text="Eltern: freie Rolle (z. B. Mami), ersetzt die Auswahl.",
+    )
+    sprache = models.CharField(
+        max_length=5,
+        blank=True,
+        choices=settings.LANGUAGES,
+        help_text="Eigene Sprache; leer = Gerät bzw. Browser entscheidet.",
     )
     erstellt_am = models.DateTimeField(default=timezone.now)
 
@@ -209,8 +218,8 @@ class ElternZugang(models.Model):
 
 
 class GeraeteTyp(models.TextChoices):
-    KIOSK = "kiosk", "Kiosk (Flur-Tablet)"
-    PERSOENLICH = "persoenlich", "Persönlich"
+    KIOSK = "kiosk", _("Kiosk (Flur-Tablet)")
+    PERSOENLICH = "persoenlich", _("Persönlich")
 
 
 class Geraet(models.Model):
@@ -238,8 +247,8 @@ class Geraet(models.Model):
 
 
 class AnmeldeArt(models.TextChoices):
-    ELTERN = "eltern", "Eltern"
-    KIND = "kind", "Kind"
+    ELTERN = "eltern", _("Eltern")
+    KIND = "kind", _("Kind")
 
 
 class AnmeldeVersuch(models.Model):

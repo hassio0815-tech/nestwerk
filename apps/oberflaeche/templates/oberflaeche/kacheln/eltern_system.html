@@ -1,9 +1,9 @@
-<article class="karte"><div class="karte__inhalt stapel">
-  <h2>Systemstatus {% if k.status.gesund %}{% include "komponenten/chip.html" with text="in Ordnung" stufe="uncommon" %}{% else %}{% include "komponenten/chip.html" with text="Achtung" stufe="epic" %}{% endif %}</h2>
+{% load i18n %}<article class="karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Systemstatus" %} {% if k.status.gesund %}{% include "komponenten/chip.html" with text=_("in Ordnung") stufe="uncommon" %}{% else %}{% include "komponenten/chip.html" with text=_("Achtung") stufe="epic" %}{% endif %}</h2>
   <ul class="liste-schlicht">
-    <li class="zeile"><span>Worker</span><span>{% if k.status.worker_lebt %}läuft{% else %}<strong>keine Rückmeldung</strong>{% endif %}{% if k.status.worker_herzschlag %} (zuletzt {{ k.status.worker_herzschlag|date:"H:i:s" }}){% endif %}</span></li>
-    <li class="zeile"><span>Offene Zustellungen</span><span>{{ k.status.offen }} offen, {{ k.status.fehler }} Fehler, {{ k.status.aufgegeben }} aufgegeben</span></li>
-    <li class="zeile"><span>Datensicherung</span><span>{% with lauf=k.status.jobs.db_sichern %}{% if lauf %}{{ lauf.get_status_display }}, {{ lauf.gestartet_am|date:"d.m. H:i" }}{% else %}noch nie gelaufen{% endif %}{% endwith %}</span></li>
-    <li class="zeile"><span>Sicherungsprüfung</span><span>{% with lauf=k.status.jobs.backup_pruefen %}{% if lauf %}{{ lauf.get_status_display }}, {{ lauf.gestartet_am|date:"d.m. H:i" }}{% else %}noch nie gelaufen{% endif %}{% endwith %}</span></li>
+    <li class="zeile"><span>{% translate "Worker" %}</span><span>{% if k.status.worker_lebt %}{% translate "läuft" %}{% else %}<strong>{% translate "keine Rückmeldung" %}</strong>{% endif %}{% if k.status.worker_herzschlag %} ({% blocktranslate with zeit=k.status.worker_herzschlag|date:"H:i:s" %}zuletzt {{ zeit }}{% endblocktranslate %}){% endif %}</span></li>
+    <li class="zeile"><span>{% translate "Offene Zustellungen" %}</span><span>{% blocktranslate with offen=k.status.offen fehler=k.status.fehler aufgegeben=k.status.aufgegeben %}{{ offen }} offen, {{ fehler }} Fehler, {{ aufgegeben }} aufgegeben{% endblocktranslate %}</span></li>
+    <li class="zeile"><span>{% translate "Datensicherung" %}</span><span>{% with lauf=k.status.jobs.db_sichern %}{% if lauf %}{{ lauf.get_status_display }}, {{ lauf.gestartet_am|date:"d.m. H:i" }}{% else %}{% translate "noch nie gelaufen" %}{% endif %}{% endwith %}</span></li>
+    <li class="zeile"><span>{% translate "Sicherungsprüfung" %}</span><span>{% with lauf=k.status.jobs.backup_pruefen %}{% if lauf %}{{ lauf.get_status_display }}, {{ lauf.gestartet_am|date:"d.m. H:i" }}{% else %}{% translate "noch nie gelaufen" %}{% endif %}{% endwith %}</span></li>
   </ul>
 </div></article>

@@ -23,6 +23,7 @@ from dataclasses import dataclass
 
 from django.db import transaction
 from django.db.models import Count
+from django.utils.translation import gettext
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
@@ -82,10 +83,12 @@ def _laufende_bauauftraege(kind, thema_id) -> int:
 
 def bau_meldung(laufend: int) -> str:
     if laufend == 1:
-        was = "dein Bauauftrag fertig ist"
-    else:
-        was = f"deine {laufend} Bauaufträge fertig sind"
-    return f"Warte, bis {was}. Dann darf dein Held in die Ruhmeshalle."
+        return gettext(
+            "Warte, bis dein Bauauftrag fertig ist. Dann darf dein Held in die Ruhmeshalle."
+        )
+    return gettext(
+        "Warte, bis deine %(n)s Bauaufträge fertig sind. Dann darf dein Held in die Ruhmeshalle."
+    ) % {"n": laufend}
 
 
 def _mods_snapshot(avatar) -> dict:
@@ -114,24 +117,26 @@ def in_ruhmeshalle_stellen(
     from .services import AvatarFehler, figur_pruefen, hash_aktualisieren
 
     if getattr(kind, "rolle", None) != "kind":
-        raise ModFehler("Nur Kinder stellen ihren Helden in die Ruhmeshalle.")
+        raise ModFehler(gettext("Nur Kinder stellen ihren Helden in die Ruhmeshalle."))
     jetzt = jetzt or zeit.jetzt()
     with transaction.atomic():
         punkte_services.schreibsperre(kind)
         avatar = Avatar.objects.select_for_update().select_related("thema").filter(pk=kind.pk)
         avatar = avatar.first()
         if avatar is None:
-            raise ModFehler("Wähle zuerst deinen Avatar.")
+            raise ModFehler(gettext("Wähle zuerst deinen Avatar."))
         if bau_start and avatar.thema_gewaehlt_am.isoformat() != bau_start:
             vorhanden = _vorhandener(kind, bau_start)
             if vorhanden is not None:
                 return vorhanden, False
-            raise ModFehler("Dein Held hat sich geändert. Bitte öffne den Dialog noch einmal.")
+            raise ModFehler(
+                gettext("Dein Held hat sich geändert. Bitte öffne den Dialog noch einmal.")
+            )
         stand = ausbaustufe(kind, jetzt)
         if not stand.halle_bereit:
             raise ModFehler(
-                f"Die Ruhmeshalle gibt es ab Ausbaustufe {stand.halle_ab} "
-                f"(du hast {stand.aktuell})."
+                gettext("Die Ruhmeshalle gibt es ab Ausbaustufe %(ab)s (du hast %(hast)s).")
+                % {"ab": stand.halle_ab, "hast": stand.aktuell}
             )
         laufend = _laufende_bauauftraege(kind, avatar.thema_id)
         if laufend:
@@ -205,15 +210,17 @@ def in_ruhmeshalle_stellen(
 def widmung_setzen(eintrag, text, *, von, jetzt=None) -> RuhmeshallenEintrag:
     """Eltern: Widmung schreiben oder ändern (leer = entfernen), mit Audit."""
     if getattr(von, "rolle", None) != "eltern":
-        raise ModFehler("Nur Eltern schreiben eine Widmung.")
+        raise ModFehler(gettext("Nur Eltern schreiben eine Widmung."))
     text = " ".join((text or "").split())
     if len(text) > WIDMUNG_MAX:
-        raise ModFehler(f"Die Widmung darf höchstens {WIDMUNG_MAX} Zeichen haben.")
+        raise ModFehler(
+            gettext("Die Widmung darf höchstens %(max)s Zeichen haben.") % {"max": WIDMUNG_MAX}
+        )
     pk = eintrag.pk if isinstance(eintrag, RuhmeshallenEintrag) else eintrag
     with transaction.atomic():
         eintrag = RuhmeshallenEintrag.objects.select_for_update().filter(pk=pk).first()
         if eintrag is None:
-            raise ModFehler("Diesen Eintrag gibt es nicht.")
+            raise ModFehler(gettext("Diesen Eintrag gibt es nicht."))
         if eintrag.widmung == text:
             return eintrag
         alt = eintrag.widmung

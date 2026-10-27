@@ -1,0 +1,161 @@
+# English translation (Nestwerk).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 04:59+0000\n"
+"PO-Revision-Date: 2026-10-26 20:00+0000\n"
+"Last-Translator: Nestwerk\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: einstellungen.py:80
+msgid "Liste erwartet"
+msgstr "list expected"
+
+#: einstellungen.py:104
+msgid "Ganzzahl erwartet"
+msgstr "whole number expected"
+
+#: einstellungen.py:107
+#, python-format
+msgid "kleiner als Minimum %(min)s"
+msgstr "smaller than the minimum %(min)s"
+
+#: einstellungen.py:111
+#, python-format
+msgid "größer als Maximum %(max)s"
+msgstr "larger than the maximum %(max)s"
+
+#: einstellungen.py:116
+msgid "Ja/Nein erwartet"
+msgstr "yes/no expected"
+
+#: einstellungen.py:120
+msgid "Text erwartet"
+msgstr "text expected"
+
+#: einstellungen.py:123
+#, python-format
+msgid "länger als %(max)s Zeichen"
+msgstr "longer than %(max)s characters"
+
+#: einstellungen.py:128
+msgid "Datum erwartet"
+msgstr "date expected"
+
+#: einstellungen.py:133
+msgid "Datum im Format JJJJ-MM-TT erwartet"
+msgstr "date in the format YYYY-MM-DD expected"
+
+#: einstellungen.py:138
+msgid "Uhrzeit im Format HH:MM erwartet"
+msgstr "time in the format HH:MM expected"
+
+#: einstellungen.py:142
+msgid "ungültige Uhrzeit"
+msgstr "invalid time"
+
+#: einstellungen.py:144
+msgid "Uhrzeit ohne Zeitzone erwartet"
+msgstr "time without time zone expected"
+
+#: einstellungen.py:146
+msgid "Uhrzeit nur minutengenau"
+msgstr "time must be to the minute"
+
+#: einstellungen.py:150
+msgid "unbekannte Zeitzone"
+msgstr "unknown time zone"
+
+#: einstellungen.py:156
+#, python-format
+msgid "nicht in Auswahl %(auswahl)s"
+msgstr "not one of %(auswahl)s"
+
+#: einstellungen.py:162
+#, python-format
+msgid "Einstellung '%(schluessel)s': %(wert)r ungültig (%(grund)s)"
+msgstr "Setting '%(schluessel)s': %(wert)r is invalid (%(grund)s)"
+
+#: einstellungen.py:303
+msgid "Name der Installation"
+msgstr "Name of this installation"
+
+#: einstellungen.py:308
+msgid "Zeitzone"
+msgstr "Time zone"
+
+#: einstellungen.py:309
+msgid "Fachliche Tage und Wochen werden in dieser Zeitzone gerechnet."
+msgstr "Days and weeks are calculated in this time zone."
+
+#: einstellungen.py:314
+msgid "Go-live-Datum"
+msgstr "Go-live date"
+
+#: einstellungen.py:315
+msgid "Beginn des ersten App-Jahres."
+msgstr "Start of the first app year."
+
+#: einstellungen.py:320
+msgid "Familien-Sprache"
+msgstr "Family language"
+
+#: einstellungen.py:322
+msgid ""
+"Für Benachrichtigungen und Mails an alle ohne eigene Sprache (de oder en)."
+msgstr ""
+"For notifications and emails to everyone without their own language (de or en)."
+
+#: einstellungen.py:329
+msgid "Aufbewahrung der Job-Läufe"
+msgstr "Keep job runs for"
+
+#: einstellungen.py:331
+msgid "Protokoll der geplanten Jobs (Systemstatus) wird danach gelöscht."
+msgstr "The log of scheduled jobs (system status) is deleted after this time."
+
+#: einstellungen.py:333
+msgid "Tage"
+msgstr "days"
+
+#: einstellungen.py:340
+msgid "Einrichtung abgeschlossen"
+msgstr "Setup completed"
+
+#: models.py:42
+msgctxt "Rolle"
+msgid "Eltern"
+msgstr "Parents"
+
+#: models.py:43
+msgctxt "Rolle"
+msgid "Kind"
+msgstr "Child"
+
+#: models.py:44
+msgctxt "Rolle"
+msgid "System"
+msgstr "System"
+
+#: models.py:106
+msgid "läuft"
+msgstr "running"
+
+#: models.py:107
+msgid "ok"
+msgstr "ok"
+
+#: models.py:108
+msgid "Fehler"
+msgstr "error"
+
+#: models.py:109
+msgid "übersprungen"
+msgstr "skipped"

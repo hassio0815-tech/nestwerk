@@ -1,24 +1,24 @@
-{% comment %}"Punkte einlösen" auf dem Kinder-Dashboard: Kacheln aus dem Katalog; Tippen fragt nach (hx-confirm) und nutzt den bestehenden Antrags-Ablauf.{% endcomment %}
+{% load i18n sprache %}{% comment %}"Punkte einlösen" auf dem Kinder-Dashboard: Kacheln aus dem Katalog; Tippen fragt nach (hx-confirm) und nutzt den bestehenden Antrags-Ablauf.{% endcomment %}
 <div class="zeile">
-  <h2>Punkte einlösen</h2>
+  <h2>{% translate "Punkte einlösen" %}</h2>
   {% include "komponenten/punkte.html" with wert=verfuegbar %}
 </div>
 {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler %}{% endif %}
 {% if meldung %}{% include "komponenten/toast.html" with art="erfolg" text=meldung %}{% endif %}
 <div class="einloesen">
   {% for k in kacheln %}
-    <form method="post" action="{% url 'belohnung:beantragen' k.b.pk %}" hx-post="{% url 'belohnung:beantragen' k.b.pk %}" hx-target="#kind-einloesen .karte__inhalt" hx-swap="innerHTML" hx-confirm="{{ k.b.titel }} für {{ k.b.preis_punkte }} Punkte beantragen?">
+    <form method="post" action="{% url 'belohnung:beantragen' k.b.pk %}" hx-post="{% url 'belohnung:beantragen' k.b.pk %}" hx-target="#kind-einloesen .karte__inhalt" hx-swap="innerHTML" hx-confirm="{% blocktranslate with titel=k.b.titel|uebersetzt count preis=k.b.preis_punkte %}{{ titel }} für {{ preis }} Punkt beantragen?{% plural %}{{ titel }} für {{ preis }} Punkte beantragen?{% endblocktranslate %}">
       {% csrf_token %}
       <input type="hidden" name="ort" value="dashboard">
       <button type="submit" class="kachel einloesen__kachel"{% if not k.moeglich %} disabled{% endif %}>
         {% include "komponenten/icon.html" with name=k.b.symbol|default:k.b.kategorie.symbol klasse="kachel__icon" %}
-        <span class="kachel__titel">{{ k.b.titel }}</span>
-        <span class="kachel__text">{{ k.b.preis_punkte }} Punkte{% if k.grund %} · {{ k.grund }}{% endif %}</span>
+        <span class="kachel__titel">{{ k.b.titel|uebersetzt }}</span>
+        <span class="kachel__text">{% blocktranslate count n=k.b.preis_punkte %}{{ n }} Punkt{% plural %}{{ n }} Punkte{% endblocktranslate %}{% if k.grund %} · {{ k.grund }}{% endif %}</span>
       </button>
     </form>
   {% empty %}
-    {% include "komponenten/leer.html" with icon="geschenk" titel="Noch keine Belohnungen" text="Mama und Papa legen sie an." %}
+    {% include "komponenten/leer.html" with icon="geschenk" titel=_("Noch keine Belohnungen") text=_("Mama und Papa legen sie an.") %}
   {% endfor %}
 </div>
 {% url "belohnung:kind" as alle_url %}
-<a class="knopf knopf--geist knopf--klein" href="{{ alle_url }}">Alle Belohnungen und Anträge</a>
+<a class="knopf knopf--geist knopf--klein" href="{{ alle_url }}">{% translate "Alle Belohnungen und Anträge" %}</a>
