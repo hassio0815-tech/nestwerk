@@ -243,7 +243,11 @@ def avatar_waehlen(kind, thema_schluessel, figur):
     figur = figur_pruefen(figur, thema)
     try:
         with transaction.atomic():
-            avatar = Avatar.objects.create(benutzer=kind, thema=thema, figur=figur)
+            # Zeitpunkt ausdrücklich über die Fach-Uhr (der Feld-Standard bindet die Funktion
+            # beim Import und umgeht so eine in Tests ersetzte Uhr)
+            avatar = Avatar.objects.create(
+                benutzer=kind, thema=thema, figur=figur, thema_gewaehlt_am=zeit.jetzt()
+            )
     except IntegrityError:
         raise AvatarFehler(gettext("Du hast schon einen Avatar")) from None
     hash_aktualisieren(avatar)
