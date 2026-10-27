@@ -1,4 +1,4 @@
-{% comment %}Dashboard-Karte "Erledigt – kurz prüfen": Vertrauens-Aufgaben, die noch niemand durchgesehen hat.{% endcomment %}{% load i18n %}
+{% comment %}Dashboard-Karte "Erledigt – kurz prüfen": Vertrauens-Aufgaben, die noch niemand durchgesehen hat.{% endcomment %}{% load i18n sprache %}
 <article class="karte" id="pruefen" hx-target="#pruefen" hx-swap="outerHTML"><div class="karte__inhalt stapel">
   <div class="zeile">
     <h2>{% translate "Erledigt – kurz prüfen" %}</h2>
@@ -8,7 +8,7 @@
   {% for i in k.liste %}
     <div class="stapel pruef-eintrag" id="pruef-{{ i.pk }}">
       <div class="zeile">
-        <span class="reihe"><strong>{{ i.titel_snapshot }}</strong><span class="kachel__text">{{ i.kind.anzeigename }} · {{ i.bestaetigt_am|date:"D H:i" }}</span></span>
+        <span class="reihe"><strong>{{ i.titel_snapshot|uebersetzt }}</strong><span class="kachel__text">{{ i.kind.anzeigename }} · {{ i.bestaetigt_am|date:"D H:i" }}</span></span>
         {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
       </div>
       <form method="post" class="stapel" hx-disabled-elt="find button">{% csrf_token %}

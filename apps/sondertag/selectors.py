@@ -19,6 +19,7 @@ from django.utils.translation import ngettext
 from apps.kern import einstellungen, zeit
 from apps.kern.einstellungen import EinstellungFehler
 from apps.kern.registry import UnbekannterEintrag
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 from apps.spielregeln import registry as metriken
 from apps.spielregeln import selectors as spielregeln
@@ -162,7 +163,7 @@ def noch_text(mods: int, wochen: int) -> str:
 
 
 def _rang_namen() -> dict[int, str]:
-    return {r.stufe: r.name for r in spielregeln.raenge()}
+    return {r.stufe: uebersetzt(r.name) for r in spielregeln.raenge()}
 
 
 def _kandidat_rang(kind, regel, namen) -> dict | None:
@@ -327,7 +328,7 @@ def fortschritt(kind, heute: date | None = None) -> Fortschritt:
         mods_ziel=k["mods_ziel"],
         mods_ist=k["mods_ist"],
         bestaetigt=bestaetigt,
-        extra={"zyklus": k.get("zyklus"), "regel": k["regel"].name},
+        extra={"zyklus": k.get("zyklus"), "regel": uebersetzt(k["regel"].name)},
     )
 
 

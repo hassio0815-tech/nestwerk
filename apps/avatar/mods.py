@@ -31,10 +31,12 @@ from datetime import datetime, timedelta
 
 from django.db import transaction
 from django.db.models import Sum
+from django.utils.formats import get_format
 from django.utils.translation import gettext, gettext_noop, ngettext
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
+from apps.kern.sprache import uebersetzt
 from apps.kern.zeit import IsoWoche
 from apps.konten import selectors as konten
 from apps.punkte import selectors as punkte_selectors
@@ -72,9 +74,24 @@ INSZENIERUNG = {
 STANDARD_INSZENIERUNG = (gettext_noop("Werkstatt"), gettext_noop("wird gebaut"))
 
 
+def inszenierung_msgids(thema) -> tuple[str, str]:
+    """Ort und Tätigkeit als deutsche Msgids (für Ereignisse: erst beim Rendern übersetzen)."""
+    return INSZENIERUNG.get(getattr(thema, "bau_inszenierung", ""), STANDARD_INSZENIERUNG)
+
+
 def inszenierung(thema) -> tuple[str, str]:
-    ort, tun = INSZENIERUNG.get(getattr(thema, "bau_inszenierung", ""), STANDARD_INSZENIERUNG)
+    ort, tun = inszenierung_msgids(thema)
     return gettext(ort), gettext(tun)
+
+
+def dauer_msgids(stunden: int) -> tuple[str, str | None, int]:
+    """Bauzeit als (Msgid, Plural-Msgid oder None, n). Die Msgids stehen in ``dauer_text``
+    (``ngettext``), dort werden sie für ``makemessages`` gefunden."""
+    if stunden <= 0:
+        return "sofort", None, 0
+    if stunden >= 36 or stunden % 24 == 0:
+        return "%(n)s Tag", "%(n)s Tage", max(1, round(stunden / 24))
+    return "%(n)s Stunde", "%(n)s Stunden", stunden
 
 
 def dauer_text(stunden: int) -> str:
@@ -85,6 +102,16 @@ def dauer_text(stunden: int) -> str:
         tage = max(1, round(stunden / 24))
         return ngettext("%(n)s Tag", "%(n)s Tage", tage) % {"n": tage}
     return ngettext("%(n)s Stunde", "%(n)s Stunden", stunden) % {"n": stunden}
+
+
+def dauer_daten(stunden: int, feld: str = "bauzeit") -> dict:
+    """Ereignis-Daten für eine Dauer: ``<feld>_msgid``, ``<feld>_msgid_plural``,
+    ``<feld>_parameter`` (siehe ``benachrichtigung.texte.werte_aus``)."""
+    einzahl, mehrzahl, n = dauer_msgids(stunden)
+    daten = {f"{feld}_msgid": einzahl, f"{feld}_parameter": {"n": n}}
+    if mehrzahl:
+        daten[f"{feld}_msgid_plural"] = mehrzahl
+    return daten
 
 
 def rest_text(bis: datetime, jetzt: datetime | None = None) -> str:
@@ -134,7 +161,7 @@ def konditionen(mod: ModDefinition, kind=None, *, raenge_map=None) -> Konditione
     return Konditionen(
         preis=spielregeln.mod_preis(grund_preis, kind),
         bauzeit_stunden=spielregeln.mod_bauzeit_stunden(grund_bauzeit, kind),
-        rang_name=rang.name,
+        rang_name=uebersetzt(rang.name),
         rang_selten=rang.selten,
     )
 
@@ -198,7 +225,7 @@ def ausbaustufe(kind, jetzt=None) -> Ausbaustufe:
     ergebnis = Ausbaustufe(
         thema=avatar.thema if avatar else None,
         rang_stufe=stufe,
-        rang_name=rang.name if rang else "",
+        rang_name=uebersetzt(rang.name) if rang else "",
         rang_selten=rang.selten if rang else "common",
         slots=Slot.objects.count(),
         je_seltenheit=dict.fromkeys(raenge_map, 0),
@@ -302,7 +329,7 @@ def shop(kind) -> list[ShopGruppe]:
             mod.seltenheit,
             ShopGruppe(
                 mod.seltenheit,
-                rang.name,
+                uebersetzt(rang.name),
                 rang.selten,
                 mod.seltenheit > stufe,
                 [],
@@ -338,7 +365,7 @@ def _set_gruppen(kind, avatar, raenge_map, besitz, verfuegbar, stand) -> list[Sh
         gruppen.append(
             ShopGruppe(
                 6,
-                rang.name if rang else "God Mode",
+                uebersetzt(rang.name) if rang else gettext("God Mode"),
                 rang.selten if rang else "godmode",
                 False,
                 karten,
@@ -473,7 +500,7 @@ def kaufen(kind, mod, *, jetzt=None) -> ModBesitz:
                 "besitz": besitz.pk,
                 "mod": mod.name,
                 "preis": k.preis,
-                "bauzeit": k.bauzeit_text,
+                **dauer_daten(k.bauzeit_stunden),
             },
             schluessel=f"{events.MOD_GEKAUFT}:{besitz.pk}",
             kind=kind,
@@ -534,7 +561,7 @@ def _fertig_setzen(besitz_id, fertig_am, *, von=None, sofort=False):
             from .services import slot_belegen
 
             slot_belegen(kind, besitz.mod.slot.schluessel, besitz.mod)
-        ort, _ = inszenierung(besitz.mod.thema)
+        ort, _ = inszenierung_msgids(besitz.mod.thema)
         if sofort:
             audit.protokollieren(
                 "avatar.bau_sofort_fertig",
@@ -772,7 +799,7 @@ def eltern_uebersicht(jetzt=None) -> list[dict]:
 def _tage_text(stunden: int) -> str:
     """Stunden als Tage für das Eingabefeld ("3", "1,5", "0,04")."""
     text = f"{stunden / 24:.2f}".rstrip("0").rstrip(".")
-    return text.replace(".", ",")
+    return text.replace(".", get_format("DECIMAL_SEPARATOR"))
 
 
 def standards() -> list[dict]:

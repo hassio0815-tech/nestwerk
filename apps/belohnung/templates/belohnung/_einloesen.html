@@ -1,4 +1,4 @@
-{% load i18n %}{% comment %}"Punkte einlösen" auf dem Kinder-Dashboard: Kacheln aus dem Katalog; Tippen fragt nach (hx-confirm) und nutzt den bestehenden Antrags-Ablauf.{% endcomment %}
+{% load i18n sprache %}{% comment %}"Punkte einlösen" auf dem Kinder-Dashboard: Kacheln aus dem Katalog; Tippen fragt nach (hx-confirm) und nutzt den bestehenden Antrags-Ablauf.{% endcomment %}
 <div class="zeile">
   <h2>{% translate "Punkte einlösen" %}</h2>
   {% include "komponenten/punkte.html" with wert=verfuegbar %}
@@ -12,7 +12,7 @@
       <input type="hidden" name="ort" value="dashboard">
       <button type="submit" class="kachel einloesen__kachel"{% if not k.moeglich %} disabled{% endif %}>
         {% include "komponenten/icon.html" with name=k.b.symbol|default:k.b.kategorie.symbol klasse="kachel__icon" %}
-        <span class="kachel__titel">{{ k.b.titel }}</span>
+        <span class="kachel__titel">{{ k.b.titel|uebersetzt }}</span>
         <span class="kachel__text">{% blocktranslate count n=k.b.preis_punkte %}{{ n }} Punkt{% plural %}{{ n }} Punkte{% endblocktranslate %}{% if k.grund %} · {{ k.grund }}{% endif %}</span>
       </button>
     </form>

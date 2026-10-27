@@ -1,5 +1,5 @@
 {% extends "basis/einstellungen.html" %}
-{% load i18n static %}
+{% load i18n static sprache %}
 {% block titel %}{% translate "Prognose & Kalibrierung" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
@@ -27,7 +27,7 @@
         <dd data-pg-rang>
           {% with r=z.naechster_rang %}
             {% if r %}
-              {% blocktranslate with name=r.name datum=r.datum|date:"d.m.Y" wochen=r.wochen %}{{ name }} ca. {{ datum }} (in {{ wochen }} Wochen){% endblocktranslate %}
+              {% blocktranslate with name=r.name|uebersetzt datum=r.datum|date:"SHORT_DATE_FORMAT" wochen=r.wochen %}{{ name }} ca. {{ datum }} (in {{ wochen }} Wochen){% endblocktranslate %}
               {% if r.engpass == "xp" %}· {% blocktranslate with fehlt=r.xp_fehlt %}Engpass: XP-Schwelle (noch {{ fehlt }} XP){% endblocktranslate %}
               {% elif r.engpass == "wochen" %}· {% blocktranslate with fehlt=r.wochen_fehlen %}Engpass: Mindest-Aktivwochen (noch {{ fehlt }}){% endblocktranslate %}
               {% elif r.engpass == "beides" %}· {% translate "XP und Aktivwochen gleich knapp" %}{% endif %}
@@ -38,14 +38,14 @@
         <dt>{% translate "Nächster Sondertag" %}</dt>
         <dd data-pg-sondertag>
           {% with t=z.naechster_sondertag %}
-            {% if t %}{% blocktranslate with datum=t.datum|date:"d.m.Y" name=t.name %}ca. {{ datum }} ({{ name }}){% endblocktranslate %}{% if t.verschoben_tage %}{% blocktranslate with tage=t.verschoben_tage %}, durch die Grenzen {{ tage }} Tage später{% endblocktranslate %}{% endif %}
+            {% if t %}{% blocktranslate with datum=t.datum|date:"SHORT_DATE_FORMAT" name=t.name %}ca. {{ datum }} ({{ name }}){% endblocktranslate %}{% if t.verschoben_tage %}{% blocktranslate with tage=t.verschoben_tage %}, durch die Grenzen {{ tage }} Tage später{% endblocktranslate %}{% endif %}
             {% else %}{% translate "Keiner absehbar." %}{% endif %}
           {% endwith %}
         </dd>
         {% for j in z.ergebnis.jahre %}
           <dt>{% blocktranslate with nr=j.nummer %}App-Jahr {{ nr }}{% endblocktranslate %}</dt>
           <dd data-pg-jahr="{{ j.nummer }}"><span class="pg-ampel pg-ampel--{{ j.ampel }}">{% blocktranslate with anzahl=j.anzahl ziel=j.ziel ampel=j.ampel_text %}{{ anzahl }} von {{ ziel }} Sondertagen ({{ ampel }}){% endblocktranslate %}</span>
-            <span class="kachel__text">{% blocktranslate with von=j.beginn|date:"d.m.Y" bis=j.letzter_tag|date:"d.m.Y" %}({{ von }} bis {{ bis }}){% endblocktranslate %}</span></dd>
+            <span class="kachel__text">{% blocktranslate with von=j.beginn|date:"SHORT_DATE_FORMAT" bis=j.letzter_tag|date:"SHORT_DATE_FORMAT" %}({{ von }} bis {{ bis }}){% endblocktranslate %}</span></dd>
         {% endfor %}
       </dl>
     {% endif %}

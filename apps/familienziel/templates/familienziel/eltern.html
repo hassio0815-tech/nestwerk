@@ -1,5 +1,5 @@
 {% extends "basis/einstellungen.html" %}
-{% load i18n %}
+{% load i18n sprache %}
 {% load static %}
 {% block titel %}{% translate "Familienziel" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">{% endblock %}
@@ -62,7 +62,7 @@
   <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Historie" %}</h2>
     {% for g in grossziele %}
-      <div class="fz-zeile" data-grossziel="{{ g.pk }}"><strong>{% translate "Ausflug" as ausflug %}{% blocktranslate with name=g.name|default:ausflug %}Großziel: {{ name }}{% endblocktranslate %}</strong>
+      <div class="fz-zeile" data-grossziel="{{ g.pk }}"><strong>{% translate "Ausflug" as ausflug %}{% blocktranslate with name=g.name|uebersetzt|default:ausflug %}Großziel: {{ name }}{% endblocktranslate %}</strong>
         <span>{% translate "d.m.Y" as datum %}{{ g.freigeschaltet_am|date:datum }}</span>
         {% if g.eingeloest_am %}<span class="chip" data-selten="common">{% translate "eingelöst" %}</span>
         {% else %}<form method="post" action="{% url 'familienziel:grossziel_eingeloest' g.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Eingelöst") %}</form>{% endif %}
@@ -72,7 +72,7 @@
       <div class="fz-zeile" data-woche="{{ h.pk }}">
         <strong>{% blocktranslate with woche=h.iso_woche jahr=h.iso_jahr %}Woche {{ woche }}/{{ jahr }}{% endblocktranslate %}</strong>
         <span>{{ h.ziel_punkte }} P</span>
-        <span>{% if h.belohnung %}{{ h.belohnung.titel }}{% else %}{% translate "ohne Belohnung" %}{% endif %}</span>
+        <span>{% if h.belohnung %}{{ h.belohnung.titel|uebersetzt }}{% else %}{% translate "ohne Belohnung" %}{% endif %}</span>
         <span class="chip" data-selten="{% if h.status == 'erreicht' %}rare{% else %}common{% endif %}">{{ h.get_status_display }}</span>
         {% if h.status == "erreicht" %}{% if h.eingeloest_am %}<span class="kachel__text">{% translate "eingelöst" %}</span>{% else %}
           <form method="post" action="{% url 'familienziel:woche_eingeloest' h.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Eingelöst") %}</form>{% endif %}{% endif %}

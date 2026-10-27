@@ -34,10 +34,13 @@ from datetime import date, datetime, timedelta
 
 from django.db import transaction
 from django.db.models import Q
+from django.utils import formats, translation
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_noop
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
+from apps.kern.sprache import CODES
 from apps.konten import selectors as konten
 
 from . import abzeichen, auswertung, events, held, raenge, serienbonus
@@ -165,6 +168,12 @@ def _nachfuehren(kind, jetzt=None):
 # --- Serienbonus (AP21) ---------------------------------------------------------------------
 
 
+def _serienbonus_grund(satz, serie) -> str:
+    """Buchungsgrund: wird deutsch in der Datenbank abgelegt (Protokoll, nirgends angezeigt;
+    die Kind-Texte kommen aus dem Ereignis ``serienbonus.gebucht``)."""
+    return f"Serienbonus +{satz} % (Serie {serie})"
+
+
 @transaction.atomic
 def serienbonus_buchen(
     kind,
@@ -203,7 +212,7 @@ def serienbonus_buchen(
         quelle_modul=quelle_modul,
         bezugsdatum=wirksam,  # wie Aktivität und Grundpunkte (Review AP31)
         referenz=referenz,
-        begruendung=f"Serienbonus +{satz} % (Serie {serie})",
+        begruendung=_serienbonus_grund(satz, serie),
         von=von,
     )
     ereignisse.veroeffentlichen(
@@ -225,16 +234,36 @@ def serienbonus_buchen(
 # --- Pausen ---------------------------------------------------------------------------------
 
 
-def _datum_text(tag: date) -> str:
-    return tag.strftime("%d.%m.%Y")
+def _datum_text(tag: date, sprache: str = "de") -> str:
+    """Kurzes Datum in einer festen Sprache (de: 30.10.2026, en: 10/30/2026)."""
+    with translation.override(sprache):
+        return formats.date_format(tag, "SHORT_DATE_FORMAT")
+
+
+def datum_parameter(name: str, tag: date) -> dict:
+    """Datum für msgid-Parameter: ``name`` deutsch, ``name_en`` englisch. Der Empfänger-Text
+    wählt den Platzhalter seiner Sprache (die .po-Einträge tragen ``no-python-format``)."""
+    return {f"{name}_{code}" if code != "de" else name: _datum_text(tag, code) for code in CODES}
+
+
+def _zeitraum_msgid(von: date, bis: date | None) -> tuple[str, dict]:
+    if bis is None:
+        # xgettext:no-python-format
+        return gettext_noop("ab %(von)s"), datum_parameter("von", von)
+    if bis == von:
+        # xgettext:no-python-format
+        return gettext_noop("am %(von)s"), datum_parameter("von", von)
+    # xgettext:no-python-format
+    return gettext_noop("vom %(von)s bis %(bis)s"), {
+        **datum_parameter("von", von),
+        **datum_parameter("bis", bis),
+    }
 
 
 def _zeitraum_text(von: date, bis: date | None) -> str:
-    if bis is None:
-        return f"ab {_datum_text(von)}"
-    if bis == von:
-        return f"am {_datum_text(von)}"
-    return f"vom {_datum_text(von)} bis {_datum_text(bis)}"
+    """Deutscher Rückfall für ältere Leser von ``daten["zeitraum"]``."""
+    msgid, parameter = _zeitraum_msgid(von, bis)
+    return msgid % parameter
 
 
 def _betroffene(pause):
@@ -248,6 +277,8 @@ def _pause_daten(pause, **extra):
         "von": pause.von.isoformat(),
         "bis": pause.bis.isoformat() if pause.bis else "",
         "zeitraum": _zeitraum_text(pause.von, pause.bis),
+        "zeitraum_msgid": _zeitraum_msgid(pause.von, pause.bis)[0],
+        "zeitraum_parameter": _zeitraum_msgid(pause.von, pause.bis)[1],
         **extra,
     }
 
@@ -351,10 +382,12 @@ def pause_beenden(pause, *, von, bis: date | None = None, jetzt=None):
         raise SpielregelnFehler(_("Die Pause wurde gerade geändert. Bitte neu laden."))
     alt, pause.bis = pause.bis, neues_bis
     _audit("pause.beendet", pause, von, bis_vorher=alt.isoformat() if alt else "")
-    hinweis = f"Deine Pause endet am {_datum_text(neues_bis)}."
+    # xgettext:no-python-format
+    hinweis = gettext_noop("Deine Pause endet am %(datum)s.")
     if pause.familie:
-        hinweis = f"Die Familienpause endet am {_datum_text(neues_bis)}."
-    _pause_ende_melden(pause, von, hinweis, jetzt=jetzt)
+        # xgettext:no-python-format
+        hinweis = gettext_noop("Die Familienpause endet am %(datum)s.")
+    _pause_ende_melden(pause, von, (hinweis, datum_parameter("datum", neues_bis)), jetzt=jetzt)
     return pause
 
 
@@ -373,18 +406,28 @@ def pause_loeschen(pause, *, von, jetzt=None):
     pause.delete()
     pause.pk = pk
     _pause_ende_melden(
-        pause, von, "Die geplante Pause entfällt.", betroffene=betroffene, jetzt=jetzt
+        pause,
+        von,
+        (gettext_noop("Die geplante Pause entfällt."), {}),
+        betroffene=betroffene,
+        jetzt=jetzt,
     )
     return None
 
 
 def _pause_ende_melden(pause, von, hinweis, *, betroffene=None, jetzt=None):
+    msgid, parameter = hinweis
     for betroffen in betroffene if betroffene is not None else _betroffene(pause):
         ereignisse.veroeffentlichen(
             events.PAUSE_BEENDET,
             kind=betroffen,
             akteur=von if getattr(von, "pk", None) else None,
-            daten=_pause_daten(pause, hinweis=hinweis),
+            daten=_pause_daten(
+                pause,
+                hinweis=msgid % parameter,  # deutscher Rückfall
+                hinweis_msgid=msgid,
+                hinweis_parameter=parameter,
+            ),
             schluessel=f"{events.PAUSE_BEENDET}:{pause.pk}:{betroffen.pk}:{pause.bis or 'x'}",
         )
         _nachfuehren(betroffen, jetzt)

@@ -1,5 +1,5 @@
 {% extends "basis/einstellungen.html" %}
-{% load i18n static %}
+{% load i18n static sprache %}
 {% block titel %}{% translate "Sondertage" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
@@ -8,7 +8,7 @@
 {% endblock %}
 {% block seite %}
   <h1>{% translate "Sondertage" %}</h1>
-  <p>{% blocktranslate with max=regeln.max_pro_jahr start=regeln.go_live|date:"d.m.Y" abstand=regeln.abstand %}Höchstens {{ max }} Sondertage je Kind und App-Jahr (ab {{ start }}), mindestens {{ abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.{% endblocktranslate %}</p>
+  <p>{% blocktranslate with max=regeln.max_pro_jahr start=regeln.go_live|date:"SHORT_DATE_FORMAT" abstand=regeln.abstand %}Höchstens {{ max }} Sondertage je Kind und App-Jahr (ab {{ start }}), mindestens {{ abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.{% endblocktranslate %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
@@ -16,14 +16,14 @@
     {% for e in wuensche %}
       <div class="st-wunschkarte" data-st-wunsch="{{ e.anspruch.pk }}">
         <p>{% blocktranslate with kind=e.anspruch.kind.anzeigename wunsch=e.anspruch.wunsch %}<strong>{{ kind }}</strong> wünscht sich: „{{ wunsch }}“{% endblocktranslate %}</p>
-        <p class="kachel__text">{% blocktranslate with begleitung=e.anspruch.get_begleitung_wunsch_display am=e.anspruch.wunsch_am|date:"d.m.Y" titel=e.anspruch.titel %}Begleitung: {{ begleitung }} · gesendet {{ am }} · {{ titel }}{% endblocktranslate %}</p>
+        <p class="kachel__text">{% blocktranslate with begleitung=e.anspruch.get_begleitung_wunsch_display am=e.anspruch.wunsch_am|date:"SHORT_DATE_FORMAT" titel=e.anspruch.titel|uebersetzt %}Begleitung: {{ begleitung }} · gesendet {{ am }} · {{ titel }}{% endblocktranslate %}</p>
         <form method="post" action="{% url 'sondertag:annehmen' e.anspruch.pk %}" class="reihe">{% csrf_token %}
           {% if e.einloesbar %}
             {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Wunsch angenommen") %}
             <span class="kachel__text">{% translate "Wer annimmt, begleitet. Übergeben geht danach." %}</span>
           {% else %}
             {% include "komponenten/button.html" with typ="submit" icon="schloss" text=_("Wunsch angenommen") disabled=True %}
-            <span class="kachel__text" data-st-ab>{% blocktranslate with ab=e.einloesbar_ab|date:"d.m.Y" tage=e.tage_bis %}Annehmen ab {{ ab }} (noch {{ tage }} Tage).{% endblocktranslate %}</span>
+            <span class="kachel__text" data-st-ab>{% blocktranslate with ab=e.einloesbar_ab|date:"SHORT_DATE_FORMAT" tage=e.tage_bis %}Annehmen ab {{ ab }} (noch {{ tage }} Tage).{% endblocktranslate %}</span>
           {% endif %}
         </form>
       </div>
@@ -37,7 +37,7 @@
     <h2>{% translate "Angenommen, noch nicht erledigt" %}</h2>
     {% for a in angenommen %}
       <div class="st-wunschkarte" data-st-angenommen="{{ a.pk }}">
-        <p>{% blocktranslate with kind=a.kind.anzeigename wunsch=a.wunsch am=a.annahme_datum|date:"d.m.Y" von=a.angenommen_von.anzeigename %}<strong>{{ kind }}</strong>: „{{ wunsch }}“ · angenommen {{ am }} von {{ von }}{% endblocktranslate %}</p>
+        <p>{% blocktranslate with kind=a.kind.anzeigename wunsch=a.wunsch am=a.annahme_datum|date:"SHORT_DATE_FORMAT" von=a.angenommen_von.anzeigename %}<strong>{{ kind }}</strong>: „{{ wunsch }}“ · angenommen {{ am }} von {{ von }}{% endblocktranslate %}</p>
         <p>{% translate "Begleitung:" %} <strong>{{ a.begleitung.anzeigename|default:_("offen") }}</strong></p>
         <div class="reihe">
           <form method="post" action="{% url 'sondertag:uebergeben' a.pk %}" class="reihe">{% csrf_token %}
@@ -59,16 +59,16 @@
   <section class="nw-karte" data-st-kind="{{ z.kind.pk }}"><div class="karte__inhalt stapel">
     <h2>{{ z.kind.anzeigename }}</h2>
     <dl class="st-fakten">
-      <div><dt>{% translate "Letzter Sondertag" %}</dt><dd>{% if z.letzter %}{{ z.letzter.annahme_datum|date:"d.m.Y" }}{% if z.letzter.begleitung %} {% blocktranslate with name=z.letzter.begleitung.anzeigename %}mit {{ name }}{% endblocktranslate %}{% endif %}{% else %}{% translate "noch keiner" %}{% endif %}</dd></div>
-      <div><dt>{% translate "Nächster möglicher" %}</dt><dd>{% if z.warteschlange %}{% if z.warteschlange.0.einloesbar %}{% translate "jetzt" %}{% else %}{{ z.warteschlange.0.einloesbar_ab|date:"d.m.Y" }}{% endif %} {% translate "(verdient)" %}{% else %}{% blocktranslate with datum=z.naechster_moeglich|date:"d.m.Y" %}frühestens {{ datum }}{% endblocktranslate %}{% endif %}</dd></div>
-      <div><dt>{% translate "Zuletzt mit" %}</dt><dd>{% for m in z.mit_wem %}{{ m.eltern.anzeigename }}: {% if m.datum %}{{ m.datum|date:"d.m.Y" }}{% else %}{% translate "noch nie" %}{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</dd></div>
+      <div><dt>{% translate "Letzter Sondertag" %}</dt><dd>{% if z.letzter %}{{ z.letzter.annahme_datum|date:"SHORT_DATE_FORMAT" }}{% if z.letzter.begleitung %} {% blocktranslate with name=z.letzter.begleitung.anzeigename %}mit {{ name }}{% endblocktranslate %}{% endif %}{% else %}{% translate "noch keiner" %}{% endif %}</dd></div>
+      <div><dt>{% translate "Nächster möglicher" %}</dt><dd>{% if z.warteschlange %}{% if z.warteschlange.0.einloesbar %}{% translate "jetzt" %}{% else %}{{ z.warteschlange.0.einloesbar_ab|date:"SHORT_DATE_FORMAT" }}{% endif %} {% translate "(verdient)" %}{% else %}{% blocktranslate with datum=z.naechster_moeglich|date:"SHORT_DATE_FORMAT" %}frühestens {{ datum }}{% endblocktranslate %}{% endif %}</dd></div>
+      <div><dt>{% translate "Zuletzt mit" %}</dt><dd>{% for m in z.mit_wem %}{{ m.eltern.anzeigename }}: {% if m.datum %}{{ m.datum|date:"SHORT_DATE_FORMAT" }}{% else %}{% translate "noch nie" %}{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</dd></div>
       <div><dt>{% translate "Fortschritt" %}</dt><dd>{{ z.fortschritt.text }}{% if z.fortschritt.weiter %} {% blocktranslate with weiter=z.fortschritt.weiter %}Danach: {{ weiter }}{% endblocktranslate %}{% endif %}</dd></div>
     </dl>
     {% if z.warteschlange %}
       <h3>{% translate "Verdient (Warteschlange)" %}</h3>
       <ol class="st-liste">
         {% for e in z.warteschlange %}
-          <li data-st-anspruch="{{ e.anspruch.pk }}">{% blocktranslate with titel=e.anspruch.titel am=e.anspruch.verdient_am|date:"d.m.Y" %}{{ titel }} · verdient {{ am }}{% endblocktranslate %} · {% if e.einloesbar %}<strong>{% translate "einlösbar" %}</strong>{% else %}{% blocktranslate with ab=e.einloesbar_ab|date:"d.m.Y" %}einlösbar ab {{ ab }}{% endblocktranslate %}{% endif %}{% if e.wunsch_offen %} · {% translate "Wunsch offen" %}{% endif %}</li>
+          <li data-st-anspruch="{{ e.anspruch.pk }}">{% blocktranslate with titel=e.anspruch.titel|uebersetzt am=e.anspruch.verdient_am|date:"SHORT_DATE_FORMAT" %}{{ titel }} · verdient {{ am }}{% endblocktranslate %} · {% if e.einloesbar %}<strong>{% translate "einlösbar" %}</strong>{% else %}{% blocktranslate with ab=e.einloesbar_ab|date:"SHORT_DATE_FORMAT" %}einlösbar ab {{ ab }}{% endblocktranslate %}{% endif %}{% if e.wunsch_offen %} · {% translate "Wunsch offen" %}{% endif %}</li>
         {% endfor %}
       </ol>
     {% endif %}

@@ -1,4 +1,4 @@
-{% load i18n %}{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
+{% load i18n sprache %}{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
 {% comment %}Tablet-Leiste (Registry "tablet"): großer Balken, Belohnung, Beiträge ohne Wertung, Abstimmung.{% endcomment %}
 {% with a=k.a %}
 <article class="fz-leiste{% if a.erreicht %} fz-leiste--erreicht{% endif %}" data-fz-status="{{ a.status }}">
@@ -9,7 +9,7 @@
   </header>
   {% include "familienziel/kacheln/_balken.html" with a=a gross=True %}
   {% if a.erreicht %}
-    <p class="fz-leiste__feier">{% include "komponenten/icon.html" with name="pokal" %} {% if a.belohnung %}{% blocktranslate with titel=a.belohnung.titel %}Geschafft! {{ titel }} ist freigeschaltet.{% endblocktranslate %}{% else %}{% translate "Geschafft! Das Wochenziel ist erreicht." %}{% endif %}</p>
+    <p class="fz-leiste__feier">{% include "komponenten/icon.html" with name="pokal" %} {% if a.belohnung %}{% blocktranslate with titel=a.belohnung.titel|uebersetzt %}Geschafft! {{ titel }} ist freigeschaltet.{% endblocktranslate %}{% else %}{% translate "Geschafft! Das Wochenziel ist erreicht." %}{% endif %}</p>
   {% elif a.stand.punkte_ok and a.namen_offen %}
     <p class="fz-leiste__hinweis">{% blocktranslate with namen=a.namen_offen|join:", " %}Fast! Noch eine Aufgabe von: {{ namen }}.{% endblocktranslate %}</p>
   {% else %}
@@ -23,7 +23,7 @@
   </ul>
   {% endif %}
   <p class="fz-serie" data-fz-serie="{{ a.serie }}">
-    {% if a.grossziel %}{% include "komponenten/icon.html" with name="stern" %} {% translate "Ausflug" as ausflug %}{% blocktranslate with name=a.grossziel.name|default:ausflug %}Großes Ziel freigeschaltet: <strong>{{ name }}</strong>!{% endblocktranslate %}
+    {% if a.grossziel %}{% include "komponenten/icon.html" with name="stern" %} {% translate "Ausflug" as ausflug %}{% blocktranslate with name=a.grossziel.name|uebersetzt|default:ausflug %}Großes Ziel freigeschaltet: <strong>{{ name }}</strong>!{% endblocktranslate %}
     {% else %}{% blocktranslate with serie=a.serie ziel=a.serie_ziel %}Großes Ziel: {{ serie }} von {{ ziel }} Wochen in Folge.{% endblocktranslate %}{% endif %}
   </p>
   {% if a.abstimmung %}

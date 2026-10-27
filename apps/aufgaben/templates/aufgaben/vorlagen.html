@@ -1,5 +1,5 @@
 {% extends "aufgaben/basis.html" %}
-{% load i18n %}
+{% load i18n sprache %}
 {% block titel %}{% translate "Bibliothek" %}{% endblock %}
 {% block seite %}
   <div class="zeile">
@@ -12,10 +12,10 @@
     {% for v in vorlagen %}
       <article class="karte" id="vorlage-{{ v.pk }}"><div class="karte__inhalt zeile">
         <div class="zeile__text stapel">
-          <strong>{{ v.titel }}</strong>
+          <strong>{{ v.titel|uebersetzt }}</strong>
           {% if v.wiederholung %}<span class="zeile__plan">{{ v.plan.beschreiben }}</span>{% endif %}
           <span class="reihe">
-            {% if v.kategorie %}{% include "komponenten/chip.html" with text=v.kategorie.name %}{% endif %}
+            {% if v.kategorie %}{% include "komponenten/chip.html" with text=v.kategorie.name|uebersetzt %}{% endif %}
             {% include "komponenten/chip.html" with text=v.get_freigabeart_display %}
             {% if not v.aktiv %}{% include "komponenten/chip.html" with text=_("Inaktiv") %}{% endif %}
           </span>

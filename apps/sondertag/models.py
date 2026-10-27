@@ -27,8 +27,8 @@ class Status(models.TextChoices):
 
 
 class BegleitungWunsch(models.TextChoices):
-    MAMA = "mama", "Mama"
-    PAPA = "papa", "Papa"
+    MAMA = "mama", _("Mama")
+    PAPA = "papa", _("Papa")
     EGAL = "egal", _("egal")
 
 

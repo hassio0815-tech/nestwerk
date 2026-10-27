@@ -23,9 +23,9 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from django.db import IntegrityError, transaction
-from django.utils.translation import gettext
+from django.utils.translation import gettext, gettext_noop
 
-from apps.kern import einstellungen, zeit
+from apps.kern import einstellungen, sprache, zeit
 from apps.kern.zeit import IsoWoche
 from apps.spielregeln import selectors as spielregeln
 
@@ -135,6 +135,17 @@ def teile_variieren(teile: list, nummer: int, palette: dict, slot: str) -> list:
             neu["spiegeln"] = not t.get("spiegeln", False)
         ergebnis.append(neu)
     return ergebnis
+
+
+# Erzeugte Namen bleiben deutsch in der Datenbank und werden beim Anzeigen übersetzt
+sprache.muster_registrieren(
+    r"(?P<thema>.+): God-Mode-Set (?P<n>\d+)", gettext_noop("%(thema)s: God-Mode-Set %(n)s")
+)
+sprache.muster_registrieren(r"(?P<mod>.+) · Set (?P<n>\d+)", gettext_noop("%(mod)s · Set %(n)s"))
+sprache.muster_registrieren(
+    r"God-Mode-Set (?P<n>\d+): (?P<beschreibung>.+)",
+    gettext_noop("God-Mode-Set %(n)s: %(beschreibung)s"),
+)
 
 
 def _set_name(thema, nummer) -> str:

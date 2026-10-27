@@ -1,8 +1,8 @@
-{% load i18n %}<article class="karte" id="belohnung-{{ b.pk }}"><div class="karte__inhalt zeile">
+{% load i18n sprache %}<article class="karte" id="belohnung-{{ b.pk }}"><div class="karte__inhalt zeile">
   <div class="zeile__text stapel">
-    <strong>{% include "komponenten/icon.html" with name=b.anzeige_symbol %} {{ b.titel }}</strong>
+    <strong>{% include "komponenten/icon.html" with name=b.anzeige_symbol %} {{ b.titel|uebersetzt }}</strong>
     <span class="reihe">
-      {% include "komponenten/chip.html" with text=b.kategorie.name %}
+      {% include "komponenten/chip.html" with text=b.kategorie.name|uebersetzt %}
       {% if not b.aktiv %}{% include "komponenten/chip.html" with text=_("Inaktiv") %}{% endif %}
     </span>
   </div>

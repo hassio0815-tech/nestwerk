@@ -38,7 +38,7 @@
     <form method="post" action="{% url 'avatar:standards' %}" class="stapel">{% csrf_token %}
       {% for s in standards %}
         <div class="zeile mod-standard" data-rang="{{ s.rang.schluessel }}">
-          <span class="chip" data-selten="{{ s.rang.selten }}">{{ s.rang.name }}</span>
+          <span class="chip" data-selten="{{ s.rang.selten }}">{{ s.rang.name|uebersetzt }}</span>
           <label class="feld"><span class="feld__label">{% translate "Preis (Punkte)" %}</span><input class="nw-eingabe" type="number" min="1" name="preis_{{ s.rang.stufe }}" value="{{ s.rang.mod_preis }}" required></label>
           <label class="feld"><span class="feld__label">{% translate "Bauzeit (Tage)" %}</span><input class="nw-eingabe" name="bauzeit_{{ s.rang.stufe }}" inputmode="decimal" value="{{ s.bauzeit_tage }}" required></label>
           <span class="kachel__text">{% blocktranslate with preis=s.preis_wirksam zeit=s.bauzeit_wirksam %}wirksam: {{ preis }} Punkte, {{ zeit }}{% endblocktranslate %}</span>

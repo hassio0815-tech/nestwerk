@@ -1,6 +1,6 @@
-{% load i18n %}<article class="karte" id="antrag-{{ a.pk }}"><div class="karte__inhalt zeile">
+{% load i18n sprache %}<article class="karte" id="antrag-{{ a.pk }}"><div class="karte__inhalt zeile">
   <div class="zeile__text stapel">
-    <strong>{{ a.kind.anzeigename }}: {{ a.titel_snapshot }}</strong>
+    <strong>{{ a.kind.anzeigename }}: {{ a.titel_snapshot|uebersetzt }}</strong>
     <span class="reihe">
       {% include "komponenten/chip.html" with text=a.get_status_display %}
       {% if a.geldwert_cent_snapshot %}<span>{{ a.geldwert_text }}</span>{% endif %}

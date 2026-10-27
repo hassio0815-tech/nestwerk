@@ -1,4 +1,4 @@
-{% comment %}Kinder-Aufgaben: eigene (mit Status/Aktionen) und freie (große Kacheln). HTMX ersetzt den ganzen Bereich.{% endcomment %}{% load i18n %}
+{% comment %}Kinder-Aufgaben: eigene (mit Status/Aktionen) und freie (große Kacheln). HTMX ersetzt den ganzen Bereich.{% endcomment %}{% load i18n sprache %}
 <div id="kind-aufgaben" class="stapel" hx-target="#kind-aufgaben" hx-swap="outerHTML">
   {% include "aufgaben/_hinweis.html" %}
 
@@ -7,7 +7,7 @@
     {% for i in eigene %}
       <article class="karte aufgabe-karte" data-status="{{ i.anzeige_status }}" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
         <div class="zeile">
-          <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot }}</strong></span>
+          <span class="reihe">{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" %}<strong>{{ i.titel_snapshot|uebersetzt }}</strong></span>
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
         </div>
         <span class="reihe">
@@ -60,7 +60,7 @@
         <form method="post" action="{% url 'aufgaben:kind_waehlen' i.pk %}" hx-post="{% url 'aufgaben:kind_waehlen' i.pk %}"{% if i.vergeben_an_andere %} hx-confirm="{% translate "Ein anderes Kind hat sie schon gewählt. Trotzdem wollen? Dann entscheiden Mama oder Papa." %}"{% endif %}>{% csrf_token %}
           <button type="submit" class="kachel aufgabe-kachel{% if i.vergeben_an_andere %} aufgabe-kachel--vergeben{% endif %}"{% if i.limit_erreicht %} disabled{% endif %}>
             {% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol|default:"liste" klasse="kachel__icon" %}
-            <span class="kachel__titel">{{ i.titel_snapshot }}</span>
+            <span class="kachel__titel">{{ i.titel_snapshot|uebersetzt }}</span>
             {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
             <span class="kachel__text">{% if i.limit_erreicht %}{% translate "Limit erreicht" %}{% elif i.vergeben_an_andere %}{% translate "schon gewählt" %}{% elif i.fenster_ende %}{% translate "bis" %} {{ i.fenster_ende|date:"D H:i" }}{% else %}{% translate "ohne Termin" %}{% endif %}</span>
           </button>

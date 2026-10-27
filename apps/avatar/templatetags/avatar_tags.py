@@ -10,6 +10,8 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext
 
+from apps.kern import sprache
+
 from .. import services
 
 register = template.Library()
@@ -65,4 +67,4 @@ def avatar_name(benutzer):
 def uebersetzt(text):
     """``{{ mod.name|uebersetzt }}``: Namen aus den Avatar-Daten (JSON/DB) in der Sprache des
     Benutzers. Unbekannte Texte (z. B. von Eltern geänderte Namen) bleiben unverändert."""
-    return gettext(text) if text else text
+    return sprache.uebersetzt(text)

@@ -1,5 +1,5 @@
 {% extends "basis/einstellungen.html" %}
-{% load i18n %}
+{% load i18n sprache %}
 {% block titel %}{% translate "Meilensteine" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
@@ -13,7 +13,7 @@
   {% for z in zeilen %}
     <section class="nw-karte" data-meilenstein="{{ z.regel.schluessel }}"{% if not z.regel.aktiv %} data-inaktiv{% endif %}><div class="karte__inhalt stapel">
       <div class="zeile">
-        <h2>{{ z.regel.name }}</h2>
+        <h2>{{ z.regel.name|uebersetzt }}</h2>
         {% if z.regel.aktiv %}<span class="chip" data-selten="uncommon">{% translate "an" %}</span>{% else %}<span class="chip" data-selten="common">{% translate "aus" %}</span>{% endif %}
       </div>
       <p class="kachel__text">{% translate "keine" as keine %}{% blocktranslate with art=z.regel.belohnungsart|default:keine wdh=z.regel.get_wiederholbar_display modul=z.regel.modul anzahl=z.anzahl %}Belohnung: {{ art }} · {{ wdh }} · Modul {{ modul }} · {{ anzahl }}× erreicht{% endblocktranslate %}</p>

@@ -88,7 +88,7 @@ def _kinder_ereignisse(typ, schluessel, daten):
 
 
 def _belohnung_titel(zeile):
-    return zeile.belohnung.titel if zeile.belohnung_id else "Wochenziel"
+    return zeile.belohnung.titel if zeile.belohnung_id else gettext_noop("Wochenziel")
 
 
 def erfolg_pruefen(iso: IsoWoche, jetzt=None, *, melden=None) -> bool:

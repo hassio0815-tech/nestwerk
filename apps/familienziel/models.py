@@ -28,7 +28,7 @@ class Familienbelohnung(models.Model):
         ordering = ["reihenfolge", "id"]
 
     def __str__(self):
-        return self.titel
+        return gettext(self.titel) if self.titel else ""  # Start-Titel in der aktiven Sprache
 
 
 class AbstimmungStatus(models.TextChoices):

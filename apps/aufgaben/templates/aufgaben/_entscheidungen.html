@@ -1,4 +1,4 @@
-{% comment %}Eltern: offene Entscheidungen (Konflikte, Meldungen), Reservierungen, kürzlich bestätigte (Sonderpunkte, Korrektur). HTMX ersetzt den Bereich.{% endcomment %}{% load i18n %}
+{% comment %}Eltern: offene Entscheidungen (Konflikte, Meldungen), Reservierungen, kürzlich bestätigte (Sonderpunkte, Korrektur). HTMX ersetzt den Bereich.{% endcomment %}{% load i18n sprache %}
 <div id="entscheidungen" class="stapel" hx-target="#entscheidungen" hx-swap="outerHTML">
   {% include "aufgaben/_hinweis.html" %}
   <h1>{% translate "Meldungen und Entscheidungen" %}</h1>
@@ -6,7 +6,7 @@
   <section class="stapel"><h2>{% translate "Konflikte" %}</h2>
     {% for i in konflikte %}
       <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt zeile">
-        <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong><span class="zeile__plan">{% translate "Mehrere Kinder wollen diese Aufgabe." %}</span></div>
+        <div class="zeile__text stapel"><strong>{{ i.titel_snapshot|uebersetzt }}</strong><span class="zeile__plan">{% translate "Mehrere Kinder wollen diese Aufgabe." %}</span></div>
         {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
         <div class="reihe">
           {% for interesse in i.aktive_interessen %}
@@ -26,8 +26,8 @@
     {% for i in meldungen %}
       <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
         <div class="zeile">
-          <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong>
-            <span class="zeile__plan">{{ i.kind.anzeigename }} · {% translate "gemeldet" %} {{ i.gemeldet_am|date:"D d.m. H:i" }} · {{ i.get_freigabeart_snapshot_display }}</span></div>
+          <div class="zeile__text stapel"><strong>{{ i.titel_snapshot|uebersetzt }}</strong>
+            <span class="zeile__plan">{% translate "D d.m. H:i" context "Datum mit Wochentag und Uhrzeit" as dtfmt %}{{ i.kind.anzeigename }} · {% translate "gemeldet" %} {{ i.gemeldet_am|date:dtfmt }} · {{ i.get_freigabeart_snapshot_display }}</span></div>
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
         </div>
         {% if i.meldung.text %}<p>„{{ i.meldung.text }}“</p>{% endif %}
@@ -59,7 +59,7 @@
   <section class="stapel"><h2>{% translate "Reserviert" %}</h2>
     {% for i in reserviert %}
       <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt zeile">
-        <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong><span class="zeile__plan">{{ i.kind.anzeigename }} · {% translate "bis" %} {{ i.reserviert_bis|date:"D d.m. H:i" }}</span></div>
+        <div class="zeile__text stapel"><strong>{{ i.titel_snapshot|uebersetzt }}</strong><span class="zeile__plan">{% translate "D d.m. H:i" context "Datum mit Wochentag und Uhrzeit" as dtfmt %}{{ i.kind.anzeigename }} · {% translate "bis" %} {{ i.reserviert_bis|date:dtfmt }}</span></div>
         <form method="post" action="{% url 'aufgaben:loesen' i.pk %}" hx-post="{% url 'aufgaben:loesen' i.pk %}" hx-confirm="{% translate "Reservierung lösen? Die Aufgabe wird wieder frei." %}">{% csrf_token %}
           {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Lösen") %}
         </form>
@@ -71,8 +71,8 @@
     {% for i in bestaetigt %}
       <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
         <div class="zeile">
-          <div class="zeile__text stapel"><strong>{{ i.titel_snapshot }}</strong>
-            <span class="zeile__plan">{{ i.kind.anzeigename }} · {% if i.bestaetigt_von %}{% blocktranslate with name=i.bestaetigt_von.anzeigename %}bestätigt von {{ name }}{% endblocktranslate %}{% else %}{% translate "Vertrauen (automatisch)" %}{% endif %} · {{ i.bestaetigt_am|date:"D d.m. H:i" }}{% if i.sonderpunkte %} · {% blocktranslate with punkte=i.sonderpunkte grund=i.sonderpunkte_begruendung %}+{{ punkte }} Bonus ({{ grund }}){% endblocktranslate %}{% endif %}</span></div>
+          <div class="zeile__text stapel"><strong>{{ i.titel_snapshot|uebersetzt }}</strong>
+            <span class="zeile__plan">{% translate "D d.m. H:i" context "Datum mit Wochentag und Uhrzeit" as dtfmt %}{{ i.kind.anzeigename }} · {% if i.bestaetigt_von %}{% blocktranslate with name=i.bestaetigt_von.anzeigename %}bestätigt von {{ name }}{% endblocktranslate %}{% else %}{% translate "Vertrauen (automatisch)" %}{% endif %} · {{ i.bestaetigt_am|date:dtfmt }}{% if i.sonderpunkte %} · {% blocktranslate with punkte=i.sonderpunkte grund=i.sonderpunkte_begruendung %}+{{ punkte }} Bonus ({{ grund }}){% endblocktranslate %}{% endif %}</span></div>
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
         </div>
         <div class="reihe">

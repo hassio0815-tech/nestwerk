@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 19:50+0000\n"
+"POT-Creation-Date: 2026-10-27 04:59+0000\n"
 "PO-Revision-Date: 2026-10-26 00:00+0000\n"
 "Last-Translator: Nestwerk\n"
 "Language-Team: English\n"
@@ -19,8 +19,12 @@ msgid "Taschengeld-Limit pro Monat und Kind"
 msgstr "Pocket money limit per month and child"
 
 #: einstellungen.py:16
-msgid "Gilt für alle Kinder ohne eigenes Limit. Bestätigte und offene Anträge des Kalendermonats zählen."
-msgstr "Applies to all kids without their own limit. Approved and pending requests in the calendar month count."
+msgid ""
+"Gilt für alle Kinder ohne eigenes Limit. Bestätigte und offene Anträge des "
+"Kalendermonats zählen."
+msgstr ""
+"Applies to all kids without their own limit. Approved and pending requests "
+"in the calendar month count."
 
 #: events.py:17
 msgid "Belohnung beantragt"
@@ -89,11 +93,11 @@ msgstr "Order"
 msgid "Der Preis muss mindestens 1 Punkt sein."
 msgstr "The price must be at least 1 point."
 
-#: forms.py:84 models.py:82
+#: forms.py:84 models.py:84
 msgid "Nur Taschengeld hat einen Betrag."
 msgstr "Only pocket money has an amount."
 
-#: forms.py:86 models.py:79
+#: forms.py:86 models.py:81
 msgid "Taschengeld braucht einen Betrag."
 msgstr "Pocket money needs an amount."
 
@@ -105,65 +109,65 @@ msgstr "Default limit per month and child (€)"
 msgid "Eigenes Limit (€)"
 msgstr "Own limit (€)"
 
-#: models.py:15
+#: models.py:17
 #, python-format
 msgid "%(euro)s,%(cent)02d €"
 msgstr "€%(euro)s.%(cent)02d"
 
-#: models.py:22
+#: models.py:24
 msgid "Feste Kennung; 'taschengeld' aktiviert die Limit-Logik."
 msgstr "Fixed key; 'taschengeld' turns on the limit logic."
 
-#: models.py:28
+#: models.py:30
 msgid "Belohnungskategorie"
 msgstr "Reward category"
 
-#: models.py:29
+#: models.py:31
 msgid "Belohnungskategorien"
 msgstr "Reward categories"
 
-#: models.py:53
+#: models.py:55
 msgid "Nur Taschengeld: Betrag in Cent."
 msgstr "Pocket money only: amount in cents."
 
-#: models.py:61
+#: models.py:63
 msgid "Belohnung"
 msgstr "Reward"
 
-#: models.py:62 templates/belohnung/_kind_inhalt.html:2
+#: models.py:64 templates/belohnung/_kind_inhalt.html:2
 #: templates/belohnung/basis.html:6 templates/belohnung/kind.html:4
 msgid "Belohnungen"
 msgstr "Rewards"
 
-#: models.py:86
+#: models.py:88
 msgid "Offen"
 msgstr "Pending"
 
-#: models.py:87
+#: models.py:89
 msgid "Bestätigt"
 msgstr "Approved"
 
-#: models.py:88
+#: models.py:90
 msgid "Abgelehnt"
 msgstr "Declined"
 
-#: models.py:89
+#: models.py:91
 msgid "Zurückgezogen"
 msgstr "Withdrawn"
 
-#: models.py:117
+#: models.py:119
 msgid "Einlöseantrag"
 msgstr "Redeem request"
 
-#: models.py:118
+#: models.py:120
 msgid "Einlöseanträge"
 msgstr "Redeem requests"
 
-#: models.py:147 templates/belohnung/katalog.html:15
+#: models.py:149 templates/belohnung/katalog.html:15
 msgid "Taschengeld-Limit"
 msgstr "Pocket money limit"
 
-#: models.py:148
+#: models.py:150
 msgid "Taschengeld-Limits"
 msgstr "Pocket money limits"
 
@@ -180,8 +184,10 @@ msgstr[1] "You still need %(punkte)s more points for that."
 
 #: services.py:92
 #, python-format
-msgid "Das Taschengeld-Limit für diesen Monat ist erreicht (noch frei: %(frei)s)."
-msgstr "The pocket money limit for this month is reached (still free: %(frei)s)."
+msgid ""
+"Das Taschengeld-Limit für diesen Monat ist erreicht (noch frei: %(frei)s)."
+msgstr ""
+"The pocket money limit for this month is reached (still free: %(frei)s)."
 
 #: services.py:144
 #, python-format
@@ -192,6 +198,50 @@ msgstr "%(name)s does not have enough points for this reward any more."
 #, python-format
 msgid "Der Antrag ist schon %(status)s."
 msgstr "The request is already %(status)s."
+
+#: startwerte.py:10 startwerte.py:19 startwerte.py:20
+msgid "Süßes"
+msgstr "Sweets"
+
+#: startwerte.py:11 startwerte.py:21
+msgid "Fernsehzeit"
+msgstr "TV time"
+
+#: startwerte.py:12 startwerte.py:22 startwerte.py:23
+msgid "Gaming/Computer"
+msgstr "Gaming/Computer"
+
+#: startwerte.py:13 startwerte.py:24
+msgid "Taschengeld"
+msgstr "Pocket money"
+
+#: startwerte.py:14
+msgid "Sonstiges"
+msgstr "Other"
+
+#: startwerte.py:19
+msgid "Süßes klein"
+msgstr "Sweets (small)"
+
+#: startwerte.py:20
+msgid "Süßes groß"
+msgstr "Sweets (big)"
+
+#: startwerte.py:21
+msgid "30 Min Fernsehen"
+msgstr "30 min TV"
+
+#: startwerte.py:22
+msgid "30 Min Konsole"
+msgstr "30 min console"
+
+#: startwerte.py:23
+msgid "30 Min PC"
+msgstr "30 min PC"
+
+#: startwerte.py:24
+msgid "1 € Taschengeld"
+msgstr "€1 pocket money"
 
 #: symbole.py:6
 msgid "Geschenk"
@@ -370,8 +420,12 @@ msgid "aktuell %(limit)s"
 msgstr "now %(limit)s"
 
 #: templates/belohnung/katalog.html:29
-msgid "Eigenes Limit leer lassen = Standard. Bestätigte und offene Anträge des Kalendermonats zählen."
-msgstr "Leave the own limit empty = default. Approved and pending requests in the calendar month count."
+msgid ""
+"Eigenes Limit leer lassen = Standard. Bestätigte und offene Anträge des "
+"Kalendermonats zählen."
+msgstr ""
+"Leave the own limit empty = default. Approved and pending requests in the "
+"calendar month count."
 
 #: templates/belohnung/kind.html:8
 msgid "Start"
@@ -391,7 +445,8 @@ msgstr "Monthly limit reached"
 #: views.py:84
 #, python-format
 msgid "Antrag für „%(titel)s“ ist raus. Mama oder Papa schauen drauf."
-msgstr "Your request for “%(titel)s” is on its way. Mum or Dad will take a look."
+msgstr ""
+"Your request for “%(titel)s” is on its way. Mum or Dad will take a look."
 
 #: views.py:102
 msgid "Antrag zurückgezogen."

@@ -18,6 +18,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, time
 
+from django.utils.formats import date_format
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy, ngettext, pgettext_lazy
 
@@ -150,7 +151,10 @@ class Plan:
             )
         else:
             if self.start_datum:
-                teile = [_("Einmalig am %(datum)s") % {"datum": f"{self.start_datum:%d.%m.%Y}"}]
+                teile = [
+                    _("Einmalig am %(datum)s")
+                    % {"datum": date_format(self.start_datum, "SHORT_DATE_FORMAT")}
+                ]
             else:
                 teile = [_("Einmalig")]
         if self.fenster_bis:
@@ -175,7 +179,9 @@ class Plan:
                 }
             )
         if self.art != EINMALIG and self.end_datum:
-            teile.append(_("bis %(datum)s") % {"datum": f"{self.end_datum:%d.%m.%Y}"})
+            teile.append(
+                _("bis %(datum)s") % {"datum": date_format(self.end_datum, "SHORT_DATE_FORMAT")}
+            )
         return " · ".join(teile)
 
 

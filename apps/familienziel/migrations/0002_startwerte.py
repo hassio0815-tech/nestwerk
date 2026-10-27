@@ -1,16 +1,17 @@
 """Startwerte von familienziel (AP29): Einstellungen und Startliste der Familienbelohnungen."""
 
 from django.db import migrations
+from django.utils.translation import gettext_noop as _
 
 from apps.familienziel.einstellungen import STARTWERTE
 from apps.kern.einstellungen import startwerte_schreiben
 
 BELOHNUNGEN = [
-    ("Pizza", "geschenk"),
-    ("Spieleabend", "controller"),
-    ("Kino", "tv"),
-    ("Eis essen", "stern"),
-    ("Grillen", "garten"),
+    (_("Pizza"), "geschenk"),
+    (_("Spieleabend"), "controller"),
+    (_("Kino"), "tv"),
+    (_("Eis essen"), "stern"),
+    (_("Grillen"), "garten"),
 ]
 
 

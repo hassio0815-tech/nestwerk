@@ -90,8 +90,12 @@ msgid "Aufbewahrung verarbeiteter Ereignisse"
 msgstr "Keeping processed events"
 
 #: services.py:179
-msgid "Erfolgreich verarbeitete Ereignisse (internes Protokoll) werden danach gelöscht. Punkte, Protokoll (Audit) und Spielstände bleiben immer."
-msgstr "Successfully processed events (internal log) are deleted after this. Points, the audit log and scores are always kept."
+msgid ""
+"Erfolgreich verarbeitete Ereignisse (internes Protokoll) werden danach "
+"gelöscht. Punkte, Protokoll (Audit) und Spielstände bleiben immer."
+msgstr ""
+"Successfully processed events (internal log) are deleted after this. Points, "
+"the audit log and scores are always kept."
 
 #: services.py:182
 msgid "Tage"

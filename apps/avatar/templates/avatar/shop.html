@@ -51,7 +51,7 @@
   {% for g in gruppen %}
     <section class="stapel mod-gruppe" data-selten="{{ g.rang_selten }}" data-gruppe="{% if g.set_nummer %}set-{{ g.set_nummer }}{% else %}{{ g.stufe }}{% endif %}">
       <div class="zeile">
-        <h2 class="reihe"><span class="chip" data-selten="{{ g.rang_selten }}">{{ g.rang_name }}</span>{% if g.titel %} {{ g.titel }}{% endif %}</h2>
+        <h2 class="reihe"><span class="chip" data-selten="{{ g.rang_selten }}">{{ g.rang_name }}</span>{% if g.titel %} {{ g.titel|uebersetzt }}{% endif %}</h2>
         {% if g.gesperrt %}<span class="kachel__text">{% include "komponenten/icon.html" with name="schloss" %} {% blocktranslate with rang=g.rang_name %}ab Rang {{ rang }}{% endblocktranslate %}</span>
         {% else %}<span class="kachel__text">{% blocktranslate with a=g.zaehlend b=g.karten|length %}{{ a }}/{{ b }} gebaut{% endblocktranslate %}</span>{% endif %}
       </div>

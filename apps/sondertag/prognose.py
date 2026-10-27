@@ -18,11 +18,12 @@ from dataclasses import dataclass, field
 from datetime import date, timedelta
 from decimal import Decimal
 
-from django.utils import translation
+from django.utils import formats
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from apps.kern import einstellungen, zeit
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 from apps.spielregeln import prognose as rang_prognose
 from apps.spielregeln import selectors as spielregeln
@@ -215,7 +216,7 @@ def _schritte(kind) -> tuple[list[Schritt], int]:
                 zyklus += 1
             ergebnis.append(
                 Schritt(
-                    regel.name,
+                    uebersetzt(regel.name),
                     0,
                     0,
                     godmode_wochen=max(0, zyklus * laenge - ist),
@@ -225,7 +226,7 @@ def _schritte(kind) -> tuple[list[Schritt], int]:
         else:
             k = selectors._kandidat_rang(kind, regel, namen)
             if k is not None:
-                ergebnis.append(Schritt(regel.name, k["rang_ziel"], k["mods_fehlen"]))
+                ergebnis.append(Schritt(uebersetzt(regel.name), k["rang_ziel"], k["mods_fehlen"]))
     return ergebnis, laenge
 
 
@@ -276,9 +277,7 @@ class Empfehlung:
     @property
     def text(self) -> str:
         zahlen = " / ".join(str(j.anzahl) for j in self.jahre)
-        faktor = str(self.faktor)
-        if (translation.get_language() or "de").startswith("de"):
-            faktor = faktor.replace(".", ",")
+        faktor = faktor_text(self.faktor)
         return _(
             "Faktor %(faktor)s auf die %(knopf)s "
             "würde %(zahlen)s Sondertage in den beiden App-Jahren ergeben."
@@ -379,4 +378,5 @@ def uebersicht(heute: date | None = None) -> list[Zeile]:
 
 
 def faktor_text(wert: Decimal | None) -> str:
-    return "" if wert is None else f"{wert:.2f}".replace(".", ",")
+    """Faktor mit Dezimalzeichen der aktiven Sprache (de: 0,85, en: 0.85)."""
+    return "" if wert is None else formats.number_format(wert, decimal_pos=2)

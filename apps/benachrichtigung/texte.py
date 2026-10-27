@@ -19,7 +19,7 @@ import string
 from dataclasses import dataclass
 
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.translation import gettext, gettext_noop
+from django.utils.translation import gettext, gettext_noop, ngettext
 
 from apps.kern import sprache
 
@@ -211,7 +211,8 @@ def werte_aus(ereignis):
 
     - Texte sind gespeicherte deutsche Start-Inhalte (Mod-, Rang-, Abzeichen-Namen) und werden
       per msgid übersetzt; Unbekanntes (Eingaben der Familie) bleibt unverändert.
-    - ``<feld>_msgid`` + optional ``<feld>_parameter`` (dict) bilden ``<feld>`` neu.
+    - ``<feld>_msgid`` + optional ``<feld>_parameter`` (dict) bilden ``<feld>`` neu; mit
+      ``<feld>_msgid_plural`` wird nach ``parameter["n"]`` die Mehrzahl gewählt.
     """
     daten = ereignis.daten or {}
     werte = {
@@ -230,8 +231,14 @@ def werte_aus(ereignis):
         parameter = {
             k: sprache.uebersetzt(v) if isinstance(v, str) else v for k, v in parameter.items()
         }
+        plural = daten.get(f"{feld}_msgid_plural")
         try:
-            werte[feld] = gettext(str(msgid)) % parameter
+            if plural:
+                werte[feld] = (
+                    ngettext(str(msgid), str(plural), int(parameter.get("n", 0))) % parameter
+                )
+            else:
+                werte[feld] = gettext(str(msgid)) % parameter
         except (KeyError, TypeError, ValueError):
             werte[feld] = gettext(str(msgid))
     if ereignis.kind_id:

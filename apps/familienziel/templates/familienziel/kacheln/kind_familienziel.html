@@ -1,4 +1,4 @@
-{% load i18n %}{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
+{% load i18n sprache %}{% load static %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">
 {% with a=k.a %}
 <article class="karte fz-kind"><div class="karte__inhalt stapel">
   <h2>{% translate "Familienziel" %}</h2>
@@ -13,7 +13,7 @@
         <label class="fz-wahl__option"><input type="radio" name="belohnung" value="{{ o.pk }}"{% if k.stimme.belohnung_id == o.pk %} checked{% endif %} required>{% include "familienziel/_belohnung.html" with b=o %}</label>
       {% endfor %}
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Abstimmen") %}
-      {% if k.stimme %}<p class="kachel__text">{% blocktranslate with titel=k.stimme.belohnung.titel %}Du hast {{ titel }} gewählt. Du kannst bis zum Ende ändern.{% endblocktranslate %}</p>{% endif %}
+      {% if k.stimme %}<p class="kachel__text">{% blocktranslate with titel=k.stimme.belohnung.titel|uebersetzt %}Du hast {{ titel }} gewählt. Du kannst bis zum Ende ändern.{% endblocktranslate %}</p>{% endif %}
     </form>
   {% endif %}
 </div></article>

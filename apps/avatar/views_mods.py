@@ -6,9 +6,11 @@ from decimal import Decimal, InvalidOperation
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.formats import get_format
 from django.utils.translation import gettext, gettext_lazy
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
+from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import nur_eltern, nur_kind
 from apps.punkte import selectors as punkte_selectors
 from apps.spielregeln import selectors as raenge
@@ -69,7 +71,7 @@ def _mit_rang(besitze):
     for b in besitze:
         rang = raenge_map.get(b.mod.seltenheit)
         b.selten = rang.selten if rang else "common"
-        b.rang_name = rang.name if rang else str(b.mod.seltenheit)
+        b.rang_name = uebersetzt(rang.name) if rang else str(b.mod.seltenheit)
     return besitze
 
 
@@ -226,7 +228,7 @@ def _eltern_kontext(request, fehler=""):
 
 
 def _faktor_text(wert):
-    return f"{wert:.2f}".replace(".", ",")
+    return f"{wert:.2f}".replace(".", get_format("DECIMAL_SEPARATOR"))
 
 
 @nur_eltern
@@ -273,10 +275,11 @@ def _stunden(tage, rang):
         wert = Decimal(tage.replace(",", "."))
     except InvalidOperation:
         raise RangFehler(
-            gettext("%(rang)s: Bauzeit bitte in Tagen, z. B. 3 oder 1,5.") % {"rang": rang.name}
+            gettext("%(rang)s: Bauzeit bitte in Tagen, z. B. 3 oder 1,5.")
+            % {"rang": uebersetzt(rang.name)}
         ) from None
     if wert < 0:
         raise RangFehler(
-            gettext("%(rang)s: Bauzeit darf nicht negativ sein.") % {"rang": rang.name}
+            gettext("%(rang)s: Bauzeit darf nicht negativ sein.") % {"rang": uebersetzt(rang.name)}
         )
     return int((wert * 24).to_integral_value())

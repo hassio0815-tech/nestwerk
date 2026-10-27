@@ -6,12 +6,41 @@ ist genau "Rekord-Tagesserie ≥ 7" – so holt jede spätere Prüfung (Job) ein
 sicher nach.
 """
 
+from django.utils.translation import gettext_noop as _
+
 TAGESSERIE = (7, 14, 30)
 WOCHENSERIE = (1, 2, 4, 8, 12, 24, 48)
 
 
-def _wochen(n):
-    return "Eine aktive Woche geschafft." if n == 1 else f"{n} aktive Wochen in Folge."
+# Namen und Beschreibungen sind msgids (docs/i18n.md): feste Texte, damit makemessages sie findet.
+TAGESSERIE_NAMEN = {
+    7: _("Tagesserie 7"),
+    14: _("Tagesserie 14"),
+    30: _("Tagesserie 30"),
+}
+TAGESSERIE_TEXTE = {
+    7: _("7 Tage in Folge mit einer bestätigten Aufgabe."),
+    14: _("14 Tage in Folge mit einer bestätigten Aufgabe."),
+    30: _("30 Tage in Folge mit einer bestätigten Aufgabe."),
+}
+WOCHENSERIE_NAMEN = {
+    1: _("Wochenserie 1"),
+    2: _("Wochenserie 2"),
+    4: _("Wochenserie 4"),
+    8: _("Wochenserie 8"),
+    12: _("Wochenserie 12"),
+    24: _("Wochenserie 24"),
+    48: _("Wochenserie 48"),
+}
+WOCHENSERIE_TEXTE = {
+    1: _("Eine aktive Woche geschafft."),
+    2: _("2 aktive Wochen in Folge."),
+    4: _("4 aktive Wochen in Folge."),
+    8: _("8 aktive Wochen in Folge."),
+    12: _("12 aktive Wochen in Folge."),
+    24: _("24 aktive Wochen in Folge."),
+    48: _("48 aktive Wochen in Folge."),
+}
 
 
 def startwerte():
@@ -21,8 +50,8 @@ def startwerte():
         zeilen.append(
             {
                 "schluessel": f"tagesserie-{n}",
-                "name": f"Tagesserie {n}",
-                "beschreibung": f"{n} Tage in Folge mit einer bestätigten Aufgabe.",
+                "name": TAGESSERIE_NAMEN[n],
+                "beschreibung": TAGESSERIE_TEXTE[n],
                 "symbol": f"tagesserie-{n}",
                 "gruppe": "tagesserie",
                 "metrik": "rekord_tagesserie",
@@ -35,8 +64,8 @@ def startwerte():
         zeilen.append(
             {
                 "schluessel": f"wochenserie-{n}",
-                "name": f"Wochenserie {n}",
-                "beschreibung": _wochen(n),
+                "name": WOCHENSERIE_NAMEN[n],
+                "beschreibung": WOCHENSERIE_TEXTE[n],
                 "symbol": f"wochenserie-{n}",
                 "gruppe": "wochenserie",
                 "metrik": "rekord_wochenserie",
@@ -48,8 +77,8 @@ def startwerte():
     zeilen.append(
         {
             "schluessel": "quartal-voll-aktiv",
-            "name": "Volles Quartal",
-            "beschreibung": "Ein ganzes Quartal lang jede Woche aktiv (Pausen zählen nicht).",
+            "name": _("Volles Quartal"),
+            "beschreibung": _("Ein ganzes Quartal lang jede Woche aktiv (Pausen zählen nicht)."),
             "symbol": "quartal-voll-aktiv",
             "gruppe": "quartal",
             "metrik": "quartal_voll_aktiv",
@@ -61,8 +90,8 @@ def startwerte():
     zeilen.append(
         {
             "schluessel": "rangaufstieg",
-            "name": "Rangaufstieg",
-            "beschreibung": "Einen neuen Rang erreicht.",
+            "name": _("Rangaufstieg"),
+            "beschreibung": _("Einen neuen Rang erreicht."),
             "symbol": "rangaufstieg",
             "gruppe": "rang",
             "metrik": "rang",
@@ -79,23 +108,29 @@ def startwerte():
 RUHMESHALLE = (
     (
         "erster-held",
-        "Erster Held",
-        "Den ersten Helden in die Ruhmeshalle gestellt.",
+        _("Erster Held"),
+        _("Den ersten Helden in die Ruhmeshalle gestellt."),
         "ruhmeshalle_eintraege",
         1,
     ),
-    ("heldentrio", "Heldentrio", "Drei Helden in der Ruhmeshalle.", "ruhmeshalle_eintraege", 3),
+    (
+        "heldentrio",
+        _("Heldentrio"),
+        _("Drei Helden in der Ruhmeshalle."),
+        "ruhmeshalle_eintraege",
+        3,
+    ),
     (
         "sammler",
-        "Sammler",
-        "In jedem der 10 Themen einen Helden in der Ruhmeshalle.",
+        _("Sammler"),
+        _("In jedem der 10 Themen einen Helden in der Ruhmeshalle."),
         "ruhmeshalle_themen",
         10,
     ),
     (
         "legende",
-        "Legende",
-        "Einen Helden auf höchstem Rang in die Ruhmeshalle gestellt.",
+        _("Legende"),
+        _("Einen Helden auf höchstem Rang in die Ruhmeshalle gestellt."),
         "ruhmeshalle_hoechster_rang",
         6,
     ),

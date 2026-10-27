@@ -14,6 +14,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from apps.kern import zeit
+from apps.kern.sprache import uebersetzt
 
 from . import wiederholung
 from .wiederholung import Plan
@@ -56,7 +57,7 @@ class Kategorie(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return uebersetzt(self.name)
 
     def clean(self):
         if self.farbe and not HEX_FARBE.match(self.farbe):
@@ -83,7 +84,7 @@ class Vorlage(models.Model):
         ]
 
     def __str__(self):
-        return self.titel
+        return uebersetzt(self.titel)
 
     @property
     def plan(self) -> Plan:
@@ -179,7 +180,7 @@ class Aufgabe(models.Model):
         ]
 
     def __str__(self):
-        return self.titel
+        return uebersetzt(self.titel)
 
     @property
     def plan(self) -> Plan:

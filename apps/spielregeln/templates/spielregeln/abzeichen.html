@@ -1,5 +1,5 @@
 {% extends "basis/einstellungen.html" %}
-{% load i18n %}
+{% load i18n sprache %}
 {% block titel %}{% translate "Abzeichen" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
   {% url "konten:eltern_heim" as heim_url %}
@@ -28,7 +28,7 @@
             {% endfor %}
           </ul>
         {% else %}<p class="kachel__text">{% translate "Noch keine Abzeichen." %}</p>{% endif %}
-        {% if z.naechste %}<p class="kachel__text">{% translate "Als Nächstes:" %} {% for n in z.naechste %}{{ n.abzeichen.name }} ({{ n.wert }}/{{ n.ziel }}){% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+        {% if z.naechste %}<p class="kachel__text">{% translate "Als Nächstes:" %} {% for n in z.naechste %}{{ n.abzeichen.name|uebersetzt }} ({{ n.wert }}/{{ n.ziel }}){% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
       </div>
     {% empty %}
       {% include "komponenten/leer.html" with icon="person" titel=_("Noch keine Kinder") text=_("Kinder legst du unter Familie an.") %}

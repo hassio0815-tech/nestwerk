@@ -1,7 +1,7 @@
-{% load i18n %}<article class="wochenplan__karte{% if not i.beweglich and not ohne %} wochenplan__karte--gesperrt{% endif %}" data-id="{{ i.pk }}" data-status="{{ i.status }}" {% if i.beweglich and not ohne %}data-beweglich="1" data-url="{% url 'aufgaben:wochenplan_verschieben' i.pk %}"{% endif %}>
+{% load i18n sprache %}<article class="wochenplan__karte{% if not i.beweglich and not ohne %} wochenplan__karte--gesperrt{% endif %}" data-id="{{ i.pk }}" data-status="{{ i.status }}" {% if i.beweglich and not ohne %}data-beweglich="1" data-url="{% url 'aufgaben:wochenplan_verschieben' i.pk %}"{% endif %}>
   <div class="reihe">
     {% if i.aufgabe.kategorie %}{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol %}{% endif %}
-    <strong>{{ i.titel_snapshot }}</strong>
+    <strong>{{ i.titel_snapshot|uebersetzt }}</strong>
   </div>
   <div class="reihe">
     {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}

@@ -21,11 +21,14 @@ from datetime import date, datetime
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.utils import formats
+from django.utils.translation import gettext, gettext_noop
 from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
 from apps.konten import selectors as konten
+from apps.spielregeln.services import datum_parameter
 
 from . import events, grenzen
 from .models import ANGENOMMEN, OFFEN, BegleitungWunsch, Quelle, SondertagAnspruch, Status
@@ -91,13 +94,44 @@ def neu_berechnen(kind, heute: date | None = None) -> list[tuple]:
 
 
 def datum_text(tag: date | None) -> str:
-    return tag.strftime("%d.%m.%Y") if tag else ""
+    """Kurzes Datum in der aktiven Sprache (de: 30.10.2026, en: 10/30/2026)."""
+    return formats.date_format(tag, "SHORT_DATE_FORMAT") if tag else ""
 
 
-def _hinweis(ab: date, heute: date) -> str:
+def _hinweis_daten(msgid: str, **parameter) -> dict:
+    """Hinweis als msgid + Parameter (gerendert in der Sprache des Empfängers); ``hinweis``
+    bleibt als deutscher Rückfall für ältere Leser. Datumswerte siehe ``datum_parameter``."""
+    return {
+        "hinweis": msgid % parameter,
+        "hinweis_msgid": msgid,
+        "hinweis_parameter": parameter,
+    }
+
+
+# Platzhalter ``datum`` (deutsch) und ``datum_en`` (englisch): siehe spielregeln.services.
+H_AB_SCHICKEN = gettext_noop(
+    # xgettext:no-python-format
+    "Einlösbar ab %(datum)s. Deinen Wunsch kannst du schon jetzt schicken."
+)
+# xgettext:no-python-format
+H_IN_REIHE = gettext_noop("Er wartet in der Reihe, einlösbar ab %(datum)s.")
+# xgettext:no-python-format
+H_AB = gettext_noop("Einlösbar ab %(datum)s.")
+# xgettext:no-python-format
+H_ANNEHMEN_AB = gettext_noop("Annehmen könnt ihr ihn ab %(datum)s.")
+H_WUENSCHEN = gettext_noop("Du darfst dir jetzt etwas wünschen!")
+H_ANNEHMEN_JETZT = gettext_noop("Ihr könnt ihn jetzt annehmen.")
+H_ELTERN_KOENNEN = gettext_noop("Deine Eltern können deinen Wunsch jetzt annehmen.")
+H_WUNSCH_EINLOESBAR = gettext_noop("Wunsch: „%(wunsch)s“. Ihr könnt ihn jetzt annehmen.")
+H_KEIN_WUNSCH = gettext_noop("Noch kein Wunsch gesendet.")
+TITEL_MANUELL = gettext_noop("manuell erfasst")
+TITEL_MEILENSTEIN = gettext_noop("Meilenstein")
+
+
+def _hinweis(ab: date, heute: date) -> dict:
     if ab <= heute:
-        return "Du darfst dir jetzt etwas wünschen!"
-    return f"Einlösbar ab {datum_text(ab)}. Deinen Wunsch kannst du schon jetzt schicken."
+        return _hinweis_daten(H_WUENSCHEN)
+    return _hinweis_daten(H_AB_SCHICKEN, **datum_parameter("datum", ab))
 
 
 # --- Anspruch aus Meilenstein -----------------------------------------------------------------
@@ -112,7 +146,7 @@ def nach_meilenstein(ereignis):
     if not isinstance(erreicht, int):
         logger.warning("meilenstein.erreicht ohne Fakt-ID (Ereignis %s)", ereignis.pk)
         return None
-    titel = str(daten.get("meilenstein") or "Meilenstein")[:80]
+    titel = str(daten.get("meilenstein") or TITEL_MEILENSTEIN)[:80]
     return anspruch_anlegen(ereignis.kind, erreicht, titel=titel)
 
 
@@ -151,7 +185,7 @@ def anspruch_anlegen(kind, meilenstein_id: int, *, titel="", jetzt: datetime | N
         hinweis = (
             _hinweis(ab, heute)
             if erster
-            else f"Er wartet in der Reihe, einlösbar ab {datum_text(ab)}."
+            else _hinweis_daten(H_IN_REIHE, **datum_parameter("datum", ab))
         )
         ereignisse.veroeffentlichen(
             events.FREIGESCHALTET,
@@ -160,7 +194,7 @@ def anspruch_anlegen(kind, meilenstein_id: int, *, titel="", jetzt: datetime | N
                 "anspruch": anspruch.pk,
                 "titel": titel,
                 "einloesbar_ab": ab.isoformat(),
-                "hinweis": hinweis,
+                **hinweis,
             },
             schluessel=f"{events.FREIGESCHALTET}:{anspruch.pk}",
         )
@@ -170,7 +204,7 @@ def anspruch_anlegen(kind, meilenstein_id: int, *, titel="", jetzt: datetime | N
             daten={
                 "anspruch": anspruch.pk,
                 "titel": titel,
-                "hinweis": f"Einlösbar ab {datum_text(ab)}.",
+                **_hinweis_daten(H_AB, **datum_parameter("datum", ab)),
             },
             schluessel=f"{events.VERDIENT_ELTERN}:{anspruch.pk}",
         )
@@ -220,9 +254,7 @@ def einloesbar_melden(jetzt: datetime | None = None) -> int:
                 daten={
                     "anspruch": anspruch.pk,
                     "titel": anspruch.titel,
-                    "hinweis": "Deine Eltern können deinen Wunsch jetzt annehmen."
-                    if wunsch_da
-                    else "Du darfst dir jetzt etwas wünschen!",
+                    **_hinweis_daten(H_ELTERN_KOENNEN if wunsch_da else H_WUENSCHEN),
                 },
                 schluessel=f"{events.EINLOESBAR}:{anspruch.pk}",
             )
@@ -232,9 +264,11 @@ def einloesbar_melden(jetzt: datetime | None = None) -> int:
                 daten={
                     "anspruch": anspruch.pk,
                     "titel": anspruch.titel,
-                    "hinweis": f"Wunsch: „{anspruch.wunsch[:120]}“. Ihr könnt ihn jetzt annehmen."
-                    if wunsch_da
-                    else "Noch kein Wunsch gesendet.",
+                    **(
+                        _hinweis_daten(H_WUNSCH_EINLOESBAR, wunsch=anspruch.wunsch[:120])
+                        if wunsch_da
+                        else _hinweis_daten(H_KEIN_WUNSCH)
+                    ),
                 },
                 schluessel=f"{events.EINLOESBAR_ELTERN}:{anspruch.pk}",
             )
@@ -254,12 +288,41 @@ def eltern_mit_label(label: str):
     return None
 
 
-def begleitung_text(wunsch: str) -> str:
+def _begleitung_msgid(wunsch: str) -> tuple[str, dict]:
+    """Begleitung als (msgid, Parameter); die Namen "Mama"/"Papa" übersetzt die Anzeige."""
     if wunsch in (BegleitungWunsch.MAMA, BegleitungWunsch.PAPA):
         e = eltern_mit_label(wunsch)
-        label = BegleitungWunsch(wunsch).label
-        return f"{label} ({e.anzeigename})" if e and e.anzeigename != label else label
-    return "egal"
+        label = _BEGLEITUNG_LABEL[wunsch]
+        if e and e.anzeigename != label:
+            return _BEGLEITUNG_MIT_NAME[wunsch], {"name": e.anzeigename}
+        return label, {}
+    return gettext_noop("egal"), {}
+
+
+_BEGLEITUNG_LABEL = {
+    BegleitungWunsch.MAMA: gettext_noop("Mama"),
+    BegleitungWunsch.PAPA: gettext_noop("Papa"),
+}
+_BEGLEITUNG_MIT_NAME = {
+    BegleitungWunsch.MAMA: gettext_noop("Mama (%(name)s)"),
+    BegleitungWunsch.PAPA: gettext_noop("Papa (%(name)s)"),
+}
+
+
+def begleitung_text(wunsch: str) -> str:
+    """Begleitung in der aktiven Sprache."""
+    msgid, parameter = _begleitung_msgid(wunsch)
+    return gettext(msgid) % parameter
+
+
+def _begleitung_daten(wunsch: str) -> dict:
+    """``begleitung`` als deutscher Rückfall plus msgid + Parameter für den Empfänger."""
+    msgid, parameter = _begleitung_msgid(wunsch)
+    return {
+        "begleitung": msgid % parameter,
+        "begleitung_msgid": msgid,
+        "begleitung_parameter": parameter,
+    }
 
 
 def wunsch_senden(kind, anspruch, *, wunsch, begleitung, jetzt=None) -> SondertagAnspruch:
@@ -314,11 +377,11 @@ def wunsch_senden(kind, anspruch, *, wunsch, begleitung, jetzt=None) -> Sonderta
             daten={
                 "anspruch": anspruch.pk,
                 "wunsch": text,
-                "begleitung": begleitung_text(begleitung),
-                "hinweis": (
-                    "Ihr könnt ihn jetzt annehmen."
+                **_begleitung_daten(begleitung),
+                **(
+                    _hinweis_daten(H_ANNEHMEN_JETZT)
                     if ab <= heute
-                    else f"Annehmen könnt ihr ihn ab {datum_text(ab)}."
+                    else _hinweis_daten(H_ANNEHMEN_AB, **datum_parameter("datum", ab))
                 ),
                 "geaendert": erneut,
             },
@@ -549,7 +612,7 @@ def manuell_erfassen(
         anspruch = SondertagAnspruch.objects.create(
             kind=kind,
             quelle=Quelle.MANUELL,
-            titel="manuell erfasst",
+            titel=TITEL_MANUELL,
             verdient_am=zeit.tag_beginn(tag),
             status=Status.STATTGEFUNDEN,
             annahme_datum=tag,

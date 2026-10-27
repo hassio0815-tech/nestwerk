@@ -32,11 +32,13 @@ from django.db import transaction
 from django.templatetags.static import static
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_noop
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 from apps.kern import registry as kern_registry
 from apps.kern import svg as kern_svg
+from apps.kern.sprache import uebersetzt
 from apps.konten import selectors as konten
 
 from . import events
@@ -189,8 +191,11 @@ class Pruefung:
 
 
 def _titel(verleihung) -> str:
-    name = verleihung.abzeichen.name
-    return f"{name} · {verleihung.bereich_bezeichnung}" if verleihung.bereich else name
+    """Anzeigetitel in der aktiven Sprache (Start-Namen übersetzt, Umbenanntes unverändert)."""
+    name = uebersetzt(verleihung.abzeichen.name)
+    if not verleihung.bereich:
+        return name
+    return f"{name} · {uebersetzt(verleihung.bereich_bezeichnung)}"
 
 
 @transaction.atomic
@@ -254,8 +259,26 @@ def _treffer(regel, werte) -> list[Treffer]:
         return []
 
 
+_MEHR_TITEL = gettext_noop("%(titel)s (+%(n)s weitere)")
+_MEHR_KOPF = "%(n)s neue Abzeichen: "  # deutscher Rückfall; Anzeige: _KOPF_NEU + Liste
+_KOPF_NEU = gettext_noop("Neue Abzeichen:")
+gettext_noop("Neu in der Vitrine.")  # Rückfall, wenn ein Abzeichen keine Beschreibung hat
+
+
+def _titel_teile(verleihung) -> dict:
+    teile = {"name": verleihung.abzeichen.name}
+    if verleihung.bereich:
+        teile["bereich"] = verleihung.bereich_bezeichnung
+    return teile
+
+
+def _titel_roh(verleihung) -> str:
+    """Deutscher Titel, wie gespeichert (Rückfall in Ereignissen)."""
+    name = verleihung.abzeichen.name
+    return f"{name} · {verleihung.bereich_bezeichnung}" if verleihung.bereich else name
+
+
 def _abzeichen_melden(kind, neu, melden):
-    titel = [_titel(v) for v in neu]
     audit.protokollieren(
         "abzeichen.verliehen",
         akteur=None,
@@ -266,11 +289,35 @@ def _abzeichen_melden(kind, neu, melden):
     if not melden:
         return
     erstes = neu[0]
+    # Nur msgid + Parameter speichern, gerendert wird in der Sprache des Empfängers
+    # (benachrichtigung.texte.werte_aus). ``abzeichen``/``beschreibung`` bleiben als deutscher
+    # Rückfall für ältere Leser stehen.
+    daten = {}
+    erste_teile = _titel_teile(erstes)
     if len(neu) == 1:
-        anzeige, beschreibung = titel[0], erstes.abzeichen.beschreibung or "Neu in der Vitrine."
+        anzeige = _titel_roh(erstes)
+        beschreibung = erstes.abzeichen.beschreibung or "Neu in der Vitrine."
+        if erstes.bereich:
+            daten["abzeichen_msgid"] = "%(name)s · %(bereich)s"
+            daten["abzeichen_parameter"] = erste_teile
     else:
-        anzeige = f"{titel[0]} (+{len(neu) - 1} weitere)"
-        beschreibung = f"{len(neu)} neue Abzeichen: " + ", ".join(titel)
+        titel = [_titel_roh(v) for v in neu]
+        anzeige = _MEHR_TITEL % {"titel": titel[0], "n": len(neu) - 1}
+        beschreibung = _MEHR_KOPF % {"n": len(neu)} + ", ".join(titel)
+        daten["abzeichen_msgid"] = _MEHR_TITEL
+        daten["abzeichen_parameter"] = {"titel": erste_teile["name"], "n": len(neu) - 1}
+        # Liste aus lauter Platzhaltern: braucht selbst keine Übersetzung, die Namen schon.
+        teile, parameter = [], {"kopf": _KOPF_NEU, "n": len(neu)}
+        for i, v in enumerate(neu):
+            teil = _titel_teile(v)
+            parameter[f"a{i}"] = teil["name"]
+            if v.bereich:
+                parameter[f"b{i}"] = teil["bereich"]
+                teile.append(f"%(a{i})s · %(b{i})s")
+            else:
+                teile.append(f"%(a{i})s")
+        daten["beschreibung_msgid"] = "%(kopf)s " + ", ".join(teile)
+        daten["beschreibung_parameter"] = parameter
     ereignisse.veroeffentlichen(
         events.ABZEICHEN_VERLIEHEN,
         kind=kind,
@@ -281,6 +328,7 @@ def _abzeichen_melden(kind, neu, melden):
             "symbol": erstes.abzeichen.symbol,
             "verleihungen": [v.pk for v in neu],
             "schluessel": [v.abzeichen.schluessel for v in neu],
+            **daten,
         },
         schluessel=f"{events.ABZEICHEN_VERLIEHEN}:{kind.pk}:{erstes.pk}",
     )

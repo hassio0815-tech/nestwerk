@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 19:48+0000\n"
+"POT-Creation-Date: 2026-10-27 04:59+0000\n"
 "PO-Revision-Date: 2026-10-26 00:00+0000\n"
 "Last-Translator: Nestwerk\n"
 "Language-Team: English\n"
@@ -227,16 +227,25 @@ msgid "Aufbewahrung der Zustell-Protokolle"
 msgstr "How long to keep delivery logs"
 
 #: services.py:84
-msgid "Protokoll je Kanal (gesendet, stumm, Fehler) wird danach gelöscht; die Benachrichtigung selbst bleibt nach ihrer eigenen Frist."
-msgstr "The log for each channel (sent, silent, error) is deleted after this time; the notification itself stays for its own period."
+msgid ""
+"Protokoll je Kanal (gesendet, stumm, Fehler) wird danach gelöscht; die "
+"Benachrichtigung selbst bleibt nach ihrer eigenen Frist."
+msgstr ""
+"The log for each channel (sent, silent, error) is deleted after this time; "
+"the notification itself stays for its own period."
 
 #: services.py:94
 msgid "Erlaubte Push-Dienste (Host-Endungen)"
 msgstr "Allowed push services (host suffixes)"
 
 #: services.py:96
-msgid "Web-Push-Endpunkte werden nur an diese Hosts gesendet (Endung auf Label-Grenze, z. B. push.apple.com). IP-Adressen und nicht öffentliche Ziele sind immer gesperrt."
-msgstr "Web push endpoints are only sent to these hosts (suffix on a label boundary, e.g. push.apple.com). IP addresses and non-public targets are always blocked."
+msgid ""
+"Web-Push-Endpunkte werden nur an diese Hosts gesendet (Endung auf Label-"
+"Grenze, z. B. push.apple.com). IP-Adressen und nicht öffentliche Ziele sind "
+"immer gesperrt."
+msgstr ""
+"Web push endpoints are only sent to these hosts (suffix on a label boundary, "
+"e.g. push.apple.com). IP addresses and non-public targets are always blocked."
 
 #: services.py:300
 msgid "Server und Benutzername sind Pflicht"
@@ -263,7 +272,8 @@ msgid "Der Postausgang ist noch nicht eingerichtet."
 msgstr "Outgoing mail is not set up yet."
 
 #: services.py:379
-msgid "Das gespeicherte Passwort passt nicht zum Schlüssel. Bitte neu eingeben."
+msgid ""
+"Das gespeicherte Passwort passt nicht zum Schlüssel. Bitte neu eingeben."
 msgstr "The saved password does not match the key. Please enter it again."
 
 #: services.py:385
@@ -271,8 +281,14 @@ msgid "Testnachricht"
 msgstr "Test message"
 
 #: services.py:387
-msgid "Das ist eine Testnachricht von Nestwerk.\n\nWenn du sie liest, funktioniert der E-Mail-Versand."
-msgstr "This is a test message from Nestwerk.\n\nIf you can read it, sending email works."
+msgid ""
+"Das ist eine Testnachricht von Nestwerk.\n"
+"\n"
+"Wenn du sie liest, funktioniert der E-Mail-Versand."
+msgstr ""
+"This is a test message from Nestwerk.\n"
+"\n"
+"If you can read it, sending email works."
 
 #: services.py:399
 #, python-format
@@ -324,8 +340,10 @@ msgid "Der E-Mail-Postausgang ist noch nicht eingerichtet."
 msgstr "Outgoing email is not set up yet."
 
 #: templates/benachrichtigung/_einstellungen.html:32
-msgid "In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste."
-msgstr "During this time, push stays silent. The message still shows up in the list."
+msgid ""
+"In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste."
+msgstr ""
+"During this time, push stays silent. The message still shows up in the list."
 
 #: templates/benachrichtigung/_einstellungen.html:35
 msgctxt "Uhrzeit"
@@ -468,8 +486,12 @@ msgid "Dieses Gerät oder dieser Browser kann keine Push-Nachrichten empfangen."
 msgstr "This device or browser cannot receive push messages."
 
 #: templates/benachrichtigung/_push_karte.html:19
-msgid "<strong>iPhone und iPad:</strong> Push geht nur, wenn Nestwerk als Web-App auf dem Home-Bildschirm liegt."
-msgstr "<strong>iPhone and iPad:</strong> Push only works if Nestwerk is on your home screen as a web app."
+msgid ""
+"<strong>iPhone und iPad:</strong> Push geht nur, wenn Nestwerk als Web-App "
+"auf dem Home-Bildschirm liegt."
+msgstr ""
+"<strong>iPhone and iPad:</strong> Push only works if Nestwerk is on your "
+"home screen as a web app."
 
 #: templates/benachrichtigung/_push_karte.html:21
 msgid "In Safari unten auf <strong>Teilen</strong> tippen."
@@ -480,12 +502,18 @@ msgid "<strong>Zum Home-Bildschirm</strong> wählen."
 msgstr "Choose <strong>Add to Home Screen</strong>."
 
 #: templates/benachrichtigung/_push_karte.html:23
-msgid "Den Schalter <strong>Als Web-App öffnen</strong> eingeschaltet lassen (iOS 26)."
+msgid ""
+"Den Schalter <strong>Als Web-App öffnen</strong> eingeschaltet lassen (iOS "
+"26)."
 msgstr "Leave the <strong>Open as Web App</strong> switch turned on (iOS 26)."
 
 #: templates/benachrichtigung/_push_karte.html:24
-msgid "Nestwerk über das neue Symbol auf dem Home-Bildschirm öffnen. Dann hier den Knopf zum Aktivieren antippen."
-msgstr "Open Nestwerk from the new icon on your home screen. Then tap the button to turn it on here."
+msgid ""
+"Nestwerk über das neue Symbol auf dem Home-Bildschirm öffnen. Dann hier den "
+"Knopf zum Aktivieren antippen."
+msgstr ""
+"Open Nestwerk from the new icon on your home screen. Then tap the button to "
+"turn it on here."
 
 #: templates/benachrichtigung/_push_karte.html:29
 msgid "Du bekommst Meldungen direkt auf dieses Gerät."
@@ -508,8 +536,13 @@ msgid "Auf diesem Gerät abmelden"
 msgstr "Sign out on this device"
 
 #: templates/benachrichtigung/_push_karte.html:44
-msgid "Benachrichtigungen sind für Nestwerk blockiert. Erlaube sie in den Einstellungen des Geräts (iPhone: Einstellungen, Mitteilungen, Nestwerk) und lade die Seite neu."
-msgstr "Notifications are blocked for Nestwerk. Allow them in your device settings (iPhone: Settings, Notifications, Nestwerk) and reload the page."
+msgid ""
+"Benachrichtigungen sind für Nestwerk blockiert. Erlaube sie in den "
+"Einstellungen des Geräts (iPhone: Einstellungen, Mitteilungen, Nestwerk) und "
+"lade die Seite neu."
+msgstr ""
+"Notifications are blocked for Nestwerk. Allow them in your device settings "
+"(iPhone: Settings, Notifications, Nestwerk) and reload the page."
 
 #: templates/benachrichtigung/_zaehler.html:1
 #, python-format
@@ -540,303 +573,310 @@ msgid "Keine Verbindung"
 msgstr "No connection"
 
 #: templates/benachrichtigung/offline.html:21
-msgid "Nestwerk erreicht den Server gerade nicht. Prüfe das WLAN und versuche es noch einmal."
-msgstr "Nestwerk cannot reach the server right now. Check your Wi-Fi and try again."
+msgid ""
+"Nestwerk erreicht den Server gerade nicht. Prüfe das WLAN und versuche es "
+"noch einmal."
+msgstr ""
+"Nestwerk cannot reach the server right now. Check your Wi-Fi and try again."
 
 #: templates/benachrichtigung/offline.html:22
 msgid "Neu laden"
 msgstr "Reload"
 
 #: templates/benachrichtigung/push_geraet.html:8
-msgid "Auf dem Tablet gibt es keine Push-Nachrichten. Die Anzeige aktualisiert sich von selbst."
+msgid ""
+"Auf dem Tablet gibt es keine Push-Nachrichten. Die Anzeige aktualisiert sich "
+"von selbst."
 msgstr "The tablet does not get push messages. The screen updates by itself."
 
-#: texte.py:39
+#: texte.py:41
 msgid "Datensicherung fehlgeschlagen"
 msgstr "Backup failed"
 
-#: texte.py:40
+#: texte.py:42
 msgid "Bitte Job-Läufe und Backup-Ordner prüfen (Runbook)."
 msgstr "Please check the job runs and the backup folder (runbook)."
 
-#: texte.py:43
+#: texte.py:45
 #, python-brace-format
 msgid "{kind} möchte eine Aufgabe machen"
 msgstr "{kind} wants to do a task"
 
-#: texte.py:43
+#: texte.py:45
 #, python-brace-format
 msgid "„{aufgabe}“"
 msgstr "“{aufgabe}”"
 
-#: texte.py:46
+#: texte.py:48
 msgid "Mehrere möchten dieselbe Aufgabe"
 msgstr "Several people want the same task"
 
-#: texte.py:47
+#: texte.py:49
 #, python-brace-format
 msgid "„{aufgabe}“ braucht eine Zuteilung."
 msgstr "“{aufgabe}” needs to be assigned."
 
-#: texte.py:50
+#: texte.py:52
 #, python-brace-format
 msgid "{kind} hat eine Aufgabe gemeldet"
 msgstr "{kind} reported a task"
 
-#: texte.py:51
+#: texte.py:53
 #, python-brace-format
 msgid "„{aufgabe}“ wartet auf Bestätigung."
 msgstr "“{aufgabe}” is waiting for approval."
 
-#: texte.py:54
+#: texte.py:56
 msgid "Aufgabe bestätigt!"
 msgstr "Task approved!"
 
-#: texte.py:54
+#: texte.py:56
 #, python-brace-format
 msgid "„{aufgabe}“ ist geschafft. Gut gemacht!"
 msgstr "“{aufgabe}” is done. Well done!"
 
-#: texte.py:57
+#: texte.py:59
 msgid "Aufgabe nicht angenommen"
 msgstr "Task not accepted"
 
-#: texte.py:57
+#: texte.py:59
 #, python-brace-format
 msgid "„{aufgabe}“ wurde abgelehnt."
 msgstr "“{aufgabe}” was turned down."
 
-#: texte.py:60
+#: texte.py:62
 msgid "Rückfrage zur Aufgabe"
 msgstr "Question about the task"
 
-#: texte.py:61
+#: texte.py:63
 #, python-brace-format
 msgid "Zu „{aufgabe}“ gibt es eine Rückfrage."
 msgstr "There is a question about “{aufgabe}”."
 
-#: texte.py:64
+#: texte.py:66
 msgid "Deine Aufgabe wartet"
 msgstr "Your task is waiting"
 
-#: texte.py:64
+#: texte.py:66
 #, python-brace-format
 msgid "„{aufgabe}“ läuft bald ab."
 msgstr "“{aufgabe}” runs out soon."
 
-#: texte.py:67
+#: texte.py:69
 msgid "Reservierung abgelaufen"
 msgstr "Reservation expired"
 
-#: texte.py:68
+#: texte.py:70
 #, python-brace-format
 msgid "{kind} hat „{aufgabe}“ nicht gemacht."
 msgstr "{kind} did not do “{aufgabe}”."
 
-#: texte.py:71
+#: texte.py:73
 msgid "Aufgabe läuft bald ab"
 msgstr "Task runs out soon"
 
-#: texte.py:72
+#: texte.py:74
 #, python-brace-format
 msgid "„{aufgabe}“ wurde noch nicht übernommen."
 msgstr "“{aufgabe}” has not been taken yet."
 
-#: texte.py:75
+#: texte.py:77
 msgid "Aufgabe nicht übernommen"
 msgstr "Task not taken"
 
-#: texte.py:76
+#: texte.py:78
 #, python-brace-format
 msgid "„{aufgabe}“ hat niemand übernommen."
 msgstr "Nobody took “{aufgabe}”."
 
-#: texte.py:79
+#: texte.py:81
 #, python-brace-format
 msgid "{kind} möchte eine Belohnung"
 msgstr "{kind} wants a reward"
 
-#: texte.py:80
+#: texte.py:82
 #, python-brace-format
 msgid "„{belohnung}“ wartet auf Entscheidung."
 msgstr "“{belohnung}” is waiting for a decision."
 
-#: texte.py:83
+#: texte.py:85
 msgid "Entscheidung zu deiner Belohnung"
 msgstr "Decision about your reward"
 
-#: texte.py:83
+#: texte.py:85
 #, python-brace-format
 msgid "„{belohnung}“: {ergebnis}"
 msgstr "“{belohnung}”: {ergebnis}"
 
-#: texte.py:86
+#: texte.py:88
 msgid "Dein Mod ist fertig!"
 msgstr "Your mod is ready!"
 
-#: texte.py:86
+#: texte.py:88
 #, python-brace-format
 msgid "„{mod}“ kann jetzt eingebaut werden."
 msgstr "“{mod}” can be installed now."
 
-#: texte.py:89
+#: texte.py:91
 #, python-brace-format
 msgid "Serie: {wochenserie} Wochen!"
 msgstr "Streak: {wochenserie} weeks!"
 
-#: texte.py:90
+#: texte.py:92
 #, python-brace-format
 msgid "Woche {woche} geschafft. Weiter so!"
 msgstr "Week {woche} done. Keep it up!"
 
-#: texte.py:93
+#: texte.py:95
 msgid "Neue Woche, neue Serie"
 msgstr "New week, new streak"
 
-#: texte.py:95
-msgid "Letzte Woche gab es keine Aufgabe. Schon eine Aufgabe startet deine Serie neu."
+#: texte.py:97
+msgid ""
+"Letzte Woche gab es keine Aufgabe. Schon eine Aufgabe startet deine Serie "
+"neu."
 msgstr "There was no task last week. Just one task starts your streak again."
 
-#: texte.py:99
+#: texte.py:101
 msgid "Pause – deine Serie ist sicher"
 msgstr "Break – your streak is safe"
 
-#: texte.py:100
+#: texte.py:102
 #, python-brace-format
 msgid "Pause {zeitraum}. Aufgaben zählen trotzdem."
 msgstr "Break {zeitraum}. Tasks still count."
 
-#: texte.py:102
+#: texte.py:104
 msgid "Pause vorbei"
 msgstr "Break is over"
 
-#: texte.py:102 texte.py:151
+#: texte.py:104 texte.py:153
 #, python-brace-format
 msgid "{hinweis}"
 msgstr "{hinweis}"
 
-#: texte.py:104
+#: texte.py:106
 #, python-brace-format
 msgid "Serienbonus +{prozent} %"
 msgstr "Streak bonus +{prozent} %"
 
-#: texte.py:105
+#: texte.py:107
 #, python-brace-format
 msgid "+{punkte} Punkte für {serie} Wochen in Folge."
 msgstr "+{punkte} points for {serie} weeks in a row."
 
-#: texte.py:108 texte.py:114
+#: texte.py:110 texte.py:116
 #, python-brace-format
 msgid "Neuer Rang: {rang}!"
 msgstr "New rank: {rang}!"
 
-#: texte.py:108 texte.py:114
+#: texte.py:110 texte.py:116
 #, python-brace-format
 msgid "{kind} ist aufgestiegen."
 msgstr "{kind} moved up."
 
-#: texte.py:111 texte.py:117
+#: texte.py:113 texte.py:119
 #, python-brace-format
 msgid "Neues Abzeichen: {abzeichen}"
 msgstr "New badge: {abzeichen}"
 
-#: texte.py:111
+#: texte.py:113
 #, python-brace-format
 msgid "{kind}: {beschreibung}"
 msgstr "{kind}: {beschreibung}"
 
-#: texte.py:118
+#: texte.py:120
 #, python-brace-format
 msgid "{kind} hat ein Abzeichen verdient."
 msgstr "{kind} earned a badge."
 
-#: texte.py:121
+#: texte.py:123
 #, python-brace-format
 msgid "{kind} ist Held der Woche"
 msgstr "{kind} is hero of the week"
 
-#: texte.py:123
+#: texte.py:125
 #, no-python-format, python-brace-format
 msgid "{xp} Punkte, deutlich mehr als sonst ({prozent} % darüber)."
 msgstr "{xp} points, a lot more than usual ({prozent} % above)."
 
-#: texte.py:126
+#: texte.py:128
 msgid "Du bist Held der Woche!"
 msgstr "You are hero of the week!"
 
-#: texte.py:127
+#: texte.py:129
 #, python-brace-format
 msgid "{xp} Punkte: mehr als sonst. Stark gemacht!"
 msgstr "{xp} points: more than usual. Great job!"
 
-#: texte.py:130
+#: texte.py:132
 msgid "Sondertag freigeschaltet"
 msgstr "Special day unlocked"
 
-#: texte.py:130
+#: texte.py:132
 msgid "Du darfst dir etwas wünschen!"
 msgstr "You get to make a wish!"
 
-#: texte.py:133
+#: texte.py:135
 #, python-brace-format
 msgid "Sondertag-Wunsch von {kind}"
 msgstr "Special day wish from {kind}"
 
-#: texte.py:133 texte.py:136
+#: texte.py:135 texte.py:138
 #, python-brace-format
 msgid "{wunsch}"
 msgstr "{wunsch}"
 
-#: texte.py:136
+#: texte.py:138
 msgid "Dein Wunsch wurde angenommen"
 msgstr "Your wish was accepted"
 
-#: texte.py:139
+#: texte.py:141
 #, python-brace-format
 msgid "{belohnung} freigeschaltet!"
 msgstr "{belohnung} unlocked!"
 
-#: texte.py:140
+#: texte.py:142
 #, python-brace-format
 msgid "Die Familie hat {ziel} Punkte geschafft."
 msgstr "The family reached {ziel} points."
 
-#: texte.py:143
+#: texte.py:145
 #, python-brace-format
 msgid "Geschafft! {belohnung}"
 msgstr "You did it! {belohnung}"
 
-#: texte.py:144
+#: texte.py:146
 msgid "Ihr habt das Familienziel erreicht. Super gemacht!"
 msgstr "You reached the family goal. Great job!"
 
-#: texte.py:147
+#: texte.py:149
 msgid "Abstimmung läuft"
 msgstr "Voting is open"
 
-#: texte.py:148
+#: texte.py:150
 msgid "Wähle jetzt die Belohnung für nächste Woche."
 msgstr "Pick the reward for next week now."
 
-#: texte.py:151
+#: texte.py:153
 msgid "Familienziel: Eltern entscheiden"
 msgstr "Family goal: parents decide"
 
-#: texte.py:154
+#: texte.py:156
 #, python-brace-format
 msgid "Großes Ziel freigeschaltet: {grossziel}!"
 msgstr "Big goal unlocked: {grossziel}!"
 
-#: texte.py:155
+#: texte.py:157
 msgid "Mehrere Wochenziele in Folge geschafft."
 msgstr "Several weekly goals reached in a row."
 
-#: texte.py:158
+#: texte.py:160
 #, python-brace-format
 msgid "Großes Ziel: {grossziel}!"
 msgstr "Big goal: {grossziel}!"
 
-#: texte.py:159
+#: texte.py:161
 msgid "Ihr habt mehrere Wochenziele in Folge geschafft!"
 msgstr "You reached several weekly goals in a row!"
 

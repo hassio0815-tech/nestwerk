@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
+from apps.kern.sprache import uebersetzt
+
 TASCHENGELD = "taschengeld"
 
 
@@ -36,7 +38,7 @@ class Belohnungskategorie(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return uebersetzt(self.name)
 
     @property
     def ist_taschengeld(self):
@@ -65,7 +67,7 @@ class Belohnung(models.Model):
         ]
 
     def __str__(self):
-        return self.titel
+        return uebersetzt(self.titel)
 
     @property
     def anzeige_symbol(self):

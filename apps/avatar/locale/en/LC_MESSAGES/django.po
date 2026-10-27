@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 19:50+0000\n"
+"POT-Creation-Date: 2026-10-27 05:00+0000\n"
 "PO-Revision-Date: 2026-10-26 20:00+0000\n"
 "Last-Translator: Nestwerk\n"
 "Language-Team: English\n"
@@ -1348,7 +1348,7 @@ msgstr "Drone camera"
 msgid "Drohne mit Rand."
 msgstr "A drone with an edge."
 
-#: daten_texte.py:339 mods.py:69
+#: daten_texte.py:339 mods.py:71
 msgid "Boxengasse"
 msgstr "Pit lane"
 
@@ -1792,7 +1792,7 @@ msgstr "Golden dragon"
 msgid "Ein Drache der Legenden mit Glanz."
 msgstr "A dragon of legends with sparkle."
 
-#: daten_texte.py:450 mods.py:72
+#: daten_texte.py:450 mods.py:74
 msgid "Werkstatt"
 msgstr "Workshop"
 
@@ -2974,203 +2974,222 @@ msgstr "{kind} put a hero in the Hall of Fame"
 msgid "{thema} im Rang {rang}. Du kannst eine Widmung dazuschreiben."
 msgstr "{thema} at rank {rang}. You can add a dedication."
 
-#: godmode.py:222
+#: godmode.py:142
+#, python-format
+msgid "%(thema)s: God-Mode-Set %(n)s"
+msgstr "%(thema)s: God Mode set %(n)s"
+
+#: godmode.py:144
+#, python-format
+msgid "%(mod)s · Set %(n)s"
+msgstr "%(mod)s · Set %(n)s"
+
+#: godmode.py:147
+#, python-format
+msgid "God-Mode-Set %(n)s: %(beschreibung)s"
+msgstr "God Mode set %(n)s: %(beschreibung)s"
+
+#: godmode.py:233
 #, python-format
 msgid "Zyklus %(n)s"
 msgstr "Cycle %(n)s"
 
-#: godmode.py:235
+#: godmode.py:246
 #, python-format
 msgid "Set %(n)s"
 msgstr "Set %(n)s"
 
-#: mods.py:61
+#: mods.py:63
 msgid "Schmiede"
 msgstr "Forge"
 
-#: mods.py:61 mods.py:66
+#: mods.py:63 mods.py:68
 msgid "wird geschmiedet"
 msgstr "is being forged"
 
-#: mods.py:62
+#: mods.py:64
 msgid "Raumdock"
 msgstr "Space dock"
 
-#: mods.py:62
+#: mods.py:64
 msgid "wird montiert"
 msgstr "is being assembled"
 
-#: mods.py:63
+#: mods.py:65
 msgid "Dojo-Werkstatt"
 msgstr "Dojo workshop"
 
-#: mods.py:63
+#: mods.py:65
 msgid "wird gefertigt"
 msgstr "is being crafted"
 
-#: mods.py:64
+#: mods.py:66
 msgid "Roboter-Werkstatt"
 msgstr "Robot workshop"
 
-#: mods.py:64
+#: mods.py:66
 msgid "wird zusammengeschraubt"
 msgstr "is being bolted together"
 
-#: mods.py:65
+#: mods.py:67
 msgid "Werft"
 msgstr "Shipyard"
 
-#: mods.py:65
+#: mods.py:67
 msgid "wird gezimmert"
 msgstr "is being built"
 
-#: mods.py:66
+#: mods.py:68
 msgid "Langhaus-Schmiede"
 msgstr "Longhouse forge"
 
-#: mods.py:67
+#: mods.py:69
 msgid "Zeugwart-Kabine"
 msgstr "Equipment room"
 
-#: mods.py:67 mods.py:68
+#: mods.py:69 mods.py:70
 msgid "wird vorbereitet"
 msgstr "is being prepared"
 
-#: mods.py:68
+#: mods.py:70
 msgid "Ausrüster"
 msgstr "Outfitter"
 
-#: mods.py:69
+#: mods.py:71
 msgid "wird geschraubt"
 msgstr "is being tuned"
 
-#: mods.py:70
+#: mods.py:72
 msgid "Basislager"
 msgstr "Base camp"
 
-#: mods.py:70
+#: mods.py:72
 msgid "wird gebastelt"
 msgstr "is being crafted"
 
-#: mods.py:72
+#: mods.py:74
 msgid "wird gebaut"
 msgstr "is being built"
 
-#: mods.py:83
+#: mods.py:100
 msgid "sofort"
 msgstr "right away"
 
-#: mods.py:86
+#: mods.py:103
 #, python-format
 msgid "%(n)s Tag"
 msgid_plural "%(n)s Tage"
 msgstr[0] "%(n)s day"
 msgstr[1] "%(n)s days"
 
-#: mods.py:87
+#: mods.py:104
 #, python-format
 msgid "%(n)s Stunde"
 msgid_plural "%(n)s Stunden"
 msgstr[0] "%(n)s hour"
 msgstr[1] "%(n)s hours"
 
-#: mods.py:94
+#: mods.py:121
 msgid "gleich"
 msgstr "any moment"
 
-#: mods.py:98
+#: mods.py:125
 #, python-format
 msgid "in %(n)s Tag"
 msgid_plural "in %(n)s Tagen"
 msgstr[0] "in %(n)s day"
 msgstr[1] "in %(n)s days"
 
-#: mods.py:100
+#: mods.py:127
 msgid "in 1 Tag"
 msgstr "in 1 day"
 
-#: mods.py:102
+#: mods.py:129
 msgid "in weniger als 1 Stunde"
 msgstr "in less than 1 hour"
 
-#: mods.py:103
+#: mods.py:130
 #, python-format
 msgid "in %(n)s Stunde"
 msgid_plural "in %(n)s Stunden"
 msgstr[0] "in %(n)s hour"
 msgstr[1] "in %(n)s hours"
 
-#: mods.py:131
+#: mods.py:158
 msgid "Für diese Seltenheit gibt es keinen Rang."
 msgstr "There is no rank for this rarity."
 
-#: mods.py:403
+#: mods.py:368
+msgid "God Mode"
+msgstr "God Mode"
+
+#: mods.py:430
 msgid "Diesen Mod gibt es nicht."
 msgstr "There is no such mod."
 
-#: mods.py:410
+#: mods.py:437
 msgid "Nur Kinder kaufen Mods."
 msgstr "Only kids can buy mods."
 
-#: mods.py:416 mods.py:667 ruhmeshalle.py:127 services.py:336
+#: mods.py:443 mods.py:694 ruhmeshalle.py:127 services.py:336
 msgid "Wähle zuerst deinen Avatar."
 msgstr "Pick your avatar first."
 
-#: mods.py:419
+#: mods.py:446
 msgid "Dieser Mod gehört zu einem anderen Thema."
 msgstr "This mod belongs to a different theme."
 
-#: mods.py:421
+#: mods.py:448
 msgid "Diesen Mod gibt es gerade nicht."
 msgstr "This mod is not available right now."
 
-#: mods.py:423
+#: mods.py:450
 msgid "Diesen Mod hast du schon."
 msgstr "You already have this mod."
 
-#: mods.py:427
+#: mods.py:454
 #, python-format
 msgid "Diesen Mod gibt es ab Rang %(rang)s."
 msgstr "This mod unlocks at rank %(rang)s."
 
-#: mods.py:432
+#: mods.py:459
 msgid "Dieses God-Mode-Set ist noch nicht freigeschaltet."
 msgstr "This God Mode set is not unlocked yet."
 
-#: mods.py:436
+#: mods.py:463
 #, python-format
 msgid "Dafür fehlen dir noch %(punkte)s Punkte."
 msgstr "You still need %(punkte)s points for that."
 
-#: mods.py:453
+#: mods.py:480
 msgid "Dafür reichen deine Punkte nicht."
 msgstr "You do not have enough points for that."
 
-#: mods.py:609
+#: mods.py:636
 msgid "Nur Eltern können einen Bau sofort fertigstellen."
 msgstr "Only parents can finish a build right away."
 
-#: mods.py:613
+#: mods.py:640
 msgid "Dieser Bau ist schon fertig."
 msgstr "This build is already done."
 
-#: mods.py:627
+#: mods.py:654
 msgid "Diesen Mod hast du noch nicht fertig."
 msgstr "You have not finished this mod yet."
 
-#: mods.py:659
+#: mods.py:686
 msgid "Bitte wähle ein Thema."
 msgstr "Please pick a theme."
 
-#: mods.py:670
+#: mods.py:697
 msgid "Das ist schon dein Thema."
 msgstr "That is already your theme."
 
-#: mods.py:701
+#: mods.py:728
 msgid "Nur Kinder wechseln ihr Thema."
 msgstr "Only kids can switch their theme."
 
-#: mods.py:708
+#: mods.py:735
 msgid "Deine Mods haben sich geändert. Bitte lies die Warnung noch einmal."
 msgstr "Your mods have changed. Please read the warning again."
 
@@ -3814,7 +3833,7 @@ msgstr "Hairstyle"
 msgid "Das bin ich!"
 msgstr "That’s me!"
 
-#: templatetags/avatar_tags.py:37
+#: templatetags/avatar_tags.py:39
 #, python-format
 msgid "Avatar von %(name)s"
 msgstr "Avatar of %(name)s"
@@ -3827,55 +3846,55 @@ msgstr "Your hero is now in the Hall of Fame! Pick a new theme."
 msgid "Widmung gespeichert."
 msgstr "Dedication saved."
 
-#: views_mods.py:22
+#: views_mods.py:24
 msgid "Gekauft! Dein Mod ist jetzt im Bau."
 msgstr "Bought! Your mod is under construction now."
 
-#: views_mods.py:23
+#: views_mods.py:25
 msgid "Dein Mod ist fertig und angelegt."
 msgstr "Your mod is ready and equipped."
 
-#: views_mods.py:24
+#: views_mods.py:26
 msgid "Angelegt!"
 msgstr "Equipped!"
 
-#: views_mods.py:25
+#: views_mods.py:27
 msgid "Slot ist jetzt leer."
 msgstr "The slot is empty now."
 
-#: views_mods.py:26
+#: views_mods.py:28
 msgid "Neues Thema! Deine Slots sind leer – auf zu neuen Mods."
 msgstr "New theme! Your slots are empty – time for new mods."
 
-#: views_mods.py:27
+#: views_mods.py:29
 msgid "Bau fertiggestellt."
 msgstr "Build finished."
 
-#: views_mods.py:28
+#: views_mods.py:30
 msgid "Gespeichert."
 msgstr "Saved."
 
-#: views_mods.py:116
+#: views_mods.py:118
 #, python-format
 msgid "Kaufen für %(preis)s Punkte"
 msgstr "Buy for %(preis)s points"
 
-#: views_mods.py:117
+#: views_mods.py:119
 #, python-format
 msgid "Dir fehlen noch %(fehlt)s Punkte"
 msgstr "You still need %(fehlt)s points"
 
-#: views_mods.py:118
+#: views_mods.py:120
 #, python-format
 msgid "Ab Rang %(rang)s"
 msgstr "From rank %(rang)s"
 
-#: views_mods.py:276
+#: views_mods.py:278
 #, python-format
 msgid "%(rang)s: Bauzeit bitte in Tagen, z. B. 3 oder 1,5."
 msgstr "%(rang)s: please enter the build time in days, e.g. 3 or 1.5."
 
-#: views_mods.py:280
+#: views_mods.py:283
 #, python-format
 msgid "%(rang)s: Bauzeit darf nicht negativ sein."
 msgstr "%(rang)s: build time cannot be negative."

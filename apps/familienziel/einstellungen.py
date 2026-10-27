@@ -1,13 +1,14 @@
 """Einstellungen von familienziel (AP29, Entscheidung 26). Startwerte per Datenmigration 0002."""
 
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_noop
 
 from apps.kern.einstellungen import Typ, definieren
 
 STARTWERTE = {
     "familienziel.wochenziel_punkte": 450,
     "familienziel.grossziel_serie": 4,
-    "familienziel.grossziel_name": "Ausflug",
+    "familienziel.grossziel_name": gettext_noop("Ausflug"),  # msgid, Anzeige übersetzt
     "familienziel.abstimmung_tag": 7,  # ISO-Wochentag, 7 = Sonntag
     "familienziel.abstimmung_beginn": "00:00",
     "familienziel.abstimmung_ende": "23:59",
