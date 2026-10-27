@@ -13,7 +13,6 @@ import logging
 import socket
 from urllib.parse import urlsplit
 
-from django.conf import settings
 from django.db.models import F
 from django.urls import reverse
 from django.utils import timezone, translation
@@ -21,6 +20,7 @@ from django.utils.translation import gettext, gettext_noop
 from pywebpush import WebPushException, webpush
 
 from apps.kern import adressen, audit, einstellungen
+from apps.kern import sprache as kern_sprache
 from apps.konten.models import Rolle
 
 from . import pushschluessel as vapid
@@ -255,7 +255,7 @@ class PushKanal(registry.ZustellKanal):
 def probe_senden(benutzer):
     """Test-Push an alle aktiven Geräte des Benutzers. Gibt ``(gesendet, fehlgeschlagen)``
     zurück. ``NichtKonfiguriert`` (BASIS_URL fehlt) wird weitergereicht."""
-    with translation.override(benutzer.sprache or settings.LANGUAGE_CODE):
+    with translation.override(kern_sprache.fuer(benutzer)):
         payload = nutzlast(
             gettext("Nestwerk Test"),
             gettext("Benachrichtigungen funktionieren auf diesem Gerät."),

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.utils import translation
 from django.utils.translation import gettext as _
 
 from apps.benachrichtigung import selectors as mail_selectors
@@ -49,7 +50,7 @@ def _schritt_abschliessen(nr):
 def app_name_speichern(name):
     with transaction.atomic():
         _setzen("allgemein.anzeigename", name)
-        _setzen("allgemein.sprache", "de")
+        _setzen("allgemein.sprache", (translation.get_language() or "de")[:2])
         _schritt_abschliessen(1)
 
 

@@ -16,11 +16,11 @@ Regeln (ARCHITECTURE 5.3, 13.2 K7/K13):
 
 import logging
 
-from django.conf import settings
 from django.utils import translation
 
 from apps.ereignisse import selectors as ereignis_selectors
 from apps.ereignisse.models import Zielgruppe
+from apps.kern import sprache as kern_sprache
 from apps.kern import zeit
 from apps.konten import selectors as konten_selectors
 from apps.konten.models import Rolle
@@ -84,7 +84,7 @@ def router(ereignis):
     entscheidung = selectors.ist_entscheidung(typ)
     anzahl = 0
     for empfaenger in empfaenger_fuer(typ, ereignis):
-        sprache = empfaenger.sprache or settings.LANGUAGE_CODE
+        sprache = kern_sprache.fuer(empfaenger)
         if sprache not in gerendert:
             with translation.override(sprache):
                 gerendert[sprache] = texte.rendern(ereignis, typ.bezeichnung)

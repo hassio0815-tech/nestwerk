@@ -314,7 +314,15 @@ def kern_einstellungen_definieren():
         gettext_lazy("Go-live-Datum"),
         beschreibung=gettext_lazy("Beginn des ersten App-Jahres."),
     )
-    definieren("allgemein.sprache", Typ.TEXT, gettext_lazy("Sprache"), auswahl=("de",))
+    definieren(
+        "allgemein.sprache",
+        Typ.TEXT,
+        gettext_lazy("Familien-Sprache"),
+        beschreibung=gettext_lazy(
+            "Für Benachrichtigungen und Mails an alle ohne eigene Sprache (de oder en)."
+        ),
+        auswahl=("de", "en"),
+    )
     definieren(
         "allgemein.joblauf_aufbewahrung_tage",
         Typ.GANZZAHL,

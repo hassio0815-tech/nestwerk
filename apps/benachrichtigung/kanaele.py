@@ -2,13 +2,13 @@
 
 import logging
 
-from django.conf import settings
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone, translation
 from django.utils.translation import gettext_noop
 
 from apps.kern import adressen
+from apps.kern import sprache as kern_sprache
 from apps.konten import selectors as konten_selectors
 
 from . import mail, registry
@@ -45,7 +45,7 @@ class EmailKanal(registry.ZustellKanal):
             "empfaenger": b.empfaenger,
         }
         # Worker ohne Request: Mail in der Sprache des Empfängers
-        with translation.override(b.empfaenger.sprache or settings.LANGUAGE_CODE):
+        with translation.override(kern_sprache.fuer(b.empfaenger)):
             text = render_to_string("benachrichtigung/email.txt", kontext)
             html = render_to_string("benachrichtigung/email.html", kontext)
         try:

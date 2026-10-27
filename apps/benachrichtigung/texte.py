@@ -21,6 +21,8 @@ from dataclasses import dataclass
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext, gettext_noop
 
+from apps.kern import sprache
+
 TITEL_MAX = 120
 TEXT_MAX = 400
 LINK_MAX = 200
@@ -205,11 +207,33 @@ def _fuellen(vorlage, werte):
 
 
 def werte_aus(ereignis):
-    werte = {k: v for k, v in (ereignis.daten or {}).items() if isinstance(v, str | int | float)}
-    msgid = werte.get("hinweis_msgid")
-    if msgid:
-        # Hinweis mit Msgid (z. B. Gleichstand): in der aktiven Sprache neu bilden
-        werte["hinweis"] = gettext(str(msgid)) % {"titel": werte.get("hinweis_titel", "")}
+    """Platzhalter-Werte in der aktiven Sprache (docs/i18n.md, „Texte in Ereignissen“).
+
+    - Texte sind gespeicherte deutsche Start-Inhalte (Mod-, Rang-, Abzeichen-Namen) und werden
+      per msgid übersetzt; Unbekanntes (Eingaben der Familie) bleibt unverändert.
+    - ``<feld>_msgid`` + optional ``<feld>_parameter`` (dict) bilden ``<feld>`` neu.
+    """
+    daten = ereignis.daten or {}
+    werte = {
+        k: sprache.uebersetzt(v) if isinstance(v, str) else v
+        for k, v in daten.items()
+        if isinstance(v, str | int | float)
+    }
+    for schluessel, msgid in daten.items():
+        if not schluessel.endswith("_msgid") or not msgid:
+            continue
+        feld = schluessel.removesuffix("_msgid")
+        parameter = daten.get(f"{feld}_parameter")
+        parameter = dict(parameter) if isinstance(parameter, dict) else {}
+        if feld == "hinweis" and "titel" not in parameter:
+            parameter["titel"] = daten.get("hinweis_titel", "")  # ältere Ereignisse (Gleichstand)
+        parameter = {
+            k: sprache.uebersetzt(v) if isinstance(v, str) else v for k, v in parameter.items()
+        }
+        try:
+            werte[feld] = gettext(str(msgid)) % parameter
+        except (KeyError, TypeError, ValueError):
+            werte[feld] = gettext(str(msgid))
     if ereignis.kind_id:
         werte["kind"] = ereignis.kind.anzeigename
     if ereignis.akteur_id:
