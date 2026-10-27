@@ -410,9 +410,9 @@
 .nw-begruessung[data-gruss-wechsel] { transition: opacity 0.4s ease; }
 .nw-begruessung.ist-ausgeblendet { opacity: 0; }
 
-/* Sprachwahl DE/EN oben rechts auf der Bühne */
+/* Sprachwahl: DE/EN oben rechts auf der Bühne; Segment-Knöpfe auch in den Einstellungen */
 .nw-sprache-wahl { position: absolute; top: 0; right: 0; z-index: 1; }
-.nw-sprache-wahl .nw-segment button {
+.nw-segment button {
   min-height: var(--tap-min);
   padding: 0 1rem;
   font: inherit;
@@ -423,8 +423,8 @@
   border-radius: 999px;
   cursor: pointer;
 }
-.nw-sprache-wahl .nw-segment button.ist-aktiv { color: var(--akzent-text); background: var(--akzent); }
-.nw-sprache-wahl .nw-segment button:focus-visible { outline: 3px solid var(--akzent); outline-offset: 2px; }
+.nw-segment button.ist-aktiv { color: var(--akzent-text); background: var(--akzent); }
+.nw-segment button:focus-visible { outline: 3px solid var(--akzent); outline-offset: 2px; }
 
 /* Splash-Overlay: blendet sich nach ~2 s aus. Ohne Bewegung (reduced motion) entfällt es. */
 .nw-splash {

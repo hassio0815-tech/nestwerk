@@ -4,7 +4,7 @@ Definitionen der Registry (``kern.einstellungen``). Neue Einstellungen erscheine
 
 from django.db import transaction
 from django.utils.translation import gettext as _
-from django.utils.translation import gettext_lazy
+from django.utils.translation import gettext_lazy, pgettext_lazy
 
 from apps.kern import einstellungen
 from apps.kern.einstellungen import Typ
@@ -20,6 +20,9 @@ MODUL_TITEL = {
     "punkte": gettext_lazy("Punkte"),
     "ereignisse": gettext_lazy("Ereignisse und Betrieb"),
     "spielregeln": gettext_lazy("Spielregeln"),
+    "avatar": gettext_lazy("Avatar"),
+    "familienziel": gettext_lazy("Familienziel"),
+    "sondertag": pgettext_lazy("Einstellungen-Abschnitt", "Sondertage"),
 }
 ZUERST = ("allgemein",)
 
