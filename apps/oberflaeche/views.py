@@ -58,6 +58,7 @@ KIND_REIHENFOLGE = (
     "oberflaeche.kind_konto",
     "avatar.kind_avatar",  # nur sichtbar, solange noch keine Figur gewählt ist
     "oberflaeche.kind_laufende",
+    "oberflaeche.kind_schnellknoepfe",
     "oberflaeche.kind_offene",
     "oberflaeche.kind_belohnungen",
     "familienziel.kind",
@@ -69,7 +70,9 @@ NICHT_AUF_DASHBOARD = DUNGEON + ("oberflaeche.kind_akzent",)
 
 
 def _kind_kacheln(request):
-    alle = [e for e in kacheln.fuer(KIND, request) if e["kachel"].schluessel not in NICHT_AUF_DASHBOARD]
+    alle = [
+        e for e in kacheln.fuer(KIND, request) if e["kachel"].schluessel not in NICHT_AUF_DASHBOARD
+    ]
 
     def rang(e):
         try:
@@ -140,10 +143,14 @@ ELTERN_DUNGEON = (
 @nur_eltern
 @require_GET
 def eltern_dungeon(request):
-    eintraege = [e for e in kacheln.fuer(ELTERN, request) if e["kachel"].schluessel in ELTERN_DUNGEON]
+    eintraege = [
+        e for e in kacheln.fuer(ELTERN, request) if e["kachel"].schluessel in ELTERN_DUNGEON
+    ]
     from apps.avatar.models import Avatar
 
-    namen = Avatar.objects.exclude(name="").select_related("benutzer").order_by("benutzer__reihenfolge")
+    namen = (
+        Avatar.objects.exclude(name="").select_related("benutzer").order_by("benutzer__reihenfolge")
+    )
     return render(
         request,
         "oberflaeche/eltern_dungeon.html",
@@ -188,7 +195,9 @@ def eltern_heim(request):
         "oberflaeche/eltern_heim.html",
         {
             "kacheln": [
-                e for e in kacheln.fuer(ELTERN, request) if e["kachel"].schluessel not in ELTERN_DUNGEON
+                e
+                for e in kacheln.fuer(ELTERN, request)
+                if e["kachel"].schluessel not in ELTERN_DUNGEON
             ],
             "gesperrte_kinder": konten_selectors.gesperrte_kinder(),
         },

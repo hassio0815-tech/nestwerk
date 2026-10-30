@@ -39,6 +39,16 @@ The values in this guide are **default values**. Parents can adjust all points, 
 - Proofs (photos and texts) are deleted immediately after approval.
 - The **task library** contains templates. One click activates them.
 
+### Quick buttons
+
+For tasks that only come up now and then (**General waste is full!**). The task sleeps until someone presses its button.
+
+- **Setting up (parents):** create a task with the repeat option **On demand**, plus an emoji and **Who may press it?** (everyone or parents only). The library includes **General waste**, **Organic waste** and **Recycle glass** (5 points each). The task list marks them **Quick button**.
+- **Pressing:** exactly **one** open task is created. While it runs, the button shows **already running** (with the name, if someone took it on). A second press does nothing.
+- **I'll do it:** the task is reserved for that kid, like when a kid takes on a task normally.
+- **Just report it:** the task stays open for all kids, and the kids get a notification ("General waste: who's up for it?"). With "I'll do it" there is no notification, and parents get no push message.
+- **Where:** kid dashboard (only buttons for everyone), parent dashboard and hallway tablet. On the tablet you tap the button, then **Just report it** or your picture, **without a PIN**. This only works on the device registered as the hallway tablet, and "parents only" buttons never appear there.
+
 ---
 
 ## 3. Points, balance and XP

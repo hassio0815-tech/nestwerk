@@ -1,6 +1,5 @@
 """Wappen der Eltern: Vergabe, Wahl in den Einstellungen, Anzeige."""
 
-import pytest
 from django.urls import reverse
 
 from apps.konten import services, wappen

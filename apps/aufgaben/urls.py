@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, views_ablauf, views_nachweis, views_wochenplan
+from . import views, views_ablauf, views_nachweis, views_schnellknopf, views_wochenplan
 
 app_name = "aufgaben"
 
@@ -96,6 +96,26 @@ urlpatterns += [
         "eltern/meldungen/<int:pk>/korrigieren/",
         views_ablauf.eltern_korrigieren,
         name="korrigieren",
+    ),
+]
+
+# Schnell-Knöpfe (bei Bedarf)
+urlpatterns += [
+    path(
+        "eltern/schnellknopf/<int:pk>/",
+        views_schnellknopf.eltern_druecken,
+        name="schnellknopf_eltern",
+    ),
+    path("kind/schnellknopf/<int:pk>/", views_schnellknopf.kind_druecken, name="schnellknopf_kind"),
+    path(
+        "tablet/schnellknopf/<int:pk>/",
+        views_schnellknopf.tablet_waehlen,
+        name="schnellknopf_tablet_waehlen",
+    ),
+    path(
+        "tablet/schnellknopf/<int:pk>/druecken/",
+        views_schnellknopf.tablet_druecken,
+        name="schnellknopf_tablet_druecken",
     ),
 ]
 

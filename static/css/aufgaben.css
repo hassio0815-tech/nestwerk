@@ -8,6 +8,11 @@
 .plan:has(input[name="wiederholungsart"][value="woechentlich"]:checked) .plan__serie,
 .plan:has(input[name="wiederholungsart"][value="intervall"]:checked) .plan__serie { display: flex; }
 @supports not selector(:has(*)) { .plan__wochen, .plan__intervall { display: block; } .plan .plan__serie { display: flex; } }
+/* "Bei Bedarf" (Schnell-Knopf): kein Zeitfenster, dafür Emoji und "Wer darf drücken?". */
+.plan__knopf { display: none; }
+.plan:has(input[name="wiederholungsart"][value="bei_bedarf"]:checked) .plan__knopf { display: flex; }
+.plan:has(input[name="wiederholungsart"][value="bei_bedarf"]:checked) .plan__zeit { display: none; }
+@supports not selector(:has(*)) { .plan__knopf { display: flex; } }
 .zeile { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
 .zeile__text { flex: 1 1 16rem; }
 .zeile__plan { font-size: .9rem; opacity: .8; }

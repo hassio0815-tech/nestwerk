@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 05:19+0000\n"
+"POT-Creation-Date: 2026-10-30 17:05+0000\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -149,7 +149,7 @@ msgstr "Dungeon"
 msgid "Ränge, Mods, Abzeichen und Sondertage der Kinder"
 msgstr "Kids' ranks, mods, badges and special days"
 
-#: module.py:48 registry.py:184 templates/oberflaeche/familie.html:4
+#: module.py:48 registry.py:243 templates/oberflaeche/familie.html:4
 #: templates/oberflaeche/familie.html:6
 #: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:10
 #: templates/oberflaeche/kacheln/kind_ranking.html:3
@@ -184,56 +184,60 @@ msgstr "Hero of the week"
 msgid "Rohpunkte"
 msgstr "Raw points"
 
-#: registry.py:86
+#: registry.py:115
 msgid "Guthaben und XP"
 msgstr "Balance and XP"
 
-#: registry.py:95 templates/oberflaeche/kacheln/kind_offene.html:2
+#: registry.py:124 templates/oberflaeche/kacheln/kind_offene.html:2
 msgid "Offene Aufgaben"
 msgstr "Open tasks"
 
-#: registry.py:104 templates/oberflaeche/kacheln/kind_laufende.html:2
+#: registry.py:133 templates/oberflaeche/kacheln/kind_laufende.html:2
 msgid "Meine Aufgaben"
 msgstr "My tasks"
 
-#: registry.py:113
+#: registry.py:142
 msgid "Punkte einlösen"
 msgstr "Spend points"
 
-#: registry.py:122 templates/oberflaeche/kacheln/kind_akzent.html:2
+#: registry.py:151 templates/oberflaeche/kacheln/kind_akzent.html:2
 msgid "Meine Farbe"
 msgstr "My colour"
 
-#: registry.py:131
+#: registry.py:160
 msgid "Entscheidungen"
 msgstr "Decisions"
 
-#: registry.py:140 templates/oberflaeche/familie.html:10
+#: registry.py:169 templates/oberflaeche/familie.html:10
 #: templates/oberflaeche/kacheln/eltern_kinder.html:2
 msgid "Kinder"
 msgstr "Kids"
 
-#: registry.py:149 templates/oberflaeche/kacheln/eltern_ereignisse.html:2
+#: registry.py:178 templates/oberflaeche/kacheln/eltern_ereignisse.html:2
 msgid "Ereignisse"
 msgstr "Events"
 
-#: registry.py:158 templates/oberflaeche/kacheln/eltern_system.html:2
+#: registry.py:187 templates/oberflaeche/kacheln/eltern_system.html:2
 msgid "Systemstatus"
 msgstr "System status"
 
-#: registry.py:167 templates/oberflaeche/kacheln/eltern_schnellzugriff.html:2
+#: registry.py:196 templates/oberflaeche/kacheln/eltern_schnellzugriff.html:2
 msgid "Schnellzugriff"
 msgstr "Quick access"
 
-#: registry.py:175 templates/oberflaeche/kacheln/tablet_ranking.html:2
+#: registry.py:204 templates/oberflaeche/kacheln/tablet_ranking.html:2
 msgid "Ranking"
 msgstr "Ranking"
 
-#: registry.py:193
+#: registry.py:213 registry.py:223 registry.py:233
+msgid "Schnell-Knöpfe"
+msgstr "Quick buttons"
+
+#: registry.py:252
 msgid "Erledigt – kurz prüfen"
 msgstr "Done – quick check"
 
-#: registry.py:202 templates/oberflaeche/kacheln/eltern_ranking.html:3
+#: registry.py:261 templates/oberflaeche/kacheln/eltern_ranking.html:3
 msgid "Familien-Ranking"
 msgstr "Family ranking"
 
@@ -774,7 +778,7 @@ msgstr ""
 "Points show what got done. The journey counts too: you can find rank, streak "
 "and badges in the showcase."
 
-#: views.py:225 views.py:240
+#: views.py:226 views.py:241
 msgid "Die Tablet-Ansicht gibt es nur im Heimnetz."
 msgstr "The tablet view is only available on the home network."
 

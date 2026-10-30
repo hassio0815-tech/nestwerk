@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 04:59+0000\n"
+"POT-Creation-Date: 2026-10-30 17:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Text"
 msgid "%(name)s ist zu lang (höchstens %(grenze)s Zeichen)."
 msgstr "%(name)s is too long (at most %(grenze)s characters)."
 
-#: ablauf.py:165
+#: ablauf.py:165 schnellknopf.py:73
 msgid "Nur Kinder können Aufgaben übernehmen."
 msgstr "Only kids can take on tasks."
 
@@ -38,7 +38,7 @@ msgstr "Only parents can decide this."
 msgid "Diese Aufgabe ist gerade pausiert oder beendet."
 msgstr "This task is paused or finished right now."
 
-#: ablauf.py:178
+#: ablauf.py:178 schnellknopf.py:77
 msgid "Diese Aufgabe ist für ein anderes Kind."
 msgstr "This task is for another child."
 
@@ -130,7 +130,7 @@ msgstr "This report has already been decided."
 msgid "Begründung"
 msgstr "Reason"
 
-#: ablauf.py:700 models.py:220 models.py:408
+#: ablauf.py:700 models.py:241 models.py:429
 #: templates/aufgaben/_entscheidungen.html:52
 #: templates/aufgaben/_kind_bereich.html:19
 msgid "Rückfrage"
@@ -296,175 +296,189 @@ msgstr "Longest edge of the saved photo."
 msgid "Pixel"
 msgstr "pixels"
 
-#: events.py:42
+#: events.py:44
+#, python-brace-format
+msgid "{aufgabe}: wer macht's?"
+msgstr "{aufgabe}: who's up for it?"
+
+#: events.py:45
+#
+msgid "Du kannst die Aufgabe bei „Offene Aufgaben“ übernehmen."
+msgstr "You can take it on under “Open tasks”."
+
+#: events.py:48
 msgid "Die Aufgabe gehört dir!"
 msgstr "The task is yours!"
 
-#: events.py:43
+#: events.py:49
 #, python-brace-format
 msgid "„{aufgabe}“ ist für dich reserviert."
 msgstr "“{aufgabe}” is reserved for you."
 
-#: events.py:46
+#: events.py:52
 msgid "Aufgabe vergeben"
 msgstr "Task given to someone else"
 
-#: events.py:47
+#: events.py:53
 #, python-brace-format
 msgid "„{aufgabe}“ macht diesmal jemand anderes."
 msgstr "Someone else is doing “{aufgabe}” this time."
 
-#: events.py:50
+#: events.py:56
 msgid "Reservierung aufgehoben"
 msgstr "Reservation cancelled"
 
-#: events.py:51 events.py:55
+#: events.py:57 events.py:61
 #, python-brace-format
 msgid "„{aufgabe}“ ist wieder frei."
 msgstr "“{aufgabe}” is free again."
 
-#: events.py:54
+#: events.py:60
 #, python-brace-format
 msgid "{kind} hat eine Aufgabe zurückgegeben"
 msgstr "{kind} gave a task back"
 
-#: events.py:58
+#: events.py:64
 #, python-brace-format
 msgid "{kind} hat geantwortet"
 msgstr "{kind} answered"
 
-#: events.py:59
+#: events.py:65
 #, python-brace-format
 msgid "„{aufgabe}“ wartet auf Bestätigung."
 msgstr "“{aufgabe}” is waiting for approval."
 
-#: events.py:62
+#: events.py:68
 #, python-brace-format
 msgid "{kind} hat eine Aufgabe erledigt"
 msgstr "{kind} finished a task"
 
-#: events.py:63
+#: events.py:69
 #, python-brace-format
 msgid "„{aufgabe}“: {punkte} Punkte gutgeschrieben (Vertrauen)."
 msgstr "“{aufgabe}”: {punkte} points credited (trust)."
 
-#: events.py:66
+#: events.py:72
 msgid "Sonderpunkte!"
 msgstr "Bonus points!"
 
-#: events.py:67
+#: events.py:73
 #, python-brace-format
 msgid "+{punkte} für „{aufgabe}“: {begruendung}"
 msgstr "+{punkte} for “{aufgabe}”: {begruendung}"
 
-#: events.py:70 templates/aufgaben/_kind_bereich.html:22
+#: events.py:76 templates/aufgaben/_kind_bereich.html:22
 msgid "Punkte korrigiert"
 msgstr "Points corrected"
 
-#: events.py:71
+#: events.py:77
 #, python-brace-format
 msgid "„{aufgabe}“: {punkte} Punkte abgezogen. {begruendung}"
 msgstr "“{aufgabe}”: {punkte} points taken off. {begruendung}"
 
-#: events.py:73
+#: events.py:79
 msgid "Bitte nachbessern"
 msgstr "Please fix it"
 
-#: events.py:73
+#: events.py:79
 #, python-brace-format
 msgid "„{aufgabe}“: {begruendung}"
 msgstr "“{aufgabe}”: {begruendung}"
 
-#: events.py:75
+#: events.py:81
 msgid "Nachbessern nicht erledigt"
 msgstr "Fix not done"
 
-#: events.py:76
+#: events.py:82
 #, python-brace-format
 msgid "{kind} hat „{aufgabe}“ nicht rechtzeitig nachgebessert. Keine Punkte."
 msgstr "{kind} did not fix “{aufgabe}” in time. No points."
 
-#: events.py:92
+#: events.py:98
 msgid "Aufgabe läuft bald ab (noch nicht übernommen)"
 msgstr "Task ends soon (nobody has taken it yet)"
 
-#: events.py:94
+#: events.py:100
 msgid "Aufgabe nicht übernommen"
 msgstr "Task not taken on"
 
-#: events.py:97
+#: events.py:103
 msgid "Erinnerung: Reservierung läuft bald ab"
 msgstr "Reminder: reservation ends soon"
 
-#: events.py:103
+#: events.py:109
 msgid "Reservierung abgelaufen"
 msgstr "Reservation expired"
 
-#: events.py:107
+#: events.py:113
 msgid "Kind wählt eine Aufgabe"
 msgstr "Child picks a task"
 
-#: events.py:110
+#: events.py:116
 msgid "Mehrere Kinder wollen dieselbe Aufgabe"
 msgstr "Several kids want the same task"
 
-#: events.py:115
+#: events.py:121
 msgid "Aufgabe zugeteilt"
 msgstr "Task assigned"
 
-#: events.py:118
+#: events.py:124
 msgid "Aufgabe an ein anderes Kind vergeben"
 msgstr "Task given to another child"
 
-#: events.py:125
+#: events.py:131
 msgid "Reservierung von Eltern aufgehoben"
 msgstr "Reservation cancelled by parents"
 
-#: events.py:130
+#: events.py:136
 msgid "Kind gibt eine Aufgabe zurück"
 msgstr "Child gives a task back"
 
-#: events.py:133
+#: events.py:139
 msgid "Aufgabe als erledigt gemeldet"
 msgstr "Task reported as done"
 
-#: events.py:138
+#: events.py:144
 msgid "Antwort auf Rückfrage"
 msgstr "Answer to a question"
 
-#: events.py:139
+#: events.py:145
 msgid "Aufgabe mit Vertrauen gutgeschrieben"
 msgstr "Task credited on trust"
 
-#: events.py:140
+#: events.py:146
 msgid "Aufgabe bestätigt"
 msgstr "Task approved"
 
-#: events.py:141
+#: events.py:147
 msgid "Aufgabe abgelehnt"
 msgstr "Task declined"
 
-#: events.py:142
+#: events.py:148
 msgid "Rückfrage zur Aufgabe"
 msgstr "Question about the task"
 
-#: events.py:143
+#: events.py:149
 msgid "Sonderpunkte erhalten"
 msgstr "Bonus points received"
 
-#: events.py:146
+#: events.py:152
 msgid "Punkte einer Aufgabe korrigiert"
 msgstr "Task points corrected"
 
-#: events.py:153
+#: events.py:159
 msgid "Aufgabe zum Nachbessern zurück"
 msgstr "Task sent back to fix"
 
-#: events.py:160
+#: events.py:166
 msgid "Nachbessern nicht rechtzeitig erledigt"
 msgstr "Fix not done in time"
 
-#: events.py:164
+#: events.py:172
+msgid "Schnell-Knopf gedrückt"
+msgstr "Quick button pressed"
+
+#: events.py:177
 msgid "Aufgabe erledigt (Aktivität)"
 msgstr "Task done (activity)"
 
@@ -512,79 +526,87 @@ msgstr "per"
 msgid "(kein Limit)"
 msgstr "(no limit)"
 
-#: forms.py:76 templates/aufgaben/kind.html:8
+#: forms.py:89 templates/aufgaben/kind.html:8
 msgid "Start"
 msgstr "Start"
 
-#: forms.py:81
+#: forms.py:94
 msgid "Ende (optional)"
 msgstr "End (optional)"
 
-#: forms.py:110 forms.py:148
+#: forms.py:125 forms.py:185
 msgid "Punkte"
 msgstr "Points"
 
-#: forms.py:111 forms.py:149 models.py:49
+#: forms.py:126 forms.py:186 models.py:54
 msgid "Kategorie"
 msgstr "Category"
 
-#: forms.py:112 forms.py:150
+#: forms.py:127 forms.py:187
 msgid "Freigabeart"
 msgstr "Approval type"
 
-#: forms.py:113 forms.py:147
+#: forms.py:128 forms.py:184
 msgid "Titel"
 msgstr "Title"
 
-#: forms.py:114 forms.py:146
+#: forms.py:129 forms.py:183
 msgid "Beschreibung (optional)"
 msgstr "Description (optional)"
 
-#: forms.py:115
+#: forms.py:130
 msgid "Nur für dieses Kind (optional)"
 msgstr "Only for this child (optional)"
 
-#: forms.py:117
+#: forms.py:132
 msgid "Deckel für Sonderpunkte in % (leer = Standard)"
 msgstr "Limit for bonus points in % (empty = default)"
 
-#: forms.py:128 forms.py:163
+#: forms.py:134 forms.py:188
+msgid "Symbol (Emoji) auf dem Knopf"
+msgstr "Symbol (emoji) on the button"
+
+#: forms.py:135 forms.py:189
+msgid "Wer darf drücken?"
+msgstr "Who may press it?"
+
+#: forms.py:145 forms.py:202
 msgid "(keine)"
 msgstr "(none)"
 
-#: forms.py:130
+#: forms.py:147
 msgid "Alle Kinder"
 msgstr "All kids"
 
-#: forms.py:151 forms.py:214 models.py:32
+#: forms.py:190 forms.py:255 models.py:37
 msgid "Aktiv"
 msgstr "Active"
 
-#: forms.py:205
+#: forms.py:246
 msgid "Symbol"
 msgstr "Icon"
 
-#: forms.py:211
+#: forms.py:252
 msgid "Farbe (#rrggbb, optional)"
 msgstr "Colour (#rrggbb, optional)"
 
-#: forms.py:212
+#: forms.py:253
 msgid "Name"
 msgstr "Name"
 
-#: forms.py:213
+#: forms.py:254
 msgid "Reihenfolge"
 msgstr "Order"
 
-#: forms.py:224
+#: forms.py:265
 msgid "Alle Kategorien"
 msgstr "All categories"
 
-#: forms.py:227
+#: forms.py:268
 msgid "Alle (ohne beendete)"
 msgstr "All (except finished)"
 
-#: instanzen.py:211
+#: instanzen.py:220
 msgid "Instanz wurde zwischenzeitlich geändert"
 msgstr "The task was changed in the meantime"
 
@@ -638,6 +660,7 @@ msgid "Leergut"
 msgstr "Return empty bottles"
 
 #: migrations/0002_startwerte.py:21
+#: migrations/0011_startwerte_schnellknoepfe.py:17
 msgid "Altglas"
 msgstr "Recycle glass"
 
@@ -693,6 +716,14 @@ msgstr "Vacuum the car"
 msgid "Vokabeln lernen 15 Min"
 msgstr "Learn vocabulary for 15 min"
 
+#: migrations/0011_startwerte_schnellknoepfe.py:15
+msgid "Restmüll"
+msgstr "General waste"
+
+#: migrations/0011_startwerte_schnellknoepfe.py:16
+msgid "Biomüll"
+msgstr "Organic waste"
+
 #: models.py:26
 msgid "Vertrauen (sofort gutgeschrieben)"
 msgstr "Trust (points credited right away)"
@@ -705,152 +736,161 @@ msgstr "Parents approve"
 msgid "Foto-/Text-Nachweis"
 msgstr "Photo/text proof"
 
+#: models.py:32
+#
+msgid "Alle (Kinder und Eltern)"
+msgstr "Everyone (kids and parents)"
+
 #: models.py:33
+msgid "Nur Eltern"
+msgstr "Parents only"
+
+#: models.py:38
 msgid "Pausiert"
 msgstr "Paused"
 
-#: models.py:34
+#: models.py:39
 msgid "Beendet"
 msgstr "Finished"
 
-#: models.py:42
+#: models.py:47
 msgid "Feste Kennung, z. B. 'schule' (Brücke zum Lernmodul)."
 msgstr "Fixed key, e.g. 'schule' (link to the learning module)."
 
-#: models.py:50 templates/aufgaben/basis.html:12
+#: models.py:55 templates/aufgaben/basis.html:12
 #: templates/aufgaben/kategorien.html:3 templates/aufgaben/kategorien.html:6
 msgid "Kategorien"
 msgstr "Categories"
 
-#: models.py:64
+#: models.py:69
 msgid "Farbe im Format #rrggbb angeben."
 msgstr "Enter the colour as #rrggbb."
 
-#: models.py:80
+#: models.py:89
 msgid "Vorlage"
 msgstr "Template"
 
-#: models.py:81
+#: models.py:90
 msgid "Vorlagen"
 msgstr "Templates"
 
-#: models.py:99
+#: models.py:108
 #, python-format
 msgid "Ungültige Wiederholung: %(fehler)s"
 msgstr "Invalid repeat: %(fehler)s"
 
-#: models.py:126
+#: models.py:135
 msgid ""
 "Leer = offen für alle Kinder. Gesetzt = nur dieses Kind sieht die Aufgabe."
 msgstr "Empty = open to all kids. Set = only this child sees the task."
 
-#: models.py:148
+#: models.py:157
 msgid "Leer = globaler Wert (Einstellungen)"
 msgstr "Empty = global value (settings)"
 
-#: models.py:159
+#: models.py:173
 msgid "Aufgabe"
 msgstr "Task"
 
-#: models.py:160 templates/aufgaben/basis.html:6
+#: models.py:174 templates/aufgaben/basis.html:6
 #: templates/aufgaben/basis.html:9 templates/aufgaben/kind.html:4
 #: templates/aufgaben/liste.html:3 templates/aufgaben/liste.html:6
 msgid "Aufgaben"
 msgstr "Tasks"
 
-#: models.py:208
+#: models.py:229
 msgid "Zuweisung nur an ein Kind möglich."
 msgstr "A task can only be assigned to a child."
 
-#: models.py:210
+#: models.py:231
 msgid "Wert zu hoch."
 msgstr "Value too high."
 
-#: models.py:216
+#: models.py:237
 msgid "Offen"
 msgstr "Open"
 
-#: models.py:217
+#: models.py:238
 msgid "Mehrere Interessenten"
 msgstr "Several interested"
 
-#: models.py:218 templates/aufgaben/_entscheidungen.html:60
+#: models.py:239 templates/aufgaben/_entscheidungen.html:60
 msgid "Reserviert"
 msgstr "Reserved"
 
-#: models.py:219 templates/aufgaben/_entscheidungen.html:26
+#: models.py:240 templates/aufgaben/_entscheidungen.html:26
 msgid "Gemeldet"
 msgstr "Reported"
 
-#: models.py:221 models.py:409
+#: models.py:242 models.py:430
 msgid "Bestätigt"
 msgstr "Approved"
 
-#: models.py:222 models.py:410
+#: models.py:243 models.py:431
 msgid "Abgelehnt"
 msgstr "Declined"
 
-#: models.py:223
+#: models.py:244
 msgid "Nicht übernommen"
 msgstr "Not taken on"
 
-#: models.py:224
+#: models.py:245
 msgid "Storniert"
 msgstr "Cancelled"
 
-#: models.py:225
+#: models.py:246
 msgid "Zum Nachbessern"
 msgstr "To fix"
 
-#: models.py:312
+#: models.py:333
 msgid "Aufgaben-Instanz"
 msgstr "Task instance"
 
-#: models.py:313
+#: models.py:334
 msgid "Aufgaben-Instanzen"
 msgstr "Task instances"
 
-#: models.py:341 templates/aufgaben/_kind_bereich.html:66
+#: models.py:362 templates/aufgaben/_kind_bereich.html:66
 msgid "ohne Termin"
 msgstr "no date"
 
-#: models.py:354
+#: models.py:375
 msgid "Wartet auf Entscheidung"
 msgstr "Waiting for a decision"
 
-#: models.py:355
+#: models.py:376
 msgid "Zugeteilt"
 msgstr "Assigned"
 
-#: models.py:356
+#: models.py:377
 msgid "Vergeben/gelöst"
 msgstr "Given away/released"
 
-#: models.py:357
+#: models.py:378
 msgid "Zurückgegeben"
 msgstr "Given back"
 
-#: models.py:358
+#: models.py:379
 msgid "Abgelaufen"
 msgstr "Expired"
 
-#: models.py:391
+#: models.py:412
 msgid "Interesse"
 msgstr "Interest"
 
-#: models.py:392
+#: models.py:413
 msgid "Interessen"
 msgstr "Interests"
 
-#: models.py:407
+#: models.py:428
 msgid "Wartet auf Bestätigung"
 msgstr "Waiting for approval"
 
-#: models.py:443
+#: models.py:464
 msgid "Meldung"
 msgstr "Report"
 
-#: models.py:444 templates/aufgaben/basis.html:8
+#: models.py:465 templates/aufgaben/basis.html:8
 #: templates/aufgaben/entscheidungen.html:4
 msgid "Meldungen"
 msgstr "Reports"
@@ -875,6 +915,18 @@ msgstr "The photo has too many pixels. Please use a smaller one."
 #: nachweise.py:202
 msgid "Das Foto konnte nicht gespeichert werden."
 msgstr "The photo could not be saved."
+
+#: schnellknopf.py:67
+msgid "Dieser Knopf ist gerade nicht aktiv."
+msgstr "This button is not active right now."
+
+#: schnellknopf.py:69
+msgid "Diesen Knopf dürfen nur Eltern drücken."
+msgstr "Only parents may press this button."
+
+#: schnellknopf.py:75
+msgid "Du kannst nur für dich selbst übernehmen."
+msgstr "You can only take it on for yourself."
 
 #: services.py:142
 msgid "Unbekannter Status."
@@ -1047,15 +1099,23 @@ msgstr "Nothing approved in the last 7 days."
 msgid "Wann und wie oft?"
 msgstr "When and how often?"
 
-#: templates/aufgaben/_formular.html:23
+#: templates/aufgaben/_formular.html:15
+msgid ""
+"Schnell-Knopf: Die Aufgabe schläft, bis jemand den Knopf drückt. Dann "
+"entsteht genau eine offene Aufgabe."
+msgstr ""
+"Quick button: the task sleeps until someone presses the button. Then exactly one open task appears."
+
+#: templates/aufgaben/_formular.html:30
 msgid "Limit gilt je Kind und Aufgabe."
 msgstr "The limit applies per child and task."
 
-#: templates/aufgaben/_formular.html:32
+#: templates/aufgaben/_formular.html:39
 msgid "Speichern"
 msgstr "Save"
 
-#: templates/aufgaben/_formular.html:33
+#: templates/aufgaben/_formular.html:40
+#: templates/aufgaben/_tablet_schnellknopf.html:23
 msgid "Abbrechen"
 msgstr "Cancel"
 
@@ -1213,6 +1273,35 @@ msgstr "All checked. Nothing open."
 msgid "Alle passen"
 msgstr "All look good"
 
+#: templates/aufgaben/_schnellknopf_status.html:3
+msgid "läuft schon"
+msgstr "already running"
+
+#: templates/aufgaben/_schnellknopf_status.html:4
+#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:16
+#, python-format
+msgid "%(name)s macht's"
+msgstr "%(name)s is on it"
+
+#: templates/aufgaben/_schnellknopf_status.html:4
+msgid "noch offen"
+msgstr "still open"
+
+#: templates/aufgaben/_tablet_schnellknopf.html:9
+msgid "Fertig"
+msgstr "Done"
+
+#: templates/aufgaben/_tablet_schnellknopf.html:12
+#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:14
+#: templates/aufgaben/kacheln/schnellknoepfe_kind.html:15
+#
+msgid "Nur melden"
+msgstr "Just report it"
+
+#: templates/aufgaben/_tablet_schnellknopf.html:13
+msgid "Oder ich mach's:"
+msgstr "Or I'll do it:"
+
 #: templates/aufgaben/_wochenplan.html:3 templates/aufgaben/basis.html:10
 #: templates/aufgaben/wochenplan.html:4
 msgid "Wochenplan"
@@ -1293,26 +1382,30 @@ msgstr "Can't be moved"
 msgid "nur %(name)s"
 msgstr "only %(name)s"
 
-#: templates/aufgaben/_zeile.html:14 templates/aufgaben/kategorien.html:16
+#: templates/aufgaben/_zeile.html:6
+msgid "Schnell-Knopf"
+msgstr "Quick button"
+
+#: templates/aufgaben/_zeile.html:15 templates/aufgaben/kategorien.html:16
 #: templates/aufgaben/vorlagen.html:28
 msgid "Bearbeiten"
 msgstr "Edit"
 
-#: templates/aufgaben/_zeile.html:16
+#: templates/aufgaben/_zeile.html:17
 msgid "Pausieren"
 msgstr "Pause"
 
-#: templates/aufgaben/_zeile.html:18
+#: templates/aufgaben/_zeile.html:19
 msgid "Fortsetzen"
 msgstr "Resume"
 
-#: templates/aufgaben/_zeile.html:21
+#: templates/aufgaben/_zeile.html:22
 msgid ""
 "Aufgabe beenden? Das kann nicht rückgängig gemacht werden. Vergebene Punkte "
 "bleiben."
 msgstr "Finish this task? This can't be undone. Points already given stay."
 
-#: templates/aufgaben/_zeile.html:21
+#: templates/aufgaben/_zeile.html:22
 msgid "Beenden"
 msgstr "Finish"
 
@@ -1320,7 +1413,27 @@ msgstr "Finish"
 msgid "Bibliothek"
 msgstr "Library"
 
-#: templates/aufgaben/kategorien.html:8 views.py:224
+#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:4
+#: templates/aufgaben/kacheln/schnellknoepfe_kind.html:4
+#: templates/aufgaben/kacheln/schnellknoepfe_tablet.html:4
+msgid "Schnell-Knöpfe"
+msgstr "Quick buttons"
+
+#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:12
+#: templates/aufgaben/kacheln/schnellknoepfe_kind.html:12
+#
+msgid "Drücken"
+msgstr "Press"
+
+#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:23
+msgid "Noch keine Schnell-Knöpfe."
+msgstr "No quick buttons yet."
+
+#: templates/aufgaben/kacheln/schnellknoepfe_kind.html:14
+msgid "Ich mach's"
+msgstr "I'll do it"
+
+#: templates/aufgaben/kategorien.html:8 views.py:227
 msgid "Neue Kategorie"
 msgstr "New category"
 
@@ -1328,7 +1441,7 @@ msgstr "New category"
 msgid "Inaktiv"
 msgstr "Inactive"
 
-#: templates/aufgaben/liste.html:9 views.py:82
+#: templates/aufgaben/liste.html:9 views.py:83
 msgid "Neue Aufgabe"
 msgstr "New task"
 
@@ -1344,7 +1457,7 @@ msgstr "Filter"
 msgid "Aufgabenbibliothek"
 msgstr "Task library"
 
-#: templates/aufgaben/vorlagen.html:8 views.py:142
+#: templates/aufgaben/vorlagen.html:8 views.py:143
 msgid "Neue Vorlage"
 msgstr "New template"
 
@@ -1366,20 +1479,20 @@ msgstr "Delete"
 msgid "Noch keine Vorlagen."
 msgstr "No templates yet."
 
-#: views.py:99
+#: views.py:100
 msgid "Aufgabe bearbeiten"
 msgstr "Edit task"
 
-#: views.py:159
+#: views.py:160
 msgid "Vorlage bearbeiten"
 msgstr "Edit template"
 
-#: views.py:200
+#: views.py:203
 #, python-format
 msgid "Aufgabe aus Vorlage „%(titel)s“"
 msgstr "Task from template “%(titel)s”"
 
-#: views.py:241
+#: views.py:244
 msgid "Kategorie bearbeiten"
 msgstr "Edit category"
 
@@ -1456,209 +1569,240 @@ msgstr "Sent back to the child: points taken off, they should fix it."
 msgid "Abgelehnt, Punkte zurückgebucht."
 msgstr "Declined, points taken back."
 
-#: views_wochenplan.py:37
+#: views_schnellknopf.py:56
+#, python-format
+msgid "„%(titel)s“ läuft schon."
+msgstr "“%(titel)s” is already running."
+
+#: views_schnellknopf.py:58
+#, python-format
+msgid "„%(titel)s“ ist für %(name)s reserviert."
+msgstr "“%(titel)s” is reserved for %(name)s."
+
+#: views_schnellknopf.py:62
+#, python-format
+msgid "Gemeldet: „%(titel)s“. Die Kinder wissen Bescheid."
+msgstr "Reported: “%(titel)s”. The kids know."
+
+#: views_schnellknopf.py:103
+msgid "Die Tablet-Ansicht gibt es nur im Heimnetz."
+msgstr "The tablet view is only available on the home network."
+
+#: views_schnellknopf.py:105
+msgid "Dieses Gerät ist nicht als Flur-Tablet eingerichtet."
+msgstr "This device is not set up as the hallway tablet."
+
+#: views_wochenplan.py:38
 msgid "Bitte ein gültiges Datum wählen."
 msgstr "Please choose a valid date."
 
-#: views_wochenplan.py:47
+#: views_wochenplan.py:50
 #, python-format
 msgid "„%(titel)s“ verschoben."
 msgstr "“%(titel)s” moved."
 
-#: wiederholung.py:29 wiederholung.py:159
+#: wiederholung.py:31 wiederholung.py:164
 msgid "Einmalig"
 msgstr "Once"
 
-#: wiederholung.py:30
+#: wiederholung.py:32
 msgid "Wöchentlich an bestimmten Wochentagen"
 msgstr "Weekly on certain weekdays"
 
-#: wiederholung.py:31
+#: wiederholung.py:33
 msgid "Alle paar Tage (Intervall)"
 msgstr "Every few days (interval)"
 
-#: wiederholung.py:34 wiederholung.py:39
+#: wiederholung.py:34
+msgid "Bei Bedarf"
+msgstr "On demand"
+
+#: wiederholung.py:37 wiederholung.py:42
 msgid "Tag"
 msgstr "Day"
 
-#: wiederholung.py:35 wiederholung.py:40
+#: wiederholung.py:38 wiederholung.py:43
 msgid "Woche"
 msgstr "Week"
 
-#: wiederholung.py:36 wiederholung.py:41
+#: wiederholung.py:39 wiederholung.py:44
 msgid "Monat"
 msgstr "Month"
 
-#: wiederholung.py:45
+#: wiederholung.py:48
 msgctxt "Wochentag kurz"
 msgid "Mo"
 msgstr "Mon"
 
-#: wiederholung.py:45
+#: wiederholung.py:48
 msgid "Montag"
 msgstr "Monday"
 
-#: wiederholung.py:46
+#: wiederholung.py:49
 msgctxt "Wochentag kurz"
 msgid "Di"
 msgstr "Tue"
 
-#: wiederholung.py:46
+#: wiederholung.py:49
 msgid "Dienstag"
 msgstr "Tuesday"
 
-#: wiederholung.py:47
+#: wiederholung.py:50
 msgctxt "Wochentag kurz"
 msgid "Mi"
 msgstr "Wed"
 
-#: wiederholung.py:47
+#: wiederholung.py:50
 msgid "Mittwoch"
 msgstr "Wednesday"
 
-#: wiederholung.py:48
+#: wiederholung.py:51
 msgctxt "Wochentag kurz"
 msgid "Do"
 msgstr "Thu"
 
-#: wiederholung.py:48
+#: wiederholung.py:51
 msgid "Donnerstag"
 msgstr "Thursday"
 
-#: wiederholung.py:49
+#: wiederholung.py:52
 msgctxt "Wochentag kurz"
 msgid "Fr"
 msgstr "Fri"
 
-#: wiederholung.py:49
+#: wiederholung.py:52
 msgid "Freitag"
 msgstr "Friday"
 
-#: wiederholung.py:50
+#: wiederholung.py:53
 msgctxt "Wochentag kurz"
 msgid "Sa"
 msgstr "Sat"
 
-#: wiederholung.py:50
+#: wiederholung.py:53
 msgid "Samstag"
 msgstr "Saturday"
 
-#: wiederholung.py:51
+#: wiederholung.py:54
 msgctxt "Wochentag kurz"
 msgid "So"
 msgstr "Sun"
 
-#: wiederholung.py:51
+#: wiederholung.py:54
 msgid "Sonntag"
 msgstr "Sunday"
 
-#: wiederholung.py:141
+#: wiederholung.py:142
+msgid "Bei Bedarf (Schnell-Knopf)"
+msgstr "On demand (quick button)"
+
+#: wiederholung.py:146
 #, python-format
 msgid "Jede Woche: %(tage)s"
 msgstr "Every week: %(tage)s"
 
-#: wiederholung.py:143
+#: wiederholung.py:148
 msgid "Wöchentlich"
 msgstr "Weekly"
 
-#: wiederholung.py:148
+#: wiederholung.py:153
 msgid "Jeden Tag"
 msgstr "Every day"
 
-#: wiederholung.py:150
+#: wiederholung.py:155
 #, python-format
 msgid "Alle %(n)s Tage"
 msgstr "Every %(n)s days"
 
-#: wiederholung.py:150
+#: wiederholung.py:155
 msgid "Intervall"
 msgstr "Interval"
 
-#: wiederholung.py:155
+#: wiederholung.py:160
 #, python-format
 msgid "Einmalig am %(datum)s"
 msgstr "Once on %(datum)s"
 
-#: wiederholung.py:162
+#: wiederholung.py:167
 #, python-format
 msgid "bis %(bis)s Uhr"
 msgstr "until %(bis)s"
 
-#: wiederholung.py:164
+#: wiederholung.py:169
 #, python-format
 msgid "%(von)s bis %(bis)s Uhr"
 msgstr "%(von)s to %(bis)s"
 
-#: wiederholung.py:169
+#: wiederholung.py:174
 #, python-format
 msgid "(+%(n)s Tag)"
 msgid_plural "(+%(n)s Tage)"
 msgstr[0] "(+%(n)s day)"
 msgstr[1] "(+%(n)s days)"
 
-#: wiederholung.py:175
+#: wiederholung.py:180
 #, python-format
 msgid "max. %(n)sx pro %(zeitraum)s und Kind"
 msgstr "max. %(n)sx %(zeitraum)s per child"
 
-#: wiederholung.py:183
+#: wiederholung.py:188
 #, python-format
 msgid "bis %(datum)s"
 msgstr "until %(datum)s"
 
-#: wiederholung.py:193
+#: wiederholung.py:198
 msgid "Unbekannte Wiederholungsart."
 msgstr "Unknown repeat type."
 
-#: wiederholung.py:198
+#: wiederholung.py:205
 msgid "Bitte mindestens einen Wochentag wählen."
 msgstr "Please choose at least one weekday."
 
-#: wiederholung.py:200
+#: wiederholung.py:207
 msgid "Ungültige Wochentage."
 msgstr "Invalid weekdays."
 
-#: wiederholung.py:202
+#: wiederholung.py:209
 msgid "Wochentage gibt es nur bei wöchentlicher Wiederholung."
 msgstr "Weekdays only apply to weekly repeats."
 
-#: wiederholung.py:206
+#: wiederholung.py:213
 msgid "Bitte einen Abstand von mindestens 1 Tag angeben."
 msgstr "Please enter a gap of at least 1 day."
 
-#: wiederholung.py:209
+#: wiederholung.py:216
 msgid "Ein Intervall gibt es nur bei der Wiederholungsart Intervall."
 msgstr "An interval only applies to the interval repeat type."
 
-#: wiederholung.py:213
+#: wiederholung.py:220
 msgid "Das Ende darf nicht vor dem Start liegen."
 msgstr "The end can't be before the start."
 
-#: wiederholung.py:216
+#: wiederholung.py:223
 msgid "Für ein Zeitfenster fehlt die Frist (Ende)."
 msgstr "A time window needs a deadline (end)."
 
-#: wiederholung.py:219
+#: wiederholung.py:226
 msgid "Die Tage dürfen nicht negativ sein."
 msgstr "The days can't be negative."
 
-#: wiederholung.py:221
+#: wiederholung.py:228
 msgid "Mehrere Tage gehen nur mit einer Frist."
 msgstr "Several days only work with a deadline."
 
-#: wiederholung.py:228
+#: wiederholung.py:235
 msgid "Das Ende muss nach dem Beginn liegen (oder Tage > 0 wählen)."
 msgstr "The end must be after the start (or choose days > 0)."
 
-#: wiederholung.py:231
+#: wiederholung.py:238
 msgid "Limit braucht Anzahl und Zeitraum zusammen."
 msgstr "A limit needs both a number and a period."
 
-#: wiederholung.py:234
+#: wiederholung.py:241
 msgid "Das Limit muss mindestens 1 sein."
 msgstr "The limit must be at least 1."
 
-#: wiederholung.py:236
+#: wiederholung.py:243
 msgid "Unbekannter Zeitraum."
 msgstr "Unknown period."
 

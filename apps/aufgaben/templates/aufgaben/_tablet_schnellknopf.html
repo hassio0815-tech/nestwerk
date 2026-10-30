@@ -1,0 +1,25 @@
+{% load i18n sprache avatar_tags %}{% comment %}Tablet-Dialog zu einem Schnell-Knopf (HTMX in ``#tablet-schnell-dialog``): Auswahl
+  (Nur melden / Kind tippen, ohne PIN) oder, nach dem Druck, das Ergebnis.{% endcomment %}
+<div class="tablet-dialog" data-schliessbar role="dialog" aria-modal="true" aria-labelledby="tablet-schnell-titel" hx-target="#tablet-schnell-dialog" hx-swap="innerHTML">
+  <div class="karte"><div class="karte__inhalt stapel">
+    <h2 id="tablet-schnell-titel"><span aria-hidden="true">{{ a.emoji|default:"🔘" }}</span> {{ a.titel|uebersetzt }}</h2>
+    {% if fertig %}
+      {% include "komponenten/toast.html" with art=hinweis_art|default:"erfolg" text=hinweis %}
+      <button type="button" class="knopf knopf--primaer knopf--gross" data-schliessen>{% translate "Fertig" %}</button>
+    {% else %}
+      <form method="post" action="{% url 'aufgaben:schnellknopf_tablet_druecken' a.pk %}" hx-post="{% url 'aufgaben:schnellknopf_tablet_druecken' a.pk %}" class="stapel" hx-disabled-elt="find button">{% csrf_token %}
+        <button type="submit" name="modus" value="melden" class="knopf knopf--sekundaer knopf--gross knopf--block">{% translate "Nur melden" %}</button>
+        <p class="kachel__text">{% translate "Oder ich mach's:" %}</p>
+        <div class="avatar-raster">
+          {% for kind in kinder %}
+            <button type="submit" name="kind_id" value="{{ kind.pk }}" class="kachel kachel--avatar">
+              {% avatar_bild kind "gross" %}
+              <span class="kachel__titel">{{ kind|avatar_name }}</span>
+            </button>
+          {% endfor %}
+        </div>
+      </form>
+      <button type="button" class="knopf knopf--geist" data-schliessen>{% translate "Abbrechen" %}</button>
+    {% endif %}
+  </div></div>
+</div>

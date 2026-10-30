@@ -9,7 +9,6 @@ ENTSCHEIDUNG_15 = [
     ("Müll rausbringen", 5, "vertrauen"),
     ("Mülltonnen rausstellen", 10, "vertrauen"),
     ("Leergut", 15, "vertrauen"),
-    ("Altglas", 15, "vertrauen"),
     ("Spülmaschine ausräumen", 10, "vertrauen"),
     ("Spülmaschine einräumen", 10, "vertrauen"),
     ("Tisch decken/abräumen", 10, "vertrauen"),
@@ -24,6 +23,8 @@ ENTSCHEIDUNG_15 = [
     ("Auto aussaugen", 30, "nachweis"),
     ("Vokabeln lernen 15 Min", 15, "eltern"),
 ]
+# Schnell-Knöpfe (bei Bedarf), später ergänzt; "Altglas" aus Entscheidung 15 wurde dazu umgewandelt
+SCHNELLKNOEPFE = [("Restmüll", 5, "eltern"), ("Biomüll", 5, "eltern"), ("Altglas", 5, "eltern")]
 ENTSCHEIDUNG_16 = ["Haushalt", "Küche", "Wäsche", "Garten", "Schule", "Sonstiges"]
 
 pytestmark = pytest.mark.django_db
@@ -38,8 +39,8 @@ def test_kategorien_exakt():
 
 def test_vorlagen_exakt():
     vorhanden = {(v.titel, v.punkte, v.freigabeart) for v in Vorlage.objects.all()}
-    assert vorhanden == set(ENTSCHEIDUNG_15)
-    assert Vorlage.objects.count() == 17
+    assert vorhanden == set(ENTSCHEIDUNG_15) | set(SCHNELLKNOEPFE)
+    assert Vorlage.objects.count() == 19
     assert all(v.kategorie_id and v.aktiv for v in Vorlage.objects.all())
 
 
@@ -47,3 +48,11 @@ def test_kategorie_zuordnung_sinnvoll():
     assert Vorlage.objects.get(titel="Rasen mähen").kategorie.name == "Garten"
     assert Vorlage.objects.get(titel="Vokabeln lernen 15 Min").kategorie.name == "Schule"
     assert Vorlage.objects.get(titel="Wäsche waschen").kategorie.name == "Wäsche"
+
+
+def test_schnellknopf_vorlagen_bei_bedarf():
+    for titel, emoji in (("Restmüll", "🗑️"), ("Biomüll", "🍂"), ("Altglas", "🍾")):
+        vorlage = Vorlage.objects.get(titel=titel)
+        assert vorlage.plan.art == "bei_bedarf" and vorlage.emoji == emoji
+        assert vorlage.schnellknopf_wer == "alle" and vorlage.kategorie.name == "Haushalt"
+    assert Vorlage.objects.filter(titel="Altglas").count() == 1

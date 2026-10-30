@@ -39,6 +39,16 @@ Die Werte in diesem Handbuch sind **Startwerte**. Eltern können alle Punkte, Pr
 - Nachweise (Fotos und Texte) werden nach der Bestätigung sofort gelöscht.
 - Die **Aufgabenbibliothek** enthält Vorlagen. Ein Klick aktiviert sie.
 
+### Schnell-Knöpfe
+
+Für Aufgaben, die nur manchmal anfallen (**Restmüll voll!**). Die Aufgabe schläft, bis jemand den Knopf drückt.
+
+- **Anlegen (Eltern):** Aufgabe mit Wiederholung **Bei Bedarf**, dazu ein Emoji und **Wer darf drücken?** (alle oder nur Eltern). Die Bibliothek bringt **Restmüll**, **Biomüll** und **Altglas** (je 5 Punkte) mit. Die Aufgabenliste zeigt sie mit dem Hinweis **Schnell-Knopf**.
+- **Drücken:** Es entsteht genau **eine** offene Aufgabe. Solange sie läuft, steht am Knopf **läuft schon** (mit dem Namen, falls jemand sie übernommen hat). Ein zweiter Druck bewirkt nichts.
+- **Ich mach's:** Die Aufgabe ist für dieses Kind reserviert, wie beim normalen Übernehmen.
+- **Nur melden:** Die Aufgabe bleibt für alle Kinder offen, und die Kinder bekommen eine Mitteilung („Restmüll: wer macht's?“). Bei „Ich mach's“ gibt es keine Mitteilung, die Eltern bekommen keine Push-Nachricht.
+- **Wo:** Kinder-Dashboard (nur Knöpfe für alle), Eltern-Dashboard und Flur-Tablet. Am Tablet tippt man den Knopf, dann **Nur melden** oder das eigene Bild, **ohne PIN**. Das geht nur auf dem als Flur-Tablet eingerichteten Gerät, Knöpfe „nur Eltern“ gibt es dort nicht.
+
 ---
 
 ## 3. Punkte, Guthaben und XP

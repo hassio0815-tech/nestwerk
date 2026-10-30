@@ -4,6 +4,15 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Quick buttons (30.10.2026)
+
+### Added
+- Quick buttons: "on demand" tasks (e.g. general waste) that sleep until someone presses the button; one press creates exactly one open task
+- Two modes: "I'll do it" (reserved for the kid) and "Just report it" (open for all, notification to the kids)
+- Tiles for parents, kids and the hallway tablet (no PIN there, only on the registered kiosk device)
+- Task form: repeat option "On demand", emoji and "Who may press it?"
+- Library templates General waste, Organic waste and Recycle glass (5 points)
+
 ## Bilingual release: German and English (27.10.2026)
 
 ### Added

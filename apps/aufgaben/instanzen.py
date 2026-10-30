@@ -119,7 +119,7 @@ def instanzen_erzeugen(*, jetzt: datetime | None = None, aufgaben=None) -> dict:
 
     Zeitgebunden: alle Plan-Tage bis ``heute + aufgaben.instanz_horizont_tage``, deren Fenster
     noch nicht vorbei ist. Ungebunden: höchstens eine laufende, erst ab Fälligkeit.
-    Pausierte und beendete Aufgaben erzeugen nichts.
+    Pausierte, beendete und "bei Bedarf"-Aufgaben (Schnell-Knöpfe) erzeugen nichts.
     """
     jetzt = jetzt or zeit.jetzt()
     tz = zeit.zeitzone()
@@ -127,7 +127,10 @@ def instanzen_erzeugen(*, jetzt: datetime | None = None, aufgaben=None) -> dict:
     horizont = einstellungen.wert("aufgaben.instanz_horizont_tage")
     if aufgaben is None:
         aufgaben = Aufgabe.objects.all()
-    aufgaben = aufgaben.filter(status=Status.AKTIV)
+    # Schnell-Knöpfe (bei Bedarf) schlafen: Instanzen entstehen nur per Knopfdruck
+    aufgaben = aufgaben.filter(status=Status.AKTIV).exclude(
+        wiederholungsart=wiederholung.BEI_BEDARF
+    )
     zaehler = {"aufgaben": 0, "neu": 0}
     for aufgabe in aufgaben.iterator():
         zaehler["aufgaben"] += 1
@@ -154,7 +157,13 @@ def offene_entfernen(aufgabe, *, verschobene_behalten=False) -> int:
     ``unique(aufgabe, plan_datum)`` die Neuerzeugung dieses Plan-Tags (kein Doppel).
     """
     offene = AufgabenInstanz.objects.filter(aufgabe=aufgabe, status=InstanzStatus.OFFEN)
-    if verschobene_behalten and aufgabe.status == Status.AKTIV:
+    if aufgabe.schnellknopf and aufgabe.status == Status.AKTIV:
+        # Schnell-Knopf: ein gedrückter Knopf bleibt (nur neuer Snapshot); weg gehen nur
+        # Reste aus einem früheren Zeitplan
+        for instanz in offene.filter(plan_datum__isnull=True):
+            _an_plan_anpassen(instanz, aufgabe)
+            offene = offene.exclude(pk=instanz.pk)
+    elif verschobene_behalten and aufgabe.status == Status.AKTIV:
         for instanz in offene.exclude(plan_datum__isnull=True):
             if instanz.verschoben and instanz.zeitgebunden == aufgabe.zeitgebunden:
                 _an_plan_anpassen(instanz, aufgabe)

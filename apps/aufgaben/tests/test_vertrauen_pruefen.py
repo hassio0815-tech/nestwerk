@@ -7,7 +7,8 @@ import pytest
 from django.urls import reverse
 
 from apps.aufgaben import events, services
-from apps.aufgaben.models import AufgabenInstanz, InstanzStatus as S
+from apps.aufgaben.models import AufgabenInstanz
+from apps.aufgaben.models import InstanzStatus as S
 from apps.aufgaben.tests.test_ablauf import (  # noqa: F401  (Fixtures)
     T0,
     aufgabe,

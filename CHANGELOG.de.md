@@ -4,6 +4,15 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Schnell-Knöpfe (30.10.2026)
+
+### Hinzugefügt
+- Schnell-Knöpfe: Aufgaben „bei Bedarf“ (z. B. Restmüll), die schlafen, bis jemand den Knopf drückt; ein Druck erzeugt genau eine offene Aufgabe
+- Zwei Modi: „Ich mach's“ (für das Kind reserviert) und „Nur melden“ (offen für alle, Mitteilung an die Kinder)
+- Kacheln für Eltern, Kinder und das Flur-Tablet (dort ohne PIN, nur auf dem registrierten Kiosk-Gerät)
+- Aufgabenformular: Wiederholung „Bei Bedarf“, Emoji und „Wer darf drücken?“
+- Bibliotheksvorlagen Restmüll, Biomüll und Altglas (5 Punkte)
+
 ## Umbenennung zu Nestwerk (25.10.2026)
 
 Das Projekt hieß bis hierhin **FamKo** und heißt jetzt **Nestwerk** (Untertitel: „Nestwerk – the family hub for chores, rewards & learning“). Lizenz: AGPL-3.0-or-later.

@@ -128,3 +128,52 @@
 .einstellungen-gruppe > summary h2 {
   margin: 0;
 }
+
+/* Schnell-Knöpfe (Kacheln für Eltern, Kinder und Flur-Tablet) */
+.schnellknopf__emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.schnellknopf__wahl summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.schnellknopf__wahl[open] form {
+  margin-top: var(--abstand-klein);
+}
+
+.schnellknopf-raster {
+  display: grid;
+  gap: var(--abstand);
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+}
+
+.schnellknopf-gross {
+  min-height: 7rem;
+  gap: var(--abstand-klein);
+}
+
+.schnellknopf-gross .schnellknopf__emoji {
+  font-size: 2.5rem;
+}
+
+.schnellknopf-gross--laeuft {
+  opacity: 0.7;
+}
+
+.tablet-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--abstand);
+  background: rgb(0 0 0 / 0.6);
+  overflow-y: auto;
+}
+
+.tablet-dialog > .karte {
+  width: min(100%, 40rem);
+}

@@ -34,10 +34,16 @@ NACHBESSERN = "aufgabe.nachbessern"  # Eltern geben eine Vertrauens-Aufgabe zur�
 # (= Meldedatum, lokal), gemeldet_am, bestaetigt_am, punkte. Storno: ``aufgabe.korrigiert``.
 ERLEDIGT = "aufgabe.erledigt"
 
+SCHNELLKNOPF = "aufgabe.schnellknopf"  # Schnell-Knopf "nur melden": wer macht's? (an Kinder)
+
 LINK_KIND = "/kind/aufgaben/"
 LINK_ELTERN = "/eltern/meldungen/#instanz-{instanz_id}"
 
 TEXTE = {
+    SCHNELLKNOPF: (
+        gettext_noop("{aufgabe}: wer macht's?"),
+        gettext_noop("Du kannst die Aufgabe bei „Offene Aufgaben“ übernehmen."),
+    ),
     ZUGETEILT: (
         gettext_noop("Die Aufgabe gehört dir!"),
         gettext_noop("„{aufgabe}“ ist für dich reserviert."),
@@ -160,6 +166,13 @@ def typen_deklarieren():
         gettext_noop("Nachbessern nicht rechtzeitig erledigt"),
         "eltern",
         **eltern,
+    )
+    typ(
+        SCHNELLKNOPF,
+        gettext_noop("Schnell-Knopf gedrückt"),
+        "kind",
+        kanaele=("push",),
+        **kind,
     )
     typ(ERLEDIGT, gettext_noop("Aufgabe erledigt (Aktivität)"), "intern", kanaele=())
 

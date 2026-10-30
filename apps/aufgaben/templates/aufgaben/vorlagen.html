@@ -12,7 +12,7 @@
     {% for v in vorlagen %}
       <article class="karte" id="vorlage-{{ v.pk }}"><div class="karte__inhalt zeile">
         <div class="zeile__text stapel">
-          <strong>{{ v.titel|uebersetzt }}</strong>
+          <strong>{% if v.emoji %}{{ v.emoji }} {% endif %}{{ v.titel|uebersetzt }}</strong>
           {% if v.wiederholung %}<span class="zeile__plan">{{ v.plan.beschreiben }}</span>{% endif %}
           <span class="reihe">
             {% if v.kategorie %}{% include "komponenten/chip.html" with text=v.kategorie.name|uebersetzt %}{% endif %}
