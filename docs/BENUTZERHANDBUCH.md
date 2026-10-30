@@ -44,6 +44,7 @@ Die Werte in diesem Handbuch sind **Startwerte**. Eltern können alle Punkte, Pr
 Für Aufgaben, die nur manchmal anfallen (**Restmüll voll!**). Die Aufgabe schläft, bis jemand den Knopf drückt.
 
 - **Anlegen (Eltern):** Aufgabe mit Wiederholung **Bei Bedarf**, dazu ein Emoji und **Wer darf drücken?** (alle oder nur Eltern). Die Bibliothek bringt **Restmüll**, **Biomüll** und **Altglas** (je 5 Punkte) mit. Die Aufgabenliste zeigt sie mit dem Hinweis **Schnell-Knopf**.
+- **Automatisch:** Die drei Start-Knöpfe legt die App einmal selbst als Aufgaben an (sobald es Eltern gibt, spätestens nach einer Stunde). Gelöschte kommen nicht wieder. Das Flur-Tablet zeigt Knöpfe nur, wenn es unter **Geräte** als **Tablet/Kiosk** eingerichtet ist.
 - **Drücken:** Es entsteht genau **eine** offene Aufgabe. Solange sie läuft, steht am Knopf **läuft schon** (mit dem Namen, falls jemand sie übernommen hat). Ein zweiter Druck bewirkt nichts.
 - **Ich mach's:** Die Aufgabe ist für dieses Kind reserviert, wie beim normalen Übernehmen.
 - **Nur melden:** Die Aufgabe bleibt für alle Kinder offen, und die Kinder bekommen eine Mitteilung („Restmüll: wer macht's?“). Bei „Ich mach's“ gibt es keine Mitteilung, die Eltern bekommen keine Push-Nachricht.

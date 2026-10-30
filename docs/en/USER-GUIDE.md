@@ -44,6 +44,7 @@ The values in this guide are **default values**. Parents can adjust all points, 
 For tasks that only come up now and then (**General waste is full!**). The task sleeps until someone presses its button.
 
 - **Setting up (parents):** create a task with the repeat option **On demand**, plus an emoji and **Who may press it?** (everyone or parents only). The library includes **General waste**, **Organic waste** and **Recycle glass** (5 points each). The task list marks them **Quick button**.
+- **Automatic:** The app creates the three default buttons as tasks once on its own (as soon as parents exist, within an hour at the latest). Deleted ones do not come back. The hallway tablet only shows buttons if it is registered under **Devices** as **Kiosk (hallway tablet)**.
 - **Pressing:** exactly **one** open task is created. While it runs, the button shows **already running** (with the name, if someone took it on). A second press does nothing.
 - **I'll do it:** the task is reserved for that kid, like when a kid takes on a task normally.
 - **Just report it:** the task stays open for all kids, and the kids get a notification ("General waste: who's up for it?"). With "I'll do it" there is no notification, and parents get no push message.

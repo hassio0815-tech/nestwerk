@@ -29,6 +29,9 @@ STARTWERTE_NACHWEIS = {
     "aufgaben.nachweis_max_kante_px": 1600,
 }
 
+# Technischer Merker: die drei Start-Schnell-Knöpfe wurden angelegt (einmalig), Datenmigration 0012
+STARTWERTE_SCHNELLKNOEPFE = {"aufgaben.schnellknoepfe_angelegt": False}
+
 
 def einstellungen_definieren():
     definieren(
@@ -149,4 +152,11 @@ def einstellungen_definieren():
         einheit=_("Pixel"),
         minimum=400,
         maximum=4000,
+    )
+    definieren(
+        "aufgaben.schnellknoepfe_angelegt",
+        Typ.BOOL,
+        "Start-Schnell-Knöpfe angelegt",
+        beschreibung="Technischer Merker: Restmüll, Biomüll und Altglas gibt es nur einmal.",
+        intern=True,
     )

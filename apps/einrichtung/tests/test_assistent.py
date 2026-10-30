@@ -211,3 +211,14 @@ def test_startwerte_validierung(c):
     r = c.post(url(7), {"e_konten__kind_pin_fehlversuche": "999"})
     assert r.status_code == 200
     assert einstellungen.wert("konten.kind_pin_fehlversuche") != 999
+
+
+def test_abschluss_legt_start_schnellknoepfe_an(c):
+    from apps.aufgaben.models import Aufgabe
+
+    _bis_schritt7(c)
+    assert _startwerte_posten(c).status_code == 302
+    assert not Aufgabe.objects.exists()
+    assert c.post(url(8)).status_code == 200
+    assert einstellungen.wert("allgemein.einrichtung_abgeschlossen") is True
+    assert {a.titel for a in Aufgabe.objects.all()} == {"Restmüll", "Biomüll", "Altglas"}

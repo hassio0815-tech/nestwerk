@@ -39,7 +39,7 @@ def schluessel_der_uebersicht():
     return [
         d.schluessel
         for d in einstellungen.definitionen()
-        if d.modul not in AUSGEBLENDETE_MODULE and d.schluessel not in BEHANDELT
+        if d.modul not in AUSGEBLENDETE_MODULE and not d.intern and d.schluessel not in BEHANDELT
     ]
 
 

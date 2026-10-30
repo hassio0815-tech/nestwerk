@@ -20,7 +20,7 @@ from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
-from apps.kern import audit, zeit
+from apps.kern import audit, einstellungen, zeit
 from apps.konten import selectors as konten_selectors
 
 from . import ablauf, events, wiederholung
@@ -29,8 +29,10 @@ from .models import (
     Aufgabe,
     AufgabenInstanz,
     InstanzStatus,
+    Kategorie,
     SchnellknopfWer,
     Status,
+    Vorlage,
 )
 from .zustand import AblaufFehler
 
@@ -161,3 +163,54 @@ def knoepfe(benutzer=None, *, nur_kinder_knoepfe=False):
     for aufgabe in aufgaben:
         aufgabe.laeuft = laufende.get(aufgabe.pk)
     return aufgaben
+
+
+# Start-Knöpfe: Titel wie die Bibliotheksvorlagen (Migration 0011)
+START_KNOEPFE = ("Restmüll", "Biomüll", "Altglas")
+_MERKER = "aufgaben.schnellknoepfe_angelegt"
+
+
+def schnellknoepfe_sicherstellen() -> int:
+    """Legt die drei Start-Knöpfe **einmal je Installation** als Aufgaben an (Anzahl neu).
+
+    Eine Aufgabe braucht einen Ersteller: der erste aktive Elternteil. Gibt es noch keinen oder
+    ist der Merker gesetzt, passiert nichts. Gibt es den Titel schon als Aufgabe (z. B. von den
+    Eltern aus der Bibliothek angelegt), wird er übersprungen. Löschen Eltern einen Knopf
+    später, kommt er nicht wieder (der Merker bleibt).
+    """
+    with transaction.atomic():
+        if einstellungen.wert(_MERKER):
+            return 0
+        eltern = konten_selectors.aktive_eltern().order_by("reihenfolge", "anzeigename")
+        ersteller = eltern.first()
+        if ersteller is None:
+            return 0
+        haushalt = Kategorie.objects.filter(name="Haushalt").first()
+        neu = 0
+        for titel in START_KNOEPFE:
+            if Aufgabe.objects.filter(titel=titel).exists():
+                continue
+            vorlage = Vorlage.objects.filter(titel=titel).first()
+            aufgabe = Aufgabe.objects.create(
+                titel=titel,
+                punkte=5,
+                freigabeart="eltern",
+                kategorie=vorlage.kategorie if vorlage else haushalt,
+                vorlage=vorlage,
+                wiederholungsart=wiederholung.BEI_BEDARF,
+                schnellknopf_wer=SchnellknopfWer.ALLE,
+                emoji=vorlage.emoji if vorlage and vorlage.emoji else _EMOJI[titel],
+                erstellt_von=ersteller,
+            )
+            audit.protokollieren(
+                "aufgabe.angelegt",
+                akteur=None,
+                objekt=aufgabe,
+                details={"titel": titel, "punkte": 5, "quelle": "startwerte"},
+            )
+            neu += 1
+        einstellungen.setzen(_MERKER, True, akteur=None)
+    return neu
+
+
+_EMOJI = {"Restmüll": "🗑️", "Biomüll": "🍂", "Altglas": "🍾"}
