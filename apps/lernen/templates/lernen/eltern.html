@@ -46,6 +46,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Kinder und Leistungsstufen" %}</h2>
+    <p>{% translate "Klassenstufe, Schulform, Leistungsstufe je Fach und Freigabe von Upload-Fragen ändern. Mit Knopf für das neue Schuljahr." %}</p>
+    {% url "lernen:eltern_kinder" as kinder_url %}
+    {% include "komponenten/button.html" with href=kinder_url variante="geist" klein=True icon="einstellungen" text=_("Kinder und Leistungsstufen") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Wochenbild" %}</h2>
     <p>{% translate "Pro Kind: geübte Tage, Hilfe im Verlauf, Schwächen und kurze Vorschläge, was ihr tun könnt. Keine Noten, kein Vergleich." %}</p>
     {% url "lernen:eltern_woche" as woche_url %}

@@ -2982,3 +2982,42 @@ msgstr "Folder path"
 
 msgid "Der Ordner muss schon in den Container eingebunden sein (mount). Nestwerk prüft, ob es ihn gibt und ob es hineinschreiben kann. Bereits abgelegte Dateien werden nicht verschoben."
 msgstr "The folder must already be mounted into the container. Nestwerk checks that it exists and that it can write into it. Files already stored are not moved."
+
+msgid "Kinder und Leistungsstufen"
+msgstr "Children and levels"
+
+msgid "Klassenstufe, Schulform, Leistungsstufe je Fach und Freigabe von Upload-Fragen ändern. Mit Knopf für das neue Schuljahr."
+msgstr "Change grade, school type, level per subject and approval of upload questions. With a button for the new school year."
+
+msgid "Hier ändert ihr Klassenstufe, Schulform, Leistungsstufe je Fach und die Freigabe von Fragen aus Uploads, auch nach der Einrichtung. Jedes Kind wird einzeln gespeichert."
+msgstr "Here you change grade, school type, level per subject and the approval of questions from uploads, even after setup. Each child is saved on its own."
+
+msgid "Neues Schuljahr"
+msgstr "New school year"
+
+msgid "Hebt alle eingetragenen Klassenstufen um 1 an (höchstens bis 13). Lernstand, Material und Verlauf bleiben unverändert."
+msgstr "Raises all entered grades by 1 (up to 13 at most). Learning progress, material and history stay unchanged."
+
+msgid "Gespeichert."
+msgstr "Saved."
+
+msgid "Noch keine Kinder angelegt."
+msgstr "No children yet."
+
+msgid "Neues Schuljahr: %(a)s Klassenstufen angehoben, %(g)s unverändert (Obergrenze erreicht)."
+msgstr "New school year: %(a)s grades raised, %(g)s unchanged (upper limit reached)."
+
+msgid "Alle eingetragenen Klassenstufen werden um 1 angehoben, höchstens bis %(klasse_max)s. Es wird nichts gelöscht: Lernstand, Material, Verlauf und Leistungsstufen bleiben, wie sie sind. Danach könnt ihr jedes Kind noch einzeln anpassen."
+msgstr "All entered grades are raised by 1, up to %(klasse_max)s at most. Nothing is deleted: learning progress, material, history and levels stay as they are. Afterwards you can still adjust each child on its own."
+
+msgid "Kinder mit Klassenstufe: %(mit_klasse)s. Davon werden angehoben: %(anhebbar)s. Schon bei der Obergrenze: %(oben)s."
+msgstr "Children with a grade: %(mit_klasse)s. Of these, raised: %(anhebbar)s. Already at the upper limit: %(oben)s."
+
+msgid "Ja, alle Klassenstufen +1"
+msgstr "Yes, all grades +1"
+
+msgid "Abbrechen"
+msgstr "Cancel"
+
+msgid "Bitte das neue Schuljahr bestätigen."
+msgstr "Please confirm the new school year."

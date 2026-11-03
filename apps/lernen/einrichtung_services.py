@@ -166,7 +166,9 @@ def kind_pruefen(*, klassenstufe, schulform, stufen):
     return klasse, schulform, sauber
 
 
-def kind_speichern(kind, *, klassenstufe, schulform, stufen, sofort):
+def kind_speichern(
+    kind, *, klassenstufe, schulform, stufen, sofort, akteur=None, aktion="lernen.einrichtung_kind"
+):
     """Legt Lernmappe und je aktivem Fach eine Leistungsstufe an (oder aktualisiert sie).
     Ohne Stufe und ohne Klassenstufe entsteht kein Eintrag (ein alter wird entfernt)."""
     from . import material_services
@@ -189,8 +191,8 @@ def kind_speichern(kind, *, klassenstufe, schulform, stufen, sofort):
                 else:
                     Leistungsstufe.objects.filter(kind=kind, fach=fach).delete()
             audit.protokollieren(
-                "lernen.einrichtung_kind",
-                akteur=None,
+                aktion,
+                akteur=akteur,
                 kind=kind,
                 details={"stufen": sum(1 for s in stufen.values() if s), "sofort": bool(sofort)},
             )
@@ -198,6 +200,43 @@ def kind_speichern(kind, *, klassenstufe, schulform, stufen, sofort):
         raise ValidationError(
             _("Der Ordner für die Lernmappe konnte nicht angelegt werden. Speicherort prüfen.")
         ) from None
+
+
+def schuljahr_vorschau():
+    """Was "Neues Schuljahr" bewirken würde: ``(kinder_mit_klasse, anhebbar, schon_oben)``
+    (Anzahl Kinder mit eingetragener Klassenstufe, davon anhebbar, davon schon bei der Obergrenze).
+    Gezählt wird je Kind nach seiner höchsten eingetragenen Klassenstufe."""
+    hoechste = {}
+    for e in Leistungsstufe.objects.filter(
+        kind__in=konten_selectors.aktive_kinder(), klassenstufe__isnull=False
+    ):
+        hoechste[e.kind_id] = max(hoechste.get(e.kind_id, 0), e.klassenstufe)
+    oben = sum(1 for k in hoechste.values() if k >= KLASSE_MAX)
+    return len(hoechste), len(hoechste) - oben, oben
+
+
+def schuljahr_wechsel(*, akteur=audit.AKTUELL):
+    """Hebt jede eingetragene Klassenstufe aktiver Kinder um 1 an, höchstens bis ``KLASSE_MAX``.
+    Ändert nur ``Leistungsstufe.klassenstufe``: Leistungsstufen, Lernstand, Material und Verlauf
+    bleiben unberührt, es wird nichts gelöscht. Einträge ohne Klassenstufe bleiben leer.
+    Gibt ``(angehoben, unveraendert)`` zurück (Anzahl Einträge)."""
+    angehoben = unveraendert = 0
+    with transaction.atomic():
+        eintraege = Leistungsstufe.objects.filter(
+            kind__in=konten_selectors.aktive_kinder(), klassenstufe__isnull=False
+        )
+        for e in eintraege:
+            if e.klassenstufe >= KLASSE_MAX:
+                unveraendert += 1
+                continue
+            Leistungsstufe.objects.filter(pk=e.pk).update(klassenstufe=e.klassenstufe + 1)
+            angehoben += 1
+        audit.protokollieren(
+            "lernen.schuljahr_wechsel",
+            akteur=akteur,
+            details={"angehoben": angehoben, "unveraendert": unveraendert},
+        )
+    return angehoben, unveraendert
 
 
 # --- KI -----------------------------------------------------------------------------------------

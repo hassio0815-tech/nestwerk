@@ -1,0 +1,29 @@
+{% load i18n %}<div id="kinder-liste" class="stapel">
+  {% if schuljahr %}<div class="feld__hinweis" role="status"><p>{% blocktranslate with a=schuljahr.0 g=schuljahr.1 %}Neues Schuljahr: {{ a }} Klassenstufen angehoben, {{ g }} unverändert (Obergrenze erreicht).{% endblocktranslate %}</p></div>{% endif %}
+  {% for z in zeilen %}
+    <form method="post" action="{% url 'lernen:eltern_kind_speichern' z.kind.pk %}" hx-post="{% url 'lernen:eltern_kind_speichern' z.kind.pk %}" hx-target="#kinder-liste" hx-swap="outerHTML" class="karte" autocomplete="off">
+      {% csrf_token %}
+      <div class="karte__inhalt stapel">
+        <h2>{{ z.kind.anzeigename }}</h2>
+        {% if z.fehler %}<div class="feld__hinweis feld__hinweis--fehler" role="alert">{% for e in z.fehler %}<p>{{ e }}</p>{% endfor %}</div>{% endif %}
+        {% if z.gespeichert %}<div class="feld__hinweis" role="status"><p>{% translate "Gespeichert." %}</p></div>{% endif %}
+        <div class="feld"><label class="feld__label" for="klasse-{{ z.kind.pk }}">{% translate "Klassenstufe" %}</label>
+          <input class="feld__eingabe" id="klasse-{{ z.kind.pk }}" name="klasse" type="number" inputmode="numeric" min="1" max="13" value="{{ z.werte.klassenstufe|default_if_none:'' }}"></div>
+        <div class="feld"><label class="feld__label" for="schulform-{{ z.kind.pk }}">{% translate "Schulform" %}</label>
+          <input class="feld__eingabe" id="schulform-{{ z.kind.pk }}" name="schulform" value="{{ z.werte.schulform }}" maxlength="60"></div>
+        {% for schluessel, fach, aktuell in z.stufen %}
+          <div class="feld"><label class="feld__label" for="stufe-{{ schluessel }}-{{ z.kind.pk }}">{% blocktranslate %}Leistungsstufe in {{ fach }}{% endblocktranslate %}</label>
+            <select class="feld__eingabe" id="stufe-{{ schluessel }}-{{ z.kind.pk }}" name="stufe-{{ schluessel }}">
+              <option value="">{% translate "keine Stufe" %}</option>
+              {% for wert, text in stufenwahl %}<option value="{{ wert }}"{% if aktuell == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
+            </select></div>
+        {% endfor %}
+        <fieldset class="stapel"><legend><strong>{% translate "Fragen aus hochgeladenem Material" %}</strong></legend>
+          <label class="reihe"><input type="radio" name="freigabe" value="eltern"{% if not z.werte.sofort %} checked{% endif %}> <span>{% translate "Eltern geben frei (Standard)" %}</span></label>
+          <label class="reihe"><input type="radio" name="freigabe" value="sofort"{% if z.werte.sofort %} checked{% endif %}> <span>{% translate "Sofort nutzbar" %}</span></label>
+        </fieldset>
+        {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
+      </div>
+    </form>
+  {% empty %}<p>{% translate "Noch keine Kinder angelegt." %}</p>{% endfor %}
+</div>
