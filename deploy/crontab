@@ -40,6 +40,7 @@
 # Aufräumen
 15 4 * * * python manage.py konten_aufraeumen
 20 4 * * * python manage.py benachrichtigungen_aufraeumen
+25 4 * * * python manage.py tutor_aufraeumen
 
 # Nachweis-Fotos: Sicherheitsnetz zur sofortigen Löschung (idempotent)
 17 * * * * python manage.py nachweise_aufraeumen

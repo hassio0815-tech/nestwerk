@@ -1,0 +1,24 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Tutor-Gespräch" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern_tutor" as tutor_url %}
+  {% include "komponenten/button.html" with href=tutor_url variante="geist" klein=True icon="pfeil-links" text=_("Tutor") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% blocktranslate with name=g.kind.anzeigename %}Gespräch von {{ name }}{% endblocktranslate %}</h1>
+  <p>{{ g.beginn|date:"SHORT_DATETIME_FORMAT" }}{% if g.material %} · {{ g.material.anzeigename }}{% elif g.thema %} · {{ g.thema.name }}{% endif %} · {% blocktranslate with stufe=g.hilfestufe %}höchste Hilfestufe {{ stufe }}{% endblocktranslate %}</p>
+  <section class="karte"><div class="karte__inhalt stapel">
+    <ol class="tutor-verlauf">
+      {% for n in nachrichten %}
+        <li class="tutor-nachricht tutor-nachricht--{{ n.rolle }}" data-tutor-art="{{ n.art }}">
+          <span class="tutor-nachricht__wer">{% if n.rolle == "kind" %}{{ g.kind.anzeigename }}{% else %}{% translate "Tutor" %}{% endif %} · {{ n.zeit|date:"TIME_FORMAT" }} · {{ n.get_art_display }} · {% blocktranslate with stufe=n.hilfestufe %}Stufe {{ stufe }}{% endblocktranslate %}</span>
+          {% if n.markierung %}<span class="feld__hinweis" data-tutor-markierung="{{ n.markierung }}">{{ n.get_markierung_display }}</span>{% endif %}
+          <span class="lernen-text">{{ n.text }}</span>
+        </li>
+      {% endfor %}
+    </ol>
+    <form method="post" action="{% url 'lernen:eltern_tutor_loeschen' g.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" icon="x" text=_("Gespräch löschen") %}</form>
+  </div></section>
+{% endblock %}

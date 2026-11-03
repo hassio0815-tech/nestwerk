@@ -1,0 +1,43 @@
+{% extends "basis/kind.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Tutor" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:start" as start_url %}
+  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text=_("Lernen") %}
+{% endblock %}
+{% block inhalt %}
+  <h1>{% translate "Tutor" %}</h1>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  {% if not bereit %}
+    <section class="karte"><div class="karte__inhalt stapel" data-tutor-aus="{{ status }}">
+      <p>{% translate "Der Tutor ist gerade nicht da. Frag deine Eltern, wenn du ihn nutzen möchtest. Üben kannst du trotzdem." %}</p>
+    </div></section>
+  {% else %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>{% translate "Neues Gespräch" %}</h2>
+      <p>{% translate "Der Tutor löst deine Aufgaben nicht. Er hilft dir, sie selbst zu lösen, und erklärt dir Neues." %}</p>
+      <form method="post" action="{% url 'lernen:tutor_neu' %}" class="stapel">{% csrf_token %}
+        <div class="feld"><label class="feld__label" for="t-worum">{% translate "Worum geht es?" %}</label>
+          <select class="feld__eingabe" id="t-worum" name="worum">
+            <option value="">{% translate "Das schreibe ich dir gleich" %}</option>
+            {% if material %}<optgroup label="{% translate 'Aus meiner Mappe' %}">{% for m in material %}<option value="material:{{ m.pk }}">{{ m.anzeigename }}</option>{% endfor %}</optgroup>{% endif %}
+            {% for fach, themen in optionen %}<optgroup label="{{ fach.name }}">{% for t in themen %}<option value="thema:{{ t.pk }}">{{ t.name }}</option>{% endfor %}</optgroup>{% endfor %}
+          </select></div>
+        {% include "komponenten/button.html" with typ="submit" icon="funke" text=_("Los geht's") gross=True %}
+      </form>
+    </div></section>
+  {% endif %}
+
+  {% if offene %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>{% translate "Offene Gespräche" %}</h2>
+      <ul class="stapel">
+        {% for g in offene %}
+          <li class="reihe"><a href="{% url 'lernen:tutor_gespraech' g.pk %}">{{ g.beginn|date:"SHORT_DATETIME_FORMAT" }}{% if g.material %} · {{ g.material.anzeigename }}{% elif g.thema %} · {{ g.thema.name }}{% endif %}</a></li>
+        {% endfor %}
+      </ul>
+    </div></section>
+  {% endif %}
+{% endblock %}

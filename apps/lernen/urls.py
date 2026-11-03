@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, views_ki, views_material
+from . import views, views_ki, views_material, views_tutor
 
 app_name = "lernen"
 
@@ -64,5 +64,27 @@ urlpatterns = [
         "eltern/lernen/material/<int:pk>/frage/<int:frage_pk>/",
         views_material.eltern_frage,
         name="eltern_frage",
+    ),
+    # Tutor (Etappe 5)
+    path("kind/lernen/tutor/", views_tutor.start, name="tutor"),
+    path("kind/lernen/tutor/neu/", views_tutor.neu, name="tutor_neu"),
+    path("kind/lernen/tutor/<int:pk>/", views_tutor.gespraech, name="tutor_gespraech"),
+    path("kind/lernen/tutor/<int:pk>/senden/", views_tutor.senden, name="tutor_senden"),
+    path("kind/lernen/tutor/<int:pk>/hilfe/", views_tutor.mehr_hilfe, name="tutor_hilfe"),
+    path("kind/lernen/tutor/<int:pk>/versuch/", views_tutor.versuch, name="tutor_versuch"),
+    path("kind/lernen/tutor/<int:pk>/beenden/", views_tutor.beenden, name="tutor_beenden"),
+    path("eltern/lernen/tutor/", views_tutor.eltern_seite, name="eltern_tutor"),
+    path(
+        "eltern/lernen/tutor/schalter/", views_tutor.eltern_schalter, name="eltern_tutor_schalter"
+    ),
+    path(
+        "eltern/lernen/tutor/<int:pk>/",
+        views_tutor.eltern_gespraech,
+        name="eltern_tutor_gespraech",
+    ),
+    path(
+        "eltern/lernen/tutor/<int:pk>/loeschen/",
+        views_tutor.eltern_loeschen,
+        name="eltern_tutor_loeschen",
     ),
 ]

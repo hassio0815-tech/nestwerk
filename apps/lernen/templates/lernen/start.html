@@ -74,4 +74,13 @@
     {% url "lernen:material" as mappe_url %}
     {% include "komponenten/button.html" with href=mappe_url variante="geist" icon="schule" text=_("Zur Mappe") %}
   </div></section>
+
+  {% if tutor_sichtbar %}
+  <section class="karte" data-lernen-tutor><div class="karte__inhalt stapel">
+    <h2>{% translate "Tutor" %}</h2>
+    <p>{% translate "Komm nicht weiter? Der Tutor hilft dir, deine Aufgabe selbst zu lösen." %}</p>
+    {% url "lernen:tutor" as tutor_url %}
+    {% include "komponenten/button.html" with href=tutor_url variante="geist" icon="info" text=_("Zum Tutor") %}
+  </div></section>
+  {% endif %}
 {% endblock %}

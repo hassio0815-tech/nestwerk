@@ -16,7 +16,7 @@ from apps.kern import zeit
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktuelles_kind, nur_eltern, nur_kind
 
-from . import selectors, services, texte
+from . import selectors, services, texte, tutor_selectors
 from .models import (
     Erwartung,
     Intensitaet,
@@ -77,6 +77,7 @@ def _start_kontext(kind, *, fehler=""):
         if bild.serie.wochen >= 2
         else wort("serie_neu"),
         "ton_ziel": wort("ziel_geschafft"),
+        "tutor_sichtbar": tutor_selectors.bereit(),
     }
 
 

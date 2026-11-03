@@ -1,4 +1,4 @@
-"""Datenmodell von lernen (SPEC 21; Etappe 1 Fundament, Etappe 2 Üben ohne KI, 3 KI, 4 Material).
+"""Datenmodell von lernen (SPEC 21; Etappe 1 Fundament, 2 Üben ohne KI, 3 KI, 4 Material, 5 Tutor).
 
 ``Fach`` -> ``Thema`` (je Klassenstufe) -> ``Frage`` (Vokabel oder Frage). Pro Kind gibt es genau
 eine ``Lernmappe``, beliebig viele ``Lernsitzung``en und je Fach eine ``Leistungsstufe``.
@@ -543,3 +543,86 @@ class Material(models.Model):
 
     def __str__(self):
         return f"Material {self.pk} ({self.status})"
+
+
+# --- Etappe 5: Tutor mit Hilfeleiter (SPEC 21.3, 21.4) -------------------------------------------
+
+
+class GespraechStatus(models.TextChoices):
+    OFFEN = "offen", _("offen")
+    BEENDET = "beendet", _("beendet")
+
+
+class NachrichtRolle(models.TextChoices):
+    KIND = "kind", _("Kind")
+    TUTOR = "tutor", _("Tutor")
+
+
+class NachrichtArt(models.TextChoices):
+    FRAGE = "frage", _("Frage oder Nachricht")
+    VERSUCH = "versuch", _("Lösungsversuch")
+    MEHR_HILFE = "mehr_hilfe", _("Bitte um mehr Hilfe")
+    ANTWORT = "antwort", _("Antwort des Tutors")
+    BEWERTUNG = "bewertung", _("Rückmeldung zum Versuch")
+    HINWEIS = "hinweis", _("Hinweis der App")
+
+
+class Markierung(models.TextChoices):
+    """Warum ein Tutor-Text nicht von der KI stammt oder eine Nachricht auffiel (für die Eltern)."""
+
+    LOESUNGSBITTE = "loesungsbitte", _("Bitte, die Aufgabe zu lösen")
+    ROLLENWECHSEL = "rollenwechsel", _("Versuch, die Regeln zu ändern")
+    LECK = "leck", _("Antwort zurückgehalten (Lösung vermutet)")
+
+
+class TutorGespraech(models.Model):
+    """Eine Unterhaltung eines Kindes mit dem Tutor. Gehört genau einem Kind; Geschwister und
+    andere Kinder sehen sie nie. ``hilfestufe`` ist die bisher höchste Stufe der Hilfeleiter
+    (1 bis 5) und steigt nur auf Wunsch des Kindes."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tutor_gespraeche"
+    )
+    material = models.ForeignKey(
+        Material, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    thema = models.ForeignKey(
+        Thema, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    status = models.CharField(
+        max_length=10, choices=GespraechStatus.choices, default=GespraechStatus.OFFEN
+    )
+    hilfestufe = models.PositiveSmallIntegerField(default=1)
+    beginn = models.DateTimeField()
+    ende = models.DateTimeField(null=True, blank=True)
+    letzte_aktivitaet = models.DateTimeField()
+
+    class Meta:
+        ordering = ["-beginn", "-id"]
+        indexes = [models.Index(fields=["kind", "status"], name="lernen_tutor_kind_status")]
+
+    def __str__(self):
+        return f"Tutor-Gespräch {self.pk} ({self.status})"
+
+
+class TutorNachricht(models.Model):
+    """Eine Nachricht im Gespräch. Das Protokoll ist für die Eltern nur lesbar."""
+
+    gespraech = models.ForeignKey(
+        TutorGespraech, on_delete=models.CASCADE, related_name="nachrichten"
+    )
+    rolle = models.CharField(max_length=6, choices=NachrichtRolle.choices)
+    art = models.CharField(max_length=12, choices=NachrichtArt.choices, default=NachrichtArt.FRAGE)
+    text = models.TextField()
+    hilfestufe = models.PositiveSmallIntegerField(default=1)
+    markierung = models.CharField(max_length=14, choices=Markierung.choices, blank=True)
+    urteil = models.CharField(max_length=12, blank=True)
+    empfohlene_stufe = models.PositiveSmallIntegerField(null=True, blank=True)
+    zeit = models.DateTimeField()
+
+    class Meta:
+        ordering = ["id"]
+        indexes = [models.Index(fields=["rolle", "zeit"], name="lernen_tutor_nachr_zeit")]
+
+    def __str__(self):
+        return f"Tutor-Nachricht {self.pk} ({self.rolle})"

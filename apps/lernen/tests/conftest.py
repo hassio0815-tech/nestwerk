@@ -52,6 +52,7 @@ def startwerte(db):
         STARTWERTE,
         STARTWERTE_KI,
         STARTWERTE_MATERIAL,
+        STARTWERTE_TUTOR,
         STARTWERTE_UEBEN,
     )
     from apps.spielregeln import raenge_start
@@ -61,7 +62,14 @@ def startwerte(db):
     Einstellung.objects.update_or_create(
         schluessel="allgemein.zeitzone", defaults={"wert": "Europe/Berlin", "modul": "allgemein"}
     )
-    for werte in (STARTWERTE, STARTWERTE_UEBEN, STARTWERTE_KI, STARTWERTE_MATERIAL, SPIELREGELN):
+    for werte in (
+        STARTWERTE,
+        STARTWERTE_UEBEN,
+        STARTWERTE_KI,
+        STARTWERTE_MATERIAL,
+        STARTWERTE_TUTOR,
+        SPIELREGELN,
+    ):
         startwerte_schreiben(Einstellung, werte)
     einstellungen.setzen("allgemein.go_live_datum", GO_LIVE, akteur=None)
     vorhanden = set(Einstellung.objects.values_list("schluessel", flat=True))

@@ -1,0 +1,48 @@
+{% load i18n %}
+<section class="karte"><div class="karte__inhalt stapel" data-tutor-stufe="{{ g.hilfestufe }}">
+  <p class="kachel__text">{% blocktranslate with stufe=g.hilfestufe %}Hilfestufe {{ stufe }} von 5{% endblocktranslate %}
+    {% if g.material %}· {{ g.material.anzeigename }}{% elif g.thema %}· {{ g.thema.name }}{% endif %}</p>
+  <ol class="tutor-verlauf" aria-label="{% translate 'Gespräch' %}">
+    {% for n in nachrichten %}
+      <li class="tutor-nachricht tutor-nachricht--{{ n.rolle }}" data-tutor-art="{{ n.art }}">
+        <span class="tutor-nachricht__wer">{% if n.rolle == "kind" %}{% translate "Du" %}{% else %}{% translate "Tutor" %}{% endif %}</span>
+        <span class="lernen-text">{% if n.art == "mehr_hilfe" %}{% translate "Ich brauche mehr Hilfe." %}{% else %}{{ n.text }}{% endif %}</span>
+      </li>
+    {% endfor %}
+  </ol>
+  {% if fehler %}<p class="lernen-rueck lernen-rueck--fast" role="alert" data-tutor-fehler>{{ fehler }}</p>{% endif %}
+
+  {% if aktiv %}
+    {% url "lernen:tutor_senden" g.pk as senden_url %}
+    <form method="post" action="{{ senden_url }}" hx-post="{{ senden_url }}" hx-target="#tutor-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
+      <label class="feld__label" for="t-text">{% translate "Deine Nachricht" %}</label>
+      <textarea class="feld__eingabe" id="t-text" name="text" rows="3" maxlength="{{ max_zeichen }}" required></textarea>
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Senden") %}
+    </form>
+    <div class="reihe">
+      {% if mehr_hilfe_moeglich %}
+        {% url "lernen:tutor_hilfe" g.pk as hilfe_url %}
+        <form method="post" action="{{ hilfe_url }}" hx-post="{{ hilfe_url }}" hx-target="#tutor-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante=mehr_hilfe_empfohlen|yesno:"primaer,geist" klein=True icon="info" text=_("Ich brauche mehr Hilfe") %}</form>
+      {% endif %}
+      {% url "lernen:tutor_beenden" g.pk as beenden_url %}
+      <form method="post" action="{{ beenden_url }}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text=_("Gespräch beenden") %}</form>
+    </div>
+    {% if versuch_moeglich %}
+      <details>
+        <summary>{% translate "Ich habe einen Lösungsversuch" %}</summary>
+        {% url "lernen:tutor_versuch" g.pk as versuch_url %}
+        <form method="post" action="{{ versuch_url }}" hx-post="{{ versuch_url }}" hx-target="#tutor-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
+          <label class="feld__label" for="t-aufgabe">{% translate "Die Aufgabe (wenn sie nicht oben steht)" %}</label>
+          <textarea class="feld__eingabe" id="t-aufgabe" name="aufgabe" rows="2"></textarea>
+          <label class="feld__label" for="t-versuch">{% translate "Mein Versuch" %}</label>
+          <textarea class="feld__eingabe" id="t-versuch" name="versuch" rows="3" maxlength="{{ max_zeichen }}" required></textarea>
+          {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Versuch prüfen lassen") %}
+        </form>
+      </details>
+    {% endif %}
+  {% elif g.status != "offen" %}
+    <p>{% translate "Dieses Gespräch ist beendet." %}</p>
+  {% else %}
+    <p data-tutor-aus="{{ status }}">{% translate "Der Tutor ist gerade nicht da. Frag deine Eltern, wenn du ihn nutzen möchtest." %}</p>
+  {% endif %}
+</div></section>

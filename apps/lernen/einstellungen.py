@@ -89,6 +89,7 @@ def einstellungen_definieren():
     _definieren_ueben()
     _definieren_ki()
     _definieren_material()
+    _definieren_tutor()
 
 
 def _definieren_ueben():
@@ -323,6 +324,73 @@ def _definieren_material():
         beschreibung=_("Mehr Fragen speichern wir aus einem Upload nicht."),
         minimum=1,
         maximum=100,
+    )
+
+
+# Etappe 5 (Tutor): Migration 0011 legt fehlende Werte an. ``lernen.tutor_aktiv`` gibt es seit
+# Etappe 1 (Standard aus).
+STARTWERTE_TUTOR = {
+    "lernen.tutor_vergleich_nach_versuch": True,
+    "lernen.tutor_nachrichten_pro_tag": 30,
+    "lernen.tutor_laenge_nachricht": 500,
+    "lernen.tutor_laenge_antwort": 700,
+    "lernen.tutor_gespraeche_gleichzeitig": 3,
+    "lernen.tutor_aufbewahrung_tage": 90,
+}
+
+
+def _definieren_tutor():
+    definieren(
+        "lernen.tutor_vergleich_nach_versuch",
+        Typ.BOOL,
+        _("Tutor: Versuch mit dem richtigen Weg vergleichen"),
+        beschreibung=_(
+            "Ja: Nach einem eigenen Versuch des Kindes darf der Tutor kurz sagen, ob er stimmt und "
+            "wo der Denkfehler liegt. Die Lösung nennt er nie. Nein: Er sagt nur, ob es passt."
+        ),
+    )
+    definieren(
+        "lernen.tutor_nachrichten_pro_tag",
+        Typ.GANZZAHL,
+        _("Tutor: Nachrichten pro Kind und Tag"),
+        beschreibung=_("Danach gibt es einen freundlichen Hinweis auf morgen und eine Pause."),
+        minimum=1,
+        maximum=500,
+    )
+    definieren(
+        "lernen.tutor_laenge_nachricht",
+        Typ.GANZZAHL,
+        _("Tutor: Länge einer Nachricht des Kindes"),
+        beschreibung=_("Längere Nachrichten werden nicht gesendet."),
+        einheit=_("Zeichen"),
+        minimum=50,
+        maximum=5000,
+    )
+    definieren(
+        "lernen.tutor_laenge_antwort",
+        Typ.GANZZAHL,
+        _("Tutor: Länge einer Antwort"),
+        beschreibung=_("Längere Antworten werden gekürzt. Kurze Antworten lesen sich leichter."),
+        einheit=_("Zeichen"),
+        minimum=100,
+        maximum=4000,
+    )
+    definieren(
+        "lernen.tutor_gespraeche_gleichzeitig",
+        Typ.GANZZAHL,
+        _("Tutor: offene Gespräche gleichzeitig"),
+        beschreibung=_("Mehr offene Gespräche pro Kind gibt es nicht."),
+        minimum=1,
+        maximum=20,
+    )
+    definieren(
+        "lernen.tutor_aufbewahrung_tage",
+        Typ.GANZZAHL,
+        _("Tutor: Gespräche aufbewahren"),
+        beschreibung=_("Ältere Gespräche werden automatisch gelöscht."),
+        einheit=_("Tage"),
+        minimum=1,
+        maximum=3650,
     )
 
 

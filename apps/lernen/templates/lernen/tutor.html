@@ -1,0 +1,11 @@
+{% extends "basis/kind.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Tutor" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:tutor" as tutor_url %}
+  {% include "komponenten/button.html" with href=tutor_url variante="geist" klein=True icon="pfeil-links" text=_("Tutor") %}
+{% endblock %}
+{% block inhalt %}
+  <div id="tutor-bereich" class="stapel" aria-live="polite">{% include "lernen/_tutor_chat.html" %}</div>
+{% endblock %}

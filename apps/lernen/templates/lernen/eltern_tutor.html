@@ -1,0 +1,47 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Tutor" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern" as lernen_url %}
+  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "Tutor" %}</h1>
+  <p>{% translate "Der Tutor hilft den Kindern, Aufgaben selbst zu lösen. Er löst keine Hausaufgaben und nennt keine Lösungen. Hilfen kosten keine Punkte." %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Für die ganze Familie" %}</h2>
+    <p data-tutor-schalter="{{ aktiv|yesno:'an,aus' }}">{% if aktiv %}{% translate "Der Tutor ist eingeschaltet." %}{% else %}{% translate "Der Tutor ist ausgeschaltet." %}{% endif %}
+      {% if aktiv and status != "bereit" %}{% translate "Er funktioniert erst, wenn bei der KI-Anbindung ein Anbieter für „Tutor“ eingeschaltet ist." %}{% endif %}</p>
+    <div class="feld__hinweis" role="note">
+      <p><strong>{% translate "Eine ehrliche Grenze" %}</strong></p>
+      <p>{% translate "Eine Garantie gibt es nicht. Ein Kind kann eine Aufgabe abtippen oder umformulieren, und eine KI kann Fehler machen. Der Tutor hat mehrere Sicherungen (keine Musterlösung im Gespräch, Prüfung jeder Antwort, Tageslimit, Protokoll), aber keine ist lückenlos. Schaut ab und zu ins Protokoll." %}</p>
+    </div>
+    <form method="post" action="{% url 'lernen:eltern_tutor_schalter' %}">{% csrf_token %}
+      {% if aktiv %}<input type="hidden" name="an" value="0">{% include "komponenten/button.html" with typ="submit" variante="geist" icon="x" text=_("Tutor ausschalten") %}
+      {% else %}<input type="hidden" name="an" value="1">{% include "komponenten/button.html" with typ="submit" icon="check" text=_("Tutor einschalten") %}{% endif %}
+    </form>
+    <p class="feld__hinweis">{% blocktranslate with tage=tage %}Gespräche werden nach {{ tage }} Tagen ohne Aktivität gelöscht. Grenzen und Fristen stellt ihr in den Einstellungen ein.{% endblocktranslate %}</p>
+    {% url "oberflaeche:einstellungen" as einstellungen_url %}
+    {% include "komponenten/button.html" with href=einstellungen_url variante="geist" klein=True icon="einstellungen" text=_("Einstellungen") %}
+  </div></section>
+
+  {% for zeile in zeilen %}
+    <section class="karte"><div class="karte__inhalt stapel" data-tutor-kind="{{ zeile.kind.pk }}">
+      <h2>{{ zeile.kind.anzeigename }}</h2>
+      <p>{% translate "Genutzte Hilfestufen (Antworten des Tutors):" %}
+        {% for stufe, anzahl in zeile.zaehler.items %}<span data-tutor-zaehler="{{ stufe }}">{{ stufe }}: {{ anzahl }}</span>{% if not forloop.last %} · {% endif %}{% endfor %}</p>
+      <ul class="stapel">
+        {% for g in zeile.gespraeche %}
+          <li class="reihe">
+            <a href="{% url 'lernen:eltern_tutor_gespraech' g.pk %}">{{ g.beginn|date:"SHORT_DATETIME_FORMAT" }}{% if g.material %} · {{ g.material.anzeigename }}{% elif g.thema %} · {{ g.thema.name }}{% endif %}</a>
+            <span>{% blocktranslate with stufe=g.hilfestufe %}Stufe {{ stufe }}{% endblocktranslate %}</span>
+            <form method="post" action="{% url 'lernen:eltern_tutor_loeschen' g.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Löschen") %}</form>
+          </li>
+        {% empty %}<li>{% translate "Noch keine Gespräche." %}</li>{% endfor %}
+      </ul>
+    </div></section>
+  {% empty %}<p>{% translate "Noch keine Kinder." %}</p>{% endfor %}
+{% endblock %}

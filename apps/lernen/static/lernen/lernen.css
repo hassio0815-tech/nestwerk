@@ -54,3 +54,27 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Tutor (Etappe 5) */
+.tutor-verlauf {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tutor-nachricht {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius, 0.75rem);
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+.tutor-nachricht--kind {
+  background: color-mix(in srgb, var(--akzent, currentColor) 14%, transparent);
+}
+.tutor-nachricht__wer {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.8;
+}

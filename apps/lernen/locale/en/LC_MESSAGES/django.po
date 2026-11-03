@@ -1651,3 +1651,348 @@ msgstr "The folder is full. Tell your parents, they can tidy up."
 #, python-format
 msgid "Pro Mal höchstens %(n)s Dateien."
 msgstr "At most %(n)s files at a time."
+
+msgid "Tutor: Versuch mit dem richtigen Weg vergleichen"
+msgstr "Tutor: compare an attempt with the right way"
+
+msgid "Ja: Nach einem eigenen Versuch des Kindes darf der Tutor kurz sagen, ob er stimmt und wo der Denkfehler liegt. Die Lösung nennt er nie. Nein: Er sagt nur, ob es passt."
+msgstr "Yes: after the child's own attempt the tutor may briefly say whether it is right and where the mistake in thinking is. It never gives the solution. No: it only says whether it fits."
+
+msgid "Tutor: Nachrichten pro Kind und Tag"
+msgstr "Tutor: messages per child and day"
+
+msgid "Danach gibt es einen freundlichen Hinweis auf morgen und eine Pause."
+msgstr "After that there is a friendly note about tomorrow and a break."
+
+msgid "Tutor: Länge einer Nachricht des Kindes"
+msgstr "Tutor: length of a message from the child"
+
+msgid "Längere Nachrichten werden nicht gesendet."
+msgstr "Longer messages are not sent."
+
+msgid "Zeichen"
+msgstr "characters"
+
+msgid "Tutor: Länge einer Antwort"
+msgstr "Tutor: length of an answer"
+
+msgid "Längere Antworten werden gekürzt. Kurze Antworten lesen sich leichter."
+msgstr "Longer answers are shortened. Short answers are easier to read."
+
+msgid "Tutor: offene Gespräche gleichzeitig"
+msgstr "Tutor: open conversations at the same time"
+
+msgid "Mehr offene Gespräche pro Kind gibt es nicht."
+msgstr "There are no more open conversations per child."
+
+msgid "Tutor: Gespräche aufbewahren"
+msgstr "Tutor: keep conversations"
+
+msgid "Ältere Gespräche werden automatisch gelöscht."
+msgstr "Older conversations are deleted automatically."
+
+msgid "beendet"
+msgstr "ended"
+
+msgid "Kind"
+msgstr "Child"
+
+msgid "Tutor"
+msgstr "Tutor"
+
+msgid "Frage oder Nachricht"
+msgstr "Question or message"
+
+msgid "Lösungsversuch"
+msgstr "Attempt at a solution"
+
+msgid "Bitte um mehr Hilfe"
+msgstr "Request for more help"
+
+msgid "Antwort des Tutors"
+msgstr "Answer from the tutor"
+
+msgid "Rückmeldung zum Versuch"
+msgstr "Feedback on the attempt"
+
+msgid "Hinweis der App"
+msgstr "Note from the app"
+
+msgid "Bitte, die Aufgabe zu lösen"
+msgstr "Request to solve the task"
+
+msgid "Versuch, die Regeln zu ändern"
+msgstr "Attempt to change the rules"
+
+msgid "Antwort zurückgehalten (Lösung vermutet)"
+msgstr "Answer held back (solution suspected)"
+
+msgid "Hilfestufe %(stufe)s von 5"
+msgstr "Help level %(stufe)s of 5"
+
+msgid "Gespräch"
+msgstr "Conversation"
+
+msgid "Du"
+msgstr "You"
+
+msgid "Ich brauche mehr Hilfe."
+msgstr "I need more help."
+
+msgid "Deine Nachricht"
+msgstr "Your message"
+
+msgid "Senden"
+msgstr "Send"
+
+msgid "Ich brauche mehr Hilfe"
+msgstr "I need more help"
+
+msgid "Gespräch beenden"
+msgstr "End conversation"
+
+msgid "Ich habe einen Lösungsversuch"
+msgstr "I have an attempt at a solution"
+
+msgid "Die Aufgabe (wenn sie nicht oben steht)"
+msgstr "The task (if it is not above)"
+
+msgid "Mein Versuch"
+msgstr "My attempt"
+
+msgid "Versuch prüfen lassen"
+msgstr "Have my attempt checked"
+
+msgid "Dieses Gespräch ist beendet."
+msgstr "This conversation has ended."
+
+msgid "Der Tutor ist gerade nicht da. Frag deine Eltern, wenn du ihn nutzen möchtest."
+msgstr "The tutor is not here right now. Ask your parents if you would like to use it."
+
+msgid "Der Tutor hilft beim Lösen von Aufgaben, ohne sie zu lösen. Hier schaltet ihr ihn ein und lest das Protokoll."
+msgstr "The tutor helps with solving tasks without solving them. Here you switch it on and read the log."
+
+msgid "Der Tutor hilft den Kindern, Aufgaben selbst zu lösen. Er löst keine Hausaufgaben und nennt keine Lösungen. Hilfen kosten keine Punkte."
+msgstr "The tutor helps the children solve tasks themselves. It does not do homework and does not give solutions. Help costs no points."
+
+msgid "Für die ganze Familie"
+msgstr "For the whole family"
+
+msgid "Der Tutor ist eingeschaltet."
+msgstr "The tutor is switched on."
+
+msgid "Der Tutor ist ausgeschaltet."
+msgstr "The tutor is switched off."
+
+msgid "Er funktioniert erst, wenn bei der KI-Anbindung ein Anbieter für „Tutor“ eingeschaltet ist."
+msgstr "It only works once a provider for “Tutor” is switched on under AI connection."
+
+msgid "Eine ehrliche Grenze"
+msgstr "An honest limit"
+
+msgid "Eine Garantie gibt es nicht. Ein Kind kann eine Aufgabe abtippen oder umformulieren, und eine KI kann Fehler machen. Der Tutor hat mehrere Sicherungen (keine Musterlösung im Gespräch, Prüfung jeder Antwort, Tageslimit, Protokoll), aber keine ist lückenlos. Schaut ab und zu ins Protokoll."
+msgstr "There is no guarantee. A child can type a task in or reword it, and an AI can make mistakes. The tutor has several safeguards (no model solution in the conversation, a check of every answer, daily limit, log), but none is watertight. Take a look at the log now and then."
+
+msgid "Tutor ausschalten"
+msgstr "Switch tutor off"
+
+msgid "Tutor einschalten"
+msgstr "Switch tutor on"
+
+msgid "Gespräche werden nach %(tage)s Tagen ohne Aktivität gelöscht. Grenzen und Fristen stellt ihr in den Einstellungen ein."
+msgstr "Conversations are deleted after %(tage)s days without activity. You set limits and periods in the settings."
+
+msgid "Genutzte Hilfestufen (Antworten des Tutors):"
+msgstr "Help levels used (answers from the tutor):"
+
+msgid "Stufe %(stufe)s"
+msgstr "Level %(stufe)s"
+
+msgid "Noch keine Gespräche."
+msgstr "No conversations yet."
+
+msgid "Tutor-Gespräch"
+msgstr "Tutor conversation"
+
+msgid "Gespräch von %(name)s"
+msgstr "Conversation of %(name)s"
+
+msgid "höchste Hilfestufe %(stufe)s"
+msgstr "highest help level %(stufe)s"
+
+msgid "Gespräch löschen"
+msgstr "Delete conversation"
+
+msgid "Komm nicht weiter? Der Tutor hilft dir, deine Aufgabe selbst zu lösen."
+msgstr "Stuck? The tutor helps you solve your task yourself."
+
+msgid "Zum Tutor"
+msgstr "To the tutor"
+
+msgid "Der Tutor ist gerade nicht da. Frag deine Eltern, wenn du ihn nutzen möchtest. Üben kannst du trotzdem."
+msgstr "The tutor is not here right now. Ask your parents if you would like to use it. You can still practise."
+
+msgid "Neues Gespräch"
+msgstr "New conversation"
+
+msgid "Der Tutor löst deine Aufgaben nicht. Er hilft dir, sie selbst zu lösen, und erklärt dir Neues."
+msgstr "The tutor does not solve your tasks. It helps you solve them yourself and explains new things."
+
+msgid "Worum geht es?"
+msgstr "What is it about?"
+
+msgid "Das schreibe ich dir gleich"
+msgstr "I will write it in a moment"
+
+msgid "Aus meiner Mappe"
+msgstr "From my folder"
+
+msgid "Offene Gespräche"
+msgstr "Open conversations"
+
+msgid "Der Tutor ist gerade nicht eingeschaltet."
+msgstr "The tutor is not switched on right now."
+
+msgid "Der Tutor ist noch nicht eingerichtet."
+msgstr "The tutor is not set up yet."
+
+msgid "Das Prüfen von Versuchen ist noch nicht eingerichtet."
+msgstr "Checking attempts is not set up yet."
+
+msgid "Schreib bitte zuerst etwas."
+msgstr "Please write something first."
+
+msgid "Das ist ein bisschen lang. Schreib bitte höchstens %(n)s Zeichen."
+msgstr "That is a bit long. Please write at most %(n)s characters."
+
+msgid "Dieses Material gehört nicht in deine Mappe."
+msgstr "This material does not belong in your folder."
+
+msgid "Du hast schon mehrere offene Gespräche. Beende zuerst eines, dann geht es weiter."
+msgstr "You already have several open conversations. End one first, then you can go on."
+
+msgid "(bittet um mehr Hilfe)"
+msgstr "(asks for more help)"
+
+msgid "Ich brauche mehr Hilfe zu meiner letzten Aufgabe: %(aufgabe)s"
+msgstr "I need more help with my last task: %(aufgabe)s"
+
+msgid "Die Aufgabe ist zu lang für den Tutor."
+msgstr "The task is too long for the tutor."
+
+msgid "Hallo! Ich bin dein Lern-Tutor. Ich helfe dir, Aufgaben selbst zu lösen. Woran arbeitest du gerade?"
+msgstr "Hello! I am your learning tutor. I help you solve tasks yourself. What are you working on?"
+
+msgid "Hallo! Ich bin dein Lern-Tutor. Ich erkläre dir Dinge und helfe dir, Aufgaben selbst zu lösen. Woran arbeitest du gerade?"
+msgstr "Hello! I am your learning tutor. I explain things and help you solve tasks yourself. What are you working on?"
+
+msgid "Hallo! Ich bin dein Lern-Tutor. Ich erkläre Zusammenhänge und helfe dir, Aufgaben selbst zu lösen. Woran arbeitest du?"
+msgstr "Hello! I am your learning tutor. I explain connections and help you solve tasks yourself. What are you working on?"
+
+msgid "Die Aufgabe löse ich nicht für dich. Aber ich helfe dir dabei! Erzähl mir: Was sollst du machen?"
+msgstr "I will not solve the task for you. But I will help you with it! Tell me: what are you supposed to do?"
+
+msgid "Die Aufgabe löse ich nicht für dich, aber ich helfe dir, sie selbst zu schaffen. Was ist bei der Aufgabe gefragt?"
+msgstr "I will not solve the task for you, but I will help you get it done yourself. What does the task ask?"
+
+msgid "Lösen werde ich die Aufgabe nicht, aber ich helfe dir beim Lösungsweg. Was ist gefragt, und wo hängst du?"
+msgstr "I will not solve the task, but I will help you with the way to the solution. What is asked, and where are you stuck?"
+
+msgid "Ich bleibe dein Lern-Tutor. Lass uns weiter lernen! Woran arbeitest du gerade?"
+msgstr "I stay your learning tutor. Let us keep learning! What are you working on?"
+
+msgid "Ich bleibe dein Lern-Tutor und halte mich an meine Regeln. Woran arbeitest du?"
+msgstr "I stay your learning tutor and stick to my rules. What are you working on?"
+
+msgid "Ich bleibe bei meiner Rolle als Lern-Tutor. Woran arbeitest du gerade?"
+msgstr "I stay in my role as learning tutor. What are you working on?"
+
+msgid "Das sollst du selbst herausfinden, du schaffst das! Was weißt du schon? Wenn du mehr Hilfe möchtest, drück auf den Knopf."
+msgstr "You are meant to find that out yourself, you can do it! What do you already know? If you want more help, press the button."
+
+msgid "Das verrate ich dir nicht, du schaffst das selbst. Was weißt du schon? Mit dem Knopf bekommst du mehr Hilfe."
+msgstr "I will not give that away, you can do it yourself. What do you already know? The button gives you more help."
+
+msgid "Die Lösung nenne ich dir nicht. Schreib mir, was du schon hast. Mit dem Knopf bekommst du bei Bedarf mehr Hilfe."
+msgstr "I will not give you the solution. Write what you already have. The button gives you more help if you need it."
+
+msgid "Für heute haben wir genug geredet. Morgen geht's weiter. Mach jetzt eine Pause!"
+msgstr "We have talked enough for today. We go on tomorrow. Take a break now!"
+
+msgid "Für heute ist Schluss mit Fragen. Morgen geht's weiter. Mach jetzt eine Pause!"
+msgstr "That is it for questions today. We go on tomorrow. Take a break now!"
+
+msgid "Für heute ist das Limit erreicht. Morgen geht's weiter. Gönn dir eine Pause."
+msgstr "The limit for today is reached. We go on tomorrow. Treat yourself to a break."
+
+msgid "Mehr Hilfe kann ich dir hier nicht geben, den Rest schaffst du selbst. Probier es aus und zeig mir deinen Versuch!"
+msgstr "I cannot give you more help here, you can do the rest yourself. Try it and show me your attempt!"
+
+msgid "Mehr Hilfe als bis hierhin gebe ich nicht, den letzten Schritt gehst du selbst. Probier es aus und zeig mir deinen Versuch."
+msgstr "I do not give more help than this, you take the last step yourself. Try it and show me your attempt."
+
+msgid "Das war die höchste Hilfestufe. Den letzten Schritt gehst du selbst. Zeig mir danach gern deinen Versuch."
+msgstr "That was the highest help level. You take the last step yourself. Show me your attempt afterwards."
+
+msgid "Erzähl mir zuerst, woran du arbeitest. Dann helfe ich dir."
+msgstr "First tell me what you are working on. Then I will help you."
+
+msgid "Schreib mir zuerst, bei welcher Aufgabe du Hilfe brauchst."
+msgstr "First write which task you need help with."
+
+msgid "Beschreib zuerst die Aufgabe, bei der du Hilfe brauchst."
+msgstr "First describe the task you need help with."
+
+msgid "Super, das stimmt! Du hast gut nachgedacht und bist drangeblieben."
+msgstr "Great, that is right! You thought hard and stuck with it."
+
+msgid "Das stimmt. Gut gedacht und gut durchgehalten."
+msgstr "That is right. Well thought and well done for keeping at it."
+
+msgid "Das stimmt. Sauber gearbeitet."
+msgstr "That is right. Neat work."
+
+msgid "Ein gutes Stück hast du schon! Ein Teil passt noch nicht ganz."
+msgstr "You already have a good part! One part does not quite fit yet."
+
+msgid "Das ist schon ein gutes Stück. Ein Teil passt noch nicht ganz."
+msgstr "That is already a good part. One part does not quite fit yet."
+
+msgid "Ein Teil stimmt schon, ein Teil noch nicht."
+msgstr "One part is right, one part is not yet."
+
+msgid "Noch nicht ganz. Das ist okay, so lernt man. Du bleibst dran!"
+msgstr "Not quite yet. That is okay, that is how you learn. Keep going!"
+
+msgid "Noch nicht ganz. Das ist okay, Versuche gehören zum Lernen."
+msgstr "Not quite yet. That is okay, attempts are part of learning."
+
+msgid "Noch nicht richtig. Versuche gehören dazu."
+msgstr "Not right yet. Attempts are part of it."
+
+msgid "Das kann ich gerade nicht sicher sagen. Erzähl mir, wie du vorgegangen bist."
+msgstr "I cannot say for sure right now. Tell me how you went about it."
+
+msgid "Das kann ich gerade nicht sicher beurteilen. Erzähl mir, wie du vorgegangen bist."
+msgstr "I cannot judge that for sure right now. Tell me how you went about it."
+
+msgid "Das kann ich gerade nicht sicher beurteilen. Beschreib, wie du vorgegangen bist."
+msgstr "I cannot judge that for sure right now. Describe how you went about it."
+
+msgid "Hinweis:"
+msgstr "Note:"
+
+msgid "Wenn du magst, drück auf „Ich brauche mehr Hilfe“."
+msgstr "If you like, press “I need more help”."
+
+msgid "Bei Bedarf gibt es mit „Ich brauche mehr Hilfe“ den nächsten Schritt."
+msgstr "If needed, “I need more help” gives you the next step."
+
+msgid "Gerade klappt es nicht. Probier es gleich noch einmal."
+msgstr "It is not working right now. Try again in a moment."
+
+msgid "Gerade klappt es nicht. Versuch es gleich noch einmal."
+msgstr "It is not working right now. Try again in a moment."
+
+msgid "Das hat gerade nicht geklappt. Versuch es gleich noch einmal."
+msgstr "That did not work just now. Try again in a moment."

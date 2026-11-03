@@ -39,6 +39,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Tutor" %}</h2>
+    <p>{% translate "Der Tutor hilft beim Lösen von Aufgaben, ohne sie zu lösen. Hier schaltet ihr ihn ein und lest das Protokoll." %}</p>
+    {% url "lernen:eltern_tutor" as tutor_url %}
+    {% include "komponenten/button.html" with href=tutor_url variante="geist" klein=True icon="info" text=_("Tutor") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Schonung (Krankheit, Ferien)" %}</h2>
     <p>{% translate "An Pausentagen wird kein Ziel verlangt und die Serie bleibt erhalten. Ferien für alle schaltet ihr in den Einstellungen ein." %}</p>
     {% url "oberflaeche:einstellungen" as einstellungen_url %}
