@@ -6,7 +6,7 @@ Nur Eltern. Alle Änderungen gehen über dieselben Services wie der Einrichtungs
 
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
@@ -16,6 +16,8 @@ from apps.konten.zugriff import nur_eltern
 
 from . import einrichtung_services as dienste
 from . import selectors
+
+SCHULJAHR_SESSION = "lernen_schuljahr_meldung"
 
 
 def _htmx(request):
@@ -51,7 +53,13 @@ def _antwort(request, kontext, status=200):
 @nur_eltern
 @require_GET
 def eltern_kinder(request):
-    return render(request, "lernen/eltern_kinder.html", _kontext())
+    # Meldung des Schuljahr-Wechsels (Post-Redirect-Get: F5 darf nicht noch einmal anheben)
+    schuljahr = request.session.pop(SCHULJAHR_SESSION, None)
+    return render(
+        request,
+        "lernen/eltern_kinder.html",
+        _kontext(schuljahr=tuple(schuljahr) if schuljahr else None),
+    )
 
 
 @nur_eltern
@@ -104,4 +112,5 @@ def eltern_schuljahr_bestaetigen(request):
     # Gezählt wird je Kind (wie in der Vorschau), nicht je Fach-Eintrag
     _mit, kinder_angehoben, kinder_oben = dienste.schuljahr_vorschau()
     dienste.schuljahr_wechsel()
-    return _antwort(request, _kontext(schuljahr=(kinder_angehoben, kinder_oben)))
+    request.session[SCHULJAHR_SESSION] = [kinder_angehoben, kinder_oben]
+    return redirect("lernen:eltern_kinder")

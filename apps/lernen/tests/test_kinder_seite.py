@@ -149,7 +149,8 @@ def test_schuljahr_hebt_alle_klassenstufen_um_eins(eltern_client, kind_a, kind_b
     antwort = eltern_client.post(
         reverse("lernen:eltern_schuljahr_bestaetigen"), {"bestaetigt": "1"}
     )
-    assert antwort.status_code == 200
+    assert antwort.status_code == 302
+    assert antwort.url == reverse("lernen:eltern_kinder")
     assert _klassen(kind_a) == [6] and _klassen(kind_b) == [10]
     assert _profil(kind_a).stufen["mathe"] == "Grundniveau"  # Stufe bleibt
 
@@ -230,7 +231,15 @@ def test_schuljahr_vorschau_zaehlt_je_kind(db, kind_a, kind_b):
 
 def test_schuljahr_meldung_zaehlt_kinder_nicht_eintraege(eltern_client, kind_a):
     _anlegen(kind_a, 5)  # zwei Fächer, aber ein Kind
-    antwort = eltern_client.post(
-        reverse("lernen:eltern_schuljahr_bestaetigen"), {"bestaetigt": "1"}
-    )
-    assert "bei 1 Kind angehoben" in antwort.content.decode()
+    eltern_client.post(reverse("lernen:eltern_schuljahr_bestaetigen"), {"bestaetigt": "1"})
+    seite = eltern_client.get(reverse("lernen:eltern_kinder")).content.decode()
+    assert "bei 1 Kind angehoben" in seite
+
+
+def test_schuljahr_neuladen_hebt_nicht_noch_einmal_an(eltern_client, kind_a):
+    _anlegen(kind_a, 5)
+    eltern_client.post(reverse("lernen:eltern_schuljahr_bestaetigen"), {"bestaetigt": "1"})
+    url = reverse("lernen:eltern_kinder")
+    assert "angehoben" in eltern_client.get(url).content.decode()
+    assert "angehoben" not in eltern_client.get(url).content.decode()  # Meldung nur einmal
+    assert _klassen(kind_a) == [6]

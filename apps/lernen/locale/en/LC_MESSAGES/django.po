@@ -3027,3 +3027,6 @@ msgstr "Cancel"
 
 msgid "Bitte das neue Schuljahr bestätigen."
 msgstr "Please confirm the new school year."
+
+msgid "Beim Testen werden die Angaben gespeichert und der Anbieter eingeschaltet. Ihr könnt ihn später jederzeit ausschalten."
+msgstr "Testing saves your details and switches the provider on. You can switch it off again at any time."

@@ -37,5 +37,6 @@
   </div>
   <label class="reihe"><input type="checkbox" name="einwilligung" value="1"{% if werte.einwilligung %} checked{% endif %}> <span>{% translate "Nur bei Cloud-Anbietern nötig: Ich habe die Hinweise gelesen und erlaube, dass Daten an diesen Anbieter gesendet werden." %}</span></label>
   <button type="submit" name="aktion" value="testen" class="knopf knopf--sekundaer">{% include "komponenten/icon.html" with name="glocke" %}<span>{% translate "Verbindung testen" %}</span></button>
+  <p class="feld__hinweis">{% translate "Beim Testen werden die Angaben gespeichert und der Anbieter eingeschaltet. Ihr könnt ihn später jederzeit ausschalten." %}</p>
   {% include "lernen/einrichtung/_fuss.html" %}
 </form>
