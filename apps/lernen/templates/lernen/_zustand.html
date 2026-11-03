@@ -1,0 +1,67 @@
+{% load i18n sprache %}{% url "lernen:sitzung" s.pk as sitzung_url %}
+{% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+{% if zustand == "frage" and aufgabe %}
+  <section class="karte lernen-frage" data-lernen-zustand="frage"><div class="karte__inhalt stapel">
+    <p class="kachel__text">{% blocktranslate with nr=nummer von=s.ziel_fragen %}Frage {{ nr }} von {{ von }}{% endblocktranslate %}
+      · {% blocktranslate with plan=s.get_strategie_display %}Dein Plan: {{ plan }}{% endblocktranslate %}</p>
+    {% if rueckmeldung %}<p class="lernen-rueck lernen-rueck--fast" role="status">{{ rueckmeldung.text }}</p>{% endif %}
+    {% if aufgabe.frage.typ == "vokabel" %}<p class="kachel__text">{% if aufgabe.richtung == "en_de" %}{% translate "Auf Deutsch:" %}{% else %}{% translate "In der Fremdsprache:" %}{% endif %}</p>{% endif %}
+    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text }}</p>
+    {% if hinweis %}<p class="lernen-hinweis" data-lernen-hinweis>{% translate "Tipp:" %} <span>{{ hinweis }}</span></p>{% endif %}
+    {% url "lernen:antwort" s.pk as antwort_url %}
+    <form method="post" action="{{ antwort_url }}" hx-post="{{ antwort_url }}" hx-target="#lern-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
+      <label class="feld__label" for="l-eingabe">{% translate "Deine Antwort" %}</label>
+      <input class="feld__eingabe lernen-eingabe" id="l-eingabe" name="eingabe" maxlength="300" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus required>
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Antworten") gross=True %}
+    </form>
+    <div class="reihe">
+      {% url "lernen:hilfe" s.pk as hilfe_url %}{% url "lernen:loesung" s.pk as loesung_url %}{% url "lernen:beenden" s.pk as beenden_url %}
+      <form method="post" action="{{ hilfe_url }}" hx-post="{{ hilfe_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="info" text=_("Tipp") %}</form>
+      <form method="post" action="{{ loesung_url }}" hx-post="{{ loesung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="stift" text=_("Lösung zeigen") %}</form>
+      <form method="post" action="{{ beenden_url }}" hx-post="{{ beenden_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text=_("Für jetzt genug") %}</form>
+    </div>
+  </div></section>
+
+{% elif zustand == "frage" and rueckmeldung %}
+  <section class="karte lernen-rueckmeldung" data-lernen-zustand="rueckmeldung"><div class="karte__inhalt stapel">
+    <p class="lernen-rueck lernen-rueck--{{ rueckmeldung.ergebnis }}" role="status">{{ rueckmeldung.text }}</p>
+    {% if rueckmeldung.loesung %}<p>{% blocktranslate with loesung=rueckmeldung.loesung %}So heißt es: {{ loesung }}{% endblocktranslate %}</p>{% endif %}
+    {% if rueckmeldung.ziel_erreicht %}<p class="lernen-rueck lernen-rueck--richtig">{% include "komponenten/icon.html" with name="pokal" %} {{ ton_ziel }}</p>{% endif %}
+    {% if rueckmeldung.pause_vorschlag %}<p class="lernen-pause" data-lernen-pause>{{ ton_frust }}</p>{% endif %}
+    <div class="reihe">
+      <a class="knopf knopf--primaer knopf--gross" href="{{ sitzung_url }}" hx-get="{{ sitzung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="pfeil-rechts" %}<span>{% if rueckmeldung.pause_vorschlag %}{% translate "Weiter üben" %}{% else %}{% translate "Weiter" %}{% endif %}</span></a>
+      {% url "lernen:beenden" s.pk as beenden_url %}
+      <form method="post" action="{{ beenden_url }}" hx-post="{{ beenden_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" icon="pause" text=_("Pause machen") %}</form>
+    </div>
+  </div></section>
+
+{% elif zustand == "rueckschau" %}
+  <section class="karte" data-lernen-zustand="rueckschau"><div class="karte__inhalt stapel">
+    <h1>{% translate "Kurze Rückschau" %}</h1>
+    <p>{{ ton_ende }}</p>
+    {% url "lernen:rueckschau" s.pk as rueckschau_url %}
+    <form method="post" action="{{ rueckschau_url }}" hx-post="{{ rueckschau_url }}" hx-target="#lern-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
+      <div class="feld"><label class="feld__label" for="l-schwer">{% translate "Was war schwer?" %}</label><input class="feld__eingabe" id="l-schwer" name="schwer" maxlength="300" autocomplete="off"></div>
+      <div class="feld"><label class="feld__label" for="l-geholfen">{% translate "Was hat geholfen?" %}</label><input class="feld__eingabe" id="l-geholfen" name="geholfen" maxlength="300" autocomplete="off"></div>
+      <fieldset class="lernen-wahl"><legend>{% translate "Wie war es für dich?" %}</legend>
+        {% for wert, text in einschaetzungen %}<label><input type="radio" name="einschaetzung" value="{{ wert }}"> {{ text }}</label>{% endfor %}
+      </fieldset>
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Fertig") gross=True %}
+    </form>
+  </div></section>
+
+{% else %}
+  <section class="karte" data-lernen-zustand="fertig"><div class="karte__inhalt stapel">
+    <h1 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h1>
+    <p>{{ ton_ende }}</p>
+    <p>{% blocktranslate count anzahl=s.versuche with minuten=minuten %}Du hast {{ minuten }} Minuten geübt und {{ anzahl }} Frage angeschaut.{% plural %}Du hast {{ minuten }} Minuten geübt und {{ anzahl }} Fragen angeschaut.{% endblocktranslate %}</p>
+    {% if ton_vergleich %}<p data-lernen-vergleich>{{ ton_vergleich }}</p>{% endif %}
+    {% include "lernen/_tagesbild.html" %}
+    <div class="reihe">
+      {% url "lernen:start" as start_url %}{% url "konten:kind_heim" as heim_url %}
+      {% include "komponenten/button.html" with href=start_url icon="funke" text=_("Noch eine Runde") %}
+      {% include "komponenten/button.html" with href=heim_url variante="geist" icon="home" text=_("Zurück zum Start") %}
+    </div>
+  </div></section>
+{% endif %}

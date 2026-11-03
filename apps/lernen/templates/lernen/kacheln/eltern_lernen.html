@@ -1,0 +1,9 @@
+{% load i18n sprache %}
+<article class="karte" data-kachel="lernen"><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Lernen" %}</h2>
+  {% for kind, bild in k.zeilen %}
+    <p class="kachel__text">{% blocktranslate with name=kind.anzeigename minuten=bild.minuten ziel=bild.ziel_minuten wochen=bild.serie.wochen %}{{ name }}: heute {{ minuten }} von {{ ziel }} Minuten, Serie {{ wochen }} Wochen{% endblocktranslate %}</p>
+  {% endfor %}
+  {% url "lernen:eltern" as eltern_url %}
+  {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="schule" text=_("Lernen ansehen") %}
+</div></article>

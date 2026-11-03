@@ -1,0 +1,50 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Lernen" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "konten:eltern_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "Lernen" %}</h1>
+  <p>{% translate "Es zählt die Beteiligung, nicht die Menge: geübte Tage und die Wochenserie. Noten und Vergleiche zwischen den Kindern gibt es hier nicht." %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Stand heute" %}</h2>
+    {% for kind, bild, tage in zeilen %}
+      <div class="stapel" data-lernen-kind="{{ kind.pk }}">
+        <h3>{{ kind.anzeigename }}</h3>
+        <p>{% blocktranslate with minuten=bild.minuten ziel=bild.ziel_minuten %}Heute {{ minuten }} von {{ ziel }} Minuten.{% endblocktranslate %}
+          {% blocktranslate count wochen=bild.serie.wochen %}Serie: {{ wochen }} Woche.{% plural %}Serie: {{ wochen }} Wochen.{% endblocktranslate %}
+          {% blocktranslate with tage=tage %}Geübte Tage diese Woche: {{ tage }}.{% endblocktranslate %}</p>
+        {% if bild.vorschlag_minuten %}<p class="kachel__text">{% blocktranslate with minuten=bild.vorschlag_minuten %}Vorschlag an das Kind: Tagesziel auf {{ minuten }} Minuten erhöhen.{% endblocktranslate %}</p>{% endif %}
+      </div>
+    {% empty %}<p>{% translate "Noch keine Kinder." %}</p>{% endfor %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Schonung (Krankheit, Ferien)" %}</h2>
+    <p>{% translate "An Pausentagen wird kein Ziel verlangt und die Serie bleibt erhalten. Ferien für alle schaltet ihr in den Einstellungen ein." %}</p>
+    {% url "oberflaeche:einstellungen" as einstellungen_url %}
+    {% include "komponenten/button.html" with href=einstellungen_url variante="geist" klein=True icon="einstellungen" text=_("Einstellungen") %}
+    <form method="post" action="{% url 'lernen:pause_neu' %}" class="stapel">{% csrf_token %}
+      <div class="feld"><label class="feld__label" for="lp-kind">{% translate "Für wen" %}</label>
+        <select class="feld__eingabe" id="lp-kind" name="kind"><option value="">{% translate "Alle Kinder" %}</option>{% for k in kinder %}<option value="{{ k.pk }}">{{ k.anzeigename }}</option>{% endfor %}</select></div>
+      <div class="feld"><label class="feld__label" for="lp-von">{% translate "Von" %}</label><input class="feld__eingabe" id="lp-von" type="date" name="von" value="{{ heute|date:'Y-m-d' }}" required></div>
+      <div class="feld"><label class="feld__label" for="lp-bis">{% translate "Bis" %}</label><input class="feld__eingabe" id="lp-bis" type="date" name="bis" value="{{ heute|date:'Y-m-d' }}" required></div>
+      <div class="feld"><label class="feld__label" for="lp-grund">{% translate "Grund" %}</label>
+        <select class="feld__eingabe" id="lp-grund" name="grund">{% for wert, text in gruende %}<option value="{{ wert }}">{{ text }}</option>{% endfor %}</select></div>
+      {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Pause eintragen") %}
+    </form>
+    <ul class="stapel">
+      {% for p in pausen %}
+        <li class="reihe">
+          <span>{{ p.kind.anzeigename|default:_("Alle Kinder") }}: {{ p.von|date:"SHORT_DATE_FORMAT" }}{% if p.bis %} – {{ p.bis|date:"SHORT_DATE_FORMAT" }}{% else %} – {% translate "offen" %}{% endif %} ({{ p.get_grund_display }})</span>
+          {% if p.bis %}<form method="post" action="{% url 'lernen:pause_loeschen' p.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Löschen") %}</form>{% endif %}
+        </li>
+      {% empty %}<li>{% translate "Keine Pausen eingetragen." %}</li>{% endfor %}
+    </ul>
+  </div></section>
+{% endblock %}

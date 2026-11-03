@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 10:16+0000\n"
+"POT-Creation-Date: 2026-11-03 11:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,121 +13,341 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: einstellungen.py:21
+#: einstellungen.py:40
 msgid "Tagesziel Lernzeit"
 msgstr "Daily learning goal"
 
-#: einstellungen.py:22
+#: einstellungen.py:41
 msgid "So viele Minuten pro Tag gelten als Ziel."
 msgstr "This many minutes per day count as the goal."
 
-#: einstellungen.py:23 einstellungen.py:32
+#: einstellungen.py:42 einstellungen.py:51 einstellungen.py:156
 msgid "Minuten"
 msgstr "minutes"
 
-#: einstellungen.py:30
+#: einstellungen.py:49
 msgid "Mindesttag Lernzeit"
 msgstr "Minimum learning day"
 
-#: einstellungen.py:31
+#: einstellungen.py:50
 msgid "Ab so vielen Minuten zählt ein Tag als geübt."
 msgstr "From this many minutes a day counts as practised."
 
-#: einstellungen.py:39
+#: einstellungen.py:58
 msgid "Lernpunkte pro Tag (Obergrenze)"
 msgstr "Learning points per day (upper limit)"
 
-#: einstellungen.py:40
+#: einstellungen.py:59
 msgid "Mehr Punkte als dieser Wert gibt das Lernen pro Kind und Tag nicht."
 msgstr "Learning never gives a child more points than this per day."
 
-#: einstellungen.py:41
+#: einstellungen.py:60 einstellungen.py:110
 msgid "Punkte"
 msgstr "points"
 
-#: einstellungen.py:48
+#: einstellungen.py:67
 msgid "Eltern geben Fragen frei"
 msgstr "Parents approve questions"
 
-#: einstellungen.py:50
-msgid "Ja: Fragen aus Uploads sind erst nach der Freigabe durch die Eltern nutzbar. Nein: sie sind sofort nutzbar."
-msgstr "Yes: questions from uploads can only be used once the parents approve them. No: they can be used right away."
+#: einstellungen.py:69
+msgid ""
+"Ja: Fragen aus Uploads sind erst nach der Freigabe durch die Eltern nutzbar. "
+"Nein: sie sind sofort nutzbar."
+msgstr ""
+"Yes: questions from uploads can only be used once the parents approve them. "
+"No: they can be used right away."
 
-#: einstellungen.py:57
+#: einstellungen.py:76
 msgid "Speicherplatz pro Kind"
 msgstr "Storage per child"
 
-#: einstellungen.py:58
+#: einstellungen.py:77
 msgid "So viel Platz darf die Lernmappe eines Kindes höchstens belegen."
 msgstr "A child's learning folder may use at most this much space."
 
-#: einstellungen.py:59
+#: einstellungen.py:78
 msgid "MB"
 msgstr "MB"
 
-#: einstellungen.py:66
+#: einstellungen.py:85
 msgid "KI-Tutor aktiv"
 msgstr "AI tutor active"
 
-#: einstellungen.py:67
+#: einstellungen.py:86
 msgid "Gilt für die ganze Familie. Standardmäßig aus."
 msgstr "Applies to the whole family. Off by default."
 
-#: models.py:16
+#: einstellungen.py:97
+msgid "Lernpunkte vergeben"
+msgstr "Award learning points"
+
+#: einstellungen.py:99
+msgid ""
+"Aus: Das Lernen gibt keine Punkte. Zeit, Serie und Rückschau gibt es "
+"trotzdem."
+msgstr "Off: learning earns no points. Time, streak and review still work."
+
+#: einstellungen.py:105
+msgid "Punkte für das Tagesziel"
+msgstr "Points for the daily goal"
+
+#: einstellungen.py:107
+msgid ""
+"Fester Betrag, sobald das Tagesziel erreicht ist. Es zählt die Beteiligung, "
+"nicht die Menge richtiger Antworten."
+msgstr ""
+"A fixed amount once the daily goal is reached. Taking part counts, not the "
+"number of correct answers."
+
+#: einstellungen.py:117
+msgid "Abstände der Wiederholung"
+msgstr "Review intervals"
+
+#: einstellungen.py:119
+msgid ""
+"Nach wie vielen Tagen eine Frage wiederkommt, je Box. Richtig: eine Box "
+"weiter. Noch nicht richtig: zurück in die erste Box."
+msgstr ""
+"After how many days a question comes back, per box. Correct: one box "
+"further. Not yet correct: back to the first box."
+
+#: einstellungen.py:122 einstellungen.py:148 einstellungen.py:168
+#: einstellungen.py:177
+msgid "Tage"
+msgstr "days"
+
+#: einstellungen.py:129
+msgid "Fragen je Runde: Aufwärmen"
+msgstr "Questions per round: warm-up"
+
+#: einstellungen.py:130
+msgid "Fragen je Runde: Normal"
+msgstr "Questions per round: normal"
+
+#: einstellungen.py:131
+msgid "Fragen je Runde: Herausforderung"
+msgstr "Questions per round: challenge"
+
+#: einstellungen.py:137
+msgid "Längste Denkpause"
+msgstr "Longest thinking break"
+
+#: einstellungen.py:138
+msgid "Längere Pausen zwischen zwei Schritten zählen nicht als Lernzeit."
+msgstr "Longer breaks between two steps do not count as learning time."
+
+#: einstellungen.py:139
+msgid "Sekunden"
+msgstr "seconds"
+
+#: einstellungen.py:146
+msgid "Ziel senken nach verfehlten Tagen"
+msgstr "Lower the goal after missed days"
+
+#: einstellungen.py:147
+msgid "Nach so vielen verfehlten Tagen sinkt das persönliche Tagesziel."
+msgstr "After this many missed days the personal daily goal goes down."
+
+#: einstellungen.py:155
+msgid "Schritt beim Anpassen des Ziels"
+msgstr "Step when adjusting the goal"
+
+#: einstellungen.py:163
+msgid "Erreichte Tage für einen Vorschlag"
+msgstr "Days reached for a suggestion"
+
+#: einstellungen.py:165
+msgid ""
+"Hat ein Kind in den letzten 14 Tagen so oft sein Ziel erreicht, wird ein "
+"höheres Ziel vorgeschlagen (nie automatisch gesetzt)."
+msgstr ""
+"If a child reached their goal this often in the last 14 days, a higher goal "
+"is suggested (never set automatically)."
+
+#: einstellungen.py:175
+msgid "Geübte Tage pro Woche für die Serie"
+msgstr "Practice days per week for the streak"
+
+#: einstellungen.py:176
+msgid "Eine Woche zählt für die Serie, wenn so viele Tage geübt wurden."
+msgstr "A week counts for the streak when this many days were practised."
+
+#: einstellungen.py:184 models.py:84
+msgid "Ferien"
+msgstr "Holidays"
+
+#: einstellungen.py:185
+msgid "An: Die Serie wird geschont, es wird kein Tagesziel verlangt."
+msgstr "On: the streak is protected and no daily goal is expected."
+
+#: einstellungen.py:190
+msgid "Frust-Erkennung: Fehler in Folge"
+msgstr "Frustration check: mistakes in a row"
+
+#: einstellungen.py:191
+msgid "So viele Antworten hintereinander „noch nicht“ senken die Stufe."
+msgstr "This many answers in a row that are \"not yet\" lower the level."
+
+#: einstellungen.py:198
+msgid "Frust-Erkennung: sehr schnelle Antwort"
+msgstr "Frustration check: very fast answers"
+
+#: einstellungen.py:199
+msgid "Antworten unter dieser Zeit gelten als Durchklicken."
+msgstr "Answers faster than this count as clicking through."
+
+#: einstellungen.py:200
+msgid "Millisekunden"
+msgstr "milliseconds"
+
+#: einstellungen.py:207
+msgid "Frust-Erkennung: schnelle Antworten in Folge"
+msgstr "Frustration check: fast answers in a row"
+
+#: einstellungen.py:215
+msgid "Mindestens zwei Abstände, aufsteigend."
+msgstr "At least two intervals, ascending."
+
+#: events.py:21
+msgid "Lernziel erreicht"
+msgstr "Learning goal reached"
+
+#: events.py:31 templates/lernen/kacheln/kind_lernen.html:9
+msgid "Tagesziel geschafft!"
+msgstr "Daily goal reached!"
+
+#: models.py:20
 msgid "Vokabel"
 msgstr "Vocabulary word"
 
-#: models.py:17
+#: models.py:21
 msgid "Frage"
 msgstr "Question"
 
-#: models.py:21
+#: models.py:25
 msgid "Startdaten"
 msgstr "Starter data"
 
-#: models.py:22
+#: models.py:26
 msgid "Eltern"
 msgstr "Parents"
 
-#: models.py:23
+#: models.py:27
 msgid "KI"
 msgstr "AI"
 
-#: models.py:27
+#: models.py:31
 msgid "wartet auf Freigabe"
 msgstr "waiting for approval"
 
-#: models.py:28
+#: models.py:32
 msgid "freigegeben"
 msgstr "approved"
 
-#: models.py:29
+#: models.py:33
 msgid "abgelehnt"
 msgstr "rejected"
 
-#: models.py:33
+#: models.py:37
 msgid "Aufwärmen"
 msgstr "Warm-up"
 
-#: models.py:34
+#: models.py:38
 msgid "Normal"
 msgstr "Normal"
 
-#: models.py:35
+#: models.py:39
 msgid "Herausforderung"
 msgstr "Challenge"
 
-#: models.py:39
+#: models.py:43
 msgid "zu leicht"
 msgstr "too easy"
 
-#: models.py:40
+#: models.py:44
 msgid "passend"
 msgstr "just right"
 
-#: models.py:41
+#: models.py:45
 msgid "zu schwer"
 msgstr "too hard"
+
+#: models.py:51
+msgid "Neues kennenlernen"
+msgstr "Get to know new things"
+
+#: models.py:52
+msgid "Wiederholen, was dran ist"
+msgstr "Review what is due"
+
+#: models.py:53
+msgid "Meine Stolperstellen üben"
+msgstr "Practise my tricky ones"
+
+#: models.py:57
+msgid "Ich sage das Wort laut"
+msgstr "I say the word out loud"
+
+#: models.py:58
+msgid "Ich denke erst nach, dann tippe ich"
+msgstr "I think first, then I type"
+
+#: models.py:59
+msgid "Ich stelle mir ein Bild dazu vor"
+msgstr "I picture it in my head"
+
+#: models.py:60
+msgid "Ich denke mir einen Satz dazu aus"
+msgstr "I make up a sentence with it"
+
+#: models.py:66
+msgid "Ich weiß noch wenig"
+msgstr "I know only a little"
+
+#: models.py:67
+msgid "Ich weiß einiges"
+msgstr "I know some of it"
+
+#: models.py:68
+msgid "Ich weiß schon viel"
+msgstr "I already know a lot"
+
+#: models.py:72
+msgid "Deutsch zu Fremdsprache"
+msgstr "German to foreign language"
+
+#: models.py:73
+msgid "Fremdsprache zu Deutsch"
+msgstr "Foreign language to German"
+
+#: models.py:77
+msgid "richtig"
+msgstr "correct"
+
+#: models.py:78
+msgid "fast richtig"
+msgstr "almost correct"
+
+#: models.py:79
+msgid "noch nicht"
+msgstr "not yet"
+
+#: models.py:83
+msgid "Krankheit"
+msgstr "Illness"
+
+#: models.py:85
+msgid "Sonstiges"
+msgstr "Other"
+
+#: registry.py:45 registry.py:56 templates/lernen/eltern.html:3
+#: templates/lernen/eltern.html:10
+#: templates/lernen/kacheln/eltern_lernen.html:3
+#: templates/lernen/kacheln/kind_lernen.html:4 templates/lernen/sitzung.html:3
+#: templates/lernen/sitzung.html:7 templates/lernen/start.html:3
+#: templates/lernen/start.html:10
+msgid "Lernen"
+msgstr "Learning"
 
 #: startdaten/__init__.py:18
 msgid "Englisch"
@@ -248,3 +468,518 @@ msgstr "Pythagorean theorem"
 #: startdaten/__init__.py:59
 msgid "Wahrscheinlichkeit"
 msgstr "Probability"
+
+#: templates/lernen/_tagesbild.html:2
+msgid ""
+"Heute ist ein Schontag. Du musst nichts schaffen, üben darfst du trotzdem."
+msgstr ""
+"Today is a rest day. You do not have to reach anything, but you can still "
+"practise."
+
+#: templates/lernen/_tagesbild.html:4
+#: templates/lernen/kacheln/kind_lernen.html:8
+msgid "Minuten heute"
+msgstr "Minutes today"
+
+#: templates/lernen/_tagesbild.html:6
+msgid "Der Mindesttag ist geschafft. Alles darüber ist ein Bonus."
+msgstr "The minimum day is done. Anything on top is a bonus."
+
+#: templates/lernen/_tagesbild.html:7
+#, python-format
+msgid "Schon %(minuten)s Minuten zählen als geübter Tag."
+msgstr "Even %(minuten)s minutes count as a practice day."
+
+#: templates/lernen/_tagesbild.html:9
+#, python-format
+msgid "Geübte Tage diese Woche: %(tage)s"
+msgstr "Days practised this week: %(tage)s"
+
+#: templates/lernen/_zustand.html:6
+#, python-format
+msgid "Frage %(nr)s von %(von)s"
+msgstr "Question %(nr)s of %(von)s"
+
+#: templates/lernen/_zustand.html:7
+#, python-format
+msgid "Dein Plan: %(plan)s"
+msgstr "Your plan: %(plan)s"
+
+#: templates/lernen/_zustand.html:9
+msgid "Auf Deutsch:"
+msgstr "In German:"
+
+#: templates/lernen/_zustand.html:9
+msgid "In der Fremdsprache:"
+msgstr "In the foreign language:"
+
+#: templates/lernen/_zustand.html:11
+msgid "Tipp:"
+msgstr "Hint:"
+
+#: templates/lernen/_zustand.html:14
+msgid "Deine Antwort"
+msgstr "Your answer"
+
+#: templates/lernen/_zustand.html:16
+msgid "Antworten"
+msgstr "Answer"
+
+#: templates/lernen/_zustand.html:20
+msgid "Tipp"
+msgstr "Hint"
+
+#: templates/lernen/_zustand.html:21
+msgid "Lösung zeigen"
+msgstr "Show answer"
+
+#: templates/lernen/_zustand.html:22
+msgid "Für jetzt genug"
+msgstr "Enough for now"
+
+#: templates/lernen/_zustand.html:29
+#, python-format
+msgid "So heißt es: %(loesung)s"
+msgstr "It is: %(loesung)s"
+
+#: templates/lernen/_zustand.html:33 templates/lernen/start.html:32
+msgid "Weiter üben"
+msgstr "Keep practising"
+
+#: templates/lernen/_zustand.html:33
+msgid "Weiter"
+msgstr "Next"
+
+#: templates/lernen/_zustand.html:35
+msgid "Pause machen"
+msgstr "Take a break"
+
+#: templates/lernen/_zustand.html:41
+msgid "Kurze Rückschau"
+msgstr "Quick review"
+
+#: templates/lernen/_zustand.html:45
+msgid "Was war schwer?"
+msgstr "What was hard?"
+
+#: templates/lernen/_zustand.html:46
+msgid "Was hat geholfen?"
+msgstr "What helped?"
+
+#: templates/lernen/_zustand.html:47
+msgid "Wie war es für dich?"
+msgstr "How was it for you?"
+
+#: templates/lernen/_zustand.html:50
+msgid "Fertig"
+msgstr "Done"
+
+#: templates/lernen/_zustand.html:56
+msgid "Geschafft!"
+msgstr "Well done!"
+
+#: templates/lernen/_zustand.html:58
+#, python-format
+msgid "Du hast %(minuten)s Minuten geübt und %(anzahl)s Frage angeschaut."
+msgid_plural ""
+"Du hast %(minuten)s Minuten geübt und %(anzahl)s Fragen angeschaut."
+msgstr[0] ""
+"You practised %(minuten)s minutes and looked at %(anzahl)s question."
+msgstr[1] ""
+"You practised %(minuten)s minutes and looked at %(anzahl)s questions."
+
+#: templates/lernen/_zustand.html:63
+msgid "Noch eine Runde"
+msgstr "Another round"
+
+#: templates/lernen/_zustand.html:64
+msgid "Zurück zum Start"
+msgstr "Back to start"
+
+#: templates/lernen/eltern.html:7
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/lernen/eltern.html:11
+msgid ""
+"Es zählt die Beteiligung, nicht die Menge: geübte Tage und die Wochenserie. "
+"Noten und Vergleiche zwischen den Kindern gibt es hier nicht."
+msgstr ""
+"Taking part counts, not the amount: days practised and the weekly streak. "
+"There are no grades and no comparisons between children here."
+
+#: templates/lernen/eltern.html:15
+msgid "Stand heute"
+msgstr "Today"
+
+#: templates/lernen/eltern.html:19
+#, python-format
+msgid "Heute %(minuten)s von %(ziel)s Minuten."
+msgstr "Today %(minuten)s of %(ziel)s minutes."
+
+#: templates/lernen/eltern.html:20
+#, python-format
+msgid "Serie: %(wochen)s Woche."
+msgid_plural "Serie: %(wochen)s Wochen."
+msgstr[0] "Streak: %(wochen)s week."
+msgstr[1] "Streak: %(wochen)s weeks."
+
+#: templates/lernen/eltern.html:21
+#, python-format
+msgid "Geübte Tage diese Woche: %(tage)s."
+msgstr "Days practised this week: %(tage)s."
+
+#: templates/lernen/eltern.html:22
+#, python-format
+msgid "Vorschlag an das Kind: Tagesziel auf %(minuten)s Minuten erhöhen."
+msgstr "Suggestion to the child: raise the daily goal to %(minuten)s minutes."
+
+#: templates/lernen/eltern.html:24
+msgid "Noch keine Kinder."
+msgstr "No children yet."
+
+#: templates/lernen/eltern.html:28
+msgid "Schonung (Krankheit, Ferien)"
+msgstr "Rest days (illness, holidays)"
+
+#: templates/lernen/eltern.html:29
+msgid ""
+"An Pausentagen wird kein Ziel verlangt und die Serie bleibt erhalten. Ferien "
+"für alle schaltet ihr in den Einstellungen ein."
+msgstr ""
+"On rest days no goal is expected and the streak is kept. You can turn on "
+"holidays for everyone in the settings."
+
+#: templates/lernen/eltern.html:31
+msgid "Einstellungen"
+msgstr "Settings"
+
+#: templates/lernen/eltern.html:33
+msgid "Für wen"
+msgstr "For whom"
+
+#: templates/lernen/eltern.html:34 templates/lernen/eltern.html:44
+msgid "Alle Kinder"
+msgstr "All children"
+
+#: templates/lernen/eltern.html:35
+msgid "Von"
+msgstr "From"
+
+#: templates/lernen/eltern.html:36
+msgid "Bis"
+msgstr "To"
+
+#: templates/lernen/eltern.html:37
+msgid "Grund"
+msgstr "Reason"
+
+#: templates/lernen/eltern.html:39
+msgid "Pause eintragen"
+msgstr "Add rest days"
+
+#: templates/lernen/eltern.html:44
+msgid "offen"
+msgstr "open"
+
+#: templates/lernen/eltern.html:45
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/lernen/eltern.html:47
+msgid "Keine Pausen eingetragen."
+msgstr "No rest days entered."
+
+#: templates/lernen/kacheln/eltern_lernen.html:5
+#, python-format
+msgid ""
+"%(name)s: heute %(minuten)s von %(ziel)s Minuten, Serie %(wochen)s Wochen"
+msgstr ""
+"%(name)s: today %(minuten)s of %(ziel)s minutes, streak %(wochen)s weeks"
+
+#: templates/lernen/kacheln/eltern_lernen.html:8
+msgid "Lernen ansehen"
+msgstr "View learning"
+
+#: templates/lernen/kacheln/kind_lernen.html:6
+msgid "Heute ist ein Schontag. Üben darfst du trotzdem."
+msgstr "Today is a rest day. You can still practise."
+
+#: templates/lernen/kacheln/kind_lernen.html:11
+#, python-format
+msgid "%(wochen)s Wochen in Folge geübt"
+msgstr "Practised %(wochen)s weeks in a row"
+
+#: templates/lernen/kacheln/kind_lernen.html:13
+msgid "Üben"
+msgstr "Practise"
+
+#: templates/lernen/start.html:7
+msgid "Start"
+msgstr "Start"
+
+#: templates/lernen/start.html:14
+msgid "Dein Tag"
+msgstr "Your day"
+
+#: templates/lernen/start.html:21
+msgid "Ja, das probiere ich"
+msgstr "Yes, I will try it"
+
+#: templates/lernen/start.html:22
+msgid "Lieber nicht"
+msgstr "Rather not"
+
+#: templates/lernen/start.html:30
+msgid "Du hast noch eine Runde offen."
+msgstr "You still have a round open."
+
+#: templates/lernen/start.html:37
+msgid "Neue Runde"
+msgstr "New round"
+
+#: templates/lernen/start.html:40
+msgid "Es gibt noch nichts zum Üben. Frag deine Eltern."
+msgstr "There is nothing to practise yet. Ask your parents."
+
+#: templates/lernen/start.html:44
+msgid "Was möchtest du üben?"
+msgstr "What do you want to practise?"
+
+#: templates/lernen/start.html:48
+#, python-format
+msgid "%(name)s: alles gemischt"
+msgstr "%(name)s: all mixed"
+
+#: templates/lernen/start.html:54
+msgid "Was nimmst du dir vor?"
+msgstr "What is your plan?"
+
+#: templates/lernen/start.html:57
+msgid "Wie gehst du vor?"
+msgstr "How will you go about it?"
+
+#: templates/lernen/start.html:60
+msgid "Wie viel weißt du schon?"
+msgstr "How much do you know already?"
+
+#: templates/lernen/start.html:63
+msgid "Wie anstrengend soll es sein?"
+msgstr "How hard should it be?"
+
+#: templates/lernen/start.html:66
+msgid "Los geht's"
+msgstr "Let's go"
+
+#: texte.py:27
+msgid "Super, das hast du gewusst!"
+msgstr "Great, you knew that!"
+
+#: texte.py:28
+msgid "Richtig, gut gemerkt."
+msgstr "Correct, well remembered."
+
+#: texte.py:29
+msgid "Richtig."
+msgstr "Correct."
+
+#: texte.py:32
+msgid "Fast! Schau noch einmal genau hin. Du hast einen kleinen Dreher drin."
+msgstr "Almost! Look again closely. There is a tiny mix-up in it."
+
+#: texte.py:33
+msgid "Fast richtig. Ein kleiner Tippfehler ist drin. Versuch es noch einmal."
+msgstr "Almost right. There is a small typo. Try once more."
+
+#: texte.py:34
+msgid "Fast richtig, es ist ein Tippfehler. Korrigiere ihn."
+msgstr "Almost right, it is a typo. Correct it."
+
+#: texte.py:37
+msgid "Das kannst du noch nicht. Das macht nichts, jetzt kennst du es besser."
+msgstr "You cannot do that yet. That is fine, now you know it better."
+
+#: texte.py:38
+msgid "Noch nicht. Schau dir die Lösung an, sie kommt bald wieder."
+msgstr "Not yet. Have a look at the answer, it will come back soon."
+
+#: texte.py:39
+msgid "Noch nicht richtig. Die Lösung steht unten, die Frage kommt wieder."
+msgstr "Not correct yet. The answer is below, the question will come back."
+
+#: texte.py:42
+msgid "Gut, dass du nachgeschaut hast. So lernt man."
+msgstr "Good that you checked. That is how we learn."
+
+#: texte.py:43
+msgid "Nachschauen ist erlaubt. Die Frage kommt später wieder."
+msgstr "Checking is allowed. The question will come back later."
+
+#: texte.py:44
+msgid "Nachschauen ist Teil des Lernens. Die Frage kommt wieder."
+msgstr "Checking is part of learning. The question will come back."
+
+#: texte.py:48
+msgid ""
+"Das war ganz schön viel auf einmal. Wir machen es etwas leichter. Magst du "
+"eine kleine Pause machen?"
+msgstr ""
+"That was quite a lot at once. We will make it a bit easier. Would you like a "
+"little break?"
+
+#: texte.py:52
+msgid ""
+"Das war gerade zäh. Ich stelle es etwas leichter ein. Eine kleine Pause "
+"könnte helfen."
+msgstr ""
+"That was tough just now. I will make it a bit easier. A little break might "
+"help."
+
+#: texte.py:55
+msgid ""
+"Das läuft gerade nicht rund. Die Stufe ist jetzt niedriger. Eine kurze Pause "
+"ist sinnvoll."
+msgstr ""
+"This is not going smoothly right now. The level is lower now. A short break "
+"makes sense."
+
+#: texte.py:60
+msgid "Toll, dass du geübt hast!"
+msgstr "Great that you practised!"
+
+#: texte.py:61
+msgid "Gut, dass du drangeblieben bist."
+msgstr "Good that you stuck with it."
+
+#: texte.py:62
+msgid "Gut gemacht. Regelmäßig üben zahlt sich aus."
+msgstr "Well done. Practising regularly pays off."
+
+#: texte.py:65
+msgid "Du hast dein Tagesziel geschafft! Das ist richtig stark."
+msgstr "You reached your daily goal! That is really strong."
+
+#: texte.py:66
+msgid "Tagesziel geschafft. Das Dranbleiben zählt."
+msgstr "Daily goal reached. Sticking with it is what counts."
+
+#: texte.py:67
+msgid "Tagesziel erreicht. Danke fürs Dranbleiben."
+msgstr "Daily goal reached. Thanks for sticking with it."
+
+#: texte.py:71
+#, python-format
+msgid ""
+"Wir machen dein Tagesziel erst einmal kleiner: %(minuten)s Minuten. Kleine "
+"Schritte zählen auch."
+msgstr ""
+"We are making your daily goal smaller for now: %(minuten)s minutes. Small "
+"steps count too."
+
+#: texte.py:74
+#, python-format
+msgid ""
+"Dein Tagesziel ist jetzt %(minuten)s Minuten. Kleine Schritte sind okay."
+msgstr "Your daily goal is now %(minuten)s minutes. Small steps are fine."
+
+#: texte.py:76
+#, python-format
+msgid ""
+"Dein Tagesziel wurde auf %(minuten)s Minuten angepasst. Das ist kein "
+"Rückschritt."
+msgstr ""
+"Your daily goal was adjusted to %(minuten)s minutes. That is not a step back."
+
+#: texte.py:81
+#, python-format
+msgid ""
+"Du hast oft geübt! Sollen wir dein Tagesziel auf %(minuten)s Minuten machen?"
+msgstr ""
+"You have practised a lot! Shall we make your daily goal %(minuten)s minutes?"
+
+#: texte.py:83
+#, python-format
+msgid ""
+"Du bist gut dabei. Magst du dein Tagesziel auf %(minuten)s Minuten erhöhen?"
+msgstr ""
+"You are doing well. Would you like to raise your daily goal to %(minuten)s "
+"minutes?"
+
+#: texte.py:85
+#, python-format
+msgid ""
+"Du erreichst dein Ziel regelmäßig. Vorschlag: %(minuten)s Minuten. Du "
+"entscheidest."
+msgstr ""
+"You reach your goal regularly. Suggestion: %(minuten)s minutes. You decide."
+
+#: texte.py:89
+#, python-format
+msgid "Du übst schon seit %(wochen)s Wochen regelmäßig!"
+msgstr "You have been practising regularly for %(wochen)s weeks!"
+
+#: texte.py:90
+#, python-format
+msgid "%(wochen)s Wochen in Folge geübt."
+msgstr "Practised %(wochen)s weeks in a row."
+
+#: texte.py:91
+#, python-format
+msgid "Serie: %(wochen)s Wochen."
+msgstr "Streak: %(wochen)s weeks."
+
+#: texte.py:94
+msgid "Jede Woche ist ein neuer Start. Alles, was du gesammelt hast, bleibt."
+msgstr "Every week is a fresh start. Everything you have collected stays."
+
+#: texte.py:95
+msgid "Eine neue Woche, ein neuer Start. Deine Punkte bleiben."
+msgstr "A new week, a fresh start. Your points stay."
+
+#: texte.py:96
+msgid "Neue Woche, neuer Start. Deine Punkte bleiben unverändert."
+msgstr "New week, fresh start. Your points stay unchanged."
+
+#: texte.py:99
+msgid "Du hast dich richtig eingeschätzt!"
+msgstr "You judged it just right!"
+
+#: texte.py:100
+msgid "Deine Einschätzung hat gestimmt."
+msgstr "Your estimate was right."
+
+#: texte.py:101
+msgid "Deine Einschätzung war treffend."
+msgstr "Your estimate was spot on."
+
+#: texte.py:104
+msgid "Du kannst mehr, als du gedacht hast!"
+msgstr "You can do more than you thought!"
+
+#: texte.py:105
+msgid "Du wusstest mehr, als du erwartet hast."
+msgstr "You knew more than you expected."
+
+#: texte.py:106
+msgid "Du wusstest mehr als erwartet."
+msgstr "You knew more than expected."
+
+#: texte.py:109
+msgid "Einiges ist noch neu für dich. Das üben wir weiter."
+msgstr "Some of it is still new to you. We will keep practising it."
+
+#: texte.py:110
+msgid "Einiges war schwerer als gedacht. Das kommt bald wieder dran."
+msgstr "Some of it was harder than expected. It will come back soon."
+
+#: texte.py:111
+msgid "Einiges war schwerer als erwartet. Es kommt zur Wiederholung."
+msgstr "Some of it was harder than expected. It comes back for review."
+
+#: views.py:92 views.py:99
+msgid "Bitte wähle aus, was du üben möchtest."
+msgstr "Please choose what you want to practise."
+
+#: views.py:278
+msgid "Bitte Anfang und Ende prüfen (Ende nicht vor dem Anfang)."
+msgstr "Please check start and end (the end must not be before the start)."

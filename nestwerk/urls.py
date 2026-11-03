@@ -15,4 +15,5 @@ urlpatterns = [
     path("", include("apps.spielregeln.urls")),
     path("", include("apps.familienziel.urls")),
     path("", include("apps.sondertag.urls")),
+    path("", include("apps.lernen.urls")),
 ]

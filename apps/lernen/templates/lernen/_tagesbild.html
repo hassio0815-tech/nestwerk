@@ -1,0 +1,9 @@
+{% load i18n %}{% if bild.pause %}
+  <p class="kachel__text">{% translate "Heute ist ein Schontag. Du musst nichts schaffen, üben darfst du trotzdem." %}</p>
+{% else %}
+  {% include "komponenten/fortschritt.html" with label=_("Minuten heute") wert=bild.minuten max=bild.ziel_minuten %}
+  {% if bild.erreicht %}<p class="kachel__text">{% include "komponenten/icon.html" with name="check" %} {{ ton_ziel }}</p>
+  {% elif bild.mindesttag %}<p class="kachel__text">{% translate "Der Mindesttag ist geschafft. Alles darüber ist ein Bonus." %}</p>
+  {% else %}<p class="kachel__text">{% blocktranslate with minuten=bild.mindest_minuten %}Schon {{ minuten }} Minuten zählen als geübter Tag.{% endblocktranslate %}</p>{% endif %}
+{% endif %}
+<p class="kachel__text">{% blocktranslate with tage=bild.serie.tage_diese_woche %}Geübte Tage diese Woche: {{ tage }}{% endblocktranslate %}</p>

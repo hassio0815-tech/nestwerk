@@ -1,7 +1,18 @@
+from datetime import date
+
 import pytest
+from django.test import Client
 
 from apps.konten import services as konten_services
-from apps.konten.tests.conftest import PIN
+from apps.konten.tests.conftest import (  # noqa: F401  (Fixtures weiterreichen)
+    PIN,
+    angemeldet,
+    mama,
+    papa,
+    uhr,
+)
+
+GO_LIVE = date(2026, 10, 19)
 
 
 @pytest.fixture
@@ -12,3 +23,73 @@ def kind_a(db):
 @pytest.fixture
 def kind_b(db):
     return konten_services.kind_anlegen("Testkind B", PIN)
+
+
+def _beispielwert(d):
+    from apps.kern.einstellungen import Typ
+
+    if d.auswahl:
+        return list(d.auswahl)[:1] if d.typ is Typ.LISTE else d.auswahl[0]
+    return {
+        Typ.GANZZAHL: d.minimum if d.minimum is not None else 1,
+        Typ.BOOL: False,
+        Typ.TEXT: "",
+        Typ.DATUM: "2026-01-01",
+        Typ.UHRZEIT: "12:00",
+        Typ.ZEITZONE: "Europe/Berlin",
+        Typ.LISTE: [],
+    }[d.typ]
+
+
+@pytest.fixture(autouse=True)
+def startwerte(db):
+    """Echte Startwerte von lernen und spielregeln, Rest Beispielwerte (andere Apps leeren die
+    Seeds in transaktionalen Tests)."""
+    from apps.kern import einstellungen
+    from apps.kern.einstellungen import startwerte_schreiben
+    from apps.kern.models import Einstellung
+    from apps.lernen.einstellungen import STARTWERTE, STARTWERTE_UEBEN
+    from apps.spielregeln import raenge_start
+    from apps.spielregeln.einstellungen import STARTWERTE as SPIELREGELN
+    from apps.spielregeln.models import Kalibrierung, Rang
+
+    Einstellung.objects.update_or_create(
+        schluessel="allgemein.zeitzone", defaults={"wert": "Europe/Berlin", "modul": "allgemein"}
+    )
+    for werte in (STARTWERTE, STARTWERTE_UEBEN, SPIELREGELN):
+        startwerte_schreiben(Einstellung, werte)
+    einstellungen.setzen("allgemein.go_live_datum", GO_LIVE, akteur=None)
+    vorhanden = set(Einstellung.objects.values_list("schluessel", flat=True))
+    for d in einstellungen.definitionen():
+        if d.schluessel not in vorhanden:
+            Einstellung.objects.create(
+                schluessel=d.schluessel, modul=d.modul, wert=d.pruefen(_beispielwert(d))
+            )
+    raenge_start.anlegen(Rang, Kalibrierung)
+
+
+@pytest.fixture
+def kind_client(kind_a):
+    return angemeldet(Client(), kind_a)
+
+
+@pytest.fixture
+def eltern_client(mama):  # noqa: F811
+    return angemeldet(Client(), mama)
+
+
+@pytest.fixture
+def fach(db):
+    """Ein Fach mit zwei Themen und Vokabeln (erfunden, unabhängig von den Startdaten)."""
+    from apps.lernen.models import Fach, Frage, Thema
+
+    f = Fach.objects.create(schluessel="testsprache", name="Testsprache", reihenfolge=99)
+    tiere = Thema.objects.create(fach=f, klassenstufe=5, name="Tiere")
+    farben = Thema.objects.create(fach=f, klassenstufe=5, name="Farben")
+    for thema, paare in (
+        (tiere, [("Hund", "dog"), ("Katze", "cat"), ("Pferd", "horse")]),
+        (farben, [("rot", "red"), ("blau", "blue"), ("sein", "to be / be")]),
+    ):
+        for de, en in paare:
+            Frage.objects.create(thema=thema, typ="vokabel", frage=de, antwort=en)
+    return f

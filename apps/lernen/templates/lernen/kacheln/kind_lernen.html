@@ -1,0 +1,15 @@
+{% load i18n static %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">
+{% with b=k.bild %}{% if b %}
+<article class="karte" data-kachel="lernen"><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Lernen" %}</h2>
+  {% if b.pause %}
+    <p class="kachel__text">{% translate "Heute ist ein Schontag. Üben darfst du trotzdem." %}</p>
+  {% else %}
+    {% include "komponenten/fortschritt.html" with label=_("Minuten heute") wert=b.minuten max=b.ziel_minuten %}
+    {% if b.erreicht %}<p class="kachel__text">{% include "komponenten/icon.html" with name="check" %} {% translate "Tagesziel geschafft!" %}</p>{% endif %}
+  {% endif %}
+  {% if b.serie.wochen >= 2 %}<p class="kachel__text">{% blocktranslate with wochen=b.serie.wochen %}{{ wochen }} Wochen in Folge geübt{% endblocktranslate %}</p>{% endif %}
+  {% url "lernen:start" as start_url %}
+  {% include "komponenten/button.html" with href=start_url icon="funke" text=_("Üben") %}
+</div></article>
+{% endif %}{% endwith %}

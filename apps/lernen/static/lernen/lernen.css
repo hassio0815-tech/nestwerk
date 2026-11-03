@@ -1,0 +1,48 @@
+/* Lernen (Etappe 2): Frage, Rückmeldung, Auswahl. Nutzt die Tokens des Designsystems. */
+
+.lernen-frage__text {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.lernen-eingabe {
+  font-size: 1.25rem;
+  min-height: 3rem;
+}
+.lernen-hinweis {
+  margin: 0;
+  letter-spacing: 0.15em;
+  font-family: ui-monospace, monospace;
+  font-size: 1.25rem;
+}
+.lernen-rueck {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius, 0.75rem);
+  background: color-mix(in srgb, var(--akzent, currentColor) 14%, transparent);
+  font-weight: 600;
+}
+.lernen-wahl {
+  display: grid;
+  gap: 0.5rem;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.lernen-wahl legend {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.lernen-wahl label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2.75rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lernen-rueck {
+    transition: background 0.2s ease;
+  }
+}

@@ -8,8 +8,11 @@ class LernenConfig(AppConfig):
     verbose_name = "Lernen"
 
     def ready(self):
+        from . import events, registry
         from .einstellungen import einstellungen_definieren
 
-        # Etappe 1 (Fundament): nur Einstellungen. Ereignisse, Kacheln und Metriken folgen mit
-        # den Diensten der späteren Etappen (SPEC 21).
         einstellungen_definieren()
+        events.typen_deklarieren()
+        events.texte_registrieren()
+        registry.kacheln_registrieren()
+        registry.metriken_registrieren()

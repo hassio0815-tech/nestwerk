@@ -1,0 +1,70 @@
+{% extends "basis/kind.html" %}
+{% load i18n static sprache %}
+{% block titel %}{% translate "Lernen" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "konten:kind_heim" as heim_url %}
+  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
+{% endblock %}
+{% block inhalt %}
+  <h1 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Lernen" %}</h1>
+  {% if hinweis %}{% include "komponenten/toast.html" with art="info" text=hinweis icon="info" %}{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel" data-lernen-tag>
+    <h2>{% translate "Dein Tag" %}</h2>
+    {% include "lernen/_tagesbild.html" %}
+    <p class="kachel__text">{{ serie_text }}</p>
+    {% if bild.vorschlag_minuten %}
+      <div class="stapel" data-lernen-vorschlag>
+        <p>{{ vorschlag_text }}</p>
+        <div class="reihe">
+          <form method="post" action="{% url 'lernen:ziel_vorschlag' 'annehmen' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" icon="check" text=_("Ja, das probiere ich") %}</form>
+          <form method="post" action="{% url 'lernen:ziel_vorschlag' 'lassen' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" text=_("Lieber nicht") %}</form>
+        </div>
+      </div>
+    {% endif %}
+  </div></section>
+
+  {% if offen %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <p>{% translate "Du hast noch eine Runde offen." %}</p>
+      {% url "lernen:sitzung" offen.pk as weiter_url %}
+      {% include "komponenten/button.html" with href=weiter_url icon="pfeil-rechts" text=_("Weiter üben") %}
+    </div></section>
+  {% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Neue Runde" %}</h2>
+    {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+    {% if not optionen %}
+      <p>{% translate "Es gibt noch nichts zum Üben. Frag deine Eltern." %}</p>
+    {% else %}
+    <form method="post" action="{% url 'lernen:los' %}" class="stapel lernen-form">{% csrf_token %}
+      <div class="feld">
+        <label class="feld__label" for="l-was">{% translate "Was möchtest du üben?" %}</label>
+        <select class="feld__eingabe" id="l-was" name="was" required>
+          {% for fach, themen in optionen %}
+            <optgroup label="{{ fach.name|uebersetzt }}">
+              <option value="fach:{{ fach.pk }}">{% blocktranslate with name=fach.name|uebersetzt %}{{ name }}: alles gemischt{% endblocktranslate %}</option>
+              {% for t in themen %}<option value="thema:{{ t.pk }}">{{ fach.name|uebersetzt }}: {{ t.name|uebersetzt }}</option>{% endfor %}
+            </optgroup>
+          {% endfor %}
+        </select>
+      </div>
+      <fieldset class="lernen-wahl"><legend>{% translate "Was nimmst du dir vor?" %}</legend>
+        {% for wert, text in vorhaben %}<label><input type="radio" name="vorhaben" value="{{ wert }}"{% if wert == "wiederholen" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+      </fieldset>
+      <fieldset class="lernen-wahl"><legend>{% translate "Wie gehst du vor?" %}</legend>
+        {% for wert, text in strategien %}<label><input type="radio" name="strategie" value="{{ wert }}"{% if wert == "abdecken" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+      </fieldset>
+      <fieldset class="lernen-wahl"><legend>{% translate "Wie viel weißt du schon?" %}</legend>
+        {% for wert, text in erwartungen %}<label><input type="radio" name="erwartung" value="{{ wert }}"{% if wert == "einiges" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+      </fieldset>
+      <fieldset class="lernen-wahl"><legend>{% translate "Wie anstrengend soll es sein?" %}</legend>
+        {% for wert, text in intensitaeten %}<label><input type="radio" name="intensitaet" value="{{ wert }}"{% if wert == "normal" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+      </fieldset>
+      {% include "komponenten/button.html" with typ="submit" icon="funke" text=_("Los geht's") gross=True %}
+    </form>
+    {% endif %}
+  </div></section>
+{% endblock %}
