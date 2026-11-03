@@ -4,6 +4,18 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Anerkennung, Meine Einstellungen und Moods (02.11.2026)
+
+### Hinzugefügt
+- **Anerkennung (Eltern):** Punkte ohne Aufgabe schenken. Neue Buchungsart „Anerkennung“ (1 Punkt = 1 Guthaben und 1 XP), Bemerkung Pflicht, nur Eltern. Je Vergabe 1 bis 25 Punkte, je Kind höchstens 50 Punkte pro Woche (Montag bis Sonntag); beide Grenzen sind Elterneinstellungen (`aufgaben.anerkennung_max_punkte`, `aufgaben.anerkennung_woche_max`). Das Kind bekommt eine Push-Nachricht, die Punkte zählen für XP und Familienziel, ein Storno gibt den Wochenplatz wieder frei
+- **Meine Einstellungen (Kinder):** Zahnrad in der Kopfleiste. Name (eindeutig, Groß-/Kleinschreibung egal), optionaler Spitzname (erscheint in Gruß und Kacheln), Code ändern (alter Code Pflicht, neuer Code zweimal; Fehlversuche zählen und sperren wie bei der Anmeldung)
+- **Moods:** Katalog mit 50 kindgerechten Moods (Meme, Filme, müde, gut drauf, grummelig, ruhig) plus „Kein Mood“. Der gewählte Mood steht als kleine Zeile unter dem Namen auf der Startseite und im Kinder-Dashboard
+- **Mood-Vorschläge:** Kinder schlagen neue Moods vor (höchstens 40 Zeichen, höchstens 3 offene). Eltern sehen Zähler und Liste unter „Moods“, lassen zu oder lehnen ab, blenden Katalog-Moods aus und ergänzen eigene. Zugelassene Moods gelten für alle Kinder. Push an die Eltern bei neuem Vorschlag, an das Kind bei der Entscheidung
+- Kinder-Dashboard: „Letzte Punkte“ (Punkteverlauf mit Anerkennung und Bemerkung)
+
+### Geändert
+- Eltern setzen den Code eines Kindes jederzeit neu (Bereich Familie); neu mit Tests abgesichert
+
 ## Schnell-Knöpfe (30.10.2026)
 
 ### Hinzugefügt

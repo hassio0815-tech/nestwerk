@@ -1,0 +1,36 @@
+{% extends "aufgaben/basis.html" %}
+{% load i18n %}
+{% comment %}Anerkennung: Eltern schenken einem Kind Punkte ohne Aufgabe (Kind, Punkte, Bemerkung).{% endcomment %}
+{% block titel %}{% translate "Anerkennung" %}{% endblock %}
+{% block seite %}
+  <h1>{% translate "Anerkennung" %}</h1>
+  <p class="feld__hinweis">{% blocktranslate with max=je_vergabe woche=je_woche %}Schenke Punkte für etwas Besonderes, auch ohne Aufgabe. Je Vergabe 1 bis {{ max }} Punkte, je Kind höchstens {{ woche }} Punkte pro Woche (Montag bis Sonntag).{% endblocktranslate %}</p>
+  {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art text=hinweis icon=hinweis_art|yesno:"warnung,check" %}{% endif %}
+  <section class="karte"><div class="karte__inhalt stapel">
+    <form method="post" action="{% url 'aufgaben:anerkennung' %}" class="stapel" id="anerkennung-formular">{% csrf_token %}
+      <input type="hidden" name="vorgang" value="{{ vorgang }}">
+      <fieldset class="stapel">
+        <legend>{% translate "Für wen?" %}</legend>
+        {% for z in zeilen %}
+          <label class="reihe">
+            <input type="radio" name="kind_id" value="{{ z.kind.pk }}"{% if vorgaben.kind_id == z.kind.pk|stringformat:"s" %} checked{% endif %} required>
+            <strong>{{ z.kind.anzeigename }}</strong>
+            <span class="feld__hinweis">{% blocktranslate with bisher=z.bisher rest=z.rest %}diese Woche {{ bisher }}, noch {{ rest }} möglich{% endblocktranslate %}</span>
+          </label>
+        {% empty %}
+          <p>{% translate "Noch keine Kinder." %}</p>
+        {% endfor %}
+      </fieldset>
+      <div class="feld">
+        <label class="feld__label" for="a-punkte">{% translate "Punkte" %} <span aria-hidden="true">*</span></label>
+        <input class="feld__eingabe" id="a-punkte" name="punkte" type="number" inputmode="numeric" min="1" max="{{ je_vergabe }}" step="1" value="{{ vorgaben.punkte }}" required>
+      </div>
+      <div class="feld">
+        <label class="feld__label" for="a-bemerkung">{% translate "Bemerkung" %} <span aria-hidden="true">*</span></label>
+        <textarea class="feld__eingabe" id="a-bemerkung" name="bemerkung" rows="3" maxlength="200" required>{{ vorgaben.bemerkung }}</textarea>
+        <p class="feld__hinweis">{% translate "Das Kind liest die Bemerkung. Kurz sagen, wofür." %}</p>
+      </div>
+      {% include "komponenten/button.html" with typ="submit" icon="stern" text=_("Anerkennung schenken") %}
+    </form>
+  </div></section>
+{% endblock %}

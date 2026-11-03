@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 17:05+0000\n"
+"POT-Creation-Date: 2026-11-02 19:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Text"
 msgid "%(name)s ist zu lang (höchstens %(grenze)s Zeichen)."
 msgstr "%(name)s is too long (at most %(grenze)s characters)."
 
-#: ablauf.py:165 schnellknopf.py:73
+#: ablauf.py:165 schnellknopf.py:75
 msgid "Nur Kinder können Aufgaben übernehmen."
 msgstr "Only kids can take on tasks."
 
@@ -38,7 +38,7 @@ msgstr "Only parents can decide this."
 msgid "Diese Aufgabe ist gerade pausiert oder beendet."
 msgstr "This task is paused or finished right now."
 
-#: ablauf.py:178 schnellknopf.py:77
+#: ablauf.py:178 schnellknopf.py:79
 msgid "Diese Aufgabe ist für ein anderes Kind."
 msgstr "This task is for another child."
 
@@ -169,23 +169,54 @@ msgstr "Please say briefly why it is being corrected."
 msgid "Diese Aufgabe ist schon geprüft oder wurde geändert."
 msgstr "This task has already been checked or was changed."
 
-#: einstellungen.py:37
+#: anerkennung.py:72
+msgid "Anerkennung vergeben nur Eltern."
+msgstr "Only parents can give recognition."
+
+#: anerkennung.py:74 views_anerkennung.py:51
+msgid "Bitte ein Kind auswählen."
+msgstr "Please choose a child."
+
+#: anerkennung.py:76 views_anerkennung.py:55
+msgid "Bitte eine ganze Zahl für die Punkte eingeben."
+msgstr "Please enter a whole number of points."
+
+#: anerkennung.py:79
+msgid "Bitte eine kurze Bemerkung eingeben."
+msgstr "Please enter a short note."
+
+#: anerkennung.py:82
+#, python-format
+msgid "Die Bemerkung ist zu lang (höchstens %(n)s Zeichen)."
+msgstr "The note is too long (at most %(n)s characters)."
+
+#: anerkennung.py:86
+#, python-format
+msgid "Bitte 1 bis %(max)s Punkte eingeben."
+msgstr "Please enter 1 to %(max)s points."
+
+#: anerkennung.py:99
+#, python-format
+msgid "Diese Woche sind für %(name)s nur noch %(rest)s Anerkennungs-Punkte möglich."
+msgstr "This week only %(rest)s more recognition points are possible for %(name)s."
+
+#: einstellungen.py:46
 msgid "Vorlauf für Aufgaben mit Zeitfenster"
 msgstr "Lead time for tasks with a time window"
 
-#: einstellungen.py:38
+#: einstellungen.py:47
 msgid "So viele Tage im Voraus werden Termine mit Zeitfenster angelegt."
 msgstr "Dates with a time window are created this many days ahead."
 
-#: einstellungen.py:39 einstellungen.py:121
+#: einstellungen.py:48 einstellungen.py:130
 msgid "Tage"
 msgstr "days"
 
-#: einstellungen.py:46
+#: einstellungen.py:55
 msgid "Vorwarnung an Eltern vor 'nicht übernommen'"
 msgstr "Warning to parents before 'not taken on'"
 
-#: einstellungen.py:48
+#: einstellungen.py:57
 msgid ""
 "Stunden vor Fensterende, wenn noch kein Kind die Aufgabe übernommen hat. 0 = "
 "keine Vorwarnung."
@@ -193,16 +224,16 @@ msgstr ""
 "Hours before the window ends if no child has taken the task yet. 0 = no "
 "warning."
 
-#: einstellungen.py:51 einstellungen.py:63 einstellungen.py:75
-#: einstellungen.py:83
+#: einstellungen.py:60 einstellungen.py:72 einstellungen.py:84
+#: einstellungen.py:92
 msgid "Stunden"
 msgstr "hours"
 
-#: einstellungen.py:58
+#: einstellungen.py:67
 msgid "Frist zum Nachbessern"
 msgstr "Time to fix a task"
 
-#: einstellungen.py:60
+#: einstellungen.py:69
 msgid ""
 "So lange hat ein Kind Zeit, eine zurückgegebene Aufgabe zu verbessern. "
 "Danach verfällt sie ohne Punkte."
@@ -210,11 +241,11 @@ msgstr ""
 "How long a child has to improve a task that was sent back. After that it "
 "expires without points."
 
-#: einstellungen.py:70
+#: einstellungen.py:79
 msgid "Reservierung ohne Frist läuft ab nach"
 msgstr "Reservation without deadline expires after"
 
-#: einstellungen.py:72
+#: einstellungen.py:81
 msgid ""
 "Gilt für Aufgaben ohne Zeitfenster. Mit Zeitfenster endet die Reservierung "
 "mit der Frist."
@@ -222,34 +253,34 @@ msgstr ""
 "Applies to tasks without a time window. With a time window, the reservation "
 "ends at the deadline."
 
-#: einstellungen.py:82
+#: einstellungen.py:91
 msgid "Erinnerung an das Kind vor Reservierungsablauf"
 msgstr "Reminder to the child before the reservation expires"
 
-#: einstellungen.py:90
+#: einstellungen.py:99
 msgid "Obergrenze für Sonderpunkte"
 msgstr "Limit for bonus points"
 
-#: einstellungen.py:91
+#: einstellungen.py:100
 msgid "Aus = keine Obergrenze (außer eine Aufgabe hat einen eigenen Wert)."
 msgstr "Off = no limit (unless a task has its own value)."
 
-#: einstellungen.py:96
+#: einstellungen.py:105
 msgid "Sonderpunkte höchstens"
 msgstr "Bonus points at most"
 
-#: einstellungen.py:98
+#: einstellungen.py:107
 msgid ""
 "Anteil am Punktwert der Aufgabe (aufgerundet). Eine Aufgabe kann einen "
 "eigenen Wert haben."
 msgstr ""
 "Share of the task's points (rounded up). A task can have its own value."
 
-#: einstellungen.py:108
+#: einstellungen.py:117
 msgid "Mehrere Kinder dürfen dieselbe Aufgabe wählen"
 msgstr "Several kids may pick the same task"
 
-#: einstellungen.py:110
+#: einstellungen.py:119
 msgid ""
 "An: Ein weiteres Kind kann eine schon reservierte Aufgabe auch wählen, dann "
 "entscheiden die Eltern (Konflikt). Aus: Wer zuerst wählt, bekommt sie."
@@ -257,11 +288,11 @@ msgstr ""
 "On: Another child can also pick a task that is already reserved, and the "
 "parents decide (conflict). Off: Whoever picks first gets it."
 
-#: einstellungen.py:117
+#: einstellungen.py:126
 msgid "Kinder sehen Termine im Voraus"
 msgstr "Kids see dates in advance"
 
-#: einstellungen.py:119
+#: einstellungen.py:128
 msgid ""
 "0 = nur heute, 1 = heute und morgen usw. Aufgaben ohne Termin sind immer "
 "sichtbar."
@@ -269,216 +300,250 @@ msgstr ""
 "0 = today only, 1 = today and tomorrow, and so on. Tasks without a date are "
 "always visible."
 
-#: einstellungen.py:128
+#: einstellungen.py:137
 msgid "Nachweis-Foto höchstens"
 msgstr "Proof photo at most"
 
-#: einstellungen.py:130
+#: einstellungen.py:139
 msgid ""
 "Größe eines hochgeladenen Fotos. Gespeichert wird es verkleinert und ohne "
 "Metadaten (GPS)."
 msgstr ""
 "Size of an uploaded photo. It is saved smaller and without metadata (GPS)."
 
-#: einstellungen.py:140
+#: einstellungen.py:149
 msgid "Fotos je Meldung höchstens"
 msgstr "Photos per report at most"
 
-#: einstellungen.py:147
+#: einstellungen.py:156
 msgid "Nachweis-Foto wird verkleinert auf"
 msgstr "Proof photo is shrunk to"
 
-#: einstellungen.py:148
+#: einstellungen.py:157
 msgid "Längste Kante des gespeicherten Fotos."
 msgstr "Longest edge of the saved photo."
 
-#: einstellungen.py:149
+#: einstellungen.py:158
 msgid "Pixel"
 msgstr "pixels"
 
-#: events.py:44
+#: einstellungen.py:172
+msgid "Anerkennung: Punkte je Vergabe höchstens"
+msgstr "Recognition: most points per award"
+
+#: einstellungen.py:173
+msgid "Eltern können einem Kind ohne Aufgabe 1 bis zu so viele Punkte schenken."
+msgstr "Parents can give a child from 1 up to this many points without a task."
+
+#: einstellungen.py:174 einstellungen.py:183 forms.py:125 forms.py:187
+#: templates/aufgaben/anerkennung.html:26
+msgid "Punkte"
+msgstr "Points"
+
+#: einstellungen.py:181
+msgid "Anerkennung: Punkte je Kind und Woche höchstens"
+msgstr "Recognition: most points per child and week"
+
+#: einstellungen.py:182
+msgid "Woche = Montag bis Sonntag. Eine Gegenbuchung gibt den Platz wieder frei."
+msgstr "Week = Monday to Sunday. A reversal frees up those points again."
+
+#: events.py:46
 #, python-brace-format
 msgid "{aufgabe}: wer macht's?"
 msgstr "{aufgabe}: who's up for it?"
 
-#: events.py:45
 #
+#: events.py:47
 msgid "Du kannst die Aufgabe bei „Offene Aufgaben“ übernehmen."
 msgstr "You can take it on under “Open tasks”."
 
-#: events.py:48
+#: events.py:50
+msgid "Anerkennung!"
+msgstr "Recognition!"
+
+#: events.py:51
+#, python-brace-format
+msgid "+{punkte} Punkte: {begruendung}"
+msgstr "+{punkte} points: {begruendung}"
+
+#: events.py:54
 msgid "Die Aufgabe gehört dir!"
 msgstr "The task is yours!"
 
-#: events.py:49
+#: events.py:55
 #, python-brace-format
 msgid "„{aufgabe}“ ist für dich reserviert."
 msgstr "“{aufgabe}” is reserved for you."
 
-#: events.py:52
+#: events.py:58
 msgid "Aufgabe vergeben"
 msgstr "Task given to someone else"
 
-#: events.py:53
+#: events.py:59
 #, python-brace-format
 msgid "„{aufgabe}“ macht diesmal jemand anderes."
 msgstr "Someone else is doing “{aufgabe}” this time."
 
-#: events.py:56
+#: events.py:62
 msgid "Reservierung aufgehoben"
 msgstr "Reservation cancelled"
 
-#: events.py:57 events.py:61
+#: events.py:63 events.py:67
 #, python-brace-format
 msgid "„{aufgabe}“ ist wieder frei."
 msgstr "“{aufgabe}” is free again."
 
-#: events.py:60
+#: events.py:66
 #, python-brace-format
 msgid "{kind} hat eine Aufgabe zurückgegeben"
 msgstr "{kind} gave a task back"
 
-#: events.py:64
+#: events.py:70
 #, python-brace-format
 msgid "{kind} hat geantwortet"
 msgstr "{kind} answered"
 
-#: events.py:65
+#: events.py:71
 #, python-brace-format
 msgid "„{aufgabe}“ wartet auf Bestätigung."
 msgstr "“{aufgabe}” is waiting for approval."
 
-#: events.py:68
+#: events.py:74
 #, python-brace-format
 msgid "{kind} hat eine Aufgabe erledigt"
 msgstr "{kind} finished a task"
 
-#: events.py:69
+#: events.py:75
 #, python-brace-format
 msgid "„{aufgabe}“: {punkte} Punkte gutgeschrieben (Vertrauen)."
 msgstr "“{aufgabe}”: {punkte} points credited (trust)."
 
-#: events.py:72
+#: events.py:78
 msgid "Sonderpunkte!"
 msgstr "Bonus points!"
 
-#: events.py:73
+#: events.py:79
 #, python-brace-format
 msgid "+{punkte} für „{aufgabe}“: {begruendung}"
 msgstr "+{punkte} for “{aufgabe}”: {begruendung}"
 
-#: events.py:76 templates/aufgaben/_kind_bereich.html:22
+#: events.py:82 templates/aufgaben/_kind_bereich.html:22
 msgid "Punkte korrigiert"
 msgstr "Points corrected"
 
-#: events.py:77
+#: events.py:83
 #, python-brace-format
 msgid "„{aufgabe}“: {punkte} Punkte abgezogen. {begruendung}"
 msgstr "“{aufgabe}”: {punkte} points taken off. {begruendung}"
 
-#: events.py:79
+#: events.py:85
 msgid "Bitte nachbessern"
 msgstr "Please fix it"
 
-#: events.py:79
+#: events.py:85
 #, python-brace-format
 msgid "„{aufgabe}“: {begruendung}"
 msgstr "“{aufgabe}”: {begruendung}"
 
-#: events.py:81
+#: events.py:87
 msgid "Nachbessern nicht erledigt"
 msgstr "Fix not done"
 
-#: events.py:82
+#: events.py:88
 #, python-brace-format
 msgid "{kind} hat „{aufgabe}“ nicht rechtzeitig nachgebessert. Keine Punkte."
 msgstr "{kind} did not fix “{aufgabe}” in time. No points."
 
-#: events.py:98
+#: events.py:104
 msgid "Aufgabe läuft bald ab (noch nicht übernommen)"
 msgstr "Task ends soon (nobody has taken it yet)"
 
-#: events.py:100
+#: events.py:106
 msgid "Aufgabe nicht übernommen"
 msgstr "Task not taken on"
 
-#: events.py:103
+#: events.py:109
 msgid "Erinnerung: Reservierung läuft bald ab"
 msgstr "Reminder: reservation ends soon"
 
-#: events.py:109
+#: events.py:115
 msgid "Reservierung abgelaufen"
 msgstr "Reservation expired"
 
-#: events.py:113
+#: events.py:119
 msgid "Kind wählt eine Aufgabe"
 msgstr "Child picks a task"
 
-#: events.py:116
+#: events.py:122
 msgid "Mehrere Kinder wollen dieselbe Aufgabe"
 msgstr "Several kids want the same task"
 
-#: events.py:121
+#: events.py:127
 msgid "Aufgabe zugeteilt"
 msgstr "Task assigned"
 
-#: events.py:124
+#: events.py:130
 msgid "Aufgabe an ein anderes Kind vergeben"
 msgstr "Task given to another child"
 
-#: events.py:131
+#: events.py:137
 msgid "Reservierung von Eltern aufgehoben"
 msgstr "Reservation cancelled by parents"
 
-#: events.py:136
+#: events.py:142
 msgid "Kind gibt eine Aufgabe zurück"
 msgstr "Child gives a task back"
 
-#: events.py:139
+#: events.py:145
 msgid "Aufgabe als erledigt gemeldet"
 msgstr "Task reported as done"
 
-#: events.py:144
+#: events.py:150
 msgid "Antwort auf Rückfrage"
 msgstr "Answer to a question"
 
-#: events.py:145
+#: events.py:151
 msgid "Aufgabe mit Vertrauen gutgeschrieben"
 msgstr "Task credited on trust"
 
-#: events.py:146
+#: events.py:152
 msgid "Aufgabe bestätigt"
 msgstr "Task approved"
 
-#: events.py:147
+#: events.py:153
 msgid "Aufgabe abgelehnt"
 msgstr "Task declined"
 
-#: events.py:148
+#: events.py:154
 msgid "Rückfrage zur Aufgabe"
 msgstr "Question about the task"
 
-#: events.py:149
+#: events.py:155
 msgid "Sonderpunkte erhalten"
 msgstr "Bonus points received"
 
-#: events.py:152
+#: events.py:158
+msgid "Anerkennung erhalten"
+msgstr "Recognition received"
+
+#: events.py:165
 msgid "Punkte einer Aufgabe korrigiert"
 msgstr "Task points corrected"
 
-#: events.py:159
+#: events.py:172
 msgid "Aufgabe zum Nachbessern zurück"
 msgstr "Task sent back to fix"
 
-#: events.py:166
+#: events.py:179
 msgid "Nachbessern nicht rechtzeitig erledigt"
 msgstr "Fix not done in time"
 
-#: events.py:172
+#: events.py:185
 msgid "Schnell-Knopf gedrückt"
 msgstr "Quick button pressed"
 
-#: events.py:177
+#: events.py:190
 msgid "Aufgabe erledigt (Aktivität)"
 msgstr "Task done (activity)"
 
@@ -534,23 +599,19 @@ msgstr "Start"
 msgid "Ende (optional)"
 msgstr "End (optional)"
 
-#: forms.py:125 forms.py:185
-msgid "Punkte"
-msgstr "Points"
-
-#: forms.py:126 forms.py:186 models.py:54
+#: forms.py:126 forms.py:188 models.py:54
 msgid "Kategorie"
 msgstr "Category"
 
-#: forms.py:127 forms.py:187
+#: forms.py:127 forms.py:189
 msgid "Freigabeart"
 msgstr "Approval type"
 
-#: forms.py:128 forms.py:184
+#: forms.py:128 forms.py:186
 msgid "Titel"
 msgstr "Title"
 
-#: forms.py:129 forms.py:183
+#: forms.py:129 forms.py:185
 msgid "Beschreibung (optional)"
 msgstr "Description (optional)"
 
@@ -562,15 +623,15 @@ msgstr "Only for this child (optional)"
 msgid "Deckel für Sonderpunkte in % (leer = Standard)"
 msgstr "Limit for bonus points in % (empty = default)"
 
-#: forms.py:134 forms.py:188
+#: forms.py:134 forms.py:190
 msgid "Symbol (Emoji) auf dem Knopf"
 msgstr "Symbol (emoji) on the button"
 
-#: forms.py:135 forms.py:189
+#: forms.py:135 forms.py:191
 msgid "Wer darf drücken?"
 msgstr "Who may press it?"
 
-#: forms.py:145 forms.py:202
+#: forms.py:145 forms.py:205
 msgid "(keine)"
 msgstr "(none)"
 
@@ -578,31 +639,31 @@ msgstr "(none)"
 msgid "Alle Kinder"
 msgstr "All kids"
 
-#: forms.py:190 forms.py:255 models.py:37
+#: forms.py:192 forms.py:259 models.py:37
 msgid "Aktiv"
 msgstr "Active"
 
-#: forms.py:246
+#: forms.py:250
 msgid "Symbol"
 msgstr "Icon"
 
-#: forms.py:252
+#: forms.py:256
 msgid "Farbe (#rrggbb, optional)"
 msgstr "Colour (#rrggbb, optional)"
 
-#: forms.py:253
+#: forms.py:257
 msgid "Name"
 msgstr "Name"
 
-#: forms.py:254
+#: forms.py:258
 msgid "Reihenfolge"
 msgstr "Order"
 
-#: forms.py:265
+#: forms.py:269
 msgid "Alle Kategorien"
 msgstr "All categories"
 
-#: forms.py:268
+#: forms.py:272
 msgid "Alle (ohne beendete)"
 msgstr "All (except finished)"
 
@@ -736,8 +797,8 @@ msgstr "Parents approve"
 msgid "Foto-/Text-Nachweis"
 msgstr "Photo/text proof"
 
-#: models.py:32
 #
+#: models.py:32
 msgid "Alle (Kinder und Eltern)"
 msgstr "Everyone (kids and parents)"
 
@@ -916,15 +977,15 @@ msgstr "The photo has too many pixels. Please use a smaller one."
 msgid "Das Foto konnte nicht gespeichert werden."
 msgstr "The photo could not be saved."
 
-#: schnellknopf.py:67
+#: schnellknopf.py:69
 msgid "Dieser Knopf ist gerade nicht aktiv."
 msgstr "This button is not active right now."
 
-#: schnellknopf.py:69
+#: schnellknopf.py:71
 msgid "Diesen Knopf dürfen nur Eltern drücken."
 msgstr "Only parents may press this button."
 
-#: schnellknopf.py:75
+#: schnellknopf.py:77
 msgid "Du kannst nur für dich selbst übernehmen."
 msgstr "You can only take it on for yourself."
 
@@ -1104,7 +1165,8 @@ msgid ""
 "Schnell-Knopf: Die Aufgabe schläft, bis jemand den Knopf drückt. Dann "
 "entsteht genau eine offene Aufgabe."
 msgstr ""
-"Quick button: the task sleeps until someone presses the button. Then exactly one open task appears."
+"Quick button: the task sleeps until someone presses the button. Then exactly "
+"one open task appears."
 
 #: templates/aufgaben/_formular.html:30
 msgid "Limit gilt je Kind und Aufgabe."
@@ -1291,10 +1353,10 @@ msgstr "still open"
 msgid "Fertig"
 msgstr "Done"
 
+#
 #: templates/aufgaben/_tablet_schnellknopf.html:12
 #: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:14
 #: templates/aufgaben/kacheln/schnellknoepfe_kind.html:15
-#
 msgid "Nur melden"
 msgstr "Just report it"
 
@@ -1409,6 +1471,41 @@ msgstr "Finish this task? This can't be undone. Points already given stay."
 msgid "Beenden"
 msgstr "Finish"
 
+#: templates/aufgaben/anerkennung.html:5 templates/aufgaben/anerkennung.html:7
+#: templates/aufgaben/basis.html:13
+msgid "Anerkennung"
+msgstr "Recognition"
+
+#: templates/aufgaben/anerkennung.html:8
+#, python-format
+msgid "Schenke Punkte für etwas Besonderes, auch ohne Aufgabe. Je Vergabe 1 bis %(max)s Punkte, je Kind höchstens %(woche)s Punkte pro Woche (Montag bis Sonntag)."
+msgstr "Give points for something special, even without a task. 1 to %(max)s points per award, at most %(woche)s points per child per week (Monday to Sunday)."
+
+#: templates/aufgaben/anerkennung.html:14
+msgid "Für wen?"
+msgstr "For whom?"
+
+#: templates/aufgaben/anerkennung.html:19
+#, python-format
+msgid "diese Woche %(bisher)s, noch %(rest)s möglich"
+msgstr "this week %(bisher)s, %(rest)s more possible"
+
+#: templates/aufgaben/anerkennung.html:22
+msgid "Noch keine Kinder."
+msgstr "No children yet."
+
+#: templates/aufgaben/anerkennung.html:30
+msgid "Bemerkung"
+msgstr "Note"
+
+#: templates/aufgaben/anerkennung.html:32
+msgid "Das Kind liest die Bemerkung. Kurz sagen, wofür."
+msgstr "The child will read the note. Say briefly what it is for."
+
+#: templates/aufgaben/anerkennung.html:34
+msgid "Anerkennung schenken"
+msgstr "Give recognition"
+
 #: templates/aufgaben/basis.html:11 templates/aufgaben/vorlagen.html:3
 msgid "Bibliothek"
 msgstr "Library"
@@ -1419,9 +1516,9 @@ msgstr "Library"
 msgid "Schnell-Knöpfe"
 msgstr "Quick buttons"
 
+#
 #: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:12
 #: templates/aufgaben/kacheln/schnellknoepfe_kind.html:12
-#
 msgid "Drücken"
 msgstr "Press"
 
@@ -1568,6 +1665,11 @@ msgstr "Sent back to the child: points taken off, they should fix it."
 #: views_ablauf.py:273
 msgid "Abgelehnt, Punkte zurückgebucht."
 msgstr "Declined, points taken back."
+
+#: views_anerkennung.py:65
+#, python-format
+msgid "%(punkte)s Punkte Anerkennung für %(name)s gebucht."
+msgstr "%(punkte)s recognition points booked for %(name)s."
 
 #: views_schnellknopf.py:56
 #, python-format

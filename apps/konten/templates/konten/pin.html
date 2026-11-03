@@ -5,12 +5,12 @@
 {% block buehne %}
   <div class="huelle-buehne">
     <div class="nw-profile nw-profile--eins">
-      {% include "komponenten/profil_kachel.html" with benutzer=kind name=kind.anzeigename akzent=akzent %}
+      {% include "komponenten/profil_kachel.html" with benutzer=kind name=kind.rufname akzent=akzent %}
     </div>
     <form method="post" class="stapel nw-voll" autocomplete="off">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ next }}">
-      <h1 class="nw-begruessung">{% blocktranslate with name=kind.anzeigename %}Hallo {{ name }}!{% endblocktranslate %}</h1>
+      <h1 class="nw-begruessung">{% blocktranslate with name=kind.rufname %}Hallo {{ name }}!{% endblocktranslate %}</h1>
       <p class="nw-leise">{% translate "Gib deine PIN ein." %}</p>
       {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
       {% include "komponenten/pin_pad.html" with feld="pin" %}

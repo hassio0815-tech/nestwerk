@@ -50,6 +50,21 @@ For tasks that only come up now and then (**General waste is full!**). The task 
 - **Just report it:** the task stays open for all kids, and the kids get a notification ("General waste: who's up for it?"). With "I'll do it" there is no notification, and parents get no push message.
 - **Where:** kid dashboard (only buttons for everyone), parent dashboard and hallway tablet. On the tablet you tap the button, then **Just report it** or your picture, **without a PIN**. This only works on the device registered as the hallway tablet, and "parents only" buttons never appear there.
 
+### Recognition (parents)
+
+For something special without a task, for example **Helped Grandma**.
+
+- **Where:** **Recognition** in the quick access or the tasks bar. Choose the child, enter the **points**, then the **note** below (required, the child reads it).
+- **Limits:** 1 to 25 points per award, at most 50 points per child per week (Monday to Sunday). Set both under **Settings → Tasks**.
+- **Effect:** 1 point = 1 balance and 1 XP. The child gets a message, the points show under **Latest points** and count for the family goal. A reversal frees the room in the week again.
+
+### My settings and moods
+
+- **Gear icon (kids):** at the top of the header. Change your **name**, **nickname** (optional), your **code** and your **mood**. For the code you need the old code and enter the new one twice. Several wrong attempts lock the code for a short while, like at login.
+- **Mood:** pick one of 50 moods or **No mood**. It shows as a small line under your name on the start page.
+- **Suggest a new mood:** write a short text (up to 40 characters, at most 3 open suggestions). Your parents approve or decline it. Approved moods exist for all kids.
+- **Parents:** under **Moods** (quick access, counter under decisions) you see the suggestions, can hide catalogue moods and add your own. You can reset a **child's code** at any time under **Family**.
+
 ---
 
 ## 3. Points, balance and XP

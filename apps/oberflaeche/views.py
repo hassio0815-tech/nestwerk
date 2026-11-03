@@ -89,7 +89,7 @@ def kind_heim(request):
     return render(
         request,
         "oberflaeche/kind_heim.html",
-        {"kacheln": _kind_kacheln(request)},
+        {"kacheln": _kind_kacheln(request), "mood": konten_selectors.mood_text(request.user)},
     )
 
 

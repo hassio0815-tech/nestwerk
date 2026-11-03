@@ -4,6 +4,7 @@
     <li class="zeile"><span>{% translate "Meldungen" %}</span><a href="{% url 'aufgaben:entscheidungen' %}">{{ k.meldungen }}</a></li>
     <li class="zeile"><span>{% translate "Konflikte" %}</span><a href="{% url 'aufgaben:entscheidungen' %}">{{ k.konflikte }}</a></li>
     <li class="zeile"><span>{% translate "Einlöseanträge" %}</span><a href="{% url 'belohnung:antraege' %}">{{ k.antraege }}</a></li>
+    <li class="zeile"><span>{% translate "Mood-Vorschläge" %}</span><a href="{% url 'oberflaeche:eltern_moods' %}">{{ k.moods }}</a></li>
   </ul>
   {% if not k.gesamt %}<p class="kachel__text">{% translate "Nichts zu entscheiden." %}</p>{% endif %}
 </div></article>

@@ -4,6 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-02 20:25+0100\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,6 +80,10 @@ msgstr "Devices"
 #: templates/basis/einstellungen.html:27
 msgid "Dungeon"
 msgstr "Dungeon"
+
+#: templates/basis/kind.html:10
+msgid "Meine Einstellungen"
+msgstr "My settings"
 
 #: templates/basis/tablet.html:19
 msgid "Wer bist du?"

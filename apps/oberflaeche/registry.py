@@ -66,6 +66,12 @@ def _eltern_ereignisse(request):
     }
 
 
+def _eltern_schnellzugriff(request):
+    from apps.konten import selectors as konten
+
+    return {"mood_offen": konten.mood_vorschlaege_offen_anzahl()}
+
+
 def _eltern_system(request):
     return {"status": selectors.system_status()}
 
@@ -198,6 +204,7 @@ def kacheln_registrieren():
             _("Schnellzugriff"),
             T + "eltern_schnellzugriff.html",
             {ELTERN},
+            _eltern_schnellzugriff,
             reihenfolge=50,
         ),
         Kachel(

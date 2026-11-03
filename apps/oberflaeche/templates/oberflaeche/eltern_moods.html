@@ -1,0 +1,67 @@
+{% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
+{% comment %}Moods (Eltern): Vorschläge der Kinder, eigene Moods, Katalog ausblenden.{% endcomment %}
+{% block titel %}{% translate "Moods" %}{% endblock %}
+{% block seite %}
+  <h1>{% translate "Moods" %}</h1>
+  {% if ok %}<p class="feld__hinweis" role="status">{{ ok }}</p>{% endif %}
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Vorschläge der Kinder" %} <span class="chip" data-zaehler="{{ vorschlaege|length }}">{{ vorschlaege|length }}</span></h2>
+    {% for v in vorschlaege %}
+      <div class="reihe familie-zeile">
+        <span><strong>{{ v.text }}</strong> <span class="feld__hinweis">{% blocktranslate with name=v.kind.anzeigename %}von {{ name }}{% endblocktranslate %}</span></span>
+        <form method="post" action="{% url 'oberflaeche:eltern_mood_zulassen' v.pk %}">{% csrf_token %}
+          {% include "komponenten/button.html" with typ="submit" klein=True icon="check" text=_("Zulassen") %}
+        </form>
+        <form method="post" action="{% url 'oberflaeche:eltern_mood_ablehnen' v.pk %}">{% csrf_token %}
+          {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text=_("Ablehnen") %}
+        </form>
+      </div>
+    {% empty %}
+      <p>{% translate "Keine offenen Vorschläge." %}</p>
+    {% endfor %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Eigene Moods der Familie" %}</h2>
+    {% for e in eigene %}
+      <form method="post" action="{% url 'oberflaeche:eltern_mood_entfernen' e.pk %}" class="reihe">{% csrf_token %}
+        <span>⭐ {{ e.text }}</span>
+        {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text=_("Entfernen") %}
+      </form>
+    {% empty %}
+      <p>{% translate "Noch keine eigenen Moods." %}</p>
+    {% endfor %}
+    <form method="post" action="{% url 'oberflaeche:eltern_mood_neu' %}" class="reihe">{% csrf_token %}
+      <label class="sr-only" for="mn-text">{% translate "Neuer Mood" %}</label>
+      <input class="feld__eingabe" id="mn-text" name="text" value="{{ vorgabe }}" maxlength="{{ text_max }}" placeholder="{% translate "Neuer Mood" %}" autocomplete="off" required>
+      {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Ergänzen") %}
+    </form>
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Katalog" %}</h2>
+    <p class="feld__hinweis">{% translate "Ausgeblendete Moods können die Kinder nicht mehr wählen." %}</p>
+    {% for g in gruppen %}
+      <details>
+        <summary>{{ g.name }}</summary>
+        <ul class="liste-schlicht">
+          {% for m in g.moods %}
+            <li class="zeile">
+              <span>{{ m.emoji }} {{ m.text }}{% if m.schluessel in ausgeblendet %} {% include "komponenten/chip.html" with text=_("ausgeblendet") %}{% endif %}</span>
+              <form method="post" action="{% url 'oberflaeche:eltern_mood_katalog' m.schluessel %}">{% csrf_token %}
+                {% if m.schluessel in ausgeblendet %}
+                  {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text=_("Wieder einblenden") %}
+                {% else %}
+                  <input type="hidden" name="ausblenden" value="1">
+                  {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text=_("Ausblenden") %}
+                {% endif %}
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% endfor %}
+  </div></section>
+{% endblock %}

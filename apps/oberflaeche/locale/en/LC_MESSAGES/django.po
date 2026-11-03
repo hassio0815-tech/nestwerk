@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 17:05+0000\n"
+"POT-Creation-Date: 2026-11-02 19:25+0000\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,6 +120,46 @@ msgstr "Please enter a whole number."
 msgid "Ungültiger Wert."
 msgstr "Invalid value."
 
+#: events.py:17
+#, python-brace-format
+msgid "{kind} schlägt einen Mood vor"
+msgstr "{kind} suggests a mood"
+
+#: events.py:18
+#, python-brace-format
+msgid "„{vorschlag}“ wartet auf deine Entscheidung."
+msgstr "“{vorschlag}” is waiting for your decision."
+
+#: events.py:21
+msgid "Dein Mood ist dabei!"
+msgstr "Your mood is in!"
+
+#: events.py:22
+#, python-brace-format
+msgid "„{vorschlag}“ gibt es jetzt für alle."
+msgstr "“{vorschlag}” is now available for everyone."
+
+#: events.py:25
+msgid "Mood nicht übernommen"
+msgstr "Mood not added"
+
+#: events.py:26
+#, python-brace-format
+msgid "„{vorschlag}“ nehmen wir diesmal nicht auf."
+msgstr "We are not adding “{vorschlag}” this time."
+
+#: events.py:44
+msgid "Kind schlägt einen Mood vor"
+msgstr "Child suggests a mood"
+
+#: events.py:51
+msgid "Mood-Vorschlag zugelassen"
+msgstr "Mood suggestion approved"
+
+#: events.py:57
+msgid "Mood-Vorschlag abgelehnt"
+msgstr "Mood suggestion declined"
+
 #: module.py:27
 msgid "Aufgaben & Belohnungen"
 msgstr "Tasks & rewards"
@@ -139,7 +179,7 @@ msgstr "Overview, ranking and family goal"
 #: module.py:41 templates/oberflaeche/eltern_dungeon.html:4
 #: templates/oberflaeche/eltern_dungeon.html:6
 #: templates/oberflaeche/eltern_dungeon.html:8
-#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:13
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:15
 #: templates/oberflaeche/kind_dungeon.html:5
 #: templates/oberflaeche/kind_dungeon.html:12
 msgid "Dungeon"
@@ -149,7 +189,7 @@ msgstr "Dungeon"
 msgid "Ränge, Mods, Abzeichen und Sondertage der Kinder"
 msgstr "Kids' ranks, mods, badges and special days"
 
-#: module.py:48 registry.py:243 templates/oberflaeche/familie.html:4
+#: module.py:48 registry.py:252 templates/oberflaeche/familie.html:4
 #: templates/oberflaeche/familie.html:6
 #: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:10
 #: templates/oberflaeche/kacheln/kind_ranking.html:3
@@ -184,60 +224,60 @@ msgstr "Hero of the week"
 msgid "Rohpunkte"
 msgstr "Raw points"
 
-#: registry.py:115
+#: registry.py:123
 msgid "Guthaben und XP"
 msgstr "Balance and XP"
 
-#: registry.py:124 templates/oberflaeche/kacheln/kind_offene.html:2
+#: registry.py:132 templates/oberflaeche/kacheln/kind_offene.html:2
 msgid "Offene Aufgaben"
 msgstr "Open tasks"
 
-#: registry.py:133 templates/oberflaeche/kacheln/kind_laufende.html:2
+#: registry.py:141 templates/oberflaeche/kacheln/kind_laufende.html:2
 msgid "Meine Aufgaben"
 msgstr "My tasks"
 
-#: registry.py:142
+#: registry.py:150
 msgid "Punkte einlösen"
 msgstr "Spend points"
 
-#: registry.py:151 templates/oberflaeche/kacheln/kind_akzent.html:2
+#: registry.py:159 templates/oberflaeche/kacheln/kind_akzent.html:2
 msgid "Meine Farbe"
 msgstr "My colour"
 
-#: registry.py:160
+#: registry.py:168
 msgid "Entscheidungen"
 msgstr "Decisions"
 
-#: registry.py:169 templates/oberflaeche/familie.html:10
+#: registry.py:177 templates/oberflaeche/familie.html:10
 #: templates/oberflaeche/kacheln/eltern_kinder.html:2
 msgid "Kinder"
 msgstr "Kids"
 
-#: registry.py:178 templates/oberflaeche/kacheln/eltern_ereignisse.html:2
+#: registry.py:186 templates/oberflaeche/kacheln/eltern_ereignisse.html:2
 msgid "Ereignisse"
 msgstr "Events"
 
-#: registry.py:187 templates/oberflaeche/kacheln/eltern_system.html:2
+#: registry.py:195 templates/oberflaeche/kacheln/eltern_system.html:2
 msgid "Systemstatus"
 msgstr "System status"
 
-#: registry.py:196 templates/oberflaeche/kacheln/eltern_schnellzugriff.html:2
+#: registry.py:204 templates/oberflaeche/kacheln/eltern_schnellzugriff.html:2
 msgid "Schnellzugriff"
 msgstr "Quick access"
 
-#: registry.py:204 templates/oberflaeche/kacheln/tablet_ranking.html:2
+#: registry.py:213 templates/oberflaeche/kacheln/tablet_ranking.html:2
 msgid "Ranking"
 msgstr "Ranking"
 
-#: registry.py:213 registry.py:223 registry.py:233
+#: registry.py:222 registry.py:232 registry.py:242
 msgid "Schnell-Knöpfe"
 msgstr "Quick buttons"
 
-#: registry.py:252
+#: registry.py:261
 msgid "Erledigt – kurz prüfen"
 msgstr "Done – quick check"
 
-#: registry.py:261 templates/oberflaeche/kacheln/eltern_ranking.html:3
+#: registry.py:270 templates/oberflaeche/kacheln/eltern_ranking.html:3
 msgid "Familien-Ranking"
 msgstr "Family ranking"
 
@@ -274,11 +314,12 @@ msgstr "Shown at login, in the parents' area and in messages to the kids."
 #: templates/oberflaeche/einstellungen.html:15
 #: templates/oberflaeche/einstellungen.html:53
 #: templates/oberflaeche/familie.html:71
+#: templates/oberflaeche/kind_einstellungen.html:27
 msgid "Speichern"
 msgstr "Save"
 
 #: templates/oberflaeche/_wappen_karte.html:8
-#: templates/oberflaeche/einstellungen.html:22
+#: templates/oberflaeche/einstellungen.html:22 views_kind.py:21
 msgid "Gespeichert."
 msgstr "Saved."
 
@@ -388,12 +429,81 @@ msgstr "Locked PINs"
 msgid "Entsperren"
 msgstr "Unlock"
 
+#: templates/oberflaeche/eltern_moods.html:4
+#: templates/oberflaeche/eltern_moods.html:6
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:14
+msgid "Moods"
+msgstr "Moods"
+
+#: templates/oberflaeche/eltern_moods.html:11
+msgid "Vorschläge der Kinder"
+msgstr "Suggestions from the children"
+
+#: templates/oberflaeche/eltern_moods.html:14
+#, python-format
+msgid "von %(name)s"
+msgstr "from %(name)s"
+
+#: templates/oberflaeche/eltern_moods.html:16
+msgid "Zulassen"
+msgstr "Approve"
+
+#: templates/oberflaeche/eltern_moods.html:19
+msgid "Ablehnen"
+msgstr "Decline"
+
+#: templates/oberflaeche/eltern_moods.html:23
+msgid "Keine offenen Vorschläge."
+msgstr "No open suggestions."
+
+#: templates/oberflaeche/eltern_moods.html:28
+msgid "Eigene Moods der Familie"
+msgstr "Your family's own moods"
+
+#: templates/oberflaeche/eltern_moods.html:32
+msgid "Entfernen"
+msgstr "Remove"
+
+#: templates/oberflaeche/eltern_moods.html:35
+msgid "Noch keine eigenen Moods."
+msgstr "No own moods yet."
+
+#: templates/oberflaeche/eltern_moods.html:38
+#: templates/oberflaeche/eltern_moods.html:39
+msgid "Neuer Mood"
+msgstr "New mood"
+
+#: templates/oberflaeche/eltern_moods.html:40
+msgid "Ergänzen"
+msgstr "Add"
+
+#: templates/oberflaeche/eltern_moods.html:45
+msgid "Katalog"
+msgstr "Catalogue"
+
+#: templates/oberflaeche/eltern_moods.html:46
+msgid "Ausgeblendete Moods können die Kinder nicht mehr wählen."
+msgstr "Children can no longer choose hidden moods."
+
+#: templates/oberflaeche/eltern_moods.html:53
+msgid "ausgeblendet"
+msgstr "hidden"
+
+#: templates/oberflaeche/eltern_moods.html:56
+msgid "Wieder einblenden"
+msgstr "Show again"
+
+#: templates/oberflaeche/eltern_moods.html:59
+msgid "Ausblenden"
+msgstr "Hide"
+
 #: templates/oberflaeche/familie.html:14
 msgid "PIN gesperrt"
 msgstr "PIN locked"
 
 #: templates/oberflaeche/familie.html:17 templates/oberflaeche/familie.html:48
 #: templates/oberflaeche/familie.html:49 templates/oberflaeche/familie.html:63
+#: templates/oberflaeche/kind_einstellungen.html:16
 msgid "Name"
 msgstr "Name"
 
@@ -497,7 +607,11 @@ msgstr "Conflicts"
 msgid "Einlöseanträge"
 msgstr "Redeem requests"
 
-#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:8
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:7
+msgid "Mood-Vorschläge"
+msgstr "Mood suggestions"
+
+#: templates/oberflaeche/kacheln/eltern_entscheidungen.html:9
 msgid "Nichts zu entscheiden."
 msgstr "Nothing to decide."
 
@@ -553,6 +667,10 @@ msgstr "No rated week yet."
 #: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:7
 msgid "Wochenplan"
 msgstr "Weekly plan"
+
+#: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:13
+msgid "Anerkennung"
+msgstr "Recognition"
 
 #: templates/oberflaeche/kacheln/eltern_system.html:2
 msgid "in Ordnung"
@@ -623,7 +741,11 @@ msgstr[1] "%(n)s weeks"
 msgid "%(n)s davon für Anträge reserviert"
 msgstr "%(n)s of that reserved for requests"
 
-#: templates/oberflaeche/kacheln/kind_konto.html:14
+#: templates/oberflaeche/kacheln/kind_konto.html:16
+msgid "Letzte Punkte"
+msgstr "Latest points"
+
+#: templates/oberflaeche/kacheln/kind_konto.html:22
 msgid "⚔️ Ab in den Dungeon"
 msgstr "⚔️ Off to the dungeon"
 
@@ -672,6 +794,79 @@ msgstr "%(n)s open in total"
 #: templates/oberflaeche/module.html:4
 msgid "Start"
 msgstr "Home"
+
+#: templates/oberflaeche/kind_einstellungen.html:5
+#: templates/oberflaeche/kind_einstellungen.html:12
+msgid "Meine Einstellungen"
+msgstr "My settings"
+
+#: templates/oberflaeche/kind_einstellungen.html:9
+msgid "Zurück"
+msgstr "Back"
+
+#: templates/oberflaeche/kind_einstellungen.html:20
+msgid "Mein Name"
+msgstr "My name"
+
+#: templates/oberflaeche/kind_einstellungen.html:24
+msgid "Spitzname (kannst du auch weglassen)"
+msgstr "Nickname (you can leave it empty)"
+
+#: templates/oberflaeche/kind_einstellungen.html:32
+msgid "Mein Mood"
+msgstr "My mood"
+
+#: templates/oberflaeche/kind_einstellungen.html:36
+msgid "Wie bist du heute drauf?"
+msgstr "How are you feeling today?"
+
+#: templates/oberflaeche/kind_einstellungen.html:38
+msgid "Kein Mood"
+msgstr "No mood"
+
+#: templates/oberflaeche/kind_einstellungen.html:46
+msgid "Mood speichern"
+msgstr "Save mood"
+
+#: templates/oberflaeche/kind_einstellungen.html:48
+msgid "Neuen Mood vorschlagen"
+msgstr "Suggest a new mood"
+
+#: templates/oberflaeche/kind_einstellungen.html:52
+msgid "Dein Vorschlag"
+msgstr "Your suggestion"
+
+#: templates/oberflaeche/kind_einstellungen.html:54
+msgid "Die Eltern entscheiden. Wenn sie ihn gut finden, gibt es den Mood für alle."
+msgstr "Your parents decide. If they like it, everyone gets the mood."
+
+#: templates/oberflaeche/kind_einstellungen.html:56
+msgid "Vorschlagen"
+msgstr "Suggest"
+
+#: templates/oberflaeche/kind_einstellungen.html:59
+msgid "Das warten noch auf die Eltern:"
+msgstr "These are still waiting for your parents:"
+
+#: templates/oberflaeche/kind_einstellungen.html:65
+msgid "Mein Code"
+msgstr "My code"
+
+#: templates/oberflaeche/kind_einstellungen.html:69
+msgid "Alter Code"
+msgstr "Old code"
+
+#: templates/oberflaeche/kind_einstellungen.html:73
+msgid "Neuer Code (4 Ziffern)"
+msgstr "New code (4 digits)"
+
+#: templates/oberflaeche/kind_einstellungen.html:77
+msgid "Neuen Code noch einmal"
+msgstr "New code again"
+
+#: templates/oberflaeche/kind_einstellungen.html:80
+msgid "Code ändern"
+msgstr "Change code"
 
 #: templates/oberflaeche/kind_heim.html:9 templates/oberflaeche/module.html:22
 msgid "Abmelden"
@@ -778,7 +973,7 @@ msgstr ""
 "Points show what got done. The journey counts too: you can find rank, streak "
 "and badges in the showcase."
 
-#: views.py:226 views.py:241
+#: views.py:234 views.py:249
 msgid "Die Tablet-Ansicht gibt es nur im Heimnetz."
 msgstr "The tablet view is only available on the home network."
 
@@ -813,3 +1008,39 @@ msgstr "Family password changed."
 #: views_familie.py:135
 msgid "Die beiden Eingaben sind verschieden."
 msgstr "The two entries do not match."
+
+#: views_kind.py:22
+msgid "Dein Code ist geändert."
+msgstr "Your code has been changed."
+
+#: views_kind.py:23
+msgid "Mood gespeichert."
+msgstr "Mood saved."
+
+#: views_kind.py:24
+msgid "Danke! Die Eltern schauen sich deinen Vorschlag an."
+msgstr "Thanks! Your parents will look at your suggestion."
+
+#: views_kind.py:36
+msgid "Eigene der Familie"
+msgstr "Our family's own"
+
+#: views_moods.py:18
+msgid "Vorschlag zugelassen. Der Mood gilt jetzt für alle Kinder."
+msgstr "Suggestion approved. The mood now applies to all children."
+
+#: views_moods.py:19
+msgid "Vorschlag abgelehnt."
+msgstr "Suggestion declined."
+
+#: views_moods.py:20
+msgid "Mood ergänzt."
+msgstr "Mood added."
+
+#: views_moods.py:21
+msgid "Mood entfernt."
+msgstr "Mood removed."
+
+#: views_moods.py:22
+msgid "Auswahl gespeichert."
+msgstr "Selection saved."

@@ -1,6 +1,13 @@
 from django.urls import path
 
-from . import views, views_ablauf, views_nachweis, views_schnellknopf, views_wochenplan
+from . import (
+    views,
+    views_ablauf,
+    views_anerkennung,
+    views_nachweis,
+    views_schnellknopf,
+    views_wochenplan,
+)
 
 app_name = "aufgaben"
 
@@ -117,6 +124,11 @@ urlpatterns += [
         views_schnellknopf.tablet_druecken,
         name="schnellknopf_tablet_druecken",
     ),
+]
+
+# Anerkennung (Eltern schenken Punkte ohne Aufgabe)
+urlpatterns += [
+    path("eltern/anerkennung/", views_anerkennung.anerkennung_vergeben, name="anerkennung"),
 ]
 
 urlpatterns += wochenplan_urls

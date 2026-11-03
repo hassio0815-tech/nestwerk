@@ -17,6 +17,7 @@ class Art(models.TextChoices):
     AUFGABE = "aufgabe", gettext_lazy("Aufgabe")
     SERIENBONUS = "serienbonus", gettext_lazy("Serienbonus")
     SONDERPUNKTE = "sonderpunkte", gettext_lazy("Sonderpunkte")
+    ANERKENNUNG = "anerkennung", gettext_lazy("Anerkennung")
     MODUL = "modul", gettext_lazy("Modul")
     EINLOESUNG = "einloesung", gettext_lazy("Einlösung")
     MODKAUF = "modkauf", gettext_lazy("Mod-Kauf")

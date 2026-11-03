@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 19:49+0000\n"
+"POT-Creation-Date: 2026-11-02 19:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,47 +114,346 @@ msgid ""
 msgstr ""
 "X-Forwarded-For is only read from these addresses (Nginx Proxy Manager)."
 
-#: models.py:30 models.py:250 templates/konten/eltern_heim.html:5
+#: models.py:30 models.py:265 templates/konten/eltern_heim.html:5
 #: templates/konten/start.html:34 templates/konten/start.html:38
 msgid "Eltern"
 msgstr "Parents"
 
-#: models.py:31 models.py:251
+#: models.py:31 models.py:266
 msgid "Kind"
 msgstr "Child"
 
-#: models.py:221
+#: models.py:236
 msgid "Kiosk (Flur-Tablet)"
 msgstr "Kiosk (hallway tablet)"
 
-#: models.py:222
+#: models.py:237
 msgid "Persönlich"
 msgstr "Personal"
 
-#: services.py:37
+#: models.py:332
+msgid "Offen"
+msgstr "Open"
+
+#: models.py:333
+msgid "Zugelassen"
+msgstr "Approved"
+
+#: models.py:334
+msgid "Abgelehnt"
+msgstr "Declined"
+
+#: moods.py:30
+msgid "Meme und Trends"
+msgstr "Memes and trends"
+
+#: moods.py:31
+msgid "Filme und Figuren"
+msgstr "Movies and characters"
+
+#: moods.py:32
+msgid "Müde und chillig"
+msgstr "Tired and chilled"
+
+#: moods.py:33
+msgid "Gut drauf"
+msgstr "In a good mood"
+
+#: moods.py:34
+msgid "Grummelig"
+msgstr "Grumpy"
+
+#: moods.py:35
+msgid "Ruhig und besonders"
+msgstr "Calm and special"
+
+#: moods.py:40
+msgid "Six Seven"
+msgstr "Six Seven"
+
+#: moods.py:41
+msgid "Skibidi-Laune"
+msgstr "Skibidi mood"
+
+#: moods.py:42
+msgid "Sigma-Modus"
+msgstr "Sigma mode"
+
+#: moods.py:43
+msgid "Aura +1000"
+msgstr "Aura +1000"
+
+#: moods.py:44
+msgid "Lowkey müde"
+msgstr "Lowkey tired"
+
+#: moods.py:45
+msgid "Gerade am Cooken"
+msgstr "Currently cooking"
+
+#: moods.py:46
+msgid "No cap heute top"
+msgstr "No cap, feeling great"
+
+#: moods.py:47
+msgid "Rizz-Level hoch"
+msgstr "Rizz level high"
+
+#: moods.py:48
+msgid "Brainrot aktiv"
+msgstr "Brainrot active"
+
+#: moods.py:49
+msgid "NPC-Modus"
+msgstr "NPC mode"
+
+#: moods.py:51
+msgid "Grüner Griesgram"
+msgstr "Grumpy green grouch"
+
+#: moods.py:52
+msgid "Gelbes Bananen-Chaos"
+msgstr "Yellow banana chaos"
+
+#: moods.py:53
+msgid "Sumpf-Laune"
+msgstr "Swamp mood"
+
+#: moods.py:54
+msgid "Drachenzähmer"
+msgstr "Dragon tamer"
+
+#: moods.py:55
+msgid "Ninja im Training"
+msgstr "Ninja in training"
+
+#: moods.py:56
+msgid "Zauberlehrling"
+msgstr "Wizard's apprentice"
+
+#: moods.py:57
+msgid "Superheld auf Pause"
+msgstr "Superhero on a break"
+
+#: moods.py:58
+msgid "Piratenkapitän"
+msgstr "Pirate captain"
+
+#: moods.py:59
+msgid "Weiser Meister"
+msgstr "Wise master"
+
+#: moods.py:60
+msgid "Einhorn-Glitzer"
+msgstr "Unicorn glitter"
+
+#: moods.py:62
+msgid "Faultier-Modus"
+msgstr "Sloth mode"
+
+#: moods.py:63
+msgid "Kissenburg-Bewohner"
+msgstr "Pillow fort resident"
+
+#: moods.py:64
+msgid "Akku bei 1 %"
+msgstr "Battery at 1%"
+
+#: moods.py:65
+msgid "Sofa-Held"
+msgstr "Couch hero"
+
+#: moods.py:66
+msgid "Kaffee? Kakao!"
+msgstr "Coffee? Cocoa!"
+
+#: moods.py:67
+msgid "Winterschlaf light"
+msgstr "Hibernation lite"
+
+#: moods.py:68
+msgid "Ich chille ich villain"
+msgstr "I chill, I villain"
+
+#: moods.py:69
+msgid "Gähn-Meister"
+msgstr "Yawn master"
+
+#: moods.py:71
+msgid "Hyperaktives Eichhörnchen"
+msgstr "Hyper squirrel"
+
+#: moods.py:72
+msgid "Keks-Laune"
+msgstr "Cookie mood"
+
+#: moods.py:73
+msgid "Pizza-Power"
+msgstr "Pizza power"
+
+#: moods.py:74
+msgid "Regenbogen-Stimmung"
+msgstr "Rainbow vibes"
+
+#: moods.py:75
+msgid "Raketenstart"
+msgstr "Rocket launch"
+
+#: moods.py:76
+msgid "Konfetti im Kopf"
+msgstr "Confetti in my head"
+
+#: moods.py:77
+msgid "Level-Up-Laune"
+msgstr "Level-up mood"
+
+#: moods.py:78
+msgid "Boss-Modus"
+msgstr "Boss mode"
+
+#: moods.py:79
+msgid "Tanzmaus"
+msgstr "Dancing mouse"
+
+#: moods.py:80
+msgid "Energie ohne Ende"
+msgstr "Endless energy"
+
+#: moods.py:82
+msgid "Bitte nicht füttern"
+msgstr "Please don't feed"
+
+#: moods.py:83
+msgid "Gewitterwolke"
+msgstr "Thundercloud"
+
+#: moods.py:84
+msgid "Wütender Toast"
+msgstr "Angry toast"
+
+#: moods.py:85
+msgid "Kaktus-Laune"
+msgstr "Cactus mood"
+
+#: moods.py:86
+msgid "Heute bissig"
+msgstr "Biting today"
+
+#: moods.py:87
+msgid "Drama-Lama"
+msgstr "Drama llama"
+
+#: moods.py:89
+msgid "Zen-Panda"
+msgstr "Zen panda"
+
+#: moods.py:90
+msgid "Detektiv unterwegs"
+msgstr "Detective on the case"
+
+#: moods.py:91
+msgid "Zocker-Fokus"
+msgstr "Gamer focus"
+
+#: moods.py:92
+msgid "Bücherwurm"
+msgstr "Bookworm"
+
+#: moods.py:93
+msgid "Mission: Zimmer aufräumen"
+msgstr "Mission: tidy my room"
+
+#: moods.py:94
+msgid "Gerade im Flow"
+msgstr "In the flow"
+
+#: services.py:44
 msgid "Die PIN besteht aus genau 4 Ziffern."
 msgstr "The PIN must be exactly 4 digits."
 
-#: services.py:113
+#: services.py:120
 msgid "Unbekanntes Wappen."
 msgstr "Unknown crest."
 
-#: services.py:132
+#: services.py:139
 msgid "Unbekannte Sprache."
 msgstr "Unknown language."
 
-#: services.py:199
+#: services.py:159
+#, python-format
+msgid "%(feld)s: höchstens %(n)s Zeichen."
+msgstr "%(feld)s: at most %(n)s characters."
+
+#: services.py:162
+#, python-format
+msgid "%(feld)s enthält ungültige Zeichen."
+msgstr "%(feld)s contains invalid characters."
+
+#: services.py:169
+msgid "Spitzname"
+msgstr "Nickname"
+
+#: services.py:171
+msgid "Bitte einen Namen eingeben."
+msgstr "Please enter a name."
+
+#: services.py:173
+msgid "Diesen Namen gibt es schon."
+msgstr "This name is already taken."
+
+#: services.py:229
+msgid "Die beiden neuen Codes sind verschieden."
+msgstr "The two new codes are different."
+
+#: services.py:235 services.py:252
+msgid "Zu viele Versuche. Der Code ist kurz gesperrt."
+msgstr "Too many attempts. The code is locked for a short while."
+
+#: services.py:253
+msgid "Der alte Code stimmt nicht."
+msgstr "The old code is not right."
+
+#: services.py:281
 #, python-format
 msgid "Das Passwort braucht mindestens %(n)s Zeichen."
 msgstr "The password needs at least %(n)s characters."
 
-#: services.py:224
+#: services.py:306
 msgid "Unbekannter Gerätetyp."
 msgstr "Unknown device type."
 
-#: services.py:226
+#: services.py:308
 msgid "Nur Eltern registrieren Geräte."
 msgstr "Only parents can register devices."
+
+#: services.py:352 services.py:455
+msgid "Diesen Mood gibt es nicht."
+msgstr "There is no such mood."
+
+#: services.py:362
+msgid "Mood"
+msgstr "Mood"
+
+#: services.py:364
+msgid "Bitte einen Text eingeben."
+msgstr "Please enter some text."
+
+#: services.py:368
+msgid "Diesen Mood gibt es schon."
+msgstr "This mood already exists."
+
+#: services.py:385
+#, python-format
+msgid "Du hast schon %(n)s offene Vorschläge. Warte, bis die Eltern entschieden haben."
+msgstr "You already have %(n)s open suggestions. Wait until your parents have decided."
+
+#: services.py:389
+msgid "Das hast du schon vorgeschlagen."
+msgstr "You have already suggested this."
+
+#: services.py:407
+msgid "Dieser Vorschlag ist schon entschieden."
+msgstr "This suggestion has already been decided."
 
 #: templates/konten/_leerlauf.html:8
 msgid "Noch da? Tippe irgendwo, sonst wirst du gleich abgemeldet."
@@ -316,16 +615,16 @@ msgid_plural "%(n)s Minuten"
 msgstr[0] "%(n)s minute"
 msgstr[1] "%(n)s minutes"
 
-#: views.py:93
+#: views.py:96
 msgid "Die Anmeldung geht nur im Heimnetz."
 msgstr "Logging in only works on the home network."
 
-#: views.py:99 views.py:114
+#: views.py:102 views.py:117
 #, python-format
 msgid "Gesperrt. Versuch es in %(zeit)s wieder."
 msgstr "Locked. Try again in %(zeit)s."
 
-#: views.py:138
+#: views.py:141
 #, python-format
 msgid "Zu viele Versuche. Bitte in %(zeit)s wieder."
 msgstr "Too many attempts. Please try again in %(zeit)s."

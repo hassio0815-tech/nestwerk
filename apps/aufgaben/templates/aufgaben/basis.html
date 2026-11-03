@@ -10,5 +10,6 @@
     {% include "komponenten/button.html" with href=u4 variante="sekundaer" klein=True icon="kalender" text=_("Wochenplan") %}
     {% include "komponenten/button.html" with href=u2 variante="sekundaer" klein=True icon="stern" text=_("Bibliothek") %}
     {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="einstellungen" text=_("Kategorien") %}
+    {% url "aufgaben:anerkennung" as u5 %}{% include "komponenten/button.html" with href=u5 variante="sekundaer" klein=True icon="funke" text=_("Anerkennung") %}
   </nav>
 {% endblock %}

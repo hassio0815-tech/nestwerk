@@ -11,6 +11,7 @@ from apps.punkte import selectors as punkte
 
 LAUFENDE_ANZEIGE = ("rueckfrage", "nachbessern", "reserviert", "konflikt", "gemeldet")
 AUSZUG_OFFENE = 4
+VERLAUF_ANZAHL = 5
 SICHERUNGS_JOBS = ("db_sichern", "backup_pruefen")
 
 
@@ -21,6 +22,7 @@ def kind_konto(kind):
         "guthaben": saldo.guthaben,
         "xp": saldo.xp,
         "reserviert": punkte.reserviert(kind),
+        "verlauf": list(punkte.buchungen(kind)[:VERLAUF_ANZAHL]),
     }
 
 
@@ -38,12 +40,13 @@ def offene_anzahl(kind):
 
 
 def eltern_entscheidungen():
-    """Zähler offener Entscheidungen: Meldungen, Konflikte, Einlöseanträge."""
+    """Zähler offener Entscheidungen: Meldungen, Konflikte, Einlöseanträge, Mood-Vorschläge."""
     daten = aufgaben.eltern_entscheidungen()
     zaehler = {
         "meldungen": len(daten["meldungen"]),
         "konflikte": len(daten["konflikte"]),
         "antraege": belohnung.offene_antraege().count(),
+        "moods": konten.mood_vorschlaege_offen_anzahl(),
     }
     zaehler["gesamt"] = sum(zaehler.values())
     return zaehler
