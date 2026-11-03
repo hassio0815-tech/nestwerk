@@ -164,6 +164,7 @@ def test_cache_aufraeumen_loescht_nur_verwaiste_alte(anna, uhr, monkeypatch):
     avatar = services.avatar_waehlen(anna, "ritter", {})
     RenderCache.objects.create(hash="a" * 64, svg="<svg/>")
     RenderCache.objects.create(hash="b" * 64, svg="<svg/>")
+    RenderCache.objects.update(zuletzt_genutzt=zeit.jetzt())
     spaeter = zeit.jetzt() + timedelta(days=40)
     monkeypatch.setattr(zeit, "jetzt", lambda: spaeter)
     RenderCache.objects.filter(pk="b" * 64).update(zuletzt_genutzt=spaeter)
