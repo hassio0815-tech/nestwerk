@@ -2760,3 +2760,225 @@ msgstr "Family progress"
 
 msgid "Geschafft! Alle haben diese Woche geübt."
 msgstr "Done! Everyone has practised this week."
+
+#, python-format
+msgid "Das Tagesziel muss eine Zahl von %(von)s bis %(bis)s sein."
+msgstr "The daily goal must be a number from %(von)s to %(bis)s."
+
+msgid "Lernen: Grundwerte"
+msgstr "Learning: basics"
+
+msgid "Lernen: Speicher"
+msgstr "Learning: storage"
+
+msgid "Lernen: Kinder"
+msgstr "Learning: children"
+
+msgid "Lernen: KI"
+msgstr "Learning: AI"
+
+msgid "Grundniveau"
+msgstr "Basic level"
+
+msgid "Erweiterungsniveau"
+msgstr "Extended level"
+
+msgid "Bitte mindestens ein Fach wählen."
+msgstr "Please choose at least one subject."
+
+msgid "Bitte eine Auswahl treffen."
+msgstr "Please make a choice."
+
+#, python-format
+msgid "Die Klassenstufe muss eine Zahl von %(von)s bis %(bis)s sein."
+msgstr "The grade must be a number from %(von)s to %(bis)s."
+
+msgid "Die Schulform ist zu lang."
+msgstr "The school type is too long."
+
+msgid "Unbekannte Leistungsstufe."
+msgstr "Unknown performance level."
+
+msgid "Das ist kein Kind."
+msgstr "This is not a child."
+
+msgid "Der Ordner für die Lernmappe konnte nicht angelegt werden. Speicherort prüfen."
+msgstr "The folder for the learning folder could not be created. Please check the storage location."
+
+msgid "Verbindung steht."
+msgstr "Connection works."
+
+msgid "an"
+msgstr "on"
+
+msgid "aus"
+msgstr "off"
+
+msgid "Fächer"
+msgstr "Subjects"
+
+msgid "keine"
+msgstr "none"
+
+msgid "Tagesziel"
+msgstr "Daily goal"
+
+#, python-format
+msgid "%(n)s Minuten"
+msgstr "%(n)s minutes"
+
+msgid "Lernpunkte"
+msgstr "Learning points"
+
+msgid "Speicherort"
+msgstr "Storage location"
+
+msgid "Docker-Volume (Standard)"
+msgstr "Docker volume (default)"
+
+msgid "aus (keine KI eingerichtet)"
+msgstr "off (no AI set up)"
+
+#, python-format
+msgid "%(name)s (%(art)s), für: %(aufgaben)s"
+msgstr "%(name)s (%(art)s), for: %(aufgaben)s"
+
+msgid "nichts"
+msgstr "nothing"
+
+#, python-format
+msgid "Klasse %(n)s"
+msgstr "Grade %(n)s"
+
+msgid "Fragen aus Uploads sofort nutzbar"
+msgstr "Questions from uploads usable immediately"
+
+msgid "Eltern geben frei"
+msgstr "Parents approve"
+
+msgid "KI-Anbieter, Schlüssel und Zuordnung"
+msgstr "AI provider, key and assignment"
+
+msgid "Tutor an- und ausschalten"
+msgstr "Switch the tutor on and off"
+
+msgid "Freigabe der Fragen pro Kind"
+msgstr "Approval of questions per child"
+
+msgid "Lernen: Übersicht für die Eltern"
+msgstr "Learning: overview for parents"
+
+msgid "Speicherort der Lernmappen (gemounteter Pfad)"
+msgstr "Storage location of the learning folders (mounted path)"
+
+msgid "Leer: Docker-Volume (Standard). Sonst der Ordner im Container, in den z. B. ein NAS eingebunden ist. Nestwerk prüft, ob der Ordner da ist und beschreibbar. Bereits abgelegte Dateien werden nicht verschoben."
+msgstr "Empty: Docker volume (default). Otherwise the folder inside the container where e.g. a NAS is mounted. Nestwerk checks that the folder exists and is writable. Files already stored are not moved."
+
+msgid "Bitte einen Pfad eintragen."
+msgstr "Please enter a path."
+
+msgid "Der Pfad ist ungültig."
+msgstr "The path is invalid."
+
+msgid "Bitte einen vollständigen Pfad ohne „..“ eintragen (beginnt mit /)."
+msgstr "Please enter a full path without “..” (starting with /)."
+
+msgid "Dieser Ordner darf nicht verwendet werden. Bitte einen eigenen Ordner wählen."
+msgstr "This folder must not be used. Please choose a folder of your own."
+
+msgid "Diesen Ordner gibt es nicht. Bitte zuerst den Ordner bzw. das NAS in den Container einbinden."
+msgstr "This folder does not exist. Please mount the folder or NAS into the container first."
+
+msgid "In diesen Ordner kann Nestwerk nicht schreiben. Rechte des Ordners prüfen."
+msgstr "Nestwerk cannot write to this folder. Please check the folder's permissions."
+
+msgid "Das ist in Ordnung. Du kannst es später in den Einstellungen nachholen."
+msgstr "That is fine. You can catch up later in the settings."
+
+msgid "Später in den Einstellungen"
+msgstr "Later in the settings"
+
+msgid "Nestwerk hilft den Kindern beim Üben. Dieser Teil ist freiwillig. Du kannst ihn überspringen und später nachholen."
+msgstr "Nestwerk helps the children practise. This part is optional. You can skip it and do it later."
+
+msgid "Tagesziel (Minuten pro Tag)"
+msgstr "Daily goal (minutes per day)"
+
+msgid "Startwert für alle Kinder. Er passt sich später sanft an."
+msgstr "Starting value for all children. It adjusts gently over time."
+
+msgid "Lernpunkte vergeben (für das Erreichen des Tagesziels)"
+msgstr "Award learning points (for reaching the daily goal)"
+
+msgid "Tutor einschalten (braucht eine KI)"
+msgstr "Switch the tutor on (needs an AI)"
+
+msgid "Der Tutor ist standardmäßig aus. Eine Garantie gibt es nicht: Ein Kind kann eine Aufgabe abtippen oder umformulieren, und eine KI kann Fehler machen. Schaut ab und zu ins Protokoll."
+msgstr "The tutor is off by default. There is no guarantee: a child can type out or reword a task, and an AI can make mistakes. Take a look at the log now and then."
+
+msgid "Eine KI kann Fotos einlesen, Fragen erzeugen und Antworten bewerten. Ohne KI geht das Üben mit den vorhandenen Fragen trotzdem."
+msgstr "An AI can read photos, create questions and rate answers. Without an AI you can still practise with the existing questions."
+
+msgid "Test erfolgreich."
+msgstr "Test passed."
+
+msgid "Test fehlgeschlagen."
+msgstr "Test failed."
+
+msgid "Welche KI?"
+msgstr "Which AI?"
+
+msgid "Keine KI jetzt"
+msgstr "No AI for now"
+
+msgid "z. B. Meine KI"
+msgstr "e.g. My AI"
+
+msgid "Diese KI nutzen für"
+msgstr "Use this AI for"
+
+msgid "Bei einem Cloud-Anbieter (Anthropic, OpenAI oder jeder Server außerhalb eures Netzes)"
+msgstr "With a cloud provider (Anthropic, OpenAI or any server outside your network)"
+
+msgid "Nur bei Cloud-Anbietern nötig: Ich habe die Hinweise gelesen und erlaube, dass Daten an diesen Anbieter gesendet werden."
+msgstr "Only needed for cloud providers: I have read the notes and allow data to be sent to this provider."
+
+msgid "Diese Angaben passen Aufgaben und Texte an. Alles ist freiwillig. Sie bleiben auf eurem Server."
+msgstr "These details adapt tasks and texts. Everything is optional. They stay on your server."
+
+msgid "Klassenstufe"
+msgstr "Grade"
+
+msgid "Schulform"
+msgstr "School type"
+
+#, python-format
+msgid "Leistungsstufe in %(fach)s"
+msgstr "Performance level in %(fach)s"
+
+msgid "keine Stufe"
+msgstr "no level"
+
+msgid "Fragen aus hochgeladenem Material"
+msgstr "Questions from uploaded material"
+
+msgid "Eltern geben frei (Standard)"
+msgstr "Parents approve (default)"
+
+msgid "Sofort nutzbar"
+msgstr "Usable immediately"
+
+msgid "Hier landen Fotos und Dokumente, die Kinder zum Üben hochladen."
+msgstr "Photos and documents the children upload for practice end up here."
+
+msgid "Docker-Volume (Standard, empfohlen)"
+msgstr "Docker volume (default, recommended)"
+
+msgid "Eigener Ordner, z. B. ein NAS"
+msgstr "Own folder, e.g. a NAS"
+
+msgid "Pfad des Ordners"
+msgstr "Folder path"
+
+msgid "Der Ordner muss schon in den Container eingebunden sein (mount). Nestwerk prüft, ob es ihn gibt und ob es hineinschreiben kann. Bereits abgelegte Dateien werden nicht verschoben."
+msgstr "The folder must already be mounted into the container. Nestwerk checks that it exists and that it can write into it. Files already stored are not moved."

@@ -1,0 +1,12 @@
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+  {% csrf_token %}
+  <h1>{% translate "Lernen: Speicher" %}</h1>
+  <p>{% translate "Hier landen Fotos und Dokumente, die Kinder zum Üben hochladen." %}</p>
+  {% include "lernen/einrichtung/_kopf.html" %}
+  <label class="reihe"><input type="radio" name="modus" value="volume"{% if werte.modus != "pfad" %} checked{% endif %}> <span>{% translate "Docker-Volume (Standard, empfohlen)" %}</span></label>
+  <label class="reihe"><input type="radio" name="modus" value="pfad"{% if werte.modus == "pfad" %} checked{% endif %}> <span>{% translate "Eigener Ordner, z. B. ein NAS" %}</span></label>
+  <div class="feld"><label class="feld__label" for="pfad">{% translate "Pfad des Ordners" %}</label>
+    <input class="feld__eingabe" id="pfad" name="pfad" value="{{ werte.pfad }}" maxlength="300" placeholder="/mnt/dein-ordner" aria-describedby="pfad-h">
+    <p class="feld__hinweis" id="pfad-h">{% translate "Der Ordner muss schon in den Container eingebunden sein (mount). Nestwerk prüft, ob es ihn gibt und ob es hineinschreiben kann. Bereits abgelegte Dateien werden nicht verschoben." %}</p></div>
+  {% include "lernen/einrichtung/_fuss.html" %}
+</form>

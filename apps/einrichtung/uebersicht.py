@@ -90,6 +90,8 @@ def felder(daten=None, fehler=None):
         art = _art(d)
         if daten is not None:
             wert = ("on" if daten.get(name) else "") if art == "bool" else daten.get(name, "")
+        elif art == "bool":
+            wert = "on" if aktuell else ""  # "False" als Text wäre angehakt (Altfehler)
         else:
             wert = _als_text(d, aktuell)
         gruppen[d.modul].append(

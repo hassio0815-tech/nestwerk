@@ -11,6 +11,15 @@
     <p><strong>{% translate "Adresse:" %}</strong> {{ z.netzwerk.basis_url }}</p>
     <p><strong>{% translate "Zeitzone:" %}</strong> {{ z.zeit.zeitzone }}, <strong>{% translate "Go-live:" %}</strong> {{ z.zeit.go_live_datum|date:"d.m.Y" }}</p>
   </div></section>
+  {% for m in z.module %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>{{ m.titel }}</h2>
+      {% for bezeichnung, text in m.zeilen %}<p><strong>{{ bezeichnung }}:</strong> {{ text }}</p>{% endfor %}
+      <p class="feld__hinweis">{% translate "Übersprungene Teile behalten die Startwerte." %}</p>
+      <p><strong>{% translate "Später nachholen oder ändern (nach dem Abschluss):" %}</strong></p>
+      <ul>{% for text, adresse in m.spaeter %}<li>{{ text }} <span class="feld__hinweis">{{ adresse }}</span></li>{% endfor %}</ul>
+    </div></section>
+  {% endfor %}
   <p>{% translate "Danach ist der Assistent gesperrt. Weitere Änderungen machst du im Eltern-Dashboard." %}</p>
   {% include "einrichtung/_navigation.html" with weiter_text=_("Einrichtung abschließen") %}
 </form>

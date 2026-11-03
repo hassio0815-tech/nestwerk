@@ -9,18 +9,27 @@ Etappe 4 ergänzt ``lesen``, den Blick auf fremde Dateien im Ordner ``inbox`` (`
 zweiter Eingang z. B. über ein NAS) und deren sicheres Übernehmen (``uebernehmen``).
 """
 
+import os
 import shutil
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from uuid import UUID
 
 from django.conf import settings
+from django.utils.translation import gettext as _
+
+from apps.kern.einstellungen import EinstellungFehlt, wert
 
 BEREICHE = ("inbox", "archiv", "tests")
 
 
 class SpeicherFehler(Exception):
     """Unzulässiger Pfad, Dateiname oder Bereich."""
+
+
+class PfadFehler(SpeicherFehler, ValueError):
+    """Der gewählte Speicherort ist unzulässig (Meldung für die Eltern, ohne Systemdetails)."""
 
 
 class SpeicherVoll(SpeicherFehler):
@@ -38,9 +47,76 @@ class InboxDatei:
     geaendert: float
 
 
+# Systemordner, die nie als Speicherort taugen (Prüfung nach dem Auflösen von Verknüpfungen)
+GESPERRTE_WURZELN = (
+    "/bin",
+    "/boot",
+    "/dev",
+    "/etc",
+    "/lib",
+    "/lib32",
+    "/lib64",
+    "/proc",
+    "/root",
+    "/run",
+    "/sbin",
+    "/sys",
+    "/usr",
+)
+PFAD_MAX = 300
+
+
+def pfad_pruefen(text, *, schreibtest=True):
+    """Prüft einen gemounteten Speicherort und gibt den aufgelösten Pfad (``Path``) zurück.
+
+    Verlangt: absoluter Pfad ohne ``..``, kein Systemordner und nicht der Programmordner, ein
+    vorhandener Ordner (er wird nie angelegt, er muss eingebunden sein) und, wenn ``schreibtest``,
+    eine kurze Testdatei, die sofort wieder verschwindet. Fehler sind ``PfadFehler`` mit einer
+    Meldung ohne technische Details."""
+    text = (text or "").strip()
+    if not text:
+        raise PfadFehler(_("Bitte einen Pfad eintragen."))
+    if len(text) > PFAD_MAX or "\x00" in text or any(ord(z) < 32 for z in text):
+        raise PfadFehler(_("Der Pfad ist ungültig."))
+    if not os.path.isabs(text) or ".." in Path(text).parts:
+        raise PfadFehler(_("Bitte einen vollständigen Pfad ohne „..“ eintragen (beginnt mit /)."))
+    ziel = Path(text).resolve()
+    gesperrt = [Path(p) for p in GESPERRTE_WURZELN] + [Path(settings.BASE_DIR).resolve()]
+    if ziel == Path(ziel.anchor) or any(ziel == p or p in ziel.parents for p in gesperrt):
+        raise PfadFehler(
+            _("Dieser Ordner darf nicht verwendet werden. Bitte einen eigenen Ordner wählen.")
+        )
+    if not ziel.is_dir():
+        raise PfadFehler(
+            _(
+                "Diesen Ordner gibt es nicht. "
+                "Bitte zuerst den Ordner bzw. das NAS in den Container einbinden."
+            )
+        )
+    if schreibtest:
+        try:
+            with tempfile.NamedTemporaryFile(dir=ziel, prefix=".nestwerk-test-"):
+                pass
+        except OSError:
+            raise PfadFehler(
+                _("In diesen Ordner kann Nestwerk nicht schreiben. Rechte des Ordners prüfen.")
+            ) from None
+    return ziel
+
+
+def konfigurierter_pfad():
+    """Der in der Einrichtung gewählte Speicherort oder ``""`` (= Docker-Volume)."""
+    try:
+        return wert("lernen.speicher_pfad")
+    except EinstellungFehlt:
+        return ""
+
+
 class Speicher:
     def __init__(self, basis=None):
-        self.basis = Path(basis if basis is not None else settings.LERNEN_SPEICHER_DIR).resolve()
+        if basis is None:
+            basis = konfigurierter_pfad() or settings.LERNEN_SPEICHER_DIR
+        self.basis = Path(basis).resolve()
 
     def kind_ordner(self, kind_id):
         # Konten haben UUID-Schlüssel; Ganzzahlen sind für Tests und andere Schlüsselarten erlaubt

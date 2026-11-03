@@ -17,6 +17,19 @@ def url(nr):
     return f"/einrichtung/schritt/{nr}/"
 
 
+def abschluss():
+    """Nummer des Abschluss-Schritts (hinter den optionalen Modul-Schritten)."""
+    from apps.einrichtung import schritte
+
+    return schritte.letzter()
+
+
+def lernen_ueberspringen(c):
+    """Überspringt alle optionalen Modul-Schritte zwischen Startwerten und Abschluss."""
+    for nr in range(8, abschluss()):
+        assert c.post(url(nr), {"aktion": "ueberspringen"}).status_code == 302
+
+
 ELTERN = {
     "eltern1_name": "Anna",
     "eltern1_rolle": "mama",

@@ -1,0 +1,41 @@
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+  {% csrf_token %}
+  <h1>{% translate "Lernen: KI" %}</h1>
+  <p>{% translate "Eine KI kann Fotos einlesen, Fragen erzeugen und Antworten bewerten. Ohne KI geht das Üben mit den vorhandenen Fragen trotzdem." %}</p>
+  {% include "lernen/einrichtung/_kopf.html" %}
+  {% if ergebnis.test %}
+    <div class="feld__hinweis{% if not ergebnis.test.ok %} feld__hinweis--fehler{% endif %}" role="status"><strong>{% if ergebnis.test.ok %}{% translate "Test erfolgreich." %}{% else %}{% translate "Test fehlgeschlagen." %}{% endif %}</strong> {{ ergebnis.test_text }}</div>
+  {% endif %}
+  <div class="feld"><label class="feld__label" for="ki-modus">{% translate "Welche KI?" %}</label>
+    <select class="feld__eingabe" id="ki-modus" name="modus">
+      <option value="{{ kein_wert }}"{% if werte.modus == kein_wert %} selected{% endif %}>{% translate "Keine KI jetzt" %}</option>
+      {% for wert, text in typen %}<option value="{{ wert }}"{% if werte.modus == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
+    </select></div>
+  <div class="feld"><label class="feld__label" for="ki-name">{% translate "Name" %}</label>
+    <input class="feld__eingabe" id="ki-name" name="name" value="{{ werte.name }}" maxlength="60" placeholder="{% translate 'z. B. Meine KI' %}"></div>
+  <div class="feld"><label class="feld__label" for="ki-url">{% translate "Adresse (Basis-URL)" %}</label>
+    <input class="feld__eingabe" id="ki-url" name="basis_url" value="{{ werte.basis_url }}" maxlength="300" placeholder="http://dein-ki-server:11434/v1" aria-describedby="ki-url-h">
+    <p class="feld__hinweis" id="ki-url-h">{% translate "Bei eigenen Servern Pflicht, inklusive Versionspfad (meist /v1). Bei Anthropic und OpenAI leer lassen für die Standard-Adresse." %}</p></div>
+  <div class="feld"><label class="feld__label" for="ki-modell">{% translate "Modellname" %}</label>
+    <input class="feld__eingabe" id="ki-modell" name="modell" value="{{ werte.modell }}" maxlength="120" placeholder="dein-modellname"></div>
+  <div class="feld"><label class="feld__label" for="ki-key">{% translate "API-Schlüssel" %}</label>
+    <input class="feld__eingabe" id="ki-key" type="password" name="api_key" value="" autocomplete="new-password" aria-describedby="ki-key-h">
+    <p class="feld__hinweis" id="ki-key-h">{% if werte.hat_schluessel %}{% translate "Ein Schlüssel ist gespeichert. Leer lassen, um ihn zu behalten; er wird nie angezeigt." %}{% else %}{% translate "Bei eigenen Servern oft nicht nötig. Er wird verschlüsselt gespeichert und nie angezeigt." %}{% endif %}</p></div>
+  <fieldset class="stapel"><legend><strong>{% translate "Diese KI nutzen für" %}</strong></legend>
+    {% for wert, text in aufgaben %}
+      <label class="reihe"><input type="checkbox" name="aufgaben" value="{{ wert }}"{% if wert in werte.aufgaben %} checked{% endif %}> <span>{{ text }}</span></label>
+    {% endfor %}
+  </fieldset>
+  <div class="feld__hinweis" role="note">
+    <p><strong>{% translate "Bei einem Cloud-Anbieter (Anthropic, OpenAI oder jeder Server außerhalb eures Netzes)" %}</strong></p>
+    <ul>
+      <li>{% translate "Daten verlassen euren Server und gehen an den Anbieter. Dazu können Fotos und Texte der Kinder gehören (zum Beispiel Hausaufgaben und Antworten)." %}</li>
+      <li>{% translate "Cloud-Anbieter berechnen meist Kosten pro Nutzung. Die Preise legt der Anbieter fest." %}</li>
+      <li>{% translate "Eine KI kann Fehler machen. Prüft Ausgaben, bevor ihr euch darauf verlasst." %}</li>
+      <li>{% translate "Es ist eure Entscheidung. Ihr könnt den Anbieter jederzeit wieder ausschalten." %}</li>
+    </ul>
+  </div>
+  <label class="reihe"><input type="checkbox" name="einwilligung" value="1"{% if werte.einwilligung %} checked{% endif %}> <span>{% translate "Nur bei Cloud-Anbietern nötig: Ich habe die Hinweise gelesen und erlaube, dass Daten an diesen Anbieter gesendet werden." %}</span></label>
+  <button type="submit" name="aktion" value="testen" class="knopf knopf--sekundaer">{% include "komponenten/icon.html" with name="glocke" %}<span>{% translate "Verbindung testen" %}</span></button>
+  {% include "lernen/einrichtung/_fuss.html" %}
+</form>

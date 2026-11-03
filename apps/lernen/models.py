@@ -171,6 +171,8 @@ class Lernmappe(models.Model):
     # Etappe 4: Sind Fragen aus Uploads sofort nutzbar? ``None`` = Familien-Einstellung
     # ``lernen.freigabe_durch_eltern`` (Standard: Eltern geben frei).
     fragen_sofort_nutzbar = models.BooleanField(null=True, blank=True)
+    # Etappe 8: Schulform (frei, tragen die Eltern im Einrichtungs-Assistenten ein)
+    schulform = models.CharField(max_length=60, blank=True)
 
     def __str__(self):
         return f"Lernmappe {self.kind_id}"

@@ -24,7 +24,8 @@ def anderer_wert(d, aktuell):
             case Typ.BOOL:
                 kandidaten = [not aktuell]
             case Typ.TEXT:
-                kandidaten = ["Beispiel", "https://beispiel.example", "a@b.de"]
+                # "/tmp": ein vorhandener, beschreibbarer Ordner für lernen.speicher_pfad
+                kandidaten = ["Beispiel", "https://beispiel.example", "a@b.de", "/tmp"]
             case Typ.DATUM:
                 kandidaten = ["2026-12-31", "2026-01-02"]
             case Typ.UHRZEIT:

@@ -4,7 +4,8 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.kern.einstellungen import Typ, definieren
 
-LETZTER_SCHRITT = 8
+# Obergrenze des Zwischenstands (sieben feste Schritte, Modul-Schritte, Abschluss)
+MAX_SCHRITT = 30
 
 STARTWERTE = {
     "einrichtung.schritt": 1,
@@ -20,7 +21,7 @@ def einstellungen_definieren():
         "Einrichtung: erreichter Schritt",
         beschreibung="Höchster Schritt, den der Assistent freigegeben hat (Zwischenstand).",
         minimum=1,
-        maximum=LETZTER_SCHRITT,
+        maximum=MAX_SCHRITT,
         intern=True,
     )
     definieren(

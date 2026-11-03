@@ -1,0 +1,28 @@
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+  {% csrf_token %}
+  <h1>{% translate "Lernen: Kinder" %}</h1>
+  <p>{% translate "Diese Angaben passen Aufgaben und Texte an. Alles ist freiwillig. Sie bleiben auf eurem Server." %}</p>
+  {% include "lernen/einrichtung/_kopf.html" %}
+  {% for z in zeilen %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>{{ z.kind.anzeigename }}</h2>
+      {% if z.fehler %}<div class="feld__hinweis feld__hinweis--fehler" role="alert">{% for e in z.fehler %}<p>{{ e }}</p>{% endfor %}</div>{% endif %}
+      <div class="feld"><label class="feld__label" for="klasse-{{ z.kind.pk }}">{% translate "Klassenstufe" %}</label>
+        <input class="feld__eingabe" id="klasse-{{ z.kind.pk }}" name="kind-{{ z.kind.pk }}-klasse" type="number" inputmode="numeric" min="1" max="13" value="{{ z.werte.klassenstufe }}"></div>
+      <div class="feld"><label class="feld__label" for="schulform-{{ z.kind.pk }}">{% translate "Schulform" %}</label>
+        <input class="feld__eingabe" id="schulform-{{ z.kind.pk }}" name="kind-{{ z.kind.pk }}-schulform" value="{{ z.werte.schulform }}" maxlength="60"></div>
+      {% for schluessel, fach, aktuell in z.stufen %}
+        <div class="feld"><label class="feld__label" for="stufe-{{ schluessel }}-{{ z.kind.pk }}">{% blocktranslate %}Leistungsstufe in {{ fach }}{% endblocktranslate %}</label>
+          <select class="feld__eingabe" id="stufe-{{ schluessel }}-{{ z.kind.pk }}" name="kind-{{ z.kind.pk }}-stufe-{{ schluessel }}">
+            <option value="">{% translate "keine Stufe" %}</option>
+            {% for wert, text in stufenwahl %}<option value="{{ wert }}"{% if aktuell == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
+          </select></div>
+      {% endfor %}
+      <fieldset class="stapel"><legend><strong>{% translate "Fragen aus hochgeladenem Material" %}</strong></legend>
+        <label class="reihe"><input type="radio" name="kind-{{ z.kind.pk }}-freigabe" value="eltern"{% if not z.werte.sofort %} checked{% endif %}> <span>{% translate "Eltern geben frei (Standard)" %}</span></label>
+        <label class="reihe"><input type="radio" name="kind-{{ z.kind.pk }}-freigabe" value="sofort"{% if z.werte.sofort %} checked{% endif %}> <span>{% translate "Sofort nutzbar" %}</span></label>
+      </fieldset>
+    </div></section>
+  {% endfor %}
+  {% include "lernen/einrichtung/_fuss.html" %}
+</form>

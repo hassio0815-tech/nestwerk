@@ -15,10 +15,9 @@ from apps.kern.sprache import uebersetzt
 from apps.konten import akzent, begruessung
 from apps.konten import selectors as konten_selectors
 
-from . import forms, services, uebersicht, zustand
-from .einstellungen import LETZTER_SCHRITT
+from . import forms, schritte, services, uebersicht, zustand
 
-SCHRITTE = [
+KERN_SCHRITTE = [
     (1, gettext_lazy("Willkommen")),
     (2, gettext_lazy("Eltern")),
     (3, gettext_lazy("Kinder")),
@@ -26,9 +25,8 @@ SCHRITTE = [
     (5, gettext_lazy("Netzwerk")),
     (6, gettext_lazy("Zeit")),
     (7, gettext_lazy("Startwerte")),
-    (8, gettext_lazy("Abschluss")),
 ]
-TITEL = dict(SCHRITTE)
+ABSCHLUSS_TITEL = gettext_lazy("Abschluss")
 KINDER_STARTZEILEN = 3
 FARBEN = {
     "blau": gettext_lazy("Blau"),
@@ -40,6 +38,23 @@ FARBEN = {
     "lila": gettext_lazy("Lila"),
     "pink": gettext_lazy("Pink"),
 }
+
+
+def _schritt_liste():
+    """``[(Nr., Titel)]``: feste Schritte, registrierte Modul-Schritte, Abschluss."""
+    liste = list(KERN_SCHRITTE)
+    liste += [
+        (schritte.KERN_ANZAHL + 1 + i, s.titel) for i, s in enumerate(schritte.erweiterungen())
+    ]
+    liste.append((schritte.letzter(), ABSCHLUSS_TITEL))
+    return liste
+
+
+def _vorlage(nr):
+    ext = schritte.erweiterung(nr)
+    if ext:
+        return ext.template
+    return "einrichtung/s8.html" if nr == schritte.letzter() else f"einrichtung/s{nr}.html"
 
 
 def _zugang(view, *, mit_token):
@@ -69,14 +84,15 @@ def _htmx(request):
 
 def _darstellen(request, nr, kontext=None):
     kontext = dict(kontext or {})
+    liste = _schritt_liste()
     kontext.update(
         {
             "nr": nr,
-            "schritte": LETZTER_SCHRITT,
+            "schritte": schritte.letzter(),
             "schritt": nr,
-            "schritt_titel": _("Schritt %(nr)s: %(titel)s") % {"nr": nr, "titel": TITEL[nr]},
-            "schritt_liste": SCHRITTE,
-            "inhalt": f"einrichtung/s{nr}.html",
+            "schritt_titel": _("Schritt %(nr)s: %(titel)s") % {"nr": nr, "titel": dict(liste)[nr]},
+            "schritt_liste": liste,
+            "inhalt": _vorlage(nr),
             "zurueck_url": resolve_url("einrichtung:schritt", nr=nr - 1) if nr > 1 else "",
             "weiter_url": resolve_url("einrichtung:schritt", nr=nr),
             "app_name": services.app_name(),
@@ -311,11 +327,17 @@ def _s8(request, post):
     return {"z": services.zusammenfassung(), "offen": offen}
 
 
-_HANDLER = {1: _s1, 2: _s2, 3: _s3, 4: _s4, 5: _s5, 6: _s6, 7: _s7, 8: _s8}
+_HANDLER = {1: _s1, 2: _s2, 3: _s3, 4: _s4, 5: _s5, 6: _s6, 7: _s7}
 
 
 def _schritt_anzeigen(request, nr, POST):
-    kontext = _HANDLER[nr](request, POST)
+    ext = schritte.erweiterung(nr)
+    if ext:  # optionaler Modul-Schritt: gespeichert oder übersprungen -> weiter
+        kontext = ext.verarbeiten(request, POST)
+        if kontext is None:
+            services.erweiterung_erledigt(nr)
+    else:
+        kontext = (_s8 if nr == schritte.letzter() else _HANDLER[nr])(request, POST)
     if kontext is None:
         return _weiter(request, nr + 1)
     return _darstellen(request, nr, kontext)
@@ -325,7 +347,12 @@ def _fertig(request):
     antwort = render(
         request,
         "einrichtung/_assistent.html" if _htmx(request) else "einrichtung/seite.html",
-        {"fertig": True, "app_name": services.app_name(), "schritte": 0},
+        {
+            "fertig": True,
+            "app_name": services.app_name(),
+            "schritte": 0,
+            "module": services.modul_zusammenfassungen(),
+        },
     )
     antwort["HX-Push-Url"] = "false"
     return antwort
@@ -353,12 +380,12 @@ def token(request):
 @zugang
 @require_http_methods(["GET", "POST"])
 def schritt(request, nr):
-    if nr not in TITEL:
+    if nr not in dict(_schritt_liste()):
         raise Http404
     if nr > zustand.freigegebener_schritt():
         return redirect("einrichtung:schritt", nr=zustand.freigegebener_schritt())
     post = request.method == "POST"
-    if nr == LETZTER_SCHRITT and post:
+    if nr == schritte.letzter() and post:
         if _s8(request, True) is None:
             return _fertig(request)
         return _darstellen(request, nr, _s8(request, False))

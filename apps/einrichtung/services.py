@@ -18,8 +18,7 @@ from apps.konten import akzent, wappen
 from apps.konten import selectors as konten_selectors
 from apps.konten import services as konten_services
 
-from . import zustand
-from .einstellungen import LETZTER_SCHRITT
+from . import schritte, zustand
 
 
 class SchrittFehler(Exception):
@@ -38,10 +37,16 @@ def _setzen(schluessel, wert):
     return einstellungen.setzen(schluessel, wert, akteur=None)
 
 
+def erweiterung_erledigt(nr):
+    """Ein Modul-Schritt wurde gespeichert oder übersprungen: nächsten Schritt freigeben."""
+    with transaction.atomic():
+        _schritt_abschliessen(nr)
+
+
 def _schritt_abschliessen(nr):
     """Gibt den nächsten Schritt frei und vermerkt den Zwischenstand."""
     if nr + 1 > zustand.freigegebener_schritt():
-        _setzen("einrichtung.schritt", min(nr + 1, LETZTER_SCHRITT))
+        _setzen("einrichtung.schritt", min(nr + 1, schritte.letzter()))
     audit.protokollieren("einrichtung.schritt_gespeichert", akteur=None, details={"schritt": nr})
 
 
@@ -388,7 +393,7 @@ def startwerte_speichern(aenderungen):
 def offene_punkte():
     """Was vor dem Abschluss noch fehlt (leer = fertig)."""
     offen = []
-    if zustand.freigegebener_schritt() < LETZTER_SCHRITT:
+    if zustand.freigegebener_schritt() < schritte.letzter():
         offen.append(_("Nicht alle Schritte sind durchlaufen."))
     if len(konten_selectors.aktive_eltern()) < 2 or not passwort_gesetzt():
         offen.append(_("Eltern und Familien-Passwort fehlen (Schritt 2)."))
@@ -406,9 +411,15 @@ def offene_punkte():
     return offen
 
 
+def modul_zusammenfassungen():
+    """Zusammenfassungen der Modul-Schritte (je Eintrag ``titel``, ``zeilen``, ``spaeter``)."""
+    return [s.zusammenfassung() for s in schritte.erweiterungen() if s.zusammenfassung]
+
+
 def zusammenfassung():
     konto = mail_selectors.smtp_konto()
     return {
+        "module": modul_zusammenfassungen(),
         "app_name": app_name(),
         "eltern": [(b.anzeigename, b.elternprofil.email) for b in konten_selectors.aktive_eltern()],
         "kinder": [k.anzeigename for k in konten_selectors.aktive_kinder()],

@@ -5,5 +5,9 @@
     <li><strong>{% translate "Push-Mitteilungen:" %}</strong> {% translate "Auf jedem Gerät nach der Anmeldung in den Benachrichtigungs-Einstellungen aktivieren (iPhone: erst „Zum Home-Bildschirm“)." %}</li>
     <li><strong>{% translate "Tablet:" %}</strong> {% translate "Als Elternteil anmelden und das Tablet unter „Geräte“ als Tablet markieren." %}</li>
   </ul>
+  {% for m in module %}
+    <p><strong>{% blocktranslate with titel=m.titel %}{{ titel }}: später nachholen oder ändern{% endblocktranslate %}</strong></p>
+    <ul>{% for text, adresse in m.spaeter %}<li><a href="{{ adresse }}">{{ text }}</a></li>{% endfor %}</ul>
+  {% endfor %}
   {% include "komponenten/button.html" with href="/" text=_("Zur Anmeldung") icon="home" voll=True %}
 </div>

@@ -158,11 +158,49 @@ def fortschritt(schluessel, *args, **kwargs):
     return provider_verzeichnis.holen(schluessel).funktion(*args, **kwargs)
 
 
+# --- Schritte des Einrichtungs-Assistenten ---------------------------------------------------
+
+
+@dataclass(frozen=True)
+class EinrichtungsSchritt:
+    """Optionaler, überspringbarer Schritt eines Moduls im Einrichtungs-Assistenten.
+
+    ``verarbeiten(request, absenden) -> dict | None`` liefert den Kontext zum Anzeigen oder
+    ``None`` (gespeichert oder übersprungen: weiter). ``zusammenfassung() -> dict`` (optional)
+    liefert für die Abschlussseite ``{"titel", "zeilen": [(Bezeichnung, Text)], "spaeter":
+    [(Text, Adresse)]}``. Die Schritte stehen zwischen "Startwerte" und "Abschluss"."""
+
+    schluessel: str
+    modul: str
+    titel: str
+    template: str
+    verarbeiten: Callable[[Any, bool], dict | None] = field(repr=False)
+    zusammenfassung: Callable[[], dict] | None = field(default=None, repr=False)
+    reihenfolge: int = 100
+
+
+einrichtung_verzeichnis = Verzeichnis("Einrichtungsschritt")
+
+
+def einrichtung_registrieren(schritt):
+    return einrichtung_verzeichnis.registrieren(schritt.schluessel, schritt)
+
+
+def einrichtungsschritte():
+    """Registrierte Schritte, sortiert nach Reihenfolge und Schlüssel."""
+    return sorted(einrichtung_verzeichnis.alle(), key=lambda s: (s.reihenfolge, s.schluessel))
+
+
 @contextmanager
 def isoliert():
-    """Für Tests: Kacheln, Metriken und Provider sind darin zunächst leer (ohne die von Apps
-    in ``ready()`` registrierten) und werden danach wiederhergestellt."""
-    verzeichnisse = (kachel_verzeichnis, metrik_verzeichnis, provider_verzeichnis)
+    """Für Tests: Kacheln, Metriken, Provider und Einrichtungsschritte sind darin zunächst leer
+    (ohne die von Apps in ``ready()`` registrierten) und werden danach wiederhergestellt."""
+    verzeichnisse = (
+        kachel_verzeichnis,
+        metrik_verzeichnis,
+        provider_verzeichnis,
+        einrichtung_verzeichnis,
+    )
     staende = [dict(v._eintraege) for v in verzeichnisse]
     for v in verzeichnisse:
         v._eintraege = {}

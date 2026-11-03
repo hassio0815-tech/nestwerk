@@ -1,0 +1,18 @@
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+  {% csrf_token %}
+  <h1>{% translate "Lernen: Grundwerte" %}</h1>
+  <p>{% translate "Nestwerk hilft den Kindern beim Üben. Dieser Teil ist freiwillig. Du kannst ihn überspringen und später nachholen." %}</p>
+  {% include "lernen/einrichtung/_kopf.html" %}
+  <fieldset class="stapel"><legend><strong>{% translate "Fächer" %}</strong></legend>
+    {% for schluessel, name in faecher %}
+      <label class="reihe"><input type="checkbox" name="faecher" value="{{ schluessel }}"{% if schluessel in werte.faecher %} checked{% endif %}> <span>{{ name }}</span></label>
+    {% endfor %}
+  </fieldset>
+  <div class="feld"><label class="feld__label" for="tagesziel">{% translate "Tagesziel (Minuten pro Tag)" %} <span aria-hidden="true">*</span></label>
+    <input class="feld__eingabe" id="tagesziel" name="tagesziel" type="number" inputmode="numeric" min="1" max="240" value="{{ werte.tagesziel }}" required aria-describedby="tagesziel-h">
+    <p class="feld__hinweis" id="tagesziel-h">{% translate "Startwert für alle Kinder. Er passt sich später sanft an." %}</p></div>
+  <label class="reihe"><input type="checkbox" name="lernpunkte" value="1"{% if werte.lernpunkte %} checked{% endif %}> <span>{% translate "Lernpunkte vergeben (für das Erreichen des Tagesziels)" %}</span></label>
+  <label class="reihe"><input type="checkbox" name="tutor" value="1"{% if werte.tutor %} checked{% endif %}> <span>{% translate "Tutor einschalten (braucht eine KI)" %}</span></label>
+  <div class="feld__hinweis" role="note"><strong>{% translate "Eine ehrliche Grenze" %}</strong> {% translate "Der Tutor ist standardmäßig aus. Eine Garantie gibt es nicht: Ein Kind kann eine Aufgabe abtippen oder umformulieren, und eine KI kann Fehler machen. Schaut ab und zu ins Protokoll." %}</div>
+  {% include "lernen/einrichtung/_fuss.html" %}
+</form>

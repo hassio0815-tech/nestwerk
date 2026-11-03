@@ -4,6 +4,15 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.kern.einstellungen import Typ, definieren
 
+from .speicher import pfad_pruefen
+
+
+def speicher_pfad_pruefen(pfad):
+    """Validator der Einstellung: leer = Standard, sonst Pfad und Schreibtest."""
+    if pfad:
+        pfad_pruefen(pfad)
+
+
 STARTWERTE = {
     "lernen.tagesziel_minuten": 20,
     "lernen.mindesttag_minuten": 5,
@@ -66,6 +75,9 @@ STARTWERTE_WOCHE = {
     "lernen.woche_pruefung_tage": 14,
 }
 
+# Etappe 8 (Einrichtungs-Assistent): Migration 0015 legt den Wert an. Leer = Docker-Volume.
+STARTWERTE_EINRICHTUNG = {"lernen.speicher_pfad": ""}
+
 
 def einstellungen_definieren():
     definieren(
@@ -118,6 +130,19 @@ def einstellungen_definieren():
         Typ.BOOL,
         _("KI-Tutor aktiv"),
         beschreibung=_("Gilt für die ganze Familie. Standardmäßig aus."),
+    )
+
+    definieren(
+        "lernen.speicher_pfad",
+        Typ.TEXT,
+        _("Speicherort der Lernmappen (gemounteter Pfad)"),
+        beschreibung=_(
+            "Leer: Docker-Volume (Standard). Sonst der Ordner im Container, in den z. B. ein NAS "
+            "eingebunden ist. Nestwerk prüft, ob der Ordner da ist und beschreibbar. Bereits "
+            "abgelegte Dateien werden nicht verschoben."
+        ),
+        max_laenge=300,
+        validatoren=[speicher_pfad_pruefen],
     )
 
     _definieren_ueben()

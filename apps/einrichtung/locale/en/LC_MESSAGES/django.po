@@ -696,3 +696,13 @@ msgstr "Task library"
 #: views.py:346
 msgid "Das Setup-Token stimmt nicht."
 msgstr "The setup token is wrong."
+
+#, python-format
+msgid "%(titel)s: später nachholen oder ändern"
+msgstr "%(titel)s: catch up or change later"
+
+msgid "Übersprungene Teile behalten die Startwerte."
+msgstr "Skipped parts keep their starting values."
+
+msgid "Später nachholen oder ändern (nach dem Abschluss):"
+msgstr "Catch up or change later (after finishing):"

@@ -7,7 +7,7 @@ from apps.kern import einstellungen
 from apps.kern.models import AuditEintrag
 from apps.konten import selectors
 
-from .conftest import ELTERN, KINDER, NETZ, SMTP, ZEIT, url
+from .conftest import ELTERN, KINDER, NETZ, SMTP, ZEIT, abschluss, lernen_ueberspringen, url
 
 
 def _bis_schritt7(c, smtp=True):
@@ -151,9 +151,10 @@ def test_ganzer_assistent_dann_gesperrt_und_anmeldbar(c):
     _bis_schritt7(c)
     r = _startwerte_posten(c)
     assert r.status_code == 302, r.content.decode()[:2000]
-    html = c.get(url(8)).content.decode()
+    lernen_ueberspringen(c)
+    html = c.get(url(abschluss())).content.decode()
     assert "Anna" in html and "Max" in html
-    r = c.post(url(8))
+    r = c.post(url(abschluss()))
     assert r.status_code == 200 and "Fertig" in r.content.decode()
     assert einstellungen.wert("allgemein.einrichtung_abgeschlossen") is True
     assert einstellungen.wert("allgemein.go_live_datum") == datetime.date.today()
@@ -161,7 +162,7 @@ def test_ganzer_assistent_dann_gesperrt_und_anmeldbar(c):
     assert einstellungen.wert("allgemein.anzeigename") == "Nestwerk Zuhause"
     # gesperrt
     assert c.get("/einrichtung/").status_code == 404
-    assert c.post(url(8)).status_code == 404
+    assert c.post(url(abschluss())).status_code == 404
     assert c.get("/").status_code == 200  # keine Umleitung mehr
     # Anmeldung
     anna = selectors.aktive_eltern().get(anzeigename="Anna")
@@ -202,8 +203,9 @@ def test_abschluss_mit_offenen_punkten(c):
 def test_ueberspringen_warnung_in_zusammenfassung(c):
     _bis_schritt7(c, smtp=False)
     assert _startwerte_posten(c).status_code == 302
-    assert "keine Mails" in c.get(url(8)).content.decode()
-    assert c.post(url(8)).status_code == 200
+    lernen_ueberspringen(c)
+    assert "keine Mails" in c.get(url(abschluss())).content.decode()
+    assert c.post(url(abschluss())).status_code == 200
 
 
 def test_startwerte_validierung(c):
@@ -218,7 +220,8 @@ def test_abschluss_legt_start_schnellknoepfe_an(c):
 
     _bis_schritt7(c)
     assert _startwerte_posten(c).status_code == 302
+    lernen_ueberspringen(c)
     assert not Aufgabe.objects.exists()
-    assert c.post(url(8)).status_code == 200
+    assert c.post(url(abschluss())).status_code == 200
     assert einstellungen.wert("allgemein.einrichtung_abgeschlossen") is True
     assert {a.titel for a in Aufgabe.objects.all()} == {"Restmüll", "Biomüll", "Altglas"}
