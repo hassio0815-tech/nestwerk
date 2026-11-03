@@ -1,0 +1,20 @@
+{% load i18n sprache %}{% comment %}Flur-Tablet: große Knöpfe. Tippen lädt die Auswahl (Nur melden / Kind) in den Dialog
+  ``#tablet-schnell-dialog`` außerhalb des Polling-Bereichs. Nur sichtbar auf dem registrierten Kiosk-Gerät.{% endcomment %}
+<h2 class="tablet-abschnitt__titel">{% translate "Schnell-Knöpfe" %}</h2>
+<div class="schnellknopf-raster">
+  {% for a in k.knoepfe %}
+    {% if a.laeuft %}
+      <div class="kachel schnellknopf-gross schnellknopf-gross--laeuft" aria-disabled="true">
+        <span class="schnellknopf__emoji" aria-hidden="true">{{ a.emoji|default:"🔘" }}</span>
+        <span class="kachel__titel">{{ a.titel|uebersetzt }}</span>
+        {% include "aufgaben/_schnellknopf_status.html" %}
+      </div>
+    {% else %}
+      <button type="button" class="kachel schnellknopf-gross" hx-get="{% url 'aufgaben:schnellknopf_tablet_waehlen' a.pk %}" hx-target="#tablet-schnell-dialog" hx-swap="innerHTML">
+        <span class="schnellknopf__emoji" aria-hidden="true">{{ a.emoji|default:"🔘" }}</span>
+        <span class="kachel__titel">{{ a.titel|uebersetzt }}</span>
+        {% include "komponenten/punkte.html" with wert=a.punkte %}
+      </button>
+    {% endif %}
+  {% endfor %}
+</div>

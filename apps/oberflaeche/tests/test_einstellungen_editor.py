@@ -154,6 +154,7 @@ def test_interne_einstellungen_sind_nicht_editierbar(eltern_client):
     öffnete damit den Einrichtungs-Assistenten (inkl. Passwort-Neusetzen) wieder."""
     assert {d.schluessel for d in INTERN} == {
         "allgemein.einrichtung_abgeschlossen",
+        "aufgaben.schnellknoepfe_angelegt",
         "einrichtung.schritt",
         "einrichtung.smtp_uebersprungen",
     }

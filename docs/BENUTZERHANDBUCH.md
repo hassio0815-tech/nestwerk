@@ -39,6 +39,32 @@ Die Werte in diesem Handbuch sind **Startwerte**. Eltern können alle Punkte, Pr
 - Nachweise (Fotos und Texte) werden nach der Bestätigung sofort gelöscht.
 - Die **Aufgabenbibliothek** enthält Vorlagen. Ein Klick aktiviert sie.
 
+### Schnell-Knöpfe
+
+Für Aufgaben, die nur manchmal anfallen (**Restmüll voll!**). Die Aufgabe schläft, bis jemand den Knopf drückt.
+
+- **Anlegen (Eltern):** Aufgabe mit Wiederholung **Bei Bedarf**, dazu ein Emoji und **Wer darf drücken?** (alle oder nur Eltern). Die Bibliothek bringt **Restmüll**, **Biomüll** und **Altglas** (je 5 Punkte) mit. Die Aufgabenliste zeigt sie mit dem Hinweis **Schnell-Knopf**.
+- **Automatisch:** Die drei Start-Knöpfe legt die App einmal selbst als Aufgaben an (sobald es Eltern gibt, spätestens nach einer Stunde). Gelöschte kommen nicht wieder. Das Flur-Tablet zeigt Knöpfe nur, wenn es unter **Geräte** als **Tablet/Kiosk** eingerichtet ist.
+- **Drücken:** Es entsteht genau **eine** offene Aufgabe. Solange sie läuft, steht am Knopf **läuft schon** (mit dem Namen, falls jemand sie übernommen hat). Ein zweiter Druck bewirkt nichts.
+- **Ich mach's:** Die Aufgabe ist für dieses Kind reserviert, wie beim normalen Übernehmen.
+- **Nur melden:** Die Aufgabe bleibt für alle Kinder offen, und die Kinder bekommen eine Mitteilung („Restmüll: wer macht's?“). Bei „Ich mach's“ gibt es keine Mitteilung, die Eltern bekommen keine Push-Nachricht.
+- **Wo:** Kinder-Dashboard (nur Knöpfe für alle), Eltern-Dashboard und Flur-Tablet. Am Tablet tippt man den Knopf, dann **Nur melden** oder das eigene Bild, **ohne PIN**. Das geht nur auf dem als Flur-Tablet eingerichteten Gerät, Knöpfe „nur Eltern“ gibt es dort nicht.
+
+### Anerkennung (Eltern)
+
+Für etwas Besonderes ohne Aufgabe, zum Beispiel **Hat der Oma geholfen**.
+
+- **Wo:** **Anerkennung** im Schnellzugriff oder in der Aufgaben-Leiste. Kind wählen, **Punkte** eingeben, darunter die **Bemerkung** (Pflicht, das Kind liest sie).
+- **Grenzen:** je Vergabe 1 bis 25 Punkte, je Kind höchstens 50 Punkte pro Woche (Montag bis Sonntag). Beides stellst du unter **Einstellungen → Aufgaben** ein.
+- **Wirkung:** 1 Punkt = 1 Guthaben und 1 XP. Das Kind bekommt eine Mitteilung, die Punkte stehen unter **Letzte Punkte** und zählen für das Familienziel. Ein Storno gibt den Platz in der Woche wieder frei.
+
+### Meine Einstellungen und Moods
+
+- **Zahnrad (Kinder):** oben in der Kopfleiste. Dort änderst du **Name**, **Spitzname** (optional), deinen **Code** und deinen **Mood**. Beim Code brauchst du den alten Code, den neuen gibst du zweimal ein. Mehrere Fehlversuche sperren den Code kurz, wie beim Anmelden.
+- **Mood:** Wähle aus 50 Moods oder **Kein Mood**. Er steht als kleine Zeile unter deinem Namen auf der Startseite.
+- **Neuen Mood vorschlagen:** Schreibe einen kurzen Text (bis 40 Zeichen, höchstens 3 offene Vorschläge). Die Eltern lassen ihn zu oder lehnen ihn ab. Zugelassene Moods gibt es für alle Kinder.
+- **Eltern:** Unter **Moods** (Schnellzugriff, Zähler bei Entscheidungen) siehst du die Vorschläge, kannst Katalog-Moods ausblenden und eigene ergänzen. Den **Code eines Kindes** setzt du jederzeit unter **Familie** neu.
+
 ---
 
 ## 3. Punkte, Guthaben und XP

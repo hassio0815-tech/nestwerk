@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy
 from apps.konten import selectors as konten_selectors
 
 from . import wiederholung
-from .models import Aufgabe, Kategorie, Status, Vorlage
+from .models import Aufgabe, Kategorie, SchnellknopfWer, Status, Vorlage
 from .symbole import SYMBOLE
 from .wiederholung import Plan, maske_aus_tagen, tage_aus_maske
 
@@ -71,6 +71,19 @@ class PlanFelderMixin(forms.Form):
         return maske_aus_tagen(self.cleaned_data.get("wochentage") or []) or None
 
 
+# Felder des Zeitplans: bei "bei Bedarf" (Schnell-Knopf) ohne Bedeutung und werden geleert
+ZEITPLAN_FELDER = (
+    "wochentage",
+    "intervall_tage",
+    "start_datum",
+    "end_datum",
+    "fenster_von",
+    "fenster_bis",
+    "fenster_tage",
+    "limit_anzahl",
+)
+
+
 class AufgabeForm(PlanFelderMixin, forms.ModelForm):
     start_datum = forms.DateField(
         label=gettext_lazy("Start"),
@@ -104,6 +117,8 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
             "fenster_tage",
             "limit_anzahl",
             "limit_zeitraum",
+            "emoji",
+            "schnellknopf_wer",
         ]
         widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3}), "vorlage": forms.HiddenInput}
         labels = {
@@ -116,6 +131,8 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
             "sonderpunkte_deckel_prozent": gettext_lazy(
                 "Deckel für Sonderpunkte in % (leer = Standard)"
             ),
+            "emoji": gettext_lazy("Symbol (Emoji) auf dem Knopf"),
+            "schnellknopf_wer": gettext_lazy("Wer darf drücken?"),
         }
 
     def __init__(self, *args, **kwargs):
@@ -129,6 +146,7 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         self.fields["zugewiesen_an"].queryset = konten_selectors.aktive_kinder()
         self.fields["zugewiesen_an"].empty_label = _("Alle Kinder")
         self.fields["vorlage"].required = False
+        self.fields["schnellknopf_wer"].required = False  # nur bei "bei Bedarf" von Belang
         if self.instance.pk and not self.is_bound:
             self.initial["wochentage"] = [str(t) for t in tage_aus_maske(self.instance.wochentage)]
         _stil(self)
@@ -136,11 +154,32 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
     def clean_titel(self):
         return self.cleaned_data["titel"].strip()
 
+    def clean(self):
+        daten = super().clean()
+        if daten.get("wiederholungsart") == wiederholung.BEI_BEDARF:
+            for feld in ZEITPLAN_FELDER:
+                daten[feld] = None
+            daten["limit_zeitraum"] = ""
+            daten["schnellknopf_wer"] = daten.get("schnellknopf_wer") or SchnellknopfWer.ALLE
+        else:
+            daten["emoji"] = ""
+            daten["schnellknopf_wer"] = SchnellknopfWer.ALLE
+        return daten
+
 
 class VorlageForm(PlanFelderMixin, forms.ModelForm):
     class Meta:
         model = Vorlage
-        fields = ["titel", "punkte", "beschreibung", "kategorie", "freigabeart", "aktiv"]
+        fields = [
+            "titel",
+            "punkte",
+            "beschreibung",
+            "kategorie",
+            "freigabeart",
+            "emoji",
+            "schnellknopf_wer",
+            "aktiv",
+        ]
         widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3})}
         labels = {
             "beschreibung": gettext_lazy("Beschreibung (optional)"),
@@ -148,6 +187,8 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
             "punkte": gettext_lazy("Punkte"),
             "kategorie": gettext_lazy("Kategorie"),
             "freigabeart": gettext_lazy("Freigabeart"),
+            "emoji": gettext_lazy("Symbol (Emoji) auf dem Knopf"),
+            "schnellknopf_wer": gettext_lazy("Wer darf drücken?"),
             "aktiv": gettext_lazy("Aktiv"),
         }
 
@@ -155,6 +196,7 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["wiederholungsart"].required = False
+        self.fields["schnellknopf_wer"].required = False
         self.fields["kategorie"].queryset = Kategorie.objects.filter(aktiv=True)
         if self.instance.pk and self.instance.kategorie_id:
             self.fields["kategorie"].queryset |= Kategorie.objects.filter(
@@ -177,6 +219,7 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
 
     def clean(self):
         daten = super().clean()
+        daten["schnellknopf_wer"] = daten.get("schnellknopf_wer") or SchnellknopfWer.ALLE
         plan = Plan(
             art=daten.get("wiederholungsart") or wiederholung.EINMALIG,
             wochentage=daten.get("wochentage"),
@@ -187,6 +230,8 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
             limit_anzahl=daten.get("limit_anzahl"),
             limit_zeitraum=daten.get("limit_zeitraum") or "",
         )
+        if plan.art == wiederholung.BEI_BEDARF:
+            plan = Plan(art=wiederholung.BEI_BEDARF)
         for feld, meldung in wiederholung.pruefen(plan).items():
             self.add_error(feld, meldung)
         if not self.errors:

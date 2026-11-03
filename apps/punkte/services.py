@@ -43,6 +43,7 @@ WIRKUNG = {
     Art.AUFGABE: (1, 1),
     Art.SERIENBONUS: (1, 1),
     Art.SONDERPUNKTE: (1, 1),
+    Art.ANERKENNUNG: (1, 1),  # Eltern-Lob ohne Aufgabe; Grenzen setzt aufgaben.anerkennung
     Art.MODUL: (1, 1),
     Art.EINLOESUNG: (-1, 0),
     Art.MODKAUF: (-1, 0),
@@ -51,8 +52,8 @@ WIRKUNG = {
 # Ausgaben: Guthaben darf nicht negativ werden. Wert = Standard für "verfügbar prüfen"
 # (Einlösung ist selbst schon als offener Antrag reserviert, Mod-Kauf nicht).
 AUSGABEN = {Art.EINLOESUNG: False, Art.MODKAUF: True}
-BEGRUENDUNG_PFLICHT = frozenset({Art.SONDERPUNKTE, Art.KORREKTUR})
-NUR_ELTERN = frozenset({Art.SONDERPUNKTE, Art.KORREKTUR, Art.STORNO})
+BEGRUENDUNG_PFLICHT = frozenset({Art.SONDERPUNKTE, Art.ANERKENNUNG, Art.KORREKTUR})
+NUR_ELTERN = frozenset({Art.SONDERPUNKTE, Art.ANERKENNUNG, Art.KORREKTUR, Art.STORNO})
 
 
 class PunkteFehler(ValueError):

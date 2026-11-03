@@ -1,0 +1,2 @@
+{% load i18n sprache %}{% comment %}Kopf einer Schnell-Knopf-Zeile: Emoji, Titel, Punkte. ``a.laeuft`` = laufende Instanz.{% endcomment %}
+<span class="reihe schnellknopf__kopf"><span class="schnellknopf__emoji" aria-hidden="true">{{ a.emoji|default:"🔘" }}</span><strong>{{ a.titel|uebersetzt }}</strong>{% include "komponenten/punkte.html" with wert=a.punkte %}</span>

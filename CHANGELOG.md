@@ -4,6 +4,27 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Recognition, My settings and moods (02.11.2026)
+
+### Added
+- **Recognition (parents):** give points without a task. New booking type "Recognition" (1 point = 1 balance and 1 XP), note required, parents only. 1 to 25 points per award, at most 50 points per child per week (Monday to Sunday); both limits are parent settings (`aufgaben.anerkennung_max_punkte`, `aufgaben.anerkennung_woche_max`). The child gets a push message, the points count for XP and the family goal, and a reversal frees the weekly room again
+- **My settings (kids):** gear icon in the header. Name (unique, case-insensitive), optional nickname (shown in the greeting and tiles), change code (old code required, new code twice; wrong attempts count and lock like at login)
+- **Moods:** catalogue of 50 kid-friendly moods (memes, movies, tired, happy, grumpy, calm) plus "No mood". The chosen mood appears as a small line under the name on the start page and on the kid dashboard
+- **Mood suggestions:** kids suggest new moods (at most 40 characters, at most 3 open). Parents see a counter and list under "Moods", approve or decline, hide catalogue moods and add their own. Approved moods apply to all kids. Push to the parents for a new suggestion, to the kid for the decision
+- Kid dashboard: "Latest points" (point history including recognition and its note)
+
+### Changed
+- Parents can reset a child's code at any time (Family area); now covered by tests
+
+## Quick buttons (30.10.2026)
+
+### Added
+- Quick buttons: "on demand" tasks (e.g. general waste) that sleep until someone presses the button; one press creates exactly one open task
+- Two modes: "I'll do it" (reserved for the kid) and "Just report it" (open for all, notification to the kids)
+- Tiles for parents, kids and the hallway tablet (no PIN there, only on the registered kiosk device)
+- Task form: repeat option "On demand", emoji and "Who may press it?"
+- Library templates General waste, Organic waste and Recycle glass (5 points)
+
 ## Bilingual release: German and English (27.10.2026)
 
 ### Added

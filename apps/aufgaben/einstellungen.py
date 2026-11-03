@@ -29,6 +29,15 @@ STARTWERTE_NACHWEIS = {
     "aufgaben.nachweis_max_kante_px": 1600,
 }
 
+# Technischer Merker: die drei Start-Schnell-Knöpfe wurden angelegt (einmalig), Datenmigration 0012
+STARTWERTE_SCHNELLKNOEPFE = {"aufgaben.schnellknoepfe_angelegt": False}
+
+# Anerkennung durch Eltern (Lob-Punkte ohne Aufgabe), Datenmigration 0013
+STARTWERTE_ANERKENNUNG = {
+    "aufgaben.anerkennung_max_punkte": 25,
+    "aufgaben.anerkennung_woche_max": 50,
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -149,4 +158,29 @@ def einstellungen_definieren():
         einheit=_("Pixel"),
         minimum=400,
         maximum=4000,
+    )
+    definieren(
+        "aufgaben.schnellknoepfe_angelegt",
+        Typ.BOOL,
+        "Start-Schnell-Knöpfe angelegt",
+        beschreibung="Technischer Merker: Restmüll, Biomüll und Altglas gibt es nur einmal.",
+        intern=True,
+    )
+    definieren(
+        "aufgaben.anerkennung_max_punkte",
+        Typ.GANZZAHL,
+        _("Anerkennung: Punkte je Vergabe höchstens"),
+        beschreibung=_("Eltern können einem Kind ohne Aufgabe 1 bis zu so viele Punkte schenken."),
+        einheit=_("Punkte"),
+        minimum=1,
+        maximum=1000,
+    )
+    definieren(
+        "aufgaben.anerkennung_woche_max",
+        Typ.GANZZAHL,
+        _("Anerkennung: Punkte je Kind und Woche höchstens"),
+        beschreibung=_("Woche = Montag bis Sonntag. Eine Gegenbuchung gibt den Platz wieder frei."),
+        einheit=_("Punkte"),
+        minimum=1,
+        maximum=10000,
     )

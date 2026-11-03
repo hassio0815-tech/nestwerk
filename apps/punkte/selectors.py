@@ -102,3 +102,12 @@ def buchungen_zu_schluesseln(schluessel):
         b.idempotenz_schluessel: b
         for b in Buchung.objects.filter(idempotenz_schluessel__in=list(schluessel))
     }
+
+
+def netto_summe(kind, von, bis, *, quelle_modul):
+    """Netto-Punkte (Guthaben-Wirkung inkl. Stornos) eines Kindes aus einer Quelle mit
+    Bezugsdatum in ``[von, bis]`` (inklusiv), z. B. Anerkennung je Woche. Stornos erben die
+    Quelle der Originalbuchung und geben das Limit damit wieder frei."""
+    return _summen(
+        Buchung.objects.filter(kind=kind, quelle_modul=quelle_modul, bezugsdatum__range=(von, bis))
+    )["guthaben"]

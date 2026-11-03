@@ -1,0 +1,20 @@
+{% load i18n sprache %}{% comment %}Kinder-Kachel Schnell-Knöpfe: "Ich mach's" oder "Nur melden" (nur Knöpfe für alle).{% endcomment %}
+<article class="karte" id="schnellknoepfe" hx-target="#schnellknoepfe" hx-swap="outerHTML"><div class="karte__inhalt stapel">
+  <h2>{% translate "Schnell-Knöpfe" %}</h2>
+  {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art|default:"erfolg" text=hinweis %}{% endif %}
+  {% for a in k.knoepfe %}
+    <div class="zeile schnellknopf">
+      {% include "aufgaben/_schnellknopf_zeile.html" %}
+      {% if a.laeuft %}{% include "aufgaben/_schnellknopf_status.html" %}
+      {% else %}
+        <details class="schnellknopf__wahl">
+          <summary class="knopf knopf--primaer knopf--klein">{% translate "Drücken" %}</summary>
+          <form method="post" action="{% url 'aufgaben:schnellknopf_kind' a.pk %}" hx-post="{% url 'aufgaben:schnellknopf_kind' a.pk %}" class="reihe" hx-disabled-elt="find button">{% csrf_token %}
+            <button type="submit" name="modus" value="ich" class="knopf knopf--primaer knopf--klein">{% translate "Ich mach's" %}</button>
+            <button type="submit" name="modus" value="melden" class="knopf knopf--sekundaer knopf--klein">{% translate "Nur melden" %}</button>
+          </form>
+        </details>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div></article>

@@ -10,6 +10,7 @@ from django.db import transaction
 from django.utils import translation
 from django.utils.translation import gettext as _
 
+from apps.aufgaben import schnellknopf
 from apps.benachrichtigung import selectors as mail_selectors
 from apps.benachrichtigung import services as mail_services
 from apps.kern import audit, einstellungen
@@ -439,3 +440,5 @@ def abschliessen():
                 "smtp": "konfiguriert" if smtp_gespeichert() else "uebersprungen",
             },
         )
+        # Start-Schnell-Knöpfe sofort, sonst erst der Stunden-Job (jetzt gibt es Eltern)
+        schnellknopf.schnellknoepfe_sicherstellen()

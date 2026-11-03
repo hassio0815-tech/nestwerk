@@ -482,7 +482,7 @@ def ranking_ablauf(browser, aufn):
         ("held", "Held der Woche"),
         ("rohpunkte", "Rohpunkte"),
     ):
-        eltern.goto(BASIS + "/eltern/", wait_until="networkidle")
+        eltern.goto(BASIS + "/eltern/dungeon/", wait_until="networkidle")  # Ranking im Dungeon
         eltern.locator("[data-eltern-ranking]").get_by_role("button", name=text).click()
         eltern.wait_for_load_state("networkidle")
         aufn.s.neu(f"ranking-{modus}-eltern")

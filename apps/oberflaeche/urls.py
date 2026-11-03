@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import RedirectView
 
-from apps.oberflaeche import views, views_einstellungen, views_familie
+from apps.oberflaeche import views, views_einstellungen, views_familie, views_kind, views_moods
 
 app_name = "oberflaeche"
 
@@ -14,8 +14,41 @@ urlpatterns = [
     path("eltern/dungeon/", views.eltern_dungeon, name="eltern_dungeon"),
     path("eltern/einstellungen/wappen/", views.wappen_setzen, name="wappen"),
     path("eltern/dungeon/anzeige/", views.dungeon_anzeige_setzen, name="dungeon_anzeige"),
-    path("kind/spielwelt/", RedirectView.as_view(pattern_name="oberflaeche:dungeon", permanent=True)),
+    path(
+        "kind/spielwelt/", RedirectView.as_view(pattern_name="oberflaeche:dungeon", permanent=True)
+    ),
     path("kind/akzent/", views.akzent_setzen, name="akzent"),
+    path("kind/einstellungen/", views_kind.einstellungen, name="kind_einstellungen"),
+    path("kind/einstellungen/profil/", views_kind.profil, name="kind_profil"),
+    path("kind/einstellungen/code/", views_kind.code, name="kind_code"),
+    path("kind/einstellungen/mood/", views_kind.mood_waehlen, name="kind_mood"),
+    path(
+        "kind/einstellungen/mood-vorschlag/",
+        views_kind.mood_vorschlagen,
+        name="kind_mood_vorschlag",
+    ),
+    path("eltern/moods/", views_moods.uebersicht, name="eltern_moods"),
+    path("eltern/moods/neu/", views_moods.neu, name="eltern_mood_neu"),
+    path(
+        "eltern/moods/vorschlag/<int:pk>/zulassen/",
+        views_moods.zulassen,
+        name="eltern_mood_zulassen",
+    ),
+    path(
+        "eltern/moods/vorschlag/<int:pk>/ablehnen/",
+        views_moods.ablehnen,
+        name="eltern_mood_ablehnen",
+    ),
+    path(
+        "eltern/moods/eigen/<int:pk>/entfernen/",
+        views_moods.entfernen,
+        name="eltern_mood_entfernen",
+    ),
+    path(
+        "eltern/moods/katalog/<str:schluessel>/",
+        views_moods.katalog,
+        name="eltern_mood_katalog",
+    ),
     path("eltern/ranking/modus/", views.ranking_modus, name="ranking_modus"),
     path("module/", views.module_launcher, name="module"),
     path("eltern/", views.eltern_heim, name="eltern_heim"),

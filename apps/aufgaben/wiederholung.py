@@ -5,7 +5,8 @@ Reine Python-Logik ohne Datenbankzugriff. AP11 (Instanz-Erzeugung) liest den Pla
 
 Bedeutung der Felder:
 - ``art``: einmalig (genau ein Termin am ``start_datum``), woechentlich (an den Wochentagen),
-  intervall (alle ``intervall_tage`` Tage ab ``start_datum``).
+  intervall (alle ``intervall_tage`` Tage ab ``start_datum``), bei_bedarf (Schnell-Knopf: kein
+  Zeitplan, eine Instanz entsteht nur per Knopfdruck; alle übrigen Felder werden ignoriert).
 - ``wochentage``: Bitmaske, Bit 0 = Montag ... Bit 6 = Sonntag.
 - Zeitfenster am Fälligkeitstag: ``fenster_von`` (optional), ``fenster_bis`` (Frist). Ist
   ``fenster_bis`` gesetzt, ist die Aufgabe zeitgebunden. ``fenster_tage`` verlängert das
@@ -25,10 +26,12 @@ from django.utils.translation import gettext_lazy, ngettext, pgettext_lazy
 EINMALIG = "einmalig"
 WOECHENTLICH = "woechentlich"
 INTERVALL = "intervall"
+BEI_BEDARF = "bei_bedarf"
 ARTEN = (
     (EINMALIG, gettext_lazy("Einmalig")),
     (WOECHENTLICH, gettext_lazy("Wöchentlich an bestimmten Wochentagen")),
     (INTERVALL, gettext_lazy("Alle paar Tage (Intervall)")),
+    (BEI_BEDARF, gettext_lazy("Bei Bedarf")),
 )
 ZEITRAEUME = (
     ("tag", gettext_lazy("Tag")),
@@ -135,6 +138,8 @@ class Plan:
 
     def beschreiben(self) -> str:
         """Verständliche Kurzbeschreibung, z. B. 'Jeden Mi · bis 20:00 Uhr · max. 1x pro Woche'."""
+        if self.art == BEI_BEDARF:
+            return _("Bei Bedarf (Schnell-Knopf)")
         if self.art == WOECHENTLICH:
             namen = [WOCHENTAGE[t][1] for t in self.wochentage_liste]
             teile = [
@@ -192,6 +197,8 @@ def pruefen(plan: Plan) -> dict[str, str]:
     if plan.art not in arten:
         fehler["wiederholungsart"] = _("Unbekannte Wiederholungsart.")
         return fehler
+    if plan.art == BEI_BEDARF:
+        return fehler  # kein Zeitplan: übrige Felder spielen keine Rolle
 
     if plan.art == WOECHENTLICH:
         if not plan.wochentage:

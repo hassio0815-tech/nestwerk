@@ -8,7 +8,7 @@
   </form>
 {% endblock %}
 {% block inhalt %}
-  <h1>{% blocktranslate with name=request.user.anzeigename %}Hallo {{ name }}!{% endblocktranslate %}</h1>
+  <h1>{% blocktranslate with name=request.user.rufname %}Hallo {{ name }}!{% endblocktranslate %}</h1>
   {% url "aufgaben:kind" as aufgaben_url %}
   {% if aufgaben_url %}<div class="raster">{% include "komponenten/kachel.html" with href=aufgaben_url icon="liste" titel=_("Aufgaben") text=_("Aussuchen und erledigt melden") %}</div>{% endif %}
 {% endblock %}

@@ -11,5 +11,13 @@
     {% if k.reserviert %}<span class="kachel__text">{% blocktranslate with n=k.reserviert %}{{ n }} davon für Anträge reserviert{% endblocktranslate %}</span>{% endif %}
   </div>
 </div>
+  {% if k.verlauf %}
+    <details class="punkte-verlauf">
+      <summary>{% translate "Letzte Punkte" %}</summary>
+      <ul class="liste-schlicht">
+        {% for b in k.verlauf %}<li class="zeile"><span>{{ b.bezugsdatum|date:"d.m." }} · {{ b.get_art_display }}{% if b.begruendung %}: {{ b.begruendung }}{% endif %}</span><strong>{{ b.guthaben_delta|stringformat:"+d" }}</strong></li>{% endfor %}
+      </ul>
+    </details>
+  {% endif %}
   <a class="knopf knopf--primaer knopf--gross knopf--block" href="{% url 'oberflaeche:dungeon' %}" data-dungeon>{% translate "⚔️ Ab in den Dungeon" %}</a>
 </div></article>

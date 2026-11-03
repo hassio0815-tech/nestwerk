@@ -62,6 +62,16 @@ class Benutzer(AbstractBaseUser):
         default=True,
         help_text="Eltern: Dungeon-Bereich (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage) zeigen.",
     )
+    spitzname = models.CharField(
+        max_length=20,
+        blank=True,
+        help_text="Kind: kurzer Spitzname (optional), ersetzt den Namen in Grüßen.",
+    )
+    mood = models.CharField(
+        max_length=20,
+        blank=True,
+        help_text="Kind: gewählter Mood (Katalog-Schlüssel oder eigen-<id>); leer = kein Mood.",
+    )
     wappen = models.CharField(
         max_length=20, blank=True, choices=WAPPEN_CHOICES, help_text="Eltern: humorvolles Wappen."
     )
@@ -137,6 +147,11 @@ class Benutzer(AbstractBaseUser):
         """Für Kinder-Texte: ``Mama (🐉 Hausdrache)``; ohne Rolle der Name."""
         w = self.wappen_info
         return f"{self.wappen_name} ({w.emoji} {w.titel})" if w else self.wappen_name
+
+    @property
+    def rufname(self):
+        """Spitzname, sonst Anzeigename (für Grüße und Kacheln)."""
+        return self.spitzname or self.anzeigename
 
     @property
     def ist_eltern(self):
@@ -276,3 +291,72 @@ class AnmeldeVersuch(models.Model):
 
     def __str__(self):
         return f"{self.zeit:%Y-%m-%d %H:%M} {self.art} {'ok' if self.erfolgreich else 'Fehler'}"
+
+
+class MoodEigen(models.Model):
+    """Eigener Mood der Familie: von Eltern ergänzt oder aus einem Vorschlag zugelassen.
+    Gilt für alle Kinder; ``aktiv=False`` = entfernt (bleibt für alte Auswahl erhalten)."""
+
+    text = models.CharField(max_length=40)
+    aktiv = models.BooleanField(default=True)
+    erstellt_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Eigener Mood"
+        verbose_name_plural = "Eigene Moods"
+        ordering = ["text"]
+        constraints = [models.UniqueConstraint(Lower("text"), name="konten_moodeigen_text_ci_uniq")]
+
+    def __str__(self):
+        return self.text
+
+    @property
+    def schluessel(self):
+        return f"eigen-{self.pk}"
+
+
+class MoodAusgeblendet(models.Model):
+    """Katalog-Mood, den Eltern aus der Auswahl genommen haben."""
+
+    schluessel = models.CharField(max_length=30, primary_key=True)
+
+    class Meta:
+        verbose_name = "Ausgeblendeter Mood"
+        verbose_name_plural = "Ausgeblendete Moods"
+
+    def __str__(self):
+        return self.schluessel
+
+
+class VorschlagStatus(models.TextChoices):
+    OFFEN = "offen", _("Offen")
+    ZUGELASSEN = "zugelassen", _("Zugelassen")
+    ABGELEHNT = "abgelehnt", _("Abgelehnt")
+
+
+class MoodVorschlag(models.Model):
+    """Mood-Vorschlag eines Kindes; Eltern lassen ihn zu (dann gilt er für alle) oder lehnen ab."""
+
+    kind = models.ForeignKey(
+        Benutzer,
+        on_delete=models.PROTECT,
+        related_name="mood_vorschlaege",
+        limit_choices_to={"rolle": "kind"},
+    )
+    text = models.CharField(max_length=40)
+    status = models.CharField(
+        max_length=12, choices=VorschlagStatus.choices, default=VorschlagStatus.OFFEN, db_index=True
+    )
+    entschieden_von = models.ForeignKey(
+        Benutzer, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
+    )
+    entschieden_am = models.DateTimeField(null=True, blank=True)
+    erstellt_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Mood-Vorschlag"
+        verbose_name_plural = "Mood-Vorschläge"
+        ordering = ["erstellt_am", "id"]
+
+    def __str__(self):
+        return f"{self.kind}: {self.text} ({self.status})"

@@ -28,6 +28,11 @@ class Freigabeart(models.TextChoices):
     NACHWEIS = "nachweis", gettext_lazy("Foto-/Text-Nachweis")
 
 
+class SchnellknopfWer(models.TextChoices):
+    ALLE = "alle", gettext_lazy("Alle (Kinder und Eltern)")
+    ELTERN = "eltern", gettext_lazy("Nur Eltern")
+
+
 class Status(models.TextChoices):
     AKTIV = "aktiv", gettext_lazy("Aktiv")
     PAUSIERT = "pausiert", gettext_lazy("Pausiert")
@@ -73,6 +78,10 @@ class Vorlage(models.Model):
         Kategorie, null=True, blank=True, on_delete=models.PROTECT, related_name="vorlagen"
     )
     wiederholung = models.JSONField(null=True, blank=True, help_text="Struktur wie Plan.als_json")
+    emoji = models.CharField(max_length=8, blank=True)
+    schnellknopf_wer = models.CharField(
+        max_length=10, choices=SchnellknopfWer.choices, default=SchnellknopfWer.ALLE
+    )
     aktiv = models.BooleanField(default=True)
 
     class Meta:
@@ -147,6 +156,11 @@ class Aufgabe(models.Model):
     sonderpunkte_deckel_prozent = models.PositiveSmallIntegerField(
         null=True, blank=True, help_text=gettext_lazy("Leer = globaler Wert (Einstellungen)")
     )
+    # Schnell-Knopf (Wiederholungsart "bei Bedarf")
+    emoji = models.CharField(max_length=8, blank=True)
+    schnellknopf_wer = models.CharField(
+        max_length=10, choices=SchnellknopfWer.choices, default=SchnellknopfWer.ALLE
+    )
 
     erstellt_von = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+"
@@ -185,6 +199,8 @@ class Aufgabe(models.Model):
     @property
     def plan(self) -> Plan:
         """Wiederholungs-/Zeitplan für die Instanz-Erzeugung (AP11)."""
+        if self.schnellknopf:
+            return Plan(art=wiederholung.BEI_BEDARF)
         return Plan(
             art=self.wiederholungsart,
             wochentage=self.wochentage,
@@ -199,8 +215,13 @@ class Aufgabe(models.Model):
         )
 
     @property
+    def schnellknopf(self) -> bool:
+        """Schlafende Aufgabe ohne Zeitplan: wacht nur per Knopfdruck auf."""
+        return self.wiederholungsart == wiederholung.BEI_BEDARF
+
+    @property
     def zeitgebunden(self) -> bool:
-        return self.fenster_bis is not None
+        return not self.schnellknopf and self.fenster_bis is not None
 
     def clean(self):
         fehler = wiederholung.pruefen(self.plan)

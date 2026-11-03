@@ -11,9 +11,16 @@
           {% include "aufgaben/_feld.html" with f=f %}
           <div class="plan__wochen">{% include "aufgaben/_feld.html" with f=form.wochentage %}</div>
           <div class="plan__intervall">{% include "aufgaben/_feld.html" with f=form.intervall_tage %}</div>
-          {% include "aufgaben/_feld.html" with f=form.fenster_von %}
-          {% include "aufgaben/_feld.html" with f=form.fenster_bis %}
-          {% include "aufgaben/_feld.html" with f=form.fenster_tage %}
+          <div class="plan__knopf stapel">
+            <p class="feld__hinweis">{% translate "Schnell-Knopf: Die Aufgabe schläft, bis jemand den Knopf drückt. Dann entsteht genau eine offene Aufgabe." %}</p>
+            {% include "aufgaben/_feld.html" with f=form.emoji %}
+            {% include "aufgaben/_feld.html" with f=form.schnellknopf_wer %}
+          </div>
+          <div class="plan__zeit stapel">
+            {% include "aufgaben/_feld.html" with f=form.fenster_von %}
+            {% include "aufgaben/_feld.html" with f=form.fenster_bis %}
+            {% include "aufgaben/_feld.html" with f=form.fenster_tage %}
+          </div>
           <div class="plan__serie stapel">
             {% if form.start_datum %}{% include "aufgaben/_feld.html" with f=form.start_datum %}{% include "aufgaben/_feld.html" with f=form.end_datum %}{% endif %}
             <div class="reihe">
@@ -23,7 +30,7 @@
             <p class="feld__hinweis">{% translate "Limit gilt je Kind und Aufgabe." %}</p>
           </div>
         </fieldset>
-      {% elif f.name in "wochentage intervall_tage start_datum end_datum fenster_von fenster_bis fenster_tage limit_anzahl limit_zeitraum" %}
+      {% elif f.name in "wochentage intervall_tage start_datum end_datum fenster_von fenster_bis fenster_tage limit_anzahl limit_zeitraum emoji schnellknopf_wer" %}
       {% else %}
         {% include "aufgaben/_feld.html" with f=f %}
       {% endif %}

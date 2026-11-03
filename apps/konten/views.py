@@ -58,13 +58,16 @@ def start(request):
     if request.user.is_authenticated:
         return redirect(_heim(request.user))
     jetzt = zeit.jetzt()
+    alle_kinder = list(selectors.aktive_kinder())
+    moods = selectors.mood_texte(alle_kinder)
     kinder = [
         {
             "benutzer": kind,
             "akzent": akzent.akzent_name(kind),
             "gesperrt": bool(sperre.kind_gesperrt_bis(kind.kindprofil, jetzt)),
+            "mood": moods.get(kind.pk, ""),
         }
-        for kind in selectors.aktive_kinder()
+        for kind in alle_kinder
     ]
     return render(
         request,

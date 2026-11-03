@@ -66,6 +66,12 @@ def _eltern_ereignisse(request):
     }
 
 
+def _eltern_schnellzugriff(request):
+    from apps.konten import selectors as konten
+
+    return {"mood_offen": konten.mood_vorschlaege_offen_anzahl()}
+
+
 def _eltern_system(request):
     return {"status": selectors.system_status()}
 
@@ -76,6 +82,37 @@ def _ranking(request):
 
 def _ranking_eltern(request):
     return {"a": ranking.ansicht()} | ranking.eltern_zusatz()
+
+
+def _schnellknoepfe(request, *, kinder=False, tablet=False):
+    from apps.aufgaben import schnellknopf
+    from apps.konten import selectors as konten
+
+    return {
+        "knoepfe": schnellknopf.knoepfe(
+            None if tablet else request.user, nur_kinder_knoepfe=tablet
+        ),
+        "kinder": list(konten.aktive_kinder()) if kinder else [],
+    }
+
+
+def _schnellknoepfe_eltern(request):
+    return _schnellknoepfe(request, kinder=True)
+
+
+def _schnellknoepfe_tablet(request):
+    return _schnellknoepfe(request, tablet=True)
+
+
+def _hat_knoepfe(funktion):
+    return lambda request: bool(funktion(request)["knoepfe"])
+
+
+def _tablet_kiosk(request):
+    """Tablet-Knöpfe schreiben: nur auf dem registrierten Kiosk-Gerät (siehe views_schnellknopf)."""
+    from apps.konten.geraet import ist_kiosk
+
+    return ist_kiosk(request) and bool(_schnellknoepfe_tablet(request)["knoepfe"])
 
 
 def kacheln_registrieren():
@@ -167,6 +204,7 @@ def kacheln_registrieren():
             _("Schnellzugriff"),
             T + "eltern_schnellzugriff.html",
             {ELTERN},
+            _eltern_schnellzugriff,
             reihenfolge=50,
         ),
         Kachel(
@@ -177,6 +215,36 @@ def kacheln_registrieren():
             {TABLET},
             _ranking,
             reihenfolge=50,
+        ),
+        Kachel(
+            "oberflaeche.kind_schnellknoepfe",
+            "oberflaeche",
+            _("Schnell-Knöpfe"),
+            "aufgaben/kacheln/schnellknoepfe_kind.html",
+            {KIND},
+            _schnellknoepfe,
+            _hat_knoepfe(_schnellknoepfe),
+            reihenfolge=25,
+        ),
+        Kachel(
+            "oberflaeche.eltern_schnellknoepfe",
+            "oberflaeche",
+            _("Schnell-Knöpfe"),
+            "aufgaben/kacheln/schnellknoepfe_eltern.html",
+            {ELTERN},
+            _schnellknoepfe_eltern,
+            _hat_knoepfe(_schnellknoepfe),
+            reihenfolge=15,
+        ),
+        Kachel(
+            "oberflaeche.tablet_schnellknoepfe",
+            "oberflaeche",
+            _("Schnell-Knöpfe"),
+            "aufgaben/kacheln/schnellknoepfe_tablet.html",
+            {TABLET},
+            _schnellknoepfe_tablet,
+            _tablet_kiosk,
+            reihenfolge=30,
         ),
         Kachel(
             "oberflaeche.kind_ranking",
