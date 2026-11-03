@@ -84,6 +84,7 @@ forbidden_modules = [
     "apps.avatar.models",
     "apps.familienziel.models",
     "apps.sondertag.models",
+    "apps.lernen.models",
 ]
 allow_indirect_imports = "True"
 ignore_imports = ["apps.*.tests.** -> **"]
@@ -119,6 +120,7 @@ source_modules = [
     "apps.avatar",
     "apps.sondertag",
     "apps.familienziel",
+    "apps.lernen",
     "apps.oberflaeche",
     "apps.einrichtung",
 ]

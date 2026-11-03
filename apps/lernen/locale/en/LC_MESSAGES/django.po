@@ -1,0 +1,250 @@
+# English translation (source language: German).
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-03 10:16+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: einstellungen.py:21
+msgid "Tagesziel Lernzeit"
+msgstr "Daily learning goal"
+
+#: einstellungen.py:22
+msgid "So viele Minuten pro Tag gelten als Ziel."
+msgstr "This many minutes per day count as the goal."
+
+#: einstellungen.py:23 einstellungen.py:32
+msgid "Minuten"
+msgstr "minutes"
+
+#: einstellungen.py:30
+msgid "Mindesttag Lernzeit"
+msgstr "Minimum learning day"
+
+#: einstellungen.py:31
+msgid "Ab so vielen Minuten zählt ein Tag als geübt."
+msgstr "From this many minutes a day counts as practised."
+
+#: einstellungen.py:39
+msgid "Lernpunkte pro Tag (Obergrenze)"
+msgstr "Learning points per day (upper limit)"
+
+#: einstellungen.py:40
+msgid "Mehr Punkte als dieser Wert gibt das Lernen pro Kind und Tag nicht."
+msgstr "Learning never gives a child more points than this per day."
+
+#: einstellungen.py:41
+msgid "Punkte"
+msgstr "points"
+
+#: einstellungen.py:48
+msgid "Eltern geben Fragen frei"
+msgstr "Parents approve questions"
+
+#: einstellungen.py:50
+msgid "Ja: Fragen aus Uploads sind erst nach der Freigabe durch die Eltern nutzbar. Nein: sie sind sofort nutzbar."
+msgstr "Yes: questions from uploads can only be used once the parents approve them. No: they can be used right away."
+
+#: einstellungen.py:57
+msgid "Speicherplatz pro Kind"
+msgstr "Storage per child"
+
+#: einstellungen.py:58
+msgid "So viel Platz darf die Lernmappe eines Kindes höchstens belegen."
+msgstr "A child's learning folder may use at most this much space."
+
+#: einstellungen.py:59
+msgid "MB"
+msgstr "MB"
+
+#: einstellungen.py:66
+msgid "KI-Tutor aktiv"
+msgstr "AI tutor active"
+
+#: einstellungen.py:67
+msgid "Gilt für die ganze Familie. Standardmäßig aus."
+msgstr "Applies to the whole family. Off by default."
+
+#: models.py:16
+msgid "Vokabel"
+msgstr "Vocabulary word"
+
+#: models.py:17
+msgid "Frage"
+msgstr "Question"
+
+#: models.py:21
+msgid "Startdaten"
+msgstr "Starter data"
+
+#: models.py:22
+msgid "Eltern"
+msgstr "Parents"
+
+#: models.py:23
+msgid "KI"
+msgstr "AI"
+
+#: models.py:27
+msgid "wartet auf Freigabe"
+msgstr "waiting for approval"
+
+#: models.py:28
+msgid "freigegeben"
+msgstr "approved"
+
+#: models.py:29
+msgid "abgelehnt"
+msgstr "rejected"
+
+#: models.py:33
+msgid "Aufwärmen"
+msgstr "Warm-up"
+
+#: models.py:34
+msgid "Normal"
+msgstr "Normal"
+
+#: models.py:35
+msgid "Herausforderung"
+msgstr "Challenge"
+
+#: models.py:39
+msgid "zu leicht"
+msgstr "too easy"
+
+#: models.py:40
+msgid "passend"
+msgstr "just right"
+
+#: models.py:41
+msgid "zu schwer"
+msgstr "too hard"
+
+#: startdaten/__init__.py:18
+msgid "Englisch"
+msgstr "English"
+
+#: startdaten/__init__.py:19
+msgid "Mathe"
+msgstr "Maths"
+
+#: startdaten/__init__.py:24
+msgid "Zahlen (0-20)"
+msgstr "Numbers (0-20)"
+
+#: startdaten/__init__.py:25
+msgid "Farben"
+msgstr "Colours"
+
+#: startdaten/__init__.py:26
+msgid "Schule"
+msgstr "School"
+
+#: startdaten/__init__.py:27
+msgid "Familie"
+msgstr "Family"
+
+#: startdaten/__init__.py:28
+msgid "Tiere"
+msgstr "Animals"
+
+#: startdaten/__init__.py:29
+msgid "Essen und Trinken"
+msgstr "Food and drink"
+
+#: startdaten/__init__.py:30
+msgid "Sport"
+msgstr "Sport"
+
+#: startdaten/__init__.py:31
+msgid "Wetter und Naturereignisse"
+msgstr "Weather and natural events"
+
+#: startdaten/__init__.py:32
+msgid "Haus und Wohnen"
+msgstr "House and home"
+
+#: startdaten/__init__.py:33
+msgid "Technik"
+msgstr "Technology"
+
+#: startdaten/__init__.py:34
+msgid "Natur"
+msgstr "Nature"
+
+#: startdaten/__init__.py:35
+msgid "Reisen und Verkehr"
+msgstr "Travel and transport"
+
+#: startdaten/__init__.py:36
+msgid "Freizeit und Hobbys"
+msgstr "Free time and hobbies"
+
+#: startdaten/__init__.py:41
+msgid "Zahlen bis 1000"
+msgstr "Numbers up to 1000"
+
+#: startdaten/__init__.py:42
+msgid "Addition und Subtraktion"
+msgstr "Addition and subtraction"
+
+#: startdaten/__init__.py:43
+msgid "Einmaleins"
+msgstr "Times tables"
+
+#: startdaten/__init__.py:44
+msgid "Geometrische Formen"
+msgstr "Geometric shapes"
+
+#: startdaten/__init__.py:45
+msgid "Größen und Messen"
+msgstr "Units and measuring"
+
+#: startdaten/__init__.py:48
+msgid "Brüche"
+msgstr "Fractions"
+
+#: startdaten/__init__.py:49
+msgid "Dezimalzahlen"
+msgstr "Decimals"
+
+#: startdaten/__init__.py:50
+msgid "Prozentrechnung"
+msgstr "Percentages"
+
+#: startdaten/__init__.py:51
+msgid "Umfang und Flächeninhalt"
+msgstr "Perimeter and area"
+
+#: startdaten/__init__.py:52
+msgid "Größen und Einheiten"
+msgstr "Quantities and units"
+
+#: startdaten/__init__.py:55
+msgid "Terme und Gleichungen"
+msgstr "Expressions and equations"
+
+#: startdaten/__init__.py:56
+msgid "Lineare Funktionen"
+msgstr "Linear functions"
+
+#: startdaten/__init__.py:57
+msgid "Prozent und Zinsen"
+msgstr "Percent and interest"
+
+#: startdaten/__init__.py:58
+msgid "Satz des Pythagoras"
+msgstr "Pythagorean theorem"
+
+#: startdaten/__init__.py:59
+msgid "Wahrscheinlichkeit"
+msgstr "Probability"

@@ -1,0 +1,2717 @@
+{
+"3": {
+"themen": [
+"Numbers (0-20)",
+"Colors",
+"School",
+"Family",
+"Animals"
+],
+"vokabeln": [
+{
+"de": "Null",
+"en": "zero",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Eins",
+"en": "one",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Zwei",
+"en": "two",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Drei",
+"en": "three",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Vier",
+"en": "four",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Fünf",
+"en": "five",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Sechs",
+"en": "six",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Sieben",
+"en": "seven",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Acht",
+"en": "eight",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Neun",
+"en": "nine",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Zehn",
+"en": "ten",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Elf",
+"en": "eleven",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Zwölf",
+"en": "twelve",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Dreizehn",
+"en": "thirteen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Vierzehn",
+"en": "fourteen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Fünfzehn",
+"en": "fifteen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Sechzehn",
+"en": "sixteen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Siebzehn",
+"en": "seventeen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Achtzehn",
+"en": "eighteen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Neunzehn",
+"en": "nineteen",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Zwanzig",
+"en": "twenty",
+"thema": "Numbers (0-20)"
+},
+{
+"de": "Rot",
+"en": "red",
+"thema": "Colors"
+},
+{
+"de": "Blau",
+"en": "blue",
+"thema": "Colors"
+},
+{
+"de": "Gelb",
+"en": "yellow",
+"thema": "Colors"
+},
+{
+"de": "Grün",
+"en": "green",
+"thema": "Colors"
+},
+{
+"de": "Orange",
+"en": "orange",
+"thema": "Colors"
+},
+{
+"de": "Lila",
+"en": "purple",
+"thema": "Colors"
+},
+{
+"de": "Rosa",
+"en": "pink",
+"thema": "Colors"
+},
+{
+"de": "Schwarz",
+"en": "black",
+"thema": "Colors"
+},
+{
+"de": "Weiß",
+"en": "white",
+"thema": "Colors"
+},
+{
+"de": "Braun",
+"en": "brown",
+"thema": "Colors"
+},
+{
+"de": "Grau",
+"en": "grey",
+"thema": "Colors"
+},
+{
+"de": "Schule",
+"en": "school",
+"thema": "School"
+},
+{
+"de": "Lehrer",
+"en": "teacher",
+"thema": "School"
+},
+{
+"de": "Schüler",
+"en": "pupil",
+"thema": "School"
+},
+{
+"de": "Buch",
+"en": "book",
+"thema": "School"
+},
+{
+"de": "Stift",
+"en": "pen",
+"thema": "School"
+},
+{
+"de": "Bleistift",
+"en": "pencil",
+"thema": "School"
+},
+{
+"de": "Schultasche",
+"en": "schoolbag",
+"thema": "School"
+},
+{
+"de": "Tisch",
+"en": "table",
+"thema": "School"
+},
+{
+"de": "Stuhl",
+"en": "chair",
+"thema": "School"
+},
+{
+"de": "Tafel",
+"en": "board",
+"thema": "School"
+},
+{
+"de": "Lineal",
+"en": "ruler",
+"thema": "School"
+},
+{
+"de": "Radiergummi",
+"en": "rubber",
+"thema": "School"
+},
+{
+"de": "Klassenzimmer",
+"en": "classroom",
+"thema": "School"
+},
+{
+"de": "Freund",
+"en": "friend",
+"thema": "School"
+},
+{
+"de": "Pause",
+"en": "break",
+"thema": "School"
+},
+{
+"de": "Hausaufgabe",
+"en": "homework",
+"thema": "School"
+},
+{
+"de": "Stundenplan",
+"en": "timetable",
+"thema": "School"
+},
+{
+"de": "Mutter",
+"en": "mother",
+"thema": "Family"
+},
+{
+"de": "Vater",
+"en": "father",
+"thema": "Family"
+},
+{
+"de": "Schwester",
+"en": "sister",
+"thema": "Family"
+},
+{
+"de": "Bruder",
+"en": "brother",
+"thema": "Family"
+},
+{
+"de": "Großmutter",
+"en": "grandmother",
+"thema": "Family"
+},
+{
+"de": "Großvater",
+"en": "grandfather",
+"thema": "Family"
+},
+{
+"de": "Tante",
+"en": "aunt",
+"thema": "Family"
+},
+{
+"de": "Onkel",
+"en": "uncle",
+"thema": "Family"
+},
+{
+"de": "Cousin",
+"en": "cousin",
+"thema": "Family"
+},
+{
+"de": "Baby",
+"en": "baby",
+"thema": "Family"
+},
+{
+"de": "Familie",
+"en": "family",
+"thema": "Family"
+},
+{
+"de": "Eltern",
+"en": "parents",
+"thema": "Family"
+},
+{
+"de": "Mama",
+"en": "mum",
+"thema": "Family"
+},
+{
+"de": "Papa",
+"en": "dad",
+"thema": "Family"
+},
+{
+"de": "Kinder",
+"en": "children",
+"thema": "Family"
+},
+{
+"de": "Hund",
+"en": "dog",
+"thema": "Animals"
+},
+{
+"de": "Katze",
+"en": "cat",
+"thema": "Animals"
+},
+{
+"de": "Vogel",
+"en": "bird",
+"thema": "Animals"
+},
+{
+"de": "Fisch",
+"en": "fish",
+"thema": "Animals"
+},
+{
+"de": "Pferd",
+"en": "horse",
+"thema": "Animals"
+},
+{
+"de": "Kuh",
+"en": "cow",
+"thema": "Animals"
+},
+{
+"de": "Schwein",
+"en": "pig",
+"thema": "Animals"
+},
+{
+"de": "Schaf",
+"en": "sheep",
+"thema": "Animals"
+},
+{
+"de": "Huhn",
+"en": "chicken",
+"thema": "Animals"
+},
+{
+"de": "Ente",
+"en": "duck",
+"thema": "Animals"
+},
+{
+"de": "Kaninchen",
+"en": "rabbit",
+"thema": "Animals"
+},
+{
+"de": "Maus",
+"en": "mouse",
+"thema": "Animals"
+},
+{
+"de": "Frosch",
+"en": "frog",
+"thema": "Animals"
+},
+{
+"de": "Elefant",
+"en": "elephant",
+"thema": "Animals"
+},
+{
+"de": "Löwe",
+"en": "lion",
+"thema": "Animals"
+},
+{
+"de": "Tiger",
+"en": "tiger",
+"thema": "Animals"
+},
+{
+"de": "Affe",
+"en": "monkey",
+"thema": "Animals"
+},
+{
+"de": "Bär",
+"en": "bear",
+"thema": "Animals"
+},
+{
+"de": "Ziege",
+"en": "goat",
+"thema": "Animals"
+},
+{
+"de": "Schlange",
+"en": "snake",
+"thema": "Animals"
+},
+{
+"de": "Schmetterling",
+"en": "butterfly",
+"thema": "Animals"
+},
+{
+"de": "Biene",
+"en": "bee",
+"thema": "Animals"
+}
+]
+},
+"6": {
+"themen": [
+"School",
+"Family",
+"Animals",
+"Food",
+"Sports",
+"Weather",
+"House",
+"Technology",
+"Nature",
+"Travel",
+"Hobbies"
+],
+"vokabeln": [
+{
+"de": "Schule",
+"en": "school",
+"thema": "School"
+},
+{
+"de": "Lehrer",
+"en": "teacher",
+"thema": "School"
+},
+{
+"de": "Schüler",
+"en": "student",
+"thema": "School"
+},
+{
+"de": "Klassenzimmer",
+"en": "classroom",
+"thema": "School"
+},
+{
+"de": "Schulhof",
+"en": "schoolyard",
+"thema": "School"
+},
+{
+"de": "Schulleiter",
+"en": "principal",
+"thema": "School"
+},
+{
+"de": "Schulbuch",
+"en": "textbook",
+"thema": "School"
+},
+{
+"de": "Hefte",
+"en": "notebooks",
+"thema": "School"
+},
+{
+"de": "Stift",
+"en": "pen",
+"thema": "School"
+},
+{
+"de": "Bleistift",
+"en": "pencil",
+"thema": "School"
+},
+{
+"de": "Radiergummi",
+"en": "eraser",
+"thema": "School"
+},
+{
+"de": "Lineal",
+"en": "ruler",
+"thema": "School"
+},
+{
+"de": "Schere",
+"en": "scissors",
+"thema": "School"
+},
+{
+"de": "Papier",
+"en": "paper",
+"thema": "School"
+},
+{
+"de": "Tisch",
+"en": "desk",
+"thema": "School"
+},
+{
+"de": "Stuhl",
+"en": "chair",
+"thema": "School"
+},
+{
+"de": "Tafel",
+"en": "blackboard",
+"thema": "School"
+},
+{
+"de": "Kreide",
+"en": "chalk",
+"thema": "School"
+},
+{
+"de": "Pause",
+"en": "break",
+"thema": "School"
+},
+{
+"de": "Unterricht",
+"en": "lesson",
+"thema": "School"
+},
+{
+"de": "Unterrichtsfach",
+"en": "subject",
+"thema": "School"
+},
+{
+"de": "Mathematik",
+"en": "mathematics",
+"thema": "School"
+},
+{
+"de": "Deutsch",
+"en": "German",
+"thema": "School"
+},
+{
+"de": "Englisch",
+"en": "English",
+"thema": "School"
+},
+{
+"de": "Geschichte",
+"en": "history",
+"thema": "School"
+},
+{
+"de": "Geographie",
+"en": "geography",
+"thema": "School"
+},
+{
+"de": "Naturwissenschaften",
+"en": "science",
+"thema": "School"
+},
+{
+"de": "Kunst",
+"en": "art",
+"thema": "School"
+},
+{
+"de": "Musik",
+"en": "music",
+"thema": "School"
+},
+{
+"de": "Sportunterricht",
+"en": "physical education",
+"thema": "School"
+},
+{
+"de": "Hausaufgaben",
+"en": "homework",
+"thema": "School"
+},
+{
+"de": "Prüfung",
+"en": "exam",
+"thema": "School"
+},
+{
+"de": "Note",
+"en": "grade",
+"thema": "School"
+},
+{
+"de": "Zeugnis",
+"en": "report card",
+"thema": "School"
+},
+{
+"de": "Mutter",
+"en": "mother",
+"thema": "Family"
+},
+{
+"de": "Vater",
+"en": "father",
+"thema": "Family"
+},
+{
+"de": "Eltern",
+"en": "parents",
+"thema": "Family"
+},
+{
+"de": "Schwester",
+"en": "sister",
+"thema": "Family"
+},
+{
+"de": "Bruder",
+"en": "brother",
+"thema": "Family"
+},
+{
+"de": "Großmutter",
+"en": "grandmother",
+"thema": "Family"
+},
+{
+"de": "Großvater",
+"en": "grandfather",
+"thema": "Family"
+},
+{
+"de": "Großeltern",
+"en": "grandparents",
+"thema": "Family"
+},
+{
+"de": "Tante",
+"en": "aunt",
+"thema": "Family"
+},
+{
+"de": "Onkel",
+"en": "uncle",
+"thema": "Family"
+},
+{
+"de": "Cousin",
+"en": "cousin",
+"thema": "Family"
+},
+{
+"de": "Cousine",
+"en": "cousin (female)",
+"thema": "Family"
+},
+{
+"de": "Kind",
+"en": "child",
+"thema": "Family"
+},
+{
+"de": "Sohn",
+"en": "son",
+"thema": "Family"
+},
+{
+"de": "Tochter",
+"en": "daughter",
+"thema": "Family"
+},
+{
+"de": "Ehemann",
+"en": "husband",
+"thema": "Family"
+},
+{
+"de": "Ehefrau",
+"en": "wife",
+"thema": "Family"
+},
+{
+"de": "Nachbar",
+"en": "neighbor",
+"thema": "Family"
+},
+{
+"de": "Freund",
+"en": "friend",
+"thema": "Family"
+},
+{
+"de": "Freundin",
+"en": "friend (female)",
+"thema": "Family"
+},
+{
+"de": "Hund",
+"en": "dog",
+"thema": "Animals"
+},
+{
+"de": "Katze",
+"en": "cat",
+"thema": "Animals"
+},
+{
+"de": "Vogel",
+"en": "bird",
+"thema": "Animals"
+},
+{
+"de": "Fisch",
+"en": "fish",
+"thema": "Animals"
+},
+{
+"de": "Pferd",
+"en": "horse",
+"thema": "Animals"
+},
+{
+"de": "Kuh",
+"en": "cow",
+"thema": "Animals"
+},
+{
+"de": "Schwein",
+"en": "pig",
+"thema": "Animals"
+},
+{
+"de": "Schaf",
+"en": "sheep",
+"thema": "Animals"
+},
+{
+"de": "Ziege",
+"en": "goat",
+"thema": "Animals"
+},
+{
+"de": "Huhn",
+"en": "hen",
+"thema": "Animals"
+},
+{
+"de": "Hahn",
+"en": "rooster",
+"thema": "Animals"
+},
+{
+"de": "Affe",
+"en": "monkey",
+"thema": "Animals"
+},
+{
+"de": "Löwe",
+"en": "lion",
+"thema": "Animals"
+},
+{
+"de": "Tiger",
+"en": "tiger",
+"thema": "Animals"
+},
+{
+"de": "Elefant",
+"en": "elephant",
+"thema": "Animals"
+},
+{
+"de": "Giraffe",
+"en": "giraffe",
+"thema": "Animals"
+},
+{
+"de": "Zebra",
+"en": "zebra",
+"thema": "Animals"
+},
+{
+"de": "Schlange",
+"en": "snake",
+"thema": "Animals"
+},
+{
+"de": "Schildkröte",
+"en": "turtle",
+"thema": "Animals"
+},
+{
+"de": "Frosch",
+"en": "frog",
+"thema": "Animals"
+},
+{
+"de": "Bär",
+"en": "bear",
+"thema": "Animals"
+},
+{
+"de": "Reh",
+"en": "deer",
+"thema": "Animals"
+},
+{
+"de": "Wildschwein",
+"en": "boar",
+"thema": "Animals"
+},
+{
+"de": "Fuchs",
+"en": "fox",
+"thema": "Animals"
+},
+{
+"de": "Wolf",
+"en": "wolf",
+"thema": "Animals"
+},
+{
+"de": "Biene",
+"en": "bee",
+"thema": "Animals"
+},
+{
+"de": "Schmetterling",
+"en": "butterfly",
+"thema": "Animals"
+},
+{
+"de": "Raupe",
+"en": "caterpillar",
+"thema": "Animals"
+},
+{
+"de": "Käfer",
+"en": "beetle",
+"thema": "Animals"
+},
+{
+"de": "Spinne",
+"en": "spider",
+"thema": "Animals"
+},
+{
+"de": "Apfel",
+"en": "apple",
+"thema": "Food"
+},
+{
+"de": "Banane",
+"en": "banana",
+"thema": "Food"
+},
+{
+"de": "Orange",
+"en": "orange",
+"thema": "Food"
+},
+{
+"de": "Zitrone",
+"en": "lemon",
+"thema": "Food"
+},
+{
+"de": "Erdbeere",
+"en": "strawberry",
+"thema": "Food"
+},
+{
+"de": "Himbeere",
+"en": "raspberry",
+"thema": "Food"
+},
+{
+"de": "Brombeere",
+"en": "blackberry",
+"thema": "Food"
+},
+{
+"de": "Kirsche",
+"en": "cherry",
+"thema": "Food"
+},
+{
+"de": "Pfirsich",
+"en": "peach",
+"thema": "Food"
+},
+{
+"de": "Birne",
+"en": "pear",
+"thema": "Food"
+},
+{
+"de": "Pflaume",
+"en": "plum",
+"thema": "Food"
+},
+{
+"de": "Ananas",
+"en": "pineapple",
+"thema": "Food"
+},
+{
+"de": "Mango",
+"en": "mango",
+"thema": "Food"
+},
+{
+"de": "Kiwi",
+"en": "kiwi",
+"thema": "Food"
+},
+{
+"de": "Melone",
+"en": "melon",
+"thema": "Food"
+},
+{
+"de": "Wassermelone",
+"en": "watermelon",
+"thema": "Food"
+},
+{
+"de": "Traube",
+"en": "grape",
+"thema": "Food"
+},
+{
+"de": "Kokosnuss",
+"en": "coconut",
+"thema": "Food"
+},
+{
+"de": "Nuss",
+"en": "nut",
+"thema": "Food"
+},
+{
+"de": "Brot",
+"en": "bread",
+"thema": "Food"
+},
+{
+"de": "Brötchen",
+"en": "roll",
+"thema": "Food"
+},
+{
+"de": "Kuchen",
+"en": "cake",
+"thema": "Food"
+},
+{
+"de": "Keks",
+"en": "cookie",
+"thema": "Food"
+},
+{
+"de": "Butter",
+"en": "butter",
+"thema": "Food"
+},
+{
+"de": "Marmelade",
+"en": "jam",
+"thema": "Food"
+},
+{
+"de": "Käse",
+"en": "cheese",
+"thema": "Food"
+},
+{
+"de": "Milch",
+"en": "milk",
+"thema": "Food"
+},
+{
+"de": "Joghurt",
+"en": "yogurt",
+"thema": "Food"
+},
+{
+"de": "Eis",
+"en": "ice cream",
+"thema": "Food"
+},
+{
+"de": "Fußball",
+"en": "football",
+"thema": "Sports"
+},
+{
+"de": "Basketball",
+"en": "basketball",
+"thema": "Sports"
+},
+{
+"de": "Volleyball",
+"en": "volleyball",
+"thema": "Sports"
+},
+{
+"de": "Tennis",
+"en": "tennis",
+"thema": "Sports"
+},
+{
+"de": "Tischtennis",
+"en": "table tennis",
+"thema": "Sports"
+},
+{
+"de": "Badminton",
+"en": "badminton",
+"thema": "Sports"
+},
+{
+"de": "Handball",
+"en": "handball",
+"thema": "Sports"
+},
+{
+"de": "Eishockey",
+"en": "ice hockey",
+"thema": "Sports"
+},
+{
+"de": "Cricket",
+"en": "cricket",
+"thema": "Sports"
+},
+{
+"de": "Rugby",
+"en": "rugby",
+"thema": "Sports"
+},
+{
+"de": "Schwimmen",
+"en": "swimming",
+"thema": "Sports"
+},
+{
+"de": "Tauchen",
+"en": "diving",
+"thema": "Sports"
+},
+{
+"de": "Surfen",
+"en": "surfing",
+"thema": "Sports"
+},
+{
+"de": "Rudern",
+"en": "rowing",
+"thema": "Sports"
+},
+{
+"de": "Sonne",
+"en": "sun",
+"thema": "Weather"
+},
+{
+"de": "Regen",
+"en": "rain",
+"thema": "Weather"
+},
+{
+"de": "Schnee",
+"en": "snow",
+"thema": "Weather"
+},
+{
+"de": "Wind",
+"en": "wind",
+"thema": "Weather"
+},
+{
+"de": "Sturm",
+"en": "storm",
+"thema": "Weather"
+},
+{
+"de": "Gewitter",
+"en": "thunderstorm",
+"thema": "Weather"
+},
+{
+"de": "Wolke",
+"en": "cloud",
+"thema": "Weather"
+},
+{
+"de": "Blitz",
+"en": "lightning",
+"thema": "Weather"
+},
+{
+"de": "Donner",
+"en": "thunder",
+"thema": "Weather"
+},
+{
+"de": "Eis",
+"en": "ice",
+"thema": "Weather"
+},
+{
+"de": "Hitze",
+"en": "heat",
+"thema": "Weather"
+},
+{
+"de": "Kälte",
+"en": "cold",
+"thema": "Weather"
+},
+{
+"de": "Nebel",
+"en": "fog",
+"thema": "Weather"
+},
+{
+"de": "Haus",
+"en": "house",
+"thema": "House"
+},
+{
+"de": "Villa",
+"en": "villa",
+"thema": "House"
+},
+{
+"de": "Wohnung",
+"en": "apartment",
+"thema": "House"
+},
+{
+"de": "Dach",
+"en": "roof",
+"thema": "House"
+},
+{
+"de": "Fenster",
+"en": "window",
+"thema": "House"
+},
+{
+"de": "Tür",
+"en": "door",
+"thema": "House"
+},
+{
+"de": "Wand",
+"en": "wall",
+"thema": "House"
+},
+{
+"de": "Boden",
+"en": "floor",
+"thema": "House"
+},
+{
+"de": "Decke",
+"en": "ceiling",
+"thema": "House"
+},
+{
+"de": "Zimmer",
+"en": "room",
+"thema": "House"
+},
+{
+"de": "Wohnzimmer",
+"en": "living room",
+"thema": "House"
+},
+{
+"de": "Schlafzimmer",
+"en": "bedroom",
+"thema": "House"
+},
+{
+"de": "Küche",
+"en": "kitchen",
+"thema": "House"
+},
+{
+"de": "Badezimmer",
+"en": "bathroom",
+"thema": "House"
+},
+{
+"de": "Keller",
+"en": "basement",
+"thema": "House"
+},
+{
+"de": "Dachboden",
+"en": "attic",
+"thema": "House"
+},
+{
+"de": "Computer",
+"en": "computer",
+"thema": "Technology"
+},
+{
+"de": "Laptop",
+"en": "laptop",
+"thema": "Technology"
+},
+{
+"de": "Handy",
+"en": "mobile phone",
+"thema": "Technology"
+},
+{
+"de": "Smartphone",
+"en": "smartphone",
+"thema": "Technology"
+},
+{
+"de": "Telefon",
+"en": "telephone",
+"thema": "Technology"
+},
+{
+"de": "Fernseher",
+"en": "television",
+"thema": "Technology"
+},
+{
+"de": "Radio",
+"en": "radio",
+"thema": "Technology"
+},
+{
+"de": "Kamera",
+"en": "camera",
+"thema": "Technology"
+},
+{
+"de": "Mikroskop",
+"en": "microscope",
+"thema": "Technology"
+},
+{
+"de": "Teleskop",
+"en": "telescope",
+"thema": "Technology"
+},
+{
+"de": "Baum",
+"en": "tree",
+"thema": "Nature"
+},
+{
+"de": "Blume",
+"en": "flower",
+"thema": "Nature"
+},
+{
+"de": "Rose",
+"en": "rose",
+"thema": "Nature"
+},
+{
+"de": "Tulpe",
+"en": "tulip",
+"thema": "Nature"
+},
+{
+"de": "Nelke",
+"en": "carnation",
+"thema": "Nature"
+},
+{
+"de": "Gras",
+"en": "grass",
+"thema": "Nature"
+},
+{
+"de": "Blatt",
+"en": "leaf",
+"thema": "Nature"
+},
+{
+"de": "Stamm",
+"en": "trunk",
+"thema": "Nature"
+},
+{
+"de": "Berg",
+"en": "mountain",
+"thema": "Nature"
+},
+{
+"de": "Tal",
+"en": "valley",
+"thema": "Nature"
+},
+{
+"de": "See",
+"en": "lake",
+"thema": "Nature"
+},
+{
+"de": "Fluss",
+"en": "river",
+"thema": "Nature"
+},
+{
+"de": "Meer",
+"en": "sea",
+"thema": "Nature"
+},
+{
+"de": "Strand",
+"en": "beach",
+"thema": "Nature"
+},
+{
+"de": "Zug",
+"en": "train",
+"thema": "Travel"
+},
+{
+"de": "Bus",
+"en": "bus",
+"thema": "Travel"
+},
+{
+"de": "Auto",
+"en": "car",
+"thema": "Travel"
+},
+{
+"de": "Motorrad",
+"en": "motorcycle",
+"thema": "Travel"
+},
+{
+"de": "Fahrrad",
+"en": "bicycle",
+"thema": "Travel"
+},
+{
+"de": "Moped",
+"en": "moped",
+"thema": "Travel"
+},
+{
+"de": "Flugzeug",
+"en": "airplane",
+"thema": "Travel"
+},
+{
+"de": "Helikopter",
+"en": "helicopter",
+"thema": "Travel"
+},
+{
+"de": "Schiff",
+"en": "ship",
+"thema": "Travel"
+},
+{
+"de": "Boot",
+"en": "boat",
+"thema": "Travel"
+},
+{
+"de": "Koffer",
+"en": "suitcase",
+"thema": "Travel"
+},
+{
+"de": "Rucksack",
+"en": "backpack",
+"thema": "Travel"
+},
+{
+"de": "Reise",
+"en": "trip",
+"thema": "Travel"
+},
+{
+"de": "Land",
+"en": "country",
+"thema": "Travel"
+},
+{
+"de": "Stadt",
+"en": "city",
+"thema": "Travel"
+}
+]
+},
+"8": {
+"themen": [
+"School",
+"Family",
+"Animals",
+"Food",
+"Sports",
+"Weather",
+"House",
+"Technology",
+"Nature",
+"Travel",
+"Hobbies"
+],
+"vokabeln": [
+{
+"de": "Oberschule",
+"en": "secondary school",
+"thema": "School"
+},
+{
+"de": "Gymnasium",
+"en": "grammar school",
+"thema": "School"
+},
+{
+"de": "Realschule",
+"en": "intermediate school",
+"thema": "School"
+},
+{
+"de": "Fachabteilung",
+"en": "department",
+"thema": "School"
+},
+{
+"de": "Forschungsmethoden",
+"en": "research methods",
+"thema": "School"
+},
+{
+"de": "Laboratorium",
+"en": "laboratory",
+"thema": "School"
+},
+{
+"de": "Versuch",
+"en": "experiment",
+"thema": "School"
+},
+{
+"de": "Mikrobiologe",
+"en": "microbiologist",
+"thema": "School"
+},
+{
+"de": "Zelle",
+"en": "cell",
+"thema": "School"
+},
+{
+"de": "Gewebe",
+"en": "tissue",
+"thema": "School"
+},
+{
+"de": "Organ",
+"en": "organ",
+"thema": "School"
+},
+{
+"de": "Organismus",
+"en": "organism",
+"thema": "School"
+},
+{
+"de": "Evolution",
+"en": "evolution",
+"thema": "School"
+},
+{
+"de": "Genetik",
+"en": "genetics",
+"thema": "School"
+},
+{
+"de": "Ökologie",
+"en": "ecology",
+"thema": "School"
+},
+{
+"de": "Umwelt",
+"en": "environment",
+"thema": "School"
+},
+{
+"de": "Nachhaltigkeit",
+"en": "sustainability",
+"thema": "School"
+},
+{
+"de": "Klassensprecher",
+"en": "class representative",
+"thema": "School"
+},
+{
+"de": "Schülersprecher",
+"en": "student representative",
+"thema": "School"
+},
+{
+"de": "Schulkomitee",
+"en": "school committee",
+"thema": "School"
+},
+{
+"de": "Schulfest",
+"en": "school festival",
+"thema": "School"
+},
+{
+"de": "Schulausflug",
+"en": "school trip",
+"thema": "School"
+},
+{
+"de": "Klassenfahrt",
+"en": "class trip",
+"thema": "School"
+},
+{
+"de": "Austauschprogramm",
+"en": "exchange program",
+"thema": "School"
+},
+{
+"de": "Universität",
+"en": "university",
+"thema": "School"
+},
+{
+"de": "Fachhochschule",
+"en": "technical college",
+"thema": "School"
+},
+{
+"de": "Akademie",
+"en": "academy",
+"thema": "School"
+},
+{
+"de": "Berufsorientierung",
+"en": "career guidance",
+"thema": "School"
+},
+{
+"de": "Praktikum",
+"en": "internship",
+"thema": "School"
+},
+{
+"de": "Berufsberatung",
+"en": "career counseling",
+"thema": "School"
+},
+{
+"de": "Schuldirektor",
+"en": "headteacher",
+"thema": "School"
+},
+{
+"de": "Schulverwaltung",
+"en": "school administration",
+"thema": "School"
+},
+{
+"de": "Hausmeister",
+"en": "caretaker",
+"thema": "School"
+},
+{
+"de": "Reinigungspersonal",
+"en": "cleaning staff",
+"thema": "School"
+},
+{
+"de": "Volljährigkeit",
+"en": "coming of age",
+"thema": "Family"
+},
+{
+"de": "Emanzipation",
+"en": "emancipation",
+"thema": "Family"
+},
+{
+"de": "Beziehung",
+"en": "relationship",
+"thema": "Family"
+},
+{
+"de": "Partnerschaft",
+"en": "partnership",
+"thema": "Family"
+},
+{
+"de": "Vertrauen",
+"en": "trust",
+"thema": "Family"
+},
+{
+"de": "Verständnis",
+"en": "understanding",
+"thema": "Family"
+},
+{
+"de": "Konflikt",
+"en": "conflict",
+"thema": "Family"
+},
+{
+"de": "Versöhnung",
+"en": "reconciliation",
+"thema": "Family"
+},
+{
+"de": "Erbschaft",
+"en": "inheritance",
+"thema": "Family"
+},
+{
+"de": "Testament",
+"en": "will",
+"thema": "Family"
+},
+{
+"de": "Adoption",
+"en": "adoption",
+"thema": "Family"
+},
+{
+"de": "Pflegekind",
+"en": "foster child",
+"thema": "Family"
+},
+{
+"de": "Pflegeeltern",
+"en": "foster parents",
+"thema": "Family"
+},
+{
+"de": "Waisenhaus",
+"en": "orphanage",
+"thema": "Family"
+},
+{
+"de": "Amphibien",
+"en": "amphibians",
+"thema": "Animals"
+},
+{
+"de": "Reptilien",
+"en": "reptiles",
+"thema": "Animals"
+},
+{
+"de": "Insekten",
+"en": "insects",
+"thema": "Animals"
+},
+{
+"de": "Säugetiere",
+"en": "mammals",
+"thema": "Animals"
+},
+{
+"de": "Vögel",
+"en": "birds",
+"thema": "Animals"
+},
+{
+"de": "Fische",
+"en": "fish",
+"thema": "Animals"
+},
+{
+"de": "Wirbellose",
+"en": "invertebrates",
+"thema": "Animals"
+},
+{
+"de": "Wirbeltiere",
+"en": "vertebrates",
+"thema": "Animals"
+},
+{
+"de": "Raubtier",
+"en": "carnivore",
+"thema": "Animals"
+},
+{
+"de": "Pflanzenfresser",
+"en": "herbivore",
+"thema": "Animals"
+},
+{
+"de": "Allesfresser",
+"en": "omnivore",
+"thema": "Animals"
+},
+{
+"de": "Insektenfresser",
+"en": "insectivore",
+"thema": "Animals"
+},
+{
+"de": "Zahnwal",
+"en": "toothed whale",
+"thema": "Animals"
+},
+{
+"de": "Bartwal",
+"en": "baleen whale",
+"thema": "Animals"
+},
+{
+"de": "Delfin",
+"en": "dolphin",
+"thema": "Animals"
+},
+{
+"de": "Seelöwe",
+"en": "sea lion",
+"thema": "Animals"
+},
+{
+"de": "Seehund",
+"en": "seal",
+"thema": "Animals"
+},
+{
+"de": "Seebär",
+"en": "fur seal",
+"thema": "Animals"
+},
+{
+"de": "Walross",
+"en": "walrus",
+"thema": "Animals"
+},
+{
+"de": "Seekuh",
+"en": "sea cow",
+"thema": "Animals"
+},
+{
+"de": "Manati",
+"en": "manatee",
+"thema": "Animals"
+},
+{
+"de": "Wombat",
+"en": "wombat",
+"thema": "Animals"
+},
+{
+"de": "Känguru",
+"en": "kangaroo",
+"thema": "Animals"
+},
+{
+"de": "Koala",
+"en": "koala",
+"thema": "Animals"
+},
+{
+"de": "Kiwi",
+"en": "kiwi bird",
+"thema": "Animals"
+},
+{
+"de": "Emu",
+"en": "emu",
+"thema": "Animals"
+},
+{
+"de": "Schnabeltier",
+"en": "platypus",
+"thema": "Animals"
+},
+{
+"de": "Stacheligel",
+"en": "echidna",
+"thema": "Animals"
+},
+{
+"de": "Vegetarier",
+"en": "vegetarian",
+"thema": "Food"
+},
+{
+"de": "Veganer",
+"en": "vegan",
+"thema": "Food"
+},
+{
+"de": "Pescetarier",
+"en": "pescatarian",
+"thema": "Food"
+},
+{
+"de": "Rohkost",
+"en": "raw food",
+"thema": "Food"
+},
+{
+"de": "Ballaststoffe",
+"en": "fiber",
+"thema": "Food"
+},
+{
+"de": "Kohlenhydrate",
+"en": "carbohydrates",
+"thema": "Food"
+},
+{
+"de": "Proteine",
+"en": "proteins",
+"thema": "Food"
+},
+{
+"de": "Fette",
+"en": "fats",
+"thema": "Food"
+},
+{
+"de": "Vitamine",
+"en": "vitamins",
+"thema": "Food"
+},
+{
+"de": "Mineralien",
+"en": "minerals",
+"thema": "Food"
+},
+{
+"de": "Elektrolyte",
+"en": "electrolytes",
+"thema": "Food"
+},
+{
+"de": "Kalorie",
+"en": "calorie",
+"thema": "Food"
+},
+{
+"de": "Nährwert",
+"en": "nutritional value",
+"thema": "Food"
+},
+{
+"de": "Allergen",
+"en": "allergen",
+"thema": "Food"
+},
+{
+"de": "Glutenfrei",
+"en": "gluten-free",
+"thema": "Food"
+},
+{
+"de": "Laktosefrei",
+"en": "lactose-free",
+"thema": "Food"
+},
+{
+"de": "Zucker",
+"en": "sugar",
+"thema": "Food"
+},
+{
+"de": "Süßstoff",
+"en": "sweetener",
+"thema": "Food"
+},
+{
+"de": "Konservierungsmittel",
+"en": "preservative",
+"thema": "Food"
+},
+{
+"de": "Farbstoff",
+"en": "food coloring",
+"thema": "Food"
+},
+{
+"de": "Geschmacksverstärker",
+"en": "flavor enhancer",
+"thema": "Food"
+},
+{
+"de": "Olympische Spiele",
+"en": "Olympic Games",
+"thema": "Sports"
+},
+{
+"de": "Paralympische Spiele",
+"en": "Paralympic Games",
+"thema": "Sports"
+},
+{
+"de": "Weltmeisterschaft",
+"en": "world championship",
+"thema": "Sports"
+},
+{
+"de": "Europameisterschaft",
+"en": "European championship",
+"thema": "Sports"
+},
+{
+"de": "Bundesligamannschaft",
+"en": "Bundesliga team",
+"thema": "Sports"
+},
+{
+"de": "Trainer",
+"en": "coach",
+"thema": "Sports"
+},
+{
+"de": "Schiedsrichter",
+"en": "referee",
+"thema": "Sports"
+},
+{
+"de": "Schiedsrichterin",
+"en": "female referee",
+"thema": "Sports"
+},
+{
+"de": "Spieler",
+"en": "player",
+"thema": "Sports"
+},
+{
+"de": "Spielerin",
+"en": "female player",
+"thema": "Sports"
+},
+{
+"de": "Mannschaft",
+"en": "team",
+"thema": "Sports"
+},
+{
+"de": "Nachteil",
+"en": "disadvantage",
+"thema": "Sports"
+},
+{
+"de": "Vorteil",
+"en": "advantage",
+"thema": "Sports"
+},
+{
+"de": "Tor",
+"en": "goal",
+"thema": "Sports"
+},
+{
+"de": "Treffer",
+"en": "hit",
+"thema": "Sports"
+},
+{
+"de": "Pokal",
+"en": "cup",
+"thema": "Sports"
+},
+{
+"de": "Medaille",
+"en": "medal",
+"thema": "Sports"
+},
+{
+"de": "Sieger",
+"en": "winner",
+"thema": "Sports"
+},
+{
+"de": "Sieg",
+"en": "victory",
+"thema": "Sports"
+},
+{
+"de": "Niederlage",
+"en": "defeat",
+"thema": "Sports"
+},
+{
+"de": "Unentschieden",
+"en": "draw",
+"thema": "Sports"
+},
+{
+"de": "Treibhauseffekt",
+"en": "greenhouse effect",
+"thema": "Weather"
+},
+{
+"de": "Ozonloch",
+"en": "ozone hole",
+"thema": "Weather"
+},
+{
+"de": "Luftqualität",
+"en": "air quality",
+"thema": "Weather"
+},
+{
+"de": "Smog",
+"en": "smog",
+"thema": "Weather"
+},
+{
+"de": "Säureregen",
+"en": "acid rain",
+"thema": "Weather"
+},
+{
+"de": "Erdbeben",
+"en": "earthquake",
+"thema": "Weather"
+},
+{
+"de": "Tsunami",
+"en": "tsunami",
+"thema": "Weather"
+},
+{
+"de": "Lawine",
+"en": "avalanche",
+"thema": "Weather"
+},
+{
+"de": "Bergrutsch",
+"en": "landslide",
+"thema": "Weather"
+},
+{
+"de": "Murgang",
+"en": "mudflow",
+"thema": "Weather"
+},
+{
+"de": "Lava",
+"en": "lava",
+"thema": "Weather"
+},
+{
+"de": "Asche",
+"en": "ash",
+"thema": "Weather"
+},
+{
+"de": "Pyroclastischer Strom",
+"en": "pyroclastic flow",
+"thema": "Weather"
+},
+{
+"de": "Infrastruktur",
+"en": "infrastructure",
+"thema": "House"
+},
+{
+"de": "Rohre",
+"en": "pipes",
+"thema": "House"
+},
+{
+"de": "Kanäle",
+"en": "ducts",
+"thema": "House"
+},
+{
+"de": "Ventilationen",
+"en": "ventilation",
+"thema": "House"
+},
+{
+"de": "Isolierung",
+"en": "insulation",
+"thema": "House"
+},
+{
+"de": "Dichtung",
+"en": "sealing",
+"thema": "House"
+},
+{
+"de": "Belüftung",
+"en": "aeration",
+"thema": "House"
+},
+{
+"de": "Entwässerung",
+"en": "drainage",
+"thema": "House"
+},
+{
+"de": "Heizungsanlage",
+"en": "heating system",
+"thema": "House"
+},
+{
+"de": "Klimaanlage",
+"en": "air conditioning",
+"thema": "House"
+},
+{
+"de": "Solaranlage",
+"en": "solar system",
+"thema": "House"
+},
+{
+"de": "Windkraftanlage",
+"en": "wind turbine",
+"thema": "House"
+},
+{
+"de": "Stromgenerator",
+"en": "electric generator",
+"thema": "House"
+},
+{
+"de": "Wassertank",
+"en": "water tank",
+"thema": "House"
+},
+{
+"de": "Grauwassersystem",
+"en": "greywater system",
+"thema": "House"
+},
+{
+"de": "Sicherheitssystem",
+"en": "security system",
+"thema": "House"
+},
+{
+"de": "Alarmsystem",
+"en": "alarm system",
+"thema": "House"
+},
+{
+"de": "Sprinkleranlage",
+"en": "sprinkler system",
+"thema": "House"
+},
+{
+"de": "Feuerlöscher",
+"en": "fire extinguisher",
+"thema": "House"
+},
+{
+"de": "Rauchmelder",
+"en": "smoke detector",
+"thema": "House"
+},
+{
+"de": "Sensor",
+"en": "sensor",
+"thema": "Technology"
+},
+{
+"de": "Datenbank",
+"en": "database",
+"thema": "Technology"
+},
+{
+"de": "Netzwerk",
+"en": "network",
+"thema": "Technology"
+},
+{
+"de": "Router",
+"en": "router",
+"thema": "Technology"
+},
+{
+"de": "Modem",
+"en": "modem",
+"thema": "Technology"
+},
+{
+"de": "WLAN",
+"en": "Wi-Fi",
+"thema": "Technology"
+},
+{
+"de": "Bluetooth",
+"en": "Bluetooth",
+"thema": "Technology"
+},
+{
+"de": "USB",
+"en": "USB",
+"thema": "Technology"
+},
+{
+"de": "HDMI",
+"en": "HDMI",
+"thema": "Technology"
+},
+{
+"de": "Kabel",
+"en": "cable",
+"thema": "Technology"
+},
+{
+"de": "Steckdose",
+"en": "electrical outlet",
+"thema": "Technology"
+},
+{
+"de": "Schalter",
+"en": "switch",
+"thema": "Technology"
+},
+{
+"de": "Sicherung",
+"en": "fuse",
+"thema": "Technology"
+},
+{
+"de": "Stromkreis",
+"en": "circuit",
+"thema": "Technology"
+},
+{
+"de": "Batterie",
+"en": "battery",
+"thema": "Technology"
+},
+{
+"de": "Akku",
+"en": "rechargeable battery",
+"thema": "Technology"
+},
+{
+"de": "Ladegerät",
+"en": "charger",
+"thema": "Technology"
+},
+{
+"de": "Netzteil",
+"en": "power supply",
+"thema": "Technology"
+},
+{
+"de": "Speicher",
+"en": "storage",
+"thema": "Technology"
+},
+{
+"de": "RAM",
+"en": "RAM",
+"thema": "Technology"
+},
+{
+"de": "Festplatte",
+"en": "hard drive",
+"thema": "Technology"
+},
+{
+"de": "SSD",
+"en": "solid state drive",
+"thema": "Technology"
+},
+{
+"de": "Cloud",
+"en": "cloud",
+"thema": "Technology"
+},
+{
+"de": "Datensicherung",
+"en": "backup",
+"thema": "Technology"
+},
+{
+"de": "Antivirus",
+"en": "antivirus",
+"thema": "Technology"
+},
+{
+"de": "Firewall",
+"en": "firewall",
+"thema": "Technology"
+},
+{
+"de": "Verschlüsselung",
+"en": "encryption",
+"thema": "Technology"
+},
+{
+"de": "Passwort",
+"en": "password",
+"thema": "Technology"
+},
+{
+"de": "PIN",
+"en": "PIN",
+"thema": "Technology"
+},
+{
+"de": "Biometrie",
+"en": "biometrics",
+"thema": "Technology"
+},
+{
+"de": "Fingerabdruck",
+"en": "fingerprint",
+"thema": "Technology"
+},
+{
+"de": "Gesichtserkennung",
+"en": "facial recognition",
+"thema": "Technology"
+},
+{
+"de": "Künstliche Intelligenz",
+"en": "artificial intelligence",
+"thema": "Technology"
+},
+{
+"de": "Maschinelles Lernen",
+"en": "machine learning",
+"thema": "Technology"
+},
+{
+"de": "Robotik",
+"en": "robotics",
+"thema": "Technology"
+},
+{
+"de": "Drohne",
+"en": "drone",
+"thema": "Technology"
+},
+{
+"de": "3D-Drucker",
+"en": "3D printer",
+"thema": "Technology"
+},
+{
+"de": "Bioökologie",
+"en": "bioecology",
+"thema": "Nature"
+},
+{
+"de": "Biodiversität",
+"en": "biodiversity",
+"thema": "Nature"
+},
+{
+"de": "Artenschutz",
+"en": "species protection",
+"thema": "Nature"
+},
+{
+"de": "Naturschutzgebiet",
+"en": "nature reserve",
+"thema": "Nature"
+},
+{
+"de": "Nationalpark",
+"en": "national park",
+"thema": "Nature"
+},
+{
+"de": "Reservat",
+"en": "reserve",
+"thema": "Nature"
+},
+{
+"de": "Nahrungskette",
+"en": "food chain",
+"thema": "Nature"
+},
+{
+"de": "Nahrungsnetz",
+"en": "food web",
+"thema": "Nature"
+},
+{
+"de": "Beutegreifer",
+"en": "predator",
+"thema": "Nature"
+},
+{
+"de": "Beute",
+"en": "prey",
+"thema": "Nature"
+},
+{
+"de": "Parasit",
+"en": "parasite",
+"thema": "Nature"
+},
+{
+"de": "Symbiose",
+"en": "symbiosis",
+"thema": "Nature"
+},
+{
+"de": "Ökosystem",
+"en": "ecosystem",
+"thema": "Nature"
+},
+{
+"de": "Biom",
+"en": "biome",
+"thema": "Nature"
+},
+{
+"de": "Population",
+"en": "population",
+"thema": "Nature"
+},
+{
+"de": "Migration",
+"en": "migration",
+"thema": "Nature"
+},
+{
+"de": "Winterschlaf",
+"en": "hibernation",
+"thema": "Nature"
+},
+{
+"de": "Winterruhe",
+"en": "torpor",
+"thema": "Nature"
+},
+{
+"de": "Beobachtung",
+"en": "observation",
+"thema": "Nature"
+},
+{
+"de": "Feldforschung",
+"en": "field research",
+"thema": "Nature"
+},
+{
+"de": "Expedition",
+"en": "expedition",
+"thema": "Travel"
+},
+{
+"de": "Abenteuer",
+"en": "adventure",
+"thema": "Travel"
+},
+{
+"de": "Abenteurer",
+"en": "adventurer",
+"thema": "Travel"
+},
+{
+"de": "Forscher",
+"en": "researcher",
+"thema": "Travel"
+},
+{
+"de": "Erkundung",
+"en": "exploration",
+"thema": "Travel"
+},
+{
+"de": "Kartographie",
+"en": "cartography",
+"thema": "Travel"
+},
+{
+"de": "Route",
+"en": "route",
+"thema": "Travel"
+},
+{
+"de": "Kompass",
+"en": "compass",
+"thema": "Travel"
+},
+{
+"de": "Karte",
+"en": "map",
+"thema": "Travel"
+},
+{
+"de": "Atlas",
+"en": "atlas",
+"thema": "Travel"
+},
+{
+"de": "Navigationssystem",
+"en": "navigation system",
+"thema": "Travel"
+},
+{
+"de": "GPS",
+"en": "GPS",
+"thema": "Travel"
+},
+{
+"de": "Navi",
+"en": "sat nav",
+"thema": "Travel"
+},
+{
+"de": "Koordinaten",
+"en": "coordinates",
+"thema": "Travel"
+},
+{
+"de": "Breitengrad",
+"en": "latitude",
+"thema": "Travel"
+},
+{
+"de": "Längengrad",
+"en": "longitude",
+"thema": "Travel"
+},
+{
+"de": "Äquator",
+"en": "equator",
+"thema": "Travel"
+},
+{
+"de": "Tropen",
+"en": "tropics",
+"thema": "Travel"
+},
+{
+"de": "Polarzone",
+"en": "polar zone",
+"thema": "Travel"
+},
+{
+"de": "Zeitzone",
+"en": "time zone",
+"thema": "Travel"
+},
+{
+"de": "Karaoke",
+"en": "karaoke",
+"thema": "Hobbies"
+},
+{
+"de": "Karaokebar",
+"en": "karaoke bar",
+"thema": "Hobbies"
+},
+{
+"de": "Rockband",
+"en": "rock band",
+"thema": "Hobbies"
+},
+{
+"de": "Popstar",
+"en": "pop star",
+"thema": "Hobbies"
+},
+{
+"de": "Superheld",
+"en": "superhero",
+"thema": "Hobbies"
+},
+{
+"de": "Action-Film",
+"en": "action film",
+"thema": "Hobbies"
+},
+{
+"de": "Horrorfilm",
+"en": "horror film",
+"thema": "Hobbies"
+},
+{
+"de": "Komödienfilm",
+"en": "comedy film",
+"thema": "Hobbies"
+},
+{
+"de": "Dokumentarfilm",
+"en": "documentary film",
+"thema": "Hobbies"
+},
+{
+"de": "Animationsfilm",
+"en": "animated film",
+"thema": "Hobbies"
+},
+{
+"de": "Videospiel",
+"en": "video game",
+"thema": "Hobbies"
+},
+{
+"de": "Online-Spiel",
+"en": "online game",
+"thema": "Hobbies"
+},
+{
+"de": "E-Sport",
+"en": "esports",
+"thema": "Hobbies"
+},
+{
+"de": "Streaming",
+"en": "streaming",
+"thema": "Hobbies"
+},
+{
+"de": "Podcast",
+"en": "podcast",
+"thema": "Hobbies"
+},
+{
+"de": "Social Media",
+"en": "social media",
+"thema": "Hobbies"
+},
+{
+"de": "Blog",
+"en": "blog",
+"thema": "Hobbies"
+},
+{
+"de": "Vlog",
+"en": "vlog",
+"thema": "Hobbies"
+},
+{
+"de": "Influencer",
+"en": "influencer",
+"thema": "Hobbies"
+},
+{
+"de": "Fotografie",
+"en": "photography",
+"thema": "Hobbies"
+},
+{
+"de": "Videographie",
+"en": "videography",
+"thema": "Hobbies"
+},
+{
+"de": "Filmemachen",
+"en": "filmmaking",
+"thema": "Hobbies"
+},
+{
+"de": "Schnitt",
+"en": "editing",
+"thema": "Hobbies"
+},
+{
+"de": "Animation",
+"en": "animation",
+"thema": "Hobbies"
+},
+{
+"de": "Spezialeffekte",
+"en": "special effects",
+"thema": "Hobbies"
+}
+]
+}
+}

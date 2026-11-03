@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "apps.avatar",
     "apps.sondertag",
     "apps.familienziel",
+    "apps.lernen",
     "apps.einrichtung",
     "apps.oberflaeche",
 ]
@@ -169,6 +170,10 @@ MEDIA_ROOT = DATA_DIR / "media"
 # Nachweis-Fotos (AP13): privat, nie öffentlich ausgeliefert, nicht im Backup (ARCHITECTURE 9)
 # Größe, Anzahl, Kantenlänge der Fotos: Einstellungen aufgaben.nachweis_* (Eltern-Editor)
 NACHWEIS_DIR = Path(env("NACHWEIS_DIR", DATA_DIR / "media" / "nachweise"))
+
+# Lernmappen (lernen, SPEC 21.5): Ordner inbox/archiv/tests je Kind. Standard: im Daten-Volume;
+# per LERNEN_SPEICHER_DIR auf einen gemounteten Pfad (z. B. NAS) umstellbar. Nicht öffentlich.
+LERNEN_SPEICHER_DIR = Path(env("LERNEN_SPEICHER_DIR", DATA_DIR / "lernen"))
 
 # Hinter Nginx Proxy Manager (TLS endet dort)
 USE_X_FORWARDED_HOST = True
