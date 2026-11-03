@@ -1,0 +1,9 @@
+{% load i18n sprache %}<div id="stoff-liste" class="stapel">
+  <fieldset class="lernen-wahl"><legend>{% translate "Was kommt dran?" %}</legend>
+    {% for t in themen %}<label><input type="checkbox" name="thema" value="{{ t.pk }}"> {{ t.name|uebersetzt }}</label>
+    {% endfor %}
+    {% for m in materialien %}<label><input type="checkbox" name="material" value="{{ m.pk }}"> {% blocktranslate with name=m.anzeigename %}Aus meiner Mappe: {{ name }}{% endblocktranslate %}</label>
+    {% endfor %}
+    {% if not themen and not materialien %}<p>{% translate "Zu diesem Fach gibt es noch nichts zum Üben. Frag deine Eltern." %}</p>{% endif %}
+  </fieldset>
+</div>

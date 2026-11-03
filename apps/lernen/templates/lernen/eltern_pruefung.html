@@ -1,0 +1,41 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{{ p.titel }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern_pruefungen" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text=_("Prüfungen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{{ p.titel }}</h1>
+  <p>{{ p.kind.anzeigename }} · {{ p.fach.name }} · {{ p.termin|date:"DATE_FORMAT" }} · {{ p.get_status_display }}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+  {% if check %}
+    <p class="feld__hinweis" data-pruefung-problem role="note">{% blocktranslate with braucht=check.benoetigt hat=check.verfuegbar %}Hinweis: Der Stoff braucht etwa {{ braucht }} Minuten, bis zum Termin stehen etwa {{ hat }} Minuten zur Verfügung. Das System hat deshalb keinen vollen Plan gemacht. Das Kind sieht Vorschläge (früher anfangen, Stoff verkleinern, Tagesziel etwas erhöhen) und entscheidet mit euch.{% endblocktranslate %}</p>
+  {% endif %}
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Fortschritt" %}</h2>
+    {% include "komponenten/fortschritt.html" with label=_("Portionen geschafft") wert=fortschritt.erledigt max=fortschritt.gesamt %}
+    <p>{% translate "Stoff:" %} {% for s in stoffe %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  </div></section>
+  <section class="karte"><div class="karte__inhalt stapel" data-pruefung-plan>
+    <h2>{% translate "Plan" %}</h2>
+    <ul class="stapel">
+      {% for datum, portionen in tage %}
+        <li><strong>{{ datum|date:"l, d.m." }}</strong>
+          {% for x in portionen %}<div>{% if x.art == art_puffer %}{% translate "Puffertag (Reserve)" %}{% else %}{% if x.status == "erledigt" %}{% include "komponenten/icon.html" with name="check" %} {% endif %}{{ x.stoff.name }} · {{ x.get_art_display }} · {% blocktranslate with min=x.minuten %}{{ min }} Min.{% endblocktranslate %}{% endif %}</div>{% endfor %}
+        </li>
+      {% empty %}<li>{% translate "Es gibt noch keinen Plan." %}</li>{% endfor %}
+    </ul>
+  </div></section>
+  {% if aktiv %}
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Termin ändern" %}</h2>
+    <form method="post" action="{% url 'lernen:eltern_pruefung_termin' p.pk %}" class="reihe">{% csrf_token %}
+      <input class="feld__eingabe" type="date" name="termin" min="{{ morgen|date:'Y-m-d' }}" value="{{ p.termin|date:'Y-m-d' }}" required aria-label="{% translate 'Neuer Termin' %}">
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
+    </form>
+  </div></section>
+  {% endif %}
+  <form method="post" action="{% url 'lernen:eltern_pruefung_loeschen' p.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" icon="x" text=_("Prüfung löschen") %}</form>
+{% endblock %}

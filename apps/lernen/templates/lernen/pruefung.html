@@ -1,0 +1,106 @@
+{% extends "basis/kind.html" %}
+{% load i18n static sprache %}
+{% block titel %}{{ p.titel }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:pruefungen" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text=_("Prüfungen") %}
+{% endblock %}
+{% block inhalt %}
+  <h1>{{ p.titel }}</h1>
+  <p>{{ p.fach.name|uebersetzt }} · {{ p.termin|date:"DATE_FORMAT" }}
+    · {% blocktranslate count tage=tage_bis %}noch {{ tage }} Tag{% plural %}noch {{ tage }} Tage{% endblocktranslate %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+  {% if ton_angepasst %}<p class="lernen-rueck lernen-rueck--richtig" data-pruefung-angepasst role="status">{{ ton_angepasst }} {{ ton_puffer }}</p>{% endif %}
+  {% if knapp %}<p data-pruefung-knapp>{{ knapp }}</p>{% endif %}
+
+  {% if not aktiv %}
+    <section class="karte"><div class="karte__inhalt stapel"><p>{% translate "Diese Prüfung ist beendet. Den Plan kannst du hier noch nachlesen." %}</p></div></section>
+  {% endif %}
+
+  {% if check %}
+  <section class="karte" data-pruefung-check><div class="karte__inhalt stapel">
+    <h2>{% translate "Das müssen wir uns ansehen" %}</h2>
+    <p>{{ ton_zu_viel }}</p>
+    {% if ton_pausen %}<p>{{ ton_pausen }}</p>{% endif %}
+    {% if vorschlaege %}
+      <ul class="stapel" data-pruefung-vorschlaege>
+        {% for v, text in vorschlaege %}
+          <li>{{ text }}
+            {% if v.art == "ziel" %}
+              <form method="post" action="{% url 'lernen:pruefung_ziel' p.pk %}">{% csrf_token %}<input type="hidden" name="minuten" value="{{ v.wert }}">{% include "komponenten/button.html" with typ="submit" klein=True icon="check" text=_("Ja, das probiere ich") %}</form>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}<p>{{ ton_keiner }}</p>{% endif %}
+    {% if stoffe|length > 1 %}
+      <details><summary>{% translate "Stoff verkleinern" %}</summary>
+        <ul class="stapel">
+          {% for s in stoffe %}
+            <li class="reihe">{{ s.name }}
+              <form method="post" action="{% url 'lernen:pruefung_stoff_entfernen' p.pk s.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Weglassen") %}</form>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% endif %}
+    <form method="post" action="{% url 'lernen:pruefung_neu_planen' p.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="funke" text=_("Plan neu rechnen") %}</form>
+  </div></section>
+  {% endif %}
+
+  {% if p.plan_ok or tage %}
+  <section class="karte"><div class="karte__inhalt stapel" data-pruefung-fortschritt>
+    <h2>{% translate "Dein Fortschritt" %}</h2>
+    {% include "komponenten/fortschritt.html" with label=_("Portionen geschafft") wert=fortschritt.erledigt max=fortschritt.gesamt %}
+  </div></section>
+  {% endif %}
+
+  {% if aktiv and tage %}
+  <section class="karte" data-pruefung-heute><div class="karte__inhalt stapel">
+    <h2>{% translate "Heute dran" %}</h2>
+    {% if dran %}
+      <ul class="stapel">
+        {% for x in dran %}
+          <li class="reihe" data-portion="{{ x.pk }}">
+            <span>{{ x.stoff.name }} · {{ x.get_art_display }} · {% blocktranslate with min=x.minuten %}{{ min }} Min.{% endblocktranslate %}{% if x.datum < heute %} · {% translate "noch offen" %}{% endif %}</span>
+            <form method="post" action="{% url 'lernen:pruefung_portion_start' p.pk x.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" icon="funke" text=_("Los geht's") %}</form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% elif puffer_heute %}<p>{{ ton_puffer_heute }}</p>
+    {% else %}<p>{{ ton_frei }}</p>{% endif %}
+  </div></section>
+  {% endif %}
+
+  {% if tage %}
+  <section class="karte"><div class="karte__inhalt stapel" data-pruefung-plan>
+    <h2>{% translate "Dein Plan" %}</h2>
+    <ul class="stapel">
+      {% for datum, portionen in tage %}
+        <li{% if datum == heute %} data-heute{% endif %}><strong>{{ datum|date:"l, d.m." }}</strong>
+          {% for x in portionen %}
+            <div>
+              {% if x.art == art_puffer %}{% translate "Puffertag (Reserve)" %}
+              {% else %}{% if x.status == "erledigt" %}{% include "komponenten/icon.html" with name="check" %} {% endif %}{{ x.stoff.name }} · {{ x.get_art_display }} · {% blocktranslate with min=x.minuten %}{{ min }} Min.{% endblocktranslate %}{% endif %}
+            </div>
+          {% endfor %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div></section>
+  {% endif %}
+
+  {% if aktiv %}
+  <section class="karte" data-pruefung-probe><div class="karte__inhalt stapel">
+    <h2>{% translate "Probe-Prüfung" %}</h2>
+    <p>{% translate "Eine Probe zum Schluss: gemischte Fragen, ohne Zeitdruck und ohne Note. Sie zeigt dir, was schon gut sitzt." %}</p>
+    <div class="reihe">
+      <form method="post" action="{% url 'lernen:pruefung_probe' p.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" icon="stift" text=_("Probe machen") %}</form>
+      {% if letzte_probe %}{% url "lernen:probe" letzte_probe.pk as probe_url %}{% include "komponenten/button.html" with href=probe_url variante="geist" icon="info" text=_("Letztes Ergebnis") %}{% endif %}
+    </div>
+  </div></section>
+
+  <form method="post" action="{% url 'lernen:pruefung_abbrechen' p.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Diese Prüfung beenden") %}</form>
+  {% endif %}
+{% endblock %}

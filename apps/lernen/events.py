@@ -11,7 +11,10 @@ from apps.ereignisse import registry
 
 LERNZIEL_ERREICHT = "lernen.ziel_erreicht"  # Kind: kleines Pop-up "Tagesziel geschafft"
 
+PRUEFUNG_VORBEREITET = "lernen.pruefung_vorbereitet"  # Kind: "Prüfungsplan eingehalten"
+
 LINK_KIND = "/kind/lernen/"
+LINK_PRUEFUNG = "/kind/lernen/pruefung/"
 
 
 def typen_deklarieren():
@@ -23,6 +26,14 @@ def typen_deklarieren():
         standard_kanaele=["popup"],
         deep_link_muster=LINK_KIND,
     )
+    registry.typ_deklarieren(
+        PRUEFUNG_VORBEREITET,
+        modul="lernen",
+        bezeichnung=gettext_noop("Prüfung vorbereitet"),
+        zielgruppe="kind",
+        standard_kanaele=["popup"],
+        deep_link_muster=LINK_PRUEFUNG,
+    )
 
 
 def texte_registrieren():
@@ -30,4 +41,9 @@ def texte_registrieren():
         LERNZIEL_ERREICHT,
         titel=gettext_noop("Tagesziel geschafft!"),
         text="{hinweis}",  # der Satz steckt in hinweis_msgid + hinweis_parameter
+    )
+    texte.text_registrieren(
+        PRUEFUNG_VORBEREITET,
+        titel=gettext_noop("Prüfungsplan eingehalten!"),
+        text="{hinweis}",
     )

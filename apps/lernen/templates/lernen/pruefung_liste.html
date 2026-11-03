@@ -1,0 +1,40 @@
+{% extends "basis/kind.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Prüfungen" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:start" as start_url %}
+  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text=_("Lernen") %}
+{% endblock %}
+{% block inhalt %}
+  <h1 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Prüfungen" %}</h1>
+  <p>{% translate "Sag mir, wann die Prüfung ist und was dran kommt. Ich mache dir einen Plan mit kleinen Schritten." %}</p>
+
+  {% for p, fortschritt in zeilen %}
+    <section class="karte" data-pruefung="{{ p.pk }}"><div class="karte__inhalt stapel">
+      <h2>{{ p.titel }}</h2>
+      <p>{{ p.fach.name }} · {{ p.termin|date:"DATE_FORMAT" }}</p>
+      {% if p.plan_ok %}
+        {% include "komponenten/fortschritt.html" with label=_("Geschafft") wert=fortschritt.erledigt max=fortschritt.gesamt %}
+      {% else %}
+        <p data-pruefung-check>{% translate "Der Plan braucht noch eine Entscheidung von dir." %}</p>
+      {% endif %}
+      {% url "lernen:pruefung" p.pk as detail_url %}
+      {% include "komponenten/button.html" with href=detail_url icon="pfeil-rechts" text=_("Zum Plan") %}
+    </div></section>
+  {% empty %}
+    <section class="karte"><div class="karte__inhalt stapel"><p>{% translate "Gerade steht keine Prüfung an." %}</p></div></section>
+  {% endfor %}
+
+  {% url "lernen:pruefung_neu" as neu_url %}
+  {% include "komponenten/button.html" with href=neu_url icon="funke" text=_("Neue Prüfung") gross=True %}
+
+  {% if alte %}
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>{% translate "Früher" %}</h2>
+      <ul class="stapel">
+        {% for p in alte %}<li><a href="{% url 'lernen:pruefung' p.pk %}">{{ p.titel }} · {{ p.termin|date:"DATE_FORMAT" }}</a></li>{% endfor %}
+      </ul>
+    </div></section>
+  {% endif %}
+{% endblock %}

@@ -1996,3 +1996,530 @@ msgstr "It is not working right now. Try again in a moment."
 
 msgid "Das hat gerade nicht geklappt. Versuch es gleich noch einmal."
 msgstr "That did not work just now. Try again in a moment."
+
+msgid "Prüfung: ein Puffertag je so viele Lerntage"
+msgstr "Exam: one buffer day per this many study days"
+
+msgid "0 heißt: keine Puffertage. Puffertage bleiben frei, falls ein Tag ausfällt."
+msgstr "0 means no buffer days. Buffer days stay free in case a day is missed."
+
+msgid "Prüfung: Antworten je Portion"
+msgstr "Exam: answers per portion"
+
+msgid "So viele Fragen muss ein Kind bei einer Portion beantworten, damit sie als erledigt zählt. Ein bloßer Klick genügt nie."
+msgstr "This many questions a child must answer in a portion for it to count as done. A mere click is never enough."
+
+msgid "Prüfung: Mindestzeit je Portion"
+msgstr "Exam: minimum time per portion"
+
+msgid "Alternativ zählt eine Portion als erledigt, wenn so lange geübt wurde (mindestens eine Antwort)."
+msgstr "Alternatively a portion counts as done when the child practised this long (at least one answer)."
+
+msgid "Prüfung: empfohlener Vorlauf"
+msgstr "Exam: recommended lead time"
+
+msgid "Ist der Termin näher, steht ein freundlicher Hinweis, dass es knapp wird."
+msgstr "If the date is closer, a friendly note says that time is getting short."
+
+msgid "Prüfung: längster Plan"
+msgstr "Exam: longest plan"
+
+msgid "So viele Tage vor dem Termin beginnt der Plan frühestens."
+msgstr "The plan starts at the earliest this many days before the date."
+
+msgid "Prüfung: Zeit je Frage (Schätzung)"
+msgstr "Exam: time per question (estimate)"
+
+msgid "Daraus rechnet der Plan, wie viele Minuten der Stoff braucht."
+msgstr "The plan uses this to work out how many minutes the material needs."
+
+msgid "Prüfung: Größe einer Portion"
+msgstr "Exam: size of a portion"
+
+msgid "So viele Minuten dauert eine Portion höchstens (nie mehr als das Tagesziel)."
+msgstr "A portion takes at most this many minutes (never more than the daily goal)."
+
+msgid "Prüfung: Zeit für eine Wiederholung"
+msgstr "Exam: time for a review"
+
+msgid "Anteil der Lernzeit einer Portion, den eine Wiederholung braucht."
+msgstr "Share of a portion's study time that a review needs."
+
+msgid "Prüfung: leichter Tag vor der Prüfung"
+msgstr "Exam: light day before the exam"
+
+msgid "So viele Minuten leichte Wiederholung stehen am letzten Lerntag."
+msgstr "This many minutes of light review are planned on the last study day."
+
+msgid "Prüfung: Lerntage der Woche"
+msgstr "Exam: study days of the week"
+
+msgid "An diesen Wochentagen plant der Plan (0 = Montag bis 6 = Sonntag)."
+msgstr "The plan schedules on these weekdays (0 = Monday to 6 = Sunday)."
+
+msgid "Prüfung: größte Erhöhung des Tagesziels im Vorschlag"
+msgstr "Exam: largest daily goal increase in a suggestion"
+
+msgid "Weiter als so viele Minuten über das Tagesziel hinaus schlägt der Plan nie vor."
+msgstr "The plan never suggests going further than this many minutes above the daily goal."
+
+msgid "Probe-Prüfung: Anzahl Fragen"
+msgstr "Practice exam: number of questions"
+
+msgid "Probe-Prüfung: ab hier ist es eine Stärke"
+msgstr "Practice exam: from here it is a strength"
+
+msgid "Anteil richtiger Antworten je Thema. Nur ein Hinweis, keine Note."
+msgstr "Share of correct answers per topic. Only a hint, not a grade."
+
+msgid "Probe-Prüfung: darunter ist es noch zu üben"
+msgstr "Practice exam: below this it needs practice"
+
+msgid "Punkte: Planwoche eingehalten"
+msgstr "Points: plan week kept"
+
+msgid "Fester kleiner Betrag, wenn alle Portionen einer Woche erledigt sind. Es zählt das Lernpunkte-Tageslimit."
+msgstr "Small fixed amount when all portions of a week are done. The daily limit for learning points applies."
+
+msgid "Punkte: Prüfung vorbereitet"
+msgstr "Points: exam prepared"
+
+msgid "Fester kleiner Betrag, wenn der Plan geschafft ist. Es zählt das Lernpunkte-Tageslimit."
+msgstr "Small fixed amount when the plan is done. The daily limit for learning points applies."
+
+msgid "Prüfung vorbereitet"
+msgstr "Exam prepared"
+
+msgid "Prüfungsplan eingehalten!"
+msgstr "Exam plan kept!"
+
+msgid "geplant"
+msgstr "planned"
+
+msgid "aktiv"
+msgstr "active"
+
+msgid "erledigt"
+msgstr "done"
+
+msgid "verschoben"
+msgstr "moved"
+
+msgid "Leicht auffrischen"
+msgstr "Light refresher"
+
+msgid "Ein Stoffteil muss bleiben. Du kannst die Prüfung auch beenden."
+msgstr "One part of the material has to stay. You can also end the exam."
+
+msgid "Zu dieser Portion gibt es gerade keine Fragen."
+msgstr "There are no questions for this portion right now."
+
+msgid "Für eine Probe-Prüfung gibt es noch keine Fragen."
+msgstr "There are no questions for a practice exam yet."
+
+msgid "Die Probe-Prüfung ist schon fertig."
+msgstr "The practice exam is already finished."
+
+msgid "Kein Problem, ich habe den Plan angepasst. Wir machen einfach weiter."
+msgstr "No problem, I have adjusted the plan. We just carry on."
+
+msgid "Kein Problem, ich habe den Plan angepasst."
+msgstr "No problem, I have adjusted the plan."
+
+msgid "Kein Problem, der Plan ist angepasst."
+msgstr "No problem, the plan has been adjusted."
+
+msgid "Ich habe einen Puffertag genutzt, damit alles Platz hat."
+msgstr "I used a buffer day so that everything fits."
+
+msgid "Dafür habe ich einen Puffertag genutzt, damit alles Platz hat."
+msgstr "I used a buffer day for that so that everything fits."
+
+msgid "Ein Puffertag wurde dafür genutzt."
+msgstr "A buffer day was used for that."
+
+#, python-format
+msgid "Das ist so zu viel. Du brauchst etwa %(braucht)s Minuten, hast aber nur etwa %(hat)s Minuten Zeit. Ich mache dir keinen vollen Plan, der nicht klappt. Du entscheidest, was wir ändern."
+msgstr "That is too much like this. You need about %(braucht)s minutes but only have about %(hat)s minutes. I will not make you a full plan that does not work. You decide what we change."
+
+#, python-format
+msgid "Das ist so zu viel: Du brauchst etwa %(braucht)s Minuten und hast etwa %(hat)s Minuten Zeit. Ich plane nichts Überfülltes. Du entscheidest, was wir ändern."
+msgstr "That is too much like this: you need about %(braucht)s minutes and have about %(hat)s minutes. I do not plan anything overloaded. You decide what we change."
+
+#, python-format
+msgid "Das ist so zu viel: Bedarf etwa %(braucht)s Minuten, verfügbar etwa %(hat)s Minuten. Ein überfüllter Plan bringt nichts. Ihr entscheidet, was sich ändert."
+msgstr "That is too much like this: about %(braucht)s minutes needed, about %(hat)s minutes available. An overloaded plan helps nobody. You decide what changes."
+
+#, python-format
+msgid "Früher anfangen: Mit %(tage)s Tagen mehr Zeit würde es klappen."
+msgstr "Start earlier: with %(tage)s more days it would work."
+
+#, python-format
+msgid "Früher anfangen: Mit etwa %(tage)s Tagen mehr Zeit würde es klappen."
+msgstr "Start earlier: with about %(tage)s more days it would work."
+
+#, python-format
+msgid "Früher beginnen: Etwa %(tage)s Tage mehr Zeit würden reichen."
+msgstr "Start earlier: about %(tage)s more days would be enough."
+
+#, python-format
+msgid "Den Stoff kleiner machen: Etwa %(fragen)s Fragen weniger, dann passt es."
+msgstr "Make the material smaller: about %(fragen)s fewer questions and it fits."
+
+#, python-format
+msgid "Den Stoff verkleinern: Mit etwa %(fragen)s Fragen weniger passt es."
+msgstr "Shrink the material: with about %(fragen)s fewer questions it fits."
+
+#, python-format
+msgid "Stoff verkleinern: Etwa %(fragen)s Fragen weniger würden reichen."
+msgstr "Shrink the material: about %(fragen)s fewer questions would be enough."
+
+#, python-format
+msgid "Pro Tag etwas länger üben: %(minuten)s Minuten statt deines Ziels. Nur, wenn du das möchtest."
+msgstr "Practise a little longer each day: %(minuten)s minutes instead of your goal. Only if you want to."
+
+msgid "Gerade sehe ich keinen kleinen Ausweg. Sprich mit deinen Eltern darüber."
+msgstr "I do not see a small way out right now. Talk to your parents about it."
+
+msgid "Hier sehe ich keinen kleinen Ausweg. Sprich mit deinen Eltern darüber."
+msgstr "I do not see a small way out here. Talk to your parents about it."
+
+msgid "Hier hilft keine kleine Änderung. Sprecht gemeinsam über Termin und Stoff."
+msgstr "No small change helps here. Talk together about the date and the material."
+
+msgid "Der Termin ist nicht in der Zukunft. Wähle einen Tag nach heute."
+msgstr "The date is not in the future. Choose a day after today."
+
+msgid "Der Termin muss nach heute liegen. Wähle einen späteren Tag."
+msgstr "The date must be after today. Choose a later day."
+
+msgid "Der Termin muss in der Zukunft liegen."
+msgstr "The date must be in the future."
+
+msgid "Wähle zuerst den Stoff aus, den du lernen musst."
+msgstr "First choose the material you have to learn."
+
+msgid "Wähle zuerst den Stoff für die Prüfung aus."
+msgstr "First choose the material for the exam."
+
+msgid "Der Termin ist bald. Fang am besten heute an, Schritt für Schritt."
+msgstr "The date is soon. It is best to start today, step by step."
+
+msgid "Der Termin ist bald. Fang am besten heute an."
+msgstr "The date is soon. It is best to start today."
+
+msgid "Der Termin ist nah. Beginne am besten heute."
+msgstr "The date is close. It is best to begin today."
+
+msgid "Heute ist nichts geplant. Freiwilliges Üben ist möglich."
+msgstr "Nothing is planned today. Voluntary practice is possible."
+
+msgid "Heute ist ein Puffertag. Er ist da, falls mal etwas ausfällt."
+msgstr "Today is a buffer day. It is there in case something is missed."
+
+msgid "Heute ist ein Puffertag, eine Reserve für den Fall, dass etwas ausfällt."
+msgstr "Today is a buffer day, a reserve in case something is missed."
+
+msgid "Heute ist ein Puffertag (Reserve)."
+msgstr "Today is a buffer day (reserve)."
+
+msgid "Portion geschafft! Das war ein guter Schritt."
+msgstr "Portion done! That was a good step."
+
+msgid "Portion geschafft. Ein guter Schritt."
+msgstr "Portion done. A good step."
+
+msgid "Portion erledigt."
+msgstr "Portion completed."
+
+msgid "Planwoche eingehalten. Das ist richtig gut."
+msgstr "Plan week kept. That is really good."
+
+msgid "Planwoche eingehalten."
+msgstr "Plan week kept."
+
+#, python-format
+msgid "Dein Plan für %(titel)s ist geschafft. Du hast dich gut vorbereitet!"
+msgstr "Your plan for %(titel)s is done. You are well prepared!"
+
+#, python-format
+msgid "Dein Prüfungsplan für %(titel)s ist geschafft. Gut vorbereitet!"
+msgstr "Your exam plan for %(titel)s is done. Well prepared!"
+
+#, python-format
+msgid "Prüfungsplan eingehalten: %(titel)s ist vorbereitet."
+msgstr "Exam plan kept: %(titel)s is prepared."
+
+msgid "Hier bist du sicher."
+msgstr "You are confident here."
+
+msgid "Das ist auf einem guten Weg."
+msgstr "This is on a good path."
+
+msgid "Das ist auf gutem Weg."
+msgstr "This is on a good path."
+
+msgid "Hier bist du auf gutem Weg."
+msgstr "You are on a good path here."
+
+msgid "Das üben wir noch ein bisschen."
+msgstr "We will practise this a little more."
+
+msgid "Das üben wir noch."
+msgstr "We will practise this some more."
+
+msgid "Das lohnt sich noch zu üben."
+msgstr "This is worth practising some more."
+
+msgid "Das ist keine Note. Es zeigt dir nur, was du schon gut kannst und was du noch üben magst."
+msgstr "This is not a grade. It only shows you what you already know well and what you may want to practise."
+
+msgid "Das ist keine Note. Es zeigt nur, was schon sitzt und was du noch üben kannst."
+msgstr "This is not a grade. It only shows what already sticks and what you can still practise."
+
+msgid "Das ist keine Note, sondern ein Hinweis auf Stärken und Übungsbedarf."
+msgstr "This is not a grade but a hint about strengths and what needs practice."
+
+#, python-format
+msgid "In dieser Zeit hast du %(tage)s Tage Pause. Die plane ich nicht ein."
+msgstr "In this time you have %(tage)s days of break. I do not plan those."
+
+#, python-format
+msgid "%(tage)s Tage Pause sind eingetragen. Die plane ich nicht ein."
+msgstr "%(tage)s days of break are entered. I do not plan those."
+
+#, python-format
+msgid "%(tage)s Pausentage sind eingetragen und bleiben ohne Plan."
+msgstr "%(tage)s break days are entered and stay without a plan."
+
+msgid "Probe-Prüfung"
+msgstr "Practice exam"
+
+msgid "Du hast so viel Zeit, wie du brauchst. Eine Rückmeldung gibt es am Ende."
+msgstr "You have as much time as you need. Feedback comes at the end."
+
+#, python-format
+msgid "%(richtig)s von %(gesamt)s"
+msgstr "%(richtig)s of %(gesamt)s"
+
+msgid "Soll ich das, was noch nicht saß, in die letzten Tage deines Plans legen? Du entscheidest."
+msgstr "Shall I put what did not stick yet into the last days of your plan? You decide."
+
+msgid "Ja, einplanen"
+msgstr "Yes, plan it"
+
+msgid "Zum Plan"
+msgstr "To the plan"
+
+msgid "Was kommt dran?"
+msgstr "What is on the exam?"
+
+msgid "Prüfungen"
+msgstr "Exams"
+
+msgid "Hier seht ihr die Prüfungspläne der Kinder (nur lesen). Ihr könnt einen Termin ändern oder eine Prüfung löschen."
+msgstr "Here you see the children's exam plans (read only). You can change a date or delete an exam."
+
+#, python-format
+msgid "Hinweis: Der Stoff braucht etwa %(braucht)s Minuten, bis zum Termin stehen etwa %(hat)s Minuten zur Verfügung. Das System hat deshalb keinen vollen Plan gemacht. Das Kind sieht Vorschläge (früher anfangen, Stoff verkleinern, Tagesziel etwas erhöhen) und entscheidet mit euch."
+msgstr "Note: the material needs about %(braucht)s minutes, and about %(hat)s minutes are available until the date. The system therefore did not make a full plan. The child sees suggestions (start earlier, shrink the material, raise the daily goal a little) and decides together with you."
+
+msgid "Fortschritt"
+msgstr "Progress"
+
+msgid "Stoff:"
+msgstr "Material:"
+
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Puffertag (Reserve)"
+msgstr "Buffer day (reserve)"
+
+#, python-format
+msgid "%(min)s Min."
+msgstr "%(min)s min."
+
+msgid "Ihr seht, wofür die Kinder üben und wie weit der Plan ist. In den Plan eingreift ihr nicht; ihr könnt den Termin ändern oder eine Prüfung löschen."
+msgstr "You see what the children are practising for and how far the plan is. You do not intervene in the plan; you can change the date or delete an exam."
+
+#, python-format
+msgid "%(erledigt)s von %(gesamt)s Portionen"
+msgstr "%(erledigt)s of %(gesamt)s portions"
+
+msgid "Hinweis: Das Pensum bis zum Termin ist so nicht zu schaffen. Der Plan wartet auf eine Entscheidung (Stoff, Tagesziel oder Termin). Sprecht kurz mit dem Kind."
+msgstr "Note: the workload until the date cannot be managed like this. The plan is waiting for a decision (material, daily goal or date). Have a short talk with the child."
+
+#, python-format
+msgid "noch %(tage)s Tag"
+msgid_plural "noch %(tage)s Tage"
+msgstr[0] "%(tage)s day left"
+msgstr[1] "%(tage)s days left"
+
+msgid "Diese Prüfung ist beendet. Den Plan kannst du hier noch nachlesen."
+msgstr "This exam is over. You can still read the plan here."
+
+msgid "Das müssen wir uns ansehen"
+msgstr "We need to take a look at this"
+
+msgid "Stoff verkleinern"
+msgstr "Shrink the material"
+
+msgid "Plan neu rechnen"
+msgstr "Recalculate plan"
+
+msgid "Heute dran"
+msgstr "Today"
+
+msgid "Eine Probe zum Schluss: gemischte Fragen, ohne Zeitdruck und ohne Note. Sie zeigt dir, was schon gut sitzt."
+msgstr "A practice exam at the end: mixed questions, no time pressure and no grade. It shows you what already sticks well."
+
+msgid "Letztes Ergebnis"
+msgstr "Last result"
+
+msgid "Sag mir, wann die Prüfung ist und was dran kommt. Ich mache dir einen Plan mit kleinen Schritten."
+msgstr "Tell me when the exam is and what it covers. I will make you a plan with small steps."
+
+msgid "Der Plan braucht noch eine Entscheidung von dir."
+msgstr "The plan still needs a decision from you."
+
+msgid "Gerade steht keine Prüfung an."
+msgstr "No exam is coming up right now."
+
+msgid "Früher"
+msgstr "Earlier"
+
+msgid "Wie soll die Prüfung heißen?"
+msgstr "What should the exam be called?"
+
+msgid "Wann ist die Prüfung?"
+msgstr "When is the exam?"
+
+msgid "Eine Prüfung steht an? Ich mache dir einen Plan mit kleinen Schritten."
+msgstr "An exam is coming up? I will make you a plan with small steps."
+
+msgid "Zu den Prüfungen"
+msgstr "To the exams"
+
+msgid "Mindestens ein Wochentag."
+msgstr "At least one weekday."
+
+msgid "abgeschlossen"
+msgstr "finished"
+
+msgid "abgebrochen"
+msgstr "cancelled"
+
+msgid "Neues lernen"
+msgstr "Learn something new"
+
+msgid "Wiederholen"
+msgstr "Review"
+
+msgid "Puffertag"
+msgstr "Buffer day"
+
+msgid "Dieses Fach gibt es gerade nicht."
+msgstr "This subject is not available right now."
+
+msgid "Dieser Stoff gehört nicht zu deinem Fach."
+msgstr "This material does not belong to your subject."
+
+msgid "Dieser Stoff gehört nicht zu dieser Prüfung."
+msgstr "This material does not belong to this exam."
+
+msgid "Dieses Ziel ist nicht möglich."
+msgstr "This goal is not possible."
+
+msgid "Diese Portion gehört nicht zu dir."
+msgstr "This portion does not belong to you."
+
+msgid "Diese Prüfung ist beendet."
+msgstr "This exam is over."
+
+msgid "Diese Portion kann man nicht üben."
+msgstr "This portion cannot be practised."
+
+#, python-format
+msgid "Das Tagesziel etwas erhöhen: auf %(minuten)s Minuten. Nur, wenn du das möchtest."
+msgstr "Raise the daily goal a little: to %(minuten)s minutes. Only if you want to."
+
+#, python-format
+msgid "Das Tagesziel auf %(minuten)s Minuten erhöhen. Das ist ein Vorschlag, du entscheidest."
+msgstr "Raise the daily goal to %(minuten)s minutes. This is a suggestion, you decide."
+
+msgid "Wähle zuerst aus, was du lernen musst."
+msgstr "First choose what you have to learn."
+
+msgid "Heute steht nichts an. Du darfst trotzdem üben."
+msgstr "Nothing is planned today. You may practise anyway."
+
+msgid "Heute steht nichts im Plan. Üben darfst du trotzdem."
+msgstr "Nothing is in the plan today. You may still practise."
+
+msgid "Du hast diese Woche deinen Plan eingehalten! Das ist stark."
+msgstr "You kept your plan this week! That is great."
+
+msgid "Das kannst du schon gut."
+msgstr "You already know this well."
+
+msgid "Das sitzt schon gut."
+msgstr "This already sticks well."
+
+#, python-format
+msgid "Aus meiner Mappe: %(name)s"
+msgstr "From my folder: %(name)s"
+
+msgid "Zu diesem Fach gibt es noch nichts zum Üben. Frag deine Eltern."
+msgstr "There is nothing to practise for this subject yet. Ask your parents."
+
+msgid "Portionen geschafft"
+msgstr "Portions done"
+
+msgid "Es gibt noch keinen Plan."
+msgstr "There is no plan yet."
+
+msgid "Termin ändern"
+msgstr "Change date"
+
+msgid "Neuer Termin"
+msgstr "New date"
+
+msgid "Prüfung löschen"
+msgstr "Delete exam"
+
+msgid "Keine Prüfungen."
+msgstr "No exams."
+
+msgid "Weglassen"
+msgstr "Leave out"
+
+msgid "Dein Fortschritt"
+msgstr "Your progress"
+
+msgid "noch offen"
+msgstr "still open"
+
+msgid "Dein Plan"
+msgstr "Your plan"
+
+msgid "Probe machen"
+msgstr "Take the practice exam"
+
+msgid "Diese Prüfung beenden"
+msgstr "End this exam"
+
+msgid "Geschafft"
+msgstr "Done"
+
+msgid "Neue Prüfung"
+msgstr "New exam"
+
+msgid "Plan machen"
+msgstr "Make plan"
+
+msgid "Bitte wähle einen Tag für die Prüfung aus."
+msgstr "Please choose a day for the exam."
+
+msgid "Bitte wähle ein Fach aus."
+msgstr "Please choose a subject."

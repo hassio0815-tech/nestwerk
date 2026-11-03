@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, views_ki, views_material, views_tutor
+from . import views, views_ki, views_material, views_plan, views_tutor
 
 app_name = "lernen"
 
@@ -86,5 +86,49 @@ urlpatterns = [
         "eltern/lernen/tutor/<int:pk>/loeschen/",
         views_tutor.eltern_loeschen,
         name="eltern_tutor_loeschen",
+    ),
+    # Prüfungsvorbereitung (Etappe 6)
+    path("kind/lernen/pruefung/", views_plan.liste, name="pruefungen"),
+    path("kind/lernen/pruefung/neu/", views_plan.neu, name="pruefung_neu"),
+    path("kind/lernen/pruefung/anlegen/", views_plan.anlegen, name="pruefung_anlegen"),
+    path("kind/lernen/pruefung/<int:pk>/", views_plan.detail, name="pruefung"),
+    path(
+        "kind/lernen/pruefung/<int:pk>/portion/<int:portion_pk>/start/",
+        views_plan.portion_start,
+        name="pruefung_portion_start",
+    ),
+    path("kind/lernen/pruefung/<int:pk>/ziel/", views_plan.ziel_erhoehen, name="pruefung_ziel"),
+    path(
+        "kind/lernen/pruefung/<int:pk>/stoff/<int:stoff_pk>/entfernen/",
+        views_plan.stoff_entfernen,
+        name="pruefung_stoff_entfernen",
+    ),
+    path(
+        "kind/lernen/pruefung/<int:pk>/neu-planen/",
+        views_plan.neu_planen,
+        name="pruefung_neu_planen",
+    ),
+    path(
+        "kind/lernen/pruefung/<int:pk>/abbrechen/", views_plan.abbrechen, name="pruefung_abbrechen"
+    ),
+    path("kind/lernen/pruefung/<int:pk>/probe/", views_plan.probe_start, name="pruefung_probe"),
+    path("kind/lernen/probe/<int:pk>/", views_plan.probe, name="probe"),
+    path("kind/lernen/probe/<int:pk>/antwort/", views_plan.probe_antwort, name="probe_antwort"),
+    path(
+        "kind/lernen/probe/<int:pk>/schwaechen/",
+        views_plan.probe_schwaechen,
+        name="probe_schwaechen",
+    ),
+    path("eltern/lernen/pruefung/", views_plan.eltern_liste, name="eltern_pruefungen"),
+    path("eltern/lernen/pruefung/<int:pk>/", views_plan.eltern_detail, name="eltern_pruefung"),
+    path(
+        "eltern/lernen/pruefung/<int:pk>/termin/",
+        views_plan.eltern_termin,
+        name="eltern_pruefung_termin",
+    ),
+    path(
+        "eltern/lernen/pruefung/<int:pk>/loeschen/",
+        views_plan.eltern_loeschen,
+        name="eltern_pruefung_loeschen",
     ),
 ]

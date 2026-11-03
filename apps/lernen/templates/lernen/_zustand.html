@@ -1,5 +1,12 @@
 {% load i18n sprache %}{% url "lernen:sitzung" s.pk as sitzung_url %}
 {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+{% if portion %}
+  <p class="kachel__text" data-lernen-portion>
+    {% url "lernen:pruefung" portion.pruefung_id as plan_url %}
+    <a href="{{ plan_url }}">{{ portion.pruefung.titel }}</a>
+    {% if portion_erledigt %}· <span data-portion-erledigt>{{ ton_portion }}</span>{% endif %}
+  </p>
+{% endif %}
 
 {% if zustand == "frage" and aufgabe %}
   <section class="karte lernen-frage" data-lernen-zustand="frage"><div class="karte__inhalt stapel">

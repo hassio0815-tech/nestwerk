@@ -1,0 +1,27 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Prüfungen" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern" as lernen_url %}
+  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "Prüfungen" %}</h1>
+  <p>{% translate "Ihr seht, wofür die Kinder üben und wie weit der Plan ist. In den Plan eingreift ihr nicht; ihr könnt den Termin ändern oder eine Prüfung löschen." %}</p>
+  {% for kind, zeilen in kinder %}
+    <section class="karte"><div class="karte__inhalt stapel" data-pruefung-kind="{{ kind.pk }}">
+      <h2>{{ kind.anzeigename }}</h2>
+      <ul class="stapel">
+        {% for z in zeilen %}
+          <li data-pruefung="{{ z.p.pk }}">
+            <a href="{% url 'lernen:eltern_pruefung' z.p.pk %}">{{ z.p.titel }}</a>
+            · {{ z.p.fach.name }} · {{ z.p.termin|date:"DATE_FORMAT" }} · {{ z.p.get_status_display }}
+            · {% blocktranslate with erledigt=z.fortschritt.erledigt gesamt=z.fortschritt.gesamt %}{{ erledigt }} von {{ gesamt }} Portionen{% endblocktranslate %}
+            {% if z.problem %}<p class="feld__hinweis" data-pruefung-problem role="note">{% translate "Hinweis: Das Pensum bis zum Termin ist so nicht zu schaffen. Der Plan wartet auf eine Entscheidung (Stoff, Tagesziel oder Termin). Sprecht kurz mit dem Kind." %}</p>{% endif %}
+          </li>
+        {% empty %}<li>{% translate "Keine Prüfungen." %}</li>{% endfor %}
+      </ul>
+    </div></section>
+  {% empty %}<p>{% translate "Noch keine Kinder." %}</p>{% endfor %}
+{% endblock %}

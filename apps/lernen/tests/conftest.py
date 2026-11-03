@@ -52,6 +52,7 @@ def startwerte(db):
         STARTWERTE,
         STARTWERTE_KI,
         STARTWERTE_MATERIAL,
+        STARTWERTE_PRUEFUNG,
         STARTWERTE_TUTOR,
         STARTWERTE_UEBEN,
     )
@@ -67,6 +68,7 @@ def startwerte(db):
         STARTWERTE_UEBEN,
         STARTWERTE_KI,
         STARTWERTE_MATERIAL,
+        STARTWERTE_PRUEFUNG,
         STARTWERTE_TUTOR,
         SPIELREGELN,
     ):

@@ -5,6 +5,9 @@ eine ``Lernmappe``, beliebig viele ``Lernsitzung``en und je Fach eine ``Leistung
 Namen von Fächern und Themen aus den Startdaten sind in der Datenmigration mit ``gettext_noop``
 markiert (docs/i18n.md); von Eltern geänderte Namen bleiben unverändert.
 
+Etappe 6 ergänzt die Prüfungsvorbereitung (``Pruefung``, ``Pruefungsstoff``, ``Pruefungsportion``,
+``ProbePruefung``, ``ProbeVersuch``).
+
 Etappe 2 ergänzt ``Lernstand`` (Abstandswiederholung je Kind, Frage und Richtung), ``Versuch``
 (jede Antwort einer Lernsitzung), ``Lerntag`` (Tagesbilanz), ``Lernziel`` (angepasstes Tagesziel)
 und ``Lernpause`` (Schonung). Alles additiv zu Etappe 1.
@@ -218,6 +221,10 @@ class Lernsitzung(models.Model):
     aktuell_seit = models.DateTimeField(null=True, blank=True)
     aktuell_versuche = models.PositiveSmallIntegerField(default=0)
     aktuell_hilfe = models.PositiveSmallIntegerField(default=0)
+    # Etappe 6: Die Sitzung übt eine Portion des Prüfungsplans
+    portion = models.ForeignKey(
+        "Pruefungsportion", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
 
     class Meta:
         ordering = ["-beginn"]
@@ -626,3 +633,150 @@ class TutorNachricht(models.Model):
 
     def __str__(self):
         return f"Tutor-Nachricht {self.pk} ({self.rolle})"
+
+
+# --- Etappe 6: Prüfungsvorbereitung (SPEC 21.7) ---------------------------------------------------
+
+
+class PruefungStatus(models.TextChoices):
+    GEPLANT = "geplant", _("geplant")
+    AKTIV = "aktiv", _("aktiv")
+    ABGESCHLOSSEN = "abgeschlossen", _("abgeschlossen")
+    ABGEBROCHEN = "abgebrochen", _("abgebrochen")
+
+
+class PortionStatus(models.TextChoices):
+    OFFEN = "offen", _("offen")
+    ERLEDIGT = "erledigt", _("erledigt")
+    VERSCHOBEN = "verschoben", _("verschoben")
+
+
+class PortionArt(models.TextChoices):
+    NEU = "neu", _("Neues lernen")
+    WIEDERHOLUNG = "wiederholung", _("Wiederholen")
+    LEICHT = "leicht", _("Leicht auffrischen")
+    PUFFER = "puffer", _("Puffertag")
+
+
+class Pruefung(models.Model):
+    """Eine Prüfung eines Kindes mit Fach, Termin und Plan. Gehört genau einem Kind: Geschwister
+    sehen sie nie, die Eltern lesen sie (und löschen sie oder ändern den Termin)."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="pruefungen"
+    )
+    fach = models.ForeignKey(Fach, on_delete=models.CASCADE, related_name="+")
+    titel = models.CharField(max_length=80)
+    termin = models.DateField()
+    status = models.CharField(
+        max_length=14, choices=PruefungStatus.choices, default=PruefungStatus.GEPLANT
+    )
+    # Gibt es einen schaffbaren Plan? Falsch heißt: der Realitätscheck zeigt Vorschläge.
+    plan_ok = models.BooleanField(default=False)
+    plan_angepasst_am = models.DateField(null=True, blank=True)
+    puffer_genutzt = models.BooleanField(default=False)
+    vorbereitet_am = models.DateField(null=True, blank=True)
+    erstellt = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["termin", "id"]
+        indexes = [models.Index(fields=["kind", "status"], name="lernen_pruefung_kind_status")]
+
+    def __str__(self):
+        return f"Prüfung {self.pk} {self.termin}"
+
+
+class Pruefungsstoff(models.Model):
+    """Was zur Prüfung gehört: ein Thema oder ein Material aus der Lernmappe des Kindes."""
+
+    pruefung = models.ForeignKey(Pruefung, on_delete=models.CASCADE, related_name="stoffe")
+    thema = models.ForeignKey(
+        Thema, null=True, blank=True, on_delete=models.CASCADE, related_name="+"
+    )
+    material = models.ForeignKey(
+        Material, null=True, blank=True, on_delete=models.CASCADE, related_name="+"
+    )
+
+    class Meta:
+        ordering = ["id"]
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(thema__isnull=False, material__isnull=True)
+                | Q(thema__isnull=True, material__isnull=False),
+                name="lernen_stoff_thema_oder_material",
+            )
+        ]
+
+    def __str__(self):
+        return f"Stoff {self.pk}"
+
+    @property
+    def name(self):
+        return self.thema.name if self.thema_id else self.material.anzeigename
+
+
+class Pruefungsportion(models.Model):
+    """Ein Eintrag im Plan: Datum, Stoffteil (Fragen), Minuten und Status. Puffertage haben keine
+    Fragen und 0 Minuten. ``fragen`` sind die Frage-IDs, die zum Planzeitpunkt zum Teil gehörten."""
+
+    pruefung = models.ForeignKey(Pruefung, on_delete=models.CASCADE, related_name="portionen")
+    stoff = models.ForeignKey(
+        Pruefungsstoff, null=True, blank=True, on_delete=models.CASCADE, related_name="portionen"
+    )
+    datum = models.DateField()
+    art = models.CharField(max_length=14, choices=PortionArt.choices)
+    minuten = models.PositiveSmallIntegerField(default=0)
+    fragen = models.JSONField(default=list)
+    pflicht = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=10, choices=PortionStatus.choices, default=PortionStatus.OFFEN
+    )
+    erledigt_am = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["datum", "id"]
+        indexes = [models.Index(fields=["pruefung", "datum"], name="lernen_portion_pruef_datum")]
+
+    def __str__(self):
+        return f"Portion {self.pk} {self.datum} {self.art}"
+
+    @property
+    def ist_puffer(self):
+        return self.art == PortionArt.PUFFER
+
+
+class ProbePruefung(models.Model):
+    """Probe-Prüfung am Ende: gemischte, freigegebene Fragen des Stoffs, ohne Zeitdruck. Das
+    Ergebnis ist ein Hinweis auf Stärken und Schwächen je Thema, keine Note."""
+
+    pruefung = models.ForeignKey(Pruefung, on_delete=models.CASCADE, related_name="proben")
+    fragen = models.JSONField(default=list)  # Frage-IDs in der Reihenfolge der Probe
+    beginn = models.DateTimeField()
+    ende = models.DateTimeField(null=True, blank=True)
+    schwaechen_eingeplant = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-beginn", "-id"]
+
+    def __str__(self):
+        return f"Probe-Prüfung {self.pk}"
+
+
+class ProbeVersuch(models.Model):
+    probe = models.ForeignKey(ProbePruefung, on_delete=models.CASCADE, related_name="versuche")
+    frage = models.ForeignKey(Frage, on_delete=models.CASCADE, related_name="+")
+    richtung = models.CharField(max_length=5, choices=Richtung.choices)
+    ergebnis = models.CharField(max_length=12, choices=Ergebnis.choices)
+    eingabe = models.CharField(max_length=300, blank=True)
+    erstellt = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["probe", "frage", "richtung"], name="lernen_probe_frage_einmal"
+            )
+        ]
+
+    def __str__(self):
+        return f"Probe-Versuch {self.pk} ({self.ergebnis})"

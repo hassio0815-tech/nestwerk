@@ -74,22 +74,24 @@ def stand_buchen(kind, frage, richtung, richtig, heute, jetzt):
     return stand
 
 
-def _kandidaten(kind, fach, themen, thema, heute):
+def _kandidaten(kind, fach, themen, thema, heute, nur_fragen=None):
     """Alle Paare (Frage, Richtung) der Auswahl mit ihrem Stand, getrennt in neu und fällig.
     Neue Paare kommen nur aus dem gewählten Thema (oder aus dem ganzen Fach), fällige Wiederholungen
-    aus dem ganzen Fach, damit die Themen gemischt werden."""
+    aus dem ganzen Fach, damit die Themen gemischt werden. Mit ``nur_fragen`` (Prüfungsportion)
+    zählen nur diese Fragen, gleich aus welchem Fach."""
     fragen = {}
     for t in themen:
         if thema is not None and t.pk != thema.pk:
             continue
         for f in nutzbare_fragen(t, kind):
-            fragen[f.pk] = f
-    staende = {
-        (s.frage_id, s.richtung): s
-        for s in Lernstand.objects.filter(kind=kind, frage__thema__fach=fach).select_related(
-            "frage__thema"
-        )
-    }
+            if nur_fragen is None or f.pk in nur_fragen:
+                fragen[f.pk] = f
+    staende_qs = Lernstand.objects.filter(kind=kind)
+    if nur_fragen is None:
+        staende_qs = staende_qs.filter(frage__thema__fach=fach)
+    else:
+        staende_qs = staende_qs.filter(frage_id__in=nur_fragen)
+    staende = {(s.frage_id, s.richtung): s for s in staende_qs.select_related("frage__thema")}
     neu, faellig, stolper = [], [], []
     for f in fragen.values():
         for richtung in richtungen(f):
@@ -119,6 +121,7 @@ def naechste(
     ausgeschlossen,
     letztes_thema,
     zufall,
+    nur_fragen=None,
 ):
     """Wählt das nächste Paar (Frage, Richtung) oder ``None``, wenn nichts mehr dran ist.
 
@@ -126,8 +129,11 @@ def naechste(
     ``ausgeschlossen``: Paare, die in dieser Sitzung schon dran waren. Die Reihenfolge der Pools
     folgt dem Vorhaben; innerhalb eines Pools bevorzugt die Intensität eine Richtung
     (Aufwärmen: Fremdsprache zu Deutsch, Herausforderung: Deutsch zu Fremdsprache).
+
+    ``nur_fragen`` (Menge von Frage-IDs, Prüfungsportion): nur diese Fragen; ist nichts neu oder
+    fällig, kommen sie trotzdem dran (die Portion soll sich üben lassen).
     """
-    neu, faellig, stolper = _kandidaten(kind, fach, themen, thema, heute)
+    neu, faellig, stolper = _kandidaten(kind, fach, themen, thema, heute, nur_fragen)
     pools = {
         Vorhaben.NEU: (neu, faellig),
         Vorhaben.WIEDERHOLEN: (faellig, neu),
@@ -147,4 +153,22 @@ def naechste(
             if f.thema_id != letztes_thema:
                 return f, r
         return frei[0]
+    if nur_fragen is not None:
+        return _beliebige(kind, themen, nur_fragen, ausgeschlossen, letztes_thema, zufall)
     return None
+
+
+def _beliebige(kind, themen, nur_fragen, ausgeschlossen, letztes_thema, zufall):
+    """Prüfungsportion ohne Neues oder Fälliges: irgendeine noch nicht gestellte Frage daraus."""
+    paare = [
+        (f, r)
+        for t in themen
+        for f in nutzbare_fragen(t, kind)
+        if f.pk in nur_fragen
+        for r in richtungen(f)
+        if (f.pk, r) not in ausgeschlossen
+    ]
+    if not paare:
+        return None
+    zufall.shuffle(paare)
+    return next((p for p in paare if p[0].thema_id != letztes_thema), paare[0])

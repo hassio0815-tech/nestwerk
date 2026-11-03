@@ -46,6 +46,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Prüfungen" %}</h2>
+    <p>{% translate "Hier seht ihr die Prüfungspläne der Kinder (nur lesen). Ihr könnt einen Termin ändern oder eine Prüfung löschen." %}</p>
+    {% url "lernen:eltern_pruefungen" as pruefungen_url %}
+    {% include "komponenten/button.html" with href=pruefungen_url variante="geist" klein=True icon="info" text=_("Prüfungen") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Schonung (Krankheit, Ferien)" %}</h2>
     <p>{% translate "An Pausentagen wird kein Ziel verlangt und die Serie bleibt erhalten. Ferien für alle schaltet ihr in den Einstellungen ein." %}</p>
     {% url "oberflaeche:einstellungen" as einstellungen_url %}

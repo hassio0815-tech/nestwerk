@@ -16,12 +16,13 @@ from apps.kern import zeit
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktuelles_kind, nur_eltern, nur_kind
 
-from . import selectors, services, texte, tutor_selectors
+from . import plan_texte, selectors, services, texte, tutor_selectors
 from .models import (
     Erwartung,
     Intensitaet,
     Lernpause,
     PausenGrund,
+    PortionStatus,
     Selbsteinschaetzung,
     Strategie,
     Vorhaben,
@@ -174,6 +175,16 @@ def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler=""):
         "ton_frust": wort("frust"),
         "ton_ziel": wort("ziel_geschafft"),
     }
+    if sitzung_.portion_id:
+        portion = sitzung_.portion
+        portion.refresh_from_db()
+        kontext.update(
+            portion=portion,
+            portion_erledigt=portion.status == PortionStatus.ERLEDIGT,
+            ton_portion=plan_texte.ton(
+                "portion_geschafft", selectors.sprachstufe(kind, sitzung_.fach)
+            ),
+        )
     if zustand in ("rueckschau", "fertig"):
         heute = zeit.heute()
         bild = selectors.tagesbild(kind, heute)

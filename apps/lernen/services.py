@@ -22,7 +22,7 @@ from apps.kern.einstellungen import wert
 from apps.punkte import services as punkte
 from apps.spielregeln import services as spielregeln
 
-from . import events, frust, pruefung, selectors, tagesziel, texte, wiederholung
+from . import events, frust, plan_selectors, pruefung, selectors, tagesziel, texte, wiederholung
 from .models import (
     Ergebnis,
     Erwartung,
@@ -37,6 +37,7 @@ from .models import (
     Quelle,
     Selbsteinschaetzung,
     Strategie,
+    Thema,
     Versuch,
     Vorhaben,
 )
@@ -147,9 +148,12 @@ def sitzung_starten(
     vorhaben=Vorhaben.WIEDERHOLEN,
     strategie=Strategie.ABDECKEN,
     erwartung=Erwartung.EINIGES,
+    portion=None,
+    ziel_fragen=None,
     jetzt=None,
 ):
-    """Legt eine Sitzung an. Gibt es noch eine offene, wird sie zuerst beendet (nur eine läuft)."""
+    """Legt eine Sitzung an. Gibt es noch eine offene, wird sie zuerst beendet (nur eine läuft).
+    ``portion``: Portion eines Prüfungsplans (Etappe 6); dann üben nur ihre Fragen."""
     _kind_pruefen(kind)
     jetzt = _jetzt(jetzt)
     if not fach.aktiv or (thema is not None and thema.fach_id != fach.pk):
@@ -162,8 +166,9 @@ def sitzung_starten(
     if alte is not None:
         sitzung_beenden(alte, jetzt=jetzt)
     tag_vorbereiten(kind, zeit.heute(jetzt))
-    anzahl = wert(f"lernen.fragen_{intensitaet}")
+    anzahl = ziel_fragen or wert(f"lernen.fragen_{intensitaet}")
     return Lernsitzung.objects.create(
+        portion=portion,
         kind=kind,
         fach=fach,
         thema=thema,
@@ -264,11 +269,17 @@ def frage_stellen(sitzung, *, zufall=None, jetzt=None):
             return None
         kind, fach = sitzung.kind, sitzung.fach
         letzter = sitzung.antworten.order_by("-id").select_related("frage").first()
+        themen = selectors.themen_bis(fach, selectors.klassenstufe(kind, fach))
+        thema, nur = sitzung.thema, None
+        if sitzung.portion_id:  # Prüfungsportion: nur ihre Fragen, gleich aus welchem Fach
+            nur = frozenset(plan_selectors.portion_fragen(sitzung.portion))
+            themen, thema = Thema.objects.filter(fragen__pk__in=nur).distinct(), None
         wahl = wiederholung.naechste(
             kind,
             fach,
-            selectors.themen_bis(fach, selectors.klassenstufe(kind, fach)),
-            thema=sitzung.thema,
+            themen,
+            nur_fragen=nur,
+            thema=thema,
             vorhaben=sitzung.vorhaben,
             intensitaet=sitzung.intensitaet,
             heute=zeit.heute(jetzt),
@@ -339,7 +350,16 @@ def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt):
             pause = True
             senkt = _stufe_senken(sitzung)
     sitzung.save()
+    _portion_pruefen(sitzung, jetzt)
     return pause, senkt, ziel_erreicht
+
+
+def _portion_pruefen(sitzung, jetzt):
+    """Gehört die Sitzung zu einer Prüfungsportion, zählt der Fortschritt dort (Etappe 6)."""
+    if sitzung.portion_id:
+        from . import plan_services
+
+        plan_services.fortschritt_pruefen(sitzung, jetzt)
 
 
 _STUFEN = [Intensitaet.AUFWAERMEN, Intensitaet.NORMAL, Intensitaet.HERAUSFORDERUNG]
@@ -421,6 +441,7 @@ def sitzung_beenden(sitzung, *, jetzt=None):
     sitzung.aktuell_richtung = ""
     sitzung.aktuell_seit = None
     sitzung.save()
+    _portion_pruefen(sitzung, jetzt)
     return sitzung
 
 

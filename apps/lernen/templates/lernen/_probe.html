@@ -1,0 +1,31 @@
+{% load i18n %}{% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+{% if aufgabe %}
+  <section class="karte lernen-frage" data-probe-zustand="frage"><div class="karte__inhalt stapel">
+    <h1>{% translate "Probe-Prüfung" %}</h1>
+    <p class="kachel__text">{% translate "Du hast so viel Zeit, wie du brauchst. Eine Rückmeldung gibt es am Ende." %}</p>
+    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text }}</p>
+    {% url "lernen:probe_antwort" probe.pk as antwort_url %}
+    <form method="post" action="{{ antwort_url }}" hx-post="{{ antwort_url }}" hx-target="#probe-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
+      <label class="feld__label" for="pr-eingabe">{% translate "Deine Antwort" %}</label>
+      <input class="feld__eingabe lernen-eingabe" id="pr-eingabe" name="eingabe" maxlength="300" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus>
+      {% include "komponenten/button.html" with typ="submit" icon="pfeil-rechts" text=_("Weiter") gross=True %}
+    </form>
+  </div></section>
+{% else %}
+  <section class="karte" data-probe-zustand="ergebnis"><div class="karte__inhalt stapel">
+    <h1 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h1>
+    <p>{{ ton_hinweis }}</p>
+    <ul class="stapel" data-probe-ergebnis>
+      {% for e, text in ergebnisse %}
+        <li data-thema-einstufung="{{ e.einstufung }}"><strong>{{ e.thema.name }}</strong>: {{ text }}
+          ({% blocktranslate with richtig=e.richtig gesamt=e.gesamt %}{{ richtig }} von {{ gesamt }}{% endblocktranslate %})</li>
+      {% endfor %}
+    </ul>
+    {% if schwaechen and not probe.schwaechen_eingeplant %}
+      <p>{% translate "Soll ich das, was noch nicht saß, in die letzten Tage deines Plans legen? Du entscheidest." %}</p>
+      <form method="post" action="{% url 'lernen:probe_schwaechen' probe.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" icon="check" text=_("Ja, einplanen") %}</form>
+    {% endif %}
+    {% url "lernen:pruefung" p.pk as plan_url %}
+    {% include "komponenten/button.html" with href=plan_url variante="geist" icon="pfeil-links" text=_("Zum Plan") %}
+  </div></section>
+{% endif %}

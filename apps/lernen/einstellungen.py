@@ -33,6 +33,27 @@ STARTWERTE_UEBEN = {
 }
 
 
+# Etappe 6 (Prüfungsvorbereitung): Migration 0013 legt fehlende Werte an.
+STARTWERTE_PRUEFUNG = {
+    "lernen.pruefung_puffer_rhythmus": 5,
+    "lernen.pruefung_min_antworten": 8,
+    "lernen.pruefung_min_sekunden": 300,
+    "lernen.pruefung_vorlauf_tage": 14,
+    "lernen.pruefung_max_planlaenge": 42,
+    "lernen.pruefung_sekunden_pro_frage": 45,
+    "lernen.pruefung_portion_minuten": 10,
+    "lernen.pruefung_wiederholung_prozent": 40,
+    "lernen.pruefung_leicht_minuten": 10,
+    "lernen.pruefung_wochentage": [0, 1, 2, 3, 4, 5, 6],
+    "lernen.pruefung_ziel_zuschlag_max": 15,
+    "lernen.pruefung_probe_fragen": 15,
+    "lernen.pruefung_probe_staerke_prozent": 80,
+    "lernen.pruefung_probe_schwaeche_prozent": 60,
+    "lernen.pruefung_punkte_woche": 3,
+    "lernen.pruefung_punkte_vorbereitet": 10,
+}
+
+
 def einstellungen_definieren():
     definieren(
         "lernen.tagesziel_minuten",
@@ -90,6 +111,7 @@ def einstellungen_definieren():
     _definieren_ki()
     _definieren_material()
     _definieren_tutor()
+    _definieren_pruefung()
 
 
 def _definieren_ueben():
@@ -392,6 +414,175 @@ def _definieren_tutor():
         minimum=1,
         maximum=3650,
     )
+
+
+def _definieren_pruefung():
+    """Einstellungen für Prüfungsplan, Portionen und Probe-Prüfung (SPEC 21.7)."""
+    definieren(
+        "lernen.pruefung_puffer_rhythmus",
+        Typ.GANZZAHL,
+        _("Prüfung: ein Puffertag je so viele Lerntage"),
+        beschreibung=_(
+            "0 heißt: keine Puffertage. Puffertage bleiben frei, falls ein Tag ausfällt."
+        ),
+        einheit=_("Tage"),
+        minimum=0,
+        maximum=30,
+    )
+    definieren(
+        "lernen.pruefung_min_antworten",
+        Typ.GANZZAHL,
+        _("Prüfung: Antworten je Portion"),
+        beschreibung=_(
+            "So viele Fragen muss ein Kind bei einer Portion beantworten, damit sie als erledigt "
+            "zählt. Ein bloßer Klick genügt nie."
+        ),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.pruefung_min_sekunden",
+        Typ.GANZZAHL,
+        _("Prüfung: Mindestzeit je Portion"),
+        beschreibung=_(
+            "Alternativ zählt eine Portion als erledigt, wenn so lange geübt wurde "
+            "(mindestens eine Antwort)."
+        ),
+        einheit=_("Sekunden"),
+        minimum=30,
+        maximum=3600,
+    )
+    definieren(
+        "lernen.pruefung_vorlauf_tage",
+        Typ.GANZZAHL,
+        _("Prüfung: empfohlener Vorlauf"),
+        beschreibung=_("Ist der Termin näher, steht ein freundlicher Hinweis, dass es knapp wird."),
+        einheit=_("Tage"),
+        minimum=1,
+        maximum=120,
+    )
+    definieren(
+        "lernen.pruefung_max_planlaenge",
+        Typ.GANZZAHL,
+        _("Prüfung: längster Plan"),
+        beschreibung=_("So viele Tage vor dem Termin beginnt der Plan frühestens."),
+        einheit=_("Tage"),
+        minimum=7,
+        maximum=180,
+    )
+    definieren(
+        "lernen.pruefung_sekunden_pro_frage",
+        Typ.GANZZAHL,
+        _("Prüfung: Zeit je Frage (Schätzung)"),
+        beschreibung=_("Daraus rechnet der Plan, wie viele Minuten der Stoff braucht."),
+        einheit=_("Sekunden"),
+        minimum=5,
+        maximum=600,
+    )
+    definieren(
+        "lernen.pruefung_portion_minuten",
+        Typ.GANZZAHL,
+        _("Prüfung: Größe einer Portion"),
+        beschreibung=_(
+            "So viele Minuten dauert eine Portion höchstens (nie mehr als das Tagesziel)."
+        ),
+        einheit=_("Minuten"),
+        minimum=1,
+        maximum=120,
+    )
+    definieren(
+        "lernen.pruefung_wiederholung_prozent",
+        Typ.GANZZAHL,
+        _("Prüfung: Zeit für eine Wiederholung"),
+        beschreibung=_("Anteil der Lernzeit einer Portion, den eine Wiederholung braucht."),
+        einheit=_("Prozent"),
+        minimum=10,
+        maximum=100,
+    )
+    definieren(
+        "lernen.pruefung_leicht_minuten",
+        Typ.GANZZAHL,
+        _("Prüfung: leichter Tag vor der Prüfung"),
+        beschreibung=_("So viele Minuten leichte Wiederholung stehen am letzten Lerntag."),
+        einheit=_("Minuten"),
+        minimum=1,
+        maximum=60,
+    )
+    definieren(
+        "lernen.pruefung_wochentage",
+        Typ.LISTE,
+        _("Prüfung: Lerntage der Woche"),
+        beschreibung=_("An diesen Wochentagen plant der Plan (0 = Montag bis 6 = Sonntag)."),
+        element_typ=Typ.GANZZAHL,
+        minimum=0,
+        maximum=6,
+        validatoren=(_mindestens_ein_tag,),
+    )
+    definieren(
+        "lernen.pruefung_ziel_zuschlag_max",
+        Typ.GANZZAHL,
+        _("Prüfung: größte Erhöhung des Tagesziels im Vorschlag"),
+        beschreibung=_(
+            "Weiter als so viele Minuten über das Tagesziel hinaus schlägt der Plan nie vor."
+        ),
+        einheit=_("Minuten"),
+        minimum=0,
+        maximum=60,
+    )
+    definieren(
+        "lernen.pruefung_probe_fragen",
+        Typ.GANZZAHL,
+        _("Probe-Prüfung: Anzahl Fragen"),
+        minimum=3,
+        maximum=100,
+    )
+    definieren(
+        "lernen.pruefung_probe_staerke_prozent",
+        Typ.GANZZAHL,
+        _("Probe-Prüfung: ab hier ist es eine Stärke"),
+        beschreibung=_("Anteil richtiger Antworten je Thema. Nur ein Hinweis, keine Note."),
+        einheit=_("Prozent"),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.pruefung_probe_schwaeche_prozent",
+        Typ.GANZZAHL,
+        _("Probe-Prüfung: darunter ist es noch zu üben"),
+        beschreibung=_("Anteil richtiger Antworten je Thema. Nur ein Hinweis, keine Note."),
+        einheit=_("Prozent"),
+        minimum=0,
+        maximum=99,
+    )
+    definieren(
+        "lernen.pruefung_punkte_woche",
+        Typ.GANZZAHL,
+        _("Punkte: Planwoche eingehalten"),
+        beschreibung=_(
+            "Fester kleiner Betrag, wenn alle Portionen einer Woche erledigt sind. Es zählt das "
+            "Lernpunkte-Tageslimit."
+        ),
+        einheit=_("Punkte"),
+        minimum=0,
+        maximum=100,
+    )
+    definieren(
+        "lernen.pruefung_punkte_vorbereitet",
+        Typ.GANZZAHL,
+        _("Punkte: Prüfung vorbereitet"),
+        beschreibung=_(
+            "Fester kleiner Betrag, wenn der Plan geschafft ist. Es zählt das "
+            "Lernpunkte-Tageslimit."
+        ),
+        einheit=_("Punkte"),
+        minimum=0,
+        maximum=100,
+    )
+
+
+def _mindestens_ein_tag(liste):
+    if not liste:
+        raise ValueError(_("Mindestens ein Wochentag."))
 
 
 def _mindestens_zwei(liste):

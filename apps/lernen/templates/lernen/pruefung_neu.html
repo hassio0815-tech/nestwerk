@@ -1,0 +1,26 @@
+{% extends "basis/kind.html" %}
+{% load i18n static sprache %}
+{% block titel %}{% translate "Neue Prüfung" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:pruefungen" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text=_("Prüfungen") %}
+{% endblock %}
+{% block inhalt %}
+  <h1>{% translate "Neue Prüfung" %}</h1>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+  <section class="karte"><div class="karte__inhalt stapel">
+    <form method="post" action="{% url 'lernen:pruefung_anlegen' %}" class="stapel lernen-form">{% csrf_token %}
+      <div class="feld"><label class="feld__label" for="p-fach">{% translate "Fach" %}</label>
+        <select class="feld__eingabe" id="p-fach" name="fach" hx-get="{% url 'lernen:pruefung_neu' %}" hx-target="#stoff-liste" hx-swap="outerHTML" hx-include="this">
+          {% for f in faecher %}<option value="{{ f.pk }}"{% if fach and f.pk == fach.pk %} selected{% endif %}>{{ f.name|uebersetzt }}</option>{% endfor %}
+        </select></div>
+      <div class="feld"><label class="feld__label" for="p-titel">{% translate "Wie soll die Prüfung heißen?" %}</label>
+        <input class="feld__eingabe" id="p-titel" name="titel" maxlength="80" autocomplete="off" value="{{ werte.titel }}"></div>
+      <div class="feld"><label class="feld__label" for="p-termin">{% translate "Wann ist die Prüfung?" %}</label>
+        <input class="feld__eingabe" type="date" id="p-termin" name="termin" min="{{ morgen|date:'Y-m-d' }}" value="{{ werte.termin }}" required></div>
+      {% include "lernen/_pruefung_stoff.html" %}
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Plan machen") gross=True %}
+    </form>
+  </div></section>
+{% endblock %}
