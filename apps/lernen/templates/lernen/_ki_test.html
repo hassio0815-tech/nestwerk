@@ -1,0 +1,5 @@
+{% load i18n %}
+<p id="ki-test-{{ a.pk }}" class="feld__hinweis{% if not ergebnis.ok %} feld__hinweis--fehler{% endif %}" role="status">
+  {% if ergebnis.ok %}{% blocktranslate with ms=ergebnis.dauer_ms %}Verbindung klappt (Antwort in {{ ms }} ms).{% endblocktranslate %}
+  {% else %}{% translate "Test fehlgeschlagen:" %} {{ fehlertext }}{% endif %}
+</p>

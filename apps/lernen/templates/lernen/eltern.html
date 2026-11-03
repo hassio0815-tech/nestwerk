@@ -25,6 +25,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "KI-Anbindung" %}</h2>
+    <p>{% translate "Die KI ist standardmäßig aus. Hier richtet ihr einen eigenen Server oder einen Cloud-Anbieter ein." %}</p>
+    {% url "lernen:ki" as ki_url %}
+    {% include "komponenten/button.html" with href=ki_url variante="geist" klein=True icon="einstellungen" text=_("KI-Anbindung") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Schonung (Krankheit, Ferien)" %}</h2>
     <p>{% translate "An Pausentagen wird kein Ziel verlangt und die Serie bleibt erhalten. Ferien für alle schaltet ihr in den Einstellungen ein." %}</p>
     {% url "oberflaeche:einstellungen" as einstellungen_url %}

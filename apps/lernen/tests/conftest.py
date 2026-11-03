@@ -48,7 +48,7 @@ def startwerte(db):
     from apps.kern import einstellungen
     from apps.kern.einstellungen import startwerte_schreiben
     from apps.kern.models import Einstellung
-    from apps.lernen.einstellungen import STARTWERTE, STARTWERTE_UEBEN
+    from apps.lernen.einstellungen import STARTWERTE, STARTWERTE_KI, STARTWERTE_UEBEN
     from apps.spielregeln import raenge_start
     from apps.spielregeln.einstellungen import STARTWERTE as SPIELREGELN
     from apps.spielregeln.models import Kalibrierung, Rang
@@ -56,7 +56,7 @@ def startwerte(db):
     Einstellung.objects.update_or_create(
         schluessel="allgemein.zeitzone", defaults={"wert": "Europe/Berlin", "modul": "allgemein"}
     )
-    for werte in (STARTWERTE, STARTWERTE_UEBEN, SPIELREGELN):
+    for werte in (STARTWERTE, STARTWERTE_UEBEN, STARTWERTE_KI, SPIELREGELN):
         startwerte_schreiben(Einstellung, werte)
     einstellungen.setzen("allgemein.go_live_datum", GO_LIVE, akteur=None)
     vorhanden = set(Einstellung.objects.values_list("schluessel", flat=True))
@@ -93,3 +93,58 @@ def fach(db):
         for de, en in paare:
             Frage.objects.create(thema=thema, typ="vokabel", frage=de, antwort=en)
     return f
+
+
+class FakeTransport:
+    """Ersetzt ``ki.transport.post_json``: zeichnet Aufrufe auf, liefert Antworten aus einer Liste
+    (``(status, body)`` oder eine Exception). Kein echtes Netz."""
+
+    def __init__(self):
+        self.antworten = []
+        self.aufrufe = []
+
+    def __call__(self, url, *, headers, payload, timeout):
+        self.aufrufe.append(
+            {"url": url, "headers": headers, "payload": payload, "timeout": timeout}
+        )
+        if not self.antworten:
+            return 200, {"choices": [{"message": {"content": "OK"}}], "usage": {}}
+        antwort = self.antworten.pop(0)
+        if isinstance(antwort, Exception):
+            raise antwort
+        return antwort
+
+
+@pytest.fixture
+def transport(monkeypatch):
+    from apps.lernen.ki import transport as modul
+
+    fake = FakeTransport()
+    monkeypatch.setattr(modul, "post_json", fake)
+    return fake
+
+
+@pytest.fixture
+def lokal(db):
+    from apps.lernen import ki_services
+
+    return ki_services.anbieter_speichern(
+        name="Eigener Server",
+        typ="openai_kompatibel",
+        basis_url="http://dein-ki-server:11434/v1",
+        modell="dein-modellname",
+        akteur=None,
+    )
+
+
+@pytest.fixture
+def cloud(db):
+    from apps.lernen import ki_services
+
+    return ki_services.anbieter_speichern(
+        name="Cloud",
+        typ="anthropic",
+        modell="dein-modellname",
+        api_key="test-schluessel-nicht-echt",
+        akteur=None,
+    )

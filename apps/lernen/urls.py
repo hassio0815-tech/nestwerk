@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, views_ki
 
 app_name = "lernen"
 
@@ -17,4 +17,23 @@ urlpatterns = [
     path("eltern/lernen/", views.eltern_seite, name="eltern"),
     path("eltern/lernen/pause/", views.pause_neu, name="pause_neu"),
     path("eltern/lernen/pause/<int:pk>/loeschen/", views.pause_loeschen, name="pause_loeschen"),
+    path("eltern/lernen/ki/", views_ki.ki_seite, name="ki"),
+    path("eltern/lernen/ki/anbieter/", views_ki.anbieter_speichern, name="ki_anbieter_neu"),
+    path(
+        "eltern/lernen/ki/anbieter/<int:pk>/",
+        views_ki.anbieter_speichern,
+        name="ki_anbieter_aendern",
+    ),
+    path(
+        "eltern/lernen/ki/anbieter/<int:pk>/aktivieren/",
+        views_ki.anbieter_aktivieren,
+        name="ki_aktivieren",
+    ),
+    path(
+        "eltern/lernen/ki/anbieter/<int:pk>/deaktivieren/",
+        views_ki.anbieter_deaktivieren,
+        name="ki_deaktivieren",
+    ),
+    path("eltern/lernen/ki/anbieter/<int:pk>/testen/", views_ki.anbieter_testen, name="ki_testen"),
+    path("eltern/lernen/ki/zuordnung/", views_ki.zuordnung_setzen, name="ki_zuordnung"),
 ]

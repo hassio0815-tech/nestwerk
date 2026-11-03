@@ -380,6 +380,7 @@ sequenceDiagram
 | `wochen_sicherstellen` | stündlich :10 (Di 00:10 = Abschluss nach 24 h Puffer) | Wochenauswertung je Kind (aktiv, neutral, Serie), Ränge, Abzeichen/Meilensteine (Catch-up), Held der Woche | `unique(kind, iso_jahr, iso_woche)`, `finalisiert_am`, Fakten unique, Held = `zuwachs_relativ` gesetzt |
 | `familienwoche_sicherstellen` | :03/:18/:33/:48 | Familienwoche anlegen, Abstimmung öffnen/schließen (Gleichstand -> Eltern), Woche abschließen (erreicht/verfehlt/neutral), Großziel | `unique(iso_jahr, iso_woche)`, bedingte Updates, Großziel `unique(ausloesende_woche)` |
 | `mods_fertigstellen` | alle 5 min | Bau fertig -> Status, Zeitbremse-Woche, Slot belegen, Abzeichen/Meilensteine prüfen | bedingtes Update `im_bau -> fertig` |
+| `ki_auftraege_verarbeiten` | alle 2 min | `lernen` (Etappe 3): KI-Warteschlange abarbeiten; Job-Sperre (Lease 15 min) = ein Aufruf zur Zeit, Mindestabstand je Anbieter, Wiederholung mit Backoff (Basis x 4^n), Abbruch nach `lernen.ki_max_versuche` | Schlüssel `unique`, bedingte Updates `wartend -> läuft -> fertig/fehler` |
 | `sondertag_sicherstellen` | stündlich :25 | Ansprüche zu Meilenstein-Fakten nachholen, Einlösedaten neu, "jetzt einlösbar" melden | `unique(meilenstein)`, `einloesbar_gemeldet_am IS NULL` + Ereignis-Schlüssel |
 | `nachweise_aufraeumen` | stündlich :17 | Waisen-Dateien und Nachweise abgeschlossener Meldungen löschen | Löschen ist idempotent |
 | `db_sichern` | täglich 03:30 (+13:30 Nachholtermin) | Backup + Rotation | Dateiname mit Datum; existiert -> überspringen |

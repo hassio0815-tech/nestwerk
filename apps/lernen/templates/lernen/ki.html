@@ -1,0 +1,80 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "KI-Anbindung" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern" as lernen_url %}
+  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "KI-Anbindung" %}</h1>
+  <p>{% translate "Standardmäßig ist die KI aus. Nestwerk nutzt keine externen Dienste, bis ihr einen Anbieter einrichtet und einschaltet. Ihr könnt einen eigenen Server, Cloud-Anbieter oder eine Mischung wählen." %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Anbieter" %}</h2>
+    {% for a in anbieter %}
+      <div class="stapel" id="ki-anbieter-{{ a.pk }}">
+        <h3>{{ a.name }}</h3>
+        <p>
+          {{ a.get_typ_display }} ·
+          {% if a.ist_cloud %}{% translate "Cloud" %}{% else %}{% translate "lokal" %}{% endif %} ·
+          {% if a.aktiv %}{% translate "eingeschaltet" %}{% else %}{% translate "ausgeschaltet" %}{% endif %} ·
+          {% if a.hat_schluessel %}{% translate "Schlüssel gesetzt" %}{% else %}{% translate "kein Schlüssel" %}{% endif %}
+        </p>
+        {% if a.einwilligung_am %}<p class="feld__hinweis">{% blocktranslate with am=a.einwilligung_am|date:"SHORT_DATETIME_FORMAT" von=a.einwilligung_von.anzeigename|default:"-" %}Einwilligung am {{ am }} von {{ von }}.{% endblocktranslate %}</p>{% endif %}
+        {% if a.ist_cloud and not a.aktiv %}
+          <div class="feld__hinweis" role="note">
+            <p><strong>{% translate "Bevor ihr diesen Cloud-Anbieter einschaltet" %}</strong></p>
+            <ul>
+              <li>{% translate "Daten verlassen euren Server und gehen an den Anbieter. Dazu können Fotos und Texte der Kinder gehören (zum Beispiel Hausaufgaben und Antworten)." %}</li>
+              <li>{% translate "Cloud-Anbieter berechnen meist Kosten pro Nutzung. Die Preise legt der Anbieter fest." %}</li>
+              <li>{% translate "Eine KI kann Fehler machen. Prüft Ausgaben, bevor ihr euch darauf verlasst." %}</li>
+              <li>{% translate "Es ist eure Entscheidung. Ihr könnt den Anbieter jederzeit wieder ausschalten." %}</li>
+            </ul>
+          </div>
+        {% elif not a.ist_cloud %}
+          <p class="feld__hinweis">{% translate "Die Daten bleiben bei einem lokalen Anbieter in eurem Netz. Auch eine eigene KI kann Fehler machen: Prüft Ausgaben, bevor ihr euch darauf verlasst." %}</p>
+        {% endif %}
+        {% if a.aktiv %}
+          <form method="post" action="{% url 'lernen:ki_deaktivieren' a.pk %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Ausschalten") %}</form>
+        {% else %}
+          <form method="post" action="{% url 'lernen:ki_aktivieren' a.pk %}" class="stapel">{% csrf_token %}
+            {% if a.ist_cloud and not a.einwilligung_am %}<label class="reihe"><input type="checkbox" name="einwilligung" value="1" required> {% translate "Ich habe die Hinweise gelesen und erlaube, dass Daten an diesen Anbieter gesendet werden." %}</label>{% endif %}
+            {% include "komponenten/button.html" with typ="submit" klein=True icon="plus" text=_("Einschalten") %}
+          </form>
+        {% endif %}
+        <div class="reihe">
+          <button type="button" class="knopf knopf--geist knopf--klein" hx-post="{% url 'lernen:ki_testen' a.pk %}" hx-target="#ki-test-{{ a.pk }}" hx-swap="outerHTML">{% translate "Verbindung testen" %}</button>
+        </div>
+        <p id="ki-test-{{ a.pk }}" class="feld__hinweis">{% if a.letzter_test_am %}{% if a.letzter_test_ok %}{% translate "Letzter Test: erfolgreich." %}{% else %}{% translate "Letzter Test: fehlgeschlagen." %}{% endif %}{% else %}{% translate "Der Test sendet nur ein kurzes „Antworte mit OK“, keine Daten der Kinder." %}{% endif %}</p>
+        <details><summary>{% translate "Bearbeiten" %}</summary>{% include "lernen/_ki_formular.html" %}</details>
+      </div>
+    {% empty %}<p>{% translate "Noch kein Anbieter eingerichtet. Die KI ist aus." %}</p>{% endfor %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Neuer Anbieter" %}</h2>
+    <p>{% translate "Neue Anbieter sind zuerst ausgeschaltet. Danach könnt ihr die Verbindung testen und den Anbieter einschalten." %}</p>
+    {% include "lernen/_ki_formular.html" with a=None %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Wofür welcher Anbieter?" %}</h2>
+    <p>{% translate "Die Zuordnung gilt für die ganze Familie, nicht pro Kind. Ohne Zuordnung bleibt die KI für diese Aufgabe aus. Es gibt keinen automatischen Wechsel zu einem anderen Anbieter." %}</p>
+    {% for wert, text, zugewiesen, status in aufgaben %}
+      <form method="post" action="{% url 'lernen:ki_zuordnung' %}" class="reihe">{% csrf_token %}
+        <input type="hidden" name="aufgabe" value="{{ wert }}">
+        <label class="feld__label" for="ki-z-{{ wert }}">{{ text }}</label>
+        <select class="feld__eingabe" id="ki-z-{{ wert }}" name="anbieter">
+          <option value="">{% translate "KI aus" %}</option>
+          {% for a in anbieter %}<option value="{{ a.pk }}"{% if zugewiesen.pk == a.pk %} selected{% endif %}>{{ a.name }}</option>{% endfor %}
+        </select>
+        {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True text=_("Speichern") %}
+        {% if status == "nicht_aktiv" %}<span class="feld__hinweis">{% translate "Anbieter ist ausgeschaltet: KI bleibt aus." %}</span>
+        {% elif status == "einwilligung_fehlt" %}<span class="feld__hinweis">{% translate "Einwilligung fehlt: KI bleibt aus." %}</span>
+        {% elif status == "bereit" %}<span class="feld__hinweis">{% translate "bereit" %}</span>{% endif %}
+      </form>
+    {% endfor %}
+  </div></section>
+{% endblock %}

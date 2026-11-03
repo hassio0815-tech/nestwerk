@@ -87,6 +87,7 @@ def einstellungen_definieren():
     )
 
     _definieren_ueben()
+    _definieren_ki()
 
 
 def _definieren_ueben():
@@ -207,6 +208,62 @@ def _definieren_ueben():
         _("Frust-Erkennung: schnelle Antworten in Folge"),
         minimum=2,
         maximum=20,
+    )
+
+
+# Etappe 3 (KI-Anbindung): Migration 0007 legt fehlende Werte an. KI ist standardmäßig aus.
+STARTWERTE_KI = {
+    "lernen.ki_timeout_sekunden": 60,
+    "lernen.ki_max_versuche": 3,
+    "lernen.ki_backoff_sekunden": 60,
+    "lernen.ki_mindestabstand_sekunden": 2,
+    "lernen.ki_auftraege_pro_lauf": 10,
+}
+
+
+def _definieren_ki():
+    definieren(
+        "lernen.ki_timeout_sekunden",
+        Typ.GANZZAHL,
+        _("KI: Zeitlimit pro Aufruf"),
+        beschreibung=_("Nach dieser Zeit ohne Antwort bricht der Aufruf ab."),
+        einheit=_("Sekunden"),
+        minimum=5,
+        maximum=600,
+    )
+    definieren(
+        "lernen.ki_max_versuche",
+        Typ.GANZZAHL,
+        _("KI: Versuche pro Auftrag"),
+        beschreibung=_("Nach so vielen Fehlversuchen wird ein Hintergrund-Auftrag aufgegeben."),
+        minimum=1,
+        maximum=10,
+    )
+    definieren(
+        "lernen.ki_backoff_sekunden",
+        Typ.GANZZAHL,
+        _("KI: Wartezeit nach einem Fehler"),
+        beschreibung=_("Basiswartezeit; sie vervierfacht sich mit jedem weiteren Fehlversuch."),
+        einheit=_("Sekunden"),
+        minimum=5,
+        maximum=3600,
+    )
+    definieren(
+        "lernen.ki_mindestabstand_sekunden",
+        Typ.GANZZAHL,
+        _("KI: Mindestabstand zwischen Hintergrund-Aufrufen"),
+        beschreibung=_("Schont den Server und die Kosten. Gilt je Anbieter."),
+        einheit=_("Sekunden"),
+        minimum=0,
+        maximum=600,
+    )
+    definieren(
+        "lernen.ki_auftraege_pro_lauf",
+        Typ.GANZZAHL,
+        _("KI: Aufträge pro Lauf"),
+        beschreibung=_("So viele Hintergrund-Aufträge bearbeitet ein Lauf höchstens."),
+        minimum=1,
+        maximum=100,
     )
 
 

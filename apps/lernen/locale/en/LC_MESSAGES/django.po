@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 11:43+0100\n"
+"POT-Creation-Date: 2026-11-03 12:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,6 +13,302 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "KI: Zeitlimit pro Aufruf"
+msgstr "AI: time limit per call"
+
+msgid "Nach dieser Zeit ohne Antwort bricht der Aufruf ab."
+msgstr "After this time without an answer the call is aborted."
+
+msgid "KI: Versuche pro Auftrag"
+msgstr "AI: attempts per job"
+
+msgid "Nach so vielen Fehlversuchen wird ein Hintergrund-Auftrag aufgegeben."
+msgstr "After this many failed attempts a background job is given up."
+
+msgid "KI: Wartezeit nach einem Fehler"
+msgstr "AI: wait time after an error"
+
+msgid "Basiswartezeit; sie vervierfacht sich mit jedem weiteren Fehlversuch."
+msgstr "Base wait time; it quadruples with every further failed attempt."
+
+msgid "KI: Mindestabstand zwischen Hintergrund-Aufrufen"
+msgstr "AI: minimum gap between background calls"
+
+msgid "Schont den Server und die Kosten. Gilt je Anbieter."
+msgstr "Protects the server and the costs. Applies per provider."
+
+msgid "KI: Aufträge pro Lauf"
+msgstr "AI: jobs per run"
+
+msgid "So viele Hintergrund-Aufträge bearbeitet ein Lauf höchstens."
+msgstr "A run processes at most this many background jobs."
+
+msgid "Unbekannter Anbieter-Typ."
+msgstr "Unknown provider type."
+
+msgid "Bitte den Modellnamen eintragen."
+msgstr "Please enter the model name."
+
+msgid "Bitte die Adresse des KI-Servers eintragen."
+msgstr "Please enter the address of the AI server."
+
+msgid ""
+"Die Adresse ist ungültig (http:// oder https://, ohne Benutzer und Passwort)."
+msgstr ""
+"The address is invalid (http:// or https://, without user name and password)."
+
+msgid "Für diesen Anbieter ist ein API-Schlüssel nötig."
+msgstr "This provider needs an API key."
+
+msgid "Diesen Namen gibt es schon."
+msgstr "This name already exists."
+
+msgid "Unbekannte Aufgabe."
+msgstr "Unknown task."
+
+msgid ""
+"Die Einstellungen sind unvollständig oder ungültig (Adresse, Modell, "
+"Schlüssel)."
+msgstr "The settings are incomplete or invalid (address, model, key)."
+
+msgid "Der KI-Server ist nicht erreichbar. Adresse und Netzwerk prüfen."
+msgstr "The AI server cannot be reached. Check the address and the network."
+
+msgid "Der KI-Server hat nicht rechtzeitig geantwortet."
+msgstr "The AI server did not answer in time."
+
+msgid "Der KI-Server hat den Zugang abgelehnt. API-Schlüssel prüfen."
+msgstr "The AI server rejected the access. Check the API key."
+
+msgid ""
+"Der KI-Server meldet ein Limit (zu viele Anfragen oder Kontingent erschöpft)."
+msgstr "The AI server reports a limit (too many requests or quota used up)."
+
+msgid ""
+"Der KI-Server meldet einen eigenen Fehler. Später noch einmal versuchen."
+msgstr "The AI server reports an error of its own. Try again later."
+
+msgid "Der KI-Server hat die Anfrage abgelehnt. Modellname und Adresse prüfen."
+msgstr ""
+"The AI server rejected the request. Check the model name and the address."
+
+msgid "Die Antwort war leer oder nicht lesbar."
+msgstr "The answer was empty or not readable."
+
+msgid "Für diese Aufgabe ist keine KI eingeschaltet."
+msgstr "No AI is switched on for this task."
+
+msgid "Für diesen Cloud-Anbieter fehlt die Einwilligung der Eltern."
+msgstr "The parents' consent is missing for this cloud provider."
+
+msgid "Unerwarteter Fehler."
+msgstr "Unexpected error."
+
+msgid "OpenAI-kompatibel (Ollama, vLLM, LiteLLM, eigener Server)"
+msgstr "OpenAI-compatible (Ollama, vLLM, LiteLLM, own server)"
+
+msgid "Anthropic"
+msgstr "Anthropic"
+
+msgid "OpenAI"
+msgstr "OpenAI"
+
+msgid "Auslesen (Foto oder Text einlesen)"
+msgstr "Reading (scan a photo or text)"
+
+msgid "Fragen erzeugen"
+msgstr "Generate questions"
+
+msgid "Tutor (Hilfe beim Lösen)"
+msgstr "Tutor (help with solving)"
+
+msgid "läuft"
+msgstr "running"
+
+msgid "Fehler"
+msgstr "Error"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Art des Anbieters"
+msgstr "Type of provider"
+
+msgid "Adresse (Basis-URL)"
+msgstr "Address (base URL)"
+
+msgid ""
+"Bei eigenen Servern Pflicht, inklusive Versionspfad (meist /v1). Bei "
+"Anthropic und OpenAI leer lassen für die Standard-Adresse."
+msgstr ""
+"Required for own servers, including the version path (usually /v1). Leave "
+"empty for Anthropic and OpenAI to use the default address."
+
+msgid "Modellname"
+msgstr "Model name"
+
+msgid "API-Schlüssel"
+msgstr "API key"
+
+msgid ""
+"Ein Schlüssel ist gespeichert. Leer lassen, um ihn zu behalten; er wird nie "
+"angezeigt."
+msgstr "A key is saved. Leave empty to keep it; it is never shown."
+
+msgid ""
+"Bei eigenen Servern oft nicht nötig. Er wird verschlüsselt gespeichert und "
+"nie angezeigt."
+msgstr ""
+"Often not needed for own servers. It is stored encrypted and never shown."
+
+msgid "Speichern"
+msgstr "Save"
+
+msgid "Verbindung klappt (Antwort in %(ms)s ms)."
+msgstr "Connection works (answer in %(ms)s ms)."
+
+msgid "Test fehlgeschlagen:"
+msgstr "Test failed:"
+
+msgid "KI-Anbindung"
+msgstr "AI connection"
+
+msgid ""
+"Die KI ist standardmäßig aus. Hier richtet ihr einen eigenen Server oder "
+"einen Cloud-Anbieter ein."
+msgstr ""
+"The AI is off by default. Here you set up your own server or a cloud "
+"provider."
+
+msgid ""
+"Standardmäßig ist die KI aus. Nestwerk nutzt keine externen Dienste, bis ihr "
+"einen Anbieter einrichtet und einschaltet. Ihr könnt einen eigenen Server, "
+"Cloud-Anbieter oder eine Mischung wählen."
+msgstr ""
+"The AI is off by default. Nestwerk uses no external services until you set "
+"up a provider and switch it on. You can choose your own server, cloud "
+"providers or a mix."
+
+msgid "Anbieter"
+msgstr "Providers"
+
+msgid "Cloud"
+msgstr "Cloud"
+
+msgid "lokal"
+msgstr "local"
+
+msgid "eingeschaltet"
+msgstr "switched on"
+
+msgid "ausgeschaltet"
+msgstr "switched off"
+
+msgid "Schlüssel gesetzt"
+msgstr "Key saved"
+
+msgid "kein Schlüssel"
+msgstr "no key"
+
+msgid "Bevor ihr diesen Cloud-Anbieter einschaltet"
+msgstr "Before you switch on this cloud provider"
+
+msgid ""
+"Daten verlassen euren Server und gehen an den Anbieter. Dazu können Fotos "
+"und Texte der Kinder gehören (zum Beispiel Hausaufgaben und Antworten)."
+msgstr ""
+"Data leaves your server and goes to the provider. This can include photos "
+"and texts of the children (for example homework and answers)."
+
+msgid ""
+"Cloud-Anbieter berechnen meist Kosten pro Nutzung. Die Preise legt der "
+"Anbieter fest."
+msgstr ""
+"Cloud providers usually charge for usage. The provider sets the prices."
+
+msgid ""
+"Eine KI kann Fehler machen. Prüft Ausgaben, bevor ihr euch darauf verlasst."
+msgstr "An AI can make mistakes. Check its output before you rely on it."
+
+msgid ""
+"Es ist eure Entscheidung. Ihr könnt den Anbieter jederzeit wieder "
+"ausschalten."
+msgstr ""
+"It is your decision. You can switch the provider off again at any time."
+
+msgid ""
+"Die Daten bleiben bei einem lokalen Anbieter in eurem Netz. Auch eine eigene "
+"KI kann Fehler machen: Prüft Ausgaben, bevor ihr euch darauf verlasst."
+msgstr ""
+"With a local provider the data stays in your network. Your own AI can make "
+"mistakes too: check its output before you rely on it."
+
+msgid "Ausschalten"
+msgstr "Switch off"
+
+msgid ""
+"Ich habe die Hinweise gelesen und erlaube, dass Daten an diesen Anbieter "
+"gesendet werden."
+msgstr "I have read the notes and allow data to be sent to this provider."
+
+msgid "Einschalten"
+msgstr "Switch on"
+
+msgid "Verbindung testen"
+msgstr "Test connection"
+
+msgid "Letzter Test: erfolgreich."
+msgstr "Last test: successful."
+
+msgid "Letzter Test: fehlgeschlagen."
+msgstr "Last test: failed."
+
+msgid ""
+"Der Test sendet nur ein kurzes „Antworte mit OK“, keine Daten der Kinder."
+msgstr ""
+"The test only sends a short \"Reply with OK\", no data of the children."
+
+msgid "Noch kein Anbieter eingerichtet. Die KI ist aus."
+msgstr "No provider set up yet. The AI is off."
+
+msgid "Neuer Anbieter"
+msgstr "New provider"
+
+msgid ""
+"Neue Anbieter sind zuerst ausgeschaltet. Danach könnt ihr die Verbindung "
+"testen und den Anbieter einschalten."
+msgstr ""
+"New providers are switched off at first. Then you can test the connection "
+"and switch the provider on."
+
+msgid "Wofür welcher Anbieter?"
+msgstr "Which provider for what?"
+
+msgid ""
+"Die Zuordnung gilt für die ganze Familie, nicht pro Kind. Ohne Zuordnung "
+"bleibt die KI für diese Aufgabe aus. Es gibt keinen automatischen Wechsel zu "
+"einem anderen Anbieter."
+msgstr ""
+"The assignment applies to the whole family, not per child. Without an "
+"assignment the AI stays off for that task. There is no automatic switch to "
+"another provider."
+
+msgid "KI aus"
+msgstr "AI off"
+
+msgid "Anbieter ist ausgeschaltet: KI bleibt aus."
+msgstr "Provider is switched off: the AI stays off."
+
+msgid "Einwilligung fehlt: KI bleibt aus."
+msgstr "Consent missing: the AI stays off."
+
+msgid "bereit"
+msgstr "ready"
+
+msgid "Für einen Cloud-Anbieter braucht es zuerst eure Einwilligung (Häkchen)."
+msgstr ""
+"For a cloud provider you first need to give your consent (tick the box)."
+
 #: einstellungen.py:40
 msgid "Tagesziel Lernzeit"
 msgstr "Daily learning goal"
@@ -21,7 +317,7 @@ msgstr "Daily learning goal"
 msgid "So viele Minuten pro Tag gelten als Ziel."
 msgstr "This many minutes per day count as the goal."
 
-#: einstellungen.py:42 einstellungen.py:51 einstellungen.py:156
+#: einstellungen.py:42 einstellungen.py:51 einstellungen.py:157
 msgid "Minuten"
 msgstr "minutes"
 
@@ -41,7 +337,7 @@ msgstr "Learning points per day (upper limit)"
 msgid "Mehr Punkte als dieser Wert gibt das Lernen pro Kind und Tag nicht."
 msgstr "Learning never gives a child more points than this per day."
 
-#: einstellungen.py:60 einstellungen.py:110
+#: einstellungen.py:60 einstellungen.py:111
 msgid "Punkte"
 msgstr "points"
 
@@ -77,21 +373,21 @@ msgstr "AI tutor active"
 msgid "Gilt für die ganze Familie. Standardmäßig aus."
 msgstr "Applies to the whole family. Off by default."
 
-#: einstellungen.py:97
+#: einstellungen.py:98
 msgid "Lernpunkte vergeben"
 msgstr "Award learning points"
 
-#: einstellungen.py:99
+#: einstellungen.py:100
 msgid ""
 "Aus: Das Lernen gibt keine Punkte. Zeit, Serie und Rückschau gibt es "
 "trotzdem."
 msgstr "Off: learning earns no points. Time, streak and review still work."
 
-#: einstellungen.py:105
+#: einstellungen.py:106
 msgid "Punkte für das Tagesziel"
 msgstr "Points for the daily goal"
 
-#: einstellungen.py:107
+#: einstellungen.py:108
 msgid ""
 "Fester Betrag, sobald das Tagesziel erreicht ist. Es zählt die Beteiligung, "
 "nicht die Menge richtiger Antworten."
@@ -99,11 +395,11 @@ msgstr ""
 "A fixed amount once the daily goal is reached. Taking part counts, not the "
 "number of correct answers."
 
-#: einstellungen.py:117
+#: einstellungen.py:118
 msgid "Abstände der Wiederholung"
 msgstr "Review intervals"
 
-#: einstellungen.py:119
+#: einstellungen.py:120
 msgid ""
 "Nach wie vielen Tagen eine Frage wiederkommt, je Box. Richtig: eine Box "
 "weiter. Noch nicht richtig: zurück in die erste Box."
@@ -111,52 +407,53 @@ msgstr ""
 "After how many days a question comes back, per box. Correct: one box "
 "further. Not yet correct: back to the first box."
 
-#: einstellungen.py:122 einstellungen.py:148 einstellungen.py:168
-#: einstellungen.py:177
+#: einstellungen.py:123 einstellungen.py:149 einstellungen.py:169
+#: einstellungen.py:178
 msgid "Tage"
 msgstr "days"
 
-#: einstellungen.py:129
+#: einstellungen.py:130
 msgid "Fragen je Runde: Aufwärmen"
 msgstr "Questions per round: warm-up"
 
-#: einstellungen.py:130
+#: einstellungen.py:131
 msgid "Fragen je Runde: Normal"
 msgstr "Questions per round: normal"
 
-#: einstellungen.py:131
+#: einstellungen.py:132
 msgid "Fragen je Runde: Herausforderung"
 msgstr "Questions per round: challenge"
 
-#: einstellungen.py:137
+#: einstellungen.py:138
 msgid "Längste Denkpause"
 msgstr "Longest thinking break"
 
-#: einstellungen.py:138
+#: einstellungen.py:139
 msgid "Längere Pausen zwischen zwei Schritten zählen nicht als Lernzeit."
 msgstr "Longer breaks between two steps do not count as learning time."
 
-#: einstellungen.py:139
+#: einstellungen.py:140 einstellungen.py:230 einstellungen.py:247
+#: einstellungen.py:256
 msgid "Sekunden"
 msgstr "seconds"
 
-#: einstellungen.py:146
+#: einstellungen.py:147
 msgid "Ziel senken nach verfehlten Tagen"
 msgstr "Lower the goal after missed days"
 
-#: einstellungen.py:147
+#: einstellungen.py:148
 msgid "Nach so vielen verfehlten Tagen sinkt das persönliche Tagesziel."
 msgstr "After this many missed days the personal daily goal goes down."
 
-#: einstellungen.py:155
+#: einstellungen.py:156
 msgid "Schritt beim Anpassen des Ziels"
 msgstr "Step when adjusting the goal"
 
-#: einstellungen.py:163
+#: einstellungen.py:164
 msgid "Erreichte Tage für einen Vorschlag"
 msgstr "Days reached for a suggestion"
 
-#: einstellungen.py:165
+#: einstellungen.py:166
 msgid ""
 "Hat ein Kind in den letzten 14 Tagen so oft sein Ziel erreicht, wird ein "
 "höheres Ziel vorgeschlagen (nie automatisch gesetzt)."
@@ -164,47 +461,47 @@ msgstr ""
 "If a child reached their goal this often in the last 14 days, a higher goal "
 "is suggested (never set automatically)."
 
-#: einstellungen.py:175
+#: einstellungen.py:176
 msgid "Geübte Tage pro Woche für die Serie"
 msgstr "Practice days per week for the streak"
 
-#: einstellungen.py:176
+#: einstellungen.py:177
 msgid "Eine Woche zählt für die Serie, wenn so viele Tage geübt wurden."
 msgstr "A week counts for the streak when this many days were practised."
 
-#: einstellungen.py:184 models.py:84
+#: einstellungen.py:185 models.py:84
 msgid "Ferien"
 msgstr "Holidays"
 
-#: einstellungen.py:185
+#: einstellungen.py:186
 msgid "An: Die Serie wird geschont, es wird kein Tagesziel verlangt."
 msgstr "On: the streak is protected and no daily goal is expected."
 
-#: einstellungen.py:190
+#: einstellungen.py:191
 msgid "Frust-Erkennung: Fehler in Folge"
 msgstr "Frustration check: mistakes in a row"
 
-#: einstellungen.py:191
+#: einstellungen.py:192
 msgid "So viele Antworten hintereinander „noch nicht“ senken die Stufe."
 msgstr "This many answers in a row that are \"not yet\" lower the level."
 
-#: einstellungen.py:198
+#: einstellungen.py:199
 msgid "Frust-Erkennung: sehr schnelle Antwort"
 msgstr "Frustration check: very fast answers"
 
-#: einstellungen.py:199
+#: einstellungen.py:200
 msgid "Antworten unter dieser Zeit gelten als Durchklicken."
 msgstr "Answers faster than this count as clicking through."
 
-#: einstellungen.py:200
+#: einstellungen.py:201
 msgid "Millisekunden"
 msgstr "milliseconds"
 
-#: einstellungen.py:207
+#: einstellungen.py:208
 msgid "Frust-Erkennung: schnelle Antworten in Folge"
 msgstr "Frustration check: fast answers in a row"
 
-#: einstellungen.py:215
+#: einstellungen.py:272
 msgid "Mindestens zwei Abstände, aufsteigend."
 msgstr "At least two intervals, ascending."
 
@@ -215,6 +512,10 @@ msgstr "Learning goal reached"
 #: events.py:31 templates/lernen/kacheln/kind_lernen.html:9
 msgid "Tagesziel geschafft!"
 msgstr "Daily goal reached!"
+
+#: ki_services.py:67
+msgid "Bitte einen Namen eintragen."
+msgstr "Please enter a name."
 
 #: models.py:20
 msgid "Vokabel"
@@ -340,12 +641,24 @@ msgstr "Illness"
 msgid "Sonstiges"
 msgstr "Other"
 
+#: models.py:372
+msgid "Antworten bewerten"
+msgstr "Rate answers"
+
+#: models.py:377
+msgid "wartend"
+msgstr "waiting"
+
+#: models.py:379
+msgid "fertig"
+msgstr "done"
+
 #: registry.py:45 registry.py:56 templates/lernen/eltern.html:3
 #: templates/lernen/eltern.html:10
 #: templates/lernen/kacheln/eltern_lernen.html:3
-#: templates/lernen/kacheln/kind_lernen.html:4 templates/lernen/sitzung.html:3
-#: templates/lernen/sitzung.html:7 templates/lernen/start.html:3
-#: templates/lernen/start.html:10
+#: templates/lernen/kacheln/kind_lernen.html:4 templates/lernen/ki.html:7
+#: templates/lernen/sitzung.html:3 templates/lernen/sitzung.html:7
+#: templates/lernen/start.html:3 templates/lernen/start.html:10
 msgid "Lernen"
 msgstr "Learning"
 
@@ -638,11 +951,11 @@ msgstr "Suggestion to the child: raise the daily goal to %(minuten)s minutes."
 msgid "Noch keine Kinder."
 msgstr "No children yet."
 
-#: templates/lernen/eltern.html:28
+#: templates/lernen/eltern.html:35
 msgid "Schonung (Krankheit, Ferien)"
 msgstr "Rest days (illness, holidays)"
 
-#: templates/lernen/eltern.html:29
+#: templates/lernen/eltern.html:36
 msgid ""
 "An Pausentagen wird kein Ziel verlangt und die Serie bleibt erhalten. Ferien "
 "für alle schaltet ihr in den Einstellungen ein."
@@ -650,43 +963,43 @@ msgstr ""
 "On rest days no goal is expected and the streak is kept. You can turn on "
 "holidays for everyone in the settings."
 
-#: templates/lernen/eltern.html:31
+#: templates/lernen/eltern.html:38
 msgid "Einstellungen"
 msgstr "Settings"
 
-#: templates/lernen/eltern.html:33
+#: templates/lernen/eltern.html:40
 msgid "Für wen"
 msgstr "For whom"
 
-#: templates/lernen/eltern.html:34 templates/lernen/eltern.html:44
+#: templates/lernen/eltern.html:41 templates/lernen/eltern.html:51
 msgid "Alle Kinder"
 msgstr "All children"
 
-#: templates/lernen/eltern.html:35
+#: templates/lernen/eltern.html:42
 msgid "Von"
 msgstr "From"
 
-#: templates/lernen/eltern.html:36
+#: templates/lernen/eltern.html:43
 msgid "Bis"
 msgstr "To"
 
-#: templates/lernen/eltern.html:37
+#: templates/lernen/eltern.html:44
 msgid "Grund"
 msgstr "Reason"
 
-#: templates/lernen/eltern.html:39
+#: templates/lernen/eltern.html:46
 msgid "Pause eintragen"
 msgstr "Add rest days"
 
-#: templates/lernen/eltern.html:44
+#: templates/lernen/eltern.html:51
 msgid "offen"
 msgstr "open"
 
-#: templates/lernen/eltern.html:45
+#: templates/lernen/eltern.html:52
 msgid "Löschen"
 msgstr "Delete"
 
-#: templates/lernen/eltern.html:47
+#: templates/lernen/eltern.html:54
 msgid "Keine Pausen eingetragen."
 msgstr "No rest days entered."
 
@@ -713,6 +1026,15 @@ msgstr "Practised %(wochen)s weeks in a row"
 #: templates/lernen/kacheln/kind_lernen.html:13
 msgid "Üben"
 msgstr "Practise"
+
+#: templates/lernen/ki.html:25
+#, python-format
+msgid "Einwilligung am %(am)s von %(von)s."
+msgstr "Consent given on %(am)s by %(von)s."
+
+#: templates/lernen/ki.html:51
+msgid "Bearbeiten"
+msgstr "Edit"
 
 #: templates/lernen/start.html:7
 msgid "Start"

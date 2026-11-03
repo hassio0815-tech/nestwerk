@@ -352,3 +352,114 @@ class Lernpause(models.Model):
 
     def __str__(self):
         return f"Pause {self.kind_id or 'alle'} {self.von}-{self.bis or 'offen'}"
+
+
+# --- Etappe 3: KI-Anbindung (SPEC 21.6) -----------------------------------------------------------
+
+
+class KiTyp(models.TextChoices):
+    OPENAI_KOMPATIBEL = (
+        "openai_kompatibel",
+        _("OpenAI-kompatibel (Ollama, vLLM, LiteLLM, eigener Server)"),
+    )
+    ANTHROPIC = "anthropic", _("Anthropic")
+    OPENAI = "openai", _("OpenAI")
+
+
+class KiAufgabe(models.TextChoices):
+    AUSLESEN = "auslesen", _("Auslesen (Foto oder Text einlesen)")
+    FRAGEN_ERZEUGEN = "fragen_erzeugen", _("Fragen erzeugen")
+    BEWERTEN = "bewerten", _("Antworten bewerten")
+    TUTOR = "tutor", _("Tutor (Hilfe beim Lösen)")
+
+
+class KiAuftragStatus(models.TextChoices):
+    WARTEND = "wartend", _("wartend")
+    LAEUFT = "laeuft", _("läuft")
+    FERTIG = "fertig", _("fertig")
+    FEHLER = "fehler", _("Fehler")
+
+
+class KiAnbieter(models.Model):
+    """Ein konfigurierter KI-Zugang. Der API-Schlüssel liegt nur als Fernet-Token in der DB
+    (``benachrichtigung.crypto``) und wird nie angezeigt oder geloggt. Neu angelegt ist ein
+    Anbieter immer inaktiv; Cloud-Anbieter brauchen vor der Aktivierung die Einwilligung der
+    Eltern (Zeitpunkt und Elternperson)."""
+
+    name = models.CharField(max_length=60, unique=True)
+    typ = models.CharField(max_length=20, choices=KiTyp.choices)
+    basis_url = models.CharField(max_length=300, blank=True)
+    modell = models.CharField(max_length=120)
+    schluessel_verschluesselt = models.TextField(blank=True, editable=False)
+    aktiv = models.BooleanField(default=False)
+    ist_cloud = models.BooleanField(default=True)
+    einwilligung_am = models.DateTimeField(null=True, blank=True)
+    einwilligung_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    letzter_test_am = models.DateTimeField(null=True, blank=True)
+    letzter_test_ok = models.BooleanField(null=True, blank=True)
+    angelegt_am = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def hat_schluessel(self):
+        return bool(self.schluessel_verschluesselt)
+
+
+class KiZuordnung(models.Model):
+    """Welcher Anbieter eine Aufgabe erledigt (familienweit, nicht pro Kind). Keine Zeile =
+    KI für diese Aufgabe aus."""
+
+    aufgabe = models.CharField(max_length=20, choices=KiAufgabe.choices, unique=True)
+    anbieter = models.ForeignKey(KiAnbieter, on_delete=models.CASCADE, related_name="zuordnungen")
+
+    class Meta:
+        ordering = ["aufgabe"]
+
+    def __str__(self):
+        return f"{self.aufgabe} -> {self.anbieter_id}"
+
+
+class KiAuftrag(models.Model):
+    """Warteschlangen-Eintrag für KI-Arbeit im Hintergrund. Enthält nie Inhalte, nur einen
+    Verweis auf die Eingabe (z. B. ``lernen.lernmappe:12``) und den Idempotenz-Schlüssel."""
+
+    aufgabe = models.CharField(max_length=20, choices=KiAufgabe.choices)
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    anbieter = models.ForeignKey(
+        KiAnbieter, null=True, blank=True, on_delete=models.SET_NULL, related_name="auftraege"
+    )
+    schluessel = models.CharField(max_length=120, unique=True)
+    eingabe_verweis = models.CharField(max_length=200, blank=True)
+    status = models.CharField(
+        max_length=10, choices=KiAuftragStatus.choices, default=KiAuftragStatus.WARTEND
+    )
+    versuche = models.PositiveSmallIntegerField(default=0)
+    fehler_art = models.CharField(max_length=30, blank=True)
+    naechster_versuch_am = models.DateTimeField(null=True, blank=True)
+    gestartet_am = models.DateTimeField(null=True, blank=True)
+    beendet_am = models.DateTimeField(null=True, blank=True)
+    angelegt_am = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        indexes = [models.Index(fields=["status", "naechster_versuch_am"])]
+
+    def __str__(self):
+        return f"{self.aufgabe} ({self.status})"

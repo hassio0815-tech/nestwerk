@@ -1,0 +1,19 @@
+{% load i18n %}
+{% comment %} Anbieter-Formular. a = Anbieter oder leer (neu). Der Schlüssel wird nie angezeigt. {% endcomment %}
+<form method="post" action="{% if a %}{% url 'lernen:ki_anbieter_aendern' a.pk %}{% else %}{% url 'lernen:ki_anbieter_neu' %}{% endif %}" class="stapel">{% csrf_token %}
+  {% with p=a.pk|default:"neu" %}
+  <div class="feld"><label class="feld__label" for="ki-name-{{ p }}">{% translate "Name" %}</label>
+    <input class="feld__eingabe" id="ki-name-{{ p }}" name="name" value="{{ a.name|default:'' }}" maxlength="60" required></div>
+  <div class="feld"><label class="feld__label" for="ki-typ-{{ p }}">{% translate "Art des Anbieters" %}</label>
+    <select class="feld__eingabe" id="ki-typ-{{ p }}" name="typ">{% for wert, text in typen %}<option value="{{ wert }}"{% if a.typ == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}</select></div>
+  <div class="feld"><label class="feld__label" for="ki-url-{{ p }}">{% translate "Adresse (Basis-URL)" %}</label>
+    <input class="feld__eingabe" id="ki-url-{{ p }}" name="basis_url" value="{{ a.basis_url|default:'' }}" maxlength="300" placeholder="http://dein-ki-server:11434/v1" aria-describedby="ki-url-{{ p }}-h">
+    <p class="feld__hinweis" id="ki-url-{{ p }}-h">{% translate "Bei eigenen Servern Pflicht, inklusive Versionspfad (meist /v1). Bei Anthropic und OpenAI leer lassen für die Standard-Adresse." %}</p></div>
+  <div class="feld"><label class="feld__label" for="ki-modell-{{ p }}">{% translate "Modellname" %}</label>
+    <input class="feld__eingabe" id="ki-modell-{{ p }}" name="modell" value="{{ a.modell|default:'' }}" maxlength="120" placeholder="dein-modellname" required></div>
+  <div class="feld"><label class="feld__label" for="ki-key-{{ p }}">{% translate "API-Schlüssel" %}</label>
+    <input class="feld__eingabe" id="ki-key-{{ p }}" type="password" name="api_key" value="" autocomplete="new-password" aria-describedby="ki-key-{{ p }}-h">
+    <p class="feld__hinweis" id="ki-key-{{ p }}-h">{% if a.hat_schluessel %}{% translate "Ein Schlüssel ist gespeichert. Leer lassen, um ihn zu behalten; er wird nie angezeigt." %}{% else %}{% translate "Bei eigenen Servern oft nicht nötig. Er wird verschlüsselt gespeichert und nie angezeigt." %}{% endif %}</p></div>
+  {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Speichern") %}
+  {% endwith %}
+</form>
