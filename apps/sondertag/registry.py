@@ -2,7 +2,14 @@
 
 from django.utils.translation import gettext_lazy as _
 
-from apps.kern.registry import ELTERN, KIND, Kachel, kachel_registrieren
+from apps.kern.registry import (
+    ELTERN,
+    KIND,
+    Kachel,
+    Provider,
+    kachel_registrieren,
+    provider_registrieren,
+)
 
 MODUL = "sondertag"
 
@@ -21,6 +28,15 @@ def _eltern(request):
         "zeilen": selectors.eltern_uebersicht(),
         "wuensche": selectors.offene_wuensche(),
     }
+
+
+def fortschritt_registrieren():
+    """Fortschritt (Sondertag) für andere Module, z. B. den Avatar-Charakter."""
+    from . import selectors
+
+    provider_registrieren(
+        Provider("sondertag.fortschritt", MODUL, _("Sondertag-Fortschritt"), selectors.fortschritt)
+    )
 
 
 def kacheln_registrieren():

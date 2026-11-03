@@ -61,7 +61,8 @@ def eltern_anlegen(
     wappen_rolle="",
     wappen_rolle_eigen="",
 ):
-    """Ohne ``wappen`` wird zufällig eines vergeben (möglichst anders als bei den anderen Eltern)."""
+    """Ohne ``wappen`` wird zufällig eines vergeben (möglichst anders als bei den anderen
+    Eltern)."""
     with transaction.atomic():
         benutzer = Benutzer(
             anzeigename=anzeigename,

@@ -60,7 +60,9 @@ class Benutzer(AbstractBaseUser):
     aktiv = models.BooleanField(default=True)
     dungeon_anzeigen = models.BooleanField(
         default=True,
-        help_text="Eltern: Dungeon-Bereich (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage) zeigen.",
+        help_text=(
+            "Eltern: Dungeon-Bereich (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage) zeigen."
+        ),
     )
     spitzname = models.CharField(
         max_length=20,

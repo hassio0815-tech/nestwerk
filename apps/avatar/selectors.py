@@ -71,3 +71,10 @@ def angelegte_mods(avatar):
         for slot, schluessel in avatar.angelegt.items()
         if schluessel in nach_schluessel
     }
+
+
+def benannte_avatare():
+    """Avatare mit gesetztem Figurennamen, in Geschwister-Reihenfolge (Eltern-Dungeon)."""
+    return list(
+        Avatar.objects.exclude(name="").select_related("benutzer").order_by("benutzer__reihenfolge")
+    )

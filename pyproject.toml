@@ -44,6 +44,10 @@ extend-exclude = ["migrations", "branding"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "DJ"]
 
+[tool.ruff.lint.per-file-ignores]
+# pytest-Fixtures werden als Testparameter genutzt (kein echtes Neu-Definieren)
+"apps/**/tests/*" = ["F811"]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "nestwerk.settings.test"
 python_files = ["test_*.py"]
@@ -68,6 +72,8 @@ layers = [
     "konten",
     "kern",
 ]
+# Tests dürfen quer importieren (wie in den übrigen Verträgen)
+ignore_imports = ["apps.*.tests.** -> **"]
 
 # Öffentliche Schnittstelle je App (ARCHITECTURE 2.2): fremde models.py werden nicht importiert
 # (Review AP19, B-11). Indirekt über selectors/services ist erlaubt. Enums (z. B. konten.Rolle)

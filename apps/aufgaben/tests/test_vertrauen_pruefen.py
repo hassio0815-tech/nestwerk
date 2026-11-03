@@ -113,14 +113,20 @@ def test_nachbessern_klappt_auch_wenn_naechste_runde_offen_ist(aufgabe, anna, ma
 def test_nachbessern_frist_abgelaufen(aufgabe, anna, mama):
     a = erledigt(aufgabe, anna)
     services.korrigieren(a, von=mama, begruendung="Nochmal", nachbessern=True, jetzt=T0)
-    assert services.nachbessern_pruefen(jetzt=T0 + timedelta(hours=47)) == {"nachbessern_abgelaufen": 0}
+    assert services.nachbessern_pruefen(jetzt=T0 + timedelta(hours=47)) == {
+        "nachbessern_abgelaufen": 0
+    }
     with pytest.raises(services.UngueltigerUebergang, match="Frist"):
         services.erledigt_melden(a, anna, jetzt=T0 + timedelta(hours=49))
-    assert services.nachbessern_pruefen(jetzt=T0 + timedelta(hours=49)) == {"nachbessern_abgelaufen": 1}
+    assert services.nachbessern_pruefen(jetzt=T0 + timedelta(hours=49)) == {
+        "nachbessern_abgelaufen": 1
+    }
     assert frisch(a).status == S.STORNIERT
     assert punkte_selectors.salden(anna) == Saldo(guthaben=0, xp=0)
     assert ereignisse(events.NACHBESSERN_ABGELAUFEN).count() == 1
-    assert services.nachbessern_pruefen(jetzt=T0 + timedelta(hours=50)) == {"nachbessern_abgelaufen": 0}
+    assert services.nachbessern_pruefen(jetzt=T0 + timedelta(hours=50)) == {
+        "nachbessern_abgelaufen": 0
+    }
 
 
 def test_dashboard_karte_und_aktionen(eltern_client, aufgabe, anna, mama):

@@ -217,7 +217,7 @@ def eltern_korrigieren(request, pk):
     return _eltern_aktion(request, pk, aktion, _("Korrigiert, Punkte zurückgebucht."))
 
 
-# --- Vertrauen prüfen (Dashboard-Karte "Erledigt – kurz prüfen") -----------------------------------
+# --- Vertrauen prüfen (Dashboard-Karte "Erledigt – kurz prüfen") ----------------------------------
 
 
 def _pruefen_antwort(request, hinweis="", art="erfolg"):

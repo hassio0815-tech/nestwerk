@@ -17,6 +17,7 @@ class SondertagConfig(AppConfig):
         events.typen_deklarieren()
         events.texte_registrieren()
         registry.kacheln_registrieren()
+        registry.fortschritt_registrieren()
         # Anspruch synchron mit dem Meilenstein-Fakt (gleiche Transaktion, idempotent); fällt er
         # aus, holt ``sondertag_sicherstellen`` bzw. die nächste Prüfung ihn nach.
         ereignis_registry.handler_registrieren(

@@ -25,7 +25,13 @@ INLINE_SKRIPT = re.compile(r"<script(?![^>]*\ssrc\s*=)[^>]*>", re.IGNORECASE)
 STATISCHE_PFADE = re.compile(r"""\b(?:src|href)\s*=\s*["'](/static/[^"'?#]+)""")
 CSS_URL = re.compile(r"""url\(\s*["']?([^"')]+)["']?\s*\)""")
 
-STATIC_CSS = ["css/tokens.css", "css/nestwerk.css", "css/huelle.css", "css/spiel.css", "css/styleguide.css"]
+STATIC_CSS = [
+    "css/tokens.css",
+    "css/nestwerk.css",
+    "css/huelle.css",
+    "css/spiel.css",
+    "css/styleguide.css",
+]
 LIZENZEN = [
     "fonts/inter/OFL-Inter.txt",
     "fonts/fraunces/OFL-Fraunces.txt",

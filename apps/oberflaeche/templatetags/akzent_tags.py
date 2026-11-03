@@ -1,4 +1,4 @@
-"""``{% akzent_palette as farben %}``: Namen der Kind-Akzentfarben (für die Farbwahl in der Kopfleiste)."""
+"""``{% akzent_palette as farben %}``: Namen der Kind-Akzentfarben (Farbwahl in der Kopfleiste)."""
 
 from django import template
 

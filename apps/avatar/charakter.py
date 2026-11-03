@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from django.urls import reverse
 from django.utils.translation import gettext, ngettext
 
+from apps.kern.registry import fortschritt, provider_vorhanden
 from apps.kern.sprache import uebersetzt
 from apps.punkte import selectors as punkte_selectors
 
@@ -28,11 +29,10 @@ class SlotKachel:
 def _ziel_text(stufe, raenge_map, kind) -> str:
     fehlt = max(0, stufe.slots - stufe.aktuell)
     if fehlt:
-        from apps.sondertag import selectors as sondertag
-
-        f = sondertag.fortschritt(kind)
-        if f.art in ("unterwegs", "ab_rang") and f.text:
-            return f.text
+        if provider_vorhanden("sondertag.fortschritt"):
+            f = fortschritt("sondertag.fortschritt", kind)
+            if f.art in ("unterwegs", "ab_rang") and f.text:
+                return f.text
         return ngettext(
             "Noch %(n)s Slot bis zur vollen Ausbaustufe!",
             "Noch %(n)s Slots bis zur vollen Ausbaustufe!",

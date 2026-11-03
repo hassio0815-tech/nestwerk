@@ -146,15 +146,12 @@ def eltern_dungeon(request):
     eintraege = [
         e for e in kacheln.fuer(ELTERN, request) if e["kachel"].schluessel in ELTERN_DUNGEON
     ]
-    from apps.avatar.models import Avatar
+    from apps.avatar import selectors as avatar_selectors
 
-    namen = (
-        Avatar.objects.exclude(name="").select_related("benutzer").order_by("benutzer__reihenfolge")
-    )
     return render(
         request,
         "oberflaeche/eltern_dungeon.html",
-        {"kacheln": eintraege, "namen": list(namen)},
+        {"kacheln": eintraege, "namen": avatar_selectors.benannte_avatare()},
     )
 
 
