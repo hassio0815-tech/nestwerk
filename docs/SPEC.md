@@ -409,6 +409,7 @@
 - **[V]** Fotos liegen nur temporär im Dateisystem des Servers.
 - **[V]** Alle Daten bleiben auf dem eigenen Server.
 - **[V]** Keine externen Dienste für Analyse oder Tracking.
+- **[E]** Das Lernmodul kann optional Cloud-KI nutzen. Das ist ein bewusstes Opt-in der Eltern (siehe 21.6).
 - **[E]** Schriften werden selbst gehostet. (E11)
 - **[E] Backup:** Proxmox-VM-Backup plus tägliche Datenbank-Dumps. (E21)
 - **[V]** Wiederherstellungstest durchführen.
@@ -446,7 +447,7 @@ Alle Stufen sind **[V]** und anpassbar. Die Zuordnung der neuen Punkte ist offen
    - Pop-ups und Animationen
    - weitere Themen und Mods
 4. **Später:**
-   - Lernsystem (eigenes Modul `lernen`, Lernassistent). Anforderungen offen (siehe 19).
+   - Lernsystem (eigenes Modul `lernen`, Lernassistent). Anforderungen siehe Abschnitt 21.
    - Forschungssystem (eigenes Modul `forschen`)
    - Home-Assistant-Anbindung (Benachrichtigungskanal, Pause-Automatik, Tablet als Familien-Display)
    - weitere Familienfunktionen
@@ -671,7 +672,7 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
 6. **[O] Ranking-Modi:** Welche Ansichten sind im Eltern-Dashboard umschaltbar (Showcase, "Held der Woche", Rohpunkte)? Entscheidung 25 nennt nur "umschaltbar".
 7. **[O] DNS-Anbieter** für die Let's-Encrypt-DNS-Challenge. Entscheidung 19 nennt "vermutlich Cloudflare".
 8. **[O] Stufenzuordnung neuer Punkte.** Vorschlag: Assistent, Kiosk-Tablet, Aufgabenbibliothek und Taschengeld-Limit in Kern. Pause, Familienziel, Ranking in Spielebene.
-9. **[O] Lernsystem:** Anforderungen an Lernassistent (eigenes Interview, Konzept 13.12).
+9. **Lernsystem:** Geklärt im Lern-Interview, siehe Abschnitt 21.
 10. **[O] Home-Assistant-Anbindung:** Anforderungen (eigenes Interview).
 11. **[O] Technische Standardwerte:** PIN-Sperre (Anzahl Fehlversuche, Dauer) und maximale Bildgröße für Nachweise. Standard setzen und kennzeichnen.
 
@@ -698,3 +699,117 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
 - **Geschlossene Konzept-[O]-Punkte:** App-Name Nestwerk (E8), Stil der Kinderoberfläche (E11), Startwerte für Ränge, Katalog und Bibliothek (E13–E15), Mod-Seltenheit an Rang gekoppelt und 36 Mods pro Thema (E7, E9), Eltern-Avatar (E10), Meilenstein-Schwellen (E12), Mailpostfach (E18).
 - **Stufen:** Aufgabenbibliothek und Taschengeld-Limit nach Kern verschoben, weil die Startwerte im Assistenten gebraucht werden (E13, E15). Zuordnung offen (siehe 19, Punkt 8).
 - **Module:** Lernsystem und Forschungssystem als eigene Django-Module (Vorgabe des Auftrags).
+- **Lernsystem:** Anforderungen aus dem Lern-Interview in Abschnitt 21 (L1–L12). Cloud-KI als Opt-in ergänzt Abschnitt 14.
+
+---
+
+## 21. Lernsystem (Modul `lernen`)
+
+Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L12**. Sie schließen Punkt 9 aus Abschnitt 19.
+
+### 21.1 Ziel
+
+- **[E]** Die Kinder lernen, **selbst zu lernen**, und zwar kontinuierlich. (L1)
+- **[E]** Das Modul begleitet die Schule (Hausaufgaben), unterstützt tägliches Üben und bereitet auf Prüfungen vor. (L1)
+- **[E]** Ziele sind immer schaffbar. Die Lust am Lernen bleibt erhalten. (L1)
+- **[E]** Startumfang: alle Kinder, zwei Fächer (Mathe, Englisch-Vokabeln). Weitere Fächer sind danach Daten, kein Code. (L12)
+
+### 21.2 Prinzipien
+
+- **[E] Schaffbare Ziele:**
+  - Schon ein Mindesttag (ca. 5 Minuten) erfüllt das Tagesziel.
+  - Das Ziel passt sich an die letzten zwei Wochen an. Es wird nach zwei verfehlten Tagen gesenkt, ohne Vorwurf.
+  - Die Serie zählt in Wochen. Es gibt Schonung für Krankheit und Ferien. Eine gerissene Serie löscht keine Punkte.
+  - Zielbereich der Aufgabenschwierigkeit: etwa 70–85 % richtig.
+  - Frust-Erkennung (z. B. drei Fehler in Folge, wildes Durchklicken) senkt die Stufe und schlägt eine Pause vor. (L2)
+- **[E] Punkte für den Prozess:**
+  - Punkte gibt es für Tagesziel, Selbsttest, überarbeitete Fehler, Rückschau und eingehaltene Prüfungspläne. Nicht pro richtige Antwort.
+  - Lernpunkte haben ein Tageslimit. Die Eltern können sie abschalten.
+  - Hilfen kosten keine Punkte. (L3)
+- **[E] Lernen lernen:**
+  - Vor dem Üben wählt das Kind ein Vorhaben und eine Strategie.
+  - Danach zwei Fragen: Was war schwer? Was hat geholfen?
+  - Selbsteinschätzung wird mit dem Ergebnis verglichen.
+  - Wiederholung im Abstand (1, 3, 7, 14 Tage) und gemischte Themen. (L4)
+- **[E] Ton:** Prozesslob, "noch nicht" statt "falsch", Sprache nach Klassenstufe. (L2)
+
+### 21.3 Hausaufgaben und Antworten
+
+- **[E]** Die KI **löst keine Hausaufgaben für das Kind**. Sie hilft beim Lösen. (L5)
+- **[E] Hilfeleiter**, jede Stufe nur auf Wunsch des Kindes:
+  1. Nachfragen
+  2. Denkanstoß
+  3. analoges Beispiel mit anderen Zahlen oder Wörtern
+  4. Verweis ins eigene Material
+  5. Lösungsstruktur ohne Ergebnis
+- **[E]** Erklären von Konzepten ist erlaubt. Eigene Lösungsversuche des Kindes werden geprüft. (L5)
+- **[E] Technische Absicherung:**
+  - Der Tutor bekommt bei hochgeladenen Aufgaben keine Musterlösung.
+  - Die Bewertung läuft in einem getrennten Aufruf mit strukturierter Ausgabe.
+  - Eine Prüfung der Antwort erkennt Lösungs-Leaks.
+  - Tageslimit und Protokoll für die Eltern.
+- **[E]** Eine Garantie gibt es nicht. Ein Kind kann die Aufgabe abtippen oder umformulieren. Die Eltern werden darauf hingewiesen. (L5)
+
+### 21.4 Tutor
+
+- **[E]** Eng geführt: Er spricht nur über Lernstoff aus der Lernmappe. (L6)
+- **[E]** Standardmäßig **aus**. Die Eltern schalten ihn für die ganze Familie ein, nicht pro Kind. (L6)
+- **[E]** Die Eltern sehen das Chatprotokoll. (L6)
+
+### 21.5 Lernmappe und Material
+
+- **[E]** Jedes Kind hat eine **Lernmappe**. Sie enthält Uploads, ausgelesenen Text, Fragen, Vokabeln, Verlauf und Fehlerstellen. Nur das Kind und die Eltern sehen sie, Geschwister nicht. (L7)
+- **[E]** Kinder laden Material als Bild oder Dokument selbst hoch. (L7)
+- **[E]** Freigabe nach Alter: Die Eltern stellen pro Kind ein, ob Fragen aus Uploads sofort nutzbar sind. Standard: Eltern geben frei. (L7)
+- **[E]** Ordner pro Kind: `inbox`, `archiv`, `tests`. Die KI erkennt das Fach und schlägt es vor. Manuelle Fach-Unterordner gelten als Hinweis. (L8)
+- **[E]** Zweiter Eingang: Dateien können auch direkt im Ordner `inbox` abgelegt werden (z. B. auf einem NAS). Ein Hintergrundjob verarbeitet sie Schritt für Schritt über eine Warteschlange. (L8)
+- **[E]** Verarbeitete Originale liegen im Archiv, bis die Eltern sie löschen. Der Speicherplatz pro Kind ist begrenzt (Einstellung). (L8)
+- **[E]** Der Speicher ist austauschbar: Docker-Volume (Standard) oder gemounteter Pfad (NAS). (L8)
+
+### 21.6 KI-Anbindung
+
+- **[E]** Die Eltern haben maximale Wahlfreiheit: Cloud-Anbieter, eigenes LLM oder eine Kombination. (L9)
+- **[E]** Ein Adapter mit drei Typen: OpenAI-kompatibel (Ollama, vLLM, LiteLLM, eigene Hubs), Anthropic, OpenAI. (L9)
+- **[E]** Die Zuordnung gilt **pro Aufgabe und familienweit** (z. B. Auslesen, Fragen erzeugen, Bewerten, Tutor). Nicht pro Kind. (L9)
+- **[E]** Die Eltern werden über Risiken und mögliche Ausgaben informiert, bevor sie einen Anbieter aktivieren. Es gibt keine Verbote. (L9)
+- **[E]** API-Schlüssel liegen verschlüsselt in der Datenbank und werden nie angezeigt oder geloggt. (L9)
+- **[V]** Fallback auf einen zweiten Anbieter kommt später und nur mit ausdrücklicher Erlaubnis der Eltern. (L9)
+- **[E]** Das ändert Abschnitt 14: Standardmäßig nutzt Nestwerk keine externen Dienste. Cloud-KI ist ein bewusstes Opt-in der Eltern. (L9)
+
+### 21.7 Prüfungsvorbereitung
+
+- **[E]** Das Kind nennt Termin, Fach und Stoff. Der Plan wird rückwärts in kleinen Portionen mit Puffertagen gebaut. (L10)
+- **[E]** Realitätscheck: Ist das Pensum zu hoch, schlägt das System vor, früher zu beginnen oder den Umfang zu senken. (L10)
+- **[E]** Verpasste Tage verschieben den Plan ohne Schuldzuweisung. Die Eltern sehen den Plan. (L10)
+- **[V]** Am Ende steht eine Probe-Prüfung. Eine Lösungs-PDF ist später möglich.
+
+### 21.8 Leistungsstufe und Schwierigkeit
+
+- **[E]** Die Leistungsstufe (z. B. Grund- und Erweiterungsniveau an einer IGS) tragen die Eltern pro Kind und Fach im Einrichtungs-Assistenten ein. (L11)
+- **[E]** Das Kind wählt innerhalb der Stufe die Intensität (Aufwärmen, Normal, Herausforderung). Das System passt sich zusätzlich an. (L11)
+- **[E]** Das Kind kann melden, dass etwas zu leicht oder zu schwer wirkt. Die Eltern sehen das als Hinweis. (L11)
+
+### 21.9 Familienansicht
+
+- **[E]** Im Familienranking und bei "Held der Woche" zählt nur die **Beteiligung**, nie die Menge. (L12)
+- **[E]** Ein Familienziel kann lauten: "alle üben an vier Tagen". (L12)
+- **[E]** Wochen-Titel ohne Punkte: Übungsmeister, Aufsteiger, Durchbeißer, Entdecker. Jeder Wert ist relativ zum eigenen Ziel. Bei Gleichstand teilen sich die Kinder den Titel. Die Eltern können die Anzeige abschalten. (L12)
+- **[O]** Ob sich die Titel ohne Änderung an der Engine in `spielregeln` abbilden lassen, wird in Etappe 1 geprüft.
+
+### 21.10 Eltern-Sicht
+
+- **[E]** Wochenbild: Tage geübt, genutzte Hilfestufen im Verlauf, Schwächen.
+- **[E]** Handlungsvorschläge statt Bewertung. Keine Notenkontrolle, keine Vergleiche zwischen Geschwistern.
+
+### 21.11 Privatsphäre im Repository
+
+- **[E]** Im öffentlichen Repository stehen **keine privaten Daten**: keine Namen, Altersangaben oder Klassen von Kindern, keine Schulen, keine IP-Adressen oder Pfade, keine Schlüssel.
+- **[E]** Startdaten sind generisch. Tests nutzen erfundene Kinder und Beispielwerte.
+- **[E]** Alles Familienspezifische geben die Eltern im Einrichtungs-Assistenten ein: Kinder, Klassenstufe, Schulform, Leistungsstufen, KI-Anbieter und Schlüssel, Speicherort, Fächer, Tagesziel, Freigabe-Alter.
+- **[E]** Vor jedem Commit läuft ein Scan auf Privates.
+
+### 21.12 Technik
+
+- **[E]** Das Modul `lernen` hält die Schichtregeln aus `MODULE-ERWEITERN.md` ein. Punkte buchen über `punkte.services`, Aktivität über `spielregeln.services`.
+- **[E]** Alle Schwellen (Mindesttag, Tageslimit, Stufen, Limits) sind Einstellungen in der Datenbank. Startwerte nur per Datenmigration.
+- **[V]** Gemessen und gespeichert wird pro Lernsitzung: Dauer, Versuche, Hilfestufen, Selbsteinschätzung, Rückschau.
