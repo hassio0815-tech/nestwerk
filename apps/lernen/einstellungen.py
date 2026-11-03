@@ -53,6 +53,19 @@ STARTWERTE_PRUEFUNG = {
     "lernen.pruefung_punkte_vorbereitet": 10,
 }
 
+# Etappe 7 (Familienansicht, Titel, Wochenbild): Migration 0014 legt fehlende Werte an.
+STARTWERTE_WOCHE = {
+    "lernen.titel_anzeigen": True,
+    "lernen.familienziel_tage": 4,
+    "lernen.titel_min_versuche": 8,
+    "lernen.titel_min_fehler": 3,
+    "lernen.woche_tendenz_prozent": 5,
+    "lernen.woche_schwaeche_fehler": 4,
+    "lernen.woche_schwaeche_prozent": 40,
+    "lernen.woche_hilfe_hoch_prozent": 40,
+    "lernen.woche_pruefung_tage": 14,
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -112,6 +125,7 @@ def einstellungen_definieren():
     _definieren_material()
     _definieren_tutor()
     _definieren_pruefung()
+    _definieren_woche()
 
 
 def _definieren_ueben():
@@ -577,6 +591,91 @@ def _definieren_pruefung():
         einheit=_("Punkte"),
         minimum=0,
         maximum=100,
+    )
+
+
+def _definieren_woche():
+    """Familienansicht, Wochen-Titel und Eltern-Wochenbild (SPEC 21.9, 21.10)."""
+    definieren(
+        "lernen.titel_anzeigen",
+        Typ.BOOL,
+        _("Wochen-Titel anzeigen"),
+        beschreibung=_(
+            "Übungsmeister, Aufsteiger, Durchbeißer, Entdecker: Anerkennung ohne Punkte. "
+            "Aus: Die Titel erscheinen nirgends."
+        ),
+    )
+    definieren(
+        "lernen.familienziel_tage",
+        Typ.GANZZAHL,
+        _("Lern-Familienziel: Übungstage"),
+        beschreibung=_(
+            "Alle Kinder üben an so vielen Tagen der Woche. Pausentage senken, was verlangt wird."
+        ),
+        einheit=_("Tage"),
+        minimum=1,
+        maximum=7,
+    )
+    definieren(
+        "lernen.titel_min_versuche",
+        Typ.GANZZAHL,
+        _("Aufsteiger: mindestens so viele Antworten pro Woche"),
+        beschreibung=_("Erst ab dieser Zahl in beiden Wochen vergleicht der Titel Aufsteiger."),
+        einheit=_("Antworten"),
+        minimum=1,
+        maximum=500,
+    )
+    definieren(
+        "lernen.titel_min_fehler",
+        Typ.GANZZAHL,
+        _("Durchbeißer: mindestens so viele Fehler in der Woche"),
+        beschreibung=_("Der Titel misst, wie viele der eigenen Fehler das Kind selbst klärt."),
+        einheit=_("Fehler"),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.woche_tendenz_prozent",
+        Typ.GANZZAHL,
+        _("Wochenbild: ab hier gilt eine Veränderung als Tendenz"),
+        beschreibung=_("Prozentpunkte gegenüber der Vorwoche (Treffer und Hilfe)."),
+        einheit=_("Prozentpunkte"),
+        minimum=1,
+        maximum=50,
+    )
+    definieren(
+        "lernen.woche_schwaeche_fehler",
+        Typ.GANZZAHL,
+        _("Wochenbild: Schwäche ab so vielen Fehlversuchen im Thema"),
+        einheit=_("Fehlversuche"),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.woche_schwaeche_prozent",
+        Typ.GANZZAHL,
+        _("Wochenbild: Schwäche ab diesem Anteil Fehler im Thema"),
+        beschreibung=_("Nur ein Hinweis für Gespräche, keine Note."),
+        einheit=_("Prozent"),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.woche_hilfe_hoch_prozent",
+        Typ.GANZZAHL,
+        _("Wochenbild: ab hier gilt die Hilfe als oft genutzt"),
+        beschreibung=_("Anteil der Antworten, bei denen das Kind Hilfe benutzt hat."),
+        einheit=_("Prozent"),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.woche_pruefung_tage",
+        Typ.GANZZAHL,
+        _("Wochenbild: Prüfungen so viele Tage im Voraus erwähnen"),
+        einheit=_("Tage"),
+        minimum=1,
+        maximum=90,
     )
 
 

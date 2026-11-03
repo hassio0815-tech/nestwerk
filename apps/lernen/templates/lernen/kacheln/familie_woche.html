@@ -1,0 +1,33 @@
+{% load i18n static %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">
+{% comment %}Übungswoche (Familien-/Tablet-Ansicht und Kind): nur Beteiligung. Wer nicht geübt hat, kommt nicht vor. Keine Zahlen-Rangliste.{% endcomment %}
+<article class="karte" data-kachel="lernen-woche"><div class="karte__inhalt stapel">
+  <h2 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Übungswoche" %}</h2>
+
+  {% with z=k.ziel %}{% if z %}
+    <p class="kachel__text" data-woche-ziel="{% if z.erreicht %}erreicht{% else %}offen{% endif %}">{% blocktranslate with tage=z.tage %}Wir üben zusammen an {{ tage }} Tagen.{% endblocktranslate %}</p>
+    <progress class="woche-balken" value="{{ z.prozent }}" max="100" aria-label="{% translate "Fortschritt der Familie" %}">{{ z.prozent }} %</progress>
+    {% if z.erreicht %}<p class="kachel__text">{% include "komponenten/icon.html" with name="pokal" %} {% translate "Geschafft! Alle haben diese Woche geübt." %}</p>{% endif %}
+  {% endif %}{% endwith %}
+
+  {% if k.beteiligung %}
+    <ul class="stapel" aria-label="{% translate "Diese Woche geübt" %}" data-woche-beteiligung>
+      {% for b in k.beteiligung %}
+        <li class="woche-zeile">
+          <span>{{ b.kind.anzeigename }}</span>
+          <span class="woche-tage">{% for tag, geuebt in b.tage %}<span class="woche-tag{% if geuebt %} woche-tag--geuebt{% endif %}">{{ tag|date:"D" }}{% if geuebt %}{% include "komponenten/icon.html" with name="check" %}{% else %}<span aria-hidden="true">·</span>{% endif %}</span>{% endfor %}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="kachel__text">{% translate "Die Woche hat gerade erst angefangen. Jeder Tag zählt." %}</p>
+  {% endif %}
+
+  {% if k.titel %}
+    <h3>{% translate "Titel der letzten Woche" %}</h3>
+    <ul class="woche-titel" data-woche-titel>
+      {% for t in k.titel %}
+        <li><strong>{{ t.name }}</strong>: {{ t.namen|join:", " }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div></article>

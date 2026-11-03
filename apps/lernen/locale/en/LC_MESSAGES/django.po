@@ -2523,3 +2523,240 @@ msgstr "Please choose a day for the exam."
 
 msgid "Bitte wähle ein Fach aus."
 msgstr "Please choose a subject."
+
+msgid "Wochen-Titel anzeigen"
+msgstr "Show weekly titles"
+
+msgid "Übungsmeister, Aufsteiger, Durchbeißer, Entdecker: Anerkennung ohne Punkte. Aus: Die Titel erscheinen nirgends."
+msgstr "Practice Master, Climber, Stayer, Explorer: recognition without points. Off: the titles appear nowhere."
+
+msgid "Lern-Familienziel: Übungstage"
+msgstr "Learning family goal: practice days"
+
+msgid "Alle Kinder üben an so vielen Tagen der Woche. Pausentage senken, was verlangt wird."
+msgstr "All children practise on this many days of the week. Days off lower what is asked."
+
+msgid "Aufsteiger: mindestens so viele Antworten pro Woche"
+msgstr "Climber: at least this many answers per week"
+
+msgid "Erst ab dieser Zahl in beiden Wochen vergleicht der Titel Aufsteiger."
+msgstr "The Climber title only compares from this number in both weeks."
+
+msgid "Durchbeißer: mindestens so viele Fehler in der Woche"
+msgstr "Stayer: at least this many mistakes in the week"
+
+msgid "Der Titel misst, wie viele der eigenen Fehler das Kind selbst klärt."
+msgstr "The title measures how many of their own mistakes the child sorts out alone."
+
+msgid "Wochenbild: ab hier gilt eine Veränderung als Tendenz"
+msgstr "Week view: from here a change counts as a trend"
+
+msgid "Prozentpunkte gegenüber der Vorwoche (Treffer und Hilfe)."
+msgstr "Percentage points compared with last week (hits and help)."
+
+msgid "Wochenbild: Schwäche ab so vielen Fehlversuchen im Thema"
+msgstr "Week view: weak spot from this many failed attempts in a topic"
+
+msgid "Wochenbild: Schwäche ab diesem Anteil Fehler im Thema"
+msgstr "Week view: weak spot from this share of mistakes in a topic"
+
+msgid "Nur ein Hinweis für Gespräche, keine Note."
+msgstr "Only a hint for conversations, not a grade."
+
+msgid "Wochenbild: ab hier gilt die Hilfe als oft genutzt"
+msgstr "Week view: from here help counts as often used"
+
+msgid "Anteil der Antworten, bei denen das Kind Hilfe benutzt hat."
+msgstr "Share of answers where the child used help."
+
+msgid "Wochenbild: Prüfungen so viele Tage im Voraus erwähnen"
+msgstr "Week view: mention exams this many days ahead"
+
+msgid "Übungswoche"
+msgstr "Practice week"
+
+msgid "Wochenbild"
+msgstr "Week view"
+
+msgid "Pro Kind: geübte Tage, Hilfe im Verlauf, Schwächen und kurze Vorschläge, was ihr tun könnt. Keine Noten, kein Vergleich."
+msgstr "Per child: practice days, help over time, weak spots and short suggestions for what you can do. No grades, no comparison."
+
+#, python-format
+msgid "Woche ab %(datum)s. Das Bild zeigt, was das Lernen gerade braucht. Es gibt keine Noten und keinen Vergleich zwischen den Kindern."
+msgstr "Week starting %(datum)s. This view shows what learning needs right now. There are no grades and no comparison between the children."
+
+msgid "Diese Woche"
+msgstr "This week"
+
+msgid "Vorwoche"
+msgstr "Last week"
+
+msgid "Was ihr tun könnt"
+msgstr "What you can do"
+
+msgid "Hilfe im Verlauf"
+msgstr "Help over time"
+
+#, python-format
+msgid "Hilfe bei %(hilfe)s %% der Antworten, richtig %(treffer)s %%"
+msgstr "help on %(hilfe)s %% of answers, correct %(treffer)s %%"
+
+msgid "Tendenz: weniger Hilfe als zuvor."
+msgstr "Trend: less help than before."
+
+msgid "Tendenz: mehr Hilfe als zuvor."
+msgstr "Trend: more help than before."
+
+msgid "Tendenz: etwa gleich viel Hilfe."
+msgstr "Trend: about the same amount of help."
+
+msgid "Dabei fiel es schwer"
+msgstr "These were hard"
+
+msgid "Selbsteinschätzung und Ergebnis"
+msgstr "Self-assessment and result"
+
+#, python-format
+msgid "Passte: %(passt)s. Besser als erwartet: %(mehr)s. Weniger als erwartet: %(weniger)s."
+msgstr "Matched: %(passt)s. Better than expected: %(mehr)s. Less than expected: %(weniger)s."
+
+msgid "Meldungen des Kindes"
+msgstr "Reports from the child"
+
+#, python-format
+msgid "%(fach)s: zu schwer (%(anzahl)s)"
+msgstr "%(fach)s: too hard (%(anzahl)s)"
+
+#, python-format
+msgid "%(fach)s: zu leicht (%(anzahl)s)"
+msgstr "%(fach)s: too easy (%(anzahl)s)"
+
+msgid "Wochen-Titel"
+msgstr "Weekly titles"
+
+msgid "Die Titel (Übungsmeister, Aufsteiger, Durchbeißer, Entdecker) werden in der Familienansicht gezeigt. Sie bringen keine Punkte."
+msgstr "The titles (Practice Master, Climber, Stayer, Explorer) are shown in the family view. They give no points."
+
+msgid "Die Titel sind ausgeschaltet und erscheinen nirgends."
+msgstr "The titles are switched off and appear nowhere."
+
+#, python-format
+msgid "Wir üben zusammen an %(tage)s Tagen."
+msgstr "Together we practise on %(tage)s days."
+
+msgid "Diese Woche geübt"
+msgstr "Practised this week"
+
+msgid "Die Woche hat gerade erst angefangen. Jeder Tag zählt."
+msgstr "The week has only just begun. Every day counts."
+
+msgid "Titel der letzten Woche"
+msgstr "Titles of last week"
+
+msgid "Übungsmeister"
+msgstr "Practice Master"
+
+msgid "Am häufigsten das eigene Tagesziel geschafft."
+msgstr "Reached their own daily goal most often."
+
+msgid "Aufsteiger"
+msgstr "Climber"
+
+msgid "Im Vergleich zur Vorwoche mehr Treffer und weniger Hilfe."
+msgstr "More hits and less help than last week."
+
+msgid "Durchbeißer"
+msgstr "Stayer"
+
+msgid "Die meisten eigenen Fehler selbst geklärt."
+msgstr "Sorted out the most of their own mistakes alone."
+
+msgid "Entdecker"
+msgstr "Explorer"
+
+msgid "Ein neues Thema angefangen."
+msgstr "Started a new topic."
+
+msgid "Das Wochenziel ist geschafft. Ein kurzes Lob freut das Kind."
+msgstr "The weekly goal is reached. A short word of praise will please your child."
+
+msgid "Diese Woche gab es noch keinen Übungstag. Ein gemeinsamer Start mit 5 Minuten kann helfen."
+msgstr "There has been no practice day this week yet. Starting together for 5 minutes can help."
+
+#, python-format
+msgid "Es waren %(tage)s von %(soll)s Übungstagen. Ein fester Zeitpunkt am Tag macht das Üben leichter."
+msgstr "That was %(tage)s of %(soll)s practice days. A fixed time of day makes practising easier."
+
+#, python-format
+msgid "Im Fach %(fach)s fiel %(thema)s schwer. Plane %(minuten)s Minuten %(thema)s ein."
+msgstr "In %(fach)s, %(thema)s was hard. Plan %(minuten)s minutes for %(thema)s."
+
+msgid "Das Kind hat oft Hilfe genutzt. Schaut zusammen, welche Hilfe wirklich nötig war."
+msgstr "Your child often used help. Look together at which help was really needed."
+
+msgid "Das Kind braucht weniger Hilfe als in den Wochen davor. Sagt ihm ruhig, dass ihr das seht."
+msgstr "Your child needs less help than in the weeks before. Do tell them that you see it."
+
+msgid "Der Tutor musste oft auf hoher Stufe helfen. Lasst das Kind erklären, was es schon versteht."
+msgstr "The tutor often had to help at a high level. Let your child explain what they already understand."
+
+msgid "Das Kind hat sich öfter besser eingeschätzt, als es lief. Sprecht darüber, woran man merkt, ob man etwas schon kann."
+msgstr "Your child often rated themselves higher than how it went. Talk about how to tell whether you already know something."
+
+msgid "Das Kind kann mehr, als es sich zutraut. Sagt ihm das ruhig."
+msgstr "Your child can do more than they trust themselves to. Do tell them."
+
+#, python-format
+msgid "Das Kind meldet, dass %(fach)s zu schwer war. Fragt nach, was genau schwer war."
+msgstr "Your child reports that %(fach)s was too hard. Ask what exactly was hard."
+
+#, python-format
+msgid "Das Kind meldet, dass %(fach)s zu leicht war. Schlagt die Herausforderung vor."
+msgstr "Your child reports that %(fach)s was too easy. Suggest the challenge level."
+
+#, python-format
+msgid "Für die Prüfung %(titel)s (%(fach)s) am %(datum)s passt noch kein Plan. Schaut gemeinsam auf die Vorschläge im Realitätscheck."
+msgstr "There is no fitting plan yet for the exam %(titel)s (%(fach)s) on %(datum)s. Look together at the suggestions in the reality check."
+
+#, python-format
+msgid "Die Prüfung %(titel)s ist in %(tage)s Tagen. Vom Plan sind %(prozent)s Prozent geschafft. Plant gemeinsam einen zusätzlichen Termin ein."
+msgstr "The exam %(titel)s is in %(tage)s days. %(prozent)s percent of the plan is done. Plan an extra session together."
+
+msgid "Prozentpunkte"
+msgstr "Percentage points"
+
+msgid "Fehlversuche"
+msgstr "Failed attempts"
+
+#, python-format
+msgid "Geübte Tage: %(tage)s (Ziel der Woche: %(soll)s)."
+msgstr "Days practised: %(tage)s (goal for the week: %(soll)s)."
+
+#, python-format
+msgid "Geübte Tage: %(tage)s. Diese Woche wird nichts verlangt."
+msgstr "Days practised: %(tage)s. Nothing is asked this week."
+
+#, python-format
+msgid "Eigenes Tagesziel erreicht an %(tage)s Tagen."
+msgstr "Own daily goal reached on %(tage)s days."
+
+msgid "keine Daten"
+msgstr "no data"
+
+msgid "Bevorstehende Prüfungen"
+msgstr "Upcoming exams"
+
+msgid "Plan braucht eine Entscheidung"
+msgstr "Plan needs a decision"
+
+msgid "Titel ausschalten"
+msgstr "Switch titles off"
+
+msgid "Titel einschalten"
+msgstr "Switch titles on"
+
+msgid "Fortschritt der Familie"
+msgstr "Family progress"
+
+msgid "Geschafft! Alle haben diese Woche geübt."
+msgstr "Done! Everyone has practised this week."

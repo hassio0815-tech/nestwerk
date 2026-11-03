@@ -78,3 +78,46 @@
   font-weight: 700;
   opacity: 0.8;
 }
+
+/* Übungswoche (Etappe 7): Haken je Wochentag, kein Zahlenvergleich */
+.woche-zeile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+}
+.woche-tage {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.woche-tag {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 1.9rem;
+  font-size: 0.75rem;
+  opacity: 0.55;
+}
+.woche-tag--geuebt {
+  opacity: 1;
+  font-weight: 700;
+  color: var(--akzent, currentColor);
+}
+.woche-balken {
+  width: 100%;
+  height: 0.9rem;
+}
+.woche-titel {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.woche-vorschlaege {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.woche-verlauf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+}

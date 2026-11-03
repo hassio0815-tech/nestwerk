@@ -209,6 +209,9 @@ def _zeit_buchen(sitzung, jetzt):
         neu_erreicht = True
         _tagesziel_belohnen(kind, tag, heute)
     tag.save()
+    if neu_erreicht:
+        # Die Metrik "Lern-Beteiligung" ist neu: Abzeichen und Meilensteine prüfen (Engine-Vorgabe)
+        spielregeln.abzeichen_pruefen(kind)
     return neu_erreicht
 
 

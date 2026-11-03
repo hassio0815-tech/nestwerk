@@ -7,6 +7,7 @@ from apps.kern import zeit
 from apps.kern.registry import (
     ELTERN,
     KIND,
+    TABLET,
     Kachel,
     Metrik,
     Provider,
@@ -37,7 +38,42 @@ def _eltern(request):
     return {"zeilen": [(k, selectors.tagesbild(k, heute)) for k in konten.aktive_kinder()]}
 
 
+def _woche(request):
+    """Übungswoche für die Familien-/Tablet-Ansicht und das Kind: Beteiligung, Familienziel,
+    Titel der Vorwoche (wenn die Eltern die Anzeige nicht abgeschaltet haben)."""
+    from apps.konten import selectors as konten
+
+    from . import woche_selectors, woche_texte
+
+    heute = zeit.heute()
+    kinder = list(konten.aktive_kinder())
+    titel = [
+        {
+            "name": woche_texte.titel_name(t.schluessel),
+            "beschreibung": woche_texte.titel_beschreibung(t.schluessel),
+            "namen": sorted(k.anzeigename for k in t.kinder),
+        }
+        for t in woche_selectors.titel_vorwoche(kinder, heute)
+    ]
+    return {
+        "beteiligung": woche_selectors.uebungswoche(kinder, heute),
+        "ziel": woche_selectors.familienziel(kinder, heute),
+        "titel": titel,
+    }
+
+
 def kacheln_registrieren():
+    kachel_registrieren(
+        Kachel(
+            "lernen.woche",
+            MODUL,
+            _("Übungswoche"),
+            "lernen/kacheln/familie_woche.html",
+            {KIND, TABLET},
+            _woche,
+            reihenfolge=16,
+        )
+    )
     kachel_registrieren(
         Kachel(
             "lernen.kind",
@@ -76,4 +112,19 @@ def metriken_registrieren():
     )
     provider_registrieren(
         Provider("metrik.tage_geuebt", MODUL, "Tage geübt", selectors.tage_geuebt)
+    )
+    metrik_registrieren(
+        Metrik(
+            "lern_beteiligung",
+            MODUL,
+            "Lern-Beteiligung",
+            beschreibung=(
+                "Tage, an denen das Kind sein eigenes Tagesziel erreicht hat "
+                "(relativ zum persönlichen Ziel, nie die Menge)"
+            ),
+            einheit="Tage",
+        )
+    )
+    provider_registrieren(
+        Provider("metrik.lern_beteiligung", MODUL, "Lern-Beteiligung", selectors.lern_beteiligung)
     )

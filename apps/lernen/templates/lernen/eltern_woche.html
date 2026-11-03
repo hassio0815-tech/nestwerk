@@ -1,0 +1,77 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Wochenbild" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern" as lernen_url %}
+  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "Wochenbild" %}</h1>
+  <p>{% blocktranslate with datum=montag|date:"SHORT_DATE_FORMAT" %}Woche ab {{ datum }}. Das Bild zeigt, was das Lernen gerade braucht. Es gibt keine Noten und keinen Vergleich zwischen den Kindern.{% endblocktranslate %}</p>
+  {% url "lernen:eltern_woche" as woche_url %}
+  {% if vorwoche %}
+    {% include "komponenten/button.html" with href=woche_url variante="geist" klein=True icon="pfeil-rechts" text=_("Diese Woche") %}
+  {% else %}
+    {% include "komponenten/button.html" with href=woche_url|add:"?woche=vor" variante="geist" klein=True icon="pfeil-links" text=_("Vorwoche") %}
+  {% endif %}
+
+  {% for b in bilder %}
+    <section class="karte" data-woche-kind="{{ b.kind.pk }}"><div class="karte__inhalt stapel">
+      <h2>{{ b.kind.anzeigename }}</h2>
+      <p>
+        {% if b.soll_tage %}{% blocktranslate with tage=b.tage_geuebt soll=b.soll_tage %}Geübte Tage: {{ tage }} (Ziel der Woche: {{ soll }}).{% endblocktranslate %}
+        {% else %}{% blocktranslate with tage=b.tage_geuebt %}Geübte Tage: {{ tage }}. Diese Woche wird nichts verlangt.{% endblocktranslate %}{% endif %}
+        {% blocktranslate with tage=b.tage_ziel %}Eigenes Tagesziel erreicht an {{ tage }} Tagen.{% endblocktranslate %}
+      </p>
+
+      {% if b.vorschlaege %}
+        <h3>{% translate "Was ihr tun könnt" %}</h3>
+        <ul class="woche-vorschlaege" data-woche-vorschlaege>
+          {% for v in b.vorschlaege %}<li>{{ v.text }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+
+      <h3>{% translate "Hilfe im Verlauf" %}</h3>
+      <div class="woche-verlauf">
+        {% for p in b.verlauf %}
+          <span>{{ p.montag|date:"SHORT_DATE_FORMAT" }}: {% if p.hilfe is None %}{% translate "keine Daten" %}{% else %}{% blocktranslate with hilfe=p.hilfe treffer=p.treffer %}Hilfe bei {{ hilfe }} % der Antworten, richtig {{ treffer }} %{% endblocktranslate %}{% endif %}</span>
+        {% endfor %}
+      </div>
+      {% if b.hilfe_tendenz == "sinkt" %}<p>{% translate "Tendenz: weniger Hilfe als zuvor." %}</p>
+      {% elif b.hilfe_tendenz == "steigt" %}<p>{% translate "Tendenz: mehr Hilfe als zuvor." %}</p>
+      {% elif b.hilfe_tendenz == "gleich" %}<p>{% translate "Tendenz: etwa gleich viel Hilfe." %}</p>{% endif %}
+
+      {% if b.schwaechen %}
+        <h3>{% translate "Dabei fiel es schwer" %}</h3>
+        <ul>{% for s in b.schwaechen %}<li>{{ s.fach }}: {{ s.thema }}</li>{% endfor %}</ul>
+      {% endif %}
+
+      {% if b.einschaetzung %}
+        <h3>{% translate "Selbsteinschätzung und Ergebnis" %}</h3>
+        <p>{% blocktranslate with passt=b.einschaetzung.passt|default:0 mehr=b.einschaetzung.mehr|default:0 weniger=b.einschaetzung.weniger|default:0 %}Passte: {{ passt }}. Besser als erwartet: {{ mehr }}. Weniger als erwartet: {{ weniger }}.{% endblocktranslate %}</p>
+      {% endif %}
+
+      {% if b.meldungen %}
+        <h3>{% translate "Meldungen des Kindes" %}</h3>
+        <ul>{% for m in b.meldungen %}<li>{% if m.art == "zu_schwer" %}{% blocktranslate with fach=m.fach|default:"-" anzahl=m.anzahl %}{{ fach }}: zu schwer ({{ anzahl }}){% endblocktranslate %}{% else %}{% blocktranslate with fach=m.fach|default:"-" anzahl=m.anzahl %}{{ fach }}: zu leicht ({{ anzahl }}){% endblocktranslate %}{% endif %}</li>{% endfor %}</ul>
+      {% endif %}
+
+      {% if b.pruefungen %}
+        <h3>{% translate "Bevorstehende Prüfungen" %}</h3>
+        <ul>{% for p in b.pruefungen %}<li>{{ p.titel }} ({{ p.fach }}), {{ p.termin|date:"SHORT_DATE_FORMAT" }}{% if not p.plan_ok %}: {% translate "Plan braucht eine Entscheidung" %}{% endif %}</li>{% endfor %}</ul>
+      {% endif %}
+    </div></section>
+  {% empty %}
+    <section class="karte"><div class="karte__inhalt stapel"><p>{% translate "Noch keine Kinder." %}</p></div></section>
+  {% endfor %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Wochen-Titel" %}</h2>
+    <p data-titel-schalter="{{ titel_an|yesno:'an,aus' }}">{% if titel_an %}{% translate "Die Titel (Übungsmeister, Aufsteiger, Durchbeißer, Entdecker) werden in der Familienansicht gezeigt. Sie bringen keine Punkte." %}{% else %}{% translate "Die Titel sind ausgeschaltet und erscheinen nirgends." %}{% endif %}</p>
+    <form method="post" action="{% url 'lernen:eltern_titel_schalter' %}">{% csrf_token %}
+      {% if titel_an %}<input type="hidden" name="an" value="0">{% include "komponenten/button.html" with typ="submit" variante="geist" icon="x" text=_("Titel ausschalten") %}
+      {% else %}<input type="hidden" name="an" value="1">{% include "komponenten/button.html" with typ="submit" icon="check" text=_("Titel einschalten") %}{% endif %}
+    </form>
+  </div></section>
+{% endblock %}

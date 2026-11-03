@@ -147,6 +147,11 @@ def tage_geuebt(kind):
     return Lerntag.objects.filter(kind=kind, mindesttag=True).count()
 
 
+def lern_beteiligung(kind):
+    """Metrik "Lern-Beteiligung": Tage mit erreichtem EIGENEM Tagesziel (relativ, nicht Menge)."""
+    return Lerntag.objects.filter(kind=kind, erreicht=True).count()
+
+
 def tage_der_woche(kind, heute):
     """Geübte Tage (ab Mindesttag) von Montag bis heute."""
     return Lerntag.objects.filter(

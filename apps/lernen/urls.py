@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, views_ki, views_material, views_plan, views_tutor
+from . import views, views_ki, views_material, views_plan, views_tutor, views_woche
 
 app_name = "lernen"
 
@@ -130,5 +130,11 @@ urlpatterns = [
         "eltern/lernen/pruefung/<int:pk>/loeschen/",
         views_plan.eltern_loeschen,
         name="eltern_pruefung_loeschen",
+    ),
+    path("eltern/lernen/woche/", views_woche.eltern_woche, name="eltern_woche"),
+    path(
+        "eltern/lernen/woche/titel/",
+        views_woche.eltern_titel_schalter,
+        name="eltern_titel_schalter",
     ),
 ]

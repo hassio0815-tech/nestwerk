@@ -55,6 +55,7 @@ def startwerte(db):
         STARTWERTE_PRUEFUNG,
         STARTWERTE_TUTOR,
         STARTWERTE_UEBEN,
+        STARTWERTE_WOCHE,
     )
     from apps.spielregeln import raenge_start
     from apps.spielregeln.einstellungen import STARTWERTE as SPIELREGELN
@@ -70,6 +71,7 @@ def startwerte(db):
         STARTWERTE_MATERIAL,
         STARTWERTE_PRUEFUNG,
         STARTWERTE_TUTOR,
+        STARTWERTE_WOCHE,
         SPIELREGELN,
     ):
         startwerte_schreiben(Einstellung, werte)

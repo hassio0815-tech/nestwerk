@@ -794,7 +794,7 @@ Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L12**. 
 - **[E]** Im Familienranking und bei "Held der Woche" zählt nur die **Beteiligung**, nie die Menge. (L12)
 - **[E]** Ein Familienziel kann lauten: "alle üben an vier Tagen". (L12)
 - **[E]** Wochen-Titel ohne Punkte: Übungsmeister, Aufsteiger, Durchbeißer, Entdecker. Jeder Wert ist relativ zum eigenen Ziel. Bei Gleichstand teilen sich die Kinder den Titel. Die Eltern können die Anzeige abschalten. (L12)
-- **[O]** Ob sich die Titel ohne Änderung an der Engine in `spielregeln` abbilden lassen, wird in Etappe 1 geprüft.
+- **[E]** Ergebnis der Prüfung (Etappe 7): Die Engine in `spielregeln` kann Titel als Abzeichen abbilden, verleiht aber immer mit Pop-up und Benachrichtigung und als bleibenden Fakt; ein Abschalten der Anzeige ginge dann nicht. Die Titel sind deshalb eine reine Anzeige-Berechnung in `lernen` (nichts wird gespeichert, gebucht oder gemeldet). `familienziel` und "Held der Woche" rechnen mit Punkten und nehmen keine Metrik auf; das Lern-Familienziel ("alle üben an N Tagen", Einstellung `lernen.familienziel_tage`, Standard 4) steht deshalb in der Kachel "Übungswoche" von `lernen`. Die Metrik `lern_beteiligung` steht für Abzeichen und Meilensteine bereit.
 
 ### 21.10 Eltern-Sicht
 

@@ -46,6 +46,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Wochenbild" %}</h2>
+    <p>{% translate "Pro Kind: geübte Tage, Hilfe im Verlauf, Schwächen und kurze Vorschläge, was ihr tun könnt. Keine Noten, kein Vergleich." %}</p>
+    {% url "lernen:eltern_woche" as woche_url %}
+    {% include "komponenten/button.html" with href=woche_url variante="geist" klein=True icon="kalender" text=_("Wochenbild") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Prüfungen" %}</h2>
     <p>{% translate "Hier seht ihr die Prüfungspläne der Kinder (nur lesen). Ihr könnt einen Termin ändern oder eine Prüfung löschen." %}</p>
     {% url "lernen:eltern_pruefungen" as pruefungen_url %}
