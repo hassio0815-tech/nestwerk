@@ -223,3 +223,80 @@ There are six ranks, like rarities in a game:
 - The parent dashboard shows all events as a list with a counter.
 
 **Setting up iPhone push:** add the app to your home screen, open it from the icon and tap **Turn on notifications** in the settings. The instructions are in the [installation guide](INSTALLATION.md).
+
+---
+
+## 16. Learning
+
+The learning module is **optional** and meant for kids and parents. There are **no grades** and no comparison between the kids. Goals are always achievable.
+
+**Without AI**, practice works with the existing questions (start data: English vocabulary; for maths there is the topic structure, and the questions come from material or from the parents). AI is **off by default**.
+
+### Practice (kids)
+
+- **Where:** the **Learning** tile on the home page. There you see **Your day**.
+- **New round:** you choose **what** to practise (subject and topic), **what you plan** (get to know new things, review what is due, practise my stumbling blocks), **how you go about it** (for example say it aloud, or think first and then type), **how much you already know** and **how demanding** it should be (Warm-up, Normal, Challenge).
+- **Answers:** you get feedback such as **right**, **almost right** or **not yet**. On "not yet" you can ask for help or look at the solution. Help costs **no points** and is never penalised.
+- **Spaced repetition:** what you know well comes back later. What was hard comes back sooner.
+- **Too much frustration?** After several mistakes in a row it gets easier, and the system suggests a break.
+- **Look back:** at the end you answer two short questions: What was hard? What helped? You also say whether it was too easy, just right or too hard. Parents see this as a hint.
+
+### Daily goal and streak (kids)
+
+- **Daily goal:** default 20 minutes. Even a **minimum day** (default 5 minutes) counts as a practised day.
+- **The goal adapts:** after two missed days it gets smaller, without blame. When things go well for a long time, the system suggests raising it a little. That only happens if **you agree**.
+- **Weekly streak:** the streak counts in **weeks**. On **rest days** (illness, holidays) nothing is required and the streak stays. A broken streak **never removes points**.
+- **Points:** there are learning points for reaching the daily goal (default 5, at most 10 per day), **not per correct answer**. Parents can switch learning points off.
+
+### Uploading material (kids)
+
+- **Where:** **My folder** in the Learning area. Upload a photo or document (image, PDF, text), for example a vocabulary list or a worksheet.
+- **What happens:** with AI switched on, Nestwerk reads the text and turns it into practice questions. This takes a moment. The material shows its status ("being read", "questions are ready").
+- **Approval:** by default **parents** look at the questions and approve them. For each child parents can allow questions from uploads to be **usable right away**.
+- **Who sees the folder?** Only you and your parents, **never** a sibling.
+- **Without AI:** the material is stored but not turned into questions.
+
+### Exam preparation (kids)
+
+- **Where:** **Exams** in the Learning area. Say **when** the exam is and **what** it covers (topics or your material).
+- **Plan:** Nestwerk plans backwards from the date in small portions. A day never holds more than your daily goal, there are **buffer days**, and the last day before the exam only has light review.
+- **Reality check:** if the material does not fit into the time, there is **no** plan that overloads you. Instead you get suggestions (start earlier, less material, raise the goal a little). **You** decide.
+- **Mock exam:** a practice run with questions from the material. It shows where things still wobble and is **not a grade**.
+- There are **points** for keeping to exam plans (amounts in the settings).
+
+### Tutor (kids and parents)
+
+- **What it does:** the tutor **explains** new things and **helps you solve** your tasks with a ladder of help steps. Each step only comes when **you** ask for more help: ask back, a nudge, a similar example with other numbers or words, a pointer to your material, a solution outline without the result.
+- **What it does not do:** it **does not solve your homework** and does not give solutions. It only talks about learning material from your folder. It checks your own attempts.
+- **Off by default.** Parents switch it on **for the whole family** (parents: **Learning → Tutor**). It needs a switched-on AI for the task "Tutor".
+- **Log:** parents can read the conversations. Conversations without activity are deleted after some time (default 90 days). There is a daily limit.
+- **Honest limits (parents, please read):**
+  - There is **no guarantee**. A child can copy a task or rephrase it, and an AI can make mistakes.
+  - The safeguards are: no model solution in the conversation, a check of every answer for leaked solutions, a daily limit and the log. The check is a **heuristic**, not a watertight control.
+  - Look at the log from time to time.
+
+### Practice week and titles
+
+- In the family ranking and "Hero of the Week" only **participation** counts (on how many days someone practised), **never the amount**.
+- A family goal can read: "everyone practises on four days".
+- **Weekly titles** come without points: Practice Master, Climber, Stayer, Explorer. Each value is relative to **your own** goal. On a tie the kids share the title. The titles are only a display. Parents can switch them off under **Learning → Weekly picture**.
+
+### For parents
+
+- **Where:** parents area, **Learning** tile.
+- **Learning folder and approval:** look at the kids' material, **approve** or reject questions, check storage. Files in the archive stay until you delete them. The space per child is limited (default 500 MB).
+- **Log:** read tutor conversations (**Learning → Tutor**). The general log (section 14) shows who set up, switched on or assigned an AI provider and who changed children's details or the new school year. The log contains no keys and no school names.
+- **Weekly picture** (**Learning → Weekly picture**): per child days practised, help steps used over time, weak spots and short **suggestions** for what you can do. No grades, no sibling comparison.
+- **Exams:** you see the kids' plans (read only). You can change a date or delete an exam.
+- **Rest days:** enter pauses for one child or all (illness, holidays, other). Then no goal is required and the streak stays.
+- **Children and levels** (**Learning → Children and levels**): change grade, school type, level per subject (for example basic or extended level) and the approval of upload questions. Each child is saved on its own. This is optional and stays on your server.
+  - **New school year:** the button raises **all entered grades by 1**, up to 13 at most. A confirmation with numbers comes first. It only changes the grade, **never** levels, learning progress or material. Children without a grade stay without one.
+- **Setting up an AI provider** (**Learning → AI connection**):
+  1. **New provider:** enter name, type, address, model name and, if needed, a key. The provider starts **switched off**. Nestwerk never shows the key again.
+  2. **Test connection:** the test only sends "Reply with OK", no data about the kids.
+  3. **Switch on:** for a **cloud provider** you must confirm the notes first.
+  4. **Assignment:** decides which provider does which task (reading, creating questions, checking answers, tutor). This applies to the whole family. Without an assignment, AI stays off for that task. There is no automatic fallback.
+  - **Risks:** with **cloud providers**, texts and photos of the kids (for example homework and answers) go to the provider. This is your deliberate decision. Cloud providers usually bill per use. **Any AI can make mistakes**, your own server too. Check outputs before you rely on them.
+  - **Own server:** data stays on your network if the server is there. How to connect it is in the installation guide (section 6.3).
+  - **Not tested:** the connection is only tested here with a fake transport. Whether your provider and model give good results you have to try yourself.
+- **Settings:** minimum day, daily goal, learning points and daily limit, box intervals, upload size per file, storage limit, tutor limits, weekly picture thresholds, AI limits and more are under **Settings**. You switch on holidays for everyone there.

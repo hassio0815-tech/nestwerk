@@ -4,6 +4,26 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Lernmodul (03.11.2026)
+
+### Hinzugefügt
+- **Lernen (`lernen`):** neues Modul für Kinder und Eltern. Alles ist freiwillig, und im Repository liegen keine privaten Daten (Startdaten sind generisch).
+- **Üben:** Vokabeln und Fragen mit Wiederholung im Abstand (Boxen), Vorhaben und Strategie vorher, zwei Rückschau-Fragen nachher, „noch nicht“ statt „falsch“, Frust-Erkennung, die die Stufe senkt und eine Pause vorschlägt. Hilfen kosten nie Punkte.
+- **Tagesziel und Serie:** Schon ein kleiner Mindesttag zählt, das Ziel passt sich sanft an die letzten zwei Wochen an, die Serie zählt in Wochen. Die Eltern tragen Schontage ein (Krankheit, Ferien); eine gerissene Serie nimmt nie Punkte weg.
+- **Material hochladen:** Kinder legen ein Foto oder Dokument in ihre eigene Lernmappe. Fragen daraus warten auf die Freigabe der Eltern, solange diese sie nicht pro Kind sofort erlauben. Zweiter Eingang: Dateien im Ordner `inbox`, z. B. auf einem NAS. Speicher: Docker-Volume oder eingehängter Ordner.
+- **Prüfungsvorbereitung:** Plan rückwärts vom Termin mit kleinen Portionen und Puffertagen, Realitätscheck mit Vorschlägen statt eines Plans, der nicht passt, und Probe-Prüfung.
+- **Optionale KI mit eigenem Anbieter:** eigener Server mit OpenAI-kompatibler Schnittstelle (z. B. Ollama), Anthropic oder OpenAI mit eigenem Schlüssel. **Die KI ist standardmäßig aus.** Cloud-Anbieter brauchen eine ausdrückliche Einwilligung, Schlüssel liegen verschlüsselt, und eine Warteschlange arbeitet KI-Aufträge nacheinander mit Wiederholungen ab.
+- **Tutor:** erklärt und hilft mit einer Leiter von Hilfestufen, löst aber keine Hausaufgaben. **Standardmäßig aus**, von den Eltern für die ganze Familie schaltbar, mit Protokoll. Die Prüfung auf verratene Lösungen ist eine Heuristik, keine Garantie.
+- **Übungswoche und Titel:** Beteiligung statt Menge. Die Wochen-Titel (Übungsmeister, Aufsteiger, Durchbeißer, Entdecker) sind nur eine Anzeige, geben keine Punkte und sind abschaltbar. Die Eltern bekommen pro Kind ein Wochenbild mit Vorschlägen, ohne Noten und ohne Geschwistervergleich.
+- **Einrichtungs-Assistent:** vier optionale Schritte „Lernen“ (Grundwerte, Speicher, Kinder, KI). Die neue Registry-Erweiterung `EinrichtungsSchritt` in `kern` lässt Module überspringbare Schritte ergänzen.
+- **Eltern-Seite „Kinder und Leistungsstufen“:** Klassenstufe, Schulform, Leistungsstufe je Fach und die Freigabe von Upload-Fragen jederzeit ändern, mit denselben Services wie der Assistent. **Neues Schuljahr** hebt nach einer Bestätigung alle eingetragenen Klassenstufen um 1 an (bis 13); Lernstand wird nie gelöscht.
+- Hintergrundjobs `ki_auftraege_verarbeiten`, `lernen_inbox_scannen` und `tutor_aufraeumen` in `deploy/crontab`.
+- Dokumentation: Benutzerhandbuch Kapitel „Lernen“, Installationsschritte für Speicher, KI-Anbieter und Jobs, Architektur Abschnitt 14, Datenmodell Abschnitt 16, Abschnitt 5a in „Ein neues Modul anlegen“.
+
+### Hinweise
+- Die KI-Adapter sind gegen einen Fake-Transport getestet. Das Modul ist **nicht** mit einer echten KI (Ollama, Anthropic, OpenAI) und nicht im Browser getestet.
+- Uploads begrenzt die vorhandene Middleware `UploadGrenze` aus `aufgaben` (bei Standardwerten rund 46 MB je Anfrage).
+
 ## Anerkennung, Meine Einstellungen und Moods (02.11.2026)
 
 ### Hinzugefügt

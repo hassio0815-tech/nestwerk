@@ -37,7 +37,8 @@
 | | `familienziel` | Familienwoche, Ziel, Beiträge, Abstimmung, Großziel, Familienbelohnungen |
 | 4 Oberfläche | `einrichtung` | Einrichtungs-Assistent (schreibt nur über Services der anderen Apps) |
 | | `oberflaeche` | Layouts, Kinder-/Eltern-/Tablet-Dashboards, PWA (Manifest, `sw.js`), Live-Aktualisierung, Designsystem |
-| Später | `lernen`, `forschen`, `hausautomation` | Schicht 3, docken über Registry + Events an |
+| | `lernen` | Lernsystem: Üben mit Abstandswiederholung, Tagesziel und Wochenserie, Lernmappe und Material-Upload, Prüfungsvorbereitung, Tutor, Wochenbild; optionale KI über einen eigenen Anbieter (Abschnitt 14) |
+| Später | `forschen`, `hausautomation` | Schicht 3, docken über Registry + Events an |
 
 - **[A] Sondertag und Familienziel als eigene Apps** (nicht in `avatar` bzw. `spielregeln`): eigene Regeln, eigene Zustände, später von `lernen` gespeist.
 - **[A] Modul = Django-App im selben Image.** Eigene Container nur für eigene Prozesse (z. B. lokale KI, HA-Brücke). **[K]** SPEC 17 "weitere Module als zusätzliche Container" wörtlich genommen hieße getrennte Deployments mit geteilter SQLite-Datei; das ist riskant. Empfehlung: Fach-Module im Web-Image, nur Fremdprozesse als Container.
@@ -56,7 +57,7 @@ flowchart TD
     avatar
     sondertag
     familienziel
-    lernen[lernen später]
+    lernen
   end
   subgraph S2[Schicht 2: Gemeinsame Kerne]
     punkte
@@ -83,7 +84,7 @@ flowchart TD
 - **Erlaubt:** Import nur **nach unten** (höhere Schicht -> niedrigere).
 - **Verboten:** Imports zwischen Fach-Modulen (Schicht 3 untereinander). Kommunikation nur über:
   - **Domain-Events** (`ereignisse.veroeffentlichen(...)`, Handler im Ziel-Modul),
-  - **Registry** in `kern` (Metrik-Provider, Fortschritts-Provider, Dashboard-Kacheln, Ereignistypen).
+  - **Registry** in `kern` (Metrik-Provider, Fortschritts-Provider, Dashboard-Kacheln, Ereignistypen, Einrichtungsschritte).
 - **Innerhalb Schicht 2:** `spielregeln -> punkte, ereignisse`; `benachrichtigung -> ereignisse` (nie `punkte`); `punkte -> ereignisse` (Ereignis `punkte.gebucht`, AP04); `ereignisse` hängt nur von `kern`, `konten` ab.
 - **Öffentliche Schnittstelle je App:** nur `services.py` (schreibend), `selectors.py` (lesend), `events.py` (Ereignistypen), `registry.py`. Fremde `models.py` werden nie importiert. Ausnahme: `ForeignKey` per String-Referenz (`"konten.Benutzer"`) auf Schicht 0–2.
 - **Durchsetzung:** `import-linter` (Layers-Contract + "forbidden" zwischen Fach-Modulen) läuft in den Tests. [A] Seit AP19 zusätzlich "forbidden"-Verträge: Oberfläche und Fach-Module importieren keine fremden `models.py` (Enums wie `konten.Rolle` ausgenommen), `benachrichtigung` nie `punkte`. Seit AP31: Fach-Module und Oberfläche importieren aus `spielregeln` nur `services`/`selectors`/`registry`/`events` (Interna wie `raenge`, `abzeichen`, `held` verboten). Bewusste Ausnahme: `<modul>/events.py` registriert Texte über `benachrichtigung.texte.text_registrieren` (Registry-Charakter).
@@ -597,6 +598,7 @@ Nestwerk/
 │   ├── avatar/               # generator/, teile/*.svg, fixtures/
 │   ├── sondertag/
 │   ├── familienziel/
+│   ├── lernen/               # ki/ (Adapter), startdaten/, tests/
 │   ├── einrichtung/
 │   └── oberflaeche/          # kacheln, layouts, pwa (manifest, sw.js), live
 │       # je App: apps.py, models.py, services.py, selectors.py, events.py,
@@ -742,3 +744,67 @@ flowchart LR
 | Grafik-Umfang (360+ Mods) | Verzug | Generator + haiku-Varianten; Phase 2 startet mit 2–3 Themen, Rest Phase 3 |
 | Regeländerung durch Eltern rückwirkend | Verwirrung bei Kindern | Fakten (Rang, Abzeichen, Sondertag) nie zurücknehmen; Snapshots (Punkte je Instanz, Wochenziel) |
 | Kinder sehen Eltern-Daten | Vertrauensverlust | Rechte-Mixins + Tests je View |
+
+---
+
+## 14. Modul `lernen` (Lernsystem)
+
+Das Modul liegt in Schicht 3 und hält die Regeln aus [MODULE-ERWEITERN.md](MODULE-ERWEITERN.md): keine Imports anderer Fach-Module, Punkte über `punkte.services`, Aktivität über `spielregeln.services`, Ereignisse über `ereignisse`, Kacheln und Einrichtungsschritte über die Registry in `kern`. Modelle: [DATA_MODEL.md](DATA_MODEL.md), Abschnitt 16. Fachliche Anforderungen: [SPEC.md](SPEC.md), Abschnitt 21.
+
+### 14.1 Aufbau im Modul
+
+| Teil | Dateien | Aufgabe |
+|---|---|---|
+| Reine Rechenschicht (keine Datenbank) | `plan.py`, `pruefung.py`, `frust.py`, `wiederholung.py`, `tagesziel.py`, `tutor_pruefung.py`, `material_dateien.py` | Planer, Antwort-Vergleich, Frust-Erkennung, Boxen, Tagesziel und Serie, Absicherung des Tutors, Prüfen und Aufbereiten von Uploads |
+| Lesen | `selectors.py`, `material_selectors.py`, `plan_selectors.py`, `tutor_selectors.py`, `woche_selectors.py`, `ki_selectors.py` | nur lesende Abfragen |
+| Schreiben | `services.py`, `material_services.py`, `plan_services.py`, `tutor_services.py`, `woche_services.py`, `ki_services.py`, `einrichtung_services.py` | alle Änderungen, jeweils in einer Transaktion und mit Audit, wo es Einstellungen oder Eltern-Entscheidungen betrifft |
+| KI | `ki/`, `ki_warteschlange.py`, `material_ki.py`, `*_prompts.py`, `*_texte.py` | Adapter, Warteschlange, fachliche Aufgaben und feste Texte |
+| Speicher | `speicher.py` | Ordner der Lernmappe je Kind |
+| Oberfläche | `views*.py`, `urls.py`, `templates/lernen/` | Kinder- und Eltern-Seiten (HTMX) |
+| Anbindung | `registry.py`, `events.py`, `einstellungen.py`, `einrichtung.py` | Kacheln, Metriken, Ereignistypen, Einstellungen, Schritte im Einrichtungs-Assistenten |
+
+- Alle Schwellen (Mindesttag, Tageslimit, Box-Abstände, KI-Limits, Upload-Größe, Tutor-Grenzen) sind Einstellungen `lernen.*` in der Datenbank. Startwerte kommen nur per Datenmigration.
+- Eltern-Seiten sind nur für die Rolle Eltern erreichbar. Kinder sehen nur ihre eigenen Daten; die Lernmappe sieht kein Geschwister.
+- Im Repository liegen keine privaten Daten. Startdaten sind generisch (Mathe: Themenstruktur je Klassenstufe ohne Fragen; Englisch: Startvokabeln).
+
+### 14.2 KI-Adapter
+
+- Eine Schnittstelle (`ki/basis.py`: `Adapter`, `KiAnfrage`, `KiAntwort`, Fehlerklassen) und drei Typen: `openai_kompatibel` (eigener Server, z. B. Ollama oder vLLM), `anthropic` und `openai`.
+- Der Transport (`ki/transport.py`) ist austauschbar. Die Tests laufen gegen einen Fake-Transport und prüfen Anfrage, Fehlerklassen und Ausgabe-Validierung. **Mit einer echten KI ist das Modul in diesem Repository nicht getestet.**
+- **Standard ist KI aus.** Ein Anbieter wird von den Eltern angelegt, ist zunächst ausgeschaltet und wird erst nach Verbindungstest und (bei Cloud) ausdrücklicher Einwilligung benutzt. Die Zuordnung "Aufgabe -> Anbieter" (`auslesen`, `fragen_erzeugen`, `bewerten`, `tutor`) gilt familienweit. Es gibt keinen automatischen Wechsel zu einem anderen Anbieter.
+- `ki/cloud.py` entscheidet beim Speichern, ob ein Anbieter Cloud ist (Anthropic und OpenAI immer; sonst nur lokale Namen und private Adressen gelten als lokal, im Zweifel Cloud).
+- Der API-Schlüssel wird verschlüsselt gespeichert und erscheint nie in Antworten, Audit, Log oder `repr`. Nachrichten, Prompts und Bilder stehen nie in Logs oder Fehlermeldungen.
+- Eingaben des Kindes und Materialtexte gehen als **Daten** zwischen festen Begrenzern in die Nutzer-Nachricht, nie in den System-Prompt. Antworten werden als strukturierte Ausgabe validiert; was nicht passt, wird verworfen.
+
+### 14.3 Warteschlange
+
+- `KiAuftrag` (Modell) und `ki_warteschlange.py`. `auftrag_einreihen` ist über einen Schlüssel idempotent. Der Auftrag speichert nur Verweise, keine Inhalte.
+- Der Job `ki_auftraege_verarbeiten` (alle 2 Minuten, Abschnitt 6) läuft unter der Job-Sperre aus `kern`: höchstens ein KI-Aufruf zur Zeit, dazu ein Mindestabstand je Anbieter. Fehler führen zu Wiederholungen mit wachsender Wartezeit und nach `lernen.ki_max_versuche` zum Status `fehler`. Jeder Statuswechsel ist ein bedingtes `UPDATE ... WHERE status = alt`.
+- Fachliche Handler (`material_ki.py`) melden sich mit `handler_registrieren` an. So bleibt die Warteschlange unabhängig von Material und Tutor.
+- Der Tutor ruft die KI **direkt** (Kind wartet auf die Antwort), nicht über die Warteschlange.
+
+### 14.4 Material und Speicher
+
+- Zwei Eingänge: Upload durch das Kind (Seite "Meine Mappe") und Dateien im Ordner `inbox` (z. B. auf einem NAS). Der Job `lernen_inbox_scannen` (alle 2 Minuten) übernimmt nur stabile Dateien, deren Typ am **Inhalt** geprüft wurde (Bild, PDF oder Text; die Endung muss dazu passen).
+- Bilder werden neu zu JPEG kodiert (entfernt EXIF mit GPS und angehängte Fremdinhalte). Ausgeliefert wird nur mit festem Typ und `nosniff`. PDF-Text wird ohne KI gelesen; nur Scans brauchen die Bilderkennung durch die KI.
+- Speicher: `speicher.py` legt je Kind `kind_<id>/{inbox,archiv,tests}` an (nach Konten-ID, nie nach Name). Jeder Pfad wird aufgelöst und muss unter dem Ordner des Kindes liegen. Basis ist ein Docker-Volume (Standard) oder ein eingehängter Ordner. Der Platz je Kind ist begrenzt (`lernen.speicher_limit_mb`).
+- Fragen aus Uploads sind je nach Einstellung des Kindes sofort nutzbar oder warten auf die Freigabe der Eltern.
+- Die Größe einer Anfrage begrenzt vorab `UploadGrenze` (Middleware aus `aufgaben`) nach den Einstellungen der Nachweis-Fotos (bei Standardwerten rund 46 MB je POST). Zusätzlich gilt `lernen.upload_max_mb` je Datei.
+
+### 14.5 Tutor
+
+- Standardmäßig aus (`lernen.tutor_aktiv`), nur für die ganze Familie schaltbar. Er braucht einen eingeschalteten Anbieter für die Aufgabe `tutor`.
+- Ablauf einer Nachricht (`tutor_services.py`): Zugang und Grenzen, Vorprüfung ohne KI (Lösungsbitte, Rollenwechsel), KI-Aufruf ohne Musterlösung, Leak-Prüfung der Antwort, Speichern. Die Hilfestufe steigt nur auf Wunsch des Kindes. Hilfen kosten keine Punkte.
+- **Grenzen:** Die Leak-Prüfung (`tutor_pruefung.py`) ist eine Heuristik. Ein Kind kann eine Aufgabe abtippen oder umformulieren; eine KI kann Fehler machen. Es gibt Tageslimit und Protokoll für die Eltern, aber keine Garantie.
+- `tutor_aufraeumen` (täglich) löscht Gespräche ohne Aktivität nach `lernen.tutor_aufbewahrung_tage`.
+
+### 14.6 Einrichtungsschritte (Registry-Erweiterung in `kern`)
+
+- `kern.registry` kennt neben Kacheln, Metriken und Providern auch **Einrichtungsschritte**: `EinrichtungsSchritt(schluessel, modul, titel, template, verarbeiten, zusammenfassung, reihenfolge)`, registriert mit `einrichtung_registrieren`. Der Assistent (`einrichtung/schritte.py`) liest sie mit `einrichtungsschritte()` und zeigt sie zwischen "Startwerte" und "Abschluss".
+- `verarbeiten(request, absenden)` liefert den Kontext zum Anzeigen oder `None` (gespeichert oder übersprungen). `zusammenfassung()` ist optional und liefert Zeilen und "später"-Links für die Abschlussseite.
+- Schritte sind **optional und überspringbar**. `lernen` registriert vier: Grundwerte, Speicher, Kinder, KI (`lernen/einrichtung.py`). Sie schreiben nur über `einrichtung_services.py`. Dieselben Services nutzt die Eltern-Seite "Kinder und Leistungsstufen" (nachträgliches Ändern und "Neues Schuljahr").
+- Ein neues Modul braucht dafür nur einen Eintrag in seiner Registry und ein Template. Siehe [MODULE-ERWEITERN.md](MODULE-ERWEITERN.md), Abschnitt 5a.
+
+### 14.7 Eltern-Seiten
+
+Lernmappe und Freigabe, KI-Anbindung, Tutor und Protokoll, Kinder und Leistungsstufen, Wochenbild, Prüfungen (nur lesen, Termin ändern, löschen), Schonung. Änderungen schreiben einen Audit-Eintrag (`lernen.kind_geaendert`, `lernen.schuljahr_wechsel`, KI-Anbieter, Einwilligung und Zuordnung). Das Audit enthält Zahlen und Schalter, keine Namen, Schulformen oder Schlüssel.

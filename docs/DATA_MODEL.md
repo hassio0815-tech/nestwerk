@@ -2,7 +2,7 @@
 
 - **Stand:** 24.10.2026 (Review AP31: Abschnitte 5.8, 6, 9–12, 14, 15.2 an den Code angeglichen)
 - **Bezug:** `docs/ARCHITECTURE.md` (Abschnitte und [K]-Punkte), `docs/SPEC.md`
-- **Umfang:** siehe Abschnitt 12 (Stand Code nach Phase 2). `oberflaeche` und `einrichtung` haben keine eigenen Modelle.
+- **Umfang:** siehe Abschnitt 12 (Stand Code nach Phase 2; `lernen` seit Etappe 9 in Abschnitt 16). `oberflaeche` und `einrichtung` haben keine eigenen Modelle.
 
 ## 0. Konventionen
 
@@ -954,7 +954,8 @@ Held in der Ruhmeshalle: Snapshot des fertig ausgebauten Avatars. Unveränderlic
 | avatar | Thema, Slot, ModSet, ModDefinition, Avatar, ModBesitz, RenderCache, RuhmeshallenEintrag | 8 |
 | sondertag | SondertagAnspruch | 1 |
 | familienziel | Familienbelohnung, Familienwoche, Stimme, Grossziel | 4 |
-| **Summe** | | **58** |
+| lernen | Fach, Thema, Frage, Lernmappe, Leistungsstufe, Lernsitzung, Lernstand, Versuch, Lerntag, Lernziel, Lernpause, Material, KiAnbieter, KiZuordnung, KiAuftrag, TutorGespraech, TutorNachricht, Pruefung, Pruefungsstoff, Pruefungsportion, ProbePruefung, ProbeVersuch (Details in Abschnitt 16) | 22 |
+| **Summe** | | **80** |
 
 
 ---
@@ -1196,3 +1197,356 @@ Aus der Registry und den Datenmigrationen erzeugt (Review AP31, B-22). "(Assiste
 - `spielregeln.serienbonus_start` = 2 – Serienbonus ab Serie
 
 - **Nicht in der DB (bewusst):** Secrets (`SECRET_KEY`, VAPID, Fernet) in `/data/secrets`; Domain/Proxy-Header in `.env`. Begründung: werden vor DB-Zugriff gebraucht bzw. sind Infrastruktur.
+
+---
+
+## 16. `lernen`
+
+> **Stand Etappe 9 (03.11.2026):** Tabellen dieses Abschnitts sind aus den Django-Modellen erzeugt (Code ist maßgeblich). Fachliche Erläuterungen stehen in ARCHITECTURE 14.
+
+- 22 Modelle in sechs Gruppen. Im Repository liegen **keine** privaten Daten: Startdaten sind generisch, alles Familienspezifische (Kinder, Klassenstufe, Schulform, Leistungsstufen, KI-Anbieter und Schlüssel, Speicherort) tragen die Eltern ein.
+- Einstellungen (Schlüssel `lernen.*`, Startwerte per Datenmigration) stehen in `apps/lernen/einstellungen.py` und sind im Eltern-Bereich änderbar; sie sind hier nicht noch einmal aufgelistet.
+
+
+### 16.1 Fächer, Themen, Fragen
+
+- Fächer und Themen sind **Daten, kein Code**. Startdaten (Mathe: nur Themenstruktur je Klassenstufe, Englisch: Startvokabeln) entstehen per Datenmigration und enthalten nichts Familienspezifisches.
+- `Frage.kind` ist gesetzt, wenn die Frage aus dem Material eines Kindes stammt; Startdaten-Fragen haben kein Kind (CHECK). Fragen aus KI-Auslesen starten je nach Einstellung als `offen` und brauchen die Freigabe der Eltern.
+
+#### Fach
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| schluessel | varchar(40) | ja | unique |
+| name | varchar(60) | ja |  |
+| reihenfolge | int (klein) | nein | Standard 0 |
+| aktiv | bool | nein | Standard True |
+
+#### Thema
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| fach | FK Fach | ja | CASCADE |
+| klassenstufe | int (klein) | nein |  |
+| name | varchar(80) | ja |  |
+| reihenfolge | int (klein) | nein | Standard 0 |
+
+- Constraint `lernen_thema_eindeutig`
+
+#### Frage
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| thema | FK Thema | ja | CASCADE |
+| typ | varchar(10) | nein | vokabel/frage; Standard 'frage' |
+| frage | varchar(300) | ja |  |
+| antwort | varchar(300) | ja |  |
+| quelle | varchar(10) | nein | system/eltern/ki; Standard 'system' |
+| freigabe | varchar(12) | nein | offen/freigegeben/abgelehnt; Standard 'freigegeben' |
+| kind | FK Benutzer | nein | CASCADE |
+| erstellt | datetime | nein |  |
+| material | FK Material | nein | CASCADE |
+
+- Constraint `lernen_frage_system_ohne_kind`
+
+### 16.2 Lernmappe, Leistungsstufe, Material
+
+- Die **Lernmappe** gehört genau einem Kind. Sie sieht nur das Kind selbst und die Eltern, nie ein Geschwister. `fragen_sofort_nutzbar = NULL` heißt: Familien-Einstellung `lernen.freigabe_durch_eltern`.
+- `Lernmappe.schulform` und `Leistungsstufe.klassenstufe` tragen die Eltern selbst ein (Einrichtungs-Assistent oder Seite "Kinder und Leistungsstufen"). Der Wechsel zum neuen Schuljahr ändert nur `Leistungsstufe.klassenstufe`.
+- `Material` verweist auf eine Datei im Speicher (Ordner `inbox`, `archiv`, `tests` je Kind). Die Datei selbst liegt nicht in der Datenbank; `inhalt_hash` erkennt Doppelte. Der Speicherort ist ein Docker-Volume oder ein eingehängter Ordner.
+
+#### Lernmappe
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | 1:1 Benutzer | ja | CASCADE; unique |
+| erstellt | datetime | nein |  |
+| fragen_sofort_nutzbar | bool | nein |  |
+| schulform | varchar(60) | nein |  |
+
+#### Leistungsstufe
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| fach | FK Fach | ja | CASCADE |
+| stufe | varchar(40) | nein |  |
+| klassenstufe | int (klein) | nein |  |
+
+- Constraint `lernen_stufe_je_kind_fach`
+
+#### Material
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| name | varchar(60) | ja |  |
+| anzeigename | varchar(80) | nein |  |
+| art | varchar(10) | ja | bild/dokument |
+| mime | varchar(40) | ja |  |
+| groesse | int | nein | Standard 0 |
+| inhalt_hash | varchar(64) | ja |  |
+| bereich | varchar(10) | nein | Standard 'inbox' |
+| eingang | varchar(10) | nein | upload/inbox; Standard 'upload' |
+| hinweis_fach | varchar(40) | nein |  |
+| status | varchar(14) | nein | wartet_ki/wartet/liest/rueckfrage/fragen/wartet_eltern/bereit/fehler; Standard 'wartet_ki' |
+| fehler | varchar(30) | nein |  |
+| fach | FK Fach | nein | SET_NULL |
+| thema_name | varchar(80) | nein |  |
+| klassenstufe | int (klein) | nein |  |
+| konfidenz | float | nein |  |
+| text | text | nein |  |
+| durchgang | int (klein) | nein | Standard 1 |
+| erstellt | datetime | nein |  |
+| aktualisiert | datetime | nein |  |
+
+- Constraint `lernen_material_name_je_kind`
+
+### 16.3 Üben, Lernstand, Tagesziel
+
+- `Lernstand` ist die Abstandswiederholung je Kind, Frage und Richtung (Boxen laut Einstellung `lernen.box_abstaende_tage`).
+- `Lerntag` (je Kind und Datum) trägt Tagesziel, Mindesttag und erreichte Punkte; die Wochenserie wird daraus berechnet, nicht gespeichert. `Lernpause` mit `kind = NULL` gilt für alle Kinder.
+- `Versuch.eingabe` speichert die Antwort des Kindes (bis 300 Zeichen), `Lernsitzung.rueckschau*` seine Rückschau. Beides wird keinem Geschwister gezeigt.
+
+#### Lernsitzung
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| fach | FK Fach | nein | SET_NULL |
+| beginn | datetime | ja |  |
+| dauer_sekunden | int | nein | Standard 0 |
+| versuche | int | nein | Standard 0 |
+| intensitaet | varchar(16) | nein | aufwaermen/normal/herausforderung; Standard 'normal' |
+| hilfestufe_max | int (klein) | nein | Standard 0 |
+| selbsteinschaetzung | varchar(10) | nein | zu_leicht/passend/zu_schwer |
+| rueckschau | text | nein |  |
+| thema | FK Thema | nein | SET_NULL |
+| vorhaben | varchar(16) | nein | neu/wiederholen/stolperstellen |
+| strategie | varchar(16) | nein | laut/abdecken/bild/satz |
+| erwartung | varchar(10) | nein | weniges/einiges/vieles |
+| ziel_fragen | int (klein) | nein | Standard 10 |
+| richtig | int | nein | Standard 0 |
+| ende | datetime | nein |  |
+| letzte_aktivitaet | datetime | nein |  |
+| frust_erkannt | bool | nein | Standard False |
+| rueckschau_schwer | varchar(300) | nein |  |
+| rueckschau_geholfen | varchar(300) | nein |  |
+| rueckschau_fertig | bool | nein | Standard False |
+| aktuell_frage | FK Frage | nein | SET_NULL |
+| aktuell_richtung | varchar(5) | nein | de_en/en_de |
+| aktuell_seit | datetime | nein |  |
+| aktuell_versuche | int (klein) | nein | Standard 0 |
+| aktuell_hilfe | int (klein) | nein | Standard 0 |
+| portion | FK Pruefungsportion | nein | SET_NULL |
+
+#### Lernstand
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| frage | FK Frage | ja | CASCADE |
+| richtung | varchar(5) | ja | de_en/en_de |
+| box | int (klein) | nein | Standard 0 |
+| faellig_am | date | ja |  |
+| versuche | int | nein | Standard 0 |
+| richtige | int | nein | Standard 0 |
+| zuletzt | datetime | nein |  |
+
+- Constraint `lernen_stand_je_kind_frage_richtung`
+
+#### Versuch
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| sitzung | FK Lernsitzung | ja | CASCADE |
+| frage | FK Frage | ja | CASCADE |
+| richtung | varchar(5) | ja | de_en/en_de |
+| ergebnis | varchar(12) | ja | richtig/fast/noch_nicht |
+| hilfestufe | int (klein) | nein | Standard 0 |
+| eingabe | varchar(300) | nein |  |
+| dauer_ms | int | nein | Standard 0 |
+| erstellt | datetime | nein |  |
+
+#### Lerntag
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| datum | date | ja |  |
+| sekunden | int | nein | Standard 0 |
+| ziel_minuten | int (klein) | ja |  |
+| mindesttag | bool | nein | Standard False |
+| erreicht | bool | nein | Standard False |
+| punkte | int | nein | Standard 0 |
+
+- Constraint `lernen_tag_je_kind_datum`
+
+#### Lernziel
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | 1:1 Benutzer | ja | CASCADE; unique |
+| ziel_minuten | int (klein) | ja |  |
+| vorschlag_minuten | int (klein) | nein |  |
+| seit | date | ja |  |
+| geaendert_am | date | nein |  |
+
+#### Lernpause
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | nein | CASCADE |
+| von | date | ja |  |
+| bis | date | nein |  |
+| grund | varchar(10) | nein | krank/ferien/sonstiges; Standard 'sonstiges' |
+
+- Constraint `lernen_pause_bis_nach_von`
+
+### 16.4 KI-Anbindung und Warteschlange
+
+- `KiAnbieter` ist ein Anbieter, den die Eltern selbst anlegen (Typ `openai_kompatibel`, `anthropic` oder `openai`). Neue Anbieter sind **aus**. Der API-Schlüssel steht nur **verschlüsselt** in `schluessel_verschluesselt`; er geht nie in Antworten, Audit oder Log.
+- `ist_cloud` wird beim Speichern berechnet (Anthropic und OpenAI immer Cloud; bei eigener Adresse zählen nur lokale Namen und private Adressen als lokal, im Zweifel Cloud). Ein Cloud-Anbieter läuft erst nach `einwilligung_am` (Einwilligung der Eltern).
+- `KiZuordnung` weist einer Aufgabe (`auslesen`, `fragen_erzeugen`, `bewerten`, `tutor`) familienweit einen Anbieter zu. Ohne Zeile ist die KI für diese Aufgabe aus; es gibt keinen automatischen Wechsel.
+- `KiAuftrag` ist die Warteschlange. `schluessel` (unique) macht das Einreihen idempotent. Wiederholungen mit Wartezeit steuern `versuche` und `naechster_versuch_am`. Der Auftrag speichert nur einen Verweis (`eingabe_verweis`), keinen Inhalt.
+
+#### KiAnbieter
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| name | varchar(60) | ja | unique |
+| typ | varchar(20) | ja | openai_kompatibel/anthropic/openai |
+| basis_url | varchar(300) | nein |  |
+| modell | varchar(120) | ja |  |
+| schluessel_verschluesselt | text | nein |  |
+| aktiv | bool | nein | Standard False |
+| ist_cloud | bool | nein | Standard True |
+| einwilligung_am | datetime | nein |  |
+| einwilligung_von | FK Benutzer | nein | SET_NULL |
+| letzter_test_am | datetime | nein |  |
+| letzter_test_ok | bool | nein |  |
+| angelegt_am | datetime | nein |  |
+
+#### KiZuordnung
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| aufgabe | varchar(20) | ja | unique; auslesen/fragen_erzeugen/bewerten/tutor |
+| anbieter | FK KiAnbieter | ja | CASCADE |
+
+#### KiAuftrag
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| aufgabe | varchar(20) | ja | auslesen/fragen_erzeugen/bewerten/tutor |
+| kind | FK Benutzer | nein | CASCADE |
+| anbieter | FK KiAnbieter | nein | SET_NULL |
+| schluessel | varchar(120) | ja | unique |
+| eingabe_verweis | varchar(200) | nein |  |
+| status | varchar(10) | nein | wartend/laeuft/fertig/fehler; Standard 'wartend' |
+| versuche | int (klein) | nein | Standard 0 |
+| fehler_art | varchar(30) | nein |  |
+| naechster_versuch_am | datetime | nein |  |
+| gestartet_am | datetime | nein |  |
+| beendet_am | datetime | nein |  |
+| angelegt_am | datetime | nein |  |
+
+### 16.5 Tutor
+
+- Der Tutor ist standardmäßig aus (`lernen.tutor_aktiv`). Gespräche und Nachrichten sind für Kind und Eltern sichtbar (Protokoll). Gespräche ohne Aktivität werden nach `lernen.tutor_aufbewahrung_tage` Tagen samt Nachrichten gelöscht (Job `tutor_aufraeumen`).
+- `TutorNachricht.markierung` hält fest, wenn eine Lösungsbitte, ein Rollenwechsel oder ein möglicher Lösungs-Leak erkannt wurde. Die Leak-Erkennung ist eine **Heuristik**, keine Garantie.
+
+#### TutorGespraech
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| material | FK Material | nein | SET_NULL |
+| thema | FK Thema | nein | SET_NULL |
+| status | varchar(10) | nein | offen/beendet; Standard 'offen' |
+| hilfestufe | int (klein) | nein | Standard 1 |
+| beginn | datetime | ja |  |
+| ende | datetime | nein |  |
+| letzte_aktivitaet | datetime | ja |  |
+
+#### TutorNachricht
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| gespraech | FK TutorGespraech | ja | CASCADE |
+| rolle | varchar(6) | ja | kind/tutor |
+| art | varchar(12) | nein | frage/versuch/mehr_hilfe/antwort/bewertung/hinweis; Standard 'frage' |
+| text | text | ja |  |
+| hilfestufe | int (klein) | nein | Standard 1 |
+| markierung | varchar(14) | nein | loesungsbitte/rollenwechsel/leck |
+| urteil | varchar(12) | nein |  |
+| empfohlene_stufe | int (klein) | nein |  |
+| zeit | datetime | ja |  |
+
+### 16.6 Prüfungsvorbereitung
+
+- Der Plan geht rückwärts vom Termin aus. `Pruefungsportion.fragen` hält die Fragen-IDs der Portion als JSON. Passt der Stoff nicht in die Zeit, entsteht kein Plan (`plan_ok = false`), und das Kind bekommt Vorschläge statt einer Überforderung.
+- Die Probe-Prüfung (`ProbePruefung`, `ProbeVersuch`) bewertet nur zur Übung. Sie zählt nicht als Note.
+
+#### Pruefung
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| kind | FK Benutzer | ja | CASCADE |
+| fach | FK Fach | ja | CASCADE |
+| titel | varchar(80) | ja |  |
+| termin | date | ja |  |
+| status | varchar(14) | nein | geplant/aktiv/abgeschlossen/abgebrochen; Standard 'geplant' |
+| plan_ok | bool | nein | Standard False |
+| plan_angepasst_am | date | nein |  |
+| puffer_genutzt | bool | nein | Standard False |
+| vorbereitet_am | date | nein |  |
+| erstellt | datetime | nein |  |
+
+#### Pruefungsstoff
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| pruefung | FK Pruefung | ja | CASCADE |
+| thema | FK Thema | nein | CASCADE |
+| material | FK Material | nein | CASCADE |
+
+- Constraint `lernen_stoff_thema_oder_material`
+
+#### Pruefungsportion
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| pruefung | FK Pruefung | ja | CASCADE |
+| stoff | FK Pruefungsstoff | nein | CASCADE |
+| datum | date | ja |  |
+| art | varchar(14) | ja | neu/wiederholung/leicht/puffer |
+| minuten | int (klein) | nein | Standard 0 |
+| fragen | json | nein |  |
+| pflicht | bool | nein | Standard False |
+| status | varchar(10) | nein | offen/erledigt/verschoben; Standard 'offen' |
+| erledigt_am | date | nein |  |
+
+#### ProbePruefung
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| pruefung | FK Pruefung | ja | CASCADE |
+| fragen | json | nein |  |
+| beginn | datetime | ja |  |
+| ende | datetime | nein |  |
+| schwaechen_eingeplant | bool | nein | Standard False |
+
+#### ProbeVersuch
+
+| Feld | Typ | Pflicht | Hinweis |
+|---|---|---|---|
+| probe | FK ProbePruefung | ja | CASCADE |
+| frage | FK Frage | ja | CASCADE |
+| richtung | varchar(5) | ja | de_en/en_de |
+| ergebnis | varchar(12) | ja | richtig/fast/noch_nicht |
+| eingabe | varchar(300) | nein |  |
+| erstellt | datetime | nein |  |
+
+- Constraint `lernen_probe_frage_einmal`
+

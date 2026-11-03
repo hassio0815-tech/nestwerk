@@ -230,6 +230,7 @@ The answer must be `<NPM-IP>`.
    5. **Network:** home network and "Trusted proxies" (only the `<NPM-IP>`)
    6. **Time:** go-live date (start of the app year) and time zone (default Europe/Berlin)
    7. **Check default values:** ranks, rewards, task library, family goal. You can change everything later.
+   *(Optionally in between: four "Learning" steps, see 6.1.)*
    8. **Summary** and completion
 4. Then **remove** the setup token from the `.env`:
 
@@ -240,6 +241,77 @@ docker compose up -d
 ```
 
 As long as the token is set, the wizard is open to every device on the home network. That is why you should remove it after setup.
+
+### 6.1 Learning in the wizard (optional)
+
+Between "Check default values" and the summary, four steps for the learning module appear. **All of them are optional**: you can skip each one and do it later.
+
+1. **Learning: basics:** subjects, daily goal in minutes, learning points on or off, tutor on or off (default: off).
+2. **Learning: storage:** where photos and documents from the kids go (section 6.2).
+3. **Learning: kids:** per child grade, school type, level per subject, and whether questions from uploads are usable right away or parents approve them (default: parents approve). All of this is optional and stays on your server. To change it later: parents area, **Learning → Children and levels**, which also has **New school year**.
+4. **Learning: AI:** an AI provider (section 6.3) or **No AI for now**.
+
+Without AI, practice with the existing questions still works. Uploaded material is then not read automatically, and the tutor stays off.
+
+### 6.2 Storage location of the learning folder and NAS
+
+- **Default:** a Docker volume (`/data/lernen`). It is part of the VM backup (level 1 in section 9), **not** of the daily database dumps.
+- **Own folder (e.g. a NAS):** the folder must **already be mounted into the container**. Nestwerk only checks that it exists and that it can write into it. Files already stored are not moved.
+
+Example with a file `compose.override.yaml` next to `compose.yaml` (Docker Compose reads it automatically, and updates do not change it). All three roles need the folder, because the background job for the `inbox` folder runs in the `scheduler`:
+
+```yaml
+services:
+  web:
+    volumes:
+      - /mnt/<NAS-SHARE>/lernen:/lernen
+  worker:
+    volumes:
+      - /mnt/<NAS-SHARE>/lernen:/lernen
+  scheduler:
+    volumes:
+      - /mnt/<NAS-SHARE>/lernen:/lernen
+```
+
+1. Mount the share on the VM (e.g. NFS or SMB under `/mnt/<NAS-SHARE>`). The folder must be writable for UID 1000.
+2. `docker compose up -d`
+3. Enter `/lernen` as the path in the wizard (or later in the learning settings).
+
+For each child Nestwerk creates the folders `inbox`, `archiv` and `tests` (named after the account ID, never after the name). Files you drop into `inbox` are picked up by a background job after a few seconds of quiet. The example has not been tested here with a real NAS.
+
+**Backup:** a mounted folder is not part of the VM backup. Back it up on the NAS side.
+
+### 6.3 AI provider (optional)
+
+AI is **off by default**. Nestwerk calls no external service until you set up a provider **and** switch it on. The AI reads photos, creates questions, checks answers and powers the tutor. You choose per task which provider does it. There is no automatic fallback to another provider.
+
+| Type | Example address (placeholder) | Key | Does data leave the server? |
+|---|---|---|---|
+| Own server with an OpenAI-compatible interface (e.g. Ollama) | `http://<AI-SERVER>:11434/v1` | usually not needed | no, if the server is on your home network |
+| Anthropic | leave empty (default address) | **your own** key | **yes** |
+| OpenAI | leave empty (default address) | **your own** key | **yes** |
+
+- Enter name, address, model name and key in the wizard or in the parents area under **Learning → AI connection**. Keys do **not** belong in the `.env`. Nestwerk stores them encrypted and never shows them again.
+- A new provider starts **switched off**. **Test connection** sends only a short "Reply with OK", no data about the kids.
+- **Cloud providers** (Anthropic, OpenAI and any server outside your network) need your explicit consent before they run. When in doubt, a provider counts as cloud.
+- **Risks:** with cloud providers, texts and photos of the kids (e.g. homework) go to the provider. The provider usually bills per use. An AI can make mistakes, and so can your own server.
+- The adapters are tested with a fake transport. **The module has not been checked against a real AI (Ollama, Anthropic, OpenAI) in this repository.** Test your provider yourself with **Test connection** and a trial upload.
+
+### 6.4 Background jobs of the learning module
+
+They are listed in `deploy/crontab` and run automatically in the `scheduler` container. You do not need to set anything up.
+
+| Job | Schedule | Purpose |
+|---|---|---|
+| `ki_auftraege_verarbeiten` | every 2 minutes | work through the AI queue (one call at a time, retry on errors) |
+| `lernen_inbox_scannen` | every 2 minutes | move new files from the `inbox` folder into the learning folder |
+| `tutor_aufraeumen` | daily 04:25 | delete old tutor conversations (retention is adjustable, default 90 days) |
+
+Without a switched-on AI the queue has nothing to do, and uploaded material is not turned into questions. If something does not run: `docker compose logs scheduler`.
+
+### 6.5 Upload size
+
+The `UploadGrenze` middleware (from the `aufgaben` module) rejects oversized POST requests **before** Django reads the files. The limit follows the settings for proof photos and is about 46 MB per request with the default values. In addition, `lernen.upload_max_mb` (default 10 MB) applies per file. The proxy value from section 4.2 (`client_max_body_size 50m`) is enough for this.
 
 ---
 

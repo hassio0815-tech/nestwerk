@@ -223,3 +223,80 @@ Es gibt sechs Ränge, wie Seltenheiten in einem Spiel:
 - Im Eltern-Dashboard stehen alle Ereignisse als Liste mit Zähler.
 
 **iPhone-Push einrichten:** Die App zum Home-Bildschirm hinzufügen, über das Icon öffnen und in den Einstellungen **Benachrichtigungen aktivieren** antippen. Die Anleitung steht in `docs/INSTALLATION.md`.
+
+---
+
+## 16. Lernen
+
+Das Lernmodul ist **freiwillig** und für Kinder und Eltern gedacht. Es gibt **keine Noten** und keine Vergleiche zwischen den Kindern. Ziele sind immer schaffbar.
+
+**Ohne KI** funktioniert das Üben mit den vorhandenen Fragen (Startdaten: Englisch-Vokabeln; für Mathe gibt es die Themenstruktur, die Fragen kommen aus Material oder von den Eltern). Die KI ist **standardmäßig aus**.
+
+### Üben (Kinder)
+
+- **Wo:** Kachel **Lernen** auf der Startseite. Dort siehst du **Dein Tag**.
+- **Neue Runde:** Du wählst, **was** du üben willst (Fach und Thema), **was du dir vornimmst** (Neues kennenlernen, Wiederholen, was dran ist, Meine Stolperstellen üben), **wie du vorgehst** (zum Beispiel laut sagen oder erst nachdenken, dann tippen), **wie viel du schon weißt** und **wie anstrengend** es sein soll (Aufwärmen, Normal, Herausforderung).
+- **Antworten:** Du bekommst Rückmeldung wie **richtig**, **fast richtig** oder **noch nicht**. Bei „noch nicht“ kannst du Hilfe holen oder die Lösung ansehen. Hilfen kosten **keine Punkte** und werden nie bestraft.
+- **Wiederholung im Abstand:** Was du gut kannst, kommt später wieder. Was schwer war, kommt früher.
+- **Zu viel Frust?** Wenn mehrere Fehler in Folge kommen, wird es leichter, und das System schlägt eine Pause vor.
+- **Rückschau:** Am Ende beantwortest du zwei kurze Fragen: Was war schwer? Was hat geholfen? Außerdem sagst du, ob es zu leicht, passend oder zu schwer war. Die Eltern sehen das als Hinweis.
+
+### Tagesziel und Serie (Kinder)
+
+- **Tagesziel:** Startwert 20 Minuten. Schon ein **Mindesttag** (Startwert 5 Minuten) zählt als geübter Tag.
+- **Das Ziel passt sich an:** Nach zwei verfehlten Tagen wird es kleiner, ohne Vorwurf. Wenn es lange gut läuft, schlägt das System vor, es etwas zu erhöhen. Das passiert nur, wenn du **zustimmst**.
+- **Wochenserie:** Die Serie zählt in **Wochen**. An **Schontagen** (Krankheit, Ferien) wird nichts verlangt, und die Serie bleibt erhalten. Eine gerissene Serie **löscht keine Punkte**.
+- **Punkte:** Es gibt Lernpunkte für das Erreichen des Tagesziels (Startwert 5, höchstens 10 pro Tag), **nicht pro richtige Antwort**. Die Eltern können Lernpunkte abschalten.
+
+### Material hochladen (Kinder)
+
+- **Wo:** **Meine Mappe** im Bereich Lernen. Lade ein Foto oder ein Dokument (Bild, PDF, Text) hoch, zum Beispiel eine Vokabelliste oder ein Arbeitsblatt.
+- **Was passiert:** Mit eingeschalteter KI liest Nestwerk den Text aus und macht Übungsfragen daraus. Das dauert etwas. Der Status steht beim Material („wird gelesen“, „Fragen sind bereit“).
+- **Freigabe:** Standardmäßig schauen sich die **Eltern** die Fragen an und geben sie frei. Pro Kind kann man einstellen, dass Fragen aus Uploads **sofort nutzbar** sind.
+- **Wer sieht die Mappe?** Nur du und deine Eltern, **nie** ein Geschwisterkind.
+- **Ohne KI:** Das Material wird gespeichert, aber nicht zu Fragen verarbeitet.
+
+### Prüfungsvorbereitung (Kinder)
+
+- **Wo:** **Prüfungen** im Bereich Lernen. Sag, **wann** die Prüfung ist und **was** drankommt (Themen oder dein Material).
+- **Plan:** Nestwerk plant vom Termin rückwärts in kleinen Portionen. An einem Tag steht nie mehr als dein Tagesziel, es gibt **Puffertage**, und am letzten Tag vor der Prüfung nur leichte Wiederholung.
+- **Realitätscheck:** Wenn der Stoff nicht in die Zeit passt, gibt es **keinen** Plan, der dich überfordert. Stattdessen bekommst du Vorschläge (früher anfangen, weniger Stoff, das Ziel etwas erhöhen). **Du** entscheidest.
+- **Probe-Prüfung:** Eine Übung mit Fragen aus dem Stoff. Sie zeigt, wo es noch hakt, und ist **keine Note**.
+- **Punkte** gibt es für eingehaltene Prüfungspläne (Beträge in den Einstellungen).
+
+### Tutor (Kinder und Eltern)
+
+- **Was er tut:** Der Tutor **erklärt** Neues und **hilft beim Lösen** deiner Aufgaben mit einer Leiter von Hilfestufen. Jede Stufe gibt es nur, wenn **du** mehr Hilfe willst: Nachfragen, Denkanstoß, ähnliches Beispiel mit anderen Zahlen oder Wörtern, Verweis auf dein Material, Lösungsweg ohne Ergebnis.
+- **Was er nicht tut:** Er **löst deine Hausaufgaben nicht** und nennt keine Lösungen. Er spricht nur über Lernstoff aus deiner Mappe. Eigene Lösungsversuche prüft er.
+- **Standardmäßig aus.** Die Eltern schalten ihn **für die ganze Familie** ein (Eltern: **Lernen → Tutor**). Er braucht eine eingeschaltete KI für die Aufgabe „Tutor“.
+- **Protokoll:** Die Eltern sehen die Gespräche. Gespräche ohne Aktivität werden nach einiger Zeit gelöscht (Startwert 90 Tage). Es gibt ein Limit pro Tag.
+- **Ehrliche Grenzen (Eltern bitte lesen):**
+  - Es gibt **keine Garantie**. Ein Kind kann eine Aufgabe abtippen oder umformulieren, und eine KI kann Fehler machen.
+  - Die Sicherungen sind: keine Musterlösung im Gespräch, eine Prüfung jeder Antwort auf verratene Lösungen, ein Tageslimit und das Protokoll. Die Prüfung ist eine **Heuristik**, keine lückenlose Kontrolle.
+  - Schaut ab und zu ins Protokoll.
+
+### Übungswoche und Titel
+
+- Im Familienranking und bei „Held der Woche“ zählt nur die **Beteiligung** (an wie vielen Tagen geübt), **nie die Menge**.
+- Ein Familienziel kann lauten: „alle üben an vier Tagen“.
+- **Wochen-Titel** gibt es ohne Punkte: Übungsmeister, Aufsteiger, Durchbeißer, Entdecker. Jeder Wert ist relativ zum **eigenen** Ziel. Bei Gleichstand teilen sich die Kinder den Titel. Die Titel sind nur eine Anzeige. Die Eltern können sie unter **Lernen → Wochenbild** abschalten.
+
+### Für Eltern
+
+- **Wo:** Eltern-Bereich, Kachel **Lernen**.
+- **Lernmappe und Freigabe:** Material der Kinder ansehen, Fragen **freigeben** oder ablehnen, Speicher prüfen. Dateien im Archiv bleiben, bis ihr sie löscht. Der Platz je Kind ist begrenzt (Startwert 500 MB).
+- **Protokoll:** Tutor-Gespräche lesen (**Lernen → Tutor**). Im allgemeinen Protokoll (Abschnitt 14) steht, wer einen KI-Anbieter eingerichtet, eingeschaltet oder zugeordnet hat und wer Kinder-Angaben oder das neue Schuljahr geändert hat. Das Protokoll enthält keine Schlüssel und keine Namen von Schulen.
+- **Wochenbild** (**Lernen → Wochenbild**): je Kind geübte Tage, genutzte Hilfestufen im Verlauf, Schwächen und kurze **Vorschläge**, was ihr tun könnt. Keine Noten, kein Geschwistervergleich.
+- **Prüfungen:** Ihr seht die Pläne der Kinder (nur lesen). Ihr könnt einen Termin ändern oder eine Prüfung löschen.
+- **Schonung:** Pausen für ein Kind oder alle (Krankheit, Ferien, Sonstiges) eintragen. Dann wird kein Ziel verlangt, und die Serie bleibt.
+- **Kinder und Leistungsstufen** (**Lernen → Kinder und Leistungsstufen**): Klassenstufe, Schulform, Leistungsstufe je Fach (zum Beispiel Grund- oder Erweiterungsniveau) und die Freigabe von Upload-Fragen ändern. Jedes Kind wird einzeln gespeichert. Das ist freiwillig und bleibt auf eurem Server.
+  - **Neues Schuljahr:** Der Knopf hebt **alle eingetragenen Klassenstufen um 1** an, höchstens bis 13. Vorher gibt es eine Bestätigung mit Zahlen. Er ändert nur die Klassenstufe, **nie** Leistungsstufen, Lernstand oder Material. Kinder ohne Klassenstufe bleiben ohne.
+- **KI-Anbieter einrichten** (**Lernen → KI-Anbindung**):
+  1. **Neuer Anbieter:** Name, Typ, Adresse, Modellname und bei Bedarf Schlüssel eintragen. Der Anbieter ist zuerst **ausgeschaltet**. Den Schlüssel zeigt Nestwerk nie wieder an.
+  2. **Verbindung testen:** Der Test schickt nur „Antworte mit OK“, keine Daten der Kinder.
+  3. **Einschalten:** Bei einem **Cloud-Anbieter** müsst ihr vorher die Hinweise bestätigen.
+  4. **Zuordnung:** Legt fest, welcher Anbieter welche Aufgabe erledigt (Auslesen, Fragen erzeugen, Antworten bewerten, Tutor). Das gilt für die ganze Familie. Ohne Zuordnung bleibt die KI für diese Aufgabe aus. Es gibt keinen automatischen Wechsel.
+  - **Risiken:** Bei **Cloud-Anbietern** gehen Texte und Fotos der Kinder (zum Beispiel Hausaufgaben und Antworten) an den Anbieter. Das ist eure bewusste Entscheidung. Cloud-Anbieter berechnen meist Kosten pro Nutzung. **Jede KI kann Fehler machen**, auch ein eigener Server. Prüft Ausgaben, bevor ihr euch darauf verlasst.
+  - **Eigener Server:** Daten bleiben in eurem Netz, wenn der Server dort steht. Wie ihr ihn anbindet, steht in der Installationsanleitung (Abschnitt 6.3).
+  - **Nicht getestet:** Die Anbindung ist hier nur mit einem Fake-Transport getestet. Ob euer Anbieter und euer Modell gute Ergebnisse liefern, müsst ihr selbst ausprobieren.
+- **Einstellungen:** Mindesttag, Tagesziel, Lernpunkte und Tageslimit, Box-Abstände, Upload-Größe je Datei, Speicherlimit, Tutor-Grenzen, Wochenbild-Schwellen, KI-Limits und mehr stehen unter **Einstellungen**. Ferien für alle schaltet ihr dort ein.

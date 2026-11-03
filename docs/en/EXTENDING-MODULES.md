@@ -202,6 +202,41 @@ def metriken_registrieren():
 
 ---
 
+## 5a. Setup steps (optional)
+
+A module can add its own **skippable** steps to the setup wizard. They appear between "Check default values" and "Finish". The wizard writes only through services; that applies to your steps too.
+
+```python
+# apps/lernen/einrichtung.py (excerpt)
+from apps.kern.registry import EinrichtungsSchritt, einrichtung_registrieren
+
+
+def kinder(request, absenden):
+    """Return the context to display, or None (saved or skipped)."""
+    ...
+
+
+def einrichtung_registrieren_alle():
+    einrichtung_registrieren(
+        EinrichtungsSchritt(
+            schluessel="lernen_kinder",
+            modul="lernen",
+            titel="Learning: children",
+            template="lernen/einrichtung/kinder.html",
+            verarbeiten=kinder,
+            zusammenfassung=None,  # optional: rows for the final page
+            reihenfolge=30,
+        )
+    )
+```
+
+- `verarbeiten(request, absenden)` gets `absenden=True` when the form is submitted. On errors return the context with error texts, on success or skip return `None`.
+- `zusammenfassung()` is optional and returns `{"titel", "zeilen": [(label, text)], "spaeter": [(text, address)]}`.
+- Call the registration in `AppConfig.ready()`, like the tiles.
+- Keep the logic in a service (`einrichtung_services.py`). That way a normal parents' page can change the same values later without duplicating logic. Example: the "Children and levels" page in `lernen`.
+
+---
+
 ## 6. Badges and milestones
 
 Badges and milestones are **data**, not code logic. The engine in `spielregeln` evaluates them generically.
@@ -241,6 +276,7 @@ Migration rules:
 - [ ] Settings defined, default values via data migration
 - [ ] Event types and texts registered, handlers set
 - [ ] Tiles and metrics registered via `kern.registry`
+- [ ] Optional: setup steps registered via `einrichtung_registrieren`
 - [ ] Badges and milestones created as data
 - [ ] Tests for layer rules (`lint-imports`) and module tests passing
 - [ ] No imports between feature modules

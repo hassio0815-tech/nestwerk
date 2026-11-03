@@ -5,7 +5,7 @@ Index of this folder. The user and operations guides are available in English an
 ## English (`en/`)
 
 - [INSTALLATION.md](en/INSTALLATION.md): step-by-step installation on a Debian VM, with reverse proxy, DNS, devices and troubleshooting
-- [USER-GUIDE.md](en/USER-GUIDE.md): for parents and kids: tasks, points, ranks, badges, avatars and more
+- [USER-GUIDE.md](en/USER-GUIDE.md): for parents and kids: tasks, points, ranks, badges, avatars, learning and more
 - [RUNBOOK.md](en/RUNBOOK.md): operations: updates, rollback, backup restore, secrets, troubleshooting
 - [EXTENDING-MODULES.md](en/EXTENDING-MODULES.md): how to add a new module, using `lernen` (learning) as the example
 - [i18n.md](en/i18n.md): how the German/English translations work

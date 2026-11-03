@@ -27,6 +27,7 @@ The app UI is available in English and German.
 - **Family goal:** weekly shared goal, voting, family ranking, "Hero of the Week"
 - **Forecast:** when will a child reach the next rank? Parents calibrate the pace.
 - **Notifications:** email, push on iPhone, pop-up in the app
+- **Learning:** practice with spaced repetition, daily goal and weekly streak, upload material (a photo or document becomes practice questions), exam preparation with a plan and a mock exam, and a weekly picture for parents without grades and without comparing siblings. Optionally with **your own AI** (Ollama or another server of your own, or a cloud provider with your own key). Without AI, practice works with the existing questions. The **tutor** explains and helps solving, is **off by default** and gives no guarantee against copied solutions. AI is off until parents set it up; a **cloud AI** is a deliberate opt-in in which texts and photos of the kids go to the provider. The repository contains no private data (no names, schools, addresses, keys). The module has not been tested against a real AI here.
 - **Hallway tablet:** kiosk view with family goal and ranking
 - **Operations:** setup assistant, daily database backups, updates with rollback
 
@@ -91,7 +92,7 @@ Older screenshots from development phases 1 to 3 (still under the old name) are 
 | Document | Content |
 |---|---|
 | [docs/en/INSTALLATION.md](docs/en/INSTALLATION.md) | Step-by-step installation, reverse proxy, DNS, devices, updates, backup, troubleshooting |
-| [docs/en/USER-GUIDE.md](docs/en/USER-GUIDE.md) | For parents and kids: tasks, points, ranks, badges, avatar and more |
+| [docs/en/USER-GUIDE.md](docs/en/USER-GUIDE.md) | For parents and kids: tasks, points, ranks, badges, avatar, learning and more |
 | [docs/en/RUNBOOK.md](docs/en/RUNBOOK.md) | Operations: update, rollback, backup restore, secrets, troubleshooting |
 | [docs/SPEC.md](docs/SPEC.md) (German) | Product specification and decisions |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (German) | Architecture, layers, events, rule engine |

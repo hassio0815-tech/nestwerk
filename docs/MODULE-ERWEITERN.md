@@ -202,6 +202,41 @@ def metriken_registrieren():
 
 ---
 
+## 5a. Einrichtungsschritte (optional)
+
+Ein Modul kann dem Einrichtungs-Assistenten eigene, **überspringbare** Schritte hinzufügen. Sie stehen zwischen "Startwerte" und "Abschluss". Der Assistent schreibt nur über Services; das gilt auch für deine Schritte.
+
+```python
+# apps/lernen/einrichtung.py (Auszug)
+from apps.kern.registry import EinrichtungsSchritt, einrichtung_registrieren
+
+
+def kinder(request, absenden):
+    """Gibt den Kontext zum Anzeigen zurück oder None (gespeichert oder übersprungen)."""
+    ...
+
+
+def einrichtung_registrieren_alle():
+    einrichtung_registrieren(
+        EinrichtungsSchritt(
+            schluessel="lernen_kinder",
+            modul="lernen",
+            titel="Lernen: Kinder",
+            template="lernen/einrichtung/kinder.html",
+            verarbeiten=kinder,
+            zusammenfassung=None,  # optional: Zeilen für die Abschlussseite
+            reihenfolge=30,
+        )
+    )
+```
+
+- `verarbeiten(request, absenden)` bekommt `absenden=True` beim Absenden des Formulars. Bei Fehlern gibst du den Kontext mit Fehlertexten zurück, bei Erfolg oder Überspringen `None`.
+- `zusammenfassung()` ist optional und liefert `{"titel", "zeilen": [(Bezeichnung, Text)], "spaeter": [(Text, Adresse)]}`.
+- Rufe die Registrierung wie die Kacheln in `AppConfig.ready()` auf.
+- Die Logik gehört in einen Service (`einrichtung_services.py`). So kann eine normale Eltern-Seite dieselben Werte später wieder ändern, ohne Logik zu duplizieren. Beispiel: die Seite "Kinder und Leistungsstufen" in `lernen`.
+
+---
+
 ## 6. Abzeichen und Meilensteine
 
 Abzeichen und Meilensteine sind **Daten**, keine Code-Logik. Die Engine in `spielregeln` wertet sie generisch aus.
@@ -241,6 +276,7 @@ Regeln für Migrationen:
 - [ ] Einstellungen definiert, Startwerte per Datenmigration
 - [ ] Ereignistypen und Texte registriert, Handler gesetzt
 - [ ] Kacheln und Metriken über `kern.registry` registriert
+- [ ] Optional: Einrichtungsschritte über `einrichtung_registrieren` registriert
 - [ ] Abzeichen und Meilensteine als Daten angelegt
 - [ ] Tests für Schichtenregeln (`lint-imports`) und Modul grün
 - [ ] Keine Importe zwischen Fach-Modulen

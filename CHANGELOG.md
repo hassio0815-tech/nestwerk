@@ -4,6 +4,26 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Learning module (03.11.2026)
+
+### Added
+- **Learning (`lernen`):** new module for kids and parents. Everything is optional, and no private data is part of the repository (start data is generic).
+- **Practice:** vocabulary and questions with spaced repetition (boxes), intention and strategy before, two reflection questions after, "not yet" instead of "wrong", frustration detection that lowers the level and suggests a break. Help never costs points.
+- **Daily goal and streak:** a small minimum day counts, the goal adapts gently to the last two weeks, the streak counts in weeks. Parents can set days off (illness, holidays); a broken streak never removes points.
+- **Upload material:** kids add a photo or document to their own learning folder. Questions from uploads wait for the parents' approval unless parents allow them per child. Second entry: files dropped into an `inbox` folder, e.g. on a NAS. The storage is a Docker volume or a mounted folder.
+- **Exam preparation:** plan backwards from the exam date with small portions and buffer days, a reality check that makes suggestions instead of a plan that does not fit, and a mock exam.
+- **Optional AI with your own provider:** own server with an OpenAI-compatible interface (e.g. Ollama), Anthropic or OpenAI with your own key. **AI is off by default.** Cloud providers need explicit consent, keys are stored encrypted, and a queue works through AI jobs one at a time with retries.
+- **Tutor:** explains and helps with a ladder of help steps, but does not solve homework. **Off by default**, switched by parents for the whole family, with a log. The check against leaked solutions is a heuristic, not a guarantee.
+- **Practice week and titles:** participation instead of volume. The weekly titles (Practice Master, Climber, Stayer, Explorer) are only a display, give no points and can be switched off. Parents get a weekly picture per child with suggestions, without grades and without sibling comparison.
+- **Setup wizard:** four optional steps "Learning" (basics, storage, kids, AI). New registry extension `EinrichtungsSchritt` in `kern` lets modules add skippable wizard steps.
+- **Parents page "Children and levels":** change grade, school type, level per subject and the approval of upload questions at any time, using the same services as the wizard. **New school year** raises all entered grades by 1 (up to 13) after a confirmation; learning progress is never deleted.
+- Background jobs `ki_auftraege_verarbeiten`, `lernen_inbox_scannen` and `tutor_aufraeumen` in `deploy/crontab`.
+- Documentation: user guide chapter "Learning", installation steps for storage, AI provider and jobs, architecture section 14, data model section 16, section 5a in "Extending modules".
+
+### Notes
+- The AI adapters are tested against a fake transport. The module has **not** been tested against a real AI (Ollama, Anthropic, OpenAI) or in a browser.
+- Upload requests are limited by the existing `UploadGrenze` middleware from `aufgaben` (about 46 MB per request with default values).
+
 ## Recognition, My settings and moods (02.11.2026)
 
 ### Added

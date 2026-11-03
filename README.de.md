@@ -25,6 +25,7 @@
 - **Familienziel:** wöchentliches Gemeinschaftsziel, Abstimmung, Familien-Ranking, „Held der Woche“
 - **Prognose:** Wann erreicht ein Kind den nächsten Rang? Die Eltern kalibrieren das Tempo.
 - **Benachrichtigungen:** E-Mail, Push auf dem iPhone, Pop-up in der App
+- **Lernen:** Üben mit Wiederholung im Abstand, Tagesziel und Wochenserie, Material hochladen (Foto oder Dokument wird zu Übungsfragen), Prüfungsvorbereitung mit Plan und Probe-Prüfung, Wochenbild für die Eltern ohne Noten und ohne Geschwistervergleich. Optional mit **eigener KI** (Ollama oder anderer eigener Server, oder Cloud mit eigenem Schlüssel). Ohne KI läuft das Üben mit den vorhandenen Fragen. Der **Tutor** erklärt und hilft beim Lösen, ist **standardmäßig aus** und bietet keine Garantie gegen abgeschriebene Lösungen. Die KI ist aus, bis die Eltern sie einrichten; eine **Cloud-KI** ist nur ein bewusstes Opt-in, bei dem Texte und Fotos der Kinder an den Anbieter gehen. Im Repository liegen keine privaten Daten (keine Namen, Schulen, Adressen, Schlüssel). Mit einer echten KI ist das Modul hier nicht getestet.
 - **Flur-Tablet:** Kiosk-Ansicht mit Familienziel und Ranking
 - **Betrieb:** Einrichtungs-Assistent, tägliche Datenbank-Backups, Updates mit Rollback
 
@@ -89,7 +90,7 @@ Alle Screenshots zeigen **Demo-Daten** (Mama, Papa, Kind A/B/C).
 | Dokument | Inhalt |
 |---|---|
 | [docs/INSTALLATION.md](docs/INSTALLATION.md) | Installation Schritt für Schritt, Reverse Proxy, DNS, Geräte, Updates, Backup, Fehlersuche |
-| [docs/BENUTZERHANDBUCH.md](docs/BENUTZERHANDBUCH.md) | Für Eltern und Kinder: Aufgaben, Punkte, Ränge, Abzeichen, Avatar und mehr |
+| [docs/BENUTZERHANDBUCH.md](docs/BENUTZERHANDBUCH.md) | Für Eltern und Kinder: Aufgaben, Punkte, Ränge, Abzeichen, Avatar, Lernen und mehr |
 | [docs/RUNBOOK.md](docs/RUNBOOK.md) | Betrieb: Update, Rollback, Backup-Restore, Secrets, Fehlersuche |
 | [docs/SPEC.md](docs/SPEC.md) | Produktspezifikation und Entscheidungen |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Architektur, Schichten, Ereignisse, Regel-Engine |

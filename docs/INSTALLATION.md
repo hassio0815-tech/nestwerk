@@ -230,6 +230,7 @@ Die Antwort muss `<NPM-IP>` sein.
    5. **Netzwerk:** Heimnetz und „Vertraute Proxys“ (nur die `<NPM-IP>`)
    6. **Zeit:** Go-live-Datum (Startpunkt des App-Jahres) und Zeitzone (Standard Europe/Berlin)
    7. **Startwerte prüfen:** Ränge, Belohnungen, Aufgabenbibliothek, Familienziel. Alles ist später änderbar.
+   *(Optional dazwischen: vier Schritte „Lernen“, siehe 6.1.)*
    8. **Zusammenfassung** und Abschluss
 4. Danach das Setup-Token aus der `.env` **entfernen**:
 
@@ -240,6 +241,77 @@ docker compose up -d
 ```
 
 Solange das Token gesetzt ist, ist der Assistent für jedes Gerät im Heimnetz offen. Deshalb nach dem Abschluss entfernen.
+
+### 6.1 Lernen im Assistenten (optional)
+
+Zwischen „Startwerte prüfen“ und der Zusammenfassung erscheinen vier Schritte zum Lernmodul. **Alle sind freiwillig**, jeder lässt sich überspringen und später nachholen.
+
+1. **Lernen: Grundwerte:** Fächer, Tagesziel in Minuten, Lernpunkte an oder aus, Tutor an oder aus (Standard: aus).
+2. **Lernen: Speicher:** wohin Fotos und Dokumente der Kinder kommen (Abschnitt 6.2).
+3. **Lernen: Kinder:** je Kind Klassenstufe, Schulform, Leistungsstufe je Fach und ob Fragen aus Uploads sofort nutzbar sind oder die Eltern sie freigeben (Standard: Eltern geben frei). Das alles ist freiwillig und bleibt auf deinem Server. Spätere Änderungen: im Eltern-Bereich unter **Lernen → Kinder und Leistungsstufen**, dort auch **Neues Schuljahr**.
+4. **Lernen: KI:** ein KI-Anbieter (Abschnitt 6.3) oder **Keine KI jetzt**.
+
+Ohne KI funktioniert das Üben mit den vorhandenen Fragen trotzdem. Hochgeladenes Material wird dann nicht ausgelesen, und der Tutor bleibt aus.
+
+### 6.2 Speicherort der Lernmappe und NAS
+
+- **Standard:** Ein Docker-Volume (`/data/lernen`). Es gehört zum VM-Backup (Ebene 1 in Abschnitt 9), **nicht** zu den täglichen Datenbank-Dumps.
+- **Eigener Ordner (z. B. ein NAS):** Der Ordner muss **schon im Container eingebunden sein**. Nestwerk prüft nur, ob es ihn gibt und ob es hineinschreiben kann. Bereits abgelegte Dateien werden nicht verschoben.
+
+Beispiel mit einer Datei `compose.override.yaml` neben der `compose.yaml` (Docker Compose liest sie automatisch, und Updates ändern sie nicht). Alle drei Rollen brauchen den Ordner, denn der Hintergrundjob für den Ordner `inbox` läuft im `scheduler`:
+
+```yaml
+services:
+  web:
+    volumes:
+      - /mnt/<NAS-FREIGABE>/lernen:/lernen
+  worker:
+    volumes:
+      - /mnt/<NAS-FREIGABE>/lernen:/lernen
+  scheduler:
+    volumes:
+      - /mnt/<NAS-FREIGABE>/lernen:/lernen
+```
+
+1. Die Freigabe auf der VM einhängen (z. B. NFS oder SMB unter `/mnt/<NAS-FREIGABE>`). Der Ordner muss für UID 1000 beschreibbar sein.
+2. `docker compose up -d`
+3. Im Assistenten (oder später in den Lern-Einstellungen) als Pfad `/lernen` eintragen.
+
+Je Kind legt Nestwerk die Ordner `inbox`, `archiv` und `tests` an (benannt nach der Konten-ID, nie nach dem Namen). Dateien, die du in `inbox` legst, übernimmt ein Hintergrundjob nach ein paar Sekunden Ruhe. Das Beispiel ist hier nicht mit einem echten NAS getestet.
+
+**Sicherung:** Ein eingehängter Ordner gehört nicht zum VM-Backup. Sichere ihn auf der NAS-Seite.
+
+### 6.3 KI-Anbieter (optional)
+
+Die KI ist **standardmäßig aus**. Nestwerk ruft keinen externen Dienst auf, bis du einen Anbieter einrichtest **und** einschaltest. Die KI liest Fotos ein, erzeugt Fragen, bewertet Antworten und treibt den Tutor an. Du wählst pro Aufgabe, welcher Anbieter sie erledigt. Es gibt keinen automatischen Wechsel.
+
+| Typ | Beispiel für die Adresse (Platzhalter) | Schlüssel | Verlassen Daten den Server? |
+|---|---|---|---|
+| Eigener Server mit OpenAI-kompatibler Schnittstelle (z. B. Ollama) | `http://<KI-SERVER>:11434/v1` | meist nicht nötig | nein, wenn der Server im Heimnetz steht |
+| Anthropic | leer lassen (Standardadresse) | **dein eigener** Schlüssel | **ja** |
+| OpenAI | leer lassen (Standardadresse) | **dein eigener** Schlüssel | **ja** |
+
+- Du trägst Namen, Adresse, Modellname und Schlüssel im Assistenten oder im Eltern-Bereich unter **Lernen → KI-Anbindung** ein. Schlüssel gehören **nicht** in die `.env`. Nestwerk speichert sie verschlüsselt und zeigt sie nie wieder an.
+- Ein neuer Anbieter ist zuerst **ausgeschaltet**. Mit **Verbindung testen** schickt Nestwerk nur ein kurzes „Antworte mit OK“, keine Daten der Kinder.
+- Für **Cloud-Anbieter** (Anthropic, OpenAI und jeder Server außerhalb deines Netzes) musst du ausdrücklich zustimmen, bevor sie laufen. Im Zweifel gilt ein Anbieter als Cloud.
+- **Risiken:** Bei Cloud-Anbietern gehen Texte und Fotos der Kinder (z. B. Hausaufgaben) an den Anbieter. Der Anbieter stellt meist Kosten pro Nutzung in Rechnung. Eine KI kann Fehler machen, auch ein eigener Server.
+- Die Adapter sind mit einem Fake-Transport getestet. **Mit einer echten KI (Ollama, Anthropic, OpenAI) wurde das Modul in diesem Repository nicht geprüft.** Teste deinen Anbieter selbst mit **Verbindung testen** und einem Probe-Upload.
+
+### 6.4 Hintergrundjobs des Lernmoduls
+
+Sie stehen in `deploy/crontab` und laufen automatisch im Container `scheduler`. Du musst nichts einrichten.
+
+| Job | Takt | Aufgabe |
+|---|---|---|
+| `ki_auftraege_verarbeiten` | alle 2 Minuten | KI-Warteschlange abarbeiten (ein Aufruf zur Zeit, Wiederholung bei Fehlern) |
+| `lernen_inbox_scannen` | alle 2 Minuten | neue Dateien im Ordner `inbox` in die Lernmappe übernehmen |
+| `tutor_aufraeumen` | täglich 04:25 | alte Tutor-Gespräche löschen (Aufbewahrung einstellbar, Standard 90 Tage) |
+
+Ohne eingeschaltete KI hat die Warteschlange nichts zu tun, und hochgeladenes Material wird nicht zu Fragen verarbeitet. Läuft etwas nicht: `docker compose logs scheduler`.
+
+### 6.5 Upload-Größe
+
+Die Middleware `UploadGrenze` (aus dem Modul `aufgaben`) lehnt zu große POST-Anfragen ab, **bevor** Django die Dateien liest. Die Grenze folgt den Einstellungen für Nachweis-Fotos und liegt bei den Standardwerten bei rund 46 MB je Anfrage. Dazu gilt `lernen.upload_max_mb` (Standard 10 MB) je Datei. Der Proxy-Wert aus Abschnitt 4.2 (`client_max_body_size 50m`) reicht dafür aus.
 
 ---
 
