@@ -121,3 +121,34 @@
   flex-wrap: wrap;
   gap: 0.5rem 1.2rem;
 }
+
+/* Links in Listen (Mappe, Prüfungen): Tippfläche mindestens 44px */
+[data-material-liste] a,
+.karte__inhalt li > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+}
+
+/* Aufklapp-Bereiche: als bedienbar erkennbar (Pfeil) und groß genug zum Tippen */
+.karte details > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--tap-min);
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+}
+
+.karte details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.karte details > summary::before {
+  content: "\25B8";
+}
+
+.karte details[open] > summary::before {
+  content: "\25BE";
+}

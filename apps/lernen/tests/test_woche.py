@@ -667,3 +667,11 @@ def test_tagesziel_erreicht_loest_abzeichen_pruefung_aus(kind_a, monkeypatch):
     einstellungen.setzen("lernen.leerlauf_sekunden", 300, akteur=None)
     assert services._zeit_buchen(sitzung, jetzt) is True
     assert aufrufe == [kind_a]
+
+
+def test_modul_titel_deckt_alle_einstellungsmodule_ab():
+    """Sonst steht in der Einrichtung "Oberflaeche" (capitalize) und in EN nichts übersetzt."""
+    from apps.einrichtung.uebersicht import MODUL_TITEL
+
+    for modul in ("avatar", "ereignisse", "familienziel", "lernen", "oberflaeche", "sondertag"):
+        assert modul in MODUL_TITEL

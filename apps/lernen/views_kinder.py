@@ -101,5 +101,7 @@ def eltern_schuljahr(request):
 def eltern_schuljahr_bestaetigen(request):
     if request.POST.get("bestaetigt") != "1":
         return HttpResponseBadRequest(_("Bitte das neue Schuljahr bestätigen."))
-    ergebnis = dienste.schuljahr_wechsel()
-    return _antwort(request, _kontext(schuljahr=ergebnis))
+    # Gezählt wird je Kind (wie in der Vorschau), nicht je Fach-Eintrag
+    _mit, kinder_angehoben, kinder_oben = dienste.schuljahr_vorschau()
+    dienste.schuljahr_wechsel()
+    return _antwort(request, _kontext(schuljahr=(kinder_angehoben, kinder_oben)))

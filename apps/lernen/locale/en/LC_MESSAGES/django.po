@@ -2641,8 +2641,10 @@ msgid "Die Titel sind ausgeschaltet und erscheinen nirgends."
 msgstr "The titles are switched off and appear nowhere."
 
 #, python-format
-msgid "Wir üben zusammen an %(tage)s Tagen."
-msgstr "Together we practise on %(tage)s days."
+msgid "Wir üben zusammen an %(tage)s Tag."
+msgid_plural "Wir üben zusammen an %(tage)s Tagen."
+msgstr[0] "Together we practise on %(tage)s day."
+msgstr[1] "Together we practise on %(tage)s days."
 
 msgid "Diese Woche geübt"
 msgstr "Practised this week"
@@ -2737,8 +2739,10 @@ msgid "Geübte Tage: %(tage)s. Diese Woche wird nichts verlangt."
 msgstr "Days practised: %(tage)s. Nothing is asked this week."
 
 #, python-format
-msgid "Eigenes Tagesziel erreicht an %(tage)s Tagen."
-msgstr "Own daily goal reached on %(tage)s days."
+msgid "Eigenes Tagesziel erreicht an %(tage)s Tag."
+msgid_plural "Eigenes Tagesziel erreicht an %(tage)s Tagen."
+msgstr[0] "Own daily goal reached on %(tage)s day."
+msgstr[1] "Own daily goal reached on %(tage)s days."
 
 msgid "keine Daten"
 msgstr "no data"
@@ -3004,8 +3008,10 @@ msgstr "Saved."
 msgid "Noch keine Kinder angelegt."
 msgstr "No children yet."
 
-msgid "Neues Schuljahr: %(a)s Klassenstufen angehoben, %(g)s unverändert (Obergrenze erreicht)."
-msgstr "New school year: %(a)s grades raised, %(g)s unchanged (upper limit reached)."
+msgid "Neues Schuljahr: Klassenstufe bei %(a)s Kind angehoben, %(g)s unverändert (Obergrenze erreicht)."
+msgid_plural "Neues Schuljahr: Klassenstufe bei %(a)s Kindern angehoben, %(g)s unverändert (Obergrenze erreicht)."
+msgstr[0] "New school year: grade raised for %(a)s child, %(g)s unchanged (upper limit reached)."
+msgstr[1] "New school year: grade raised for %(a)s children, %(g)s unchanged (upper limit reached)."
 
 msgid "Alle eingetragenen Klassenstufen werden um 1 angehoben, höchstens bis %(klasse_max)s. Es wird nichts gelöscht: Lernstand, Material, Verlauf und Leistungsstufen bleiben, wie sie sind. Danach könnt ihr jedes Kind noch einzeln anpassen."
 msgstr "All entered grades are raised by 1, up to %(klasse_max)s at most. Nothing is deleted: learning progress, material, history and levels stay as they are. Afterwards you can still adjust each child on its own."

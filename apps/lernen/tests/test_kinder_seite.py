@@ -226,3 +226,11 @@ def test_schuljahr_vorschau_zaehlt_je_kind(db, kind_a, kind_b):
     _anlegen(kind_a, 13)
     _anlegen(kind_b, 7)
     assert dienste.schuljahr_vorschau() == (2, 1, 1)
+
+
+def test_schuljahr_meldung_zaehlt_kinder_nicht_eintraege(eltern_client, kind_a):
+    _anlegen(kind_a, 5)  # zwei Fächer, aber ein Kind
+    antwort = eltern_client.post(
+        reverse("lernen:eltern_schuljahr_bestaetigen"), {"bestaetigt": "1"}
+    )
+    assert "bei 1 Kind angehoben" in antwort.content.decode()

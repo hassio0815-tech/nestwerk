@@ -995,6 +995,7 @@ details > summary {
 
 label.reihe {
   min-height: var(--tap-min);
+  flex-wrap: nowrap; /* Checkbox bleibt neben langem Text, springt nicht in eine eigene Zeile */
 }
 
 input[type="checkbox"],

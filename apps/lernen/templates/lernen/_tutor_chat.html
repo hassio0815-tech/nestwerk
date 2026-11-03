@@ -6,7 +6,7 @@
     {% for n in nachrichten %}
       <li class="tutor-nachricht tutor-nachricht--{{ n.rolle }}" data-tutor-art="{{ n.art }}">
         <span class="tutor-nachricht__wer">{% if n.rolle == "kind" %}{% translate "Du" %}{% else %}{% translate "Tutor" %}{% endif %}</span>
-        <span class="lernen-text">{% if n.art == "mehr_hilfe" %}{% translate "Ich brauche mehr Hilfe." %}{% else %}{{ n.text }}{% endif %}</span>
+        <span class="lernen-text">{% if n.art == "mehr_hilfe" %}{% translate "Ich brauche mehr Hilfe." %}{% elif n.rolle == "tutor" %}{% translate n.text %}{% else %}{{ n.text }}{% endif %}</span>
       </li>
     {% endfor %}
   </ol>
@@ -16,7 +16,7 @@
     {% url "lernen:tutor_senden" g.pk as senden_url %}
     <form method="post" action="{{ senden_url }}" hx-post="{{ senden_url }}" hx-target="#tutor-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
       <label class="feld__label" for="t-text">{% translate "Deine Nachricht" %}</label>
-      <textarea class="feld__eingabe" id="t-text" name="text" rows="3" maxlength="{{ max_zeichen }}" required></textarea>
+      <textarea class="feld__eingabe" id="t-text" name="text" rows="3" maxlength="{{ max_zeichen }}" required>{{ eingabe.text }}</textarea>
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Senden") %}
     </form>
     <div class="reihe">
@@ -28,14 +28,14 @@
       <form method="post" action="{{ beenden_url }}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text=_("Gespräch beenden") %}</form>
     </div>
     {% if versuch_moeglich %}
-      <details>
+      <details{% if eingabe.versuch %} open{% endif %}>
         <summary>{% translate "Ich habe einen Lösungsversuch" %}</summary>
         {% url "lernen:tutor_versuch" g.pk as versuch_url %}
         <form method="post" action="{{ versuch_url }}" hx-post="{{ versuch_url }}" hx-target="#tutor-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
           <label class="feld__label" for="t-aufgabe">{% translate "Die Aufgabe (wenn sie nicht oben steht)" %}</label>
-          <textarea class="feld__eingabe" id="t-aufgabe" name="aufgabe" rows="2"></textarea>
+          <textarea class="feld__eingabe" id="t-aufgabe" name="aufgabe" rows="2">{{ eingabe.aufgabe }}</textarea>
           <label class="feld__label" for="t-versuch">{% translate "Mein Versuch" %}</label>
-          <textarea class="feld__eingabe" id="t-versuch" name="versuch" rows="3" maxlength="{{ max_zeichen }}" required></textarea>
+          <textarea class="feld__eingabe" id="t-versuch" name="versuch" rows="3" maxlength="{{ max_zeichen }}" required>{{ eingabe.versuch }}</textarea>
           {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Versuch prüfen lassen") %}
         </form>
       </details>

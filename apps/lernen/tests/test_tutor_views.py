@@ -153,7 +153,9 @@ def test_limit_hinweis_in_der_seite(g, kind_client):
     einstellungen.setzen("lernen.tutor_nachrichten_pro_tag", 1, akteur=None)
     kind_client.post(url("tutor_senden", g.pk), {"text": "Eins"}, **HX)
     html = kind_client.post(url("tutor_senden", g.pk), {"text": "Zwei"}, **HX).content.decode()
-    assert escape(tutor_texte.ton("limit_tag", 2)) in html and "Zwei" not in html
+    assert escape(tutor_texte.ton("limit_tag", 2)) in html
+    # nicht gespeichert (steht höchstens als Entwurf im Eingabefeld)
+    assert not TutorNachricht.objects.filter(text="Zwei").exists()
 
 
 def test_ausgabe_wird_escaped(g, tutor, kind_client):
@@ -358,3 +360,19 @@ def test_eltern_uebersicht_verlinkt_tutor(eltern_client):
 def test_selectors_protokoll(tutor, kind_a):
     g1 = tutor_services.gespraech_starten(kind_a)
     assert list(tutor_selectors.protokoll(kind_a)) == [g1]
+
+
+def test_fehler_behaelt_getippten_text(tutor, kind_client, g):
+    """Zu lange Nachricht: Fehlermeldung, und das Kind muss nicht alles neu tippen."""
+    zu_lang = "Mein Satz " * 400
+    antwort = kind_client.post(url("tutor_senden", g.pk), {"text": zu_lang}, **HX)
+    html = antwort.content.decode()
+    assert "data-tutor-fehler" in html
+    assert zu_lang.strip() in html
+
+
+def test_begruessung_wird_in_der_sprache_der_seite_gezeigt(tutor, kind_client, g):
+    kind_client.cookies["nestwerk_sprache"] = "en"
+    html = kind_client.get(url("tutor_gespraech", g.pk)).content.decode()
+    assert "Ich bin dein Lern-Tutor" not in html
+    assert "your learning tutor" in html

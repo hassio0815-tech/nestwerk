@@ -4,7 +4,7 @@
   <h2 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Übungswoche" %}</h2>
 
   {% with z=k.ziel %}{% if z %}
-    <p class="kachel__text" data-woche-ziel="{% if z.erreicht %}erreicht{% else %}offen{% endif %}">{% blocktranslate with tage=z.tage %}Wir üben zusammen an {{ tage }} Tagen.{% endblocktranslate %}</p>
+    <p class="kachel__text" data-woche-ziel="{% if z.erreicht %}erreicht{% else %}offen{% endif %}">{% blocktranslate count tage=z.tage %}Wir üben zusammen an {{ tage }} Tag.{% plural %}Wir üben zusammen an {{ tage }} Tagen.{% endblocktranslate %}</p>
     <progress class="woche-balken" value="{{ z.prozent }}" max="100" aria-label="{% translate "Fortschritt der Familie" %}">{{ z.prozent }} %</progress>
     {% if z.erreicht %}<p class="kachel__text">{% include "komponenten/icon.html" with name="pokal" %} {% translate "Geschafft! Alle haben diese Woche geübt." %}</p>{% endif %}
   {% endif %}{% endwith %}

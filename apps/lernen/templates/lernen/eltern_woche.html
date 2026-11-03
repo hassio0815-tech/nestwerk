@@ -22,7 +22,7 @@
       <p>
         {% if b.soll_tage %}{% blocktranslate with tage=b.tage_geuebt soll=b.soll_tage %}Geübte Tage: {{ tage }} (Ziel der Woche: {{ soll }}).{% endblocktranslate %}
         {% else %}{% blocktranslate with tage=b.tage_geuebt %}Geübte Tage: {{ tage }}. Diese Woche wird nichts verlangt.{% endblocktranslate %}{% endif %}
-        {% blocktranslate with tage=b.tage_ziel %}Eigenes Tagesziel erreicht an {{ tage }} Tagen.{% endblocktranslate %}
+        {% blocktranslate count tage=b.tage_ziel %}Eigenes Tagesziel erreicht an {{ tage }} Tag.{% plural %}Eigenes Tagesziel erreicht an {{ tage }} Tagen.{% endblocktranslate %}
       </p>
 
       {% if b.vorschlaege %}

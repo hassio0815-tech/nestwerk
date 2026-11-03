@@ -91,7 +91,7 @@ def _eigenes(request, pk):
     return g
 
 
-def _chat(request, g, *, fehler=""):
+def _chat(request, g, *, fehler="", eingabe=None):
     nachrichten = list(tutor_selectors.nachrichten(g))
     letzte = nachrichten[-1] if nachrichten else None
     status = tutor_selectors.status()
@@ -100,6 +100,7 @@ def _chat(request, g, *, fehler=""):
         "g": g,
         "nachrichten": nachrichten,
         "fehler": fehler,
+        "eingabe": eingabe or {},  # bei Fehler: das Getippte bleibt stehen
         "status": status,
         "aktiv": offen and status is tutor_selectors.TutorStatus.BEREIT,
         "mehr_hilfe_moeglich": g.hilfestufe < tutor_services.HILFESTUFE_MAX,
@@ -127,7 +128,7 @@ def _chat_aktion(funktion):
         try:
             funktion(request, g)
         except TutorFehler as fehler:
-            return _chat(request, g, fehler=str(fehler))
+            return _chat(request, g, fehler=str(fehler), eingabe=request.POST)
         g.refresh_from_db()
         return _chat(request, g)
 

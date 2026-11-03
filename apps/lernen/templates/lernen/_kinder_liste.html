@@ -1,5 +1,5 @@
 {% load i18n %}<div id="kinder-liste" class="stapel">
-  {% if schuljahr %}<div class="feld__hinweis" role="status"><p>{% blocktranslate with a=schuljahr.0 g=schuljahr.1 %}Neues Schuljahr: {{ a }} Klassenstufen angehoben, {{ g }} unverändert (Obergrenze erreicht).{% endblocktranslate %}</p></div>{% endif %}
+  {% if schuljahr %}<div class="feld__hinweis" role="status"><p>{% blocktranslate count a=schuljahr.0 with g=schuljahr.1 %}Neues Schuljahr: Klassenstufe bei {{ a }} Kind angehoben, {{ g }} unverändert (Obergrenze erreicht).{% plural %}Neues Schuljahr: Klassenstufe bei {{ a }} Kindern angehoben, {{ g }} unverändert (Obergrenze erreicht).{% endblocktranslate %}</p></div>{% endif %}
   {% for z in zeilen %}
     <form method="post" action="{% url 'lernen:eltern_kind_speichern' z.kind.pk %}" hx-post="{% url 'lernen:eltern_kind_speichern' z.kind.pk %}" hx-target="#kinder-liste" hx-swap="outerHTML" class="karte" autocomplete="off">
       {% csrf_token %}

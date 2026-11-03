@@ -21,6 +21,12 @@ MODUL_TITEL = {
     "belohnung": gettext_lazy("Belohnungen und Taschengeld"),
     "benachrichtigung": gettext_lazy("Benachrichtigungen"),
     "spielregeln": gettext_lazy("Spielregeln"),
+    "avatar": gettext_lazy("Avatar"),
+    "ereignisse": gettext_lazy("Ereignisse"),
+    "familienziel": gettext_lazy("Familienziel"),
+    "lernen": gettext_lazy("Lernen"),
+    "oberflaeche": gettext_lazy("Oberfläche"),
+    "sondertag": gettext_lazy("Sondertag"),
 }
 AUSGEBLENDETE_MODULE = {"einrichtung"}
 BEHANDELT = {

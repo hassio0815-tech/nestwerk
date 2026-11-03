@@ -706,3 +706,6 @@ msgstr "Skipped parts keep their starting values."
 
 msgid "Später nachholen oder ändern (nach dem Abschluss):"
 msgstr "Catch up or change later (after finishing):"
+
+msgid "Oberfläche"
+msgstr "Interface"
