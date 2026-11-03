@@ -29,7 +29,7 @@ def _beispielwert(d):
         Typ.DATUM: "2026-01-01",
         Typ.UHRZEIT: "12:00",
         Typ.ZEITZONE: "Europe/Berlin",
-        Typ.LISTE: [],
+        Typ.LISTE: [1, 2] if d.element_typ is Typ.GANZZAHL else [],
     }[d.typ]
 
 
