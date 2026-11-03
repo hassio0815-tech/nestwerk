@@ -1,0 +1,87 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{{ m.anzeigename }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern_material" as liste_url %}
+  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="home" text=_("Lernmappe") %}
+{% endblock %}
+{% block seite %}
+  <h1>{{ m.anzeigename }}</h1>
+  <p>{{ m.kind.anzeigename }} · {{ m.get_status_display }}{% if fehlertext %} · {{ fehlertext }}{% endif %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Original" %}</h2>
+    {% url "lernen:material_datei" m.pk as datei_url %}
+    {% if m.mime == "image/jpeg" %}<img src="{{ datei_url }}" alt="{% translate 'Hochgeladenes Foto' %}" class="lernen-material-bild">{% endif %}
+    {% include "komponenten/button.html" with href=datei_url variante="geist" klein=True icon="pfeil-rechts" text=_("Datei öffnen") %}
+    {% if m.status == "wartet_ki" %}<p class="kachel__text">{% translate "Wartet auf die KI-Einrichtung. Ihr könnt Fach und Fragen auch von Hand eintragen." %}</p>{% endif %}
+    {% if m.text %}<h3>{% translate "Gelesener Text" %}</h3><pre class="lernen-text">{{ text_gekuerzt }}</pre>{% endif %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Fach und Thema" %}</h2>
+    <p>{% if m.fach %}{{ m.fach.name }}{% else %}{% translate "noch kein Fach" %}{% endif %}{% if m.thema_name %} – {{ m.thema_name }}{% endif %}{% if m.konfidenz is not None %} ({{ m.konfidenz|floatformat:2 }}){% endif %}</p>
+    <form method="post" action="{% url 'lernen:eltern_material_aktion' m.pk 'fach' %}" class="stapel">{% csrf_token %}
+      <div class="feld"><label class="feld__label" for="mf-fach">{% translate "Fach" %}</label>
+        <select class="feld__eingabe" id="mf-fach" name="fach" required>{% for f in faecher %}<option value="{{ f.pk }}"{% if f.pk == m.fach_id %} selected{% endif %}>{{ f.name }}</option>{% endfor %}</select></div>
+      <div class="feld"><label class="feld__label" for="mf-thema">{% translate "Thema" %}</label>
+        <input class="feld__eingabe" id="mf-thema" name="thema" maxlength="80" value="{{ m.thema_name }}"></div>
+      {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Fach speichern") %}
+    </form>
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Fragen" %}</h2>
+    {% if fragen %}
+    <form method="post" action="{% url 'lernen:eltern_material_aktion' m.pk 'freigeben' %}" class="stapel" id="fragen-form">{% csrf_token %}
+      <ul class="stapel">
+        {% for f in fragen %}
+          <li class="reihe" data-frage="{{ f.pk }}">
+            <label><input type="checkbox" name="frage" value="{{ f.pk }}"> {{ f.frage }} → {{ f.antwort }}</label>
+            <span>{{ f.get_freigabe_display }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="reihe">
+        <button type="submit" class="knopf knopf--primaer">{% translate "Ausgewählte freigeben (ohne Auswahl: alle wartenden)" %}</button>
+        <button type="submit" formaction="{% url 'lernen:eltern_material_aktion' m.pk 'ablehnen' %}" class="knopf knopf--geist">{% translate "Ablehnen" %}</button>
+      </div>
+    </form>
+    {% for f in fragen %}
+      <form method="post" action="{% url 'lernen:eltern_frage' m.pk f.pk %}" class="stapel">{% csrf_token %}
+        <div class="feld"><label class="feld__label" for="fq-{{ f.pk }}">{% translate "Frage ändern" %}</label>
+          <input class="feld__eingabe" id="fq-{{ f.pk }}" name="frage" maxlength="300" value="{{ f.frage }}" required></div>
+        <div class="feld"><label class="feld__label" for="fa-{{ f.pk }}">{% translate "Antwort" %}</label>
+          <input class="feld__eingabe" id="fa-{{ f.pk }}" name="antwort" maxlength="300" value="{{ f.antwort }}" required></div>
+        {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text=_("Speichern") %}
+      </form>
+    {% endfor %}
+    {% else %}<p>{% translate "Noch keine Fragen." %}</p>{% endif %}
+
+    {% if m.fach %}
+    <h3>{% translate "Frage von Hand anlegen" %}</h3>
+    <form method="post" action="{% url 'lernen:eltern_material_aktion' m.pk 'frage_neu' %}" class="stapel">{% csrf_token %}
+      <div class="feld"><label class="feld__label" for="mn-typ">{% translate "Art" %}</label>
+        <select class="feld__eingabe" id="mn-typ" name="typ">{% for wert, text in typen %}<option value="{{ wert }}">{{ text }}</option>{% endfor %}</select></div>
+      <div class="feld"><label class="feld__label" for="mn-frage">{% translate "Frage (oder deutsches Wort)" %}</label>
+        <input class="feld__eingabe" id="mn-frage" name="frage" maxlength="300" required></div>
+      <div class="feld"><label class="feld__label" for="mn-antwort">{% translate "Antwort" %}</label>
+        <input class="feld__eingabe" id="mn-antwort" name="antwort" maxlength="300" required></div>
+      {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Frage anlegen") %}
+    </form>
+    {% endif %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Weiteres" %}</h2>
+    {% if m.status == "fehler" or m.status == "wartet_ki" %}
+      <form method="post" action="{% url 'lernen:eltern_material_aktion' m.pk 'neu' %}">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" icon="funke" text=_("Noch einmal versuchen") %}</form>
+    {% endif %}
+    <form method="post" action="{% url 'lernen:eltern_material_aktion' m.pk 'loeschen' %}">{% csrf_token %}
+      <p>{% translate "Löschen entfernt das Original, den gelesenen Text und alle Fragen aus diesem Material." %}</p>
+      {% include "komponenten/button.html" with typ="submit" variante="geist" icon="x" text=_("Material löschen") %}
+    </form>
+  </div></section>
+{% endblock %}

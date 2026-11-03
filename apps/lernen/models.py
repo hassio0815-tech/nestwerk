@@ -1,4 +1,4 @@
-"""Datenmodell von lernen (SPEC 21; Etappe 1 Fundament, Etappe 2 Üben ohne KI).
+"""Datenmodell von lernen (SPEC 21; Etappe 1 Fundament, Etappe 2 Üben ohne KI, 3 KI, 4 Material).
 
 ``Fach`` -> ``Thema`` (je Klassenstufe) -> ``Frage`` (Vokabel oder Frage). Pro Kind gibt es genau
 eine ``Lernmappe``, beliebig viele ``Lernsitzung``en und je Fach eine ``Leistungsstufe``.
@@ -138,6 +138,10 @@ class Frage(models.Model):
         related_name="lernfragen",
     )
     erstellt = models.DateTimeField(auto_now_add=True)
+    # Etappe 4: Frage stammt aus einem Upload; mit dem Material verschwindet sie
+    material = models.ForeignKey(
+        "Material", null=True, blank=True, on_delete=models.CASCADE, related_name="fragen"
+    )
 
     class Meta:
         ordering = ["thema", "id"]
@@ -161,6 +165,9 @@ class Lernmappe(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="lernmappe"
     )
     erstellt = models.DateTimeField(auto_now_add=True)
+    # Etappe 4: Sind Fragen aus Uploads sofort nutzbar? ``None`` = Familien-Einstellung
+    # ``lernen.freigabe_durch_eltern`` (Standard: Eltern geben frei).
+    fragen_sofort_nutzbar = models.BooleanField(null=True, blank=True)
 
     def __str__(self):
         return f"Lernmappe {self.kind_id}"
@@ -463,3 +470,76 @@ class KiAuftrag(models.Model):
 
     def __str__(self):
         return f"{self.aufgabe} ({self.status})"
+
+
+# --- Etappe 4: Material-Pipeline (SPEC 21.5) ----------------------------------------------------
+
+
+class MaterialArt(models.TextChoices):
+    BILD = "bild", _("Bild")
+    DOKUMENT = "dokument", _("Dokument")
+
+
+class MaterialEingang(models.TextChoices):
+    UPLOAD = "upload", _("Upload")
+    INBOX = "inbox", _("Ordner inbox")
+
+
+class MaterialStatus(models.TextChoices):
+    WARTET_KI = "wartet_ki", _("wartet auf KI-Einrichtung")
+    WARTET = "wartet", _("wartet")
+    LIEST = "liest", _("wird gelesen")
+    RUECKFRAGE = "rueckfrage", _("braucht Rückfrage")
+    FRAGEN = "fragen", _("Fragen werden gemacht")
+    WARTET_ELTERN = "wartet_eltern", _("wartet auf die Eltern")
+    BEREIT = "bereit", _("bereit")
+    FEHLER = "fehler", _("Fehler")
+
+
+class Material(models.Model):
+    """Ein Upload oder eine Datei aus dem Ordner ``inbox`` in der Lernmappe eines Kindes.
+
+    ``name`` ist der neutrale Dateiname im Speicher (``<32 Hex>.<ext>``), nie der Name des
+    Uploads; ``anzeigename`` ist die bereinigte Fassung zur Anzeige. Der Inhalt der Datei und
+    der ausgelesene Text sind **Daten** und nie Anweisungen (Prompt-Injection).
+    """
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="materialien"
+    )
+    name = models.CharField(max_length=60)
+    anzeigename = models.CharField(max_length=80, blank=True)
+    art = models.CharField(max_length=10, choices=MaterialArt.choices)
+    mime = models.CharField(max_length=40)
+    groesse = models.PositiveIntegerField(default=0)
+    inhalt_hash = models.CharField(max_length=64, db_index=True)
+    bereich = models.CharField(max_length=10, default="inbox")  # inbox oder archiv
+    eingang = models.CharField(
+        max_length=10, choices=MaterialEingang.choices, default=MaterialEingang.UPLOAD
+    )
+    hinweis_fach = models.CharField(max_length=40, blank=True)  # Fach-Unterordner im inbox
+    status = models.CharField(
+        max_length=14, choices=MaterialStatus.choices, default=MaterialStatus.WARTET_KI
+    )
+    fehler = models.CharField(max_length=30, blank=True)
+    fach = models.ForeignKey(
+        Fach, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    thema_name = models.CharField(max_length=80, blank=True)
+    klassenstufe = models.PositiveSmallIntegerField(null=True, blank=True)
+    konfidenz = models.FloatField(null=True, blank=True)
+    text = models.TextField(blank=True)
+    # Zählt Neustarts; Teil des Idempotenz-Schlüssels der KI-Aufträge
+    durchgang = models.PositiveSmallIntegerField(default=1)
+    erstellt = models.DateTimeField(auto_now_add=True)
+    aktualisiert = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-erstellt", "-id"]
+        constraints = [
+            models.UniqueConstraint(fields=["kind", "name"], name="lernen_material_name_je_kind")
+        ]
+        indexes = [models.Index(fields=["kind", "status"], name="lernen_material_kind_status")]
+
+    def __str__(self):
+        return f"Material {self.pk} ({self.status})"

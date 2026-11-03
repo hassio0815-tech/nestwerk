@@ -1305,3 +1305,349 @@ msgstr "Please choose what you want to practise."
 #: views.py:278
 msgid "Bitte Anfang und Ende prüfen (Ende nicht vor dem Anfang)."
 msgstr "Please check start and end (the end must not be before the start)."
+
+msgid "Ja: Fragen aus Uploads sind erst nach der Freigabe durch die Eltern nutzbar. Nein: sie sind sofort nutzbar. Pro Kind lässt sich das auf der Lernen-Seite ändern."
+msgstr "Yes: questions from uploads can only be used after the parents approve them. No: they can be used right away. You can change this per child on the Learning page."
+
+msgid "Upload: größte Datei"
+msgstr "Upload: largest file"
+
+msgid "Größere Fotos und Dokumente nimmt die Lernmappe nicht an."
+msgstr "Larger photos and documents are not accepted into the learning folder."
+
+msgid "Auslesen: Mindest-Sicherheit für das Fach"
+msgstr "Reading: minimum certainty for the subject"
+
+msgid "Ist die KI unsicherer, fragen wir die Eltern, zu welchem Fach es gehört."
+msgstr "If the AI is less certain, we ask the parents which subject it belongs to."
+
+msgid "Prozent"
+msgstr "Percent"
+
+msgid "Ordner inbox: Ruhezeit einer Datei"
+msgstr "Folder inbox: resting time of a file"
+
+msgid "Eine Datei im Ordner wird erst gelesen, wenn sie so lange unverändert ist."
+msgstr "A file in the folder is only read once it has been unchanged for this long."
+
+msgid "Ordner inbox: Dateien pro Lauf"
+msgstr "Folder inbox: files per run"
+
+msgid "So viele neue Dateien übernimmt ein Lauf höchstens."
+msgstr "A run takes over at most this many new files."
+
+msgid "Fragen aus einem Material (Obergrenze)"
+msgstr "Questions from one material (upper limit)"
+
+msgid "Mehr Fragen speichern wir aus einem Upload nicht."
+msgstr "We do not save more questions than this from one upload."
+
+msgid "Datei"
+msgstr "File"
+
+msgid "Diese Datei können wir nicht nehmen. Erlaubt sind Fotos (JPEG, PNG, WebP), PDF und Text."
+msgstr "We cannot accept this file. Allowed are photos (JPEG, PNG, WebP), PDF and text."
+
+#, python-format
+msgid "Die Datei ist zu groß (höchstens %(mb)s MB)."
+msgstr "The file is too large (at most %(mb)s MB)."
+
+msgid "Die Datei ist leer."
+msgstr "The file is empty."
+
+msgid "Das Foto hat zu viele Pixel. Bitte nimm ein kleineres."
+msgstr "The photo has too many pixels. Please use a smaller one."
+
+msgid "Dieses PDF ist geschützt. Bitte nimm ein anderes."
+msgstr "This PDF is protected. Please use another one."
+
+#, python-format
+msgid "Das PDF hat zu viele Seiten (höchstens %(n)s)."
+msgstr "The PDF has too many pages (at most %(n)s)."
+
+msgid "Im Material ist kein Text zu erkennen."
+msgstr "No text can be recognised in the material."
+
+msgid "In diesem PDF ist kein Text und kein Bild zu erkennen."
+msgstr "This PDF contains neither text nor an image that can be recognised."
+
+msgid "Die Datei fehlt oder ist nicht lesbar."
+msgstr "The file is missing or cannot be read."
+
+msgid "Die Datei ist zu groß."
+msgstr "The file is too large."
+
+msgid "Diese Datei können wir nicht nehmen."
+msgstr "We cannot accept this file."
+
+msgid "Dieses Material ist schon in der Mappe."
+msgstr "This material is already in the folder."
+
+msgid "Der Speicher ist voll."
+msgstr "The storage is full."
+
+msgid "Aus diesem Material konnten keine Fragen gemacht werden."
+msgstr "No questions could be made from this material."
+
+msgid "Die Eltern haben dieses Material abgelehnt."
+msgstr "The parents rejected this material."
+
+msgid "Die Antwort der KI war nicht brauchbar."
+msgstr "The AI answer was not usable."
+
+msgid "Material gibt es nur für Kinder."
+msgstr "Material only exists for children."
+
+msgid "Das hast du schon hochgeladen."
+msgstr "You have already uploaded this."
+
+msgid "Dieses Material braucht keinen neuen Versuch."
+msgstr "This material does not need another try."
+
+msgid "Diese Datei lässt sich nicht verarbeiten. Bitte löschen."
+msgstr "This file cannot be processed. Please delete it."
+
+msgid "Diese Frage gibt es nicht."
+msgstr "This question does not exist."
+
+msgid "Bitte Frage und Antwort ausfüllen (ohne Links und ohne HTML)."
+msgstr "Please fill in question and answer (without links and without HTML)."
+
+msgid "Dieses Fach ist nicht aktiv."
+msgstr "This subject is not active."
+
+msgid "Bitte zuerst ein Fach wählen."
+msgstr "Please choose a subject first."
+
+msgid "Bild"
+msgstr "Image"
+
+msgid "Dokument"
+msgstr "Document"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Ordner inbox"
+msgstr "Folder inbox"
+
+msgid "wartet auf KI-Einrichtung"
+msgstr "waiting for AI setup"
+
+msgid "wartet"
+msgstr "waiting"
+
+msgid "wird gelesen"
+msgstr "being read"
+
+msgid "braucht Rückfrage"
+msgstr "needs a question"
+
+msgid "Fragen werden gemacht"
+msgstr "questions are being made"
+
+msgid "wartet auf die Eltern"
+msgstr "waiting for the parents"
+
+msgid "Lernmappe"
+msgstr "Learning folder"
+
+msgid "Material der Kinder ansehen, Fragen freigeben, Speicher prüfen."
+msgstr "View the children's material, approve questions, check storage."
+
+msgid "Hier landet das Material der Kinder. Ihr gebt die Fragen frei, bevor sie beim Üben erscheinen (außer ihr erlaubt die sofortige Nutzung für ein Kind). Jedes Kind sieht nur seine eigene Mappe."
+msgstr "This is where the children's material ends up. You approve the questions before they appear in practice (unless you allow immediate use for a child). Each child only sees their own folder."
+
+msgid "Wartet auf euch"
+msgstr "Waiting for you"
+
+msgid "Ansehen"
+msgstr "View"
+
+msgid "Ausgewählte freigeben"
+msgstr "Approve selected"
+
+msgid "Ausgewählte ablehnen"
+msgstr "Reject selected"
+
+msgid "Nichts wartet."
+msgstr "Nothing is waiting."
+
+#, python-format
+msgid "Speicher: %(belegt)s von %(limit)s MB."
+msgstr "Storage: %(belegt)s of %(limit)s MB."
+
+msgid "Fragen aus Uploads sind sofort nutzbar."
+msgstr "Questions from uploads can be used right away."
+
+msgid "Lieber selbst freigeben"
+msgstr "Rather approve them myself"
+
+msgid "Ihr gebt Fragen aus Uploads frei."
+msgstr "You approve questions from uploads."
+
+msgid "Sofort nutzbar machen"
+msgstr "Make immediately usable"
+
+msgid "Noch kein Material."
+msgstr "No material yet."
+
+msgid "Original"
+msgstr "Original"
+
+msgid "Hochgeladenes Foto"
+msgstr "Uploaded photo"
+
+msgid "Datei öffnen"
+msgstr "Open file"
+
+msgid "Wartet auf die KI-Einrichtung. Ihr könnt Fach und Fragen auch von Hand eintragen."
+msgstr "Waiting for the AI setup. You can also enter subject and questions by hand."
+
+msgid "Gelesener Text"
+msgstr "Text that was read"
+
+msgid "Fach und Thema"
+msgstr "Subject and topic"
+
+msgid "noch kein Fach"
+msgstr "no subject yet"
+
+msgid "Fach"
+msgstr "Subject"
+
+msgid "Thema"
+msgstr "Topic"
+
+msgid "Fach speichern"
+msgstr "Save subject"
+
+msgid "Fragen"
+msgstr "Questions"
+
+msgid "Ausgewählte freigeben (ohne Auswahl: alle wartenden)"
+msgstr "Approve selected (without a selection: all waiting)"
+
+msgid "Ablehnen"
+msgstr "Reject"
+
+msgid "Frage ändern"
+msgstr "Change question"
+
+msgid "Antwort"
+msgstr "Answer"
+
+msgid "Noch keine Fragen."
+msgstr "No questions yet."
+
+msgid "Frage von Hand anlegen"
+msgstr "Add a question by hand"
+
+msgid "Art"
+msgstr "Kind"
+
+msgid "Frage (oder deutsches Wort)"
+msgstr "Question (or German word)"
+
+msgid "Frage anlegen"
+msgstr "Add question"
+
+msgid "Weiteres"
+msgstr "More"
+
+msgid "Noch einmal versuchen"
+msgstr "Try again"
+
+msgid "Löschen entfernt das Original, den gelesenen Text und alle Fragen aus diesem Material."
+msgstr "Deleting removes the original, the text that was read and all questions from this material."
+
+msgid "Material löschen"
+msgstr "Delete material"
+
+msgid "Meine Mappe"
+msgstr "My folder"
+
+#, python-format
+msgid "Super, %(n)s Datei ist angekommen."
+msgid_plural "Super, %(n)s Dateien sind angekommen."
+msgstr[0] "Great, %(n)s file has arrived."
+msgstr[1] "Great, %(n)s files have arrived."
+
+msgid "Material hochladen"
+msgstr "Upload material"
+
+msgid "Mach ein Foto von deinem Heft, Buch oder Arbeitsblatt, oder nimm ein PDF oder eine Textdatei. Daraus entstehen Übungsfragen."
+msgstr "Take a photo of your notebook, book or worksheet, or choose a PDF or a text file. Practice questions are made from it."
+
+msgid "Die Fragen entstehen erst, wenn deine Eltern die KI eingerichtet haben. Dein Material wartet bis dahin sicher in der Mappe."
+msgstr "The questions are only made once your parents have set up the AI. Until then your material waits safely in the folder."
+
+msgid "Foto oder Datei"
+msgstr "Photo or file"
+
+#, python-format
+msgid "Erlaubt: %(endungen)s. Höchstens %(mb)s MB pro Datei."
+msgstr "Allowed: %(endungen)s. At most %(mb)s MB per file."
+
+msgid "Hochladen"
+msgstr "Upload"
+
+#, python-format
+msgid "Platz in der Mappe: %(belegt)s von %(limit)s MB."
+msgstr "Space in the folder: %(belegt)s of %(limit)s MB."
+
+msgid "Dein Material"
+msgstr "Your material"
+
+msgid "wartet auf die KI-Einrichtung"
+msgstr "waiting for the AI setup"
+
+msgid "wartet auf deine Eltern"
+msgstr "waiting for your parents"
+
+msgid "bereit zum Üben"
+msgstr "ready to practise"
+
+msgid "hat nicht geklappt, deine Eltern schauen nach"
+msgstr "did not work, your parents will take a look"
+
+msgid "Noch nichts in deiner Mappe."
+msgstr "Nothing in your folder yet."
+
+msgid "Dein Material wartet darauf, gelesen zu werden."
+msgstr "Your material is waiting to be read."
+
+msgid "Dein Material wird gerade gelesen."
+msgstr "Your material is being read right now."
+
+msgid "Deine Eltern schauen sich die Fragen an und geben sie frei."
+msgstr "Your parents are looking at the questions and will approve them."
+
+msgid "Die Fragen sind bereit. Du findest sie beim Üben."
+msgstr "The questions are ready. You will find them in practice."
+
+msgid "Das hat nicht geklappt. Deine Eltern schauen nach."
+msgstr "That did not work. Your parents will take a look."
+
+#, python-format
+msgid "Fach: %(fach)s"
+msgstr "Subject: %(fach)s"
+
+msgid "Dein Foto"
+msgstr "Your photo"
+
+msgid "Lade ein Foto oder ein Dokument hoch. Daraus entstehen Übungsfragen."
+msgstr "Upload a photo or a document. Practice questions are made from it."
+
+msgid "Zur Mappe"
+msgstr "To the folder"
+
+msgid "Bitte wähle zuerst eine Datei aus."
+msgstr "Please choose a file first."
+
+msgid "Die Mappe ist voll. Sag deinen Eltern Bescheid, sie können aufräumen."
+msgstr "The folder is full. Tell your parents, they can tidy up."
+
+#, python-format
+msgid "Pro Mal höchstens %(n)s Dateien."
+msgstr "At most %(n)s files at a time."

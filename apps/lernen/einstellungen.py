@@ -67,7 +67,7 @@ def einstellungen_definieren():
         _("Eltern geben Fragen frei"),
         beschreibung=_(
             "Ja: Fragen aus Uploads sind erst nach der Freigabe durch die Eltern nutzbar. "
-            "Nein: sie sind sofort nutzbar."
+            "Nein: sie sind sofort nutzbar. Pro Kind lässt sich das auf der Lernen-Seite ändern."
         ),
     )
     definieren(
@@ -88,6 +88,7 @@ def einstellungen_definieren():
 
     _definieren_ueben()
     _definieren_ki()
+    _definieren_material()
 
 
 def _definieren_ueben():
@@ -262,6 +263,64 @@ def _definieren_ki():
         Typ.GANZZAHL,
         _("KI: Aufträge pro Lauf"),
         beschreibung=_("So viele Hintergrund-Aufträge bearbeitet ein Lauf höchstens."),
+        minimum=1,
+        maximum=100,
+    )
+
+
+# Etappe 4 (Material-Pipeline): Migration 0009 legt fehlende Werte an.
+STARTWERTE_MATERIAL = {
+    "lernen.upload_max_mb": 10,
+    "lernen.auslesen_min_konfidenz": 60,
+    "lernen.scan_ruhe_sekunden": 30,
+    "lernen.scan_dateien_pro_lauf": 10,
+    "lernen.fragen_je_material_max": 30,
+}
+
+
+def _definieren_material():
+    definieren(
+        "lernen.upload_max_mb",
+        Typ.GANZZAHL,
+        _("Upload: größte Datei"),
+        beschreibung=_("Größere Fotos und Dokumente nimmt die Lernmappe nicht an."),
+        einheit=_("MB"),
+        minimum=1,
+        maximum=40,
+    )
+    definieren(
+        "lernen.auslesen_min_konfidenz",
+        Typ.GANZZAHL,
+        _("Auslesen: Mindest-Sicherheit für das Fach"),
+        beschreibung=_("Ist die KI unsicherer, fragen wir die Eltern, zu welchem Fach es gehört."),
+        einheit=_("Prozent"),
+        minimum=0,
+        maximum=100,
+    )
+    definieren(
+        "lernen.scan_ruhe_sekunden",
+        Typ.GANZZAHL,
+        _("Ordner inbox: Ruhezeit einer Datei"),
+        beschreibung=_(
+            "Eine Datei im Ordner wird erst gelesen, wenn sie so lange unverändert ist."
+        ),
+        einheit=_("Sekunden"),
+        minimum=0,
+        maximum=3600,
+    )
+    definieren(
+        "lernen.scan_dateien_pro_lauf",
+        Typ.GANZZAHL,
+        _("Ordner inbox: Dateien pro Lauf"),
+        beschreibung=_("So viele neue Dateien übernimmt ein Lauf höchstens."),
+        minimum=1,
+        maximum=200,
+    )
+    definieren(
+        "lernen.fragen_je_material_max",
+        Typ.GANZZAHL,
+        _("Fragen aus einem Material (Obergrenze)"),
+        beschreibung=_("Mehr Fragen speichern wir aus einem Upload nicht."),
         minimum=1,
         maximum=100,
     )

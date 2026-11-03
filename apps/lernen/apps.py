@@ -8,7 +8,7 @@ class LernenConfig(AppConfig):
     verbose_name = "Lernen"
 
     def ready(self):
-        from . import events, registry
+        from . import events, material_ki, registry
         from .einstellungen import einstellungen_definieren
 
         einstellungen_definieren()
@@ -16,3 +16,4 @@ class LernenConfig(AppConfig):
         events.texte_registrieren()
         registry.kacheln_registrieren()
         registry.metriken_registrieren()
+        material_ki.registrieren()

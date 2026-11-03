@@ -1,0 +1,61 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Lernmappe" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern" as lernen_url %}
+  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "Lernmappe" %}</h1>
+  <p>{% translate "Hier landet das Material der Kinder. Ihr gebt die Fragen frei, bevor sie beim Üben erscheinen (außer ihr erlaubt die sofortige Nutzung für ein Kind). Jedes Kind sieht nur seine eigene Mappe." %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Wartet auf euch" %}</h2>
+    {% if wartend %}
+    <form method="post" action="{% url 'lernen:eltern_material_sammel' %}" class="stapel" data-sammel>{% csrf_token %}
+      <ul class="stapel">
+        {% for m in wartend %}
+          <li class="reihe">
+            <label><input type="checkbox" name="material" value="{{ m.pk }}"> {{ m.kind.anzeigename }}: {{ m.anzeigename }}</label>
+            <span>{{ m.get_status_display }}</span>
+            {% url "lernen:eltern_material_detail" m.pk as d_url %}
+            {% include "komponenten/button.html" with href=d_url variante="geist" klein=True icon="pfeil-rechts" text=_("Ansehen") %}
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="reihe">
+        <button type="submit" name="aktion" value="freigeben" class="knopf knopf--primaer">{% translate "Ausgewählte freigeben" %}</button>
+        <button type="submit" name="aktion" value="ablehnen" class="knopf knopf--geist">{% translate "Ausgewählte ablehnen" %}</button>
+      </div>
+    </form>
+    {% else %}<p>{% translate "Nichts wartet." %}</p>{% endif %}
+  </div></section>
+
+  {% for z in zeilen %}
+  <section class="karte"><div class="karte__inhalt stapel" data-mappe-kind="{{ z.kind.pk }}">
+    <h2>{{ z.kind.anzeigename }}</h2>
+    <p>{% blocktranslate with belegt=z.belegt_mb limit=z.limit_mb %}Speicher: {{ belegt }} von {{ limit }} MB.{% endblocktranslate %}</p>
+    <form method="post" action="{% url 'lernen:eltern_material_regel' %}" class="reihe">{% csrf_token %}
+      <input type="hidden" name="kind" value="{{ z.kind.pk }}">
+      {% if z.sofort %}
+        <span>{% translate "Fragen aus Uploads sind sofort nutzbar." %}</span>
+        <button type="submit" name="sofort" value="0" class="knopf knopf--geist knopf--klein">{% translate "Lieber selbst freigeben" %}</button>
+      {% else %}
+        <span>{% translate "Ihr gebt Fragen aus Uploads frei." %}</span>
+        <button type="submit" name="sofort" value="1" class="knopf knopf--geist knopf--klein">{% translate "Sofort nutzbar machen" %}</button>
+      {% endif %}
+    </form>
+    <ul class="stapel">
+      {% for m in z.material %}
+        <li class="reihe">
+          {% url "lernen:eltern_material_detail" m.pk as d_url %}
+          <a href="{{ d_url }}">{{ m.anzeigename }}</a>
+          <span>{{ m.get_status_display }}</span>
+        </li>
+      {% empty %}<li>{% translate "Noch kein Material." %}</li>{% endfor %}
+    </ul>
+  </div></section>
+  {% endfor %}
+{% endblock %}

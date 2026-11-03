@@ -1,0 +1,23 @@
+{% extends "basis/kind.html" %}
+{% load i18n static %}
+{% block titel %}{{ m.anzeigename }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:material" as mappe_url %}
+  {% include "komponenten/button.html" with href=mappe_url variante="geist" klein=True icon="schule" text=_("Meine Mappe") %}
+{% endblock %}
+{% block inhalt %}
+  <h1>{{ m.anzeigename }}</h1>
+  <section class="karte"><div class="karte__inhalt stapel">
+    <p data-phase="{{ phase }}">
+      {% if phase == "wartet" %}{% translate "Dein Material wartet darauf, gelesen zu werden." %}
+      {% elif phase == "liest" %}{% translate "Dein Material wird gerade gelesen." %}
+      {% elif phase == "eltern" %}{% translate "Deine Eltern schauen sich die Fragen an und geben sie frei." %}
+      {% elif phase == "bereit" %}{% translate "Die Fragen sind bereit. Du findest sie beim Üben." %}
+      {% else %}{% translate "Das hat nicht geklappt. Deine Eltern schauen nach." %}{% endif %}
+    </p>
+    {% if m.fach %}<p>{% blocktranslate with fach=m.fach.name %}Fach: {{ fach }}{% endblocktranslate %}{% if m.thema_name %} – {{ m.thema_name }}{% endif %}</p>{% endif %}
+    {% if m.mime == "image/jpeg" %}<img src="{% url 'lernen:material_datei' m.pk %}" alt="{% translate 'Dein Foto' %}" class="lernen-material-bild">{% endif %}
+    {% if m.text %}<h2>{% translate "Gelesener Text" %}</h2><pre class="lernen-text">{{ m.text }}</pre>{% endif %}
+  </div></section>
+{% endblock %}

@@ -48,7 +48,12 @@ def startwerte(db):
     from apps.kern import einstellungen
     from apps.kern.einstellungen import startwerte_schreiben
     from apps.kern.models import Einstellung
-    from apps.lernen.einstellungen import STARTWERTE, STARTWERTE_KI, STARTWERTE_UEBEN
+    from apps.lernen.einstellungen import (
+        STARTWERTE,
+        STARTWERTE_KI,
+        STARTWERTE_MATERIAL,
+        STARTWERTE_UEBEN,
+    )
     from apps.spielregeln import raenge_start
     from apps.spielregeln.einstellungen import STARTWERTE as SPIELREGELN
     from apps.spielregeln.models import Kalibrierung, Rang
@@ -56,7 +61,7 @@ def startwerte(db):
     Einstellung.objects.update_or_create(
         schluessel="allgemein.zeitzone", defaults={"wert": "Europe/Berlin", "modul": "allgemein"}
     )
-    for werte in (STARTWERTE, STARTWERTE_UEBEN, STARTWERTE_KI, SPIELREGELN):
+    for werte in (STARTWERTE, STARTWERTE_UEBEN, STARTWERTE_KI, STARTWERTE_MATERIAL, SPIELREGELN):
         startwerte_schreiben(Einstellung, werte)
     einstellungen.setzen("allgemein.go_live_datum", GO_LIVE, akteur=None)
     vorhanden = set(Einstellung.objects.values_list("schluessel", flat=True))
@@ -66,6 +71,13 @@ def startwerte(db):
                 schluessel=d.schluessel, modul=d.modul, wert=d.pruefen(_beispielwert(d))
             )
     raenge_start.anlegen(Rang, Kalibrierung)
+
+
+@pytest.fixture(autouse=True)
+def speicher_ordner(settings, tmp_path):
+    """Jeder Test schreibt in einen eigenen Ordner, nie ins echte Datenverzeichnis."""
+    settings.LERNEN_SPEICHER_DIR = tmp_path / "lernmappe"
+    return settings.LERNEN_SPEICHER_DIR
 
 
 @pytest.fixture

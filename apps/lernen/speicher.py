@@ -5,10 +5,12 @@ Der Basispfad kommt aus ``settings.LERNEN_SPEICHER_DIR`` (Standard: Docker-Volum
 heißen nach der Kind-ID (``kind_<id>``, Konten-ID als UUID), nie nach dem Namen. Jeder Pfad
 wird aufgelöst und muss unter dem Ordner des Kindes liegen; Dateinamen sind reine Namen
 (kein ``/``, kein ``..``).
-Noch ohne Upload-Oberfläche und ohne Verarbeitung (Etappe 1).
+Etappe 4 ergänzt ``lesen``, den Blick auf fremde Dateien im Ordner ``inbox`` (``inbox_dateien``,
+zweiter Eingang z. B. über ein NAS) und deren sicheres Übernehmen (``uebernehmen``).
 """
 
 import shutil
+from dataclasses import dataclass
 from pathlib import Path
 from uuid import UUID
 
@@ -23,6 +25,17 @@ class SpeicherFehler(Exception):
 
 class SpeicherVoll(SpeicherFehler):
     """Das Speicherlimit des Kindes wäre überschritten."""
+
+
+@dataclass(frozen=True)
+class InboxDatei:
+    """Eine von außen abgelegte Datei im ``inbox``. ``hinweis`` = Name des Unterordners (Fach)."""
+
+    pfad: Path
+    hinweis: str
+    name: str
+    groesse: int
+    geaendert: float
 
 
 class Speicher:
@@ -84,6 +97,60 @@ class Speicher:
         ziel = self.pfad(kind_id, nach, name)
         if not quelle.is_file():
             raise FileNotFoundError(name)
+        if ziel.exists():
+            raise FileExistsError(name)
+        ziel.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(quelle, ziel)
+        return ziel
+
+    def lesen(self, kind_id, bereich, name, *, max_bytes=None):
+        """Inhalt einer Datei; ``FileNotFoundError``, wenn es sie nicht (als echte Datei) gibt."""
+        ziel = self.pfad(kind_id, bereich, name)
+        if not ziel.is_file():
+            raise FileNotFoundError(name)
+        with open(ziel, "rb") as f:
+            return f.read() if max_bytes is None else f.read(max_bytes + 1)
+
+    def inbox_dateien(self, kind_id):
+        """Dateien, die direkt in ``inbox`` oder in einem Unterordner (Tiefe 1) liegen.
+
+        Symlinks (Dateien wie Ordner), versteckte Namen und alles, was nach dem Auflösen nicht
+        unter ``inbox`` liegt, werden übersprungen. Reihenfolge stabil (nach Pfad)."""
+        inbox = self.ordner(kind_id, "inbox")
+        if not inbox.is_dir():
+            return []
+        ergebnis = []
+
+        def dateien(ordner, hinweis):
+            for eintrag in sorted(ordner.iterdir(), key=lambda p: p.name):
+                if eintrag.name.startswith("."):
+                    continue
+                if eintrag.is_symlink() or not eintrag.is_file():
+                    continue
+                try:
+                    pfad = self._innerhalb(inbox, eintrag)
+                    info = pfad.stat()
+                except (SpeicherFehler, OSError):
+                    continue
+                ergebnis.append(
+                    InboxDatei(pfad, hinweis, eintrag.name, info.st_size, info.st_mtime)
+                )
+
+        dateien(inbox, "")
+        for unter in sorted(inbox.iterdir(), key=lambda p: p.name):
+            if unter.is_dir() and not unter.is_symlink() and not unter.name.startswith("."):
+                dateien(unter, unter.name)
+        return ergebnis
+
+    def uebernehmen(self, kind_id, quelle, bereich, name):
+        """Verschiebt eine Datei aus ``inbox`` (``InboxDatei.pfad``) unter einem neuen, neutralen
+        Namen in ``bereich``. Die Quelle muss eine echte Datei unter ``inbox`` sein."""
+        inbox = self.ordner(kind_id, "inbox")
+        quelle = Path(quelle)
+        if quelle.is_symlink() or not quelle.is_file():
+            raise FileNotFoundError(quelle.name)
+        self._innerhalb(inbox, quelle)
+        ziel = self.pfad(kind_id, bereich, name)
         if ziel.exists():
             raise FileExistsError(name)
         ziel.parent.mkdir(parents=True, exist_ok=True)

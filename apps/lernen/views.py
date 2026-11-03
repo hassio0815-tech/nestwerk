@@ -45,8 +45,14 @@ def _fach_optionen(kind):
     """Auswahl "Was möchtest du üben?": je Fach alles gemischt oder ein Thema."""
     ergebnis = []
     for fach in selectors.faecher():
-        themen = list(selectors.themen_bis(fach, selectors.klassenstufe(kind, fach)))
-        if any(selectors.nutzbare_fragen(t, kind).exists() for t in themen):
+        # nur Themen mit Fragen, die dieses Kind nutzen darf: Themen aus dem Material eines
+        # Geschwisters (oder noch ohne Freigabe) tauchen hier nie auf
+        themen = [
+            t
+            for t in selectors.themen_bis(fach, selectors.klassenstufe(kind, fach))
+            if selectors.nutzbare_fragen(t, kind).exists()
+        ]
+        if themen:
             ergebnis.append((fach, themen))
     return ergebnis
 

@@ -1,0 +1,47 @@
+{% extends "basis/kind.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Meine Mappe" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}
+  {% url "lernen:start" as lernen_url %}
+  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="schule" text=_("Lernen") %}
+{% endblock %}
+{% block inhalt %}
+  <h1 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Meine Mappe" %}</h1>
+  {% if neu %}<p class="lernen-rueck" role="status">{% blocktranslate count n=neu %}Super, {{ n }} Datei ist angekommen.{% plural %}Super, {{ n }} Dateien sind angekommen.{% endblocktranslate %}</p>{% endif %}
+  {% if fehler %}<div role="alert">{% for f in fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ f }}</p>{% endfor %}</div>{% endif %}
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Material hochladen" %}</h2>
+    <p>{% translate "Mach ein Foto von deinem Heft, Buch oder Arbeitsblatt, oder nimm ein PDF oder eine Textdatei. Daraus entstehen Übungsfragen." %}</p>
+    {% if not ki_bereit %}<p class="kachel__text">{% translate "Die Fragen entstehen erst, wenn deine Eltern die KI eingerichtet haben. Dein Material wartet bis dahin sicher in der Mappe." %}</p>{% endif %}
+    <form method="post" action="{% url 'lernen:material_hochladen' %}" enctype="multipart/form-data" class="stapel lernen-form">{% csrf_token %}
+      <div class="feld">
+        <label class="feld__label" for="m-datei">{% translate "Foto oder Datei" %}</label>
+        <input class="feld__eingabe" id="m-datei" type="file" name="datei" accept="{{ accept }}" multiple required>
+        <p class="feld__hinweis">{% blocktranslate with mb=max_mb %}Erlaubt: {{ endungen }}. Höchstens {{ mb }} MB pro Datei.{% endblocktranslate %}</p>
+      </div>
+      {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Hochladen") %}
+    </form>
+    <p class="kachel__text">{% blocktranslate with belegt=belegt_mb limit=limit_mb %}Platz in der Mappe: {{ belegt }} von {{ limit }} MB.{% endblocktranslate %}</p>
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Dein Material" %}</h2>
+    <ul class="stapel" data-material-liste>
+      {% for m, phase in eintraege %}
+        <li class="reihe" data-phase="{{ phase }}">
+          {% url "lernen:material_kind" m.pk as m_url %}
+          <a href="{{ m_url }}">{{ m.anzeigename }}</a>
+          <span>
+            {% if phase == "wartet" %}{% if m.status == "wartet_ki" %}{% translate "wartet auf die KI-Einrichtung" %}{% else %}{% translate "wartet" %}{% endif %}
+            {% elif phase == "liest" %}{% translate "wird gelesen" %}
+            {% elif phase == "eltern" %}{% translate "wartet auf deine Eltern" %}
+            {% elif phase == "bereit" %}{% translate "bereit zum Üben" %}
+            {% else %}{% translate "hat nicht geklappt, deine Eltern schauen nach" %}{% endif %}
+          </span>
+        </li>
+      {% empty %}<li>{% translate "Noch nichts in deiner Mappe." %}</li>{% endfor %}
+    </ul>
+  </div></section>
+{% endblock %}

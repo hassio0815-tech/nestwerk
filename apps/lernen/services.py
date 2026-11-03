@@ -61,13 +61,23 @@ def speicher_limit_bytes():
     return wert("lernen.speicher_limit_mb") * 1024 * 1024
 
 
-def frage_anlegen(thema, typ, frage, antwort, *, quelle, kind=None):
-    """Neue Frage von Eltern oder KI. Der Status folgt der Einstellung
-    ``lernen.freigabe_durch_eltern``; Eltern-Fragen sind sofort freigegeben."""
+def fragen_sofort_nutzbar(kind):
+    """Sind KI-Fragen aus Uploads dieses Kindes sofort nutzbar? Gilt die Einstellung der Lernmappe
+    (pro Kind), sonst ``lernen.freigabe_durch_eltern`` (Standard: Eltern geben frei)."""
+    mappe = Lernmappe.objects.filter(kind=kind).first() if kind is not None else None
+    if mappe is not None and mappe.fragen_sofort_nutzbar is not None:
+        return mappe.fragen_sofort_nutzbar
+    return not wert("lernen.freigabe_durch_eltern")
+
+
+def frage_anlegen(thema, typ, frage, antwort, *, quelle, kind=None, material=None):
+    """Neue Frage von Eltern oder KI. KI-Fragen warten auf die Freigabe der Eltern, außer die
+    Lernmappe des Kindes erlaubt die sofortige Nutzung; Eltern-Fragen sind sofort freigegeben."""
     if quelle == Quelle.SYSTEM:
         raise ValueError("Startdaten entstehen nur per Datenmigration.")
-    offen = quelle == Quelle.KI and wert("lernen.freigabe_durch_eltern")
+    offen = quelle == Quelle.KI and not fragen_sofort_nutzbar(kind)
     return Frage.objects.create(
+        material=material,
         thema=thema,
         typ=typ,
         frage=frage,

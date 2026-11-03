@@ -100,3 +100,49 @@ def test_verschieben_und_loeschen(speicher):
         speicher.verschieben(1, "a.txt", "inbox", "archiv")
     assert speicher.loeschen(1, "archiv", "a.txt") is True
     assert speicher.loeschen(1, "archiv", "a.txt") is False
+
+
+# --- Etappe 4: lesen, Inbox-Blick, Übernehmen ----------------------------------------------------
+
+
+def test_lesen(speicher):
+    speicher.speichern(3, "inbox", "a.txt", b"Hallo")
+    assert speicher.lesen(3, "inbox", "a.txt") == b"Hallo"
+    assert speicher.lesen(3, "inbox", "a.txt", max_bytes=2) == b"Hal"  # eins mehr als erlaubt
+    with pytest.raises(FileNotFoundError):
+        speicher.lesen(3, "inbox", "gibts-nicht.txt")
+    with pytest.raises(SpeicherFehler):
+        speicher.lesen(3, "inbox", "../a.txt")
+
+
+def test_inbox_dateien_und_uebernehmen(speicher, tmp_path):
+    speicher.ordner_anlegen(4)
+    inbox = speicher.ordner(4, "inbox")
+    (inbox / "a.txt").write_bytes(b"A")
+    (inbox / "mathe").mkdir()
+    (inbox / "mathe" / "b.txt").write_bytes(b"BB")
+    (inbox / "mathe" / "tief").mkdir()
+    (inbox / "mathe" / "tief" / "c.txt").write_bytes(b"C")
+    (inbox / ".versteckt").write_bytes(b"x")
+    fremd = tmp_path / "fremd.txt"
+    fremd.write_bytes(b"F")
+    os.symlink(fremd, inbox / "link.txt")
+    os.symlink(tmp_path, inbox / "linkordner")
+    gefunden = {(d.hinweis, d.name, d.groesse) for d in speicher.inbox_dateien(4)}
+    assert gefunden == {("", "a.txt", 1), ("mathe", "b.txt", 2)}
+    datei = next(d for d in speicher.inbox_dateien(4) if d.name == "b.txt")
+    ziel = speicher.uebernehmen(4, datei.pfad, "archiv", "neutral.txt")
+    assert ziel.read_bytes() == b"BB" and not datei.pfad.exists()
+    with pytest.raises(FileExistsError):
+        speicher.uebernehmen(4, inbox / "a.txt", "archiv", "neutral.txt")
+    with pytest.raises(FileNotFoundError):
+        speicher.uebernehmen(4, inbox / "link.txt", "archiv", "x.txt")  # Symlink
+    with pytest.raises(FileNotFoundError):
+        speicher.uebernehmen(4, inbox / "weg.txt", "archiv", "x.txt")
+    with pytest.raises(SpeicherFehler):
+        speicher.uebernehmen(4, fremd, "archiv", "y.txt")  # außerhalb der inbox
+    assert fremd.read_bytes() == b"F"
+
+
+def test_inbox_dateien_ohne_ordner(speicher):
+    assert speicher.inbox_dateien(9) == []

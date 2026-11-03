@@ -46,3 +46,11 @@
     transition: background 0.2s ease;
   }
 }
+.lernen-material-bild {
+  max-width: 100%;
+  height: auto;
+}
+.lernen-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
