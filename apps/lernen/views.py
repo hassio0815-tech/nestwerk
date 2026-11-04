@@ -16,7 +16,7 @@ from apps.kern import zeit
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktuelles_kind, nur_eltern, nur_kind
 
-from . import plan_texte, selectors, services, texte, tutor_selectors
+from . import mathe_ki, plan_texte, selectors, services, texte, tutor_selectors, tutor_services
 from .models import (
     Erwartung,
     Intensitaet,
@@ -146,7 +146,7 @@ def _eigene(request, pk):
     return kind, sitzung_
 
 
-def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler=""):
+def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler="", erklaerung=""):
     """Zeigt den Stand der Sitzung: Frage, Rückmeldung, Rückschau oder Ergebnis. Bei HTMX nur
     der austauschbare Teil."""
     kind = sitzung_.kind
@@ -166,6 +166,7 @@ def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler=""):
         "rueckmeldung": rueckmeldung,
         "hinweis": hinweis,
         "fehler": fehler,
+        "erklaerung": erklaerung,
         "einschaetzungen": Selbsteinschaetzung.choices,
         "nummer": min(sitzung_.versuche + 1, sitzung_.ziel_fragen),
         "ton_frust": wort("frust"),
@@ -227,6 +228,16 @@ def antwort(request, sitzung_):
 def hilfe(request, sitzung_):
     hinweis = services.hilfe(sitzung_)
     return _zustand(request, sitzung_, hinweis=hinweis)
+
+
+@_geschuetzt
+def erklaerung(request, sitzung_):
+    """ "Erkläre es anders" (Mathe, nur mit Tutor): andere Worte zu Karte und Beispiel."""
+    try:
+        text = mathe_ki.erklaerung_anders(sitzung_)
+    except tutor_services.TutorFehler as fehler:
+        return _zustand(request, sitzung_, fehler=str(fehler))
+    return _zustand(request, sitzung_, erklaerung=text)
 
 
 @_geschuetzt

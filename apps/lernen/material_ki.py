@@ -28,6 +28,7 @@ from . import (
     material_dateien,
     material_prompts,
     material_services,
+    mathe_ki,
     selectors,
     services,
 )
@@ -259,6 +260,8 @@ def _archivieren(material, speicher):
 
 
 def fragen_handler(auftrag):
+    if auftrag.eingabe_verweis.startswith(mathe_ki.VERWEIS):  # Mathe-Einkleidung (Etappe 10b)
+        return mathe_ki.einkleidung_handler(auftrag)
     material = _material_zu(auftrag, KiAufgabe.FRAGEN_ERZEUGEN, (MaterialStatus.FRAGEN,))
     if material is None:
         return

@@ -17,7 +17,7 @@ from datetime import timedelta
 from apps.kern import zeit
 from apps.kern.einstellungen import wert
 
-from . import selectors
+from . import mathe_ki, selectors
 from .mathe import registry, schwierigkeit, textaufgaben
 from .models import (
     Ergebnis,
@@ -58,7 +58,8 @@ def speichern(aufgabe, thema):
     """Legt die Aufgabe als Frage-Zeile an (siehe Modulbeschreibung).
 
     Kommt die Aufgabe als Textaufgabe (Einstellung ``lernen.mathe_textaufgaben_prozent``), steht
-    die lokale Vorlage als Text da. Zahlen und Lösung bleiben die des Generators."""
+    die lokale Vorlage als Text da; mit Opt-in der Eltern wird zusätzlich die KI-Einkleidung in
+    die Warteschlange gestellt (``mathe_ki``). Zahlen und Lösung bleiben die des Generators."""
     text, daten = aufgabe.text, aufgabe.to_dict()
     textfassung = als_textaufgabe(aufgabe)
     if textfassung:
@@ -78,6 +79,8 @@ def speichern(aufgabe, thema):
         gen_schwierigkeit=aufgabe.schwierigkeit,
         gen_daten=daten,
     )
+    if textfassung:
+        mathe_ki.einreihen(frage, aufgabe)
     return frage
 
 

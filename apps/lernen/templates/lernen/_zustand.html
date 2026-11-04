@@ -24,6 +24,7 @@
         {% if st.karte %}{% url "lernen:tipps" as tipps_url %}<p><a href="{{ tipps_url }}#karte-{{ st.karte }}" target="_blank" rel="noopener">{% translate "Zu den Rechen-Tipps" %}</a></p>{% endif %}
       </section>
     {% endfor %}
+    {% if erklaerung %}<section class="lernen-hilfe" data-lernen-erklaerung><h2 class="lernen-hilfe__titel">{% translate "Noch einmal anders erklärt" %}</h2><p>{{ erklaerung }}</p></section>{% endif %}
     {% if karte %}
       <details class="lernen-tipp lernen-tipp--frage" data-lernen-karte="{{ karte.schluessel }}">
         <summary>{% blocktranslate with titel=karte.titel %}Rechen-Tipp: {{ titel }}{% endblocktranslate %}</summary>
@@ -42,8 +43,9 @@
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Antworten") gross=True %}
     </form>
     <div class="reihe">
-      {% url "lernen:hilfe" s.pk as hilfe_url %}{% url "lernen:loesung" s.pk as loesung_url %}{% url "lernen:beenden" s.pk as beenden_url %}
+      {% url "lernen:hilfe" s.pk as hilfe_url %}{% url "lernen:erklaerung" s.pk as erklaerung_url %}{% url "lernen:loesung" s.pk as loesung_url %}{% url "lernen:beenden" s.pk as beenden_url %}
       {% if hilfe_weiter %}<form method="post" action="{{ hilfe_url }}" hx-post="{{ hilfe_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="info" text=hilfe_text %}</form>{% endif %}
+      {% if erklaerung_moeglich %}<form method="post" action="{{ erklaerung_url }}" hx-post="{{ erklaerung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="info" text=_("Erkläre es anders") %}</form>{% endif %}
       <form method="post" action="{{ loesung_url }}" hx-post="{{ loesung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="stift" text=_("Lösung zeigen") %}</form>
       <form method="post" action="{{ beenden_url }}" hx-post="{{ beenden_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="pause" text=_("Für jetzt genug") %}</form>
     </div>

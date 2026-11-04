@@ -214,7 +214,7 @@ def test_fremde_sitzung_ist_tabu_fuer_hilfe_und_erklaerung(kind_a, kind_b, mathe
     stufe(kind_b, mathe, 3)
     s = start(kind_b, mathe)
     services.frage_stellen(s, zufall=random.Random(2))
-    for name in ("lernen:hilfe", "lernen:antwort", "lernen:loesung"):
+    for name in ("lernen:hilfe", "lernen:erklaerung", "lernen:antwort", "lernen:loesung"):
         assert kind_client.post(reverse(name, args=[s.pk])).status_code == 404
     s.refresh_from_db()
     assert s.aktuell_hilfe == 0
@@ -223,6 +223,7 @@ def test_fremde_sitzung_ist_tabu_fuer_hilfe_und_erklaerung(kind_a, kind_b, mathe
 def test_eltern_duerfen_nicht_hilfe_holen(kind_a, mathe, eltern_client):
     s, _a = sitzung_mit(kind_a, mathe, "einmaleins")
     assert eltern_client.post(reverse("lernen:hilfe", args=[s.pk])).status_code == 403
+    assert eltern_client.post(reverse("lernen:erklaerung", args=[s.pk])).status_code == 403
     s.refresh_from_db()
     assert s.aktuell_hilfe == 0
 
@@ -330,6 +331,7 @@ def test_kind_b_sieht_nichts_von_den_fehlern_des_kindes_a(kind_a, kind_b, mathe)
 
 def test_einstellungen_haben_startwerte_fuer_die_hilfe(db):
     assert einstellungen.wert("lernen.mathe_hilfe_max_stufe") == 5
+    assert einstellungen.wert("lernen.mathe_einkleidung_ki") is False
     assert einstellungen.wert("lernen.mathe_textaufgaben_prozent") == 0
 
 

@@ -27,6 +27,7 @@ from . import (
     events,
     frust,
     mathe_aufgaben,
+    mathe_ki,
     plan_selectors,
     selectors,
     tagesziel,
@@ -58,6 +59,7 @@ from .speicher import Speicher
 
 QUELLE = "lernen"  # quelle_modul der Buchungen, modul der Aktivität
 RUECKSCHAU_MAX = 300
+ERKLAERUNG_AB_STUFE = 3  # "Erkläre es anders" gibt es, wenn das analoge Beispiel offen ist
 
 
 class LernenFehler(ValueError):
@@ -401,6 +403,8 @@ def hilfe_kontext(sitzung, aufgabe):
         "hilfe_stufen": stufen,
         "hilfe_weiter": sitzung.aktuell_hilfe < mathe_hilfe_stufe_max(),
         "hilfe_text": _("Mehr Hilfe") if stufen else _("Hilfe"),
+        "erklaerung_moeglich": sitzung.aktuell_hilfe >= ERKLAERUNG_AB_STUFE
+        and mathe_ki.erklaerung_bereit(),
         "karte": karte,
         "karte_verborgen": karte_verborgen,
     }

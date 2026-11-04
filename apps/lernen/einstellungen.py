@@ -95,6 +95,7 @@ STARTWERTE_MATHE = {
 # Etappe 10b (Mathe-Hilfe): Migration 0019 legt fehlende Werte an.
 STARTWERTE_MATHE_HILFE = {
     "lernen.mathe_hilfe_max_stufe": 5,
+    "lernen.mathe_einkleidung_ki": False,
     "lernen.mathe_textaufgaben_prozent": 0,
 }
 
@@ -834,6 +835,19 @@ def _definieren_mathe():
         einheit=_("Prozent"),
         minimum=0,
         maximum=100,
+    )
+    definieren(
+        "lernen.mathe_einkleidung_ki",
+        Typ.BOOL,
+        _("Mathe: Textaufgaben mit KI formulieren (Opt-in)"),
+        beschreibung=_(
+            "Standardmäßig aus. Wenn an und für die Aufgabe „Fragen erzeugen“ ein KI-Anbieter "
+            "zugeordnet ist, formuliert die KI aus den Zahlen der Aufgabe eine kurze Sachaufgabe. "
+            "Zahlen und Lösung kommen immer vom Generator, nie von der KI. Bei einer Cloud-KI "
+            "gehen die Zahlen der Aufgabe (keine persönlichen Daten) an den Anbieter. Eine "
+            "Garantie gibt es nicht: Prüfe die Texte, die Nestwerk anzeigt, und schalte es bei "
+            "Zweifeln wieder aus. Ohne KI nutzt Nestwerk eigene Vorlagen."
+        ),
     )
 
 

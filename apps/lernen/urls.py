@@ -20,6 +20,7 @@ urlpatterns = [
     path("kind/lernen/sitzung/<int:pk>/", views.sitzung, name="sitzung"),
     path("kind/lernen/sitzung/<int:pk>/antwort/", views.antwort, name="antwort"),
     path("kind/lernen/sitzung/<int:pk>/hilfe/", views.hilfe, name="hilfe"),
+    path("kind/lernen/sitzung/<int:pk>/erklaerung/", views.erklaerung, name="erklaerung"),
     path("kind/lernen/sitzung/<int:pk>/loesung/", views.loesung, name="loesung"),
     path("kind/lernen/sitzung/<int:pk>/beenden/", views.beenden, name="beenden"),
     path("kind/lernen/sitzung/<int:pk>/rueckschau/", views.rueckschau, name="rueckschau"),
