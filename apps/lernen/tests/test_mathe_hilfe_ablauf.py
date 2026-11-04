@@ -237,7 +237,26 @@ def test_fehlerhinweis_steht_auf_der_seite(kind_a, mathe, kind_client):
     html = kind_client.post(
         reverse("lernen:antwort", args=[s.pk]), {"eingabe": falsch}, **HX
     ).content.decode()
-    assert "data-lernen-fehlerhinweis" in html and "So heißt es" in html
+    assert "data-lernen-fehlerhinweis" in html and "Die Lösung ist:" in html
+    assert "So heißt es" not in html  # das ist die Vokabel-Formulierung
+    assert "autofocus" in html  # "Weiter" hat den Fokus: Enter geht zur nächsten Aufgabe
+
+
+def test_eingabefeld_hat_passende_handy_tastatur(kind_a, mathe, kind_client):
+    s, a = sitzung_mit(kind_a, mathe, "add_sub_100")
+    html = kind_client.get(reverse("lernen:sitzung", args=[s.pk])).content.decode()
+    assert 'inputmode="decimal"' in html and 'enterkeyhint="send"' in html
+    s2, a2 = sitzung_mit(kind_a, mathe, "negative_zahlen", klasse=8)
+    assert a2.eingabemodus == ("decimal" if a2.frage.antwort.isdigit() else "text")
+
+
+def test_rechnung_bricht_nicht_mitten_in_der_rechnung():
+    from apps.lernen.templatetags.lernen_text import rechnung
+
+    assert rechnung("2x + 3 = 11: Probe: 2 · 4 + 3 = 11.") == (
+        "2x\u00a0+ 3\u00a0= 11: Probe: 2\u00a0·\u00a04\u00a0+ 3\u00a0= 11."
+    )
+    assert rechnung("47 + 38: Einer") == "47\u00a0+ 38: Einer"  # Satz-Doppelpunkt bleibt
 
 
 # --- Rechen-Tipps ----------------------------------------------------------------------------
@@ -346,3 +365,13 @@ def test_jede_rechenart_hat_eine_seite_mit_hilfe(kind_a, mathe, kind_client):
         services.sitzung_beenden(s)
         Lernsitzung.objects.filter(pk=s.pk).update(ende=timezone.now())
         selectors  # noqa: B018
+
+
+def test_gegeben_trennt_dezimalzahlen_mit_semikolon(kind_a, mathe):
+    s, a = sitzung_mit(kind_a, mathe, "dezimal_rechnen", klasse=6)
+    for _ in range(2):
+        services.hilfe(s)
+    s.refresh_from_db()
+    erste = services.hilfe_stufen(s)[0]
+    gegeben = next(x for x in erste.absaetze if x.startswith("Gegeben ist:"))
+    assert ";" in gegeben and gegeben.endswith(".") and gegeben.count(",") == 2

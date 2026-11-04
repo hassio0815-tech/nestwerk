@@ -1,13 +1,13 @@
-{% load i18n %}{% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+{% load i18n lernen_text %}{% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 {% if aufgabe %}
   <section class="karte lernen-frage" data-probe-zustand="frage"><div class="karte__inhalt stapel">
     <h1>{% translate "Probe-Prüfung" %}</h1>
     <p class="kachel__text">{% translate "Du hast so viel Zeit, wie du brauchst. Eine Rückmeldung gibt es am Ende." %}</p>
-    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text }}</p>
+    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text|rechnung }}</p>
     {% url "lernen:probe_antwort" probe.pk as antwort_url %}
     <form method="post" action="{{ antwort_url }}" hx-post="{{ antwort_url }}" hx-target="#probe-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
       <label class="feld__label" for="pr-eingabe">{% translate "Deine Antwort" %}</label>
-      <input class="feld__eingabe lernen-eingabe" id="pr-eingabe" name="eingabe" maxlength="300" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus>
+      <input class="feld__eingabe lernen-eingabe" id="pr-eingabe" name="eingabe" maxlength="300" inputmode="{{ aufgabe.eingabemodus|default:"text" }}" enterkeyhint="send" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus>
       {% include "komponenten/button.html" with typ="submit" icon="pfeil-rechts" text=_("Weiter") gross=True %}
     </form>
   </div></section>

@@ -126,6 +126,9 @@ class Rueckmeldung:
     stufe_gesenkt: bool = False
     ziel_erreicht: bool = False
     hinweis: str = ""  # Mathe: gezielter Hinweis zum Fehler (nie mit der Lösung)
+    rechnung: bool = (
+        False  # Lösung einer erzeugten Mathe-Aufgabe (andere Anzeige als "So heißt es")
+    )
 
 
 def _jetzt(jetzt):
@@ -529,6 +532,7 @@ def antworten(sitzung, eingabe, *, jetzt=None):
         ergebnis,
         texte.ton("richtig" if ergebnis == Ergebnis.RICHTIG else "noch_nicht", stufe),
         loesung="" if ergebnis == Ergebnis.RICHTIG else aufgabe.loesung,
+        rechnung=aufgabe.generiert,
         hinweis="" if ergebnis == Ergebnis.RICHTIG else pruefung_.hinweis,
         pause_vorschlag=pause,
         stufe_gesenkt=senkt,
@@ -549,6 +553,7 @@ def loesung_zeigen(sitzung, *, jetzt=None):
         Ergebnis.NOCH_NICHT,
         texte.ton("loesung", stufe),
         loesung=aufgabe.loesung,
+        rechnung=aufgabe.generiert,
         pause_vorschlag=pause,
         stufe_gesenkt=senkt,
         ziel_erreicht=erreicht,

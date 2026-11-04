@@ -832,7 +832,9 @@ def _allgemein(aufgabe, werte):
     ist = werte
     if soll != 0 and -soll in ist:
         return "vorzeichen"
-    if soll != 0:
+    if (
+        soll != 0 and "/" not in aufgabe.loesung.anzeige
+    ):  # bei Brüchen passt der Komma-Hinweis nicht
         for k in (1, 2, 3):
             if soll * 10**k in ist or soll / 10**k in ist:
                 return "komma"

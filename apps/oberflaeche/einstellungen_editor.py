@@ -22,6 +22,7 @@ MODUL_TITEL = {
     "spielregeln": gettext_lazy("Spielregeln"),
     "avatar": gettext_lazy("Avatar"),
     "familienziel": gettext_lazy("Familienziel"),
+    "lernen": gettext_lazy("Lernen"),
     "sondertag": pgettext_lazy("Einstellungen-Abschnitt", "Sondertage"),
 }
 ZUERST = ("allgemein",)

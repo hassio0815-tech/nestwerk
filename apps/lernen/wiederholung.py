@@ -7,6 +7,7 @@
 - Gemischte Themen: Die Auswahl vermeidet dasselbe Thema direkt hintereinander.
 """
 
+import re
 from dataclasses import dataclass
 from datetime import timedelta
 
@@ -38,6 +39,14 @@ class Aufgabe:
         if self.generiert:
             return self.frage.antwort
         return anzeige_antwort(self.erwartet)
+
+    @property
+    def eingabemodus(self):
+        """Tastatur auf dem Handy: reine, nicht negative Zahl als Ziffernblock, sonst Text
+        (Brüche, Minus, Gleichungen, Einheiten und Rest brauchen Buchstaben und Zeichen)."""
+        if self.generiert and re.fullmatch(r"\d+([.,]\d+)?", self.frage.antwort.strip()):
+            return "decimal"
+        return "text"
 
     @property
     def mehrere(self):

@@ -582,6 +582,16 @@ def test_allgemeine_regeln():
     assert fehler.analysiere(a, "0,7") == "komma"
     b = mk("umkehr", "ergaenzen_100", "Ergänze: 15 + ? = 100", zahl(85), a=15, ziel=100)
     assert fehler.analysiere(b, "58") == "zahlendreher"
+    # Bei Bruch-Lösungen gibt es keinen Komma-Hinweis (Kürze 2/4: "5" ist kein Kommafehler)
+    c = mk(
+        "bruch_kuerzen",
+        "kuerzen",
+        "Kürze vollständig: 2/4",
+        bausteine.lsg_bruch(Fraction(1, 2)),
+        zaehler=2,
+        nenner=4,
+    )
+    assert fehler.analysiere(c, "5") != "komma"
 
 
 def test_unbekannter_fehler_und_unlesbares_ergibt_keinen_typ():

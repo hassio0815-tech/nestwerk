@@ -1,4 +1,4 @@
-{% load i18n sprache %}{% url "lernen:sitzung" s.pk as sitzung_url %}
+{% load i18n sprache lernen_text %}{% url "lernen:sitzung" s.pk as sitzung_url %}
 {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 {% if portion %}
   <p class="kachel__text" data-lernen-portion>
@@ -14,13 +14,13 @@
       · {% blocktranslate with plan=s.get_strategie_display %}Dein Plan: {{ plan }}{% endblocktranslate %}</p>
     {% if rueckmeldung %}<p class="lernen-rueck lernen-rueck--fast" role="status">{{ rueckmeldung.text }}</p>{% endif %}
     {% if aufgabe.frage.typ == "vokabel" %}<p class="kachel__text">{% if aufgabe.richtung == "en_de" %}{% translate "Auf Deutsch:" %}{% else %}{% translate "In der Fremdsprache:" %}{% endif %}</p>{% endif %}
-    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text }}</p>
+    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text|rechnung }}</p>
     {% if hinweis %}<p class="lernen-hinweis" data-lernen-hinweis>{% translate "Tipp:" %} <span>{{ hinweis }}</span></p>{% endif %}
     {% for st in hilfe_stufen %}
       <section class="lernen-hilfe" data-lernen-hilfe-stufe="{{ st.stufe }}">
         <h2 class="lernen-hilfe__titel">{{ st.titel }}</h2>
-        {% for a in st.absaetze %}<p>{{ a }}</p>{% endfor %}
-        {% if st.zeilen %}<ul class="lernen-hilfe__zeilen">{% for z in st.zeilen %}<li>{{ z }}</li>{% endfor %}</ul>{% endif %}
+        {% for a in st.absaetze %}<p>{{ a|rechnung }}</p>{% endfor %}
+        {% if st.zeilen %}<ul class="lernen-hilfe__zeilen">{% for z in st.zeilen %}<li>{{ z|rechnung }}</li>{% endfor %}</ul>{% endif %}
         {% if st.karte %}{% url "lernen:tipps" as tipps_url %}<p><a href="{{ tipps_url }}#karte-{{ st.karte }}" target="_blank" rel="noopener">{% translate "Zu den Rechen-Tipps" %}</a></p>{% endif %}
       </section>
     {% endfor %}
@@ -31,15 +31,15 @@
         {% if karte_verborgen %}
           {% url "lernen:tipps" as tipps_url %}<p><a href="{{ tipps_url }}#karte-{{ karte.schluessel }}" target="_blank" rel="noopener">{% translate "Diese Karte findest du bei den Rechen-Tipps." %}</a></p>
         {% else %}
-          <p>{{ karte.merksatz }}</p>
-          {% if karte.beispiel %}<p><strong>{% translate "Beispiel:" %}</strong> {{ karte.beispiel }}</p>{% endif %}
+          <p>{{ karte.merksatz|rechnung }}</p>
+          {% if karte.beispiel %}<p><strong>{% translate "Beispiel:" %}</strong> {{ karte.beispiel|rechnung }}</p>{% endif %}
         {% endif %}
       </details>
     {% endif %}
     {% url "lernen:antwort" s.pk as antwort_url %}
     <form method="post" action="{{ antwort_url }}" hx-post="{{ antwort_url }}" hx-target="#lern-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
       <label class="feld__label" for="l-eingabe">{% translate "Deine Antwort" %}</label>
-      <input class="feld__eingabe lernen-eingabe" id="l-eingabe" name="eingabe" maxlength="300" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus required>
+      <input class="feld__eingabe lernen-eingabe" id="l-eingabe" name="eingabe" maxlength="300" inputmode="{{ aufgabe.eingabemodus }}" enterkeyhint="send" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus required>
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Antworten") gross=True %}
     </form>
     <div class="reihe">
@@ -54,12 +54,12 @@
 {% elif zustand == "frage" and rueckmeldung %}
   <section class="karte lernen-rueckmeldung" data-lernen-zustand="rueckmeldung"><div class="karte__inhalt stapel">
     <p class="lernen-rueck lernen-rueck--{{ rueckmeldung.ergebnis }}" role="status">{{ rueckmeldung.text }}</p>
-    {% if rueckmeldung.hinweis %}<p class="lernen-hinweis" data-lernen-fehlerhinweis>{{ rueckmeldung.hinweis }}</p>{% endif %}
-    {% if rueckmeldung.loesung %}<p>{% blocktranslate with loesung=rueckmeldung.loesung %}So heißt es: {{ loesung }}{% endblocktranslate %}</p>{% endif %}
+    {% if rueckmeldung.hinweis %}<p class="lernen-hinweis" data-lernen-fehlerhinweis>{{ rueckmeldung.hinweis|rechnung }}</p>{% endif %}
+    {% if rueckmeldung.loesung %}<p>{% if rueckmeldung.rechnung %}{% blocktranslate with loesung=rueckmeldung.loesung %}Die Lösung ist: {{ loesung }}{% endblocktranslate %}{% else %}{% blocktranslate with loesung=rueckmeldung.loesung %}So heißt es: {{ loesung }}{% endblocktranslate %}{% endif %}</p>{% endif %}
     {% if rueckmeldung.ziel_erreicht %}<p class="lernen-rueck lernen-rueck--richtig">{% include "komponenten/icon.html" with name="pokal" %} {{ ton_ziel }}</p>{% endif %}
     {% if rueckmeldung.pause_vorschlag %}<p class="lernen-pause" data-lernen-pause>{{ ton_frust }}</p>{% endif %}
     <div class="reihe">
-      <a class="knopf knopf--primaer knopf--gross" href="{{ sitzung_url }}" hx-get="{{ sitzung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="pfeil-rechts" %}<span>{% if rueckmeldung.pause_vorschlag %}{% translate "Weiter üben" %}{% else %}{% translate "Weiter" %}{% endif %}</span></a>
+      <a class="knopf knopf--primaer knopf--gross" href="{{ sitzung_url }}" autofocus hx-get="{{ sitzung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="pfeil-rechts" %}<span>{% if rueckmeldung.pause_vorschlag %}{% translate "Weiter üben" %}{% else %}{% translate "Weiter" %}{% endif %}</span></a>
       {% url "lernen:beenden" s.pk as beenden_url %}
       <form method="post" action="{{ beenden_url }}" hx-post="{{ beenden_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% csrf_token %}{% include "komponenten/button.html" with typ="submit" variante="geist" icon="pause" text=_("Pause machen") %}</form>
     </div>

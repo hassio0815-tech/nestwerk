@@ -167,7 +167,9 @@ def _beispiel_text(beispiel):
 def _stufe1(hilfe):
     absaetze = [_("Lies die Aufgabe noch einmal in Ruhe.")]
     if hilfe.gegeben:
-        absaetze.append(_("Gegeben ist: %(g)s.") % {"g": ", ".join(hilfe.gegeben)})
+        # Dezimalzahlen haben ein Komma: dann trennt ein Semikolon ("23,2; 12,5" statt "23,2, 12,5")
+        trenner = "; " if any("," in g for g in hilfe.gegeben) else ", "
+        absaetze.append(_("Gegeben ist: %(g)s.") % {"g": trenner.join(hilfe.gegeben)})
     absaetze.append(_("Gesucht ist: %(s)s.") % {"s": hilfe.gesucht})
     absaetze.append(_("Magst du es mit eigenen Worten sagen, bevor du rechnest?"))
     return absaetze

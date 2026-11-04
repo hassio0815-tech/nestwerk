@@ -855,6 +855,11 @@ msgstr "Enough for now"
 msgid "So heißt es: %(loesung)s"
 msgstr "It is: %(loesung)s"
 
+#: templates/lernen/_zustand.html
+#, python-format
+msgid "Die Lösung ist: %(loesung)s"
+msgstr "The solution is: %(loesung)s"
+
 #: templates/lernen/_zustand.html:33 templates/lernen/start.html:32
 msgid "Weiter üben"
 msgstr "Keep practising"

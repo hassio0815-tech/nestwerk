@@ -108,6 +108,10 @@ msgid "Familienziel"
 msgstr "Family goal"
 
 #: einstellungen_editor.py:25
+msgid "Lernen"
+msgstr "Learning"
+
+#: einstellungen_editor.py:25
 msgctxt "Einstellungen-Abschnitt"
 msgid "Sondertage"
 msgstr "Special days"
