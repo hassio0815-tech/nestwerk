@@ -230,7 +230,7 @@ Es gibt sechs Ränge, wie Seltenheiten in einem Spiel:
 
 Das Lernmodul ist **freiwillig** und für Kinder und Eltern gedacht. Es gibt **keine Noten** und keine Vergleiche zwischen den Kindern. Ziele sind immer schaffbar.
 
-**Ohne KI** funktioniert das Üben mit den vorhandenen Fragen (Startdaten: Englisch-Vokabeln; für Mathe gibt es die Themenstruktur, die Fragen kommen aus Material oder von den Eltern). Die KI ist **standardmäßig aus**.
+**Ohne KI** funktioniert das Üben mit den vorhandenen Fragen (Startdaten: Englisch-Vokabeln; Mathe-Aufgaben erzeugt Nestwerk selbst, ohne KI). Die KI ist **standardmäßig aus**.
 
 ### Üben (Kinder)
 
@@ -240,6 +240,23 @@ Das Lernmodul ist **freiwillig** und für Kinder und Eltern gedacht. Es gibt **k
 - **Wiederholung im Abstand:** Was du gut kannst, kommt später wieder. Was schwer war, kommt früher.
 - **Zu viel Frust?** Wenn mehrere Fehler in Folge kommen, wird es leichter, und das System schlägt eine Pause vor.
 - **Rückschau:** Am Ende beantwortest du zwei kurze Fragen: Was war schwer? Was hat geholfen? Außerdem sagst du, ob es zu leicht, passend oder zu schwer war. Die Eltern sehen das als Hinweis.
+
+### Mathe: Hilfe, Rechen-Tipps und Fehlerhinweise (Kinder und Eltern)
+
+Alles in diesem Abschnitt läuft **lokal und ohne KI**. Die Hilfe verrät **nie die Lösung** der Aufgabe, an der du gerade rechnest.
+
+- **Hilfe-Leiter:** Beim Mathe-Üben gibt es den Knopf **Hilfe**. Jedes Drücken schaltet **eine** Stufe frei, nie mehr, als du willst: 1. **Nachfragen** (was ist gegeben, was gesucht, mit den Zahlen deiner Aufgabe), 2. **Denkanstoß** zur Rechenart, 3. ein **ähnliches Beispiel mit anderen Zahlen**, ganz vorgerechnet, 4. der **Rechen-Tipp** zur Rechenart, 5. das **Gerüst** deiner Aufgabe mit Strichen (___) statt Ergebnissen. Du füllst die Striche selbst aus. Die höchste benutzte Stufe merkt sich Nestwerk, sie kostet **keine Punkte** und wird nie bestraft.
+- **Rechen-Tipps:** Zu jeder Rechenart gibt es eine kurze Karte mit Merksatz und Beispiel, in drei Sprachstufen (bis Klasse 4, Klasse 5 bis 7, ab Klasse 8). Beim Üben klappt die Karte unter der Aufgabe auf. Alle Karten stehen im Bereich Lernen unter **Rechen-Tipps**. Die Eltern sehen sie unter **Lernen → Rechen-Tipps** (nur lesen, mit wählbarer Sprachstufe), um mitzuhelfen. Passt ein Zahlenbeispiel der Karte zufällig zur Lösung deiner Aufgabe, blendet Nestwerk es aus.
+- **Hinweis bei Fehlern:** Nestwerk erkennt typische Rechenfehler, zum Beispiel einen vergessenen Übertrag, einen mitgerechneten Nenner, ein verrutschtes Komma, Punkt-vor-Strich oder ein falsches Vorzeichen. Dann gibt es einen **freundlichen Hinweis ohne Lösung** und einen **zweiten Versuch**. Bleibt es falsch, steht danach die Lösung da. Ein unbekannter Fehler bekommt einen neutralen Hinweis.
+- **Wochenbild:** Die Eltern sehen unter **Lernen → Wochenbild** bis zu drei **häufige Stolpersteine** der Woche, mit dem Hinweis, den das Kind bekommen hat.
+- **Einstellungen (Eltern):** **Höchste erlaubte Hilfestufe** (Startwert 5) und **Anteil der Textaufgaben** (Startwert 0). Mit einem Anteil über 0 kommt ein Teil der passenden Aufgaben als kurze Sachaufgabe aus eigenen Vorlagen. Zahlen und Lösung bleiben dieselben.
+- **Optional mit KI (aus, nur auf Wunsch der Eltern):**
+  - **Textaufgaben mit KI formulieren** (Einstellung „Mathe: Textaufgaben mit KI formulieren“): Nur wenn sie an ist und für die Aufgabe „Fragen erzeugen“ ein KI-Anbieter zugeordnet ist, formuliert die KI aus den Zahlen einer Aufgabe eine Sachaufgabe. Das läuft im Hintergrund. Die KI bekommt nur die Rechnung, **nie die Lösung**. Nestwerk prüft den Text vor der Anzeige (alle Zahlen, keine anderen Zahlen, keine Links, keine Fragen nach persönlichen Daten); fällt er durch, bleibt der eigene Vorlagentext. Die KI-Fassung erscheint nur, wenn sie fertig ist, **bevor** die Aufgabe gestellt wird (zum Beispiel bei Aufgaben für einen Prüfungsplan); sonst gilt die lokale Fassung.
+  - **Erkläre es anders:** Bei eingeschaltetem Tutor erscheint ab Hilfestufe 3 der Knopf „Erkläre es anders“. Die KI erklärt dann die Karte und das ähnliche Beispiel in anderen Worten. Sie kennt **deine Aufgabe nicht**. Der Aufruf zählt zum Tageslimit des Tutors, die Antwort wird auf verratene Lösungen geprüft, und die Eltern sehen sie im Tutor-Protokoll.
+- **Ehrliche Grenzen (Eltern bitte lesen):**
+  - Die Fehlererkennung ist eine **Heuristik**: Mehrere Fehler können dieselbe falsche Zahl ergeben, dann wählt Nestwerk den wahrscheinlichsten. Manche Fehler erkennt es nicht.
+  - Bei der KI gibt es **keine Garantie**. Eine Sachaufgabe kann sprachlich schief sein, auch wenn alle Zahlen stimmen. Die Lösung bleibt aber immer die des Generators. Prüft die Texte ab und zu und schaltet die KI bei Zweifeln wieder aus.
+  - Bei einer **Cloud-KI** gehen die Zahlen der Aufgabe (keine persönlichen Daten, keine Namen) an den Anbieter, das ist eure bewusste Entscheidung. Die Anbindung ist nur mit einem Fake-Transport getestet.
 
 ### Tagesziel und Serie (Kinder)
 

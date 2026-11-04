@@ -230,7 +230,7 @@ There are six ranks, like rarities in a game:
 
 The learning module is **optional** and meant for kids and parents. There are **no grades** and no comparison between the kids. Goals are always achievable.
 
-**Without AI**, practice works with the existing questions (start data: English vocabulary; for maths there is the topic structure, and the questions come from material or from the parents). AI is **off by default**.
+**Without AI**, practice works with the existing questions (start data: English vocabulary; Nestwerk creates maths tasks itself, without AI). AI is **off by default**.
 
 ### Practice (kids)
 
@@ -240,6 +240,23 @@ The learning module is **optional** and meant for kids and parents. There are **
 - **Spaced repetition:** what you know well comes back later. What was hard comes back sooner.
 - **Too much frustration?** After several mistakes in a row it gets easier, and the system suggests a break.
 - **Look back:** at the end you answer two short questions: What was hard? What helped? You also say whether it was too easy, just right or too hard. Parents see this as a hint.
+
+### Maths: help, calculation tips and error hints (kids and parents)
+
+Everything in this section runs **locally and without AI**. The help **never gives away the solution** of the task you are working on.
+
+- **Help ladder:** while practising maths there is a **Help** button. Each press unlocks **one** more step, never more than you want: 1. **Asking** (what is given, what is asked, with the numbers of your task), 2. a **nudge** for the type of calculation, 3. a **similar example with other numbers**, worked out completely, 4. the **calculation tip** for the type, 5. the **frame** of your task with blanks (___) instead of results. You fill in the blanks yourself. Nestwerk remembers the highest step used; it costs **no points** and is never penalised.
+- **Calculation tips:** every type of calculation has a short card with a rule and an example, in three language levels (up to grade 4, grades 5 to 7, grade 8 and up). While practising, the card opens under the task. All cards are in the Learning area under **Rechen-Tipps** (calculation tips). Parents see them under **Learning → Rechen-Tipps** (read only, with a selectable language level) so they can help. If a number example on a card happens to match the solution of your task, Nestwerk hides it.
+- **Hint on mistakes:** Nestwerk recognises typical calculation mistakes, for example a forgotten carry, a denominator that was calculated too, a misplaced decimal point, order of operations or a wrong sign. You then get a **friendly hint without the solution** and a **second try**. If it stays wrong, the solution is shown. An unknown mistake gets a neutral hint.
+- **Weekly picture:** under **Learning → Weekly picture** parents see up to three **common stumbling blocks** of the week, with the hint the child got.
+- **Settings (parents):** **Highest allowed help step** (start value 5) and **Share of word problems** (start value 0). With a share above 0, some of the suitable tasks come as a short word problem from built-in templates. Numbers and solution stay the same.
+- **Optional with AI (off, only if parents want it):**
+  - **Word problems with AI** (setting "Maths: formulate word problems with AI"): only when it is on and an AI provider is assigned to the task "Create questions", the AI turns the numbers of a task into a word problem. It runs in the background. The AI only gets the calculation, **never the solution**. Nestwerk checks the text before showing it (all numbers, no other numbers, no links, no questions about personal data); if it fails, the built-in template text stays. The AI version only appears if it is ready **before** the task is asked (for example for tasks of an exam plan); otherwise the local version applies.
+  - **Explain it differently:** with the tutor switched on, the button "Explain it differently" appears from help step 3. The AI then explains the card and the similar example in other words. It **does not know your task**. The call counts towards the tutor's daily limit, the answer is checked for leaked solutions, and parents see it in the tutor log.
+- **Honest limits (parents, please read):**
+  - Error recognition is a **heuristic**: several mistakes can produce the same wrong number, then Nestwerk picks the most likely one. Some mistakes it does not recognise.
+  - With AI there is **no guarantee**. A word problem can be awkwardly worded even if all numbers are right. The solution is always the one from the generator, though. Check the texts now and then and switch the AI off if in doubt.
+  - With a **cloud AI**, the numbers of the task (no personal data, no names) go to the provider; that is your conscious decision. The connection has only been tested with a fake transport.
 
 ### Daily goal and streak (kids)
 
