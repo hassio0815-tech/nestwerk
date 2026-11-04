@@ -171,6 +171,7 @@ def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler=""):
         "ton_frust": wort("frust"),
         "ton_ziel": wort("ziel_geschafft"),
     }
+    kontext.update(services.hilfe_kontext(sitzung_, aufgabe))
     if sitzung_.portion_id:
         portion = sitzung_.portion
         portion.refresh_from_db()

@@ -92,6 +92,12 @@ STARTWERTE_MATHE = {
     "lernen.mathe_aufbewahren_tage": 60,
 }
 
+# Etappe 10b (Mathe-Hilfe): Migration 0019 legt fehlende Werte an.
+STARTWERTE_MATHE_HILFE = {
+    "lernen.mathe_hilfe_max_stufe": 5,
+    "lernen.mathe_textaufgaben_prozent": 0,
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -803,6 +809,31 @@ def _definieren_mathe():
         einheit=_("Tage"),
         minimum=7,
         maximum=730,
+    )
+    definieren(
+        "lernen.mathe_hilfe_max_stufe",
+        Typ.GANZZAHL,
+        _("Mathe: höchste erlaubte Hilfestufe"),
+        beschreibung=_(
+            "Die Hilfeleiter hat fünf Stufen: Nachfragen, Denkanstoß, ähnliches Beispiel, "
+            "Rechen-Tipp und Lösungsgerüst ohne Ergebnis. Hier kannst du die oberste Stufe "
+            "begrenzen. Die Lösung selbst zeigt die Hilfe nie."
+        ),
+        minimum=1,
+        maximum=5,
+    )
+    definieren(
+        "lernen.mathe_textaufgaben_prozent",
+        Typ.GANZZAHL,
+        _("Mathe: Anteil der Textaufgaben"),
+        beschreibung=_(
+            "So viele von hundert passenden Aufgaben kommen als kurze Sachaufgabe statt als reine "
+            "Rechnung (0: keine). Die Texte stammen aus eigenen Vorlagen, ohne KI. Zahlen und "
+            "Lösung bleiben dieselben."
+        ),
+        einheit=_("Prozent"),
+        minimum=0,
+        maximum=100,
     )
 
 

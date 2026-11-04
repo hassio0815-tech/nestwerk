@@ -75,6 +75,13 @@
     {% include "komponenten/button.html" with href=pruefungen_url variante="geist" icon="kalender" text=_("Zu den Prüfungen") %}
   </div></section>
 
+  <section class="karte" data-lernen-tipps><div class="karte__inhalt stapel">
+    <h2>{% translate "Rechen-Tipps" %}</h2>
+    <p>{% translate "Hier steht kurz, wie jede Rechenart geht. Zum Nachlesen, wann du willst." %}</p>
+    {% url "lernen:tipps" as tipps_url %}
+    {% include "komponenten/button.html" with href=tipps_url variante="geist" icon="info" text=_("Zu den Rechen-Tipps") %}
+  </div></section>
+
   <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Meine Mappe" %}</h2>
     <p>{% translate "Lade ein Foto oder ein Dokument hoch. Daraus entstehen Übungsfragen." %}</p>

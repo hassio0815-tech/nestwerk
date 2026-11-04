@@ -1,0 +1,13 @@
+{% load i18n %}
+{% for band, karten in gruppen %}
+  <h2>{% if band == 3 %}{% translate "Klasse 3 und 4" %}{% elif band == 6 %}{% translate "Klasse 5 bis 7" %}{% else %}{% translate "Ab Klasse 8" %}{% endif %}</h2>
+  {% for k in karten %}
+    <details class="karte lernen-tipp" id="karte-{{ k.schluessel }}" data-lernen-tipp="{{ k.schluessel }}">
+      <summary class="lernen-tipp__titel">{{ k.titel }}</summary>
+      <div class="karte__inhalt stapel">
+        <p>{{ k.merksatz }}</p>
+        <p class="lernen-tipp__beispiel"><strong>{% translate "Beispiel:" %}</strong> {{ k.beispiel }}</p>
+      </div>
+    </details>
+  {% endfor %}
+{% endfor %}

@@ -145,7 +145,9 @@ def test_richtig_falsch_hilfe_loesung_wie_bei_vokabeln(kind_a, mathe):
     assert antwort.ergebnis == Ergebnis.NOCH_NICHT and antwort.loesung == b.loesung
     assert Lernstand.objects.get(kind=kind_a, frage=b.frage).box == 0
     c = services.frage_stellen(s, zufall=rng)
-    assert services.hilfe(s)  # Hinweis auf die Lösung, kostet nichts
+    assert services.hilfe(s) == ""  # Mathe: Hilfeleiter statt Anfangsbuchstabe, kostet nichts
+    s.refresh_from_db()
+    assert s.aktuell_hilfe == 1
     assert services.frage_stellen(s).frage == c.frage  # Neuladen: dieselbe Aufgabe
     rueck = services.loesung_zeigen(s)
     assert (

@@ -152,3 +152,31 @@
 .karte details[open] > summary::before {
   content: "\25BE";
 }
+
+/* Mathe-Hilfe (Etappe 10b): Hilfestufen, Rechen-Tipps, Fehlerhinweis */
+.lernen-hilfe {
+  border-left: 4px solid currentColor;
+  padding: 0.25rem 0 0.25rem 0.75rem;
+  margin: 0.5rem 0;
+}
+.lernen-hilfe__titel {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+.lernen-hilfe__zeilen {
+  margin: 0.25rem 0 0;
+  padding-left: 1.25rem;
+  font-family: ui-monospace, monospace;
+}
+.lernen-tipp > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.lernen-tipp__beispiel {
+  margin: 0;
+}
+[data-lernen-fehlerhinweis] {
+  letter-spacing: normal;
+  font-family: inherit;
+  font-size: 1rem;
+}

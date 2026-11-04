@@ -15,6 +15,7 @@ import random
 from dataclasses import dataclass
 
 from django.db import transaction
+from django.utils.translation import gettext as _
 
 from apps.ereignisse import services as ereignisse
 from apps.kern import zeit
@@ -32,6 +33,8 @@ from . import (
     texte,
     wiederholung,
 )
+from .mathe import fehler as mathe_fehler
+from .mathe import hilfe as mathe_hilfe
 from .models import (
     Ergebnis,
     Erwartung,
@@ -120,6 +123,7 @@ class Rueckmeldung:
     pause_vorschlag: bool = False
     stufe_gesenkt: bool = False
     ziel_erreicht: bool = False
+    hinweis: str = ""  # Mathe: gezielter Hinweis zum Fehler (nie mit der Lösung)
 
 
 def _jetzt(jetzt):
@@ -333,15 +337,73 @@ def hinweis_text(loesung):
     )
 
 
+def mathe_hilfe_stufe_max():
+    """Höchste Stufe der Mathe-Hilfeleiter, die die Eltern erlauben (Einstellung, Standard 5)."""
+    return max(1, min(mathe_hilfe.MAX_STUFE, wert("lernen.mathe_hilfe_max_stufe")))
+
+
+def _hat_mathe_hilfe(aufgabe):
+    return aufgabe.generiert and mathe_hilfe.hat_hilfe(aufgabe.frage.generator)
+
+
 @transaction.atomic
 def hilfe(sitzung, *, jetzt=None):
-    """Hilfestufe 1 für die offene Frage; gibt den Hinweis zurück. Kostet keine Punkte."""
+    """Hilfe für die offene Frage; kostet keine Punkte.
+
+    Mathe-Aufgaben: die nächste Stufe der Hilfeleiter (SPEC 21.3, höchstens die erlaubte); die
+    Texte holt ``hilfe_stufen``, der Rückgabewert ist dann leer. Sonst Stufe 1 wie bisher:
+    Anfangsbuchstabe und Länge, z. B. ``b _ _ _ _``."""
     aufgabe = _offen(sitzung)
     _zeit_buchen(sitzung, _jetzt(jetzt))
+    if _hat_mathe_hilfe(aufgabe):
+        stufe = min(sitzung.aktuell_hilfe + 1, mathe_hilfe_stufe_max())
+        sitzung.aktuell_hilfe = max(sitzung.aktuell_hilfe, stufe)
+        sitzung.hilfestufe_max = max(sitzung.hilfestufe_max, stufe)
+        sitzung.save()
+        return ""
     sitzung.aktuell_hilfe = max(sitzung.aktuell_hilfe, 1)
     sitzung.hilfestufe_max = max(sitzung.hilfestufe_max, 1)
     sitzung.save()
     return hinweis_text(aufgabe.loesung)
+
+
+def hilfe_stufen(sitzung):
+    """Die Texte der Hilfestufen 1 bis zur freigeschalteten für die offene Mathe-Aufgabe (sonst
+    leer). Aus den gespeicherten Zahlen der Aufgabe, ohne ihre Lösung."""
+    if sitzung.aktuell_frage_id is None or sitzung.aktuell_hilfe < 1:
+        return []
+    aufgabe = wiederholung.aufgabe_fuer(sitzung.aktuell_frage, sitzung.aktuell_richtung)
+    if not _hat_mathe_hilfe(aufgabe):
+        return []
+    mathe = mathe_hilfe.aufgabe_aus_frage(aufgabe.frage)
+    if mathe is None:
+        return []
+    stufe = selectors.sprachstufe(sitzung.kind, sitzung.fach)
+    return mathe_hilfe.stufen_bis(mathe, min(sitzung.aktuell_hilfe, mathe_hilfe_stufe_max()), stufe)
+
+
+def hilfe_kontext(sitzung, aufgabe):
+    """Alles, was die Seite für Hilfe und Erklärkarte der offenen Aufgabe braucht."""
+    if aufgabe is None:
+        return {}
+    if not _hat_mathe_hilfe(aufgabe):
+        return {"hilfe_weiter": True, "hilfe_text": _("Tipp")}
+    stufen = hilfe_stufen(sitzung)
+    mathe = mathe_hilfe.aufgabe_aus_frage(aufgabe.frage)
+    karte = karte_verborgen = None
+    if mathe is not None:
+        anzeige = mathe_hilfe.karte_anzeige(
+            mathe, selectors.sprachstufe(sitzung.kind, sitzung.fach)
+        )
+        if anzeige is not None:
+            karte, karte_verborgen = anzeige
+    return {
+        "hilfe_stufen": stufen,
+        "hilfe_weiter": sitzung.aktuell_hilfe < mathe_hilfe_stufe_max(),
+        "hilfe_text": _("Mehr Hilfe") if stufen else _("Hilfe"),
+        "karte": karte,
+        "karte_verborgen": karte_verborgen,
+    }
 
 
 def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehlertyp=""):
@@ -403,6 +465,24 @@ def _stufe_senken(sitzung):
     return True
 
 
+def _noch_einmal(sitzung, aufgabe, eingabe, pruefung_, jetzt):
+    """Erster Versuch mit erkanntem Fehler: Hinweis zeigen, dieselbe Aufgabe noch einmal."""
+    sitzung.aktuell_versuche += 1
+    Versuch.objects.create(
+        sitzung=sitzung,
+        frage=aufgabe.frage,
+        richtung=aufgabe.richtung,
+        ergebnis=Ergebnis.FAST,
+        hilfestufe=sitzung.aktuell_hilfe,
+        eingabe=eingabe[:300],
+        dauer_ms=max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000)),
+        fehlertyp=pruefung_.fehlertyp,
+    )
+    _zeit_buchen(sitzung, jetzt)
+    sitzung.save()
+    return Rueckmeldung(Ergebnis.FAST, pruefung_.hinweis, nochmal=True, hinweis=pruefung_.hinweis)
+
+
 @transaction.atomic
 def antworten(sitzung, eingabe, *, jetzt=None):
     """Prüft die Antwort auf die offene Frage. Ein kleiner Tippfehler ergibt beim ersten Mal
@@ -428,6 +508,15 @@ def antworten(sitzung, eingabe, *, jetzt=None):
         return Rueckmeldung(
             Ergebnis.FAST, pruefung_.hinweis or texte.ton("fast", stufe), nochmal=True
         )
+    if (
+        aufgabe.generiert
+        and not pruefung_.richtig
+        and pruefung_.fehlertyp in mathe_fehler.ZWEITE_CHANCE
+        and sitzung.aktuell_versuche == 0
+    ):
+        # Mathe: ein erkannter Fehler bekommt einen gezielten Hinweis (ohne Lösung) und einen
+        # zweiten Versuch, statt gleich die Lösung zu zeigen. Es kostet keine Punkte.
+        return _noch_einmal(sitzung, aufgabe, eingabe, pruefung_, jetzt)
     ergebnis = Ergebnis.RICHTIG if pruefung_.richtig else Ergebnis.NOCH_NICHT
     pause, senkt, erreicht = _abschliessen(
         sitzung, aufgabe, ergebnis, eingabe, sitzung.aktuell_hilfe, jetzt, pruefung_.fehlertyp
@@ -436,6 +525,7 @@ def antworten(sitzung, eingabe, *, jetzt=None):
         ergebnis,
         texte.ton("richtig" if ergebnis == Ergebnis.RICHTIG else "noch_nicht", stufe),
         loesung="" if ergebnis == Ergebnis.RICHTIG else aufgabe.loesung,
+        hinweis="" if ergebnis == Ergebnis.RICHTIG else pruefung_.hinweis,
         pause_vorschlag=pause,
         stufe_gesenkt=senkt,
         ziel_erreicht=erreicht,
@@ -449,7 +539,7 @@ def loesung_zeigen(sitzung, *, jetzt=None):
     aufgabe = _offen(sitzung)
     stufe = selectors.sprachstufe(sitzung.kind, sitzung.fach)
     pause, senkt, erreicht = _abschliessen(
-        sitzung, aufgabe, Ergebnis.NOCH_NICHT, "", 2, _jetzt(jetzt)
+        sitzung, aufgabe, Ergebnis.NOCH_NICHT, "", max(2, sitzung.aktuell_hilfe), _jetzt(jetzt)
     )
     return Rueckmeldung(
         Ergebnis.NOCH_NICHT,

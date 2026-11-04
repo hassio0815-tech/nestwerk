@@ -1,6 +1,15 @@
 from django.urls import path
 
-from . import views, views_ki, views_kinder, views_material, views_plan, views_tutor, views_woche
+from . import (
+    views,
+    views_ki,
+    views_kinder,
+    views_material,
+    views_plan,
+    views_tipps,
+    views_tutor,
+    views_woche,
+)
 
 app_name = "lernen"
 
@@ -14,6 +23,8 @@ urlpatterns = [
     path("kind/lernen/sitzung/<int:pk>/loesung/", views.loesung, name="loesung"),
     path("kind/lernen/sitzung/<int:pk>/beenden/", views.beenden, name="beenden"),
     path("kind/lernen/sitzung/<int:pk>/rueckschau/", views.rueckschau, name="rueckschau"),
+    path("kind/lernen/tipps/", views_tipps.kind_tipps, name="tipps"),
+    path("eltern/lernen/tipps/", views_tipps.eltern_tipps, name="eltern_tipps"),
     path("eltern/lernen/", views.eltern_seite, name="eltern"),
     path("eltern/lernen/pause/", views.pause_neu, name="pause_neu"),
     path("eltern/lernen/pause/<int:pk>/loeschen/", views.pause_loeschen, name="pause_loeschen"),

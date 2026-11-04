@@ -24,6 +24,7 @@ from apps.kern import zeit
 from apps.kern.einstellungen import wert
 
 from . import plan_selectors, selectors, tagesziel
+from .mathe import fehler as mathe_fehler
 from .models import (
     Ergebnis,
     Lernsitzung,
@@ -42,6 +43,7 @@ ENTDECKER = "entdecker"
 TITEL = (UEBUNGSMEISTER, AUFSTEIGER, DURCHBEISSER, ENTDECKER)
 
 VERLAUF_WOCHEN = 4
+FEHLERARTEN_MAX = 3
 TUTOR_HOHE_STUFE = 4  # ab dieser Stufe der Hilfeleiter gilt die Hilfe als hoch
 VORSCHLAEGE_MAX = 8
 
@@ -322,6 +324,15 @@ class PruefungHinweis:
     prozent: int
 
 
+@dataclass(frozen=True)
+class Fehlerart:
+    """Häufige Fehlerart beim Mathe-Üben (Fehleranalyse): Schlüssel und Zahl der Antworten."""
+
+    typ: str
+    anzahl: int
+    hinweis: str  # der Hinweis, den das Kind dazu bekommt (zum Mithelfen)
+
+
 @dataclass
 class Wochenbild:
     kind: object
@@ -335,6 +346,7 @@ class Wochenbild:
     tutor_hoch: int = 0
     verlauf: list = field(default_factory=list)
     schwaechen: list = field(default_factory=list)
+    fehlerarten: list = field(default_factory=list)  # Fehleranalyse (Mathe), häufigste zuerst
     einschaetzung: dict = field(default_factory=dict)
     meldungen: list = field(default_factory=list)
     pruefungen: list = field(default_factory=list)
@@ -380,6 +392,21 @@ def _schwaechen(woche):
         if pk in namen
     ]
     return sorted(ergebnis, key=lambda s: (-s.fehler, s.thema))
+
+
+def _fehlerarten(kind, montag):
+    """Die häufigsten erkannten Fehlerarten der Woche (nur mit eigenem Hinweistext), ab der
+    gleichen Mindestzahl wie bei den Schwächen."""
+    von, bis = _fenster(montag)
+    zaehler = Counter(
+        Versuch.objects.filter(sitzung__kind=kind, erstellt__gte=von, erstellt__lt=bis)
+        .exclude(fehlertyp="")
+        .values_list("fehlertyp", flat=True)
+    )
+    mindest = wert("lernen.woche_schwaeche_fehler")
+    bekannt = [(t, n) for t, n in zaehler.items() if t in mathe_fehler.HINWEISE and n >= mindest]
+    bekannt.sort(key=lambda x: (-x[1], x[0]))
+    return [Fehlerart(t, n, mathe_fehler.hinweis_text(t)) for t, n in bekannt[:FEHLERARTEN_MAX]]
 
 
 def _sitzungen(kind, montag):
@@ -438,6 +465,7 @@ def wochenbild(kind, heute, montag=None):
         ).count(),
         verlauf=verlauf,
         schwaechen=_schwaechen(woche),
+        fehlerarten=_fehlerarten(kind, montag),
         einschaetzung=dict(
             Counter(v for s in sitzungen if s.ende is not None and (v := selectors.vergleich(s)))
         ),

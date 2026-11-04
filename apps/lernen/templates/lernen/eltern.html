@@ -60,6 +60,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Rechen-Tipps" %}</h2>
+    <p>{% translate "So erklärt Nestwerk den Kindern die Rechenarten (nur lesen). Damit könnt ihr beim Üben mithelfen." %}</p>
+    {% url "lernen:eltern_tipps" as tipps_url %}
+    {% include "komponenten/button.html" with href=tipps_url variante="geist" klein=True icon="info" text=_("Rechen-Tipps") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Prüfungen" %}</h2>
     <p>{% translate "Hier seht ihr die Prüfungspläne der Kinder (nur lesen). Ihr könnt einen Termin ändern oder eine Prüfung löschen." %}</p>
     {% url "lernen:eltern_pruefungen" as pruefungen_url %}

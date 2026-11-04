@@ -12,6 +12,7 @@ from datetime import timedelta
 
 from apps.kern.einstellungen import wert
 
+from .mathe.hilfe import aufgabe_aus_frage
 from .models import Frage, FrageTyp, Intensitaet, Lernstand, Richtung, Vorhaben
 from .pruefung import alternativen, anzeige_antwort, pruefen, pruefen_mathe
 from .selectors import nutzbare_fragen
@@ -45,7 +46,9 @@ class Aufgabe:
     def pruefen(self, eingabe):
         """Prüft die Eingabe: Vokabel und Frage wie bisher, Mathe gegen die berechnete Lösung."""
         if self.generiert:
-            return pruefen_mathe(eingabe, self.frage.gen_daten["loesung"])
+            return pruefen_mathe(
+                eingabe, self.frage.gen_daten["loesung"], aufgabe_aus_frage(self.frage)
+            )
         return pruefen(eingabe, self.erwartet)
 
 

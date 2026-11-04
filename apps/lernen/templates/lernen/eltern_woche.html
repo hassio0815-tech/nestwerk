@@ -47,6 +47,12 @@
         <ul>{% for s in b.schwaechen %}<li>{{ s.fach }}: {{ s.thema }}</li>{% endfor %}</ul>
       {% endif %}
 
+      {% if b.fehlerarten %}
+        <h3>{% translate "Häufige Stolpersteine beim Rechnen" %}</h3>
+        <p class="kachel__text">{% translate "Das erkennt Nestwerk an den falschen Antworten (eine Einschätzung, keine Gewissheit). So wird dem Kind dazu geholfen:" %}</p>
+        <ul data-lernen-fehlerarten>{% for f in b.fehlerarten %}<li>{{ f.hinweis }} ({% blocktranslate with n=f.anzahl %}{{ n }} Mal{% endblocktranslate %})</li>{% endfor %}</ul>
+      {% endif %}
+
       {% if b.einschaetzung %}
         <h3>{% translate "Selbsteinschätzung und Ergebnis" %}</h3>
         <p>{% blocktranslate with passt=b.einschaetzung.passt|default:0 mehr=b.einschaetzung.mehr|default:0 weniger=b.einschaetzung.weniger|default:0 %}Passte: {{ passt }}. Besser als erwartet: {{ mehr }}. Weniger als erwartet: {{ weniger }}.{% endblocktranslate %}</p>

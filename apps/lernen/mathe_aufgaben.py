@@ -18,7 +18,7 @@ from apps.kern import zeit
 from apps.kern.einstellungen import wert
 
 from . import selectors
-from .mathe import registry, schwierigkeit
+from .mathe import registry, schwierigkeit, textaufgaben
 from .models import (
     Ergebnis,
     Frage,
@@ -47,20 +47,38 @@ GLEICHER_GENERATOR_FAKTOR = 0.05
 # --- Anlegen --------------------------------------------------------------------------------------
 
 
+def als_textaufgabe(aufgabe):
+    """Kommt diese Aufgabe als Textaufgabe? Der Seed entscheidet gleichmäßig nach dem Anteil in
+    ``lernen.mathe_textaufgaben_prozent`` (Standard 0); nur Rechenarten mit Vorlage zählen."""
+    anteil = wert("lernen.mathe_textaufgaben_prozent")
+    return bool(anteil) and aufgabe.seed % 100 < anteil and textaufgaben.hat_vorlage(aufgabe)
+
+
 def speichern(aufgabe, thema):
-    """Legt die Aufgabe als Frage-Zeile an (siehe Modulbeschreibung)."""
-    return Frage.objects.create(
+    """Legt die Aufgabe als Frage-Zeile an (siehe Modulbeschreibung).
+
+    Kommt die Aufgabe als Textaufgabe (Einstellung ``lernen.mathe_textaufgaben_prozent``), steht
+    die lokale Vorlage als Text da. Zahlen und Lösung bleiben die des Generators."""
+    text, daten = aufgabe.text, aufgabe.to_dict()
+    textfassung = als_textaufgabe(aufgabe)
+    if textfassung:
+        lokal = textaufgaben.lokal(aufgabe)
+        if lokal:
+            text = lokal
+            daten["einkleidung"] = {"quelle": "lokal"}
+    frage = Frage.objects.create(
         thema=thema,
         typ=FrageTyp.FRAGE,
-        frage=aufgabe.text[:300],
+        frage=text[:300],
         antwort=aufgabe.loesung.anzeige[:300],
         quelle=Quelle.SYSTEM,
         freigabe=Freigabe.FREIGEGEBEN,
         generiert=True,
         generator=aufgabe.generator,
         gen_schwierigkeit=aufgabe.schwierigkeit,
-        gen_daten=aufgabe.to_dict(),
+        gen_daten=daten,
     )
+    return frage
 
 
 def _thema(fach, schluessel, cache):

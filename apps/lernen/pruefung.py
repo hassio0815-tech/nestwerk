@@ -12,6 +12,7 @@ import unicodedata
 from dataclasses import dataclass
 
 from .mathe import antwort as mathe_antwort
+from .mathe import fehler as mathe_fehler
 
 TRENNER = re.compile(r"[/;]")
 KLAMMER = re.compile(r"\([^)]*\)")
@@ -24,8 +25,9 @@ class Pruefergebnis:
     richtig: bool
     fast: bool = False  # kleiner Tippfehler: noch nicht richtig, aber nah dran
     treffer: str = ""  # die akzeptierte Antwort, die gemeint war (bei richtig oder fast)
-    # Etappe 10a (Mathe): Hinweis für das Kind bei "fast" (z. B. "noch nicht gekürzt") und
-    # Art des Formfehlers; der Typ ist ein Platzhalter für die Fehleranalyse in Paket 2
+    # Mathe (Etappe 10a/10b): Hinweis für das Kind (bei "fast" z. B. "noch nicht gekürzt", bei
+    # falschen Antworten ein gezielter Hinweis aus der Fehleranalyse, nie mit der Lösung) und der
+    # Fehlertyp (Schlüssel aus ``mathe.fehler``; leer: nicht erkannt)
     hinweis: str = ""
     fehlertyp: str = ""
 
@@ -115,15 +117,22 @@ def pruefen(gegeben, erwartet):
     return Pruefergebnis(False)
 
 
-def pruefen_mathe(gegeben, loesung):
+def pruefen_mathe(gegeben, loesung, aufgabe=None):
     """Prüft die Eingabe zu einer erzeugten Mathe-Aufgabe gegen deren berechnete Lösung
     (``Loesung`` oder ihr ``dict``). Zahlen, Brüche, Rest, Gleichungen und Terme: siehe
-    ``mathe.antwort``. "Fast" heißt: Der Wert stimmt, die Schreibweise noch nicht."""
+    ``mathe.antwort``. "Fast" heißt: Der Wert stimmt, die Schreibweise noch nicht.
+
+    Mit ``aufgabe`` (``mathe.aufgabe.Aufgabe``) untersucht die Fehleranalyse falsche Antworten:
+    Fehlertyp und ein gezielter Hinweis ohne die Lösung. Nicht erkannt: neutraler Hinweis."""
     befund = mathe_antwort.pruefen(gegeben, loesung)
+    fehlertyp, hinweis = befund.fehlertyp, befund.hinweis
+    if aufgabe is not None and not befund.richtig and not befund.fast:
+        fehlertyp = fehlertyp or mathe_fehler.analysiere(aufgabe, gegeben)
+        hinweis = mathe_fehler.hinweis_text(fehlertyp or "neutral", aufgabe)
     return Pruefergebnis(
         befund.richtig,
         fast=befund.fast,
         treffer=loesung["anzeige"] if isinstance(loesung, dict) else loesung.anzeige,
-        hinweis=befund.hinweis,
-        fehlertyp=befund.fehlertyp,
+        hinweis=hinweis,
+        fehlertyp=fehlertyp,
     )
