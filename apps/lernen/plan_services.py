@@ -24,7 +24,7 @@ from apps.kern.einstellungen import wert
 from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte
 
-from . import events, plan, plan_selectors, plan_texte, pruefung, selectors, services, tagesziel
+from . import events, plan, plan_selectors, plan_texte, selectors, services, tagesziel
 from .models import (
     Ergebnis,
     Frage,
@@ -425,7 +425,7 @@ def probe_antworten(probe_, eingabe, *, jetzt=None):
     aufgabe = probe_aufgabe(probe_)
     if aufgabe is None:
         return probe_beenden(probe_, jetzt=jetzt)
-    geprueft = pruefung.pruefen(eingabe, aufgabe.erwartet)
+    geprueft = aufgabe.pruefen(eingabe)
     ergebnis = (
         Ergebnis.RICHTIG
         if geprueft.richtig

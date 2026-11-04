@@ -48,11 +48,7 @@ def _fach_optionen(kind):
     for fach in selectors.faecher():
         # nur Themen mit Fragen, die dieses Kind nutzen darf: Themen aus dem Material eines
         # Geschwisters (oder noch ohne Freigabe) tauchen hier nie auf
-        themen = [
-            t
-            for t in selectors.themen_bis(fach, selectors.klassenstufe(kind, fach))
-            if selectors.nutzbare_fragen(t, kind).exists()
-        ]
+        themen = [t for t in selectors.themen_fuer(kind, fach) if selectors.hat_fragen(t, kind)]
         if themen:
             ergebnis.append((fach, themen))
     return ergebnis

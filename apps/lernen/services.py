@@ -22,7 +22,16 @@ from apps.kern.einstellungen import wert
 from apps.punkte import services as punkte
 from apps.spielregeln import services as spielregeln
 
-from . import events, frust, plan_selectors, pruefung, selectors, tagesziel, texte, wiederholung
+from . import (
+    events,
+    frust,
+    mathe_aufgaben,
+    plan_selectors,
+    selectors,
+    tagesziel,
+    texte,
+    wiederholung,
+)
 from .models import (
     Ergebnis,
     Erwartung,
@@ -35,6 +44,7 @@ from .models import (
     Lernsitzung,
     PausenGrund,
     Quelle,
+    Richtung,
     Selbsteinschaetzung,
     Strategie,
     Thema,
@@ -166,7 +176,12 @@ def sitzung_starten(
     if alte is not None:
         sitzung_beenden(alte, jetzt=jetzt)
     tag_vorbereiten(kind, zeit.heute(jetzt))
-    anzahl = ziel_fragen or wert(f"lernen.fragen_{intensitaet}")
+    mathe_aufgaben.aufraeumen(jetzt)
+    anzahl = (
+        ziel_fragen
+        or (portion is None and mathe_aufgaben.aufgaben_je_runde(fach))
+        or wert(f"lernen.fragen_{intensitaet}")
+    )
     return Lernsitzung.objects.create(
         portion=portion,
         kind=kind,
@@ -259,6 +274,35 @@ def _offen(sitzung):
 
 
 @transaction.atomic
+def _naechste_wahl(sitzung, zufall, jetzt):
+    """Das nächste Paar (Frage, Richtung): erzeugte Mathe-Aufgabe (SPEC 21.13) oder gespeicherte
+    Frage nach der Abstandswiederholung. ``None``, wenn nichts mehr dran ist."""
+    zufall = zufall or random.Random()
+    if mathe_aufgaben.nutzt_generator(sitzung):
+        frage = mathe_aufgaben.naechste(sitzung, zufall=zufall, jetzt=jetzt)
+        return (frage, Richtung.DE_EN) if frage is not None else None
+    kind, fach = sitzung.kind, sitzung.fach
+    letzter = sitzung.antworten.order_by("-id").select_related("frage").first()
+    themen = selectors.themen_fuer(kind, fach)
+    thema, nur = sitzung.thema, None
+    if sitzung.portion_id:  # Prüfungsportion: nur ihre Fragen, gleich aus welchem Fach
+        nur = frozenset(plan_selectors.portion_fragen(sitzung.portion))
+        themen, thema = Thema.objects.filter(fragen__pk__in=nur).distinct(), None
+    return wiederholung.naechste(
+        kind,
+        fach,
+        themen,
+        nur_fragen=nur,
+        thema=thema,
+        vorhaben=sitzung.vorhaben,
+        intensitaet=sitzung.intensitaet,
+        heute=zeit.heute(jetzt),
+        ausgeschlossen=set(sitzung.antworten.values_list("frage_id", "richtung")),
+        letztes_thema=letzter.frage.thema_id if letzter else None,
+        zufall=zufall,
+    )
+
+
 def frage_stellen(sitzung, *, zufall=None, jetzt=None):
     """Die offene oder nächste Frage (``Aufgabe``), ``None`` wenn nichts mehr dran ist.
     Neuladen zeigt dieselbe Frage. Danach ist ``sitzung_beenden`` fällig."""
@@ -270,26 +314,7 @@ def frage_stellen(sitzung, *, zufall=None, jetzt=None):
         if sitzung.versuche >= sitzung.ziel_fragen:
             sitzung.save()
             return None
-        kind, fach = sitzung.kind, sitzung.fach
-        letzter = sitzung.antworten.order_by("-id").select_related("frage").first()
-        themen = selectors.themen_bis(fach, selectors.klassenstufe(kind, fach))
-        thema, nur = sitzung.thema, None
-        if sitzung.portion_id:  # Prüfungsportion: nur ihre Fragen, gleich aus welchem Fach
-            nur = frozenset(plan_selectors.portion_fragen(sitzung.portion))
-            themen, thema = Thema.objects.filter(fragen__pk__in=nur).distinct(), None
-        wahl = wiederholung.naechste(
-            kind,
-            fach,
-            themen,
-            nur_fragen=nur,
-            thema=thema,
-            vorhaben=sitzung.vorhaben,
-            intensitaet=sitzung.intensitaet,
-            heute=zeit.heute(jetzt),
-            ausgeschlossen=set(sitzung.antworten.values_list("frage_id", "richtung")),
-            letztes_thema=letzter.frage.thema_id if letzter else None,
-            zufall=zufall or random.Random(),
-        )
+        wahl = _naechste_wahl(sitzung, zufall, jetzt)
         if wahl is None:
             sitzung.save()
             return None
@@ -319,7 +344,7 @@ def hilfe(sitzung, *, jetzt=None):
     return hinweis_text(aufgabe.loesung)
 
 
-def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt):
+def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehlertyp=""):
     """Eine beantwortete Frage verbuchen: Versuch, Lernstand, Zähler, Frust, Zeit."""
     dauer_ms = max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000))
     Versuch.objects.create(
@@ -330,6 +355,7 @@ def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt):
         hilfestufe=hilfestufe,
         eingabe=eingabe[:300],
         dauer_ms=dauer_ms,
+        fehlertyp=fehlertyp,
     )
     richtig = ergebnis == Ergebnis.RICHTIG
     wiederholung.stand_buchen(
@@ -384,7 +410,7 @@ def antworten(sitzung, eingabe, *, jetzt=None):
     aufgabe = _offen(sitzung)
     jetzt = _jetzt(jetzt)
     stufe = selectors.sprachstufe(sitzung.kind, sitzung.fach)
-    pruefung_ = pruefung.pruefen(eingabe, aufgabe.erwartet)
+    pruefung_ = aufgabe.pruefen(eingabe)
     if pruefung_.fast and sitzung.aktuell_versuche == 0:
         sitzung.aktuell_versuche += 1
         Versuch.objects.create(
@@ -395,13 +421,16 @@ def antworten(sitzung, eingabe, *, jetzt=None):
             hilfestufe=sitzung.aktuell_hilfe,
             eingabe=eingabe[:300],
             dauer_ms=max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000)),
+            fehlertyp=pruefung_.fehlertyp,
         )
         _zeit_buchen(sitzung, jetzt)
         sitzung.save()
-        return Rueckmeldung(Ergebnis.FAST, texte.ton("fast", stufe), nochmal=True)
+        return Rueckmeldung(
+            Ergebnis.FAST, pruefung_.hinweis or texte.ton("fast", stufe), nochmal=True
+        )
     ergebnis = Ergebnis.RICHTIG if pruefung_.richtig else Ergebnis.NOCH_NICHT
     pause, senkt, erreicht = _abschliessen(
-        sitzung, aufgabe, ergebnis, eingabe, sitzung.aktuell_hilfe, jetzt
+        sitzung, aufgabe, ergebnis, eingabe, sitzung.aktuell_hilfe, jetzt, pruefung_.fehlertyp
     )
     return Rueckmeldung(
         ergebnis,

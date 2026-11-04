@@ -699,13 +699,13 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
 - **Geschlossene Konzept-[O]-Punkte:** App-Name Nestwerk (E8), Stil der Kinderoberfläche (E11), Startwerte für Ränge, Katalog und Bibliothek (E13–E15), Mod-Seltenheit an Rang gekoppelt und 36 Mods pro Thema (E7, E9), Eltern-Avatar (E10), Meilenstein-Schwellen (E12), Mailpostfach (E18).
 - **Stufen:** Aufgabenbibliothek und Taschengeld-Limit nach Kern verschoben, weil die Startwerte im Assistenten gebraucht werden (E13, E15). Zuordnung offen (siehe 19, Punkt 8).
 - **Module:** Lernsystem und Forschungssystem als eigene Django-Module (Vorgabe des Auftrags).
-- **Lernsystem:** Anforderungen aus dem Lern-Interview in Abschnitt 21 (L1–L12). Cloud-KI als Opt-in ergänzt Abschnitt 14.
+- **Lernsystem:** Anforderungen aus dem Lern-Interview in Abschnitt 21 (L1–L15). Cloud-KI als Opt-in ergänzt Abschnitt 14.
 
 ---
 
 ## 21. Lernsystem (Modul `lernen`)
 
-Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L12**. Sie schließen Punkt 9 aus Abschnitt 19.
+Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L15**. Sie schließen Punkt 9 aus Abschnitt 19.
 
 ### 21.1 Ziel
 
@@ -713,6 +713,7 @@ Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L12**. 
 - **[E]** Das Modul begleitet die Schule (Hausaufgaben), unterstützt tägliches Üben und bereitet auf Prüfungen vor. (L1)
 - **[E]** Ziele sind immer schaffbar. Die Lust am Lernen bleibt erhalten. (L1)
 - **[E]** Startumfang: alle Kinder, zwei Fächer (Mathe, Englisch-Vokabeln). Weitere Fächer sind danach Daten, kein Code. (L12)
+- **[E]** Mathe-Aufgaben erzeugt ein lokaler Generator ohne KI (Abschnitt 21.13). Englisch bleibt bei den gespeicherten Vokabeln. (L13)
 
 ### 21.2 Prinzipien
 
@@ -813,3 +814,20 @@ Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L12**. 
 - **[E]** Das Modul `lernen` hält die Schichtregeln aus `MODULE-ERWEITERN.md` ein. Punkte buchen über `punkte.services`, Aktivität über `spielregeln.services`.
 - **[E]** Alle Schwellen (Mindesttag, Tageslimit, Stufen, Limits) sind Einstellungen in der Datenbank. Startwerte nur per Datenmigration.
 - **[V]** Gemessen und gespeichert wird pro Lernsitzung: Dauer, Versuche, Hilfestufen, Selbsteinschätzung, Rückschau.
+
+### 21.13 Mathe-Generator und Hilfe
+
+- **[E]** Mathe-Aufgaben entstehen **lokal und ohne KI**: Zufallszahlen, **berechnete Lösung**, einstellbare Schwierigkeit. Die Lösung wird immer berechnet, nie von der KI geraten. (L13)
+- **[E]** Die Hilfe beim Mathe-Üben ist **regelbasiert** (Hilfeleiter aus 21.3 mit Erklärkarten und Fehleranalyse); sie folgt als Paket 2. (L14)
+- **[E]** Cloud oder KI ist für Mathe nur ein **Opt-in** und nur für die Einkleidung (Textaufgabe) und die Erklärung. Zahlen und Lösung bleiben unberührt. (L15)
+- **[E]** Rechenarten je Klassenstufe (Inhaltsband 3, 6, 8; Klasse 4 gehört zu 3, 5 bis 7 zu 6, ab 8 zu 8):
+  - Klasse 3: Plus und Minus bis 100 und 1000 (mit und ohne Übertrag), kleines Einmaleins, Umkehraufgaben, Teilen ohne Rest, Euro und Cent, Meter und Zentimeter.
+  - Klasse 6: schriftlich Malnehmen und Teilen (mit Rest, als Dezimalzahl), Brüche (Kürzen, Erweitern, Plus und Minus), Dezimalzahlen (Runden, Rechnen), Prozent (Anteil, Prozentwert), Größen umrechnen, Punkt vor Strich, Klammern und vorteilhaftes Rechnen.
+  - Klasse 8: lineare Gleichungen, Terme zusammenfassen und ausmultiplizieren, Prozent- und Zinsrechnung, Dreisatz (proportional und antiproportional), Potenzen, Wurzeln, negative Zahlen.
+- **[E]** Jede Aufgabe ist eindeutig lösbar und kindgerecht: keine negativen Ergebnisse in Klasse 3, Brüche am Ende gekürzt, Teilen ohne Rest nur wenn angekündigt, Gleichungen mit ganzzahliger Lösung, Geldbeträge mit höchstens zwei Stellen.
+- **[E]** Schwierigkeit 1 bis 5: Start nach Leistungsstufe (Grund: 1 bis 3, Erweiterung: 2 bis 4 je nach Intensität) und danach nach den letzten Antworten. Zielbereich 70 bis 85 % richtig (Einstellungen). Zu viele richtig: eine Stufe schwerer, zu wenige: leichter. Aufwärmen bleibt unter "Normal", Herausforderung darüber; Frust-Erkennung senkt eine Stufe. (L11)
+- **[E]** Auswahl: Themen und Rechenarten gemischt statt in Blöcken (dieselbe Rechenart nie direkt hintereinander, Rechenarten mit Schwäche öfter). Fällige Wiederholungen kommen als **gleichartige neue Aufgabe** (gleiche Rechenart und Stufe, andere Zahlen), nie dieselbe.
+- **[E]** Technik: Eine erzeugte Aufgabe liegt als Frage-Zeile (`generiert`, ohne Kind) mit Seed, Typ, Parametern und Lösung. Versuch, Lernstand, Wiederholung, Tagesziel, Punkte und Prüfungsplan laufen unverändert. Alte Zeilen ohne Wiederholungstermin werden nach einer einstellbaren Frist gelöscht. Prüfungspläne und Probe-Prüfungen nutzen je Mathe-Thema feste Aufgaben (Seeds aus Kind und Thema).
+- **[E]** Antworten werden großzügig gelesen: Komma oder Punkt, Tausendertrennung, führende und abschließende Nullen, Brüche (`3/4`), gemischte Zahlen (`1 1/2`), Rest (`17 R 2`), `x = 5`, Prozent, optionale Einheit, einfache Terme. Stimmt der Wert, aber nicht die Form (nicht gekürzt, Rest fehlt, nicht vereinfacht), gilt das als "fast" mit Hinweis.
+- **[E]** Einstellungen (Eltern): Rechenarten an oder aus, Aufgaben je Runde, Obergrenze für Zahlenräume, Zielbereich, Aufbewahrungsfrist, Aufgaben je Prüfungsthema. Eine eigene Seite dafür gibt es noch nicht; sie stehen im Einstellungs-Editor.
+- **[V]** Hilfe-Assistent, Erklärkarten und Fehleranalyse (Paket 2). Erweiterungspunkte: `mathe.registry.analog` (gleichartige Aufgabe mit anderen Zahlen), Fehlertyp je Versuch.

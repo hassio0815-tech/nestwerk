@@ -7,6 +7,7 @@ from django.db.models import Q
 from apps.kern.einstellungen import wert
 
 from . import tagesziel
+from .mathe import registry as mathe_registry
 from .models import (
     Erwartung,
     Fach,
@@ -42,11 +43,57 @@ def themen_bis(fach, klassenstufe=None):
     return qs
 
 
-def nutzbare_fragen(thema, kind):
-    """Freigegebene Fragen: Startdaten und die eigenen des Kindes (nie die eines Geschwisters)."""
-    return Frage.objects.filter(thema=thema, freigabe=Freigabe.FREIGEGEBEN).filter(
+def themen_fuer(kind, fach):
+    """Themen in Reichweite des Kindes: bis zu seiner Klassenstufe. In Fächern mit Mathe-Generator
+    zählt das Inhaltsband (Klasse 5 bis 7 lernt die Themen der Stufe 6), weil die Startdaten nur
+    die Stufen 3, 6 und 8 kennen."""
+    stufe = klassenstufe(kind, fach)
+    if stufe is not None and Thema.objects.filter(fach=fach).exclude(schluessel="").exists():
+        stufe = mathe_registry.band(stufe)
+    return themen_bis(fach, stufe)
+
+
+def nutzbare_fragen(thema, kind, mit_generierten=False):
+    """Freigegebene Fragen: Startdaten und die eigenen des Kindes (nie die eines Geschwisters).
+    Vom Mathe-Generator erzeugte Aufgaben zählen nur ``mit_generierten`` (Prüfungsportionen):
+    sonst würden die Zeilen anderer Kinder als "neu" auftauchen."""
+    qs = Frage.objects.filter(thema=thema, freigabe=Freigabe.FREIGEGEBEN).filter(
         Q(kind__isnull=True) | Q(kind=kind)
     )
+    return qs if mit_generierten else qs.filter(generiert=False)
+
+
+# --- Mathe-Generator (Etappe 10a) -------------------------------------------------------------
+
+
+def mathe_rechenarten():
+    """Schlüssel der Generatoren, die die Eltern nicht abgeschaltet haben."""
+    aus = set(wert("lernen.mathe_rechenarten_aus"))
+    return {k for k in mathe_registry.schluessel_alle() if k not in aus}
+
+
+def mathe_kontext():
+    """Einstellungen der Eltern, die das Erzeugen berühren (Obergrenze für Zahlenräume)."""
+    return mathe_registry.Kontext(wert("lernen.mathe_zahlenraum_max") or None)
+
+
+def ist_generatorthema(thema):
+    """Gehört das Thema zu Mathe-Generatoren, von denen mindestens einer an ist?"""
+    if not thema.schluessel:
+        return False
+    aktiv = mathe_rechenarten()
+    return any(g.schluessel in aktiv for g in mathe_registry.generatoren_fuer(thema.schluessel))
+
+
+def hat_fragen(thema, kind):
+    """Gibt es etwas zu üben: Fragen, die das Kind nutzen darf, oder Mathe-Aufgaben?"""
+    return nutzbare_fragen(thema, kind).exists() or ist_generatorthema(thema)
+
+
+def niveau(kind, fach):
+    """``grund`` oder ``erweitert`` aus der Leistungsstufe, die die Eltern eingetragen haben."""
+    eintrag = leistungsstufe(kind, fach)
+    return mathe_registry.niveau(eintrag.stufe if eintrag else "")
 
 
 def offene_fragen(kind=None):

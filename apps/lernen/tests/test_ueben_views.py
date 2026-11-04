@@ -74,7 +74,12 @@ def test_startseite(kind_client, fach):
 
 
 def test_startseite_ohne_fragen(kind_client, db):
+    from apps.kern import einstellungen
+    from apps.lernen.mathe.registry import schluessel_alle
+
     Frage.objects.all().delete()
+    # die Mathe-Themen haben Generatoren; ohne Rechenarten gibt es auch dort nichts zu üben
+    einstellungen.setzen("lernen.mathe_rechenarten_aus", list(schluessel_alle()), akteur=None)
     assert (
         "Es gibt noch nichts zum Üben" in kind_client.get(reverse("lernen:start")).content.decode()
     )

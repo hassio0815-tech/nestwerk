@@ -13,7 +13,7 @@ from datetime import timedelta
 from apps.kern.einstellungen import wert
 
 from .models import Frage, FrageTyp, Intensitaet, Lernstand, Richtung, Vorhaben
-from .pruefung import alternativen, anzeige_antwort
+from .pruefung import alternativen, anzeige_antwort, pruefen, pruefen_mathe
 from .selectors import nutzbare_fragen
 
 
@@ -27,13 +27,26 @@ class Aufgabe:
     erwartet: str  # alle akzeptierten Antworten, wie gespeichert
 
     @property
+    def generiert(self):
+        return self.frage.generiert
+
+    @property
     def loesung(self):
-        """Die Lösung als Anzeige (erste Schreibweise ohne Klammern)."""
+        """Die Lösung als Anzeige (erste Schreibweise ohne Klammern; bei erzeugten
+        Mathe-Aufgaben die berechnete Lösung, ``3/4`` bleibt ein Bruch)."""
+        if self.generiert:
+            return self.frage.antwort
         return anzeige_antwort(self.erwartet)
 
     @property
     def mehrere(self):
-        return len(alternativen(self.erwartet)) > 1
+        return not self.generiert and len(alternativen(self.erwartet)) > 1
+
+    def pruefen(self, eingabe):
+        """Prüft die Eingabe: Vokabel und Frage wie bisher, Mathe gegen die berechnete Lösung."""
+        if self.generiert:
+            return pruefen_mathe(eingabe, self.frage.gen_daten["loesung"])
+        return pruefen(eingabe, self.erwartet)
 
 
 def aufgabe_fuer(frage, richtung):
@@ -83,12 +96,13 @@ def _kandidaten(kind, fach, themen, thema, heute, nur_fragen=None):
     for t in themen:
         if thema is not None and t.pk != thema.pk:
             continue
-        for f in nutzbare_fragen(t, kind):
+        for f in nutzbare_fragen(t, kind, mit_generierten=nur_fragen is not None):
             if nur_fragen is None or f.pk in nur_fragen:
                 fragen[f.pk] = f
     staende_qs = Lernstand.objects.filter(kind=kind)
     if nur_fragen is None:
-        staende_qs = staende_qs.filter(frage__thema__fach=fach)
+        # erzeugte Mathe-Aufgaben wiederholt mathe_aufgaben als gleichartige neue Aufgabe
+        staende_qs = staende_qs.filter(frage__thema__fach=fach, frage__generiert=False)
     else:
         staende_qs = staende_qs.filter(frage_id__in=nur_fragen)
     staende = {(s.frage_id, s.richtung): s for s in staende_qs.select_related("frage__thema")}
@@ -163,7 +177,7 @@ def _beliebige(kind, themen, nur_fragen, ausgeschlossen, letztes_thema, zufall):
     paare = [
         (f, r)
         for t in themen
-        for f in nutzbare_fragen(t, kind)
+        for f in nutzbare_fragen(t, kind, mit_generierten=True)
         if f.pk in nur_fragen
         for r in richtungen(f)
         if (f.pk, r) not in ausgeschlossen

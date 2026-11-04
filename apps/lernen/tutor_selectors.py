@@ -125,7 +125,8 @@ def bekannte_antworten(gespraech_, texte=()):
         )
     if gespraech_.thema_id:
         antworten += list(
-            Frage.objects.filter(thema=gespraech_.thema, freigabe="freigegeben")
+            # erzeugte Mathe-Aufgaben nicht: ihre kurzen Zahlen-Antworten wären Fehlalarme
+            Frage.objects.filter(thema=gespraech_.thema, freigabe="freigegeben", generiert=False)
             .filter(Q(kind__isnull=True) | Q(kind=kind))
             .values_list("antwort", flat=True)
         )

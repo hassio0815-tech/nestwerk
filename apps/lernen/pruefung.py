@@ -11,6 +11,8 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
+from .mathe import antwort as mathe_antwort
+
 TRENNER = re.compile(r"[/;]")
 KLAMMER = re.compile(r"\([^)]*\)")
 # Umlaut-Punkte (U+0308) bleiben erhalten, wenn sie auf a, o oder u stehen
@@ -22,6 +24,10 @@ class Pruefergebnis:
     richtig: bool
     fast: bool = False  # kleiner Tippfehler: noch nicht richtig, aber nah dran
     treffer: str = ""  # die akzeptierte Antwort, die gemeint war (bei richtig oder fast)
+    # Etappe 10a (Mathe): Hinweis für das Kind bei "fast" (z. B. "noch nicht gekürzt") und
+    # Art des Formfehlers; der Typ ist ein Platzhalter für die Fehleranalyse in Paket 2
+    hinweis: str = ""
+    fehlertyp: str = ""
 
 
 def normalisieren(text):
@@ -107,3 +113,17 @@ def pruefen(gegeben, erwartet):
     if bester is not None:
         return Pruefergebnis(False, fast=True, treffer=bester[1])
     return Pruefergebnis(False)
+
+
+def pruefen_mathe(gegeben, loesung):
+    """Prüft die Eingabe zu einer erzeugten Mathe-Aufgabe gegen deren berechnete Lösung
+    (``Loesung`` oder ihr ``dict``). Zahlen, Brüche, Rest, Gleichungen und Terme: siehe
+    ``mathe.antwort``. "Fast" heißt: Der Wert stimmt, die Schreibweise noch nicht."""
+    befund = mathe_antwort.pruefen(gegeben, loesung)
+    return Pruefergebnis(
+        befund.richtig,
+        fast=befund.fast,
+        treffer=loesung["anzeige"] if isinstance(loesung, dict) else loesung.anzeige,
+        hinweis=befund.hinweis,
+        fehlertyp=befund.fehlertyp,
+    )

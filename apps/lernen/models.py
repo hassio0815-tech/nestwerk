@@ -107,6 +107,8 @@ class Thema(models.Model):
     klassenstufe = models.PositiveSmallIntegerField(null=True, blank=True)
     name = models.CharField(max_length=80)
     reihenfolge = models.PositiveSmallIntegerField(default=0)
+    # Etappe 10a: Schlüssel, der das Thema mit den Mathe-Generatoren verbindet (leer = keiner)
+    schluessel = models.SlugField(max_length=40, blank=True, default="")
 
     class Meta:
         ordering = ["fach", "klassenstufe", "reihenfolge", "name"]
@@ -145,10 +147,19 @@ class Frage(models.Model):
     material = models.ForeignKey(
         "Material", null=True, blank=True, on_delete=models.CASCADE, related_name="fragen"
     )
+    # Etappe 10a: vom Mathe-Generator erzeugte Aufgabe (SPEC 21.13). ``gen_daten`` hält Seed,
+    # Typ, Parameter und die berechnete Lösung; mit ihnen ist die Aufgabe reproduzierbar.
+    generiert = models.BooleanField(default=False)
+    generator = models.CharField(max_length=40, blank=True, default="")
+    gen_schwierigkeit = models.PositiveSmallIntegerField(null=True, blank=True)
+    gen_daten = models.JSONField(default=dict, blank=True)
 
     class Meta:
         ordering = ["thema", "id"]
-        indexes = [models.Index(fields=["thema", "freigabe"], name="lernen_frage_thema_frei")]
+        indexes = [
+            models.Index(fields=["thema", "freigabe"], name="lernen_frage_thema_frei"),
+            models.Index(fields=["generiert", "erstellt"], name="lernen_frage_gen_erstellt"),
+        ]
         constraints = [
             # Startdaten gehören keinem Kind
             models.CheckConstraint(
@@ -294,6 +305,8 @@ class Versuch(models.Model):
     eingabe = models.CharField(max_length=300, blank=True)
     dauer_ms = models.PositiveIntegerField(default=0)
     erstellt = models.DateTimeField(auto_now_add=True)
+    # Etappe 10a: Art des Formfehlers (Platzhalter für die Fehleranalyse in Paket 2)
+    fehlertyp = models.CharField(max_length=30, blank=True, default="")
 
     class Meta:
         ordering = ["id"]

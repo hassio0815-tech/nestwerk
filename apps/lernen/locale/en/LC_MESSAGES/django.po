@@ -3030,3 +3030,258 @@ msgstr "Please confirm the new school year."
 
 msgid "Beim Testen werden die Angaben gespeichert und der Anbieter eingeschaltet. Ihr könnt ihn später jederzeit ausschalten."
 msgstr "Testing saves your details and switches the provider on. You can switch it off again at any time."
+
+msgid "Mathe: abgeschaltete Rechenarten"
+msgstr "Maths: disabled operations"
+
+msgid "Diese Rechenarten kommen beim Mathe-Üben nicht vor (ein Schlüssel je Zeile). Leer: alle sind an. Mögliche Schlüssel:"
+msgstr "These operations do not appear in maths practice (one key per line). Empty: all are on. Possible keys:"
+
+msgid "Mathe: Aufgaben je Runde"
+msgstr "Maths: tasks per round"
+
+msgid "0: Die Zahl hängt von der Intensität ab (wie bei den Vokabeln)."
+msgstr "0: The number depends on the intensity (as with vocabulary)."
+
+msgid "Mathe: Obergrenze für Zahlen"
+msgstr "Maths: upper limit for numbers"
+
+msgid "0: keine Obergrenze. Sonst bleiben die Zahlen der Aufgaben bei Plus, Minus, Malnehmen und Prozent unter diesem Wert (mindestens 20)."
+msgstr "0: no upper limit. Otherwise the numbers in addition, subtraction, multiplication and percent tasks stay below this value (at least 20)."
+
+msgid "Mathe: Zielbereich richtig, von"
+msgstr "Maths: target range correct, from"
+
+msgid "Unter diesem Anteil richtiger Antworten wird die Aufgabe leichter."
+msgstr "Below this share of correct answers the tasks get easier."
+
+msgid "Mathe: Zielbereich richtig, bis"
+msgstr "Maths: target range correct, to"
+
+msgid "Über diesem Anteil richtiger Antworten wird die Aufgabe schwerer."
+msgstr "Above this share of correct answers the tasks get harder."
+
+msgid "Mathe: so viele letzte Antworten zählen für die Anpassung"
+msgstr "Maths: this many recent answers count for the adjustment"
+
+msgid "Mathe: Aufgaben je Prüfungsthema"
+msgstr "Maths: tasks per exam topic"
+
+msgid "So viele Aufgaben legt der Prüfungsplan je Mathe-Thema fest (Portionen und Probe-Prüfung ziehen daraus)."
+msgstr "The exam plan fixes this many tasks per maths topic (portions and the practice exam draw from them)."
+
+msgid "Mathe: erzeugte Aufgaben aufbewahren"
+msgstr "Maths: keep generated tasks"
+
+msgid "Ältere Aufgaben ohne Wiederholungstermin werden gelöscht, mit ihren Antworten."
+msgstr "Older tasks without a review date are deleted, together with their answers."
+
+msgid "Der Wert stimmt. Schreibe das Ergebnis als Bruch."
+msgstr "The value is right. Write the result as a fraction."
+
+msgid "Der Wert stimmt. Schreibe das Ergebnis als Zahl, z. B. mit Komma."
+msgstr "The value is right. Write the result as a number, e.g. with a decimal comma."
+
+msgid "Fast: Vergiss den Rest nicht, z. B. 17 R 2."
+msgstr "Almost: do not forget the remainder, e.g. 17 R 2."
+
+msgid "Plus und Minus bis 100"
+msgstr "Addition and subtraction up to 100"
+
+msgid "Plus und Minus bis 1000"
+msgstr "Addition and subtraction up to 1000"
+
+msgid "Umkehraufgaben"
+msgstr "Inverse tasks"
+
+msgid "Ergänze: %(a)s + ? = %(z)s"
+msgstr "Complete: %(a)s + ? = %(z)s"
+
+msgid "Teilen ohne Rest"
+msgstr "Division without remainder"
+
+msgid "Euro und Cent"
+msgstr "Euros and cents"
+
+msgid "Wie viele Cent sind %(e)s €?"
+msgstr "How many cents are %(e)s €?"
+
+msgid "Ein Heft kostet %(a)s €, ein Stift %(b)s €. Wie viel kosten beide zusammen?"
+msgstr "A notebook costs %(a)s €, a pen %(b)s €. How much do they cost together?"
+
+msgid "Du bezahlst mit %(b)s €. Dein Einkauf kostet %(k)s €. Wie viel Geld bekommst du zurück?"
+msgstr "You pay with %(b)s €. Your shopping costs %(k)s €. How much change do you get back?"
+
+msgid "%(n)s Hefte kosten je %(p)s €. Wie viel kosten sie zusammen?"
+msgstr "%(n)s notebooks cost %(p)s € each. How much do they cost together?"
+
+msgid "Meter und Zentimeter"
+msgstr "Metres and centimetres"
+
+msgid "Wie viele Zentimeter sind %(m)s m?"
+msgstr "How many centimetres are %(m)s m?"
+
+msgid "Schriftlich malnehmen"
+msgstr "Written multiplication"
+
+msgid "Rechne schriftlich: %(a)s · %(b)s = ?"
+msgstr "Calculate in writing: %(a)s · %(b)s = ?"
+
+msgid "Rechne schriftlich: %(a)s : %(b)s = ?"
+msgstr "Calculate in writing: %(a)s : %(b)s = ?"
+
+msgid "Rechne schriftlich mit Rest: %(a)s : %(b)s = ?"
+msgstr "Calculate in writing with remainder: %(a)s : %(b)s = ?"
+
+msgid "Teile und gib das Ergebnis als Dezimalzahl an: %(a)s : %(b)s = ?"
+msgstr "Divide and give the result as a decimal: %(a)s : %(b)s = ?"
+
+msgid "Schriftlich teilen"
+msgstr "Written division"
+
+msgid "Kürze vollständig: %(b)s"
+msgstr "Reduce fully: %(b)s"
+
+msgid "Brüche erweitern"
+msgstr "Expanding fractions"
+
+msgid "Erweitere auf den neuen Nenner: %(p)s/%(q)s = ?/%(n)s. Wie lautet der Zähler?"
+msgstr "Expand to the new denominator: %(p)s/%(q)s = ?/%(n)s. What is the numerator?"
+
+msgid "Brüche addieren und subtrahieren"
+msgstr "Adding and subtracting fractions"
+
+msgid "Rechne und kürze: %(t)s"
+msgstr "Calculate and reduce: %(t)s"
+
+msgid "Ganze"
+msgstr "units"
+
+msgid "Zehntel"
+msgstr "tenths"
+
+msgid "Hundertstel"
+msgstr "hundredths"
+
+msgid "Tausendstel"
+msgstr "thousandths"
+
+msgid "Zehner"
+msgstr "tens"
+
+msgid "Hunderter"
+msgstr "hundreds"
+
+msgid "Runde %(z)s auf %(s)s."
+msgstr "Round %(z)s to %(s)s."
+
+msgid "Wie viel Prozent sind %(a)s von 100?"
+msgstr "How many percent is %(a)s of 100?"
+
+msgid "Schreibe als Prozent: %(b)s"
+msgstr "Write as a percentage: %(b)s"
+
+msgid "Wie viel Prozent sind %(a)s von %(g)s?"
+msgstr "How many percent is %(a)s of %(g)s?"
+
+msgid "Punkt vor Strich"
+msgstr "Order of operations"
+
+msgid "Klammern und Rechengesetze"
+msgstr "Brackets and laws of arithmetic"
+
+msgid "Rechne vorteilhaft: %(t)s"
+msgstr "Calculate cleverly: %(t)s"
+
+msgid "Löse die Gleichung: %(g)s"
+msgstr "Solve the equation: %(g)s"
+
+msgid "Terme zusammenfassen"
+msgstr "Simplifying terms"
+
+msgid "Fasse zusammen: %(t)s"
+msgstr "Simplify: %(t)s"
+
+msgid "Terme ausmultiplizieren"
+msgstr "Expanding brackets"
+
+msgid "Multipliziere aus und fasse zusammen: %(t)s"
+msgstr "Expand and simplify: %(t)s"
+
+msgid "Wie viel Prozent sind %(w)s von %(g)s?"
+msgstr "How many percent is %(w)s of %(g)s?"
+
+msgid "%(w)s sind %(p)s %% des Grundwerts. Wie groß ist der Grundwert?"
+msgstr "%(w)s is %(p)s %% of the base value. How big is the base value?"
+
+msgid "Ein Pullover kostet %(g)s €. Im Angebot gibt es %(p)s %% Rabatt. Wie viel kostet er jetzt?"
+msgstr "A sweater costs %(g)s €. There is a %(p)s %% discount. How much does it cost now?"
+
+msgid "Eine Ware kostet netto %(n)s €. Dazu kommen 19 %% Mehrwertsteuer. Wie hoch ist der Bruttopreis?"
+msgstr "An item costs %(n)s € net. Add 19 %% VAT. What is the gross price?"
+
+msgid "Ein Preis steigt von %(a)s € auf %(b)s €. Um wie viel Prozent ist er gestiegen?"
+msgstr "A price rises from %(a)s € to %(b)s €. By how many percent did it rise?"
+
+msgid "Ein Guthaben von %(k)s € wird ein Jahr lang mit %(p)s %% verzinst. Wie hoch sind die Zinsen?"
+msgstr "A balance of %(k)s € earns %(p)s %% interest for one year. How much interest is that?"
+
+msgid "Auf %(k)s € gibt es in einem Jahr %(z)s € Zinsen. Wie hoch ist der Zinssatz?"
+msgstr "%(k)s € earns %(z)s € interest in one year. What is the interest rate?"
+
+msgid "Bei einem Zinssatz von %(p)s %% gibt es in einem Jahr %(z)s € Zinsen. Wie hoch ist das Kapital?"
+msgstr "At an interest rate of %(p)s %% there is %(z)s € interest in one year. What is the capital?"
+
+msgid "%(k)s € werden %(m)s Monate lang mit %(p)s %% pro Jahr verzinst. Wie hoch sind die Zinsen?"
+msgstr "%(k)s € earns %(p)s %% per year for %(m)s months. How much interest is that?"
+
+msgid "%(k)s € werden 2 Jahre lang mit %(p)s %% pro Jahr verzinst (Zinseszins). Wie viel Geld ist es danach?"
+msgstr "%(k)s € earns %(p)s %% per year for 2 years (compound interest). How much money is it afterwards?"
+
+msgid "Dreisatz (proportional)"
+msgstr "Rule of three (proportional)"
+
+msgid "%(a)s Hefte kosten %(p)s €. Wie viel kosten %(b)s Hefte?"
+msgstr "%(a)s notebooks cost %(p)s €. How much do %(b)s notebooks cost?"
+
+msgid "%(a)s kg Äpfel kosten %(p)s €. Wie viel kosten %(b)s kg?"
+msgstr "%(a)s kg of apples cost %(p)s €. How much do %(b)s kg cost?"
+
+msgid "Ein Auto verbraucht auf %(a)s km %(v)s Liter. Wie viele Liter braucht es auf %(b)s km?"
+msgstr "A car uses %(v)s litres over %(a)s km. How many litres does it need over %(b)s km?"
+
+msgid "Dreisatz (antiproportional)"
+msgstr "Rule of three (inversely proportional)"
+
+msgid "%(a)s Arbeiter brauchen für eine Arbeit %(t)s Tage. Wie viele Tage brauchen %(b)s Arbeiter?"
+msgstr "%(a)s workers need %(t)s days for a job. How many days do %(b)s workers need?"
+
+msgid "Ein Vorrat reicht für %(a)s Personen %(t)s Tage. Wie lange reicht er für %(b)s Personen?"
+msgstr "A supply lasts %(a)s people %(t)s days. How long does it last %(b)s people?"
+
+msgid "%(a)s Pumpen leeren ein Becken in %(t)s Stunden. Wie lange brauchen %(b)s Pumpen?"
+msgstr "%(a)s pumps empty a pool in %(t)s hours. How long do %(b)s pumps need?"
+
+msgid "Potenzen"
+msgstr "Powers"
+
+msgid "Wurzeln"
+msgstr "Roots"
+
+msgid "Welche positive Zahl hat das Quadrat %(q)s?"
+msgstr "Which positive number has the square %(q)s?"
+
+msgid "Rechnen mit negativen Zahlen"
+msgstr "Calculating with negative numbers"
+
+msgid "Schriftliches Rechnen"
+msgstr "Written arithmetic"
+
+msgid "Rechengesetze und Klammern"
+msgstr "Laws of arithmetic and brackets"
+
+msgid "Dreisatz"
+msgstr "Rule of three"
+
+msgid "Überspringen?"
+msgstr "Skip?"

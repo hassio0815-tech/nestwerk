@@ -1,5 +1,6 @@
 """Einstellungen von lernen (SPEC 21.12). Startwerte per Datenmigration 0002, generisch."""
 
+from django.utils.text import format_lazy
 from django.utils.translation import gettext_lazy as _
 
 from apps.kern.einstellungen import Typ, definieren
@@ -79,6 +80,19 @@ STARTWERTE_WOCHE = {
 STARTWERTE_EINRICHTUNG = {"lernen.speicher_pfad": ""}
 
 
+# Etappe 10a (Mathe-Generator, SPEC 21.13): Migration 0017 legt fehlende Werte an.
+STARTWERTE_MATHE = {
+    "lernen.mathe_rechenarten_aus": [],
+    "lernen.mathe_aufgaben_je_runde": 0,
+    "lernen.mathe_zahlenraum_max": 0,
+    "lernen.mathe_ziel_von_prozent": 70,
+    "lernen.mathe_ziel_bis_prozent": 85,
+    "lernen.mathe_fenster": 8,
+    "lernen.mathe_pruefung_aufgaben": 12,
+    "lernen.mathe_aufbewahren_tage": 60,
+}
+
+
 def einstellungen_definieren():
     definieren(
         "lernen.tagesziel_minuten",
@@ -151,6 +165,7 @@ def einstellungen_definieren():
     _definieren_tutor()
     _definieren_pruefung()
     _definieren_woche()
+    _definieren_mathe()
 
 
 def _definieren_ueben():
@@ -701,6 +716,93 @@ def _definieren_woche():
         einheit=_("Tage"),
         minimum=1,
         maximum=90,
+    )
+
+
+def _definieren_mathe():
+    """Einstellungen des Mathe-Generators (SPEC 21.13): lokal, ohne KI."""
+    from .mathe.registry import schluessel_alle
+
+    definieren(
+        "lernen.mathe_rechenarten_aus",
+        Typ.LISTE,
+        _("Mathe: abgeschaltete Rechenarten"),
+        beschreibung=format_lazy(
+            "{} {}",
+            _(
+                "Diese Rechenarten kommen beim Mathe-Üben nicht vor (ein Schlüssel je Zeile). "
+                "Leer: alle sind an. Mögliche Schlüssel:"
+            ),
+            ", ".join(schluessel_alle()),
+        ),
+        element_typ=Typ.TEXT,
+        auswahl=schluessel_alle(),
+    )
+    definieren(
+        "lernen.mathe_aufgaben_je_runde",
+        Typ.GANZZAHL,
+        _("Mathe: Aufgaben je Runde"),
+        beschreibung=_("0: Die Zahl hängt von der Intensität ab (wie bei den Vokabeln)."),
+        minimum=0,
+        maximum=50,
+    )
+    definieren(
+        "lernen.mathe_zahlenraum_max",
+        Typ.GANZZAHL,
+        _("Mathe: Obergrenze für Zahlen"),
+        beschreibung=_(
+            "0: keine Obergrenze. Sonst bleiben die Zahlen der Aufgaben bei Plus, Minus, "
+            "Malnehmen und Prozent unter diesem Wert (mindestens 20)."
+        ),
+        minimum=0,
+        maximum=1_000_000,
+    )
+    definieren(
+        "lernen.mathe_ziel_von_prozent",
+        Typ.GANZZAHL,
+        _("Mathe: Zielbereich richtig, von"),
+        beschreibung=_("Unter diesem Anteil richtiger Antworten wird die Aufgabe leichter."),
+        einheit=_("Prozent"),
+        minimum=0,
+        maximum=100,
+    )
+    definieren(
+        "lernen.mathe_ziel_bis_prozent",
+        Typ.GANZZAHL,
+        _("Mathe: Zielbereich richtig, bis"),
+        beschreibung=_("Über diesem Anteil richtiger Antworten wird die Aufgabe schwerer."),
+        einheit=_("Prozent"),
+        minimum=0,
+        maximum=100,
+    )
+    definieren(
+        "lernen.mathe_fenster",
+        Typ.GANZZAHL,
+        _("Mathe: so viele letzte Antworten zählen für die Anpassung"),
+        minimum=4,
+        maximum=30,
+    )
+    definieren(
+        "lernen.mathe_pruefung_aufgaben",
+        Typ.GANZZAHL,
+        _("Mathe: Aufgaben je Prüfungsthema"),
+        beschreibung=_(
+            "So viele Aufgaben legt der Prüfungsplan je Mathe-Thema fest (Portionen und "
+            "Probe-Prüfung ziehen daraus)."
+        ),
+        minimum=4,
+        maximum=60,
+    )
+    definieren(
+        "lernen.mathe_aufbewahren_tage",
+        Typ.GANZZAHL,
+        _("Mathe: erzeugte Aufgaben aufbewahren"),
+        beschreibung=_(
+            "Ältere Aufgaben ohne Wiederholungstermin werden gelöscht, mit ihren Antworten."
+        ),
+        einheit=_("Tage"),
+        minimum=7,
+        maximum=730,
     )
 
 

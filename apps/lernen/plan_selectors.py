@@ -10,7 +10,7 @@ from django.db.models import Q, Sum
 
 from apps.kern.einstellungen import wert
 
-from . import plan, selectors, tagesziel
+from . import mathe_aufgaben, plan, selectors, tagesziel
 from .models import (
     Frage,
     Freigabe,
@@ -76,6 +76,10 @@ def stoff_fragen(stoff, kind):
     """Frage-IDs eines Stoffs, die das Kind nutzen darf (freigegeben, nie die von Geschwistern)."""
     if stoff.thema_id:
         qs = selectors.nutzbare_fragen(stoff.thema, kind)
+        if selectors.ist_generatorthema(stoff.thema):
+            # Mathe-Thema: feste, erzeugte Aufgaben (legt fehlende an, bei jedem Aufruf dieselben)
+            fest = mathe_aufgaben.pruefungspool(stoff.thema, kind)
+            return sorted(set(qs.values_list("id", flat=True)) | set(fest))
     else:
         qs = Frage.objects.filter(
             material_id=stoff.material_id, kind=kind, freigabe=Freigabe.FREIGEGEBEN
@@ -96,11 +100,7 @@ def stoffe_fragen(pruefung_):
 
 def themen_zur_auswahl(kind, fach):
     """Themen des Fachs mit Fragen, die das Kind nutzen darf."""
-    return [
-        t
-        for t in selectors.themen_bis(fach, selectors.klassenstufe(kind, fach))
-        if selectors.nutzbare_fragen(t, kind).exists()
-    ]
+    return [t for t in selectors.themen_fuer(kind, fach) if selectors.hat_fragen(t, kind)]
 
 
 def materialien_zur_auswahl(kind, fach):

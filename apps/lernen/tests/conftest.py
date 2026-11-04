@@ -52,6 +52,7 @@ def startwerte(db):
         STARTWERTE,
         STARTWERTE_KI,
         STARTWERTE_MATERIAL,
+        STARTWERTE_MATHE,
         STARTWERTE_PRUEFUNG,
         STARTWERTE_TUTOR,
         STARTWERTE_UEBEN,
@@ -72,6 +73,7 @@ def startwerte(db):
         STARTWERTE_PRUEFUNG,
         STARTWERTE_TUTOR,
         STARTWERTE_WOCHE,
+        STARTWERTE_MATHE,
         SPIELREGELN,
     ):
         startwerte_schreiben(Einstellung, werte)
