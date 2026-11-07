@@ -52,6 +52,7 @@ from .instanzen import (
     verfall_pruefen,
 )
 from .models import Aufgabe, Kategorie, Status, Vorlage
+from .uebernahme import uebernehmen as aus_woche_uebernehmen
 from .zustand import AblaufFehler, UngueltigerUebergang
 
 __all__ = [
@@ -82,6 +83,7 @@ __all__ = [
     "storno_hook_registrieren",
     "zurueckgeben",
     "zuteilen",
+    "aus_woche_uebernehmen",
     "aufgabe_speichern",
     "aufgabe_status_setzen",
     "instanz_verschieben",

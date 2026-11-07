@@ -9,6 +9,7 @@
   </form>
 {% endblock %}
 {% block inhalt %}
+  {% include "aufgaben/_hinweis.html" %}
   <h1>{% blocktranslate with name=request.user.rufname %}Hallo {{ name }}!{% endblocktranslate %}</h1>
   {% if mood %}<p class="nw-profil__rolle" data-mood>{{ mood }}</p>{% endif %}
 {% if kacheln %}

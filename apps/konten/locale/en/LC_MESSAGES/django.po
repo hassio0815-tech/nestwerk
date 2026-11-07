@@ -723,3 +723,40 @@ msgstr "Lord/Lady of the Castle"
 #: wappen.py:27
 msgid "Hüter des Nests"
 msgstr "Keeper of the Nest"
+
+#: templates/konten/start.html
+msgid "Diese Woche"
+msgstr "This week"
+
+#: templates/konten/start.html
+msgctxt "Kurzdatum"
+msgid "j.n."
+msgstr "n/j"
+
+#: templates/konten/start.html
+msgid "Alle Kinder"
+msgstr "All children"
+
+#: templates/konten/start.html
+msgid "Schließen"
+msgstr "Close"
+
+#: templates/konten/start.html
+msgctxt "Aufgabe"
+msgid "Übernehmen"
+msgstr "Take it"
+
+#: templates/konten/start.html
+msgid "Keine festen Aufgaben"
+msgstr "No fixed tasks"
+
+#: templates/konten/start.html
+msgid "%(n)s feste Aufgabe"
+msgid_plural "%(n)s feste Aufgaben"
+msgstr[0] "%(n)s fixed task"
+msgstr[1] "%(n)s fixed tasks"
+
+#: templates/konten/start.html
+#, python-format
+msgid "Wer übernimmt „%(titel)s“ (%(datum)s)? Tippe unten auf dein Bild."
+msgstr "Who takes “%(titel)s” (%(datum)s)? Tap your picture below."

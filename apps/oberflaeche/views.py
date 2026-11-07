@@ -23,7 +23,7 @@ from apps.konten.geraet import ist_kiosk
 from apps.konten.models import Rolle
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
-from . import kacheln, module, ranking, selectors
+from . import kacheln, module, ranking, selectors, uebernehmen
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +53,48 @@ def startseite(request):
     except einstellungen.EinstellungFehlt:  # z. B. vor der Einrichtung: Anmeldung geht vor
         logger.warning("Infozeile der Startseite ohne Zeitzone nicht verfügbar")
         infozeile = None
-    return konten_views.start(request, extra={"infozeile": infozeile})
+    try:
+        woche = selectors.start_woche()
+    except einstellungen.EinstellungFehlt:
+        logger.warning("Wochenvorschau der Startseite ohne Zeitzone nicht verfügbar")
+        woche = None
+    return konten_views.start(
+        request,
+        extra={"infozeile": infozeile, "woche": woche, "uebernehmen": _absicht(request)},
+    )
+
+
+def _absicht(request):
+    """Vorgemerkte Aufgabe fürs Banner der Anmeldeseite (nur wenn sie noch gültig ist)."""
+    gemerkt = uebernehmen.gemerkt(request)
+    if gemerkt is None:
+        return None
+    try:
+        aufgabe = selectors.uebernehmen_absicht(*gemerkt)
+    except einstellungen.EinstellungFehlt:
+        return None
+    if aufgabe is None:
+        uebernehmen.verwerfen(request)
+        return None
+    return {"aufgabe": aufgabe, "datum": gemerkt[1]}
+
+
+@require_POST
+def uebernehmen_vormerken(request):
+    """Popup der Wochenvorschau: Aufgabe vormerken, dann zur normalen Kind-Anmeldung."""
+    if request.user.is_authenticated:
+        return redirect("konten:start")
+    try:
+        uebernehmen.vormerken(request, request.POST.get("aufgabe"), request.POST.get("datum"))
+    except einstellungen.EinstellungFehlt:
+        uebernehmen.verwerfen(request)
+    return redirect("konten:start")
+
+
+@require_POST
+def uebernehmen_abbrechen(request):
+    uebernehmen.verwerfen(request)
+    return redirect("konten:start")
 
 
 # Dungeon (über den Avatar erreichbar): Figur, Mods, Shop, Ränge, Ruhmeshalle, Abzeichen.
@@ -100,10 +141,13 @@ def _kind_kacheln(request, schluessel=None):
 def kind_heim(request):
     """Kinder-Startseite: Avatar, Mini-Übersicht, Lernen, Aufgaben; der Rest in Untermenüs."""
     kind = request.user
+    hinweis, hinweis_art = uebernehmen.hinweis_entnehmen(request)
     return render(
         request,
         "oberflaeche/kind_heim.html",
         {
+            "hinweis": hinweis,
+            "hinweis_art": hinweis_art,
             "kacheln": _kind_kacheln(request),
             "mood": konten_selectors.mood_text(kind),
             "guthaben": _oder(lambda: selectors.kind_konto(kind)["guthaben"], 0),

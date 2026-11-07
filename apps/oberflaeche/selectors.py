@@ -132,6 +132,21 @@ def start_infozeile(anzahl=START_INFOZEILE_MAX):
     return {"aufgaben": offene[:anzahl], "weitere": max(len(offene) - anzahl, 0)}
 
 
+def start_woche():
+    """Kalenderleiste der Anmeldeseite: 7 Tage mit ``anzahl`` fester Aufgaben; ``aufgaben`` je Tag
+    sind für das Popup des Tages."""
+    tage = aufgaben.start_woche()
+    for tag in tage:
+        tag["anzahl"] = len(tag["aufgaben"])
+    return {"tage": tage, "mit_aufgaben": [t for t in tage if t["aufgaben"]]}
+
+
+def uebernehmen_absicht(aufgabe_id, datum):
+    """Die vorgemerkte Aufgabe (Banner der Anmeldeseite) oder ``None``, wenn sie nicht (mehr)
+    zur Wochenvorschau gehört."""
+    return aufgaben.start_woche_aufgabe(aufgabe_id, datum)
+
+
 def eltern_entscheidungen():
     """Zähler offener Entscheidungen: Meldungen, Konflikte, Einlöseanträge, Mood-Vorschläge."""
     daten = aufgaben.eltern_entscheidungen()
