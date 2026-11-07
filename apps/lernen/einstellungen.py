@@ -17,7 +17,7 @@ def speicher_pfad_pruefen(pfad):
 STARTWERTE = {
     "lernen.tagesziel_minuten": 20,
     "lernen.mindesttag_minuten": 5,
-    "lernen.lernpunkte_tageslimit": 10,
+    "lernen.lernpunkte_tageslimit": 8,
     "lernen.freigabe_durch_eltern": True,
     "lernen.speicher_limit_mb": 500,
     "lernen.tutor_aktiv": False,
@@ -120,6 +120,24 @@ STARTWERTE_ELTERN = {
 }
 
 
+# Etappe 14 (Punkte-Lücken, Metakognition): Migration 0026 legt fehlende Werte an. Das Tageslimit
+# sinkt dort von 10 auf 8, falls es noch der alte Startwert ist.
+STARTWERTE_PUNKTE = {
+    "lernen.punkte_selbsttest": 3,
+    "lernen.punkte_fehlerueberarbeitung": 3,
+    "lernen.punkte_rueckschau": 1,
+    "lernen.fehlerueberarbeitung_min_antworten": 5,
+    "lernen.fehlergrund_ab_klasse": 6,
+    "lernen.pause_nach_minuten": 20,
+    "lernen.minuten_aufwaermen": 5,
+    "lernen.minuten_normal": 10,
+    "lernen.minuten_herausforderung": 15,
+    "lernen.fragen_max_sitzung": 60,
+}
+# Nur die Migration setzt "minuten"; ohne Wert gilt "fragen" (Tests rechnen Runden in Fragen).
+STARTWERTE_RUNDE = {"lernen.runde_ziel": "minuten"}
+
+
 def einstellungen_definieren():
     definieren(
         "lernen.tagesziel_minuten",
@@ -195,6 +213,7 @@ def einstellungen_definieren():
     _definieren_mathe()
     _definieren_wiederholung()
     _definieren_eltern()
+    _definieren_punkte_metakognition()
 
 
 def _definieren_ueben():
@@ -988,4 +1007,90 @@ def _definieren_eltern():
         Typ.UHRZEIT,
         _("Zusammenfassung: Uhrzeit"),
         beschreibung=_("Ab dieser Uhrzeit (Ortszeit) wird sie am gewählten Tag gesendet."),
+    )
+
+
+def _definieren_punkte_metakognition():
+    """Punkte für Selbsttest, Fehlerüberarbeitung und Rückschau, Runde nach Zeit, Pause, Fehlergrund
+    (Etappe 14). Alle Punkte sind feste Beträge pro Tag und Art, nie pro Antwort."""
+    for schluessel, bezeichnung, hilfe in (
+        (
+            "lernen.punkte_selbsttest",
+            _("Punkte: Selbsttest beendet"),
+            _("Probe-Prüfung zu Ende gemacht. Höchstens einmal am Tag."),
+        ),
+        (
+            "lernen.punkte_fehlerueberarbeitung",
+            _("Punkte: Fehlerüberarbeitung"),
+            _("Runde „Meine Stolperstellen üben“ mit genug Antworten. Höchstens einmal am Tag."),
+        ),
+        (
+            "lernen.punkte_rueckschau",
+            _("Punkte: Rückschau ausgefüllt"),
+            _("Mindestens eine Antwort in der Rückschau. Höchstens einmal am Tag."),
+        ),
+    ):
+        definieren(
+            schluessel,
+            Typ.GANZZAHL,
+            bezeichnung,
+            beschreibung=format_lazy("{} {}", hilfe, _("Zählt zum Lernpunkte-Tageslimit.")),
+            einheit=_("Punkte"),
+            minimum=0,
+            maximum=100,
+        )
+    definieren(
+        "lernen.fehlerueberarbeitung_min_antworten",
+        Typ.GANZZAHL,
+        _("Fehlerüberarbeitung: Mindestzahl Antworten"),
+        beschreibung=_("So viele Antworten braucht die Runde, damit sie als Überarbeitung zählt."),
+        minimum=1,
+        maximum=100,
+    )
+    definieren(
+        "lernen.fehlergrund_ab_klasse",
+        Typ.GANZZAHL,
+        _("Fehlergrund erfragen ab Klasse"),
+        beschreibung=_(
+            "Ab dieser Klassenstufe fragt das Üben nach „noch nicht“, woran es lag. Freiwillig."
+        ),
+        minimum=1,
+        maximum=13,
+    )
+    definieren(
+        "lernen.pause_nach_minuten",
+        Typ.GANZZAHL,
+        _("Pause vorschlagen nach"),
+        beschreibung=_(
+            "Nach so vielen Minuten in einer Runde kommt einmal der Pausen-Vorschlag. 0 = aus."
+        ),
+        einheit=_("Minuten"),
+        minimum=0,
+        maximum=120,
+    )
+    definieren(
+        "lernen.runde_ziel",
+        Typ.TEXT,
+        _("Runde zählt nach"),
+        beschreibung=_(
+            "„minuten“: die Runde endet nach der Zeit (weiche Grenze, die offene Frage wird "
+            "fertig). „fragen“: die Runde endet nach der Fragenzahl."
+        ),
+        auswahl=("fragen", "minuten"),
+    )
+    for schluessel, bezeichnung in (
+        ("lernen.minuten_aufwaermen", _("Minuten je Runde: Aufwärmen")),
+        ("lernen.minuten_normal", _("Minuten je Runde: Normal")),
+        ("lernen.minuten_herausforderung", _("Minuten je Runde: Herausforderung")),
+    ):
+        definieren(
+            schluessel, Typ.GANZZAHL, bezeichnung, einheit=_("Minuten"), minimum=1, maximum=60
+        )
+    definieren(
+        "lernen.fragen_max_sitzung",
+        Typ.GANZZAHL,
+        _("Höchstzahl Fragen je Runde (bei Zeit-Runden)"),
+        beschreibung=_("Sicherheitsgrenze, falls die Zeit nie abläuft."),
+        minimum=5,
+        maximum=500,
     )

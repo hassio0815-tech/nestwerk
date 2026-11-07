@@ -25,6 +25,7 @@ urlpatterns = [
     path("kind/lernen/sitzung/<int:pk>/loesung/", views.loesung, name="loesung"),
     path("kind/lernen/sitzung/<int:pk>/beenden/", views.beenden, name="beenden"),
     path("kind/lernen/sitzung/<int:pk>/rueckschau/", views.rueckschau, name="rueckschau"),
+    path("kind/lernen/sitzung/<int:pk>/fehlergrund/", views.fehlergrund, name="fehlergrund"),
     path("kind/lernen/tipps/", views_tipps.kind_tipps, name="tipps"),
     path("eltern/lernen/tipps/", views_tipps.eltern_tipps, name="eltern_tipps"),
     path("eltern/lernen/", views.eltern_seite, name="eltern"),

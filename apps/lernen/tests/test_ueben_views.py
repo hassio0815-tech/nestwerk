@@ -133,7 +133,7 @@ def test_ganzer_ablauf_per_htmx(kind_client, kind_a, fach, uhr):
     url = reverse("lernen:sitzung", args=[s.pk])
     seite = kind_client.get(url).content.decode()
     assert "<html" in seite and 'id="lern-bereich"' in seite and "data-lernen-frage" in seite
-    assert "Dein Plan: Ich sage das Wort laut" in seite
+    assert "Dein Plan: Ich sage es laut" in seite
     teil = kind_client.get(url, **HX).content.decode()
     assert "<html" not in teil and "data-lernen-frage" in teil
 

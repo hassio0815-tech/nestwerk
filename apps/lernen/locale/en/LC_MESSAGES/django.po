@@ -6259,3 +6259,147 @@ msgstr "Messages to the parents"
 
 msgid "Bitte die Eingaben prüfen. Es wurde nichts gespeichert."
 msgstr "Please check your entries. Nothing was saved."
+
+msgid "Punkte: Selbsttest beendet"
+msgstr "Points: self-test finished"
+
+msgid "Probe-Prüfung zu Ende gemacht. Höchstens einmal am Tag."
+msgstr "Practice test finished. At most once a day."
+
+msgid "Punkte: Fehlerüberarbeitung"
+msgstr "Points: mistake review"
+
+msgid "Runde „Meine Stolperstellen üben“ mit genug Antworten. Höchstens einmal am Tag."
+msgstr "A round of “Practise my stumbling blocks” with enough answers. At most once a day."
+
+msgid "Punkte: Rückschau ausgefüllt"
+msgstr "Points: look-back filled in"
+
+msgid "Mindestens eine Antwort in der Rückschau. Höchstens einmal am Tag."
+msgstr "At least one answer in the look-back. At most once a day."
+
+msgid "Zählt zum Lernpunkte-Tageslimit."
+msgstr "Counts towards the daily learning-points limit."
+
+msgid "Fehlerüberarbeitung: Mindestzahl Antworten"
+msgstr "Mistake review: minimum number of answers"
+
+msgid "So viele Antworten braucht die Runde, damit sie als Überarbeitung zählt."
+msgstr "The round needs this many answers to count as a review."
+
+msgid "Fehlergrund erfragen ab Klasse"
+msgstr "Ask for the reason for a mistake from grade"
+
+msgid "Ab dieser Klassenstufe fragt das Üben nach „noch nicht“, woran es lag. Freiwillig."
+msgstr "From this grade on, practice asks after “not yet” what the reason was. Optional."
+
+msgid "Pause vorschlagen nach"
+msgstr "Suggest a break after"
+
+msgid "Nach so vielen Minuten in einer Runde kommt einmal der Pausen-Vorschlag. 0 = aus."
+msgstr "After this many minutes in a round the break suggestion appears once. 0 = off."
+
+msgid "Runde zählt nach"
+msgstr "Round is counted in"
+
+msgid "„minuten“: die Runde endet nach der Zeit (weiche Grenze, die offene Frage wird fertig). „fragen“: die Runde endet nach der Fragenzahl."
+msgstr "“minuten”: the round ends after the time (soft limit, the open question is finished). “fragen”: the round ends after the number of questions."
+
+msgid "Minuten je Runde: Aufwärmen"
+msgstr "Minutes per round: Warm-up"
+
+msgid "Minuten je Runde: Normal"
+msgstr "Minutes per round: Normal"
+
+msgid "Minuten je Runde: Herausforderung"
+msgstr "Minutes per round: Challenge"
+
+msgid "Höchstzahl Fragen je Runde (bei Zeit-Runden)"
+msgstr "Maximum questions per round (for timed rounds)"
+
+msgid "Sicherheitsgrenze, falls die Zeit nie abläuft."
+msgstr "Safety limit in case the time never runs out."
+
+msgid "Ich sage es laut"
+msgstr "I say it out loud"
+
+msgid "Ich denke mir einen Satz oder eine Geschichte dazu aus"
+msgstr "I make up a sentence or a story about it"
+
+msgid "Ich schreibe es erst auf Papier auf"
+msgstr "I write it down on paper first"
+
+msgid "Ich schaue erst das Beispiel an"
+msgstr "I look at the example first"
+
+msgid "zu schnell"
+msgstr "too fast"
+
+msgid "nicht gewusst"
+msgstr "didn't know it"
+
+msgid "verrechnet"
+msgstr "miscalculated"
+
+msgid "verschrieben"
+msgstr "mistyped"
+
+#, python-format
+msgid "Du dachtest vorher: „%(erwartung)s“. Es waren %(richtig)s von %(gesamt)s richtig."
+msgstr "Before, you thought: “%(erwartung)s”. %(richtig)s of %(gesamt)s were right."
+
+msgid "Sprich das Wort laut aus, bevor du tippst."
+msgstr "Say the word out loud before you type."
+
+msgid "Sprich die Aufgabe und jeden Schritt laut, bevor du tippst."
+msgstr "Say the task and every step out loud before you type."
+
+msgid "Denk erst in Ruhe nach. Dann tippst du."
+msgstr "Think quietly first. Then you type."
+
+msgid "Stell dir zuerst ein Bild dazu vor."
+msgstr "First picture it in your mind."
+
+msgid "Mal dir kurz eine Skizze oder ein Bild zur Aufgabe vor."
+msgstr "Picture a quick sketch or image of the task."
+
+msgid "Denk dir einen kurzen Satz dazu aus."
+msgstr "Make up a short sentence about it."
+
+msgid "Denk dir eine kleine Geschichte zur Aufgabe aus."
+msgstr "Make up a little story about the task."
+
+msgid "Nimm ein Blatt und schreib es erst auf Papier auf. Dann tippst du."
+msgstr "Take a sheet of paper and write it down first. Then you type."
+
+msgid "Nimm ein Blatt und rechne erst auf Papier. Dann tippst du das Ergebnis."
+msgstr "Take a sheet of paper and work it out first. Then you type the result."
+
+msgid "Denk an ein Beispiel, das du schon kennst. Dann tippst du."
+msgstr "Think of an example you already know. Then you type."
+
+msgid "Schau zuerst das Beispiel im Rechen-Tipp an. Dann rechnest du."
+msgstr "First look at the example in the maths tip. Then you work it out."
+
+msgid "Danke, das habe ich mir gemerkt."
+msgstr "Thanks, I have noted that."
+
+msgid "Woran lag es? Du kannst auch einfach weitermachen."
+msgstr "What was the reason? You can also just carry on."
+
+#, python-format
+msgid "Runde: %(min)s von etwa %(ziel)s Minuten"
+msgstr "Round: %(min)s of about %(ziel)s minutes"
+
+#, python-format
+msgid "Diese Woche hast du dich in %(treffer)s von %(gesamt)s Runden richtig eingeschätzt."
+msgstr "This week you judged yourself correctly in %(treffer)s of %(gesamt)s rounds."
+
+msgid "Du übst schon lange. Magst du eine kleine Pause machen? Danach geht es weiter."
+msgstr "You have been practising for a long time. Would you like a little break? Then we carry on."
+
+msgid "Du übst schon eine Weile. Eine kurze Pause tut gut. Magst du eine machen?"
+msgstr "You have been practising for a while. A short break does you good. Would you like one?"
+
+msgid "Du übst schon länger. Eine kurze Pause hilft beim Merken."
+msgstr "You have been practising for longer. A short break helps you remember."

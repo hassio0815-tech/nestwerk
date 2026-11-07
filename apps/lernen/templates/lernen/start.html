@@ -14,6 +14,7 @@
     <h2>{% translate "Dein Tag" %}</h2>
     {% include "lernen/_tagesbild.html" %}
     <p class="kachel__text">{{ serie_text }}</p>
+    {% if kalibrierung_woche %}<p class="kachel__text" data-lernen-kalibrierung-woche>{% blocktranslate with treffer=kalibrierung_woche.treffer gesamt=kalibrierung_woche.gesamt %}Diese Woche hast du dich in {{ treffer }} von {{ gesamt }} Runden richtig eingeschätzt.{% endblocktranslate %}</p>{% endif %}
     {% if bild.vorschlag_minuten %}
       <div class="stapel" data-lernen-vorschlag>
         <p>{{ vorschlag_text }}</p>

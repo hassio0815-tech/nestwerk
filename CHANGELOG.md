@@ -4,6 +4,20 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Points and reflection, stage 14 (08.11.2026)
+
+### Added
+- **Points for the process, never per answer:** finishing a practice test (3), a mistake-review round ("Practise my stumbling blocks" with at least 5 answers, 3) and a filled-in look-back (1) each give a fixed amount, at most once per child and day, together with the daily goal (5) always under the daily limit. Settings `lernen.punkte_*`.
+- **Rounds count in minutes:** warm-up / normal / challenge are 5 / 10 / 15 minutes with a soft limit (the open question is finished). Setting `lernen.runde_ziel` switches back to counting questions.
+- **Break after time:** once per round, after 20 minutes (setting, 0 = off), a break is suggested, not only after frustration.
+- **Calibration:** the end of a round says what the child expected and how many answers were right; the start page shows the weekly trend (from 2 rounds).
+- **Reason for a mistake:** from grade 6 the child can choose "too fast", "didn't know it" or "miscalculated" after "not yet" (optional, saved on the attempt, the round ends without it).
+- **Strategy has a function:** each strategy shows its first step on the question page; new strategies "write it down on paper" and "look at the example first" (opens the maths tip); the maths texts no longer talk about words.
+
+### Changed
+- **Daily limit for learning points is 8 (was 10).** A data migration lowers it only if it still has the old default. The "exam prepared" bonus (10) is therefore capped by the limit.
+- The strategy "I say the word out loud" is now "I say it out loud" (also fits maths).
+
 ## Relief for parents, stage 13 (07.11.2026)
 
 ### Added

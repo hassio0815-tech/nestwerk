@@ -22,7 +22,10 @@ PRAEFIX = "lernen."
 
 # (Überschrift, Schlüssel ohne Präfix); Reihenfolge = Reihenfolge auf der Seite
 GRUPPEN = (
-    (gettext_noop("Üben"), ("tagesziel_minuten", "lernpunkte_aktiv", "leerlauf_sekunden")),
+    (
+        gettext_noop("Üben"),
+        ("tagesziel_minuten", "lernpunkte_aktiv", "leerlauf_sekunden", "pause_nach_minuten"),
+    ),
     (gettext_noop("Schonung"), ("ferien_schalter",)),
     (gettext_noop("Anerkennung"), ("titel_anzeigen",)),
     (gettext_noop("Tutor"), ("tutor_aktiv",)),

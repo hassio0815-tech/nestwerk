@@ -16,9 +16,20 @@ from apps.kern import zeit
 from apps.konten import selectors as konten
 from apps.konten.zugriff import aktuelles_kind, nur_eltern, nur_kind
 
-from . import mathe_ki, plan_texte, selectors, services, texte, tutor_selectors, tutor_services
+from . import (
+    mathe_aufgaben,
+    mathe_ki,
+    plan_texte,
+    selectors,
+    services,
+    strategie,
+    texte,
+    tutor_selectors,
+    tutor_services,
+)
 from .models import (
     Erwartung,
+    Fehlergrund,
     Intensitaet,
     Lernpause,
     PausenGrund,
@@ -74,6 +85,12 @@ def _vorbelegung(kind):
     return wahl
 
 
+def _kalibrierung_woche(kind, heute):
+    """Wochentrend für das Kind: erst ab zwei Runden, sonst sagt er nichts."""
+    treffer, gesamt = selectors.kalibrierung_woche(kind, heute)
+    return {"treffer": treffer, "gesamt": gesamt} if gesamt >= 2 else None
+
+
 def _start_kontext(kind, *, fehler=""):
     heute = zeit.heute()
     wort = _wortwahl(kind)
@@ -97,6 +114,7 @@ def _start_kontext(kind, *, fehler=""):
         "tutor_sichtbar": tutor_selectors.bereit(),
         "vorbelegt": _vorbelegung(kind),
         "rueckschau_letzte": (selectors.rueckschauen(kind, 1) or [None])[0],
+        "kalibrierung_woche": _kalibrierung_woche(kind, heute),
     }
 
 
@@ -168,6 +186,17 @@ def _eigene(request, pk):
     return kind, sitzung_
 
 
+def _fehlergruende(sitzung_):
+    """Die drei Knöpfe; bei Rechenaufgaben heißt der dritte "verrechnet", sonst "verschrieben"."""
+    rechnen = mathe_aufgaben.nutzt_generator(sitzung_)
+    return [
+        (wert_, _("verrechnet") if rechnen else _("verschrieben"))
+        if wert_ == Fehlergrund.VERRECHNET
+        else (wert_, text)
+        for wert_, text in Fehlergrund.choices
+    ]
+
+
 def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler="", erklaerung=""):
     """Zeigt den Stand der Sitzung: Frage, Rückmeldung, Rückschau oder Ergebnis. Bei HTMX nur
     der austauschbare Teil."""
@@ -196,6 +225,18 @@ def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler="", erk
         "ton_ziel": wort("ziel_geschafft"),
     }
     kontext.update(services.hilfe_kontext(sitzung_, aufgabe))
+    if aufgabe is not None:
+        kontext["strategie_hinweis"] = strategie.hinweis(
+            sitzung_.strategie, mathe=aufgabe.generiert
+        )
+        kontext["karte_offen"] = strategie.karte_offen(sitzung_.strategie)
+    if rueckmeldung is not None:
+        kontext["ton_pause_zeit"] = wort("pause_zeit")
+        if rueckmeldung.fehlergrund_frage:
+            kontext["fehlergruende"] = _fehlergruende(sitzung_)
+    if sitzung_.ziel_minuten:
+        kontext["ziel_minuten"] = sitzung_.ziel_minuten
+        kontext["minuten_gelaufen"] = min(sitzung_.dauer_sekunden // 60, sitzung_.ziel_minuten)
     if sitzung_.portion_id:
         portion = sitzung_.portion
         portion.refresh_from_db()
@@ -216,6 +257,7 @@ def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler="", erk
             minuten=sitzung_.dauer_sekunden // 60,
             ton_ende=wort("ende"),
             ton_vergleich=wort(f"vergleich_{vergleich}") if vergleich else "",
+            kalibrierung=selectors.kalibrierung_satz(sitzung_),
         )
     vorlage = "lernen/_zustand.html" if _hx(request) else "lernen/sitzung.html"
     return render(request, vorlage, kontext)
@@ -281,6 +323,31 @@ def rueckschau(request, sitzung_):
         sitzung_, p.get("schwer", ""), p.get("geholfen", ""), p.get("einschaetzung", "")
     )
     return _zustand(request, sitzung_)
+
+
+@nur_kind
+@require_POST
+def fehlergrund(request, pk):
+    """Freiwillige Antwort auf "Woran lag es?". Ungültiges ändert nichts und stört nicht."""
+    _kind, sitzung_ = _eigene(request, pk)
+    p = request.POST
+    try:
+        services.fehlergrund_speichern(sitzung_, int(p.get("versuch", "")), p.get("grund", ""))
+        gespeichert = True
+    except (services.LernenFehler, ValueError):
+        gespeichert = False
+    if not _hx(request):
+        return redirect("lernen:sitzung", pk=sitzung_.pk)
+    return render(
+        request,
+        "lernen/_fehlergrund.html",
+        {
+            "s": sitzung_,
+            "gespeichert": gespeichert,
+            "fehlergruende": _fehlergruende(sitzung_),
+            "versuch_id": p.get("versuch", ""),
+        },
+    )
 
 
 # --- Eltern ------------------------------------------------------------------------------------

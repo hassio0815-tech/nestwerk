@@ -10,10 +10,15 @@
 
 {% if zustand == "frage" and aufgabe %}
   <section class="karte lernen-frage" data-lernen-zustand="frage"><div class="karte__inhalt stapel">
+    {% if ziel_minuten %}
+    <p class="kachel__text" data-lernen-zeit>{% blocktranslate with min=minuten_gelaufen ziel=ziel_minuten %}Runde: {{ min }} von etwa {{ ziel }} Minuten{% endblocktranslate %}</p>
+    {% else %}
     <div class="lernen-fortschritt" role="img" aria-label="{% blocktranslate with nr=nummer von=s.ziel_fragen %}Frage {{ nr }} von {{ von }}{% endblocktranslate %}">
       {% for i in fortschritt %}<span class="lernen-fortschritt__punkt{% if i < nummer|add:'-1' %} lernen-fortschritt__punkt--fertig{% elif i == nummer|add:'-1' %} lernen-fortschritt__punkt--jetzt{% endif %}"></span>{% endfor %}
     </div>
+    {% endif %}
     <p class="kachel__text lernen-plan">{% blocktranslate with plan=s.get_strategie_display %}Dein Plan: {{ plan }}{% endblocktranslate %}</p>
+    {% if strategie_hinweis %}<p class="kachel__text" data-lernen-strategie-hinweis>{{ strategie_hinweis }}</p>{% endif %}
     {% if rueckmeldung %}<p class="lernen-rueck lernen-rueck--fast" role="status">{{ rueckmeldung.text }}</p>{% endif %}
     {% if aufgabe.frage.typ == "vokabel" %}<p class="kachel__text">{% if aufgabe.richtung == "en_de" %}{% translate "Auf Deutsch:" %}{% else %}{% translate "In der Fremdsprache:" %}{% endif %}</p>{% endif %}
     <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text|schulrechnung }}</p>
@@ -28,7 +33,7 @@
     {% endfor %}
     {% if erklaerung %}<section class="lernen-hilfe" data-lernen-erklaerung><h2 class="lernen-hilfe__titel">{% translate "Noch einmal anders erklärt" %}</h2><p>{{ erklaerung }}</p></section>{% endif %}
     {% if karte %}
-      <details class="lernen-tipp lernen-tipp--frage" data-lernen-karte="{{ karte.schluessel }}">
+      <details class="lernen-tipp lernen-tipp--frage" data-lernen-karte="{{ karte.schluessel }}"{% if karte_offen %} open{% endif %}>
         <summary>{% blocktranslate with titel=karte.titel %}Rechen-Tipp: {{ titel }}{% endblocktranslate %}</summary>
         {% if karte_verborgen %}
           {% url "lernen:tipps" as tipps_url %}<p><a href="{{ tipps_url }}#karte-{{ karte.schluessel }}" target="_blank" rel="noopener">{% translate "Diese Karte findest du bei den Rechen-Tipps." %}</a></p>
@@ -69,7 +74,8 @@
       </section>
     {% endif %}
     {% if rueckmeldung.ziel_erreicht %}<p class="lernen-rueck lernen-rueck--richtig">{% include "komponenten/icon.html" with name="pokal" %} {{ ton_ziel }}</p>{% endif %}
-    {% if rueckmeldung.pause_vorschlag %}<p class="lernen-pause" data-lernen-pause>{{ ton_frust }}</p>{% endif %}
+    {% if rueckmeldung.fehlergrund_frage %}{% include "lernen/_fehlergrund.html" with versuch_id=rueckmeldung.versuch_id %}{% endif %}
+    {% if rueckmeldung.pause_vorschlag %}<p class="lernen-pause" data-lernen-pause>{% if rueckmeldung.pause_grund == "zeit" %}{{ ton_pause_zeit }}{% else %}{{ ton_frust }}{% endif %}</p>{% endif %}
     <div class="reihe">
       <a class="knopf knopf--primaer knopf--gross" href="{{ sitzung_url }}" autofocus hx-get="{{ sitzung_url }}" hx-target="#lern-bereich" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="pfeil-rechts" %}<span>{% if rueckmeldung.pause_vorschlag %}{% translate "Weiter üben" %}{% else %}{% translate "Weiter" %}{% endif %}</span></a>
       {% url "lernen:beenden" s.pk as beenden_url %}
@@ -81,6 +87,7 @@
   <section class="karte" data-lernen-zustand="rueckschau"><div class="karte__inhalt stapel">
     <h1>{% translate "Kurze Rückschau" %}</h1>
     <p>{{ ton_ende }}</p>
+    {% if kalibrierung %}<p data-lernen-kalibrierung>{{ kalibrierung }}</p>{% endif %}
     {% url "lernen:rueckschau" s.pk as rueckschau_url %}
     <form method="post" action="{{ rueckschau_url }}" hx-post="{{ rueckschau_url }}" hx-target="#lern-bereich" hx-swap="innerHTML" class="stapel">{% csrf_token %}
       <div class="feld"><label class="feld__label" for="l-schwer">{% translate "Was war schwer?" %}</label><input class="feld__eingabe" id="l-schwer" name="schwer" maxlength="300" autocomplete="off"></div>
@@ -97,6 +104,7 @@
     <h1 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h1>
     <p>{{ ton_ende }}</p>
     <p>{% blocktranslate count anzahl=s.versuche with minuten=minuten %}Du hast {{ minuten }} Minuten geübt und {{ anzahl }} Frage angeschaut.{% plural %}Du hast {{ minuten }} Minuten geübt und {{ anzahl }} Fragen angeschaut.{% endblocktranslate %}</p>
+    {% if kalibrierung %}<p data-lernen-kalibrierung>{{ kalibrierung }}</p>{% endif %}
     {% if ton_vergleich %}<p data-lernen-vergleich>{{ ton_vergleich }}</p>{% endif %}
     {% include "lernen/_tagesbild.html" %}
     <div class="reihe">

@@ -55,6 +55,7 @@ def startwerte(db):
         STARTWERTE_MATHE,
         STARTWERTE_MATHE_HILFE,
         STARTWERTE_PRUEFUNG,
+        STARTWERTE_PUNKTE,
         STARTWERTE_TUTOR,
         STARTWERTE_UEBEN,
         STARTWERTE_WOCHE,
@@ -76,6 +77,7 @@ def startwerte(db):
         STARTWERTE_WOCHE,
         STARTWERTE_MATHE,
         STARTWERTE_MATHE_HILFE,
+        STARTWERTE_PUNKTE,
         SPIELREGELN,
     ):
         startwerte_schreiben(Einstellung, werte)
@@ -87,6 +89,9 @@ def startwerte(db):
                 schluessel=d.schluessel, modul=d.modul, wert=d.pruefen(_beispielwert(d))
             )
     raenge_start.anlegen(Rang, Kalibrierung)
+    # Die Migration stellt Runden auf Minuten; die älteren Tests rechnen in Fragen, die Tests von
+    # Etappe 14 schalten selbst um (``minuten_modus``).
+    einstellungen.setzen("lernen.runde_ziel", "fragen", akteur=None)
 
 
 @pytest.fixture(autouse=True)

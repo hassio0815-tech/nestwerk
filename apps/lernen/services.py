@@ -5,9 +5,12 @@ Selbsteinschätzung) -> ``frage_stellen`` / ``antworten`` / ``hilfe`` / ``loesun
 Wechsel -> ``sitzung_beenden`` -> ``rueckschau_speichern``.
 
 - Gemessen wird die aktive Zeit (lange Denkpausen zählen nicht, ``lernen.leerlauf_sekunden``).
-- Punkte gibt es nur für den Prozess: ein fester Betrag, sobald das Tagesziel erreicht ist (nie
-  pro richtige Antwort), gedeckelt durch ``lernen.lernpunkte_tageslimit``, abschaltbar durch
-  ``lernen.lernpunkte_aktiv``. Hilfen kosten nichts. Eine gerissene Serie nimmt nie Punkte.
+- Punkte gibt es nur für den Prozess: feste Beträge (nie pro richtige Antwort) für das Tagesziel
+  und, je höchstens einmal am Tag, für Selbsttest, Fehlerüberarbeitung und Rückschau; alles
+  gedeckelt durch ``lernen.lernpunkte_tageslimit``, abschaltbar durch ``lernen.lernpunkte_aktiv``.
+  Hilfen kosten nichts. Eine gerissene Serie nimmt nie Punkte.
+- Eine Runde zählt nach Zeit (``lernen.runde_ziel``, weiche Grenze) oder nach Fragen; einmal je
+  Runde schlägt ``lernen.pause_nach_minuten`` eine Pause vor.
 - Jede Änderung läuft in einer Transaktion, ebenso Buchung, Aktivität und Ereignis.
 """
 
@@ -20,6 +23,7 @@ from django.utils.translation import gettext as _
 from apps.ereignisse import services as ereignisse
 from apps.kern import zeit
 from apps.kern.einstellungen import wert
+from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte
 from apps.spielregeln import services as spielregeln
 
@@ -40,6 +44,7 @@ from .mathe import hilfe as mathe_hilfe
 from .models import (
     Ergebnis,
     Erwartung,
+    Fehlergrund,
     Frage,
     Freigabe,
     Intensitaet,
@@ -131,6 +136,9 @@ class Rueckmeldung:
         False  # Lösung einer erzeugten Mathe-Aufgabe (andere Anzeige als "So heißt es")
     )
     rechenweg: tuple = ()  # Mathe: die Rechenschritte mit Zwischenergebnissen (mit der Lösung)
+    pause_grund: str = ""  # "frust" oder "zeit", wenn pause_vorschlag gesetzt ist
+    versuch_id: int | None = None  # der gebuchte Versuch (für den freiwilligen Fehlergrund)
+    fehlergrund_frage: bool = False  # nach "noch nicht" ab der Klassenstufe: woran lag es?
 
 
 def _jetzt(jetzt):
@@ -196,11 +204,17 @@ def sitzung_starten(
         sitzung_beenden(alte, jetzt=jetzt)
     tag_vorbereiten(kind, zeit.heute(jetzt))
     mathe_aufgaben.aufraeumen(jetzt)
-    anzahl = (
-        ziel_fragen
-        or (portion is None and mathe_aufgaben.aufgaben_je_runde(fach))
-        or wert(f"lernen.fragen_{intensitaet}")
-    )
+    minuten = 0
+    if ziel_fragen is None and portion is None and wert("lernen.runde_ziel") == "minuten":
+        # Etappe 14: die Runde zählt nach Zeit; die Fragenzahl ist nur eine Sicherheitsgrenze
+        minuten = wert(f"lernen.minuten_{intensitaet}")
+        anzahl = wert("lernen.fragen_max_sitzung")
+    else:
+        anzahl = (
+            ziel_fragen
+            or (portion is None and mathe_aufgaben.aufgaben_je_runde(fach))
+            or wert(f"lernen.fragen_{intensitaet}")
+        )
     return Lernsitzung.objects.create(
         portion=portion,
         kind=kind,
@@ -213,6 +227,7 @@ def sitzung_starten(
         strategie=strategie,
         erwartung=erwartung,
         ziel_fragen=anzahl,
+        ziel_minuten=minuten,
     )
 
 
@@ -284,6 +299,40 @@ def _tagesziel_belohnen(kind, tag, heute):
     )
 
 
+def betrag_buchen(kind, soll, schluessel, referenz, heute):
+    """Fester Betrag unter dem Lernpunkte-Tageslimit; nichts bei ausgeschalteten Lernpunkten.
+    Idempotent über den Schlüssel. Gibt den gebuchten Betrag zurück (0 = nichts)."""
+    if soll <= 0 or not wert("lernen.lernpunkte_aktiv"):
+        return 0
+    if punkte_selectors.buchung_zu_schluessel(schluessel) is not None:
+        return 0
+    tag = tagesziel.lerntag_holen(kind, heute)
+    betrag = min(soll, max(0, wert("lernen.lernpunkte_tageslimit") - tag.punkte))
+    if betrag <= 0:
+        return 0
+    punkte.buchen(
+        kind,
+        punkte.Art.MODUL,
+        betrag,
+        schluessel=schluessel,
+        quelle_modul=QUELLE,
+        bezugsdatum=heute,
+        referenz=referenz,
+        von=kind,
+    )
+    tag.punkte += betrag
+    tag.save(update_fields=["punkte"])
+    return betrag
+
+
+def tagespunkte_buchen(kind, art, einstellung, referenz, heute):
+    """Prozesspunkte für ``art`` (Selbsttest, Fehlerüberarbeitung, Rückschau): ein fester Betrag,
+    höchstens einmal je Kind, Tag und Art, nie pro Antwort, unter dem Tageslimit."""
+    return betrag_buchen(
+        kind, wert(einstellung), f"lernen:{art}:{kind.pk}:{heute.isoformat()}", referenz, heute
+    )
+
+
 def _offen(sitzung):
     if sitzung.ende is not None:
         raise LernenFehler("Die Sitzung ist schon beendet.")
@@ -322,6 +371,11 @@ def _naechste_wahl(sitzung, zufall, jetzt):
     )
 
 
+def _zeit_um(sitzung):
+    """Weiche Grenze der Runde nach Zeit: gilt erst zwischen zwei Fragen, nie mitten drin."""
+    return sitzung.ziel_minuten > 0 and sitzung.dauer_sekunden >= sitzung.ziel_minuten * 60
+
+
 def frage_stellen(sitzung, *, zufall=None, jetzt=None):
     """Die offene oder nächste Frage (``Aufgabe``), ``None`` wenn nichts mehr dran ist.
     Neuladen zeigt dieselbe Frage. Danach ist ``sitzung_beenden`` fällig."""
@@ -330,7 +384,7 @@ def frage_stellen(sitzung, *, zufall=None, jetzt=None):
     jetzt = _jetzt(jetzt)
     _zeit_buchen(sitzung, jetzt)
     if sitzung.aktuell_frage_id is None:
-        if sitzung.versuche >= sitzung.ziel_fragen:
+        if sitzung.versuche >= sitzung.ziel_fragen or _zeit_um(sitzung):
             sitzung.save()
             return None
         wahl = _naechste_wahl(sitzung, zufall, jetzt)
@@ -424,10 +478,11 @@ def hilfe_kontext(sitzung, aufgabe):
 
 
 def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehlertyp=""):
-    """Eine beantwortete Frage verbuchen: Versuch, Lernstand, Zähler, Frust, Zeit."""
+    """Eine beantwortete Frage verbuchen: Versuch, Lernstand, Zähler, Frust, Zeit. Gibt
+    ``(versuch, pause_grund, stufe_gesenkt, ziel_erreicht)`` zurück."""
     dauer_ms = max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000))
     felder = historie.versuch_felder(sitzung.kind, aufgabe.frage, aufgabe.richtung)
-    Versuch.objects.create(
+    versuch = Versuch.objects.create(
         sitzung=sitzung,
         frage=aufgabe.frage,
         richtung=aufgabe.richtung,
@@ -462,16 +517,31 @@ def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehler
     sitzung.aktuell_hilfe = 0
     ziel_erreicht = _zeit_buchen(sitzung, jetzt)
     senkt = False
-    pause = False
+    grund = ""
     if not sitzung.frust_erkannt:
         letzte = list(sitzung.antworten.order_by("-id").values_list("ergebnis", "dauer_ms")[:20])
         if frust.erkennen(letzte[::-1]) is not None:
             sitzung.frust_erkannt = True
-            pause = True
+            sitzung.pause_vorgeschlagen = True  # eine Pause je Runde genügt
+            grund = "frust"
             senkt = _stufe_senken(sitzung)
+    if not grund and not sitzung.pause_vorgeschlagen:
+        # Etappe 14 (W-10): auch ohne Frust ein Pausen-Vorschlag, einmal nach N Minuten
+        nach = wert("lernen.pause_nach_minuten")
+        if nach and sitzung.dauer_sekunden >= nach * 60:
+            sitzung.pause_vorgeschlagen = True
+            grund = "zeit"
     sitzung.save()
     _portion_pruefen(sitzung, jetzt)
-    return pause, senkt, ziel_erreicht
+    return versuch, grund, senkt, ziel_erreicht
+
+
+def _fehlergrund_frage(sitzung, ergebnis):
+    """Nach "noch nicht" ab der eingestellten Klassenstufe darf das Kind sagen, woran es lag."""
+    if ergebnis != Ergebnis.NOCH_NICHT or sitzung.fach_id is None:
+        return False
+    klasse = selectors.klassenstufe(sitzung.kind, sitzung.fach)
+    return klasse is not None and klasse >= wert("lernen.fehlergrund_ab_klasse")
 
 
 def _portion_pruefen(sitzung, jetzt):
@@ -549,7 +619,7 @@ def antworten(sitzung, eingabe, *, jetzt=None):
         # zweiten Versuch, statt gleich die Lösung zu zeigen. Es kostet keine Punkte.
         return _noch_einmal(sitzung, aufgabe, eingabe, pruefung_, jetzt)
     ergebnis = Ergebnis.RICHTIG if pruefung_.richtig else Ergebnis.NOCH_NICHT
-    pause, senkt, erreicht = _abschliessen(
+    versuch, grund, senkt, erreicht = _abschliessen(
         sitzung, aufgabe, ergebnis, eingabe, sitzung.aktuell_hilfe, jetzt, pruefung_.fehlertyp
     )
     return Rueckmeldung(
@@ -559,9 +629,12 @@ def antworten(sitzung, eingabe, *, jetzt=None):
         rechnung=aufgabe.generiert,
         rechenweg=() if ergebnis == Ergebnis.RICHTIG else _rechenweg(aufgabe),
         hinweis="" if ergebnis == Ergebnis.RICHTIG else pruefung_.hinweis,
-        pause_vorschlag=pause,
+        pause_vorschlag=bool(grund),
+        pause_grund=grund,
         stufe_gesenkt=senkt,
         ziel_erreicht=erreicht,
+        versuch_id=versuch.pk,
+        fehlergrund_frage=_fehlergrund_frage(sitzung, ergebnis),
     )
 
 
@@ -571,7 +644,7 @@ def loesung_zeigen(sitzung, *, jetzt=None):
     bald wieder; es kostet keine Punkte."""
     aufgabe = _offen(sitzung)
     stufe = selectors.sprachstufe(sitzung.kind, sitzung.fach)
-    pause, senkt, erreicht = _abschliessen(
+    versuch, grund, senkt, erreicht = _abschliessen(
         sitzung, aufgabe, Ergebnis.NOCH_NICHT, "", max(2, sitzung.aktuell_hilfe), _jetzt(jetzt)
     )
     return Rueckmeldung(
@@ -580,9 +653,12 @@ def loesung_zeigen(sitzung, *, jetzt=None):
         loesung=aufgabe.loesung,
         rechnung=aufgabe.generiert,
         rechenweg=_rechenweg(aufgabe),
-        pause_vorschlag=pause,
+        pause_vorschlag=bool(grund),
+        pause_grund=grund,
         stufe_gesenkt=senkt,
         ziel_erreicht=erreicht,
+        versuch_id=versuch.pk,
+        fehlergrund_frage=_fehlergrund_frage(sitzung, Ergebnis.NOCH_NICHT),
     )
 
 
@@ -598,8 +674,37 @@ def sitzung_beenden(sitzung, *, jetzt=None):
     sitzung.aktuell_richtung = ""
     sitzung.aktuell_seit = None
     sitzung.save()
+    _fehlerueberarbeitung_belohnen(sitzung, jetzt)
     _portion_pruefen(sitzung, jetzt)
     return sitzung
+
+
+def _fehlerueberarbeitung_belohnen(sitzung, jetzt):
+    """Eine Runde "Meine Stolperstellen üben" mit genug Antworten ist eine Fehlerüberarbeitung:
+    fester Betrag, höchstens einmal am Tag (W-9)."""
+    if sitzung.vorhaben == Vorhaben.STOLPERSTELLEN and sitzung.versuche >= wert(
+        "lernen.fehlerueberarbeitung_min_antworten"
+    ):
+        tagespunkte_buchen(
+            sitzung.kind,
+            "fehlerueberarbeitung",
+            "lernen.punkte_fehlerueberarbeitung",
+            sitzung,
+            zeit.heute(jetzt),
+        )
+
+
+@transaction.atomic
+def fehlergrund_speichern(sitzung, versuch_id, grund):
+    """Das Kind sagt nach "noch nicht", woran es lag (freiwillig, ändert nichts an Punkten oder
+    Wiederholung). Nur für einen "noch nicht"-Versuch der eigenen Sitzung."""
+    grund = _wahl(grund, Fehlergrund, "Fehlergrund")
+    versuch = sitzung.antworten.filter(pk=versuch_id, ergebnis=Ergebnis.NOCH_NICHT).first()
+    if versuch is None:
+        raise LernenFehler("Zu dieser Antwort gibt es keinen Fehlergrund.")
+    versuch.fehlergrund = grund
+    versuch.save(update_fields=["fehlergrund"])
+    return versuch
 
 
 @transaction.atomic
@@ -616,6 +721,14 @@ def rueckschau_speichern(sitzung, schwer="", geholfen="", einschaetzung=""):
         sitzung.selbsteinschaetzung = _wahl(einschaetzung, Selbsteinschaetzung, "Einschätzung")
     sitzung.rueckschau_fertig = True
     sitzung.save()
+    if sitzung.rueckschau_schwer or sitzung.rueckschau_geholfen or sitzung.selbsteinschaetzung:
+        tagespunkte_buchen(
+            sitzung.kind,
+            "rueckschau",
+            "lernen.punkte_rueckschau",
+            sitzung,
+            zeit.heute(sitzung.ende),
+        )
     return sitzung
 
 

@@ -43,6 +43,13 @@ _TEXTE = {
         gettext_noop("Nachschauen ist erlaubt. Die Frage kommt später wieder."),
         gettext_noop("Nachschauen ist Teil des Lernens. Die Frage kommt wieder."),
     ),
+    "pause_zeit": (
+        gettext_noop(
+            "Du übst schon lange. Magst du eine kleine Pause machen? Danach geht es weiter."
+        ),
+        gettext_noop("Du übst schon eine Weile. Eine kurze Pause tut gut. Magst du eine machen?"),
+        gettext_noop("Du übst schon länger. Eine kurze Pause hilft beim Merken."),
+    ),
     "frust": (
         gettext_noop(
             "Das war ganz schön viel auf einmal. Wir machen es etwas leichter. Magst du eine "

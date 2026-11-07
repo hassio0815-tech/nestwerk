@@ -1,0 +1,14 @@
+{% load i18n %}{% url "lernen:fehlergrund" s.pk as fehlergrund_url %}
+<div class="stapel" data-lernen-fehlergrund>
+  {% if gespeichert %}
+    <p class="kachel__text" data-lernen-fehlergrund-danke>{% translate "Danke, das habe ich mir gemerkt." %}</p>
+  {% else %}
+    <p class="kachel__text">{% translate "Woran lag es? Du kannst auch einfach weitermachen." %}</p>
+    <form method="post" action="{{ fehlergrund_url }}" hx-post="{{ fehlergrund_url }}" hx-target="closest [data-lernen-fehlergrund]" hx-swap="outerHTML">{% csrf_token %}
+      <input type="hidden" name="versuch" value="{{ versuch_id }}">
+      <div class="reihe">
+        {% for wert, text in fehlergruende %}{% include "komponenten/button.html" with typ="submit" variante="geist" klein=True name="grund" wert=wert text=text %}{% endfor %}
+      </div>
+    </form>
+  {% endif %}
+</div>

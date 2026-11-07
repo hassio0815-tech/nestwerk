@@ -1,9 +1,12 @@
 """Lesen für lernen. Geschwister sehen die Fragen, die Mappe und die Sitzungen nie."""
 
 from dataclasses import dataclass
+from datetime import timedelta
 
 from django.db.models import Q
+from django.utils.translation import gettext
 
+from apps.kern import zeit
 from apps.kern.einstellungen import wert
 
 from . import tagesziel
@@ -215,6 +218,31 @@ def vergleich(sitzung_):
     erwartet = [Erwartung.WENIGES, Erwartung.EINIGES, Erwartung.VIELES].index(sitzung_.erwartung)
     echt = _niveau(anteil)
     return "passt" if echt == erwartet else ("mehr" if echt > erwartet else "weniger")
+
+
+def kalibrierung_satz(sitzung_):
+    """Erwartung gegen Ergebnis in einem Satz ("Du dachtest: ... Es waren 4 von 5 richtig.") oder
+    leer, wenn es keine Selbsteinschätzung vorher oder keine Antworten gibt (Etappe 14)."""
+    if not sitzung_.erwartung or not sitzung_.versuche:
+        return ""
+    return gettext(
+        "Du dachtest vorher: „%(erwartung)s“. Es waren %(richtig)s von %(gesamt)s richtig."
+    ) % {
+        "erwartung": Erwartung(sitzung_.erwartung).label,
+        "richtig": sitzung_.richtig,
+        "gesamt": sitzung_.versuche,
+    }
+
+
+def kalibrierung_woche(kind, heute):
+    """``(treffer, gesamt)`` der letzten 7 Tage: in wie vielen beendeten Runden mit Antworten und
+    Selbsteinschätzung vorher die Erwartung zum Ergebnis passte. Nur für das Kind selbst."""
+    ab = zeit.tag_beginn(heute - timedelta(days=6))
+    runden = Lernsitzung.objects.filter(
+        kind=kind, ende__isnull=False, beginn__gte=ab, versuche__gt=0
+    ).exclude(erwartung="")
+    ergebnisse = [vergleich(r) for r in runden]
+    return ergebnisse.count("passt"), len(ergebnisse)
 
 
 @dataclass(frozen=True)

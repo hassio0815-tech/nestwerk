@@ -4,6 +4,20 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Punkte und Rückschau, Etappe 14 (08.11.2026)
+
+### Hinzugefügt
+- **Punkte für den Prozess, nie pro Antwort:** Selbsttest beendet (3), Fehlerüberarbeitung (Runde „Meine Stolperstellen üben“ mit mindestens 5 Antworten, 3) und ausgefüllte Rückschau (1) geben je einen festen Betrag, höchstens einmal je Kind und Tag, zusammen mit dem Tagesziel (5) immer unter dem Tageslimit. Einstellungen `lernen.punkte_*`.
+- **Runden zählen nach Minuten:** Aufwärmen / Normal / Herausforderung sind 5 / 10 / 15 Minuten mit weicher Grenze (die offene Frage wird noch fertig). Die Einstellung `lernen.runde_ziel` schaltet auf Fragenzahl zurück.
+- **Pause nach Zeit:** Einmal je Runde wird nach 20 Minuten (Einstellung, 0 = aus) eine Pause vorgeschlagen, nicht nur bei Frust.
+- **Kalibrierung:** Am Ende der Runde steht, was das Kind erwartet hat und wie viele Antworten richtig waren; die Startseite zeigt den Wochentrend (ab 2 Runden).
+- **Fehlergrund:** Ab Klasse 6 kann das Kind nach „noch nicht“ „zu schnell“, „nicht gewusst“ oder „verrechnet“ wählen (freiwillig, am Versuch gespeichert, die Runde endet auch ohne).
+- **Strategie hat eine Funktion:** Jede Strategie zeigt ihren ersten Schritt auf der Fragenseite; neu sind „auf Papier aufschreiben“ und „erst das Beispiel ansehen“ (klappt den Rechen-Tipp auf); die Mathe-Texte reden nicht mehr von Wörtern.
+
+### Geändert
+- **Tageslimit für Lernpunkte ist 8 (vorher 10).** Eine Datenmigration senkt es nur, wenn es noch der alte Startwert ist. Der Bonus „Prüfung vorbereitet“ (10) wird dadurch vom Limit gedeckelt.
+- Die Strategie „Ich sage das Wort laut“ heißt jetzt „Ich sage es laut“ (passt auch zu Mathe).
+
 ## Entlastung der Eltern, Etappe 13 (07.11.2026)
 
 ### Hinzugefügt

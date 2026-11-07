@@ -21,8 +21,6 @@ from django.utils.translation import gettext as _
 from apps.ereignisse import services as ereignisse
 from apps.kern import zeit
 from apps.kern.einstellungen import wert
-from apps.punkte import selectors as punkte_selectors
-from apps.punkte import services as punkte
 
 from . import events, plan, plan_selectors, plan_texte, selectors, services, tagesziel
 from .models import (
@@ -293,29 +291,8 @@ def portion_erledigen(portion, heute, jetzt=None):
 
 
 def _betrag_buchen(kind, soll, schluessel, referenz, heute):
-    """Fester Betrag unter dem Lernpunkte-Tageslimit; nichts bei ausgeschalteten Lernpunkten.
-    Idempotent über den Schlüssel. Gibt den gebuchten Betrag zurück (0 = nichts)."""
-    if soll <= 0 or not wert("lernen.lernpunkte_aktiv"):
-        return 0
-    if punkte_selectors.buchung_zu_schluessel(schluessel) is not None:
-        return 0
-    tag = tagesziel.lerntag_holen(kind, heute)
-    betrag = min(soll, max(0, wert("lernen.lernpunkte_tageslimit") - tag.punkte))
-    if betrag <= 0:
-        return 0
-    punkte.buchen(
-        kind,
-        punkte.Art.MODUL,
-        betrag,
-        schluessel=schluessel,
-        quelle_modul=services.QUELLE,
-        bezugsdatum=heute,
-        referenz=referenz,
-        von=kind,
-    )
-    tag.punkte += betrag
-    tag.save(update_fields=["punkte"])
-    return betrag
+    """Fester Betrag unter dem Lernpunkte-Tageslimit (siehe ``services.betrag_buchen``)."""
+    return services.betrag_buchen(kind, soll, schluessel, referenz, heute)
 
 
 def _wochen_belohnen(p, heute):
@@ -445,10 +422,20 @@ def probe_antworten(probe_, eingabe, *, jetzt=None):
     return probe_
 
 
+@transaction.atomic
 def probe_beenden(probe_, *, jetzt=None):
+    """Beendet die Probe (idempotent). Zu Ende gemacht gibt es einen festen Betrag, einmal am Tag
+    und unter dem Tageslimit (W-9); die Punkte hängen nie an den Antworten."""
     if probe_.ende is None:
         probe_.ende = jetzt or zeit.jetzt()
         probe_.save(update_fields=["ende"])
+        services.tagespunkte_buchen(
+            probe_.pruefung.kind,
+            "selbsttest",
+            "lernen.punkte_selbsttest",
+            probe_,
+            zeit.heute(probe_.ende),
+        )
     return probe_
 
 

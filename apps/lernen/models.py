@@ -57,10 +57,20 @@ class Vorhaben(models.TextChoices):
 
 
 class Strategie(models.TextChoices):
-    LAUT = "laut", _("Ich sage das Wort laut")
+    LAUT = "laut", _("Ich sage es laut")
     ABDECKEN = "abdecken", _("Ich denke erst nach, dann tippe ich")
     BILD = "bild", _("Ich stelle mir ein Bild dazu vor")
-    SATZ = "satz", _("Ich denke mir einen Satz dazu aus")
+    SATZ = "satz", _("Ich denke mir einen Satz oder eine Geschichte dazu aus")
+    AUFSCHREIBEN = "aufschreiben", _("Ich schreibe es erst auf Papier auf")
+    BEISPIEL = "beispiel", _("Ich schaue erst das Beispiel an")
+
+
+class Fehlergrund(models.TextChoices):
+    """Wie das Kind einen Fehler selbst erklärt (Etappe 14, W-8.2); freiwillig."""
+
+    ZU_SCHNELL = "zu_schnell", _("zu schnell")
+    NICHT_GEWUSST = "nicht_gewusst", _("nicht gewusst")
+    VERRECHNET = "verrechnet", _("verrechnet")
 
 
 class Erwartung(models.TextChoices):
@@ -219,6 +229,9 @@ class Lernsitzung(models.Model):
     strategie = models.CharField(max_length=16, choices=Strategie.choices, blank=True)
     erwartung = models.CharField(max_length=10, choices=Erwartung.choices, blank=True)
     ziel_fragen = models.PositiveSmallIntegerField(default=10)
+    # Etappe 14: Ziel der Runde in Minuten (0 = die Runde zählt nach Fragen); weiche Grenze
+    ziel_minuten = models.PositiveSmallIntegerField(default=0)
+    pause_vorgeschlagen = models.BooleanField(default=False)  # Pause nach Zeit schon gezeigt
     richtig = models.PositiveIntegerField(default=0)
     ende = models.DateTimeField(null=True, blank=True)
     letzte_aktivitaet = models.DateTimeField(null=True, blank=True)
@@ -351,6 +364,10 @@ class Versuch(models.Model):
     erstellt = models.DateTimeField(auto_now_add=True)
     # Etappe 10a: Art des Formfehlers (Platzhalter für die Fehleranalyse in Paket 2)
     fehlertyp = models.CharField(max_length=30, blank=True, default="")
+    # Etappe 14: freiwillige Antwort des Kindes nach "noch nicht" (leer = nicht gewählt)
+    fehlergrund = models.CharField(
+        max_length=15, choices=Fehlergrund.choices, blank=True, default=""
+    )
 
     class Meta:
         ordering = ["id"]

@@ -470,10 +470,12 @@ def test_vorbereitet_gibt_einen_festen_bonus_und_ein_ereignis_einmal(kind_a, fac
     p.refresh_from_db()
     assert p.vorbereitet_am == heute()
     b = Buchung.objects.get(idempotenz_schluessel=f"lernen:pruefung_vorbereitet:{p.pk}")
-    assert (
-        b.guthaben_delta == einstellungen.wert("lernen.pruefung_punkte_vorbereitet")
-        and b.kind == kind_a
+    # Das Tageslimit (8) deckelt auch diesen Bonus (10): im Zweifel niedriger
+    soll = min(
+        einstellungen.wert("lernen.pruefung_punkte_vorbereitet"),
+        einstellungen.wert("lernen.lernpunkte_tageslimit"),
     )
+    assert b.guthaben_delta == soll and b.kind == kind_a
     ereignisse = Ereignis.objects.filter(typ=events.PRUEFUNG_VORBEREITET)
     assert ereignisse.count() == 1
     daten = ereignisse.get().daten
