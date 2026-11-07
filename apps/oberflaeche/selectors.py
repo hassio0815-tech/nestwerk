@@ -123,6 +123,15 @@ def offene_anzahl(kind):
     return len(aufgaben.kind_offene(kind))
 
 
+START_INFOZEILE_MAX = 8
+
+
+def start_infozeile(anzahl=START_INFOZEILE_MAX):
+    """Offene/heute fällige Aufgaben für die Infozeile der Anmeldeseite."""
+    offene = aufgaben.start_offene()
+    return {"aufgaben": offene[:anzahl], "weitere": max(len(offene) - anzahl, 0)}
+
+
 def eltern_entscheidungen():
     """Zähler offener Entscheidungen: Meldungen, Konflikte, Einlöseanträge, Mood-Vorschläge."""
     daten = aufgaben.eltern_entscheidungen()

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 19:25+0000\n"
+"POT-Creation-Date: 2026-11-07 10:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgstr ""
 "X-Forwarded-For is only read from these addresses (Nginx Proxy Manager)."
 
 #: models.py:30 models.py:265 templates/konten/eltern_heim.html:5
-#: templates/konten/start.html:34 templates/konten/start.html:38
+#: templates/konten/start.html:57 templates/konten/start.html:61
 msgid "Eltern"
 msgstr "Parents"
 
@@ -444,8 +444,12 @@ msgstr "This mood already exists."
 
 #: services.py:385
 #, python-format
-msgid "Du hast schon %(n)s offene Vorschläge. Warte, bis die Eltern entschieden haben."
-msgstr "You already have %(n)s open suggestions. Wait until your parents have decided."
+msgid ""
+"Du hast schon %(n)s offene Vorschläge. Warte, bis die Eltern entschieden "
+"haben."
+msgstr ""
+"You already have %(n)s open suggestions. Wait until your parents have "
+"decided."
 
 #: services.py:389
 msgid "Das hast du schon vorgeschlagen."
@@ -592,15 +596,34 @@ msgstr "Enter your PIN."
 msgid "Wer ist heute dabei?"
 msgstr "Who's here today?"
 
-#: templates/konten/start.html:22
+#: templates/konten/start.html:23
+msgid "Offene Aufgaben"
+msgstr "Open tasks"
+
+#: templates/konten/start.html:30
+msgid "heute"
+msgstr "today"
+
+#: templates/konten/start.html:36
+#, python-format
+msgid "+%(n)s weitere"
+msgid_plural "+%(n)s weitere"
+msgstr[0] "+%(n)s more"
+msgstr[1] "+%(n)s more"
+
+#: templates/konten/start.html:40
+msgid "Gerade ist alles erledigt."
+msgstr "All done for now."
+
+#: templates/konten/start.html:45
 msgid "Kinder"
 msgstr "Kids"
 
-#: templates/konten/start.html:28
+#: templates/konten/start.html:51
 msgid "Noch keine Kinder"
 msgstr "No kids yet"
 
-#: templates/konten/start.html:28
+#: templates/konten/start.html:51
 msgid "Die Eltern legen die Kinder in der Einrichtung an."
 msgstr "The parents add the kids during setup."
 
@@ -615,16 +638,16 @@ msgid_plural "%(n)s Minuten"
 msgstr[0] "%(n)s minute"
 msgstr[1] "%(n)s minutes"
 
-#: views.py:96
+#: views.py:98
 msgid "Die Anmeldung geht nur im Heimnetz."
 msgstr "Logging in only works on the home network."
 
-#: views.py:102 views.py:117
+#: views.py:104 views.py:119
 #, python-format
 msgid "Gesperrt. Versuch es in %(zeit)s wieder."
 msgstr "Locked. Try again in %(zeit)s."
 
-#: views.py:141
+#: views.py:143
 #, python-format
 msgid "Zu viele Versuche. Bitte in %(zeit)s wieder."
 msgstr "Too many attempts. Please try again in %(zeit)s."

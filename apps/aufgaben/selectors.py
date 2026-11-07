@@ -209,6 +209,26 @@ def eltern_entscheidungen(*, jetzt=None) -> dict:
     }
 
 
+def start_offene(*, jetzt=None):
+    """Infozeile der Anmeldeseite: offene (nicht vergebene) Instanzen aktiver Aufgaben, deren
+    Fenster nicht vorbei ist und die heute (oder früher) fällig sind oder kein Datum haben.
+    Jede Instanz trägt ``heute`` (Fälligkeit heute/überfällig). Heute Fällige zuerst."""
+    jetzt = jetzt or zeit.jetzt()
+    heute = zeit.heute(jetzt)
+    qs = (
+        AufgabenInstanz.objects.filter(status=InstanzStatus.OFFEN, aufgabe__status=Status.AKTIV)
+        .filter(Q(fenster_ende__isnull=True) | Q(fenster_ende__gt=jetzt))
+        .filter(Q(faellig_am__isnull=True) | Q(faellig_am__lte=heute))
+        .select_related("aufgabe", "aufgabe__zugewiesen_an")
+        .order_by("faellig_am", "fenster_ende", "sortierung", "id")
+    )
+    ergebnis = []
+    for instanz in qs:
+        instanz.heute = instanz.faellig_am is not None
+        ergebnis.append(instanz)
+    return sorted(ergebnis, key=lambda i: not i.heute)
+
+
 def offene_entscheidungen_anzahl() -> int:
     """Badge-Zahl: Konflikte + Meldungen (gemeldet; Rückfragen warten aufs Kind)."""
     return AufgabenInstanz.objects.filter(
