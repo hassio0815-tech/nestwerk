@@ -6068,3 +6068,194 @@ msgstr "Maths: errors of one kind that trigger more practice"
 
 msgid "Hat ein Kind in 14 Tagen so viele erkannte Rechenfehler bei einer Rechenart, kommt sie öfter dran."
 msgstr "If a child makes this many recognised calculation errors in one operation type within 14 days, it comes up more often."
+
+msgid "Vorschlag: kurz loben."
+msgstr "Suggestion: give some quick praise."
+
+msgid "Vorschlag: gemeinsam mit 5 Minuten starten."
+msgstr "Suggestion: start together with 5 minutes."
+
+msgid "Vorschlag: einen festen Übungszeitpunkt ausmachen."
+msgstr "Suggestion: agree on a fixed practice time."
+
+msgid "Vorschlag: %(minuten)s Minuten %(thema)s einplanen."
+msgstr "Suggestion: plan %(minuten)s minutes of %(thema)s."
+
+msgid "Vorschlag: schauen, welche Hilfe nötig war."
+msgstr "Suggestion: look at which help was really needed."
+
+msgid "Vorschlag: sagen, dass ihr die Fortschritte seht."
+msgstr "Suggestion: tell them you can see the progress."
+
+msgid "Vorschlag: das Kind erklären lassen."
+msgstr "Suggestion: let the child explain it."
+
+msgid "Vorschlag: über das Einschätzen sprechen."
+msgstr "Suggestion: talk about how to judge what you already know."
+
+msgid "Vorschlag: dem Kind sagen, dass es mehr kann."
+msgstr "Suggestion: tell the child they can do more."
+
+#, python-format
+msgid "Vorschlag: nachfragen, was in %(fach)s schwer war."
+msgstr "Suggestion: ask what was hard in %(fach)s."
+
+#, python-format
+msgid "Vorschlag: in %(fach)s eine Herausforderung anbieten."
+msgstr "Suggestion: offer a challenge in %(fach)s."
+
+#, python-format
+msgid "Vorschlag: für die Prüfung %(titel)s gemeinsam planen."
+msgstr "Suggestion: plan for the test %(titel)s together."
+
+#, python-format
+msgid "Vorschlag: für die Prüfung %(titel)s einen Termin ergänzen."
+msgstr "Suggestion: add a session for the test %(titel)s."
+
+#, python-format
+msgid "Lernwoche %(kw)s: %(geuebt)s von %(n)s Kind hat an %(tage)s+ Tagen geübt."
+msgid_plural "Lernwoche %(kw)s: %(geuebt)s von %(n)s Kindern haben an %(tage)s+ Tagen geübt."
+msgstr[0] "Learning week %(kw)s: %(geuebt)s of %(n)s child practised on %(tage)s+ days."
+msgstr[1] "Learning week %(kw)s: %(geuebt)s of %(n)s children practised on %(tage)s+ days."
+
+#, python-format
+msgid "%(kind)s: %(n)s Tag geübt."
+msgid_plural "%(kind)s: %(n)s Tage geübt."
+msgstr[0] "%(kind)s: %(n)s day practised."
+msgstr[1] "%(kind)s: %(n)s days practised."
+
+msgid "%(n)s Material wartet auf eure Freigabe."
+msgid_plural "%(n)s Materialien warten auf eure Freigabe."
+msgstr[0] "%(n)s item is waiting for your approval."
+msgstr[1] "%(n)s items are waiting for your approval."
+
+#, python-format
+msgid "%(n)s Prüfung in den nächsten %(tage)s Tagen."
+msgid_plural "%(n)s Prüfungen in den nächsten %(tage)s Tagen."
+msgstr[0] "%(n)s test in the next %(tage)s days."
+msgstr[1] "%(n)s tests in the next %(tage)s days."
+
+msgid "Hinweise an die Eltern"
+msgstr "Messages to the parents"
+
+msgid "Kurze Meldungen bei Ausnahmen: Material wartet, ein Kind hat 3 Tage nicht geübt, Fehlerhäufung, Auffälligkeit im Tutor, Prüfung bald. Aus: keine dieser Meldungen."
+msgstr "Short messages for exceptions: material is waiting, a child has not practised for 3 days, repeated mistakes, something noticed in the tutor, a test coming up. Off: none of these messages."
+
+msgid "Wochen-Zusammenfassung"
+msgstr "Weekly summary"
+
+msgid "Eine Nachricht pro Woche mit dem Stand aller Kinder, ohne Vergleich."
+msgstr "One message per week with the state of all children, without comparison."
+
+msgid "Zusammenfassung: Wochentag"
+msgstr "Summary: day of the week"
+
+msgid "0 = Montag, 6 = Sonntag."
+msgstr "0 = Monday, 6 = Sunday."
+
+msgid "Zusammenfassung: Uhrzeit"
+msgstr "Summary: time of day"
+
+msgid "Ab dieser Uhrzeit (Ortszeit) wird sie am gewählten Tag gesendet."
+msgstr "From this time (local time) on the chosen day it is sent."
+
+#, python-format
+msgid "%(n)s neues Material von %(kind)s wartet auf dein OK."
+msgid_plural "%(n)s neue Materialien von %(kind)s warten auf dein OK."
+msgstr[0] "%(n)s new material from %(kind)s is waiting for your OK."
+msgstr[1] "%(n)s new materials from %(kind)s are waiting for your OK."
+
+#, python-format
+msgid "Im Tutor-Gespräch von %(kind)s wurde ein Rollenwechsel erkannt."
+msgstr "In the tutor chat of %(kind)s, an attempt to change the roles was detected."
+
+#, python-format
+msgid "Im Tutor-Gespräch von %(kind)s wurde eine Antwort zurückgehalten, weil sie die Lösung verraten könnte."
+msgstr "In the tutor chat of %(kind)s, an answer was held back because it might give away the solution."
+
+msgid "Material wartet auf Freigabe"
+msgstr "Material waiting for approval"
+
+msgid "Kind hat länger nicht geübt"
+msgstr "Child has not practised for a while"
+
+msgid "Fehlerhäufung bei einer Rechenart"
+msgstr "Repeated mistakes in one type of sum"
+
+msgid "Auffälligkeit im Tutor-Gespräch"
+msgstr "Something noticed in the tutor chat"
+
+msgid "Prüfung steht bald an"
+msgstr "Test coming up"
+
+msgid "Lernwoche (Zusammenfassung)"
+msgstr "Learning week (summary)"
+
+msgid "Material wartet"
+msgstr "Material waiting"
+
+msgid "Mal nachfragen?"
+msgstr "Maybe ask?"
+
+#, python-brace-format
+msgid "{kind} hat seit 3 Tagen nicht geübt. Vielleicht mal nachfragen, ob alles passt?"
+msgstr "{kind} has not practised for 3 days. Maybe ask if everything is okay?"
+
+msgid "Hilfe beim Rechnen"
+msgstr "Help with maths"
+
+#, python-brace-format
+msgid "{kind} stolpert diese Woche öfter bei {rechenart}. Die Erklärkarte {karte} könnte helfen."
+msgstr "{kind} is stumbling more often with {rechenart} this week. The explanation card {karte} might help."
+
+msgid "Hinweis aus dem Tutor"
+msgstr "Note from the tutor"
+
+msgid "{kind}: Die Prüfung „{titel}“ ist bald. Vom Plan sind {prozent} Prozent geschafft. Vielleicht mal gemeinsam draufschauen?"
+msgstr "{kind}: The test “{titel}” is coming up. {prozent} percent of the plan is done. Maybe take a look together?"
+
+#, python-brace-format
+msgid "Lernwoche {kw}"
+msgstr "Learning week {kw}"
+
+msgid "So kommst du zum Ergebnis"
+msgstr "How to get to the result"
+
+#, python-format
+msgid "Schritt %(nr)s"
+msgstr "Step %(nr)s"
+
+msgid "Tagesziel, Punkte, Ferien, Tutor, neue Vokabeln, Rechenarten und die Meldungen an euch auf einer Seite."
+msgstr "Daily goal, points, holidays, tutor, new vocabulary, types of sums and the messages to you on one page."
+
+msgid "Lern-Einstellungen"
+msgstr "Learning settings"
+
+msgid "Was ihr hier ändert, gilt für die ganze Familie. Alles wird zusammen gespeichert."
+msgstr "What you change here applies to the whole family. Everything is saved together."
+
+msgid "Rechenarten"
+msgstr "Types of sums"
+
+msgid "Abgehakte Rechenarten kommen beim Üben vor. Ohne Haken wird die Rechenart nicht mehr gestellt."
+msgstr "Ticked types of sums appear when practising. Without a tick the type is no longer asked."
+
+msgid "%(n)s Material wartet auf euch."
+msgid_plural "%(n)s Materialien warten auf euch."
+msgstr[0] "%(n)s item is waiting for you."
+msgstr[1] "%(n)s items are waiting for you."
+
+msgid "Schonung"
+msgstr "Taking it easy"
+
+msgid "Anerkennung"
+msgstr "Recognition"
+
+msgid "Neue Vokabeln pro Tag"
+msgstr "New vocabulary per day"
+
+msgid "Meldungen an die Eltern"
+msgstr "Messages to the parents"
+
+msgid "Bitte die Eingaben prüfen. Es wurde nichts gespeichert."
+msgstr "Please check your entries. Nothing was saved."

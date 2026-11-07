@@ -4,6 +4,15 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Entlastung der Eltern, Etappe 13 (07.11.2026)
+
+### Hinzugefügt
+- **Ausnahme-Meldungen an die Eltern (Push):** Material wartet auf Freigabe (einmal je Stand, der Link wählt die Einträge des Kindes vor), ein Kind hat 3 Tage nicht geübt (nie in Ferien oder Pause, höchstens einmal pro Woche), Fehlerhäufung bei einer Rechenart mit passender Erklärkarte (einmal pro Woche), Prüfung in höchstens 3 Tagen bei weniger als 50 % des Plans (einmal je Prüfung). Tagesjob `lernen_eltern_hinweise`; jedes Ereignis entsteht je Zeitraum nur einmal.
+- **Tutor-Markierungen sofort:** Ein Rollenwechsel-Versuch oder eine zurückgehaltene Antwort (Lösung vermutet) wird sofort gemeldet, einmal je Gespräch und Art. Einfache Lösungsbitten werden nicht gepusht.
+- **Wochen-Digest:** eine Nachricht pro Woche (Grundeinstellung Sonntag 18:00, Tag und Uhrzeit einstellbar, Push; Mail kann jedes Elternteil zuschalten), höchstens 8 Zeilen, je Kind geübte Tage und ein Vorschlag, offene Freigaben und Prüfungen. Kein Vergleich zwischen Kindern, keine Rangfolge. Job `lernen_digest`.
+- **Badge und Links:** Die Lern-Kachel der Eltern zeigt, wie viel Material auf Freigabe wartet, und führt zur Liste.
+- **Eigene Einstellungsseite** für Lernen: Tagesziel, Punkte, Ferien, Titel, Tutor, neue Vokabeln pro Tag, Denkpause, Meldungen an die Eltern und die Liste der Rechenarten.
+
 ## Wiederholung und Mischung, Etappe 12 (07.11.2026)
 
 ### Hinzugefügt

@@ -4,6 +4,15 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Relief for parents, stage 13 (07.11.2026)
+
+### Added
+- **Exception messages for parents (push):** material waits for approval (once per state, with a link that pre-selects the child's items), a child has not practised for 3 days (never during holidays or a pause, at most once a week), repeated mistakes in one operation type with the matching explanation card (once a week), a test in at most 3 days with under 50 % of the plan done (once per test). Daily job `lernen_eltern_hinweise`; each event exists once per period.
+- **Tutor flags go out at once:** a role-change attempt or a held-back answer (solution suspected) is pushed immediately, once per conversation and kind. Plain requests for the solution are not pushed.
+- **Weekly digest:** one message per week (default Sunday 18:00, day and time editable, push; mail can be added per parent), at most 8 lines, per child the practised days and one suggestion, open approvals and tests. No comparison between children, no ranking. Job `lernen_digest`.
+- **Badge and links:** the parents' learning tile shows how many items wait for approval and links to the list.
+- **Own settings page** for learning: daily goal, points, holidays, titles, tutor, new words per day, thinking pause, messages to parents and the list of operation types.
+
 ## Spaced repetition and mixing, stage 12 (07.11.2026)
 
 ### Added
