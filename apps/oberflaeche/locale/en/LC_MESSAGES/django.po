@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 19:25+0000\n"
+"POT-Creation-Date: 2026-11-07 00:31+0000\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,6 +66,8 @@ msgstr "Login and devices"
 
 #: einstellungen_editor.py:15
 #: templates/oberflaeche/kacheln/eltern_schnellzugriff.html:5
+#: templates/oberflaeche/kind_heim.html:60
+#: templates/oberflaeche/kind_heim.html:61
 msgid "Aufgaben"
 msgstr "Tasks"
 
@@ -103,7 +105,7 @@ msgstr "Game rules"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: einstellungen_editor.py:24
+#: einstellungen_editor.py:24 selectors.py:90
 msgid "Familienziel"
 msgstr "Family goal"
 
@@ -280,6 +282,33 @@ msgstr "Done – quick check"
 #: registry.py:270 templates/oberflaeche/kacheln/eltern_ranking.html:3
 msgid "Familien-Ranking"
 msgstr "Family ranking"
+
+#: selectors.py:55 templates/oberflaeche/ranking/_karte.html:8
+msgid "Serie"
+msgstr "Streak"
+
+#: selectors.py:56
+#, python-format
+msgid "%(n)s Tag"
+msgid_plural "%(n)s Tage"
+msgstr[0] "%(n)s day"
+msgstr[1] "%(n)s days"
+
+#: selectors.py:64
+msgid "Übungswoche"
+msgstr "Practice week"
+
+#: selectors.py:65
+msgid "geschafft"
+msgstr "done"
+
+#: selectors.py:65
+msgid "noch offen"
+msgstr "still open"
+
+#: selectors.py:77
+msgid "Sondertag"
+msgstr "Special day"
 
 #: templates/oberflaeche/_tablet_teil.html:9
 #: templates/oberflaeche/tablet.html:7
@@ -725,6 +754,7 @@ msgid "Farbe %(farbe)s"
 msgstr "Colour %(farbe)s"
 
 #: templates/oberflaeche/kacheln/kind_konto.html:2
+#: templates/oberflaeche/kind_heim.html:25
 msgid "Zum Dungeon: Avatar, Mods, Shop, Ränge"
 msgstr "To the dungeon: avatar, mods, shop, ranks"
 
@@ -774,29 +804,35 @@ msgid "Zu meinen Aufgaben"
 msgstr "Go to my tasks"
 
 #: templates/oberflaeche/kacheln/kind_offene.html:9
+#: templates/oberflaeche/kind_heim.html:68
 msgid "Alles erledigt"
 msgstr "All done"
 
 #: templates/oberflaeche/kacheln/kind_offene.html:9
+#: templates/oberflaeche/kind_heim.html:68
 msgid "Gerade gibt es keine freien Aufgaben."
 msgstr "There are no free tasks right now."
 
 #: templates/oberflaeche/kacheln/kind_offene.html:12
+#: templates/oberflaeche/kind_heim.html:72
 msgid "Alle Aufgaben"
 msgstr "All tasks"
 
 #: templates/oberflaeche/kacheln/kind_offene.html:13
+#: templates/oberflaeche/kind_heim.html:70
 #, python-format
 msgid "%(n)s offen insgesamt"
 msgstr "%(n)s open in total"
 
 #: templates/oberflaeche/kind_dungeon.html:9
+#: templates/oberflaeche/kind_unterseite.html:9
 #: templates/oberflaeche/module.html:4
 msgid "Start"
 msgstr "Home"
 
 #: templates/oberflaeche/kind_einstellungen.html:5
 #: templates/oberflaeche/kind_einstellungen.html:12
+#: templates/oberflaeche/kind_unterseite.html:19
 msgid "Meine Einstellungen"
 msgstr "My settings"
 
@@ -837,7 +873,8 @@ msgid "Dein Vorschlag"
 msgstr "Your suggestion"
 
 #: templates/oberflaeche/kind_einstellungen.html:54
-msgid "Die Eltern entscheiden. Wenn sie ihn gut finden, gibt es den Mood für alle."
+msgid ""
+"Die Eltern entscheiden. Wenn sie ihn gut finden, gibt es den Mood für alle."
 msgstr "Your parents decide. If they like it, everyone gets the mood."
 
 #: templates/oberflaeche/kind_einstellungen.html:56
@@ -871,6 +908,54 @@ msgstr "Change code"
 #: templates/oberflaeche/kind_heim.html:9 templates/oberflaeche/module.html:22
 msgid "Abmelden"
 msgstr "Log out"
+
+#: templates/oberflaeche/kind_heim.html:24
+msgid "Mein Avatar"
+msgstr "My avatar"
+
+#: templates/oberflaeche/kind_heim.html:29 views.py:143
+msgid "Mein Bereich"
+msgstr "My area"
+
+#: templates/oberflaeche/kind_heim.html:32
+#: templates/oberflaeche/kind_heim.html:33
+msgid "Mein Stand"
+msgstr "My progress"
+
+#: templates/oberflaeche/kind_heim.html:42 views.py:157
+msgid "Serie & Ziele"
+msgstr "Streak & goals"
+
+#: templates/oberflaeche/kind_heim.html:47
+#: templates/oberflaeche/kind_heim.html:48
+msgid "Lernen"
+msgstr "Learning"
+
+#: templates/oberflaeche/kind_heim.html:52
+#, python-format
+msgid "zuletzt vor %(wann)s"
+msgstr "last %(wann)s ago"
+
+#: templates/oberflaeche/kind_heim.html:52
+msgid "noch nicht begonnen"
+msgstr "not started yet"
+
+#: templates/oberflaeche/kind_heim.html:55
+msgid "Bald gibt es hier Fächer"
+msgstr "Subjects are coming soon"
+
+#: templates/oberflaeche/kind_heim.html:55
+msgid ""
+"Sobald Lernen freigeschaltet ist, siehst du hier, was du zuletzt geübt hast."
+msgstr "Once learning is switched on, you'll see what you practised last."
+
+#: templates/oberflaeche/kind_heim.html:57
+msgid "Zum Lernen"
+msgstr "Go to learning"
+
+#: templates/oberflaeche/kind_unterseite.html:17
+msgid "⚔️ Avatar & Dungeon"
+msgstr "⚔️ Avatar & dungeon"
 
 #: templates/oberflaeche/module.html:10
 msgid "Wohin soll es gehen?"
@@ -922,10 +1007,6 @@ msgid "%(name)s: %(n)sx Held"
 msgstr "%(name)s: hero %(n)s times"
 
 #: templates/oberflaeche/ranking/_karte.html:8
-msgid "Serie"
-msgstr "Streak"
-
-#: templates/oberflaeche/ranking/_karte.html:8
 #: templates/oberflaeche/ranking/_roh.html:7
 msgid "Pause"
 msgstr "Break"
@@ -973,7 +1054,7 @@ msgstr ""
 "Points show what got done. The journey counts too: you can find rank, streak "
 "and badges in the showcase."
 
-#: views.py:234 views.py:249
+#: views.py:299 views.py:314
 msgid "Die Tablet-Ansicht gibt es nur im Heimnetz."
 msgstr "The tablet view is only available on the home network."
 

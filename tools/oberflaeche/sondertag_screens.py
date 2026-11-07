@@ -54,12 +54,12 @@ def ablauf(browser, aufn):
     page.wait_for_selector(".st-wunsch__danke", timeout=10000)
     aufn.s.neu("sondertag-popup-gesendet")
     aufn.foto(page, "sondertag-popup-gesendet", voll=False)
-    aufn.seite(page, "sondertag-kind-kachel-verdient", "/kind/")
+    aufn.seite(page, "sondertag-kind-kachel-verdient", "/kind/ziele/")
     ctx.close()
 
     # Kind B: Fortschritt "Noch 2 Mods und … Wochen"
     ctx, page = kind_seite(browser, aufn, "Kind B", "2222")
-    aufn.seite(page, "sondertag-kind-kachel-fortschritt", "/kind/")
+    aufn.seite(page, "sondertag-kind-kachel-fortschritt", "/kind/ziele/")
     ctx.close()
 
     # Eltern: Übersicht, Wunsch von Kind C annehmen, Übergabe, Meilensteine

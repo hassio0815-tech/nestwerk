@@ -2,6 +2,9 @@
 öffentlichen Schnittstellen (selectors/services) der darunterliegenden Apps, nie aus deren
 Modellen (ARCHITECTURE 2.2; Vertrag in pyproject.toml)."""
 
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
+
 from apps.aufgaben import selectors as aufgaben
 from apps.belohnung import selectors as belohnung
 from apps.ereignisse import selectors as ereignisse
@@ -29,6 +32,87 @@ def kind_konto(kind):
 def kind_offene_auszug(kind, anzahl=AUSZUG_OFFENE):
     offene = aufgaben.kind_offene(kind)
     return {"aufgaben": offene[:anzahl], "gesamt": len(offene)}
+
+
+SERIE_ZIEL_TAGE = 7
+
+
+def kind_balken(kind):
+    """Mini-Übersicht der Kinder-Startseite: Serie, Übungswoche, Sondertag, Familienziel.
+    Jede Zeile ``{"schluessel", "label", "text", "wert", "max"}``; was ein Modul nicht liefert,
+    fehlt in der Liste (die Startseite bleibt dann trotzdem benutzbar)."""
+    from apps.familienziel import selectors as familienziel
+    from apps.sondertag import selectors as sondertag
+    from apps.spielregeln import selectors as spielregeln
+
+    zeilen = []
+    try:
+        stand = spielregeln.stand(kind)
+        tage = stand.tagesserie
+        zeilen.append(
+            {
+                "schluessel": "serie",
+                "label": _("Serie"),
+                "text": ngettext("%(n)s Tag", "%(n)s Tage", tage) % {"n": tage},
+                "wert": min(tage, SERIE_ZIEL_TAGE),
+                "max": SERIE_ZIEL_TAGE,
+            }
+        )
+        zeilen.append(
+            {
+                "schluessel": "uebungswoche",
+                "label": _("Übungswoche"),
+                "text": _("geschafft") if stand.woche_aktiv else _("noch offen"),
+                "wert": int(bool(stand.woche_aktiv)),
+                "max": 1,
+            }
+        )
+    except Exception:  # ohne Spielregeln bleiben die übrigen Balken nutzbar
+        pass
+    try:
+        f = sondertag.fortschritt(kind)
+        zeilen.append(
+            {
+                "schluessel": "sondertag",
+                "label": _("Sondertag"),
+                "text": f"{f.mods_ist}/{f.mods_ziel}" if f.mods_ziel else "–",
+                "wert": f.mods_ist if f.mods_ziel else 0,
+                "max": f.mods_ziel or 1,
+            }
+        )
+    except Exception:
+        pass
+    try:
+        stand = familienziel.ansicht().stand
+        zeilen.append(
+            {
+                "schluessel": "familienziel",
+                "label": _("Familienziel"),
+                "text": f"{stand.prozent} %",
+                "wert": stand.prozent,
+                "max": 100,
+            }
+        )
+    except Exception:
+        pass
+    return zeilen
+
+
+LERNEN_PROVIDER = "lernen.kind_faecher"
+
+
+def kind_lernen(kind):
+    """Fächer und letzte Aktivität für die Kinder-Startseite. Das Lern-Modul registriert dazu
+    einen Provider ``lernen.kind_faecher(kind)`` (``kern.registry.Provider``), der eine Liste
+    ``{"name", "zuletzt": datetime | None}`` liefert. Ohne Provider: leere Liste."""
+    from apps.kern import registry
+
+    if not registry.provider_vorhanden(LERNEN_PROVIDER):
+        return []
+    try:
+        return list(registry.fortschritt(LERNEN_PROVIDER, kind))
+    except Exception:
+        return []
 
 
 def kind_laufende(kind):

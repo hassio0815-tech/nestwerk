@@ -16,17 +16,44 @@
 .zeile { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
 .zeile__text { flex: 1 1 16rem; }
 .zeile__plan { font-size: .9rem; opacity: .8; }
+/* Aufgabenliste und Bibliothek (Eltern): Karten mit Text und Punkten oben, Aktionen gruppiert unten;
+   ab 64rem als Kartenraster mit gleich hohen Karten. */
+.aufgaben-liste { display: grid; gap: var(--abstand); grid-template-columns: minmax(0, 1fr); }
+.aufgaben-liste > .karte { display: flex; }
+.aufgaben-liste > .karte > .karte__inhalt.zeile { flex: 1 1 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; align-items: start; gap: .75rem 1rem; }
+.aufgaben-liste .zeile__text { grid-column: 1; min-width: 0; }
+.aufgaben-liste .zeile .punkte { grid-column: 2; grid-row: 1; white-space: nowrap; }
+.aufgaben-liste .zeile__aktionen { grid-column: 1 / -1; flex: none; align-self: end; }
+.aufgaben-liste > .leer { grid-column: 1 / -1; }
+@media (min-width: 64rem) {
+  .aufgaben-liste { grid-template-columns: repeat(auto-fill, minmax(26rem, 1fr)); }
+  .aufgaben-liste--vorlagen { grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr)); }
+}
+/* Aufgabenformular: Zeitfelder nebeneinander */
+@media (min-width: 48rem) {
+  .plan .plan__zeit, .plan .plan__serie, .plan .plan__knopf { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+  .plan .plan__zeit > .feld, .plan .plan__serie > .feld, .plan .plan__knopf > .feld { flex: 1 1 12rem; min-width: 0; }
+  .plan .plan__serie > .reihe, .plan .plan__serie > p, .plan .plan__knopf > p { flex: 1 1 100%; }
+}
 .aufgaben-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
 /* Kinderablauf (AP12) */
-.aufgaben-raster { grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); }
-.aufgabe-kachel { width: 100%; min-height: 9rem; cursor: pointer; font: inherit; color: inherit; }
+.raster.aufgaben-raster { grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); grid-auto-rows: 1fr; }
+.aufgaben-raster > form { display: flex; }
+#offen-titel { margin-top: var(--abstand-gross); }
+.aufgabe-kachel .kachel__text { margin-top: auto; }
+/* Schnell-Knöpfe (Kind): Titel links, Knopf rechts, ohne unschönen Umbruch */
+.zeile.schnellknopf { flex-wrap: nowrap; }
+.zeile.schnellknopf > :first-child { flex: 1 1 10rem; min-width: 0; flex-wrap: wrap; }
+.zeile.schnellknopf > :not(:first-child) { flex: 0 0 auto; }
+.aufgabe-kachel { flex: 1 1 auto; align-items: flex-start; text-align: left; width: 100%; min-height: 9rem; cursor: pointer; font: inherit; color: inherit; }
 .aufgabe-kachel:disabled { opacity: .5; cursor: not-allowed; }
 .aufgabe-kachel--vergeben { opacity: .75; border-style: dashed; }
 .aufgabe-karte__frist, .aufgabe-karte__bonus { display: inline-flex; gap: .25rem; align-items: center; font-size: .9rem; }
 .aufgabe-karte__frage { font-style: italic; }
 /* Wochenplan (AP14) */
-.wochenplan__raster { display: grid; gap: .75rem; grid-template-columns: repeat(7, minmax(9rem, 1fr)); overflow-x: auto; padding-bottom: .5rem; }
-.wochenplan__tag { border: 1px solid var(--rand, #ccc); border-radius: 12px; padding: .5rem; min-width: 9rem; }
+.wochenplan__raster { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); padding-bottom: .5rem; }
+.wochenplan__tag { border: 1px solid var(--rand, #ccc); border-radius: 12px; padding: .5rem; min-width: 0; }
+@media (min-width: 100rem) { .wochenplan__raster { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
 .wochenplan__tag--heute { border-width: 2px; }
 .wochenplan__kopf { display: flex; justify-content: space-between; align-items: center; }
 .wochenplan__kopf h2 { font-size: 1rem; margin: 0; }
@@ -56,4 +83,11 @@
   .wochenplan__tag--leer { padding-block: .25rem; }
   .wochenplan__tag--leer .wochenplan__liste { min-height: 2rem; }
   .wochenplan__verschieben .feld__eingabe { font-size: 1rem; }
+}
+/* Unternavigation (Chips): auf dem Handy eine scrollbare Zeile statt Umbruch mit Waisen */
+@media (max-width: 47.99rem) {
+  .nw-schale__inhalt .aufgaben-nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-inline-end: 1.5rem;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent); }
+  .nw-schale__inhalt .aufgaben-nav::-webkit-scrollbar { display: none; }
+  .nw-schale__inhalt .aufgaben-nav > .knopf { flex: none; }
 }

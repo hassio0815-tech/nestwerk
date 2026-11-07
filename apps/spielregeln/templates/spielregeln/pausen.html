@@ -1,10 +1,6 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Pausen" %}{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
-{% endblock %}
 {% block seite %}
   <h1>{% translate "Pausen" %}</h1>
   <p>{% translate "Pausierte Tage und Wochen sind neutral: Die Serie bricht nicht. Aufgaben in der Pause zählen normal." %}</p>
@@ -14,7 +10,7 @@
 
   <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Pause eintragen" %}</h2>
-    <form method="post" action="{% url 'spielregeln:pause_neu' %}" class="stapel">{% csrf_token %}
+    <form method="post" action="{% url 'spielregeln:pause_neu' %}" class="stapel formular-raster">{% csrf_token %}
       {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
       {% for f in form.visible_fields %}
         <div class="feld{% if f.errors %} feld--fehler{% endif %}">

@@ -2,8 +2,6 @@
 {% load i18n sprache %}
 {% block titel %}{% translate "Abzeichen" %}{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
   {% url "spielregeln:meilensteine" as ms_url %}
   {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text=_("Meilensteine") %}
 {% endblock %}

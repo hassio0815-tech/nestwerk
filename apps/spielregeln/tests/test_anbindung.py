@@ -62,13 +62,13 @@ def test_neuberechnen_command(anna, uhr, capsys):
 def test_kind_kachel_zeigt_serie_und_pause(kind_client, anna, mama, uhr):
     Aktivitaet.objects.create(kind=anna, datum=date(2026, 10, 20), modul="t", referenz="1")
     uhr.stellen(lok(2026, 10, 28, 9))
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/ziele/").content.decode()
     assert 'data-kachel="spielregeln.kind_serie"' in html
     assert "1 Woche Serie" in html and "1 aktive Woche" in html
     assert "Pause – deine Serie ist sicher" not in html
     with transaction.atomic():
         services.pause_setzen(None, von=mama)
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/ziele/").content.decode()
     assert "Pause – deine Serie ist sicher" in html
 
 

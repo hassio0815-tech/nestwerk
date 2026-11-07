@@ -162,8 +162,9 @@ def test_cache_aufraeumen_loescht_nur_verwaiste_alte(anna, uhr, monkeypatch):
     from apps.kern import zeit
 
     avatar = services.avatar_waehlen(anna, "ritter", {})
-    RenderCache.objects.create(hash="a" * 64, svg="<svg/>")
-    RenderCache.objects.create(hash="b" * 64, svg="<svg/>")
+    # Zeitstempel ausdrücklich: default=zeit.jetzt ist beim Import gebunden und umgeht die Testuhr
+    RenderCache.objects.create(hash="a" * 64, svg="<svg/>", zuletzt_genutzt=zeit.jetzt())
+    RenderCache.objects.create(hash="b" * 64, svg="<svg/>", zuletzt_genutzt=zeit.jetzt())
     spaeter = zeit.jetzt() + timedelta(days=40)
     monkeypatch.setattr(zeit, "jetzt", lambda: spaeter)
     RenderCache.objects.filter(pk="b" * 64).update(zuletzt_genutzt=spaeter)

@@ -15,6 +15,7 @@
     </form>
   </div></section>
   <p class="feld__hinweis">{% translate "Abschnitt antippen, um ihn auf- oder zuzuklappen." %}</p>
+  <div class="einstellungen-raster">
   {% for g in gruppen %}
     <section class="karte" id="modul-{{ g.modul }}"><details class="einstellungen-gruppe karte__inhalt stapel"{% if gespeichert == g.modul or offen == g.modul %} open{% endif %}>
       <summary><h2>{{ g.titel }}</h2></summary>
@@ -53,4 +54,5 @@
       </form>
     </details></section>
   {% endfor %}
+  </div>
 {% endblock %}

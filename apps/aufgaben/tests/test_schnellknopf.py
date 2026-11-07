@@ -96,7 +96,7 @@ def test_eltern_knopf_ueber_kind_kachel_abgewiesen(knopf, kind_client, anna):
     antwort = kind_client.post(reverse("aufgaben:schnellknopf_kind", args=[aufgabe.pk]), **HTMX)
     assert antwort.status_code == 200 and "nur Eltern" in antwort.content.decode()
     assert not instanzen(aufgabe).exists()
-    assert "Restmüll" not in kind_client.get(reverse("oberflaeche:kind_heim")).content.decode()
+    assert "Restmüll" not in kind_client.get(reverse("aufgaben:kind")).content.decode()
 
 
 def test_wochenplan_erzeugung_ignoriert_bei_bedarf(knopf):
@@ -231,7 +231,7 @@ def test_eltern_kachel_zeigt_knopf_und_druck(eltern_client, knopf, anna):
 
 def test_kind_kachel_ich_machs(kind_client, knopf, anna):
     aufgabe = knopf()
-    assert "Restmüll" in kind_client.get(reverse("oberflaeche:kind_heim")).content.decode()
+    assert "Restmüll" in kind_client.get(reverse("aufgaben:kind")).content.decode()
     antwort = kind_client.post(
         reverse("aufgaben:schnellknopf_kind", args=[aufgabe.pk]), {"modus": "ich"}, **HTMX
     )
@@ -242,7 +242,7 @@ def test_kind_kachel_ich_machs(kind_client, knopf, anna):
 def test_englische_kachel_zeigt_englischen_titel(kind_client, knopf):
     knopf()  # Titel ist die deutsche Msgid aus den Startwerten
     kind_client.cookies["nestwerk_sprache"] = "en"
-    html = kind_client.get(reverse("oberflaeche:kind_heim")).content.decode()
+    html = kind_client.get(reverse("aufgaben:kind")).content.decode()
     assert "General waste" in html and "Quick buttons" in html
 
 

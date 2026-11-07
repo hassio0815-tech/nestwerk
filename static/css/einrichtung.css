@@ -3,3 +3,18 @@
 .einrichtung-standard { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; padding: 0; border: 0; }
 details.karte > summary { cursor: pointer; }
 textarea.feld__eingabe { min-height: 4rem; font-family: inherit; }
+
+/* Einrichtung: Luft unter dem Kopf; Fortschrittsbalken nicht an die Überschrift kleben. */
+[data-layout="einrichtung"] .inhalt { padding-top: 2.5rem; }
+[data-layout="einrichtung"] .einrichtung-karte .fortschritt-block { margin-bottom: 0.75rem; }
+
+/* Schritt „Kinder“: breiter, pro Kind eine Feldzeile. */
+@media (min-width: 56rem) {
+  [data-layout="einrichtung"] .einrichtung-karte:has(.einrichtung-kinder) { max-width: 56rem; }
+  .einrichtung-kinder .karte__inhalt { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--abstand) 1rem; align-items: start; }
+  .einrichtung-kinder .karte__inhalt > h2 { grid-column: 1 / -1; }
+}
+@media (min-width: 40rem) and (max-width: 55.99rem) {
+  .einrichtung-kinder .karte__inhalt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--abstand) 1rem; align-items: start; }
+  .einrichtung-kinder .karte__inhalt > h2 { grid-column: 1 / -1; }
+}

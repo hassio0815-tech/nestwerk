@@ -184,10 +184,10 @@
 
 /* Schalter: <label class="nw-schalter"><input type="checkbox" role="switch"><span class="nw-schalter__spur"></span> Text</label> */
 .nw-schalter {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: var(--tap-min);
+  min-height: 3rem;
   cursor: pointer;
 }
 
@@ -259,6 +259,10 @@
   overflow-x: auto;
   scrollbar-width: none;
   padding-bottom: 0.25rem;
+  /* Handy: rechter Rand blendet aus = Hinweis „es geht weiter“; der Innenabstand hält das letzte Tab frei. */
+  padding-inline-end: 2rem;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
 }
 
 .nw-tab {
@@ -375,6 +379,12 @@
   margin: 0 auto;
   padding: 2rem 0;
   text-align: center;
+}
+
+/* Login/PIN/Begrüßung: Bühne mittig in der Höhe (Kopf ist hier ausgeblendet; Rest = Innenabstände von .inhalt). */
+[data-layout="huelle"] .huelle-buehne {
+  justify-content: center;
+  min-height: calc(100dvh - 9rem);
 }
 
 .nw-punkte {
@@ -540,9 +550,15 @@
 
 /* --- Launcher --------------------------------------------------------------------------------- */
 .nw-module {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--abstand-gross);
+}
+
+.nw-module > .nw-modul {
+  flex: 1 1 15rem;
+  max-width: 21rem;
 }
 
 .nw-modul {
@@ -607,7 +623,7 @@
     border: 1px solid var(--rahmen);
     border-radius: var(--radius-gross);
   }
-  .nw-schale__nav .nw-tabs { flex-direction: column; overflow: visible; }
+  .nw-schale__nav .nw-tabs { flex-direction: column; overflow: visible; padding-inline-end: 0; -webkit-mask-image: none; mask-image: none; }
   .nw-schale__nav .nw-tab { border-radius: var(--radius); }
 }
 
@@ -650,5 +666,6 @@
 .wappen-karte__spruch { font-size: 0.875rem; color: var(--text-leise); }
 .nw-profil__wappen { font-size: 1.8rem; line-height: 1; }
 .wappen-zeile { font-size: 1rem; color: var(--text-leise); font-weight: 400; }
+.wappen-wahl > legend { padding: 0; margin-bottom: 0.5rem; }
 .wappen-rolle { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
 .wappen-rolle-gross { font-size: 1.15em; font-weight: 800; }

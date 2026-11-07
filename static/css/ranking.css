@@ -1,27 +1,29 @@
 /* Familien-Ranking (AP30): Fortschritts-Schaufenster. Nur Tokens des Designsystems. */
 .rk { display: flex; flex-direction: column; gap: var(--abstand); }
 .rk-raster { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--abstand);
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); }
-.rk-karte { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  padding: var(--abstand); background: var(--flaeche); text-align: center;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); padding-top: 0.75rem; align-items: stretch; }
+.rk-karte { position: relative; height: 100%; container-type: inline-size; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: calc(var(--abstand) + 0.5rem) var(--abstand) var(--abstand); background: var(--flaeche); text-align: center;
   border: var(--rahmen-breite) solid var(--selten-farbe, var(--rahmen)); border-radius: var(--radius); }
 .rk-karte[data-selten] { box-shadow: 0 0 0 1px var(--selten-farbe, transparent); }
 .rk-karte--held { box-shadow: 0 0 1.2rem var(--selten-legendary); }
 .rk-karte__name { margin: 0; font-size: 1.15rem; }
-.rk-held-band { display: inline-flex; gap: 0.3rem; align-items: center; padding: 0.15rem 0.7rem;
+.rk-held-band { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; display: inline-flex; gap: 0.3rem; align-items: center; padding: 0.15rem 0.7rem;
   background: var(--selten-legendary); color: #1a1a1a; border-radius: 999px; font-weight: 700; font-size: 0.875rem; }
 .rk-held-band .icon { width: 1.1em; height: 1.1em; }
-.rk-fakten { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem 1rem; margin: 0; }
-.rk-fakten div { display: flex; flex-direction: column; align-items: center; }
+.rk-fakten { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); justify-content: stretch; gap: 0.3rem 0.5rem; margin: 0; width: 100%; }
+.rk-fakten div { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .rk-fakten dt { font-size: 0.875rem; color: var(--text-leise); }
-.rk-fakten dd { margin: 0; font-weight: 700; }
+.rk-fakten dd { margin: 0; font-weight: 700; white-space: nowrap; font-size: clamp(0.875rem, 6.5cqw, 1rem); }
 .rk-abzeichen { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.4rem; justify-content: center; }
 .rk-karte__punkte { margin: 0; color: var(--text-leise); font-size: 0.875rem; }
 .rk .avatar-bild--riesig { width: 7.5rem; }
 .rk--gross .avatar-bild--riesig { width: 8.5rem; }
 .rk--gross .rk-karte__name { font-size: 1.5rem; }
-.rk--gross .rk-fakten dd { font-size: 1.2rem; }
+.rk--gross .rk-fakten dd { font-size: clamp(0.875rem, 6.5cqw, 1.2rem); }
 .rk-held { display: flex; flex-direction: column; gap: var(--abstand-klein); align-items: center; text-align: center; }
+.rk-held .rk-raster { width: 100%; }
+.rk-held .rk-raster:has(> .rk-karte:only-child) { width: min(100%, 26rem); }
 .rk-held__titel { display: flex; gap: 0.4rem; align-items: center; margin: 0; font-size: 1.2rem; font-weight: 700; }
 .rk-held__titel .icon { color: var(--selten-legendary); }
 .rk-held__text, .rk-held__vor { margin: 0; color: var(--text-leise); }
@@ -33,3 +35,26 @@
 .rk-zuwachs { margin: 0; padding-left: 1.2rem; }
 .rk-modus { flex-wrap: wrap; }
 [data-kachel="oberflaeche.tablet_ranking"] { margin-block: var(--abstand-gross); }
+
+/* Tablet (800 hochkant bis 1280 quer): kompaktes Ranking, damit "Wer bist du?" höher rückt. */
+@media (min-width: 48rem) and (max-width: 89.99rem) {
+  .rk .avatar-bild--riesig, .rk--gross .avatar-bild--riesig { width: 5.5rem; }
+  .rk-karte { padding: 1.1rem 0.75rem 0.75rem; gap: 0.35rem; }
+  .rk-karte__name, .rk--gross .rk-karte__name { font-size: 1.15rem; }
+  .rk-raster { gap: var(--abstand-klein); }
+}
+
+/* Handy: kompakte, waagerechte Karte (Figur links, Zahlen rechts). */
+@media (max-width: 47.99rem) {
+  .rk-raster { grid-template-columns: 1fr; gap: var(--abstand-klein); }
+  .rk-karte { display: grid; grid-template-columns: 5rem minmax(0, 1fr); column-gap: var(--abstand); row-gap: 0.25rem;
+    align-items: center; justify-items: start; text-align: start; padding: 0.75rem; }
+  .rk .avatar-bild--riesig, .rk--gross .avatar-bild--riesig { width: 5rem; grid-column: 1; grid-row: 1 / span 6; align-self: center; }
+  .rk-karte > :not(.avatar-bild):not(.rk-held-band) { grid-column: 2; }
+  .rk-karte__name, .rk--gross .rk-karte__name { font-size: 1.15rem; }
+  .rk-fakten { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 0.2rem 0.9rem; }
+  .rk-fakten div { align-items: flex-start; }
+  .rk .rk-fakten dd, .rk--gross .rk-fakten dd { font-size: 0.9rem; }
+  .rk-abzeichen { justify-content: flex-start; flex-wrap: wrap; }
+  .rk-held-band { left: auto; right: 0.75rem; transform: translateY(-50%); }
+}

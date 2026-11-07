@@ -251,5 +251,5 @@ def test_anerkennung_im_verlauf_des_kindes(kind, anna, mama):
     from apps.aufgaben import anerkennung
 
     anerkennung.vergeben(anna, 8, "Tisch gedeckt", von=mama)
-    html = kind.get(u("kind_heim")).content.decode()
+    html = kind.get(u("kind_bereich")).content.decode()
     assert "Letzte Punkte" in html and "Anerkennung: Tisch gedeckt" in html and "+8" in html

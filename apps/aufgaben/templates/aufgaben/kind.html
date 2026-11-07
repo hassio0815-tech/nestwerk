@@ -2,9 +2,12 @@
 {% load i18n %}
 {% load static %}
 {% block titel %}{% translate "Aufgaben" %}{% endblock %}
-{% block css %}<link rel="stylesheet" href="{% static 'css/aufgaben.css' %}"><link rel="stylesheet" href="{% static 'css/nachweis.css' %}"><script src="{% static 'js/nachweis.js' %}" defer></script>{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/aufgaben.css' %}"><link rel="stylesheet" href="{% static 'css/nachweis.css' %}"><script src="{% static 'js/nachweis.js' %}" defer></script>{% endblock %}
 {% block kopf_rechts %}
   {% url "konten:kind_heim" as heim_url %}
   {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
 {% endblock %}
-{% block inhalt %}{% include "aufgaben/_kind_bereich.html" %}{% endblock %}
+{% block inhalt %}
+  {% if k.knoepfe %}{% include "aufgaben/kacheln/schnellknoepfe_kind.html" %}{% endif %}
+  {% include "aufgaben/_kind_bereich.html" %}
+{% endblock %}

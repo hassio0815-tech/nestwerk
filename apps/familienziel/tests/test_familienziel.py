@@ -385,7 +385,7 @@ def test_tablet_zeigt_leiste_und_abstimmung(client, anna, ben, uhr, xp):
 
 def test_kind_stimmt_ueber_kachel_ab(kind_client, anna, uhr):
     sonntag(uhr)
-    html = kind_client.get("/kind/").content.decode()
+    html = kind_client.get("/kind/ziele/").content.decode()
     assert "data-fz-abstimmung" in html
     r = kind_client.post("/kind/familienziel/abstimmen/", {"belohnung": wahl("Spieleabend")})
     assert r.status_code == 302

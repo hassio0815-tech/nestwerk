@@ -159,6 +159,80 @@ p {
   color: #33205a; /* Wortmarken-Lila des Logos */
 }
 
+.kopf__marke {
+  min-width: 0;
+}
+
+.kopf__marke > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kopf__zeile > .reihe {
+  flex-wrap: nowrap;
+  flex: none;
+}
+
+/* Handy: Kopfknöpfe nur als Symbol (Text bleibt für Vorleser), damit die Zeile nicht umbricht. */
+@media (max-width: 34rem) {
+  .kopf__zeile > .reihe {
+    gap: 0.15rem;
+  }
+
+  .kopf .knopf--klein {
+    padding-inline: 0.6rem;
+    min-width: var(--tap-min);
+  }
+
+  .kopf .knopf span:not([class]),
+  .kopf__marke > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Eltern-Seiten: mehr Platz neben der Seitenleiste (Kinder-Layout bleibt bei 72rem). */
+@media (min-width: 90rem) {
+  [data-layout="eltern"] .inhalt,
+  [data-layout="eltern"] .kopf__zeile {
+    max-width: 90rem;
+  }
+}
+
+/* Eltern-Seiten haben bis zu 5 Kopfknöpfe: Symbole schon bis Tablet-hochkant. */
+@media (max-width: 56rem) {
+  [data-layout="eltern"] .kopf__zeile > .reihe {
+    gap: 0.15rem;
+  }
+
+  [data-layout="eltern"] .kopf .knopf--klein {
+    padding-inline: 0.6rem;
+    min-width: var(--tap-min);
+  }
+
+  [data-layout="eltern"] .kopf .knopf span:not([class]) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Eltern-Seiten: mehr Platz neben der Seitenleiste (Kinder-Layout bleibt bei 72rem). */
+@media (min-width: 90rem) {
+  [data-layout="eltern"] .inhalt,
+  [data-layout="eltern"] .kopf__zeile {
+    max-width: 90rem;
+  }
+}
+
 .kopf__logo {
   width: 32px;
   height: 32px;
@@ -862,6 +936,117 @@ a.kachel:hover {
   box-shadow: none;
 }
 
+/* PIN-Pad auf Tablet (z. B. 800x1280 hochkant): größer, damit der Bildschirm nicht leer wirkt. */
+@media (min-width: 43.75rem) {
+  .pin {
+    width: min(100%, 28rem);
+    gap: 1.75rem;
+  }
+
+  .pin__punkt {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .pin__tasten {
+    gap: 1rem;
+  }
+
+  [data-layout] .pin__taste {
+    min-height: 5rem;
+    font-size: 2.25rem;
+  }
+
+  [data-layout] .pin__taste--aktion {
+    font-size: 1.05rem;
+  }
+}
+
+/* Formularzeile (mehrere Felder + Knopf): mobil 2 Spalten, ab 48rem eine Zeile, Knopf bündig unten. */
+.zeile.zeile--formular {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+  align-items: end;
+  justify-content: stretch;
+}
+
+.zeile--formular > .chip,
+.zeile--formular > strong,
+.zeile--formular > .kachel__text,
+.zeile--formular > .feld--breit,
+.zeile--formular > .knopf {
+  grid-column: 1 / -1;
+}
+
+.zeile--formular > .chip {
+  justify-self: start;
+}
+
+.zeile--formular > .knopf {
+  justify-self: start;
+}
+
+@media (min-width: 48rem) {
+  .zeile.zeile--formular {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .zeile--formular > .chip,
+  .zeile--formular > strong {
+    flex: 0 0 8rem;
+    align-self: center;
+  }
+
+  .zeile--formular > .feld {
+    flex: 1 1 8rem;
+    min-width: 0;
+  }
+
+  .zeile--formular > .feld--breit {
+    flex: 2 1 12rem;
+  }
+
+  .zeile--formular > .kachel__text {
+    flex: 0 0 auto;
+    align-self: center;
+  }
+
+  .zeile--formular > .knopf {
+    flex: 0 0 auto;
+  }
+}
+
+/* Formular als Raster: zwei Spalten ab 48rem, Fehler und Knöpfe über die volle Breite. */
+@media (min-width: 48rem) {
+  .formular-raster {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--abstand) 1.5rem;
+    align-items: start;
+  }
+
+  .formular-raster > :not(.feld),
+  .formular-raster > .feld--breit {
+    grid-column: 1 / -1;
+  }
+
+  /* Lange Felder (Beschreibung) rücken hinter die kurzen, damit diese paarweise stehen; Fehler bleiben oben. */
+  .formular-raster > .feld--spaet {
+    order: 1;
+  }
+
+  .formular-raster > :not(.feld) {
+    order: 2;
+  }
+
+  .formular-raster > p {
+    order: -1;
+  }
+}
+
 /* Formularfelder */
 .feld {
   display: flex;
@@ -1013,3 +1198,9 @@ input[type="radio"] {
     animation: none !important;
   }
 }
+
+/* Auswahlfelder (Eltern): Kästchen oben am Text ausgerichtet, auch bei Umbruch */
+.nw-schale__inhalt label:has(> input[type="radio"]),
+.nw-schale__inhalt label:has(> input[type="checkbox"]) { display: flex; align-items: flex-start; gap: .5rem; }
+.nw-schale__inhalt label > input[type="radio"],
+.nw-schale__inhalt label > input[type="checkbox"] { margin-top: .1rem; }

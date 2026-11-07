@@ -1,4 +1,4 @@
-<div id="liste" class="stapel">
+<div id="liste" class="stapel aufgaben-liste">
   {% for a in aufgaben %}{% include "aufgaben/_zeile.html" %}
   {% empty %}{% include "komponenten/leer.html" with icon="liste" text="Keine Aufgaben gefunden." %}{% endfor %}
 </div>

@@ -83,17 +83,60 @@ def test_kind_darf_familie_nicht_per_post_aendern(kind_client, anna):
 # --- Kinder-Dashboard ------------------------------------------------------------------------
 
 
-def test_kind_dashboard_zeigt_konto_und_aufgaben(kind_client, anna, mama):
-    gutschrift(anna, 25, mama)
+def test_kind_startseite_hat_vier_bloecke_mit_buttons(kind_client, anna, mama):
     instanz(mama, anna, InstanzStatus.OFFEN, titel="Fenster putzen")
     instanz(mama, anna, InstanzStatus.RESERVIERT, titel="Müll raus")
     html = kind_client.get("/kind/").content.decode()
     assert "Hallo Anna" in html
-    assert "25 XP" in html
-    assert "Fenster putzen" in html and "Müll raus" in html
-    for schluessel in ("kind_konto", "kind_offene", "kind_laufende", "kind_belohnungen"):
-        assert f'data-kachel="oberflaeche.{schluessel}"' in html
-    assert reverse("belohnung:kind") in html
+    for block in ("avatar", "balken", "lernen", "aufgaben"):
+        assert f'data-start="{block}"' in html
+    for balken in ("serie", "uebungswoche", "familienziel"):
+        assert f'data-balken="{balken}"' in html
+    assert "Fenster putzen" in html  # offene Aufgabe
+    for ziel in ("kind_bereich", "kind_ziele"):
+        assert reverse(f"oberflaeche:{ziel}") in html
+    assert reverse("aufgaben:kind") in html
+    for schluessel in ("kind_konto", "kind_belohnungen", "kind_ranking", "kind_schnellknoepfe"):
+        assert f'data-kachel="oberflaeche.{schluessel}"' not in html
+
+
+def test_kind_startseite_zeigt_hoechstens_drei_aufgaben(kind_client, anna, mama):
+    for n in range(5):
+        instanz(mama, anna, InstanzStatus.OFFEN, titel=f"Aufgabe {n}")
+    html = kind_client.get("/kind/").content.decode()
+    assert sum(f"Aufgabe {n}" in html for n in range(5)) == 3
+    assert "5 offen insgesamt" in html
+
+
+def test_kind_untermenues_haben_die_ausgelagerten_kacheln(kind_client, anna, mama):
+    gutschrift(anna, 25, mama)
+    bereich = kind_client.get(reverse("oberflaeche:kind_bereich")).content.decode()
+    assert "25 XP" in bereich and reverse("belohnung:kind") in bereich
+    assert reverse("oberflaeche:dungeon") in bereich
+    assert reverse("oberflaeche:kind_einstellungen") in bereich
+    ziele = kind_client.get(reverse("oberflaeche:kind_ziele")).content.decode()
+    assert 'data-kachel="spielregeln.kind_serie"' in ziele
+
+
+def test_kind_startseite_lernen_nutzt_provider(kind_client):
+    from apps.kern import registry
+
+    with registry.isoliert():
+        registry.provider_registrieren(
+            registry.Provider(
+                "lernen.kind_faecher",
+                "lernen",
+                "Fächer",
+                lambda kind: [{"name": "Mathe", "zuletzt": None}],
+            )
+        )
+        html = kind_client.get("/kind/").content.decode()
+    assert "Mathe" in html and "noch nicht begonnen" in html
+
+
+def test_kind_bereich_nur_fuer_kinder(eltern_client):
+    assert eltern_client.get(reverse("oberflaeche:kind_bereich")).status_code == 403
+    assert eltern_client.get(reverse("oberflaeche:kind_ziele")).status_code == 403
 
 
 def test_akzentfarbe_waehlen(kind_client, anna):

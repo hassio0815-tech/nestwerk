@@ -1,4 +1,23 @@
 /* Belohnungen: Kacheln als Buttons. Nutzt nur Tokens/Komponenten des Designsystems. */
-.belohnung-kachel { width: 100%; font: inherit; text-align: left; cursor: pointer; }
+.belohnung-kachel { flex: 1 1 auto; width: 100%; font: inherit; text-align: left; cursor: pointer; }
 .belohnung-kachel:disabled { cursor: not-allowed; }
-.belohnung-guthaben { align-items: flex-end; }
+.belohnung-kachel .kachel__text { margin-top: auto; }
+/* Gleiche Zeilenhöhe: Formular füllt die Rasterzelle, Kachel füllt das Formular */
+#belohnungen .raster > form { display: flex; }
+.belohnung-guthaben { align-items: flex-end; gap: 0.25rem; }
+/* Kopf (Titel + Guthaben) mittig ausrichten, einheitlicher Abstand zu Folge-Überschriften */
+#belohnungen > .zeile:first-child { align-items: center; }
+#belohnungen > h2 { margin-top: var(--abstand-gross); margin-bottom: 0; }
+@media (max-width: 34rem) {
+  .belohnung-kachel {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--abstand);
+    row-gap: 0.125rem;
+    align-items: center;
+    min-height: var(--tap-min);
+    padding: 0.75rem var(--abstand);
+  }
+  .belohnung-kachel .kachel__icon { grid-row: 1 / span 2; width: 1.75rem; height: 1.75rem; }
+  .belohnung-kachel .kachel__text { margin-top: 0; }
+}

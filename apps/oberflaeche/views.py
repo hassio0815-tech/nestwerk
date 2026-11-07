@@ -3,10 +3,13 @@
 Routing: ``/`` leitet je Rolle/Gerät weiter (Anmeldung bleibt bei ``konten``), ``/kind/`` und
 ``/eltern/`` sind die Dashboards, ``/tablet/`` die Live-Startseite des Flur-Tablets."""
 
+import logging
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
+from django.urls import NoReverseMatch, reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
@@ -21,6 +24,8 @@ from apps.konten.models import Rolle
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
 from . import kacheln, module, ranking, selectors
+
+logger = logging.getLogger(__name__)
 
 
 @require_GET
@@ -53,43 +58,103 @@ DUNGEON = (
     "spielregeln.kind_rang",
     "spielregeln.kind_abzeichen",
 )
-# Dashboard-Reihenfolge; unbekannte (neue) Kacheln folgen in Registry-Reihenfolge.
-KIND_REIHENFOLGE = (
-    "oberflaeche.kind_konto",
-    "avatar.kind_avatar",  # nur sichtbar, solange noch keine Figur gewählt ist
-    "oberflaeche.kind_laufende",
-    "oberflaeche.kind_schnellknoepfe",
-    "oberflaeche.kind_offene",
-    "oberflaeche.kind_belohnungen",
+# Untermenüs der Kinder-Startseite: Kacheln, die dort nicht mehr stehen, liegen auf diesen Seiten.
+KIND_BEREICH = ("oberflaeche.kind_konto", "oberflaeche.kind_belohnungen")
+KIND_ZIELE = (
+    "spielregeln.kind_serie",
+    "sondertag.kind",
     "familienziel.kind",
     "oberflaeche.kind_ranking",
-    "sondertag.kind",
-    "spielregeln.kind_serie",
 )
-NICHT_AUF_DASHBOARD = DUNGEON + ("oberflaeche.kind_akzent",)
+# "Meine Aufgaben" steht schon auf der Aufgaben-Seite, Schnell-Knöpfe liegen dort ebenfalls.
+KIND_ANDERSWO = ("oberflaeche.kind_laufende", "oberflaeche.kind_schnellknoepfe")
+NICHT_AUF_DASHBOARD = (
+    DUNGEON
+    + KIND_BEREICH
+    + KIND_ZIELE
+    + KIND_ANDERSWO
+    + (
+        "oberflaeche.kind_offene",
+        "oberflaeche.kind_akzent",
+    )
+)
 
 
-def _kind_kacheln(request):
-    alle = [
-        e for e in kacheln.fuer(KIND, request) if e["kachel"].schluessel not in NICHT_AUF_DASHBOARD
-    ]
-
-    def rang(e):
-        try:
-            return KIND_REIHENFOLGE.index(e["kachel"].schluessel)
-        except ValueError:
-            return len(KIND_REIHENFOLGE)
-
-    return sorted(alle, key=rang)  # stabil: Registry-Reihenfolge bleibt innerhalb der Gruppen
+def _kind_kacheln(request, schluessel=None):
+    """Kacheln für Startseite (``schluessel=None``: nur Unbekanntes wie "Figur wählen") oder für
+    ein Untermenü (``schluessel`` = Tupel der Kachel-Schlüssel, in dieser Reihenfolge)."""
+    alle = kacheln.fuer(KIND, request)
+    if schluessel is None:
+        return [e for e in alle if e["kachel"].schluessel not in NICHT_AUF_DASHBOARD]
+    nach_schluessel = {e["kachel"].schluessel: e for e in alle}
+    return [nach_schluessel[s] for s in schluessel if s in nach_schluessel]
 
 
 @nur_kind
 @require_GET
 def kind_heim(request):
+    """Kinder-Startseite: Avatar, Mini-Übersicht, Lernen, Aufgaben; der Rest in Untermenüs."""
+    kind = request.user
     return render(
         request,
         "oberflaeche/kind_heim.html",
-        {"kacheln": _kind_kacheln(request), "mood": konten_selectors.mood_text(request.user)},
+        {
+            "kacheln": _kind_kacheln(request),
+            "mood": konten_selectors.mood_text(kind),
+            "guthaben": _oder(lambda: selectors.kind_konto(kind)["guthaben"], 0),
+            "balken": selectors.kind_balken(kind),
+            "faecher": selectors.kind_lernen(kind),
+            "lernen_url": _url_oder_none("lernen:start"),
+            **_oder(
+                lambda: selectors.kind_offene_auszug(kind, anzahl=START_AUFGABEN),
+                {"aufgaben": [], "gesamt": 0},
+            ),
+        },
+    )
+
+
+START_AUFGABEN = 3
+
+
+def _oder(funktion, ersatz):
+    """Ein Block der Startseite darf sie nicht kippen (wie bei ``kacheln.fuer``)."""
+    try:
+        return funktion()
+    except Exception:
+        logger.exception("Startseiten-Block konnte nicht berechnet werden")
+        return ersatz
+
+
+def _url_oder_none(name):
+    try:
+        return reverse(name)
+    except NoReverseMatch:
+        return None
+
+
+@nur_kind
+@require_GET
+def kind_bereich(request):
+    """Untermenü "Mein Bereich": Dungeon, Einstellungen, Guthaben und Belohnungen."""
+    return render(
+        request,
+        "oberflaeche/kind_unterseite.html",
+        {
+            "titel": _("Mein Bereich"),
+            "bereich": True,
+            "kacheln": _kind_kacheln(request, KIND_BEREICH),
+        },
+    )
+
+
+@nur_kind
+@require_GET
+def kind_ziele(request):
+    """Untermenü "Serie & Ziele": Serie, Sondertage, Familienziel, Ranking."""
+    return render(
+        request,
+        "oberflaeche/kind_unterseite.html",
+        {"titel": _("Serie & Ziele"), "kacheln": _kind_kacheln(request, KIND_ZIELE)},
     )
 
 

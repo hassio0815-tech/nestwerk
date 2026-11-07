@@ -1,4 +1,4 @@
-{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel einrichtung-kinder" autocomplete="off">
   {% csrf_token %}
   <h1>{% translate "Kinder" %}</h1>
   <p>{% translate "Name, vierstellige PIN (zweimal) und optional eine Akzentfarbe. Leere Zeilen werden ignoriert." %}</p>

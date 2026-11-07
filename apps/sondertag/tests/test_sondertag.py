@@ -399,7 +399,7 @@ def test_kind_wunsch_formular_und_senden(kind_client, anna, mama, papa, metriken
 
 def test_kind_startseite_zeigt_kachel(kind_client, anna, metriken, uhr):
     _anspruch(anna, metriken, uhr)
-    inhalt = kind_client.get("/kind/").content.decode()
+    inhalt = kind_client.get("/kind/ziele/").content.decode()
     assert 'data-sondertag="einloesbar"' in inhalt
     assert "Wunsch abschicken" in inhalt
 
