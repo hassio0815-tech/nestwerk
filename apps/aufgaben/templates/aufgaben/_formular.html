@@ -1,6 +1,6 @@
 {% load i18n %}<section class="karte" id="formular-karte"><div class="karte__inhalt stapel">
   <h2>{{ titel }}</h2>
-  <form method="post" action="{{ aktion }}" class="stapel" hx-post="{{ aktion }}" hx-target="#formular" hx-swap="innerHTML">
+  <form method="post" action="{{ aktion }}" class="stapel formular-raster" hx-post="{{ aktion }}" hx-target="#formular" hx-swap="innerHTML">
     {% csrf_token %}
     {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
     {% for f in form.hidden_fields %}{{ f }}{% endfor %}

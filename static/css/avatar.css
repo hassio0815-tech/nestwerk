@@ -88,6 +88,29 @@
   }
 }
 
+/* Vorschau bleibt beim Wählen sichtbar: Handy = Figur klebt oben (Formular-Raster), groß = Figur klebt in der rechten Spalte */
+.avatar-wahl__haupt {
+  position: sticky;
+  top: 5rem; /* unter der klebenden Kopfzeile */
+  z-index: 2;
+  padding: var(--abstand-klein);
+  background: var(--hintergrund);
+  border-radius: var(--radius);
+}
+
+@media (max-width: 47.99rem) {
+  #avatar-vorschau { display: contents; }
+  .avatar-wahl__haupt { order: -2; }
+  .avatar-wahl__haupt .avatar-bild--riesig { width: 8rem; }
+  .avatar-wahl__figur { order: -1; }
+  .avatar-wahl__senden { order: 9; }
+}
+
+@media (min-width: 48rem) {
+  .avatar-wahl { max-width: 64rem; }
+  .avatar-wahl .avatar-wahl__senden { justify-content: flex-start; }
+}
+
 .avatar-wahl__figur {
   display: flex;
   flex-direction: column;
@@ -116,7 +139,7 @@
 .avatar-wahl__thema {
   margin: 0;
   font-family: var(--schrift-titel);
-  font-size: 0.9rem;
+  font-size: 1.15rem;
   line-height: 1.6;
   text-align: center;
 }

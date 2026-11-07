@@ -16,6 +16,84 @@
   height: 100%;
 }
 
+/* Eltern-Dashboard und Dungeon: Karten nach Inhalt (kein Strecken), so viele Spalten wie passen. */
+.dashboard--eltern { grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 48rem) {
+  .dashboard--eltern { grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); }
+}
+.dashboard--eltern .dashboard__kachel > .karte,
+.dashboard--eltern .dashboard__kachel > .kachel { height: auto; }
+.dashboard--eltern .zeile--spalte .reihe { gap: .25rem 1rem; }
+/* Schnell-Knöpfe (Eltern): Titel links, "Drücken" rechts; geöffnete Auswahl nimmt die volle Breite */
+.dashboard--eltern .zeile.schnellknopf { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.dashboard--eltern .zeile.schnellknopf > :first-child { min-width: 0; }
+.dashboard--eltern .schnellknopf__wahl { justify-self: end; }
+.dashboard--eltern .schnellknopf__wahl[open] { grid-column: 1 / -1; justify-self: stretch; }
+/* Kinder-Startseite: zwei Blöcke je Reihe, auf dem Handy untereinander. */
+.start {
+  display: grid;
+  gap: var(--abstand);
+  grid-template-columns: 1fr;
+  margin-block-end: var(--abstand);
+}
+
+@media (min-width: 48rem) {
+  .start {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.start > .karte {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Gleich hohe Karten: Inhalt füllt die Karte, der Sprung-Knopf sitzt immer unten. */
+.start > .karte > .karte__inhalt {
+  flex: 1;
+}
+
+.start .karte__inhalt > .knopf:last-child {
+  margin-top: auto;
+}
+
+.start__mitte {
+  text-align: center;
+}
+
+.start__mitte > *,
+.stapel.start__mitte > .chip--nutzer {
+  align-self: center;
+}
+
+.start__mitte > .knopf {
+  align-self: stretch;
+}
+
+.start__avatar {
+  display: block;
+}
+
+/* Mini-Balken: Name links, Balken in der Mitte, Wert rechts. */
+.start__balken {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 4.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.start__balken .fortschritt {
+  width: 100%;
+  height: 0.7rem;
+}
+
+.start__balken-text {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
 .kind-konto {
   display: flex;
   flex-direction: column;
@@ -81,16 +159,60 @@
 }
 
 .tablet-kind {
+  position: relative;
   min-width: 0; /* Raster-Spalte darf schmaler werden als ihr Inhalt (Handy 390 px) */
+  display: flex;
+  flex-direction: column;
+  background: var(--flaeche);
+  border: var(--rahmen-breite) solid var(--rahmen);
+  border-radius: var(--radius);
+  box-shadow: var(--schatten-karte);
+}
+
+/* Ganze Kachel ist eine Tippfläche: der Link deckt sie per Overlay ab, die Kachel selbst ist nur der Inhalt. */
+.tablet-kind > .kachel {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.tablet-kind > a.kachel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.tablet-kind:hover,
+.tablet-kind:has(> a:focus-visible) {
+  border-color: var(--akzent-hell, var(--akzent));
+}
+
+.tablet-kind > a.kachel:focus-visible {
+  outline: none;
+}
+
+.tablet-kind:has(> a:focus-visible) {
+  outline: 3px solid var(--akzent-hell, var(--akzent));
+  outline-offset: 2px;
 }
 
 .tablet-kind__zeile {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem var(--abstand-klein);
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin: var(--abstand-klein) 0 0;
+  margin: 0;
+  padding: 0 var(--abstand-klein) var(--abstand);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.tablet-kind__zeile .punkte__wert,
+.tablet-kind__zeile .punkte__einheit {
+  font-size: inherit;
 }
 
 .familie-zeile {
@@ -176,4 +298,53 @@
 
 .tablet-dialog > .karte {
   width: min(100%, 40rem);
+}
+
+/* Kinder-Unterseiten: Karten nicht auf Zeilenhöhe strecken (keine großen Leerflächen). */
+.dashboard--oben {
+  align-items: start;
+}
+
+.start--voll {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+  .start--voll > .karte > .karte__inhalt {
+    flex-direction: row;
+  }
+
+  .start--voll .karte__inhalt > .knopf {
+    flex: 1 1 0;
+    margin-top: 0;
+  }
+}
+
+/* Familie: Feld und Knopf in einer Zeile, Eltern-Zeile ab 48rem einreihig, "Deaktivieren" als Gefahr-Geist-Knopf */
+.familie-zeile > form.reihe { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; }
+.familie-zeile > form.reihe > .knopf { justify-self: start; }
+@media (min-width: 40rem) {
+  .familie-zeile > form.reihe { grid-template-columns: minmax(0, 1fr) auto; }
+}
+.familie-zeile .feld__eingabe { min-width: 0; }
+.familie-eltern > .feld__eingabe { flex: 1 1 12rem; }
+.familie-neu { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--abstand-klein); align-items: center; }
+.familie-neu .feld__eingabe { min-width: 0; }
+@media (min-width: 48rem) {
+  .familie-neu { grid-template-columns: repeat(2, minmax(0, 1fr)) auto; }
+  .familie-neu--passwort { grid-template-columns: repeat(2, minmax(0, 1fr)) auto; }
+  .familie-eltern { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; align-items: center; }
+}
+.familie-zeile .familie__deaktivieren { color: var(--gefahr); border-color: var(--gefahr); cursor: pointer; width: fit-content; list-style: none; }
+.familie__deaktivieren::-webkit-details-marker { display: none; }
+details[open] > .familie__deaktivieren { margin-block-end: var(--abstand-klein); }
+
+/* Einstellungen-Editor (Eltern): geschlossene Abschnitte ab 64rem in zwei Spalten, ein offener nimmt die volle Breite */
+.einstellungen-raster { display: grid; gap: var(--abstand); grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 64rem) {
+  .einstellungen-raster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .einstellungen-raster > .karte:has(details[open]) { grid-column: 1 / -1; }
+}
+@media (min-width: 64rem) {
+  .nw-schale__inhalt .wappen-galerie { grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); }
 }

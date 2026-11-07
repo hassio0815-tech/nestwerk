@@ -28,6 +28,8 @@ class PauseForm(forms.Form):
             (str(k.pk), k.anzeigename) for k in self.kinder
         ]
         self.fields["von"].initial = zeit.heute()
+        for feld in self.fields.values():
+            feld.widget.attrs.setdefault("class", "feld__eingabe")
 
     def clean(self):
         daten = super().clean()

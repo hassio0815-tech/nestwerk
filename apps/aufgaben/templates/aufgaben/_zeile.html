@@ -10,7 +10,7 @@
     </span>
   </div>
   {% include "komponenten/punkte.html" with wert=a.punkte %}
-  <div class="reihe">
+  <div class="reihe zeile__aktionen">
     {% url "aufgaben:bearbeiten" a.pk as bearbeiten_url %}
     {% include "komponenten/button.html" with href=bearbeiten_url variante="sekundaer" klein=True text=_("Bearbeiten") %}
     {% if a.status == "aktiv" %}

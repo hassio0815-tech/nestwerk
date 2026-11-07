@@ -34,6 +34,14 @@ BASIS = f"http://127.0.0.1:{PORT}"
 PASSWORT = "Sonnenblume-4711-Demo"
 KINDER = [("Kind A", "1111"), ("Kind B", "2222"), ("Kind C", "3333")]
 VIEWPORTS = {"handy": (390, 844), "tablet": (1280, 800)}
+# Optional mehr Breiten (Responsive-Prüfung): NESTWERK_VIEWPORTS=alle
+if os.environ.get("NESTWERK_VIEWPORTS") == "alle":
+    VIEWPORTS = {
+        "handy": (390, 844),
+        "hochkant": (800, 1280),  # Flur-Tablet hochkant
+        "tablet": (1280, 800),
+        "gross": (1920, 1080),
+    }
 
 # Init-Skript: CSP-Verstöße der Seite einsammeln
 CSP_SKRIPT = """
@@ -316,6 +324,8 @@ def einrichtung(page, aufn):
 # (Label, Pfad) je Sitzungsart. Neue Seiten hier ergänzen.
 SEITEN_KIND = [
     ("kinder-dashboard", "/kind/"),
+    ("kinder-bereich", "/kind/bereich/"),
+    ("kinder-ziele", "/kind/ziele/"),
     ("kinder-aufgaben", "/kind/aufgaben/"),
     ("kinder-belohnungen", "/kind/belohnungen/"),
     ("kinder-sondertag-wunsch", "/kind/sondertag/wunsch/"),  # AP27 (ohne offenen Anspruch)
@@ -439,7 +449,7 @@ def familienziel_ablauf(browser, aufn):
     kind = ctx.new_page()
     aufn.s.anbinden(kind)
     kind_login(kind, aufn, "Kind A", "1111", fotos=False)
-    aufn.seite(kind, "kind-familienziel-abstimmung", "/kind/")
+    aufn.seite(kind, "kind-familienziel-abstimmung", "/kind/ziele/")
     kind.locator("input[name=belohnung]").nth(2).check()
     kind.get_by_role("button", name="Abstimmen").click()
     kind.wait_for_load_state("networkidle")
@@ -488,7 +498,7 @@ def ranking_ablauf(browser, aufn):
         aufn.s.neu(f"ranking-{modus}-eltern")
         aufn.foto(eltern, f"ranking-{modus}-eltern")
         aufn.seite(tablet, f"ranking-{modus}-tablet", "/tablet/")
-        aufn.seite(kind, f"ranking-{modus}-kind", "/kind/")
+        aufn.seite(kind, f"ranking-{modus}-kind", "/kind/ziele/")
     ctx_e.close()
     ctx_t.close()
     ctx_k.close()

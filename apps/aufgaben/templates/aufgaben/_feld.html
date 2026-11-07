@@ -1,4 +1,4 @@
-<div class="feld{% if f.errors %} feld--fehler{% endif %}">
+<div class="feld{% if f.errors %} feld--fehler{% endif %}{% if f.name == "titel" or f.name == "beschreibung" %} feld--breit{% endif %}{% if f.name == "beschreibung" %} feld--spaet{% endif %}">
   <label class="feld__label" for="{{ f.id_for_label }}">{{ f.label }}{% if f.field.required and not f.is_hidden %} <span aria-hidden="true">*</span>{% endif %}</label>
   {{ f }}
   {% for e in f.errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}

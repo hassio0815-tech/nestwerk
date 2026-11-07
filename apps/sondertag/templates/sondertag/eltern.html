@@ -2,10 +2,6 @@
 {% load i18n static sprache %}
 {% block titel %}{% translate "Sondertage" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
-{% endblock %}
 {% block seite %}
   <h1>{% translate "Sondertage" %}</h1>
   <p>{% blocktranslate with max=regeln.max_pro_jahr start=regeln.go_live|date:"SHORT_DATE_FORMAT" abstand=regeln.abstand %}Höchstens {{ max }} Sondertage je Kind und App-Jahr (ab {{ start }}), mindestens {{ abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.{% endblocktranslate %}</p>
@@ -62,7 +58,7 @@
       <div><dt>{% translate "Letzter Sondertag" %}</dt><dd>{% if z.letzter %}{{ z.letzter.annahme_datum|date:"SHORT_DATE_FORMAT" }}{% if z.letzter.begleitung %} {% blocktranslate with name=z.letzter.begleitung.anzeigename %}mit {{ name }}{% endblocktranslate %}{% endif %}{% else %}{% translate "noch keiner" %}{% endif %}</dd></div>
       <div><dt>{% translate "Nächster möglicher" %}</dt><dd>{% if z.warteschlange %}{% if z.warteschlange.0.einloesbar %}{% translate "jetzt" %}{% else %}{{ z.warteschlange.0.einloesbar_ab|date:"SHORT_DATE_FORMAT" }}{% endif %} {% translate "(verdient)" %}{% else %}{% blocktranslate with datum=z.naechster_moeglich|date:"SHORT_DATE_FORMAT" %}frühestens {{ datum }}{% endblocktranslate %}{% endif %}</dd></div>
       <div><dt>{% translate "Zuletzt mit" %}</dt><dd>{% for m in z.mit_wem %}{{ m.eltern.anzeigename }}: {% if m.datum %}{{ m.datum|date:"SHORT_DATE_FORMAT" }}{% else %}{% translate "noch nie" %}{% endif %}{% if not forloop.last %} · {% endif %}{% endfor %}</dd></div>
-      <div><dt>{% translate "Fortschritt" %}</dt><dd>{{ z.fortschritt.text }}{% if z.fortschritt.weiter %} {% blocktranslate with weiter=z.fortschritt.weiter %}Danach: {{ weiter }}{% endblocktranslate %}{% endif %}</dd></div>
+      <div class="st-fakten__breit"><dt>{% translate "Fortschritt" %}</dt><dd>{{ z.fortschritt.text }}{% if z.fortschritt.weiter %} {% blocktranslate with weiter=z.fortschritt.weiter %}Danach: {{ weiter }}{% endblocktranslate %}{% endif %}</dd></div>
     </dl>
     {% if z.warteschlange %}
       <h3>{% translate "Verdient (Warteschlange)" %}</h3>
@@ -93,7 +89,7 @@
   <section class="nw-karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Sondertag nachtragen" %}</h2>
     <p class="kachel__text">{% translate "Zum Beispiel einen Sondertag vor dem Start der App. Er zählt für Abstand und App-Jahr." %}</p>
-    <form method="post" action="{% url 'sondertag:manuell' %}" class="st-historie">{% csrf_token %}
+    <form method="post" action="{% url 'sondertag:manuell' %}" class="st-historie st-historie--neu">{% csrf_token %}
       <label class="feld"><span class="feld__label">{% translate "Kind" %}</span><select class="nw-eingabe" name="kind" required>{% for kd in kinder %}<option value="{{ kd.pk }}">{{ kd.anzeigename }}</option>{% endfor %}</select></label>
       <label class="feld"><span class="feld__label">{% translate "Datum" %}</span><input class="nw-eingabe" type="date" name="datum" required></label>
       <label class="feld"><span class="feld__label">{% translate "Begleitung" %}</span><select class="nw-eingabe" name="begleitung"><option value="">–</option>{% for e in eltern %}<option value="{{ e.pk }}">{{ e.anzeigename }}</option>{% endfor %}</select></label>

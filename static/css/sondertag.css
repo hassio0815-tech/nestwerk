@@ -95,6 +95,11 @@
 /* Kind-Kachel */
 .st-karte { position: relative; overflow: hidden; }
 .st-karte--fest { border-color: var(--selten-legendary); }
+/* Deko-Sterne liegen hinter dem Inhalt, Text bleibt gut lesbar */
+.st-karte > .karte__inhalt { position: relative; z-index: 1; }
+.st-sterne { z-index: 0; }
+.st-karte .kachel__text, .st-karte .feld__label, .st-begleitung__option { color: var(--text); font-size: 1.05rem; }
+.st-karte .kachel__text .kachel__text { font-size: 0.95rem; color: var(--text-leise); }
 .st-karte h2 .icon, .st-karte h1 .icon { color: var(--selten-legendary); }
 .st-status { margin: 0; font-size: 1.1rem; font-weight: 600; position: relative; }
 .st-bestaetigt { margin: 0; display: flex; gap: 0.5rem; align-items: center; color: var(--erfolg); font-weight: 700; position: relative; }
@@ -119,6 +124,10 @@
   border-bottom: 1px solid var(--rahmen);
 }
 .st-historie .feld { margin: 0; }
+.st-historie--neu { border-bottom: 0; padding-bottom: 0; }
+.st-historie--neu > .knopf { justify-self: start; }
+.st-fakten__breit { grid-column: 1 / -1; }
+.st-fakten__breit dd { font-weight: 400; }
 
 /* AP32: Prognose und Kalibrierung (Eltern) */
 .pg-ampel { display: inline-flex; gap: 0.4rem; align-items: center; font-weight: 700; }

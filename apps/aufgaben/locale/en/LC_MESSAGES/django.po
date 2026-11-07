@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 19:25+0000\n"
+"POT-Creation-Date: 2026-11-07 00:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,7 +89,7 @@ msgstr "You can't give this task back any more."
 msgid "Hier gibt es nichts mehr zuzuteilen."
 msgstr "There is nothing left to assign here."
 
-#: ablauf.py:411 views_ablauf.py:152
+#: ablauf.py:411 views_ablauf.py:155
 msgid "Dieses Kind hat die Aufgabe nicht gewählt."
 msgstr "This child did not pick the task."
 
@@ -197,8 +197,10 @@ msgstr "Please enter 1 to %(max)s points."
 
 #: anerkennung.py:99
 #, python-format
-msgid "Diese Woche sind für %(name)s nur noch %(rest)s Anerkennungs-Punkte möglich."
-msgstr "This week only %(rest)s more recognition points are possible for %(name)s."
+msgid ""
+"Diese Woche sind für %(name)s nur noch %(rest)s Anerkennungs-Punkte möglich."
+msgstr ""
+"This week only %(rest)s more recognition points are possible for %(name)s."
 
 #: einstellungen.py:46
 msgid "Vorlauf für Aufgaben mit Zeitfenster"
@@ -332,7 +334,8 @@ msgid "Anerkennung: Punkte je Vergabe höchstens"
 msgstr "Recognition: most points per award"
 
 #: einstellungen.py:173
-msgid "Eltern können einem Kind ohne Aufgabe 1 bis zu so viele Punkte schenken."
+msgid ""
+"Eltern können einem Kind ohne Aufgabe 1 bis zu so viele Punkte schenken."
 msgstr "Parents can give a child from 1 up to this many points without a task."
 
 #: einstellungen.py:174 einstellungen.py:183 forms.py:125 forms.py:187
@@ -345,7 +348,8 @@ msgid "Anerkennung: Punkte je Kind und Woche höchstens"
 msgstr "Recognition: most points per child and week"
 
 #: einstellungen.py:182
-msgid "Woche = Montag bis Sonntag. Eine Gegenbuchung gibt den Platz wieder frei."
+msgid ""
+"Woche = Montag bis Sonntag. Eine Gegenbuchung gibt den Platz wieder frei."
 msgstr "Week = Monday to Sunday. A reversal frees up those points again."
 
 #: events.py:46
@@ -1478,8 +1482,13 @@ msgstr "Recognition"
 
 #: templates/aufgaben/anerkennung.html:8
 #, python-format
-msgid "Schenke Punkte für etwas Besonderes, auch ohne Aufgabe. Je Vergabe 1 bis %(max)s Punkte, je Kind höchstens %(woche)s Punkte pro Woche (Montag bis Sonntag)."
-msgstr "Give points for something special, even without a task. 1 to %(max)s points per award, at most %(woche)s points per child per week (Monday to Sunday)."
+msgid ""
+"Schenke Punkte für etwas Besonderes, auch ohne Aufgabe. Je Vergabe 1 bis "
+"%(max)s Punkte, je Kind höchstens %(woche)s Punkte pro Woche (Montag bis "
+"Sonntag)."
+msgstr ""
+"Give points for something special, even without a task. 1 to %(max)s points "
+"per award, at most %(woche)s points per child per week (Monday to Sunday)."
 
 #: templates/aufgaben/anerkennung.html:14
 msgid "Für wen?"
@@ -1593,76 +1602,76 @@ msgstr "Task from template “%(titel)s”"
 msgid "Kategorie bearbeiten"
 msgstr "Edit category"
 
-#: views_ablauf.py:61
+#: views_ablauf.py:64
 msgid "Die Aufgabe gehört dir. Los geht's!"
 msgstr "The task is yours. Let's go!"
 
-#: views_ablauf.py:65
+#: views_ablauf.py:68
 msgid "Auch andere wollen diese Aufgabe. Mama oder Papa entscheiden."
 msgstr "Others want this task too. Mum or Dad will decide."
 
-#: views_ablauf.py:75
+#: views_ablauf.py:78
 msgid "Zurückgegeben. Keine Sorge, das ist okay."
 msgstr "Given back. Don't worry, that's okay."
 
-#: views_ablauf.py:90
+#: views_ablauf.py:93
 msgid "Super! Die Punkte sind schon gutgeschrieben."
 msgstr "Great! The points are already yours."
 
-#: views_ablauf.py:92
+#: views_ablauf.py:95
 msgid "Gemeldet! Mama oder Papa schauen bald drauf."
 msgstr "Reported! Mum or Dad will take a look soon."
 
-#: views_ablauf.py:106
+#: views_ablauf.py:109
 msgid "Antwort gesendet!"
 msgstr "Answer sent!"
 
-#: views_ablauf.py:133
+#: views_ablauf.py:136
 msgid "Sonderpunkte: bitte eine ganze Zahl."
 msgstr "Bonus points: please enter a whole number."
 
-#: views_ablauf.py:155
+#: views_ablauf.py:158
 msgid "Zugeteilt."
 msgstr "Assigned."
 
-#: views_ablauf.py:165
+#: views_ablauf.py:168
 msgid "Reservierung gelöst, die Aufgabe ist wieder frei."
 msgstr "Reservation released, the task is free again."
 
-#: views_ablauf.py:180
+#: views_ablauf.py:183
 msgid "Bestätigt, Punkte gebucht."
 msgstr "Approved, points booked."
 
-#: views_ablauf.py:189
+#: views_ablauf.py:192
 msgid "Abgelehnt."
 msgstr "Declined."
 
-#: views_ablauf.py:198
+#: views_ablauf.py:201
 msgid "Rückfrage gesendet."
 msgstr "Question sent."
 
-#: views_ablauf.py:208
+#: views_ablauf.py:211
 msgid "Sonderpunkte vergeben."
 msgstr "Bonus points given."
 
-#: views_ablauf.py:217
+#: views_ablauf.py:220
 msgid "Korrigiert, Punkte zurückgebucht."
 msgstr "Corrected, points taken back."
 
-#: views_ablauf.py:244
+#: views_ablauf.py:247
 msgid "Passt, danke."
 msgstr "Looks good, thanks."
 
-#: views_ablauf.py:252
+#: views_ablauf.py:255
 #, python-format
 msgid "%(n)s als „passt“ markiert."
 msgstr "%(n)s marked as “looks good”."
 
-#: views_ablauf.py:262
+#: views_ablauf.py:265
 msgid "Zurück ans Kind: Punkte abgezogen, es soll nachbessern."
 msgstr "Sent back to the child: points taken off, they should fix it."
 
-#: views_ablauf.py:273
+#: views_ablauf.py:276
 msgid "Abgelehnt, Punkte zurückgebucht."
 msgstr "Declined, points taken back."
 

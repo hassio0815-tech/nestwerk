@@ -1,10 +1,6 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n static sprache %}
 {% block titel %}{% translate "Prognose & Kalibrierung" %}{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
-{% endblock %}
 {% block seite %}
   <link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
   <h1>{% translate "Prognose & Kalibrierung" %}</h1>

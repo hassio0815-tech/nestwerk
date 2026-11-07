@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 
 from apps.konten.zugriff import aktueller_elternteil, aktuelles_kind, nur_eltern, nur_kind
 
-from . import selectors, services
+from . import schnellknopf, selectors, services
 from .models import AufgabenInstanz, Freigabeart
 
 # --- Kind -------------------------------------------------------------------------------------
@@ -29,6 +29,9 @@ def _kind_seite(request, *, hinweis="", art="erfolg"):
         "hinweis": hinweis,
         "hinweis_art": art,
     }
+    # Schnell-Knöpfe liegen neben dem Bereich, nicht darin (eigenes HTMX-Ziel)
+    if not _htmx(request):
+        kontext["k"] = {"knoepfe": schnellknopf.knoepfe(kind), "kinder": []}
     vorlage = "aufgaben/_kind_bereich.html" if _htmx(request) else "aufgaben/kind.html"
     return render(request, vorlage, kontext)
 

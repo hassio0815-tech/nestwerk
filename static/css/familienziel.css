@@ -45,23 +45,27 @@
 .fz-beitrag--pause { opacity: 0.7; }
 
 .fz-abstimmung {
-  padding: var(--abstand);
+  padding: var(--abstand-gross, var(--abstand));
   border: 2px dashed var(--akzent);
   border-radius: var(--radius);
 }
 .fz-abstimmung h3 { margin: 0 0 0.25rem; }
 .fz-optionen { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
-.fz-optionen li { padding: 0.35rem 0.8rem; background: var(--flaeche-hoch); border-radius: var(--radius); }
+.fz-optionen li { display: flex; align-items: center; min-height: 2.75rem; padding: 0.35rem 1rem; background: var(--flaeche-hoch); border-radius: var(--radius); }
 
 .fz-wahl__option {
   display: flex; align-items: center; gap: 0.75rem;
-  min-height: var(--tap-min);
+  min-height: max(var(--tap-min), 2.75rem);
   padding: 0.4rem 0.8rem;
   background: var(--flaeche-hoch);
   border: var(--rahmen-breite) solid var(--rahmen);
   border-radius: var(--radius);
 }
-.fz-wahl__option input { width: 1.4rem; height: 1.4rem; }
+.fz-wahl__option { cursor: pointer; }
+.fz-wahl__option input { width: 1.5rem; height: 1.5rem; flex: none; accent-color: var(--akzent); }
+.fz-wahl__option:has(:checked) { border-color: var(--akzent); box-shadow: 0 0 0 2px var(--akzent);
+  background: color-mix(in srgb, var(--akzent) 18%, var(--flaeche-hoch)); font-weight: 700; }
+.fz-wahl__option:has(:focus-visible) { outline: 3px solid var(--akzent-hell, var(--akzent)); outline-offset: 2px; }
 
 .fz-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: var(--abstand-klein); padding: 0.4rem 0; border-bottom: 1px solid var(--rahmen); }
 .fz-zeile > .fz-belohnung, .fz-zeile > strong { flex: 1 1 10rem; }

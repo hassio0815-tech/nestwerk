@@ -3,10 +3,6 @@
 {% load static %}
 {% block titel %}{% translate "Familienziel" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
-{% endblock %}
 {% block seite %}
   <h1>{% translate "Familienziel" %}</h1>
   <p>{% translate "Gezählt werden die verdienten XP aller Kinder von Montag bis Sonntag. Jedes nicht pausierte Kind braucht mindestens eine bestätigte Aufgabe." %}</p>

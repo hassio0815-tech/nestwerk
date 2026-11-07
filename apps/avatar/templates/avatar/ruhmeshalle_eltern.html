@@ -2,10 +2,6 @@
 {% load i18n static avatar_tags %}
 {% block titel %}{% translate "Ruhmeshalle" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}"><link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Übersicht") %}
-{% endblock %}
 {% block seite %}
   <h1>{% translate "Ruhmeshalle" %}</h1>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}

@@ -8,7 +8,7 @@
     <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neue Vorlage" %}</span></a>
   </div>
   <div id="formular"></div>
-  <div class="stapel">
+  <div class="stapel aufgaben-liste aufgaben-liste--vorlagen">
     {% for v in vorlagen %}
       <article class="karte" id="vorlage-{{ v.pk }}"><div class="karte__inhalt zeile">
         <div class="zeile__text stapel">
@@ -21,7 +21,7 @@
           </span>
         </div>
         {% include "komponenten/punkte.html" with wert=v.punkte %}
-        <div class="reihe">
+        <div class="reihe zeile__aktionen">
           {% url "aufgaben:vorlage_als_aufgabe" v.pk as als_url %}
           <a class="knopf knopf--primaer knopf--klein" href="{{ als_url }}" hx-get="{{ als_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Als Aufgabe" %}</span></a>
           {% url "aufgaben:vorlage_bearbeiten" v.pk as bearbeiten_url %}

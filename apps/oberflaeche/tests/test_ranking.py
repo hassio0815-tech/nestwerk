@@ -109,7 +109,7 @@ def test_anonym_darf_modus_nicht_umschalten(client, anna):
 
 def test_kind_sieht_familie_aber_keine_eltern_daten(kind_client, anna, ben, uhr):
     held_anlegen(ben, uhr)
-    html = kind_client.get(reverse("oberflaeche:kind_heim")).content.decode()
+    html = kind_client.get(reverse("oberflaeche:kind_ziele")).content.decode()
     assert "<h2>Familie</h2>" in html and "Ben" in html
     assert "Zuwachs gegenüber" not in html and "data-eltern-ranking" not in html
     assert reverse("oberflaeche:ranking_modus") not in html
