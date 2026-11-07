@@ -895,7 +895,7 @@ def nachbessern_pruefen(*, jetzt=None) -> dict:
     return zaehler
 
 
-# --- Vertrauen prüfen und Tagesübersicht (Eltern-Dashboard "Heute erledigt") ------------------------------
+# --- Vertrauen prüfen und Tagesübersicht (Eltern-Dashboard "Heute erledigt") ----------
 
 
 def zu_pruefen():
@@ -929,7 +929,8 @@ def heute_erledigt(jetzt=None):
 
 def heute_erledigt_kachel(jetzt=None, limit=KACHEL_ERLEDIGT_MAX):
     """Kontext der Eltern-Kachel "Heute erledigt": die ersten ``limit`` Zeilen, Gesamtzahl,
-    Rest (ohne die immer sichtbaren ungeprüften Zeilen) und Anzahl der noch nicht durchgesehenen Vertrauens-Erledigungen. ``zu_pruefen`` je Zeile
+    Rest (ohne die immer sichtbaren ungeprüften Zeilen) und Anzahl der noch nicht durchgesehenen
+    Vertrauens-Erledigungen. ``zu_pruefen`` je Zeile
     gilt wie in :func:`zu_pruefen` (Vertrauen, niemand bestätigt, nicht geprüft)."""
     alle = list(heute_erledigt(jetzt))
     for i in alle:
