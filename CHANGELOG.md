@@ -4,6 +4,17 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Learning foundation, stage 11 (07.11.2026)
+
+### Added
+- **History that stays:** every practice card now has a stable identity (`Karte`: child, subject, key). Attempts keep the card, topic, days since the previous attempt and the planned due date. Cleaning up generated maths tasks no longer deletes attempts, so the history can grow past 60 days. A data migration fills existing data.
+- **Last reflection visible:** the start page shows what helped and what was hard last time. Parents see the last three reflections in the weekly view, and the child is told so.
+- **Last choice pre-selected:** the start page remembers the last subject, topic, intention, strategy, expectation and effort.
+
+### Changed
+- **Help counts:** a correct answer with help level 3 or higher no longer moves the card forward (it stays in its box). Applies from now on, not to past answers.
+- **"Too easy / too hard" works:** the answer from the last reflection shifts the first task of each calculation type in the next session by one step, within the allowed range.
+
 ## Learning module (03.11.2026)
 
 ### Added

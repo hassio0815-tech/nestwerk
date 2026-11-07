@@ -1,5 +1,5 @@
 {% extends "basis/einstellungen.html" %}
-{% load i18n static %}
+{% load i18n static sprache %}
 {% block titel %}{% translate "Wochenbild" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
 {% block kopf_rechts %}{{ block.super }}
@@ -56,6 +56,12 @@
       {% if b.einschaetzung %}
         <h3>{% translate "Selbsteinschätzung und Ergebnis" %}</h3>
         <p>{% blocktranslate with passt=b.einschaetzung.passt|default:0 mehr=b.einschaetzung.mehr|default:0 weniger=b.einschaetzung.weniger|default:0 %}Passte: {{ passt }}. Besser als erwartet: {{ mehr }}. Weniger als erwartet: {{ weniger }}.{% endblocktranslate %}</p>
+      {% endif %}
+
+      {% if b.rueckschauen %}
+        <h3>{% translate "Rückschau des Kindes (die letzten drei)" %}</h3>
+        <p class="kachel__text">{% translate "Das Kind weiß, dass Sie das sehen können. Es sind seine eigenen Worte, keine Bewertung." %}</p>
+        <ul data-lernen-rueckschauen>{% for r in b.rueckschauen %}<li>{{ r.datum|date:"SHORT_DATE_FORMAT" }}{% if r.fach %}, {{ r.fach|uebersetzt }}{% endif %}{% if r.geholfen %}: {% blocktranslate with text=r.geholfen %}Geholfen hat: {{ text }}{% endblocktranslate %}{% endif %}{% if r.schwer %} {% blocktranslate with text=r.schwer %}Schwer war: {{ text }}{% endblocktranslate %}{% endif %}</li>{% endfor %}</ul>
       {% endif %}
 
       {% if b.meldungen %}

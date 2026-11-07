@@ -103,12 +103,13 @@ def kind_woche(kind, montag):
             ergebnis__in=(Ergebnis.RICHTIG, Ergebnis.NOCH_NICHT),
         )
         .order_by("id")
-        .values_list("frage_id", "richtung", "ergebnis", "hilfestufe", "frage__thema_id")
+        .values_list("frage_id", "richtung", "ergebnis", "hilfestufe", "thema_id", "karte_id")
     )
     falsch, geklaert, themen = set(), set(), {}
     richtig = mit_hilfe = 0
-    for frage, richtung, ergebnis, hilfe, thema in zeilen:
-        schluessel = (frage, richtung)
+    for frage, richtung, ergebnis, hilfe, thema, karte in zeilen:
+        # Aufgaben, die es nicht mehr gibt (aufgeräumt), zählen über ihre Karte
+        schluessel = (frage, richtung) if frage is not None else ("karte", karte)
         antworten, fehlversuche = themen.get(thema, (0, 0))
         mit_hilfe += 1 if hilfe > 0 else 0
         if ergebnis == Ergebnis.RICHTIG:
@@ -123,7 +124,7 @@ def kind_woche(kind, montag):
     if themen:
         frueher = set(
             Versuch.objects.filter(sitzung__kind=kind, erstellt__lt=von)
-            .values_list("frage__thema_id", flat=True)
+            .values_list("thema_id", flat=True)
             .distinct()
         )
         # Die allererste Woche ist kein "Entdecken": ohne Vergangenheit ist alles neu.
@@ -351,6 +352,7 @@ class Wochenbild:
     meldungen: list = field(default_factory=list)
     pruefungen: list = field(default_factory=list)
     vorschlaege: list = field(default_factory=list)
+    rueckschauen: list = field(default_factory=list)  # E-14: die letzten drei, neueste zuerst
 
 
 def _prozent(bruch):
@@ -471,6 +473,7 @@ def wochenbild(kind, heute, montag=None):
         ),
         meldungen=_meldungen(sitzungen),
         pruefungen=_pruefungen(kind, heute),
+        rueckschauen=selectors.rueckschauen(kind, 3),
     )
     bild.vorschlaege = vorschlaege(bild, heute)
     return bild

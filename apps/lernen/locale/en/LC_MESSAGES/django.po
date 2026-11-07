@@ -5994,3 +5994,35 @@ msgstr "up to grade 4"
 
 msgid "ab Klasse 8"
 msgstr "from grade 8"
+
+msgid "Dein Tipp vom letzten Mal"
+msgstr "Your tip from last time"
+
+msgid "Das hat dir geholfen: %(text)s"
+msgstr "This helped you: %(text)s"
+
+msgid "Das war schwer: %(text)s"
+msgstr "This was hard: %(text)s"
+
+msgid ""
+"Deine Eltern sehen deine letzten drei Rückschauen. So können sie dir besser "
+"helfen."
+msgstr ""
+"Your parents can see your last three reflections. That helps them support "
+"you."
+
+msgid "Rückschau des Kindes (die letzten drei)"
+msgstr "The child's reflections (the last three)"
+
+msgid ""
+"Das Kind weiß, dass Sie das sehen können. Es sind seine eigenen Worte, keine "
+"Bewertung."
+msgstr ""
+"The child knows you can see this. These are their own words, not an "
+"assessment."
+
+msgid "Geholfen hat: %(text)s"
+msgstr "What helped: %(text)s"
+
+msgid "Schwer war: %(text)s"
+msgstr "What was hard: %(text)s"

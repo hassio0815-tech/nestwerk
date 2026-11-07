@@ -18,6 +18,7 @@ from .models import (
     Lernsitzung,
     Lerntag,
     Lernziel,
+    Selbsteinschaetzung,
     Thema,
 )
 
@@ -132,6 +133,62 @@ def sitzung(kind, pk):
 def offene_sitzung(kind):
     """Die letzte noch nicht beendete Sitzung des Kindes."""
     return Lernsitzung.objects.filter(kind=kind, ende__isnull=True).select_related("fach").first()
+
+
+def letzte_auswahl(kind):
+    """Die letzte Sitzung des Kindes (für die Vorbelegung der Startseite) oder ``None``."""
+    return (
+        Lernsitzung.objects.filter(kind=kind)
+        .exclude(vorhaben="", strategie="", erwartung="")
+        .select_related("fach", "thema")
+        .order_by("-id")
+        .first()
+    )
+
+
+@dataclass(frozen=True)
+class Rueckschau:
+    """Die Antworten des Kindes aus einer Rückschau (E-14: auch für die Eltern lesbar)."""
+
+    datum: object
+    fach: str
+    schwer: str
+    geholfen: str
+
+
+def rueckschauen(kind, anzahl=3):
+    """Die letzten ausgefüllten Rückschauen mit Text, neueste zuerst."""
+    sitzungen = (
+        Lernsitzung.objects.filter(kind=kind, rueckschau_fertig=True)
+        .exclude(rueckschau_schwer="", rueckschau_geholfen="")
+        .select_related("fach")
+        .order_by("-id")[:anzahl]
+    )
+    return [
+        Rueckschau(
+            (s.ende or s.beginn).date(),
+            s.fach.name if s.fach else "",
+            s.rueckschau_schwer,
+            s.rueckschau_geholfen,
+        )
+        for s in sitzungen
+    ]
+
+
+def einschaetzungs_versatz(kind, fach, ausser=None):
+    """Wirkung von "zu leicht"/"zu schwer" aus der letzten Rückschau dieses Fachs auf die
+    Schwierigkeit der nächsten Sitzung: +1, -1 oder 0. Nur die letzte beendete Sitzung zählt."""
+    letzte = (
+        Lernsitzung.objects.filter(kind=kind, fach=fach, rueckschau_fertig=True)
+        .exclude(pk=getattr(ausser, "pk", None))
+        .order_by("-id")
+        .first()
+    )
+    if letzte is None:
+        return 0
+    return {Selbsteinschaetzung.ZU_LEICHT: 1, Selbsteinschaetzung.ZU_SCHWER: -1}.get(
+        letzte.selbsteinschaetzung, 0
+    )
 
 
 def zustand(sitzung_):

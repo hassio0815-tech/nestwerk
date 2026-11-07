@@ -35,14 +35,24 @@ def quote(verlauf):
 
 
 def schwierigkeit(
-    niveau, intensitaet, verlauf, *, ziel_von=70, ziel_bis=85, fenster=8, mindestens=4, frust=False
+    niveau,
+    intensitaet,
+    verlauf,
+    *,
+    ziel_von=70,
+    ziel_bis=85,
+    fenster=8,
+    mindestens=4,
+    frust=False,
+    versatz=0,
 ):
     """Die Schwierigkeit der nächsten Aufgabe.
 
     ``verlauf``: bisherige Antworten zu dieser Rechenart, älteste zuerst, als Paare
     ``(Schwierigkeit, richtig)``. Betrachtet werden die letzten Antworten auf der zuletzt
     erreichten Stufe (höchstens ``fenster``); erst ab ``mindestens`` Antworten ändert sich etwas.
-    ``frust``: nach einer Frust-Erkennung eine Stufe leichter.
+    ``frust``: nach einer Frust-Erkennung eine Stufe leichter. ``versatz``: Wirkung der
+    Selbsteinschätzung "zu leicht/zu schwer" (+1 oder -1), bleibt im erlaubten Bereich.
     """
     niedrig, hoch = bereich(niveau, intensitaet)
     if not verlauf:
@@ -60,6 +70,7 @@ def schwierigkeit(
                 d += 1
             elif anteil * 100 < ziel_von:
                 d -= 1
+    d += versatz
     if frust:
         d -= 1
     return max(niedrig, min(hoch, max(1, d)))

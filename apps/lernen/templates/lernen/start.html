@@ -39,29 +39,37 @@
     {% if not optionen %}
       <p>{% translate "Es gibt noch nichts zum Üben. Frag deine Eltern." %}</p>
     {% else %}
+    {% if rueckschau_letzte %}
+    <div class="karte" data-lernen-rueckschau><div class="karte__inhalt stapel">
+      <h2>{% translate "Dein Tipp vom letzten Mal" %}</h2>
+      {% if rueckschau_letzte.geholfen %}<p>{% blocktranslate with text=rueckschau_letzte.geholfen %}Das hat dir geholfen: {{ text }}{% endblocktranslate %}</p>{% endif %}
+      {% if rueckschau_letzte.schwer %}<p>{% blocktranslate with text=rueckschau_letzte.schwer %}Das war schwer: {{ text }}{% endblocktranslate %}</p>{% endif %}
+      <p class="kachel__text" data-lernen-rueckschau-hinweis>{% translate "Deine Eltern sehen deine letzten drei Rückschauen. So können sie dir besser helfen." %}</p>
+    </div></div>
+    {% endif %}
     <form method="post" action="{% url 'lernen:los' %}" class="stapel lernen-form">{% csrf_token %}
       <div class="feld">
         <label class="feld__label" for="l-was">{% translate "Was möchtest du üben?" %}</label>
         <select class="feld__eingabe" id="l-was" name="was" required>
           {% for fach, themen in optionen %}
             <optgroup label="{{ fach.name|uebersetzt }}">
-              <option value="fach:{{ fach.pk }}">{% blocktranslate with name=fach.name|uebersetzt %}{{ name }}: alles gemischt{% endblocktranslate %}</option>
-              {% for t in themen %}<option value="thema:{{ t.pk }}">{{ fach.name|uebersetzt }}: {{ t.name|uebersetzt }}</option>{% endfor %}
+              <option value="fach:{{ fach.pk }}"{% if vorbelegt.fach_id == fach.pk and not vorbelegt.thema_id %} selected{% endif %}>{% blocktranslate with name=fach.name|uebersetzt %}{{ name }}: alles gemischt{% endblocktranslate %}</option>
+              {% for t in themen %}<option value="thema:{{ t.pk }}"{% if vorbelegt.thema_id == t.pk %} selected{% endif %}>{{ fach.name|uebersetzt }}: {{ t.name|uebersetzt }}</option>{% endfor %}
             </optgroup>
           {% endfor %}
         </select>
       </div>
       <fieldset class="lernen-wahl"><legend>{% translate "Was nimmst du dir vor?" %}</legend>
-        {% for wert, text in vorhaben %}<label><input type="radio" name="vorhaben" value="{{ wert }}"{% if wert == "wiederholen" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+        {% for wert, text in vorhaben %}<label><input type="radio" name="vorhaben" value="{{ wert }}"{% if wert == vorbelegt.vorhaben %} checked{% endif %}> {{ text }}</label>{% endfor %}
       </fieldset>
       <fieldset class="lernen-wahl"><legend>{% translate "Wie gehst du vor?" %}</legend>
-        {% for wert, text in strategien %}<label><input type="radio" name="strategie" value="{{ wert }}"{% if wert == "abdecken" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+        {% for wert, text in strategien %}<label><input type="radio" name="strategie" value="{{ wert }}"{% if wert == vorbelegt.strategie %} checked{% endif %}> {{ text }}</label>{% endfor %}
       </fieldset>
       <fieldset class="lernen-wahl"><legend>{% translate "Wie viel weißt du schon?" %}</legend>
-        {% for wert, text in erwartungen %}<label><input type="radio" name="erwartung" value="{{ wert }}"{% if wert == "einiges" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+        {% for wert, text in erwartungen %}<label><input type="radio" name="erwartung" value="{{ wert }}"{% if wert == vorbelegt.erwartung %} checked{% endif %}> {{ text }}</label>{% endfor %}
       </fieldset>
       <fieldset class="lernen-wahl"><legend>{% translate "Wie anstrengend soll es sein?" %}</legend>
-        {% for wert, text in intensitaeten %}<label><input type="radio" name="intensitaet" value="{{ wert }}"{% if wert == "normal" %} checked{% endif %}> {{ text }}</label>{% endfor %}
+        {% for wert, text in intensitaeten %}<label><input type="radio" name="intensitaet" value="{{ wert }}"{% if wert == vorbelegt.intensitaet %} checked{% endif %}> {{ text }}</label>{% endfor %}
       </fieldset>
       {% include "komponenten/button.html" with typ="submit" icon="funke" text=_("Los geht's") gross=True %}
     </form>

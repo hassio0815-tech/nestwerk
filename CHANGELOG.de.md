@@ -4,6 +4,17 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Lern-Fundament, Etappe 11 (07.11.2026)
+
+### Hinzugefügt
+- **Historie bleibt:** Jede Übungskarte hat jetzt eine stabile Kennung (`Karte`: Kind, Fach, Schlüssel). Versuche behalten Karte, Thema, Tage seit dem vorigen Versuch und den geplanten Termin. Das Aufräumen erzeugter Mathe-Aufgaben löscht keine Versuche mehr, die Historie kann über 60 Tage hinaus wachsen. Eine Datenmigration füllt Bestandsdaten.
+- **Letzte Rückschau sichtbar:** Die Startseite zeigt, was beim letzten Mal geholfen hat und was schwer war. Eltern sehen die letzten drei Rückschauen im Wochenbild, das Kind wird darauf hingewiesen.
+- **Letzte Auswahl vorbelegt:** Die Startseite merkt sich Fach, Thema, Vorhaben, Strategie, Erwartung und Anstrengung der letzten Sitzung.
+
+### Geändert
+- **Hilfe zählt:** Eine richtige Antwort mit Hilfestufe 3 oder höher rückt die Karte nicht mehr vor (sie bleibt in ihrer Box). Gilt ab jetzt, nicht rückwirkend.
+- **„Zu leicht / zu schwer“ wirkt:** Die Angabe aus der letzten Rückschau verschiebt die erste Aufgabe jeder Rechenart in der nächsten Sitzung um eine Stufe, im erlaubten Bereich.
+
 ## Lernmodul (03.11.2026)
 
 ### Hinzugefügt

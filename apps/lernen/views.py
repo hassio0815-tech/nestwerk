@@ -54,6 +54,26 @@ def _fach_optionen(kind):
     return ergebnis
 
 
+def _vorbelegung(kind):
+    """Auswahl der Startseite: die der letzten Sitzung, sonst die bisherigen Standardwerte."""
+    letzte = selectors.letzte_auswahl(kind)
+    wahl = {
+        "vorhaben": Vorhaben.WIEDERHOLEN,
+        "strategie": Strategie.ABDECKEN,
+        "erwartung": Erwartung.EINIGES,
+        "intensitaet": Intensitaet.NORMAL,
+        "fach_id": None,
+        "thema_id": None,
+    }
+    if letzte is not None:
+        for name in ("vorhaben", "strategie", "erwartung"):
+            wahl[name] = getattr(letzte, name) or wahl[name]
+        wahl["intensitaet"] = letzte.intensitaet or wahl["intensitaet"]
+        wahl["fach_id"] = letzte.fach_id
+        wahl["thema_id"] = letzte.thema_id
+    return wahl
+
+
 def _start_kontext(kind, *, fehler=""):
     heute = zeit.heute()
     wort = _wortwahl(kind)
@@ -75,6 +95,8 @@ def _start_kontext(kind, *, fehler=""):
         else wort("serie_neu"),
         "ton_ziel": wort("ziel_geschafft"),
         "tutor_sichtbar": tutor_selectors.bereit(),
+        "vorbelegt": _vorbelegung(kind),
+        "rueckschau_letzte": (selectors.rueckschauen(kind, 1) or [None])[0],
     }
 
 

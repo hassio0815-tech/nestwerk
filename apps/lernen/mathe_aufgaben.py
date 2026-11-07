@@ -141,11 +141,17 @@ def _parameter():
 
 def stufe_fuer(kind, fach, sitzung, generator_key, verlauf):
     """Schwierigkeit der nächsten Aufgabe dieser Rechenart (Niveau, Intensität, Verlauf, Frust)."""
+    # "zu leicht/zu schwer" aus der letzten Rückschau wirkt einmal, bei der ersten Aufgabe dieser
+    # Rechenart in der Sitzung; danach führt der Verlauf (sonst würde der Versatz sich summieren)
+    versatz = 0
+    if not sitzung.antworten.filter(frage__generator=generator_key).exists():
+        versatz = selectors.einschaetzungs_versatz(kind, fach, ausser=sitzung)
     return schwierigkeit.schwierigkeit(
         selectors.niveau(kind, fach),
         sitzung.intensitaet,
         verlauf.get(generator_key, []),
         frust=sitzung.frust_erkannt,
+        versatz=versatz,
         **_parameter(),
     )
 
@@ -377,7 +383,8 @@ def aufraeumen(jetzt):
     """Alte erzeugte Aufgaben löschen (Einstellung ``lernen.mathe_aufbewahren_tage``).
 
     - Lernstände erzeugter Aufgaben, die seit dem Dreifachen der Frist nicht mehr dran waren,
-    - erzeugte Zeilen ohne Lernstand, die älter als die Frist sind, mit ihren Versuchen.
+    - erzeugte Zeilen ohne Lernstand, die älter als die Frist sind. Ihre Versuche bleiben als
+      Historie erhalten (Frage und Lernstand-Verweis werden leer, Karte und Thema bleiben).
     Aufgaben eines geplanten oder laufenden Prüfungsplans bleiben. Gibt die Zahl gelöschter
     Aufgaben zurück.
     """
