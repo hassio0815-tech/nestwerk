@@ -243,3 +243,10 @@ def test_schuljahr_neuladen_hebt_nicht_noch_einmal_an(eltern_client, kind_a):
     assert "angehoben" in eltern_client.get(url).content.decode()
     assert "angehoben" not in eltern_client.get(url).content.decode()  # Meldung nur einmal
     assert _klassen(kind_a) == [6]
+
+
+def test_seite_englisch_uebersetzt_fachnamen(eltern_client, kind_a):
+    antwort = eltern_client.get(reverse("lernen:eltern_kinder"), HTTP_ACCEPT_LANGUAGE="en")
+    html = antwort.content.decode()
+    assert "Performance level in Maths" in html
+    assert "Performance level in Mathe" not in html

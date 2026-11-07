@@ -1,4 +1,4 @@
-{% load i18n %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
+{% load i18n sprache %}<form method="post" action="{{ weiter_url }}" hx-post="{{ weiter_url }}" hx-target="#assistent" hx-swap="innerHTML" class="stapel" autocomplete="off">
   {% csrf_token %}
   <h1>{% translate "Lernen: Kinder" %}</h1>
   <p>{% translate "Diese Angaben passen Aufgaben und Texte an. Alles ist freiwillig. Sie bleiben auf eurem Server." %}</p>
@@ -12,7 +12,7 @@
       <div class="feld"><label class="feld__label" for="schulform-{{ z.kind.pk }}">{% translate "Schulform" %}</label>
         <input class="feld__eingabe" id="schulform-{{ z.kind.pk }}" name="kind-{{ z.kind.pk }}-schulform" value="{{ z.werte.schulform }}" maxlength="60"></div>
       {% for schluessel, fach, aktuell in z.stufen %}
-        <div class="feld"><label class="feld__label" for="stufe-{{ schluessel }}-{{ z.kind.pk }}">{% blocktranslate %}Leistungsstufe in {{ fach }}{% endblocktranslate %}</label>
+        <div class="feld"><label class="feld__label" for="stufe-{{ schluessel }}-{{ z.kind.pk }}">{% blocktranslate with fach=fach|uebersetzt %}Leistungsstufe in {{ fach }}{% endblocktranslate %}</label>
           <select class="feld__eingabe" id="stufe-{{ schluessel }}-{{ z.kind.pk }}" name="kind-{{ z.kind.pk }}-stufe-{{ schluessel }}">
             <option value="">{% translate "keine Stufe" %}</option>
             {% for wert, text in stufenwahl %}<option value="{{ wert }}"{% if aktuell == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}

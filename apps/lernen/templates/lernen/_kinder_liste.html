@@ -1,4 +1,4 @@
-{% load i18n %}<div id="kinder-liste" class="stapel">
+{% load i18n sprache %}<div id="kinder-liste" class="stapel">
   {% if schuljahr %}<div class="feld__hinweis" role="status"><p>{% blocktranslate count a=schuljahr.0 with g=schuljahr.1 %}Neues Schuljahr: Klassenstufe bei {{ a }} Kind angehoben, {{ g }} unverändert (Obergrenze erreicht).{% plural %}Neues Schuljahr: Klassenstufe bei {{ a }} Kindern angehoben, {{ g }} unverändert (Obergrenze erreicht).{% endblocktranslate %}</p></div>{% endif %}
   {% for z in zeilen %}
     <form method="post" action="{% url 'lernen:eltern_kind_speichern' z.kind.pk %}" hx-post="{% url 'lernen:eltern_kind_speichern' z.kind.pk %}" hx-target="#kinder-liste" hx-swap="outerHTML" class="karte" autocomplete="off">
@@ -12,7 +12,7 @@
         <div class="feld"><label class="feld__label" for="schulform-{{ z.kind.pk }}">{% translate "Schulform" %}</label>
           <input class="feld__eingabe" id="schulform-{{ z.kind.pk }}" name="schulform" value="{{ z.werte.schulform }}" maxlength="60"></div>
         {% for schluessel, fach, aktuell in z.stufen %}
-          <div class="feld"><label class="feld__label" for="stufe-{{ schluessel }}-{{ z.kind.pk }}">{% blocktranslate %}Leistungsstufe in {{ fach }}{% endblocktranslate %}</label>
+          <div class="feld"><label class="feld__label" for="stufe-{{ schluessel }}-{{ z.kind.pk }}">{% blocktranslate with fach=fach|uebersetzt %}Leistungsstufe in {{ fach }}{% endblocktranslate %}</label>
             <select class="feld__eingabe" id="stufe-{{ schluessel }}-{{ z.kind.pk }}" name="stufe-{{ schluessel }}">
               <option value="">{% translate "keine Stufe" %}</option>
               {% for wert, text in stufenwahl %}<option value="{{ wert }}"{% if aktuell == wert %} selected{% endif %}>{{ text }}</option>{% endfor %}
