@@ -305,6 +305,8 @@ They are listed in `deploy/crontab` and run automatically in the `scheduler` con
 |---|---|---|
 | `ki_auftraege_verarbeiten` | every 2 minutes | work through the AI queue (one call at a time, retry on errors) |
 | `lernen_inbox_scannen` | every 2 minutes | move new files from the `inbox` folder into the learning folder |
+| `lernen_eltern_hinweise` | daily 16:30 | short messages to the parents for exceptions (material waiting, child quiet for 3 days, repeated mistakes, exam soon) |
+| `lernen_digest` | every 15 minutes | weekly summary; sends only on the chosen weekday after the chosen time, at most once a week |
 | `tutor_aufraeumen` | daily 04:25 | delete old tutor conversations (retention is adjustable, default 90 days) |
 
 Without a switched-on AI the queue has nothing to do, and uploaded material is not turned into questions. If something does not run: `docker compose logs scheduler`.

@@ -16,6 +16,7 @@ Entries are derived from the Git history and grouped by project phase. Work pack
 
 ### Changed
 - **Daily limit for learning points is 8 (was 10).** A data migration lowers it only if it still has the old default. The "exam prepared" bonus (10) is therefore capped by the limit.
+- Browser walkthrough fixes: subject names are translated on the children and levels page; the parents' week view addresses parents informally; the help text for new words no longer promises a per-child setting that has no screen yet.
 - The strategy "I say the word out loud" is now "I say it out loud" (also fits maths).
 
 ## Relief for parents, stage 13 (07.11.2026)

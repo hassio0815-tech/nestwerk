@@ -16,6 +16,7 @@ Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppi
 
 ### Geändert
 - **Tageslimit für Lernpunkte ist 8 (vorher 10).** Eine Datenmigration senkt es nur, wenn es noch der alte Startwert ist. Der Bonus „Prüfung vorbereitet“ (10) wird dadurch vom Limit gedeckelt.
+- Fehler aus dem Browser-Durchlauf behoben: Fachnamen werden auf der Seite „Kinder und Leistungsstufen“ übersetzt, das Wochenbild spricht die Eltern mit „ihr“ an, und der Hilfetext zu neuen Vokabeln verspricht keine Einstellung je Kind mehr, für die es noch keine Seite gibt.
 - Die Strategie „Ich sage das Wort laut“ heißt jetzt „Ich sage es laut“ (passt auch zu Mathe).
 
 ## Entlastung der Eltern, Etappe 13 (07.11.2026)

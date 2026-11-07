@@ -699,13 +699,13 @@ Konzept-Liste (Abschnitt 14), angepasst. Neue Punkte sind mit (neu) markiert.
 - **Geschlossene Konzept-[O]-Punkte:** App-Name Nestwerk (E8), Stil der Kinderoberfläche (E11), Startwerte für Ränge, Katalog und Bibliothek (E13–E15), Mod-Seltenheit an Rang gekoppelt und 36 Mods pro Thema (E7, E9), Eltern-Avatar (E10), Meilenstein-Schwellen (E12), Mailpostfach (E18).
 - **Stufen:** Aufgabenbibliothek und Taschengeld-Limit nach Kern verschoben, weil die Startwerte im Assistenten gebraucht werden (E13, E15). Zuordnung offen (siehe 19, Punkt 8).
 - **Module:** Lernsystem und Forschungssystem als eigene Django-Module (Vorgabe des Auftrags).
-- **Lernsystem:** Anforderungen aus dem Lern-Interview in Abschnitt 21 (L1–L18). Cloud-KI als Opt-in ergänzt Abschnitt 14.
+- **Lernsystem:** Anforderungen aus dem Lern-Interview in Abschnitt 21 (L1–L42). Cloud-KI als Opt-in ergänzt Abschnitt 14.
 
 ---
 
 ## 21. Lernsystem (Modul `lernen`)
 
-Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L18**. Sie schließen Punkt 9 aus Abschnitt 19.
+Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L42** (L19 ff. in 21.14). Sie schließen Punkt 9 aus Abschnitt 19.
 
 ### 21.1 Ziel
 
@@ -834,3 +834,27 @@ Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L18**. 
 - **[E]** **Erklärkarten:** je Rechenart ein Merksatz in drei Sprachstufen (wie `texte.py`) mit festem Mini-Beispiel; aufklappbar beim Üben, dazu der Bereich "Rechen-Tipps" (Kinder) und eine lesende Ansicht für die Eltern. Zeigt eine Karte zufällig die Lösung der offenen Aufgabe, blendet die Anzeige Beispiel und Merksatz dort aus. Neue Rechenarten brauchen Hilfe, Karte und mindestens eine Fehlerregel; ein Test schlägt sonst an.
 - **[E]** **Fehleranalyse (L17), regelbasiert und ohne KI:** Je Rechenart rechnen kleine Fehlermodelle aus, was bei einem typischen Fehler herauskäme (Übertrag vergessen oder doppelt, Nenner mitgerechnet, nicht erweitert, Komma verrutscht, Punkt-vor-Strich oder Klammer ignoriert, Vorzeichen, Prozentsatz und Grundwert vertauscht, Einheit falsch umgerechnet, um eins oder zehn daneben, Zahlendreher und mehr). Passt die falsche Antwort, steht der `fehlertyp` im Versuch (`Pruefergebnis.fehlertyp`). Das Kind bekommt einen freundlichen Hinweis **ohne die Lösung** und einen **zweiten Versuch**; danach steht die Lösung da. Ein unbekannter Fehler bekommt einen neutralen Hinweis. Das Wochenbild der Eltern nennt die häufigsten Fehlerarten der Woche. Die Erkennung ist eine **Heuristik**: Mehrere Fehler können denselben Wert ergeben, die erste passende Regel gewinnt.
 - **[E]** **Optionale KI (L18), nur Opt-in und nie für Lösungen:** (a) **Einkleidung** (`lernen.mathe_einkleidung_ki`, Standard aus): nur mit dem Schalter UND einem aktiven Anbieter für `fragen_erzeugen` (Cloud nur mit Einwilligung, kein stiller Fallback) formuliert die KI aus der Rechnung eine Sachaufgabe, in der Warteschlange, nie im Request, mit strukturiertem JSON. Zahlen und Lösung kommen vom Generator; vor der Anzeige prüft Nestwerk, dass alle Zahlen vorkommen und keine weiteren, Länge, kein HTML oder Link, keine Frage nach persönlichen Daten, sonst bleibt die lokale Vorlage. Das Ergebnis liegt an der Aufgabe (`gen_daten.einkleidung`). Ohne KI gibt es lokale Textaufgaben-Vorlagen (mindestens zwei je Rechenart, Anteil über `lernen.mathe_textaufgaben_prozent`, Standard 0). (b) **"Erkläre es anders"** (nur mit Tutor und Anbieter): erklärt Karte und das analoge Beispiel in anderen Worten; die echte Aufgabe ist nicht im Kontext. Zählt zu den Tutor-Limits, läuft durch die Leak-Prüfung des Tutors und eine Prüfung gegen die Lösung, sonst fester Text. Die Eltern werden in den Einstellungen und im Handbuch auf Risiken hingewiesen (keine Garantie).
+
+### 21.14 Entscheidungen der Nachtsession 07.11.2026 (L19 ff.)
+
+Entscheidungen des Nutzers vom 07.11.2026 für Lern-Etappen 11 bis 14. Die Nummern E-1 bis E-16 stammen aus dem Ausbau-Plan, die Kurzfassung steht hinter jeder Entscheidung. Was davon noch nicht gebaut ist, steht im Nachtbericht `docs/reviews/NACHT-2026-11-07.md`.
+
+- **[E]** **Grundregel (L19):** Im Zweifel werden Punkte, Mengen und Grenzen **niedriger** angesetzt, damit kein Frust entsteht.
+- **[E]** **Punkte (L20):** Lernen zählt als XP **und** Kaufpunkte. Tagesziel 5, Selbsttest 3, Fehlerüberarbeitung 3, Rückschau 1 (je einmal am Tag), Planwoche 3, Prüfung vorbereitet 10. **Tageslimit 8.** Der Bonus 10 wird deshalb vom Limit gedeckelt. Details in `docs/plans/PUNKTE-LERNEN-2026-11-07.md`.
+- **[E]** **Wiederholung (L21, E-1):** Planung mit der Bibliothek `fsrs` (gepinnt, MIT), Leitner bleibt als Fallback-Einstellung.
+- **[E]** **Neue Vokabeln (L22, E-2):** pro Tag in Klasse 3 / 6 / 8 jeweils 3 / 5 / 7, je Kind überschreibbar (Feld je Leistungsstufe; die Oberfläche je Kind steht aus, die Einstellungsseite gilt familienweit).
+- **[E]** **Audio (L23, E-3):** später (Etappe 18).
+- **[E]** **Wochen-Digest (L24, E-4):** als Grundeinstellung je Elternteil, Push am Sonntag 18:00, Tag und Uhrzeit einstellbar. Gotify als weiterer Kanal kommt später in `benachrichtigung`.
+- **[E]** **Vokabeln-Aufgabe (L25, E-5):** Die Aufgabe „Vokabeln lernen“ wird nur **erledigt** (keine zusätzlichen Punkte), sobald die Lernzeit reicht.
+- **[E]** **Ordner `tests` (L26, E-6):** wird gestrichen.
+- **[E]** **Deutsch (L27, E-7):** kein Deutsch in dieser Ausbaustufe.
+- **[E]** **Fehlergrund (L28, E-8):** Die Auswahl „Woran lag es?“ erscheint ab Klasse 6.
+- **[E]** **Auto-Freigabe (L29, E-9):** Fragen aus Material werden ab 12 Jahren bei Grounding von mindestens 90 % automatisch freigegeben.
+- **[E]** **Mischung (L30, E-10):** Interleaving mit 30 %, als Einstellung.
+- **[E]** **Hilfe-Regel (L31, E-11):** gilt nicht rückwirkend.
+- **[E]** **Ziel-Retention (L32, E-12):** 0,90.
+- **[E]** **Höchstabstand (L33, E-13):** 60 Tage.
+- **[E]** **Rückschau für Eltern (L34, E-14):** Die Eltern sehen die letzten drei Rückschau-Texte, das Kind wird darauf hingewiesen.
+- **[E]** **„3 Tage still“ (L35, E-15):** nicht in Ferien und nicht in einer Pause.
+- **[E]** **Tutor-Markierung (L36, E-16):** wird sofort gepusht.
+- **[E]** **Technik (L37 bis L42, T1, T2, T4, T5, T6/T7):** `fsrs` gepinnt ist erlaubt (T1). Die VM hat keine Lerndaten, Migrationen sind risikolos (T2). Vor jedem Deploy gibt es einen Browser-Durchlauf (T4), ohne Screenshots im Repository (T5). Commits sind englisch, englische Texte entstehen per lokaler KI oder von Hand und werden in einer Prüfliste im Bericht zur Tonkontrolle aufgeführt (T6/T7). Bei der Arbeit darf die lokale KI genutzt werden (T3).

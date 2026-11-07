@@ -305,6 +305,8 @@ Sie stehen in `deploy/crontab` und laufen automatisch im Container `scheduler`. 
 |---|---|---|
 | `ki_auftraege_verarbeiten` | alle 2 Minuten | KI-Warteschlange abarbeiten (ein Aufruf zur Zeit, Wiederholung bei Fehlern) |
 | `lernen_inbox_scannen` | alle 2 Minuten | neue Dateien im Ordner `inbox` in die Lernmappe übernehmen |
+| `lernen_eltern_hinweise` | täglich 16:30 | kurze Meldungen an die Eltern bei Ausnahmen (Material wartet, Kind 3 Tage still, Fehlerhäufung, Prüfung bald) |
+| `lernen_digest` | alle 15 Minuten | Wochen-Zusammenfassung; sendet nur am eingestellten Wochentag ab der Uhrzeit, höchstens einmal je Woche |
 | `tutor_aufraeumen` | täglich 04:25 | alte Tutor-Gespräche löschen (Aufbewahrung einstellbar, Standard 90 Tage) |
 
 Ohne eingeschaltete KI hat die Warteschlange nichts zu tun, und hochgeladenes Material wird nicht zu Fragen verarbeitet. Läuft etwas nicht: `docker compose logs scheduler`.
