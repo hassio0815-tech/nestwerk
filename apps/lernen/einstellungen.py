@@ -99,6 +99,18 @@ STARTWERTE_MATHE_HILFE = {
     "lernen.mathe_textaufgaben_prozent": 0,
 }
 
+# Etappe 12 (FSRS, Neu-Limit, Mischung): Migration 0023 legt fehlende Werte an.
+STARTWERTE_WIEDERHOLUNG = {
+    "lernen.wiederholung_algorithmus": "fsrs",
+    "lernen.fsrs_ziel_retention_prozent": 90,
+    "lernen.fsrs_hoechstabstand_tage": 60,
+    "lernen.neu_vokabeln_bis_klasse5": 3,
+    "lernen.neu_vokabeln_klasse6_7": 5,
+    "lernen.neu_vokabeln_ab_klasse8": 7,
+    "lernen.interleaving_prozent": 30,
+    "lernen.mathe_fehlerart_min": 3,
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -173,6 +185,7 @@ def einstellungen_definieren():
     _definieren_pruefung()
     _definieren_woche()
     _definieren_mathe()
+    _definieren_wiederholung()
 
 
 def _definieren_ueben():
@@ -848,6 +861,80 @@ def _definieren_mathe():
             "Garantie gibt es nicht: Prüfe die Texte, die Nestwerk anzeigt, und schalte es bei "
             "Zweifeln wieder aus. Ohne KI nutzt Nestwerk eigene Vorlagen."
         ),
+    )
+
+
+def _definieren_wiederholung():
+    """FSRS, Neu-Limit und Mischung (Etappe 12)."""
+    definieren(
+        "lernen.wiederholung_algorithmus",
+        Typ.TEXT,
+        _("Wiederholung: Algorithmus"),
+        beschreibung=_(
+            "fsrs: individuelle Abstände je Frage (Standardwerte, kein Training nötig). "
+            "leitner: feste Boxen mit den Abständen oben. Leitner gilt auch, wenn FSRS fehlt."
+        ),
+        auswahl=("fsrs", "leitner"),
+    )
+    definieren(
+        "lernen.fsrs_ziel_retention_prozent",
+        Typ.GANZZAHL,
+        _("FSRS: Ziel-Behaltensquote"),
+        beschreibung=_(
+            "So wahrscheinlich soll eine Frage bei der nächsten Wiederholung noch sitzen. "
+            "Höher heißt: öfter wiederholen."
+        ),
+        einheit=_("Prozent"),
+        minimum=70,
+        maximum=97,
+    )
+    definieren(
+        "lernen.fsrs_hoechstabstand_tage",
+        Typ.GANZZAHL,
+        _("FSRS: größter Abstand"),
+        beschreibung=_("Länger als das wartet keine Frage auf die nächste Wiederholung."),
+        einheit=_("Tage"),
+        minimum=7,
+        maximum=365,
+    )
+    for schluessel, bezeichnung in (
+        ("lernen.neu_vokabeln_bis_klasse5", _("Neue Vokabeln pro Tag: bis Klasse 5")),
+        ("lernen.neu_vokabeln_klasse6_7", _("Neue Vokabeln pro Tag: Klasse 6 und 7")),
+        ("lernen.neu_vokabeln_ab_klasse8", _("Neue Vokabeln pro Tag: ab Klasse 8")),
+    ):
+        definieren(
+            schluessel,
+            Typ.GANZZAHL,
+            bezeichnung,
+            beschreibung=_(
+                "Mehr neue Vokabeln stellt das Üben pro Tag nicht. Ist die Klasse unbekannt, "
+                "gilt der niedrigste Wert. Pro Kind lässt sich das überschreiben."
+            ),
+            minimum=1,
+            maximum=50,
+        )
+    definieren(
+        "lernen.interleaving_prozent",
+        Typ.GANZZAHL,
+        _("Mathe: Anteil älterer Rechenarten"),
+        beschreibung=_(
+            "Bei „alles gemischt“ stammt mindestens dieser Anteil der Aufgaben einer Runde aus "
+            "Rechenarten früherer Stufen. Das hält altes Können frisch."
+        ),
+        einheit=_("Prozent"),
+        minimum=0,
+        maximum=80,
+    )
+    definieren(
+        "lernen.mathe_fehlerart_min",
+        Typ.GANZZAHL,
+        _("Mathe: Fehler einer Art für mehr Übung"),
+        beschreibung=_(
+            "Hat ein Kind in 14 Tagen so viele erkannte Rechenfehler bei einer Rechenart, "
+            "kommt sie öfter dran."
+        ),
+        minimum=2,
+        maximum=30,
     )
 
 

@@ -10,13 +10,26 @@
 import re
 from dataclasses import dataclass
 from datetime import timedelta
+from statistics import median
 
+from apps.kern import zeit
 from apps.kern.einstellungen import wert
 
+from . import fsrs_adapter
 from .mathe.hilfe import aufgabe_aus_frage
-from .models import Frage, FrageTyp, Intensitaet, Lernstand, Richtung, Vorhaben
+from .models import (
+    Ergebnis,
+    Frage,
+    FrageTyp,
+    Intensitaet,
+    Leistungsstufe,
+    Lernstand,
+    Richtung,
+    Versuch,
+    Vorhaben,
+)
 from .pruefung import alternativen, anzeige_antwort, pruefen, pruefen_mathe
-from .selectors import nutzbare_fragen
+from .selectors import leistungsstufe, nutzbare_fragen
 
 
 @dataclass(frozen=True)
@@ -90,16 +103,67 @@ def faellig_nach(box, heute):
 HILFE_OHNE_FORTSCHRITT_AB = 3
 
 
-def stand_buchen(kind, frage, richtung, richtig, heute, jetzt, *, hilfestufe=0, karte=None):
+MEDIAN_MIN_ANTWORTEN = 10  # so viele Antworten braucht der Median, sonst gibt es nie "Easy"
+
+
+def median_dauer_ms(kind):
+    """Mittlere Antwortdauer der letzten richtigen Antworten ohne Hilfe, oder ``None``."""
+    dauern = list(
+        Versuch.objects.filter(
+            sitzung__kind=kind, ergebnis=Ergebnis.RICHTIG, hilfestufe=0, dauer_ms__gt=0
+        )
+        .order_by("-id")
+        .values_list("dauer_ms", flat=True)[:50]
+    )
+    return median(dauern) if len(dauern) >= MEDIAN_MIN_ANTWORTEN else None
+
+
+def _fsrs_buchen(stand, box_vorher, bewertung, heute):
+    """FSRS-Teil von ``stand_buchen``: Stabilität, Schwierigkeit und nächster Termin."""
+    stab, schw = stand.stabilitaet, stand.schwierigkeit
+    zuletzt = zeit.heute(stand.zuletzt) if stand.zuletzt else None
+    if stab is None and stand.versuche > 0:
+        # Stand aus der Leitner-Zeit: die Box gibt die Startstabilität (kein Neuanfang)
+        stab = float(abstaende()[min(box_vorher, len(abstaende()) - 1)])
+        schw = fsrs_adapter.START_SCHWIERIGKEIT
+        zuletzt = zuletzt or heute - timedelta(days=int(stab))
+    neu = fsrs_adapter.fortschreiben(stab, schw, zuletzt, heute, bewertung)
+    stand.stabilitaet, stand.schwierigkeit = neu.stabilitaet, neu.schwierigkeit
+    stand.faellig_am = heute + timedelta(days=neu.abstand_tage)
+
+
+def stand_buchen(
+    kind,
+    frage,
+    richtung,
+    richtig,
+    heute,
+    jetzt,
+    *,
+    hilfestufe=0,
+    karte=None,
+    dauer_ms=None,
+    median_ms=None,
+):
     """Schreibt das Ergebnis einer Antwort in den Lernstand (legt ihn bei Bedarf an).
-    Richtig mit viel Hilfe bleibt in der Box und kommt nach deren Abstand wieder."""
+
+    Die Box zählt immer mit (Stolperstellen, Leitner als Fallback). Mit FSRS bestimmt die
+    Bewertung der Antwort den nächsten Termin (``fsrs_adapter.bewertung``); richtig mit viel
+    Hilfe bleibt in der Box und kommt früher wieder."""
     stand, _neu = Lernstand.objects.get_or_create(
         kind=kind, frage=frage, richtung=richtung, defaults={"faellig_am": heute}
     )
+    if stand.erster_tag is None and stand.versuche == 0:
+        stand.erster_tag = heute
+    box_vorher = stand.box
     mit_hilfe = richtig and hilfestufe >= HILFE_OHNE_FORTSCHRITT_AB
     if not mit_hilfe:
         stand.box = naechste_box(stand.box, richtig)
-    stand.faellig_am = faellig_nach(stand.box, heute)
+    if fsrs_adapter.algorithmus() == fsrs_adapter.ALGORITHMUS_FSRS:
+        bewertung = fsrs_adapter.bewertung(richtig, hilfestufe, dauer_ms, median_ms)
+        _fsrs_buchen(stand, box_vorher, bewertung, heute)
+    else:
+        stand.faellig_am = faellig_nach(stand.box, heute)
     stand.versuche += 1
     stand.richtige += 1 if richtig and not mit_hilfe else 0
     stand.zuletzt = jetzt
@@ -107,6 +171,48 @@ def stand_buchen(kind, frage, richtung, richtig, heute, jetzt, *, hilfestufe=0, 
         stand.karte = karte
     stand.save()
     return stand
+
+
+# --- Neu-Limit (W-5) ------------------------------------------------------------------------------
+
+
+def neu_limit(kind, fach):
+    """So viele neue Vokabeln pro Tag: der Wert des Kindes, sonst nach Klassenstufe (Klasse
+    unbekannt: der niedrigste Wert)."""
+    eintrag = leistungsstufe(kind, fach)
+    if eintrag and eintrag.neu_pro_tag:
+        return eintrag.neu_pro_tag
+    klasse = eintrag.klassenstufe if eintrag else None
+    if klasse is None or klasse <= 5:
+        return wert("lernen.neu_vokabeln_bis_klasse5")
+    if klasse <= 7:
+        return wert("lernen.neu_vokabeln_klasse6_7")
+    return wert("lernen.neu_vokabeln_ab_klasse8")
+
+
+def neu_limit_setzen(kind, fach, anzahl):
+    """Überschreibt das Limit für ein Kind; ``None`` nimmt wieder den Wert nach Klassenstufe."""
+    Leistungsstufe.objects.update_or_create(kind=kind, fach=fach, defaults={"neu_pro_tag": anzahl})
+
+
+def _begonnene_vokabeln(kind, fach, heute):
+    return set(
+        Lernstand.objects.filter(
+            kind=kind,
+            erster_tag=heute,
+            frage__typ=FrageTyp.VOKABEL,
+            frage__thema__fach=fach,
+        ).values_list("frage_id", flat=True)
+    )
+
+
+def _neu_begrenzen(neu, kind, fach, heute):
+    """Streicht neue Vokabeln, sobald das Tageslimit erreicht ist. Die zweite Richtung einer heute
+    begonnenen Vokabel und Fragen anderer Art bleiben erlaubt."""
+    begonnen = _begonnene_vokabeln(kind, fach, heute)
+    if len(begonnen) < neu_limit(kind, fach):
+        return neu
+    return [(f, r) for f, r in neu if f.typ != FrageTyp.VOKABEL or f.pk in begonnen]
 
 
 def _kandidaten(kind, fach, themen, thema, heute, nur_fragen=None):
@@ -170,6 +276,8 @@ def naechste(
     fällig, kommen sie trotzdem dran (die Portion soll sich üben lassen).
     """
     neu, faellig, stolper = _kandidaten(kind, fach, themen, thema, heute, nur_fragen)
+    if nur_fragen is None:
+        neu = _neu_begrenzen(neu, kind, fach, heute)
     pools = {
         Vorhaben.NEU: (neu, faellig),
         Vorhaben.WIEDERHOLEN: (faellig, neu),

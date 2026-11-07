@@ -69,6 +69,7 @@ def test_box_vor_bei_richtig_zurueck_bei_falsch():
 
 
 def test_stand_buchen_fortschreiben(kind_a, fach):
+    einstellungen.setzen("lernen.wiederholung_algorithmus", "leitner", akteur=None)
     frage = Frage.objects.filter(thema__fach=fach).first()
     s = wiederholung.stand_buchen(kind_a, frage, Richtung.DE_EN, True, HEUTE, None)
     assert (s.box, s.faellig_am, s.versuche, s.richtige) == (1, HEUTE + timedelta(days=3), 1, 1)

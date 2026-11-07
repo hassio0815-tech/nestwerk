@@ -9,6 +9,7 @@ dependencies = [
     "argon2-cffi==25.1.0",
     "cryptography==50.0.2",
     "Django==5.2.18",
+    "fsrs==6.3.2",
     "gunicorn==26.2.0",
     "py-vapid==1.9.6",
     "pillow==13.0.0",

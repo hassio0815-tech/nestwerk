@@ -257,6 +257,8 @@ class Leistungsstufe(models.Model):
     fach = models.ForeignKey(Fach, on_delete=models.CASCADE, related_name="leistungsstufen")
     stufe = models.CharField(max_length=40, blank=True)
     klassenstufe = models.PositiveSmallIntegerField(null=True, blank=True)
+    # Etappe 12: neue Vokabeln pro Tag für dieses Kind; leer = Wert nach Klassenstufe
+    neu_pro_tag = models.PositiveSmallIntegerField(null=True, blank=True)
 
     class Meta:
         constraints = [
@@ -308,6 +310,10 @@ class Lernstand(models.Model):
     karte = models.ForeignKey(
         Karte, null=True, blank=True, on_delete=models.SET_NULL, related_name="staende"
     )
+    # Etappe 12 (FSRS): leer, solange der Stand noch in Leitner-Boxen läuft
+    stabilitaet = models.FloatField(null=True, blank=True)
+    schwierigkeit = models.FloatField(null=True, blank=True)
+    erster_tag = models.DateField(null=True, blank=True)  # Tag der ersten Antwort (Neu-Limit)
 
     class Meta:
         constraints = [

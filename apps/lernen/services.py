@@ -439,6 +439,7 @@ def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehler
         **felder,
     )
     richtig = ergebnis == Ergebnis.RICHTIG
+    median_ms = wiederholung.median_dauer_ms(sitzung.kind) if richtig and hilfestufe == 0 else None
     wiederholung.stand_buchen(
         sitzung.kind,
         aufgabe.frage,
@@ -448,6 +449,8 @@ def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehler
         jetzt,
         hilfestufe=hilfestufe,
         karte=felder["karte"],
+        dauer_ms=dauer_ms,
+        median_ms=median_ms,
     )
     sitzung.versuche += 1
     sitzung.richtig += 1 if richtig else 0

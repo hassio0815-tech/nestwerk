@@ -119,7 +119,14 @@ def test_neuladen_zeigt_dieselbe_frage(kind_a, fach):
     assert services.frage_stellen(s).richtung == erste.richtung
 
 
+@pytest.fixture(autouse=True)
+def _kein_neu_limit():
+    """Diese Tests üben mehr neue Vokabeln als das Tageslimit (Etappe 12 testet es eigens)."""
+    einstellungen.setzen("lernen.neu_vokabeln_bis_klasse5", 50, akteur=None)
+
+
 def test_richtige_antwort_bucht_den_lernstand(kind_a, fach, uhr):
+    einstellungen.setzen("lernen.wiederholung_algorithmus", "leitner", akteur=None)
     s = starten(kind_a, fach)
     a = frage(s)
     r = services.antworten(s, a.loesung.upper() + " ")

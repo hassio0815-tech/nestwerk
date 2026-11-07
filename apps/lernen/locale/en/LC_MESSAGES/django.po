@@ -6026,3 +6026,45 @@ msgstr "What helped: %(text)s"
 
 msgid "Schwer war: %(text)s"
 msgstr "What was hard: %(text)s"
+
+msgid "Wiederholung: Algorithmus"
+msgstr "Review: algorithm"
+
+msgid "fsrs: individuelle Abstände je Frage (Standardwerte, kein Training nötig). leitner: feste Boxen mit den Abständen oben. Leitner gilt auch, wenn FSRS fehlt."
+msgstr "fsrs: individual intervals per question (default values, no training needed). leitner: fixed boxes with the intervals above. Leitner also applies if FSRS is missing."
+
+msgid "FSRS: Ziel-Behaltensquote"
+msgstr "FSRS: target retention"
+
+msgid "So wahrscheinlich soll eine Frage bei der nächsten Wiederholung noch sitzen. Höher heißt: öfter wiederholen."
+msgstr "How likely a question should still be remembered at its next review. Higher means more reviews."
+
+msgid "FSRS: größter Abstand"
+msgstr "FSRS: longest interval"
+
+msgid "Länger als das wartet keine Frage auf die nächste Wiederholung."
+msgstr "No question waits longer than this for its next review."
+
+msgid "Neue Vokabeln pro Tag: bis Klasse 5"
+msgstr "New vocabulary per day: up to grade 5"
+
+msgid "Neue Vokabeln pro Tag: Klasse 6 und 7"
+msgstr "New vocabulary per day: grades 6 and 7"
+
+msgid "Neue Vokabeln pro Tag: ab Klasse 8"
+msgstr "New vocabulary per day: grade 8 and up"
+
+msgid "Mehr neue Vokabeln stellt das Üben pro Tag nicht. Ist die Klasse unbekannt, gilt der niedrigste Wert. Pro Kind lässt sich das überschreiben."
+msgstr "Practice never introduces more new vocabulary per day. If the grade is unknown, the lowest value applies. It can be overridden per child."
+
+msgid "Mathe: Anteil älterer Rechenarten"
+msgstr "Maths: share of older operation types"
+
+msgid "Bei „alles gemischt“ stammt mindestens dieser Anteil der Aufgaben einer Runde aus Rechenarten früherer Stufen. Das hält altes Können frisch."
+msgstr "With “everything mixed”, at least this share of a round’s tasks comes from operation types of earlier levels. This keeps old skills fresh."
+
+msgid "Mathe: Fehler einer Art für mehr Übung"
+msgstr "Maths: errors of one kind that trigger more practice"
+
+msgid "Hat ein Kind in 14 Tagen so viele erkannte Rechenfehler bei einer Rechenart, kommt sie öfter dran."
+msgstr "If a child makes this many recognised calculation errors in one operation type within 14 days, it comes up more often."
