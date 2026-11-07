@@ -211,6 +211,8 @@ def werte_aus(ereignis):
 
     - Texte sind gespeicherte deutsche Start-Inhalte (Mod-, Rang-, Abzeichen-Namen) und werden
       per msgid übersetzt; Unbekanntes (Eingaben der Familie) bleibt unverändert.
+    - ``zeilen``: Liste von ``{"msgid", "parameter", "msgid_plural"}`` wird zu einem Text mit einer
+      Zeile je Eintrag (Wochen-Digest).
     - ``<feld>_msgid`` + optional ``<feld>_parameter`` (dict) bilden ``<feld>`` neu; mit
       ``<feld>_msgid_plural`` wird nach ``parameter["n"]`` die Mehrzahl gewählt.
     """
@@ -241,11 +243,40 @@ def werte_aus(ereignis):
                 werte[feld] = gettext(str(msgid)) % parameter
         except (KeyError, TypeError, ValueError):
             werte[feld] = gettext(str(msgid))
+    zeilen = daten.get("zeilen")
+    if isinstance(zeilen, list):
+        werte["zeilen"] = zeilen_text(zeilen)
     if ereignis.kind_id:
         werte["kind"] = ereignis.kind.anzeigename
     if ereignis.akteur_id:
         werte["akteur"] = ereignis.akteur.anzeigename
     return werte
+
+
+def zeilen_text(zeilen):
+    """Text aus einer ``zeilen``-Liste in der aktiven Sprache, eine Zeile je Eintrag."""
+    return "\n".join(z for z in (_zeile(e) for e in zeilen) if z)
+
+
+def _zeile(eintrag):
+    """Eine Zeile einer ``zeilen``-Liste: ``{"msgid", "parameter", "msgid_plural"}`` (Digest)."""
+    if not isinstance(eintrag, dict) or not eintrag.get("msgid"):
+        return ""
+    parameter = eintrag.get("parameter")
+    parameter = (
+        {k: sprache.uebersetzt(v) if isinstance(v, str) else v for k, v in parameter.items()}
+        if isinstance(parameter, dict)
+        else {}
+    )
+    try:
+        if eintrag.get("msgid_plural"):
+            return (
+                ngettext(str(eintrag["msgid"]), str(eintrag["msgid_plural"]), int(parameter["n"]))
+                % parameter
+            )
+        return gettext(str(eintrag["msgid"])) % parameter
+    except (KeyError, TypeError, ValueError):
+        return gettext(str(eintrag["msgid"]))
 
 
 def rendern(ereignis, typ_bezeichnung):

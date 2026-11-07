@@ -37,6 +37,12 @@
 # Lernen: neue Dateien im Ordner inbox übernehmen, Material ohne KI nachreichen
 */2 * * * * python manage.py lernen_inbox_scannen
 
+# Lernen: Ausnahmen für die Eltern täglich 16:30 (Material wartet, Kind still, Fehlerhäufung, Prüfung)
+30 16 * * * python manage.py lernen_eltern_hinweise
+
+# Lernen: Wochen-Digest; sendet nur am eingestellten Wochentag ab der eingestellten Uhrzeit, 1x je Woche
+*/15 * * * * python manage.py lernen_digest
+
 # Aufräumen
 15 4 * * * python manage.py konten_aufraeumen
 20 4 * * * python manage.py benachrichtigungen_aufraeumen

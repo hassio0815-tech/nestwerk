@@ -111,6 +111,14 @@ STARTWERTE_WIEDERHOLUNG = {
     "lernen.mathe_fehlerart_min": 3,
 }
 
+# Etappe 13 (Eltern-Entlastung): Migration 0024 legt fehlende Werte an. Wochentag 6 = Sonntag.
+STARTWERTE_ELTERN = {
+    "lernen.eltern_hinweise_aktiv": True,
+    "lernen.digest_aktiv": True,
+    "lernen.digest_wochentag": 6,
+    "lernen.digest_uhrzeit": "18:00",
+}
+
 
 def einstellungen_definieren():
     definieren(
@@ -186,6 +194,7 @@ def einstellungen_definieren():
     _definieren_woche()
     _definieren_mathe()
     _definieren_wiederholung()
+    _definieren_eltern()
 
 
 def _definieren_ueben():
@@ -946,3 +955,37 @@ def _mindestens_ein_tag(liste):
 def _mindestens_zwei(liste):
     if len(liste) < 2 or liste != sorted(liste):
         raise ValueError(_("Mindestens zwei Abstände, aufsteigend."))
+
+
+def _definieren_eltern():
+    """Ausnahme-Meldungen und Wochen-Digest für die Eltern (Etappe 13). Kanal und Empfänger
+    wählt jedes Elternteil selbst bei den Benachrichtigungen (Push, optional Mail)."""
+    definieren(
+        "lernen.eltern_hinweise_aktiv",
+        Typ.BOOL,
+        _("Hinweise an die Eltern"),
+        beschreibung=_(
+            "Kurze Meldungen bei Ausnahmen: Material wartet, ein Kind hat 3 Tage nicht geübt, "
+            "Fehlerhäufung, Auffälligkeit im Tutor, Prüfung bald. Aus: keine dieser Meldungen."
+        ),
+    )
+    definieren(
+        "lernen.digest_aktiv",
+        Typ.BOOL,
+        _("Wochen-Zusammenfassung"),
+        beschreibung=_("Eine Nachricht pro Woche mit dem Stand aller Kinder, ohne Vergleich."),
+    )
+    definieren(
+        "lernen.digest_wochentag",
+        Typ.GANZZAHL,
+        _("Zusammenfassung: Wochentag"),
+        beschreibung=_("0 = Montag, 6 = Sonntag."),
+        minimum=0,
+        maximum=6,
+    )
+    definieren(
+        "lernen.digest_uhrzeit",
+        Typ.UHRZEIT,
+        _("Zusammenfassung: Uhrzeit"),
+        beschreibung=_("Ab dieser Uhrzeit (Ortszeit) wird sie am gewählten Tag gesendet."),
+    )

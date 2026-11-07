@@ -23,7 +23,15 @@ from django.utils.translation import gettext as _
 from apps.kern import audit, einstellungen, zeit
 from apps.kern.einstellungen import wert
 
-from . import ki_services, selectors, tutor_prompts, tutor_pruefung, tutor_selectors, tutor_texte
+from . import (
+    eltern_hinweise,
+    ki_services,
+    selectors,
+    tutor_prompts,
+    tutor_pruefung,
+    tutor_selectors,
+    tutor_texte,
+)
 from .ki import KiFehler, KiNichtVerfuegbar
 from .models import (
     GespraechStatus,
@@ -298,6 +306,7 @@ def nachricht_senden(g, text, *, jetzt=None):
         g.save(update_fields=["hilfestufe", "letzte_aktivitaet"])
         if art == NachrichtArt.ANTWORT:
             _sitzung_buchen(g, stufe)
+        eltern_hinweise.tutor_markierung_melden(g, markierung)
     return antwort
 
 
@@ -335,6 +344,7 @@ def mehr_hilfe(g, *, jetzt=None):
         g.letzte_aktivitaet = jetzt
         g.save(update_fields=["hilfestufe", "letzte_aktivitaet"])
         _sitzung_buchen(g, stufe)
+        eltern_hinweise.tutor_markierung_melden(g, markierung)
     return antwort
 
 
