@@ -4,6 +4,17 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Spaced repetition and mixing, stage 12 (07.11.2026)
+
+### Added
+- **FSRS scheduling:** each practice item now has stability and difficulty (library `fsrs`, pinned, MIT, default parameters, no training). Answers map to Again (not yet), Hard (correct with step 3+ help), Good, Easy (correct without help and faster than the child's median). Target retention 90 %, longest interval 60 days, no fuzzing, a wrong answer comes back tomorrow. Leitner boxes remain as a fallback setting (`lernen.wiederholung_algorithmus`) and apply automatically if the library is missing. Existing items continue from their box.
+- **New-vocabulary limit:** 3 / 5 / 7 new words per day (up to grade 5 / grades 6-7 / grade 8+, unknown grade: 3), editable per child.
+- **Interleaving:** with "everything mixed", at least 30 % of the maths tasks of a round come from earlier operation types (setting).
+- **Error type steers selection:** operation types with three or more recognised calculation errors in 14 days come up more often (form errors do not count).
+
+### Changed
+- **Exam planner** uses the real due date from the practice state for open reviews and the FSRS interval path (instead of the box grid) for planned ones.
+
 ## Learning foundation, stage 11 (07.11.2026)
 
 ### Added
