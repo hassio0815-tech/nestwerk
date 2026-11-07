@@ -8,9 +8,16 @@ staticfiles
 .ruff_cache
 docs
 
-backup/
+backup
 .env.*
 !.env.example
 *.whl
-.hypothesis/
-docs/reviews/
+HANDOFF*
+.hypothesis
+.impeccable
+.github
+site
+branding
+tools
+tests
+docs/reviews

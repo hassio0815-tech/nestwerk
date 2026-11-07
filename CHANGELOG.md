@@ -26,6 +26,20 @@ Entries are derived from the Git history and grouped by project phase. Work pack
 ### Notes
 - The AI adapters are tested against a fake transport. The module has **not** been tested against a real AI (Ollama, Anthropic, OpenAI) or in a browser.
 - Upload requests are limited by the existing `UploadGrenze` middleware from `aufgaben` (about 46 MB per request with default values).
+## Library becomes quick buttons (07.11.2026)
+
+### Changed
+- The task library (template UI) is gone; every entry is now a quick button. The old address `/eltern/bibliothek/` redirects to the new "Quick buttons" page. The "Template" model stays as history
+- Parents tap a button and choose in a small window: "One for all" (all children are notified), "Each child" (one reserved task per child; children with a running task are skipped) or "One specific child"; "Go" confirms
+- New per-button field "Default when pressed" (preselected in the window). Kid and tablet buttons stay as before
+- Starter values: every active template becomes a button (data migration plus hourly job). New: "Vacuum the room" (15 pts), "Empty the washing machine" (10 pts); "Zimmer gründlich" is now "Clean and tidy the room thoroughly" (50 pts)
+- Kid page: the button tile and the task list refresh together, the notice shows only once
+
+### Fixed
+- An invalid child in a button press shows a notice instead of a 500 error; kids can no longer report a button assigned to another child
+- "Split task per child": running and finished instances follow their child; active tasks only; command with `--dry-run`, collects errors per ID
+- Duplicate protection when creating a task (same title, repeat and assignment) with an "create anyway" box; "For every child" without active children shows a notice
+- Hygiene: `.gitignore` and `.dockerignore` (backups, wheels, `.env.*`, handoffs)
 
 ## Recognition, My settings and moods (02.11.2026)
 

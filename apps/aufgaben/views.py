@@ -9,12 +9,11 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
-from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
-from . import services
-from .forms import AufgabeForm, AufgabenFilterForm, KategorieForm, VorlageForm
-from .models import Aufgabe, Kategorie, Status, Vorlage
+from . import services, wiederholung
+from .forms import AufgabeForm, AufgabenFilterForm, KategorieForm
+from .models import Aufgabe, Kategorie, Status
 
 
 def _htmx(request):
@@ -63,11 +62,16 @@ def aufgaben_liste(request):
 
 
 def _start_vorgabe(request):
-    """Wochenplan (AP14): ``?datum=JJJJ-MM-TT`` füllt das Startdatum der neuen Aufgabe vor."""
+    """Vorbelegung der neuen Aufgabe: ``?datum=JJJJ-MM-TT`` (Wochenplan, AP14) setzt das
+    Startdatum, ``?art=bei_bedarf`` (Schnell-Knöpfe) die Wiederholung."""
+    vorgabe = {}
+    if request.GET.get("art") == wiederholung.BEI_BEDARF:
+        vorgabe["wiederholungsart"] = wiederholung.BEI_BEDARF
     try:
-        return {"start_datum": date.fromisoformat(request.GET.get("datum", ""))}
+        vorgabe["start_datum"] = date.fromisoformat(request.GET.get("datum", ""))
     except ValueError:
-        return {}
+        pass
+    return vorgabe
 
 
 @nur_eltern
@@ -75,8 +79,12 @@ def _start_vorgabe(request):
 def aufgabe_neu(request):
     form = AufgabeForm(request.POST or None, initial=_start_vorgabe(request))
     if request.method == "POST" and form.is_valid():
-        services.aufgabe_speichern(form, von=aktueller_elternteil(request))
-        return _weiter(request, "aufgaben:liste")
+        try:
+            services.aufgabe_speichern(form, von=aktueller_elternteil(request))
+        except ValidationError as fehler:  # z. B. Doppel-Schutz (zwei Formulare gleichzeitig)
+            form.add_error(None, fehler)
+        else:
+            return _weiter(request, "aufgaben:liste")
     return _formular(
         request,
         form,
@@ -116,95 +124,6 @@ def aufgabe_status(request, pk, status):
     if _htmx(request):
         return render(request, "aufgaben/_zeile.html", {"a": aufgabe})
     return redirect("aufgaben:liste")
-
-
-# --- Vorlagen (Bibliothek) --------------------------------------------------------------------
-
-
-@nur_eltern
-def vorlagen_liste(request):
-    return render(
-        request,
-        "aufgaben/vorlagen.html",
-        {"vorlagen": Vorlage.objects.select_related("kategorie")},
-    )
-
-
-@nur_eltern
-@require_http_methods(["GET", "POST"])
-def vorlage_neu(request):
-    form = VorlageForm(request.POST or None, initial={"aktiv": True})
-    if request.method == "POST" and form.is_valid():
-        services.vorlage_speichern(form, von=aktueller_elternteil(request))
-        return _weiter(request, "aufgaben:vorlagen")
-    return _formular(
-        request,
-        form,
-        titel=_("Neue Vorlage"),
-        aktion=reverse("aufgaben:vorlage_neu"),
-        zurueck=reverse("aufgaben:vorlagen"),
-    )
-
-
-@nur_eltern
-@require_http_methods(["GET", "POST"])
-def vorlage_bearbeiten(request, pk):
-    vorlage = get_object_or_404(Vorlage, pk=pk)
-    form = VorlageForm(request.POST or None, instance=vorlage)
-    if request.method == "POST" and form.is_valid():
-        services.vorlage_speichern(form, von=aktueller_elternteil(request))
-        return _weiter(request, "aufgaben:vorlagen")
-    return _formular(
-        request,
-        form,
-        titel=_("Vorlage bearbeiten"),
-        aktion=reverse("aufgaben:vorlage_bearbeiten", args=[pk]),
-        zurueck=reverse("aufgaben:vorlagen"),
-    )
-
-
-@nur_eltern
-@require_POST
-def vorlage_loeschen(request, pk):
-    vorlage = get_object_or_404(Vorlage, pk=pk)
-    services.vorlage_loeschen(vorlage, von=aktueller_elternteil(request))
-    if _htmx(request):
-        return HttpResponse("")
-    return redirect("aufgaben:vorlagen")
-
-
-@nur_eltern
-def vorlage_als_aufgabe(request, pk):
-    """Vorlage -> Aufgabe: Formular mit Werten der Vorlage vorausgefüllt (Speichern legt an)."""
-    vorlage = get_object_or_404(Vorlage, pk=pk)
-    plan = vorlage.plan
-    start = {
-        "titel": vorlage.titel,
-        "punkte": vorlage.punkte,
-        "beschreibung": vorlage.beschreibung,
-        "freigabeart": vorlage.freigabeart,
-        "kategorie": vorlage.kategorie_id,
-        "vorlage": vorlage.pk,
-        "emoji": vorlage.emoji,
-        "schnellknopf_wer": vorlage.schnellknopf_wer,
-        "je_kind": vorlage.je_kind,
-        "wiederholungsart": plan.art,
-        "wochentage": [str(t) for t in plan.wochentage_liste],
-        "intervall_tage": plan.intervall_tage,
-        "fenster_von": plan.fenster_von,
-        "fenster_bis": plan.fenster_bis,
-        "fenster_tage": plan.fenster_tage,
-        "limit_anzahl": plan.limit_anzahl,
-        "limit_zeitraum": plan.limit_zeitraum,
-    }
-    form = AufgabeForm(initial=start)
-    return _formular(
-        request,
-        form,
-        titel=_("Aufgabe aus Vorlage „%(titel)s“") % {"titel": uebersetzt(vorlage.titel)},
-        aktion=reverse("aufgaben:neu"),
-        zurueck=reverse("aufgaben:vorlagen"),
-    )
 
 
 # --- Kategorien -------------------------------------------------------------------------------

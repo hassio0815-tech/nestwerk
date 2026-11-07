@@ -224,4 +224,6 @@ def test_abschluss_legt_start_schnellknoepfe_an(c):
     assert not Aufgabe.objects.exists()
     assert c.post(url(abschluss())).status_code == 200
     assert einstellungen.wert("allgemein.einrichtung_abgeschlossen") is True
-    assert {a.titel for a in Aufgabe.objects.all()} == {"Restmüll", "Biomüll", "Altglas"}
+    titel = {a.titel for a in Aufgabe.objects.all()}
+    assert {"Restmüll", "Biomüll", "Altglas"} <= titel
+    assert len(titel) == 21  # Start-Knöpfe plus die Knöpfe aus der Bibliothek

@@ -337,7 +337,7 @@ SEITEN_ELTERN = [
     ("wochenplan", "/eltern/wochenplan/"),
     ("aufgabenformular", "/eltern/aufgaben/neu/"),
     ("aufgabenliste", "/eltern/aufgaben/"),
-    ("bibliothek", "/eltern/bibliothek/"),
+    ("schnellknoepfe", "/eltern/schnellknoepfe/"),
     ("belohnungs-antraege", "/eltern/belohnungen/"),
     ("einstellungen-editor", "/eltern/einstellungen/"),
     ("familie", "/eltern/familie/"),

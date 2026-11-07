@@ -52,7 +52,7 @@ Thumbs.db
 .deploy-zustand
 
 # Lokale Übergaben, Pakete und Testartefakte
-HANDOFF-lernassistent-2026-11-03.md
+HANDOFF-*.md
 *.whl
-backup/
+/backup/
 .hypothesis/

@@ -26,10 +26,7 @@ ELTERN_URLS = [
     ("aufgaben:liste", []),
     ("aufgaben:neu", []),
     ("aufgaben:bearbeiten", [1]),
-    ("aufgaben:vorlagen", []),
-    ("aufgaben:vorlage_neu", []),
-    ("aufgaben:vorlage_bearbeiten", [1]),
-    ("aufgaben:vorlage_als_aufgabe", [1]),
+    ("aufgaben:schnellknoepfe", []),
     ("aufgaben:kategorien", []),
     ("aufgaben:kategorie_neu", []),
     ("aufgaben:kategorie_bearbeiten", [1]),
@@ -45,11 +42,9 @@ def test_kind_kann_nicht_schreiben(kind_client, mama):
     assert kind_client.post(reverse("aufgaben:neu"), aufgabe_daten()).status_code == 403
     a = Aufgabe.objects.create(titel="A", punkte=5, erstellt_von=mama)
     assert kind_client.post(reverse("aufgaben:status", args=[a.pk, "beendet"])).status_code == 403
-    v = Vorlage.objects.first()
-    assert kind_client.post(reverse("aufgaben:vorlage_loeschen", args=[v.pk])).status_code == 403
     assert not Aufgabe.objects.filter(titel="Fenster putzen").exists()
     a.refresh_from_db()
-    assert a.status == "aktiv" and Vorlage.objects.filter(pk=v.pk).exists()
+    assert a.status == "aktiv"
 
 
 def test_anonym_wird_abgewiesen(client):
@@ -195,15 +190,11 @@ def test_liste_filter(eltern_client, mama):
     assert "Ende-X" in teil and "Aktiv-H" not in teil
 
 
-# --- Vorlage -> Aufgabe ----------------------------------------------------------------------
+# --- Bibliothek ist in den Schnell-Knöpfen aufgegangen --------------------------------------
 
 
-def test_vorlage_wird_per_klick_zur_aufgabe(eltern_client, mama):
+def test_aufgabe_mit_vorlage_verweis_bleibt_erhalten(eltern_client, mama):
     v = Vorlage.objects.get(titel="Bad putzen")
-    seite = eltern_client.get(reverse("aufgaben:vorlage_als_aufgabe", args=[v.pk]), **HX)
-    form = seite.context["form"]
-    assert form.initial["titel"] == "Bad putzen" and form.initial["punkte"] == 40
-    assert 'value="Bad putzen"' in seite.content.decode()
     antwort = eltern_client.post(
         reverse("aufgaben:neu"),
         aufgabe_daten(titel="Bad putzen", punkte="40", freigabeart="nachweis", vorlage=v.pk),
@@ -214,73 +205,25 @@ def test_vorlage_wird_per_klick_zur_aufgabe(eltern_client, mama):
     assert a.vorlage == v and a.freigabeart == "nachweis" and a.punkte == 40
 
 
-def test_vorlage_mit_wiederholung_uebernimmt_plan(eltern_client):
-    r = eltern_client.post(
-        reverse("aufgaben:vorlage_neu"),
-        {
-            "titel": "Tonnen",
-            "punkte": "10",
-            "freigabeart": "vertrauen",
-            "aktiv": "on",
-            "wiederholungsart": "woechentlich",
-            "wochentage": ["2"],
-            "fenster_bis": "20:00",
-        },
-        **HX,
-    )
-    assert r.status_code == 204
-    v = Vorlage.objects.get(titel="Tonnen")
-    assert v.wiederholung["wochentage"] == [2]
-    seite = eltern_client.get(reverse("aufgaben:vorlage_als_aufgabe", args=[v.pk]), **HX)
-    assert seite.context["form"].initial["wochentage"] == ["2"]
-    assert 'value="20:00"' in seite.content.decode()
+@pytest.mark.parametrize(
+    "pfad", ["/eltern/bibliothek/", "/eltern/bibliothek/neu/", "/eltern/bibliothek/3/bearbeiten/"]
+)
+def test_alte_bibliothek_leitet_auf_schnellknoepfe(eltern_client, pfad):
+    antwort = eltern_client.get(pfad)
+    assert antwort.status_code == 302
+    assert antwort["Location"] == reverse("aufgaben:schnellknoepfe")
+    assert eltern_client.get(antwort["Location"]).status_code == 200
 
 
-# --- Bibliothek verwalten --------------------------------------------------------------------
+def test_menue_hat_keine_bibliothek_mehr(eltern_client):
+    seite = eltern_client.get(reverse("aufgaben:liste")).content.decode()
+    assert "Bibliothek" not in seite and "Aus Vorlage" not in seite
+    assert reverse("aufgaben:schnellknoepfe") in seite
 
 
-def test_vorlage_crud(eltern_client, mama):
-    r = eltern_client.post(
-        reverse("aufgaben:vorlage_neu"),
-        {"titel": "Neu", "punkte": "7", "freigabeart": "eltern", "aktiv": "on"},
-        **HX,
-    )
-    assert r.status_code == 204
-    v = Vorlage.objects.get(titel="Neu")
-    assert v.wiederholung is None
-    r = eltern_client.post(
-        reverse("aufgaben:vorlage_bearbeiten", args=[v.pk]),
-        {"titel": "Neu2", "punkte": "8", "freigabeart": "vertrauen", "aktiv": "on"},
-        **HX,
-    )
-    assert r.status_code == 204
-    v.refresh_from_db()
-    assert (v.titel, v.punkte, v.freigabeart) == ("Neu2", 8, "vertrauen")
-    a = Aufgabe.objects.create(titel="Aus Vorlage", punkte=8, erstellt_von=mama, vorlage=v)
-    r = eltern_client.post(reverse("aufgaben:vorlage_loeschen", args=[v.pk]), **HX)
-    assert r.status_code == 200 and r.content == b""
-    assert not Vorlage.objects.filter(pk=v.pk).exists()
-    a.refresh_from_db()
-    assert a.vorlage is None
-    aktionen = set(AuditEintrag.objects.values_list("aktion", flat=True))
-    assert {"vorlage.angelegt", "vorlage.geaendert", "vorlage.geloescht"} <= aktionen
-
-
-def test_vorlage_validierung(eltern_client):
-    r = eltern_client.post(reverse("aufgaben:vorlage_neu"), {"punkte": "0"}, **HX)
-    errors = r.context["form"].errors
-    assert "titel" in errors and "punkte" in errors and "freigabeart" in errors
-    r = eltern_client.post(
-        reverse("aufgaben:vorlage_neu"),
-        {"titel": "T", "punkte": "5", "freigabeart": "eltern", "wiederholungsart": "intervall"},
-        **HX,
-    )
-    assert "intervall_tage" in r.context["form"].errors
-
-
-def test_bibliothek_seite_zeigt_vorlagen(eltern_client):
-    seite = eltern_client.get(reverse("aufgaben:vorlagen")).content.decode()
-    assert "Rasen mähen" in seite and "Als Aufgabe" in seite
+def test_neuer_schnellknopf_link_belegt_bei_bedarf_vor(eltern_client):
+    seite = eltern_client.get(reverse("aufgaben:neu"), {"art": "bei_bedarf"}, **HX)
+    assert seite.context["form"].initial["wiederholungsart"] == "bei_bedarf"
 
 
 # --- Kategorien ------------------------------------------------------------------------------

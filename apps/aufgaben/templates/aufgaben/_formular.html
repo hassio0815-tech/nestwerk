@@ -3,6 +3,7 @@
   <form method="post" action="{{ aktion }}" class="stapel formular-raster" hx-post="{{ aktion }}" hx-target="#formular" hx-swap="innerHTML">
     {% csrf_token %}
     {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
+    {% if form.doppelt %}{% include "aufgaben/_feld.html" with f=form.trotzdem_anlegen %}{% endif %}
     {% for f in form.hidden_fields %}{{ f }}{% endfor %}
     {% for f in form.visible_fields %}
       {% if f.name == "wiederholungsart" %}
@@ -15,6 +16,7 @@
             <p class="feld__hinweis">{% translate "Schnell-Knopf: Die Aufgabe schläft, bis jemand den Knopf drückt. Dann entsteht genau eine offene Aufgabe." %}</p>
             {% include "aufgaben/_feld.html" with f=form.emoji %}
             {% include "aufgaben/_feld.html" with f=form.schnellknopf_wer %}
+            {% include "aufgaben/_feld.html" with f=form.schnellknopf_modus %}
           </div>
           <div class="plan__zeit stapel">
             {% include "aufgaben/_feld.html" with f=form.fenster_von %}
@@ -30,7 +32,8 @@
             <p class="feld__hinweis">{% translate "Limit gilt je Kind und Aufgabe." %}</p>
           </div>
         </fieldset>
-      {% elif f.name in "wochentage intervall_tage start_datum end_datum fenster_von fenster_bis fenster_tage limit_anzahl limit_zeitraum emoji schnellknopf_wer" %}
+      {% elif f.name == "trotzdem_anlegen" %}
+      {% elif f.name in "wochentage intervall_tage start_datum end_datum fenster_von fenster_bis fenster_tage limit_anzahl limit_zeitraum emoji schnellknopf_wer schnellknopf_modus" %}
       {% else %}
         {% include "aufgaben/_feld.html" with f=f %}
       {% endif %}

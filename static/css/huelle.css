@@ -755,3 +755,38 @@
 .nw-woche__zu--leise { background: transparent; color: var(--text); border: 1px solid var(--rahmen); }
 .nw-uebernehmen { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--akzent); border-radius: var(--radius-gross); background: var(--flaeche); text-align: left; }
 .nw-uebernehmen p { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+
+/* Schnell-Knöpfe (Eltern): Auswahlfenster mit drei Modi */
+.schnellknopf__aktionen { justify-content: flex-end; flex-wrap: nowrap; }
+.knopf-dialog {
+  width: min(30rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: 1.25rem;
+  border: 1px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  background: var(--flaeche);
+  color: var(--text);
+  text-align: left;
+}
+.knopf-dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+.knopf-dialog h3 { margin: 0; }
+.knopf-dialog__modi { margin: 0; padding: 0; border: 0; min-width: 0; }
+.knopf-dialog__legende { padding: 0; margin-bottom: var(--abstand-klein); font-weight: 700; }
+.knopf-dialog__modus {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--rahmen);
+  border-radius: var(--radius-gross);
+  cursor: pointer;
+}
+.knopf-dialog__modus:has(input:checked) { border-color: var(--akzent); }
+.knopf-dialog__modus:has(input:focus-visible) { outline: 3px solid var(--akzent); outline-offset: 2px; }
+.knopf-dialog__modus input { width: 1.5rem; height: 1.5rem; margin-top: 0.1rem; flex: 0 0 auto; }
+.knopf-dialog__modus span { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
+.knopf-dialog__modus strong, .knopf-dialog__modus small { display: block; }
+.knopf-dialog__modus small { color: var(--text-leise); }
+.knopf-dialog__kind { min-height: 3rem; }
+.knopf-dialog__aktionen { justify-content: space-between; }

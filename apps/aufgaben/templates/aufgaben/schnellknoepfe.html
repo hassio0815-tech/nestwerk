@@ -1,0 +1,8 @@
+{% extends "aufgaben/basis.html" %}
+{% load i18n %}
+{% block titel %}{% translate "Schnell-Knöpfe" %}{% endblock %}
+{% block seite %}
+  <h1>{% translate "Schnell-Knöpfe" %}</h1>
+  <p class="kachel__text">{% translate "Knöpfe für Aufgaben, die bei Bedarf anfallen. Tippe auf „Drücken“ und wähle, wer sie macht. Den Standard und alles andere stellst du über das Stift-Symbol ein." %}</p>
+  {% include "aufgaben/kacheln/schnellknoepfe_eltern.html" %}
+{% endblock %}

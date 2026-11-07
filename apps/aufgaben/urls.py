@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, re_path
+from django.views.generic import RedirectView
 
 from . import (
     views,
@@ -26,18 +27,11 @@ urlpatterns = [
     path("eltern/aufgaben/neu/", views.aufgabe_neu, name="neu"),
     path("eltern/aufgaben/<int:pk>/bearbeiten/", views.aufgabe_bearbeiten, name="bearbeiten"),
     path("eltern/aufgaben/<int:pk>/status/<str:status>/", views.aufgabe_status, name="status"),
-    path("eltern/bibliothek/", views.vorlagen_liste, name="vorlagen"),
-    path("eltern/bibliothek/neu/", views.vorlage_neu, name="vorlage_neu"),
-    path(
-        "eltern/bibliothek/<int:pk>/bearbeiten/",
-        views.vorlage_bearbeiten,
-        name="vorlage_bearbeiten",
-    ),
-    path("eltern/bibliothek/<int:pk>/loeschen/", views.vorlage_loeschen, name="vorlage_loeschen"),
-    path(
-        "eltern/bibliothek/<int:pk>/als-aufgabe/",
-        views.vorlage_als_aufgabe,
-        name="vorlage_als_aufgabe",
+    # Die frühere Bibliothek ist in den Schnell-Knöpfen aufgegangen (Lesezeichen bleiben gültig)
+    re_path(
+        r"^eltern/bibliothek/(?:.*)$",
+        RedirectView.as_view(pattern_name="aufgaben:schnellknoepfe", permanent=False),
+        name="bibliothek_umleitung",
     ),
     path("eltern/kategorien/", views.kategorien_liste, name="kategorien"),
     path("eltern/kategorien/neu/", views.kategorie_neu, name="kategorie_neu"),
@@ -108,6 +102,7 @@ urlpatterns += [
 
 # Schnell-Knöpfe (bei Bedarf)
 urlpatterns += [
+    path("eltern/schnellknoepfe/", views_schnellknopf.schnellknoepfe_seite, name="schnellknoepfe"),
     path(
         "eltern/schnellknopf/<int:pk>/",
         views_schnellknopf.eltern_druecken,

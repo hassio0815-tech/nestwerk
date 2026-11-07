@@ -29,9 +29,10 @@ def _kind_seite(request, *, hinweis="", art="erfolg"):
         "hinweis": hinweis,
         "hinweis_art": art,
     }
-    # Schnell-Knöpfe liegen neben dem Bereich, nicht darin (eigenes HTMX-Ziel)
-    if not _htmx(request):
-        kontext["k"] = {"knoepfe": schnellknopf.knoepfe(kind), "kinder": []}
+    # Schnell-Knöpfe liegen neben dem Bereich (eigenes HTMX-Ziel). Bei HTMX kommt die Kachel
+    # per hx-swap-oob mit, damit beide synchron bleiben (A-P3-09).
+    kontext["k"] = {"knoepfe": schnellknopf.knoepfe(kind), "kinder": []}
+    kontext["kachel_oob"] = _htmx(request)
     vorlage = "aufgaben/_kind_bereich.html" if _htmx(request) else "aufgaben/kind.html"
     return render(request, vorlage, kontext)
 

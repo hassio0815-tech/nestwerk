@@ -1,5 +1,5 @@
 {% load i18n sprache %}{% comment %}Kinder-Kachel Schnell-Knöpfe: "Ich mach's" oder "Nur melden" (nur Knöpfe für alle).{% endcomment %}
-<article class="karte" id="schnellknoepfe" hx-target="#schnellknoepfe" hx-swap="outerHTML"><div class="karte__inhalt stapel">
+<article class="karte" id="schnellknoepfe" hx-target="#schnellknoepfe" hx-swap="outerHTML"{% if oob %} hx-swap-oob="outerHTML"{% endif %}><div class="karte__inhalt stapel">
   <h2>{% translate "Schnell-Knöpfe" %}</h2>
   {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art|default:"erfolg" text=hinweis %}{% endif %}
   {% for a in k.knoepfe %}

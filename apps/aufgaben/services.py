@@ -11,10 +11,12 @@
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from apps.kern import audit
 from apps.konten import selectors as konten_selectors
 
+from . import doppelt
 from .ablauf import (
     Erledigung,
     LimitErreicht,
@@ -51,7 +53,7 @@ from .instanzen import (
     reservierungsablauf_hook_registrieren,
     verfall_pruefen,
 )
-from .models import Aufgabe, Kategorie, Status, Vorlage
+from .models import Aufgabe, AufgabenInstanz, Kategorie, Status
 from .uebernahme import uebernehmen as aus_woche_uebernehmen
 from .zustand import AblaufFehler, UngueltigerUebergang
 
@@ -93,8 +95,6 @@ __all__ = [
     "reservierungen_pruefen",
     "reservierungsablauf_hook_registrieren",
     "verfall_pruefen",
-    "vorlage_loeschen",
-    "vorlage_speichern",
 ]
 
 
@@ -128,11 +128,13 @@ def aufgabe_speichern(form, *, von) -> Aufgabe:
     neu = form.instance.pk is None
     aufgabe = form.save(commit=False)
     if neu:
+        _doppel_pruefen(form)
         aufgabe.erstellt_von = von
         if form.cleaned_data.get("je_kind"):
             kinder = list(konten_selectors.aktive_kinder())
-            if kinder:
-                return _je_kind_anlegen(aufgabe, kinder, von=von, details=_diff(form))
+            if not kinder:
+                raise ValidationError(_JE_KIND_OHNE_KINDER)
+            return _je_kind_anlegen(aufgabe, kinder, von=von, details=_diff(form))
     aufgabe.save()
     _instanzen_neu_planen(aufgabe, verschobene_behalten=not neu)
     audit.protokollieren(
@@ -145,14 +147,43 @@ def aufgabe_speichern(form, *, von) -> Aufgabe:
     return aufgabe
 
 
-def _je_kind_anlegen(muster, kinder, *, von, details=None) -> Aufgabe:
-    """Speichert ``muster`` (ungespeichert) einmal je Kind als eigene Aufgabe."""
+_JE_KIND_OHNE_KINDER = gettext_lazy(
+    "Es gibt keine aktiven Kinder, für die die Aufgabe angelegt werden könnte."
+)
+
+
+def _doppel_pruefen(form) -> None:
+    """Doppel-Schutz noch einmal in der Transaktion (zwei gleichzeitig gesendete Formulare).
+
+    Das Formular prüft vorab; hier gilt dasselbe, falls inzwischen eine gleiche Aufgabe
+    entstanden ist. ``trotzdem_anlegen`` im Formular schaltet beides ab."""
+    daten = form.cleaned_data
+    if daten.get("trotzdem_anlegen"):
+        return
+    vorhanden = doppelt.finden(
+        daten.get("titel"),
+        daten.get("wiederholungsart"),
+        daten.get("zugewiesen_an"),
+        je_kind=bool(daten.get("je_kind")),
+    )
+    if vorhanden is not None:
+        form.doppelt = vorhanden
+        raise ValidationError(doppelt.meldung(vorhanden))
+
+
+def _je_kind_anlegen(muster, kinder, *, von, details=None, uebernehmen=None) -> Aufgabe:
+    """Speichert ``muster`` (ungespeichert) einmal je Kind als eigene Aufgabe.
+
+    ``uebernehmen(kopie, kind)``: läuft nach dem Speichern, vor dem Planen (z. B. Instanzen des
+    Kindes an die Kopie hängen, damit ihre Plan-Tage das Planen nicht doppeln)."""
     erste = None
     for kind in kinder:
         muster.pk = None
         muster._state.adding = True
         muster.zugewiesen_an = kind
         muster.save()
+        if uebernehmen is not None:
+            uebernehmen(muster, kind)
         _instanzen_neu_planen(muster)
         audit.protokollieren(
             "aufgabe.angelegt",
@@ -174,18 +205,22 @@ def _je_kind_anlegen(muster, kinder, *, von, details=None) -> Aufgabe:
 def je_kind_aufteilen(aufgabe, *, von=None) -> list[Aufgabe]:
     """Bestehende Aufgabe "für alle Kinder" in je eine eigene Aufgabe pro Kind aufteilen.
 
-    Das Original geht an das erste aktive Kind; für die übrigen entstehen Kopien. Freie
-    Instanzen des Originals werden neu geplant (sie sind jetzt nur noch für dieses Kind);
-    Begonnenes (reserviert, gemeldet, Konflikt ...) bleibt unverändert."""
+    Nur aktive Aufgaben. Das Original geht an das erste aktive Kind; für die übrigen entstehen
+    Kopien. Instanzen, die schon einem Kind gehören (reserviert, gemeldet, bestätigt ...), samt
+    Interessen und Meldungen folgen diesem Kind in dessen Kopie. Freie (offene) Instanzen des
+    Originals werden neu geplant; sie sind jetzt nur noch für das erste Kind.
+    """
+    if aufgabe.status != Status.AKTIV:
+        raise ValidationError(_("Nur aktive Aufgaben können aufgeteilt werden."))
     if aufgabe.zugewiesen_an_id:
         raise ValidationError(_("Die Aufgabe ist schon einem Kind zugewiesen."))
     kinder = list(konten_selectors.aktive_kinder())
     if not kinder:
         raise ValidationError(_("Es gibt keine aktiven Kinder."))
     erstes, *rest = kinder
+    original_pk = aufgabe.pk
     aufgabe.zugewiesen_an = erstes
     aufgabe.save(update_fields=["zugewiesen_an", "geaendert_am"])
-    _instanzen_neu_planen(aufgabe, verschobene_behalten=True)
     audit.protokollieren(
         "aufgabe.geaendert",
         akteur=von,
@@ -197,8 +232,15 @@ def je_kind_aufteilen(aufgabe, *, von=None) -> list[Aufgabe]:
     if rest:
         muster = Aufgabe.objects.get(pk=aufgabe.pk)
         muster.erstellt_von = von or aufgabe.erstellt_von
+
+        def instanzen_mitnehmen(kopie, kind):
+            AufgabenInstanz.objects.filter(aufgabe_id=original_pk, kind=kind).update(aufgabe=kopie)
+
         for kind in rest:
-            ergebnis.append(_je_kind_anlegen(muster, [kind], von=von))
+            ergebnis.append(
+                _je_kind_anlegen(muster, [kind], von=von, uebernehmen=instanzen_mitnehmen)
+            )
+    _instanzen_neu_planen(aufgabe, verschobene_behalten=True)
     return ergebnis
 
 
@@ -223,34 +265,6 @@ def aufgabe_status_setzen(aufgabe, status, *, von) -> Aufgabe:
         details={"titel": aufgabe.titel, "von": alt, "nach": status},
     )
     return aufgabe
-
-
-@transaction.atomic
-def vorlage_speichern(form, *, von) -> Vorlage:
-    neu = form.instance.pk is None
-    vorlage = form.save()
-    audit.protokollieren(
-        "vorlage.angelegt" if neu else "vorlage.geaendert",
-        akteur=von,
-        objekt=vorlage,
-        details={"titel": vorlage.titel, "punkte": vorlage.punkte, "geaendert": _diff(form)},
-    )
-    return vorlage
-
-
-@transaction.atomic
-def vorlage_loeschen(vorlage, *, von) -> None:
-    """Bereits angelegte Aufgaben bleiben erhalten (Verweis wird leer)."""
-    details = {"titel": vorlage.titel, "punkte": vorlage.punkte}
-    objekt_id = vorlage.pk
-    vorlage.delete()
-    audit.protokollieren(
-        "vorlage.geloescht",
-        akteur=von,
-        objekt_typ="aufgaben.vorlage",
-        objekt_id=str(objekt_id),
-        details=details,
-    )
 
 
 @transaction.atomic

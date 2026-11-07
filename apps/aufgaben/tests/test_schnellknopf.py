@@ -44,7 +44,8 @@ def instanzen(aufgabe):
 
 def test_druck_legt_genau_eine_offene_instanz_an(knopf, anna, mama):
     aufgabe = knopf()
-    instanz, neu = schnellknopf.druecken(aufgabe, von=mama)
+    _druck = schnellknopf.druecken(aufgabe, von=mama)
+    instanz, neu = _druck.instanz, _druck.neu
     assert neu and instanzen(aufgabe).count() == 1
     assert instanz.status == InstanzStatus.OFFEN and instanz.kind is None
     assert instanz.punkte_snapshot == 5 and instanz.freigabeart_snapshot == "eltern"
@@ -52,22 +53,27 @@ def test_druck_legt_genau_eine_offene_instanz_an(knopf, anna, mama):
 
 def test_zweiter_druck_macht_nichts(knopf, anna, ben, mama):
     aufgabe = knopf()
-    erste, _ = schnellknopf.druecken(aufgabe, von=mama)
-    zweite, neu = schnellknopf.druecken(aufgabe, von=anna, kind=anna)
+    _druck = schnellknopf.druecken(aufgabe, von=mama)
+    erste, _ = _druck.instanz, _druck.neu
+    _druck = schnellknopf.druecken(aufgabe, von=anna, kind=anna)
+    zweite, neu = _druck.instanz, _druck.neu
     assert not neu and zweite.pk == erste.pk and instanzen(aufgabe).count() == 1
     assert [a.laeuft.pk for a in schnellknopf.knoepfe(ben)] == [erste.pk]
 
 
 def test_nach_abschluss_geht_wieder_ein_druck(knopf, mama):
     aufgabe = knopf()
-    instanz, _ = schnellknopf.druecken(aufgabe, von=mama)
+    _druck = schnellknopf.druecken(aufgabe, von=mama)
+    instanz, _ = _druck.instanz, _druck.neu
     AufgabenInstanz.objects.filter(pk=instanz.pk).update(status=InstanzStatus.BESTAETIGT)
-    _, neu = schnellknopf.druecken(aufgabe, von=mama)
+    _druck = schnellknopf.druecken(aufgabe, von=mama)
+    _, neu = _druck.instanz, _druck.neu
     assert neu and instanzen(aufgabe).count() == 2
 
 
 def test_ich_machs_reserviert_fuer_das_kind(knopf, anna):
-    instanz, neu = schnellknopf.druecken(knopf(), von=anna, kind=anna)
+    _druck = schnellknopf.druecken(knopf(), von=anna, kind=anna)
+    instanz, neu = _druck.instanz, _druck.neu
     assert neu and instanz.status == InstanzStatus.RESERVIERT and instanz.kind == anna
     assert instanz.reserviert_bis is not None
     assert schnellknopf.knoepfe(anna)[0].laeuft.kind == anna
@@ -87,7 +93,8 @@ def test_eltern_knopf_nicht_fuer_kinder(knopf, anna, mama):
         schnellknopf.druecken(aufgabe, von=None)  # Tablet
     assert schnellknopf.knoepfe(anna) == [] and schnellknopf.knoepfe(nur_kinder_knoepfe=True) == []
     assert len(schnellknopf.knoepfe(mama)) == 1
-    _, neu = schnellknopf.druecken(aufgabe, von=mama, kind=anna)
+    _druck = schnellknopf.druecken(aufgabe, von=mama, kind=anna)
+    _, neu = _druck.instanz, _druck.neu
     assert neu
 
 
@@ -219,7 +226,7 @@ def test_tablet_gesperrtes_kind_nicht_waehlbar(knopf, anna, tablet):
 def test_eltern_kachel_zeigt_knopf_und_druck(eltern_client, knopf, anna):
     aufgabe = knopf()
     html = eltern_client.get(reverse("oberflaeche:eltern_heim")).content.decode()
-    assert "Restmüll" in html and "Anna macht&#x27;s" in html or "Anna macht's" in html
+    assert "Restmüll" in html and "Anna" in html and "Los" in html
     antwort = eltern_client.post(
         reverse("aufgaben:schnellknopf_eltern", args=[aufgabe.pk]),
         {"kind_id": str(anna.pk)},
@@ -270,7 +277,8 @@ def test_formular_bei_bedarf_leert_zeitplan(eltern_client, mama):
 
 def test_aufgabe_aendern_behaelt_gedrueckten_knopf(knopf, mama):
     aufgabe = knopf()
-    instanz, _ = schnellknopf.druecken(aufgabe, von=mama)
+    _druck = schnellknopf.druecken(aufgabe, von=mama)
+    instanz, _ = _druck.instanz, _druck.neu
     aufgabe.punkte = 8
     services.offene_entfernen(aufgabe, verschobene_behalten=True)
     instanz.refresh_from_db()

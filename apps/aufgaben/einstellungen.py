@@ -32,6 +32,9 @@ STARTWERTE_NACHWEIS = {
 # Technischer Merker: die drei Start-Schnell-Knöpfe wurden angelegt (einmalig), Datenmigration 0012
 STARTWERTE_SCHNELLKNOEPFE = {"aufgaben.schnellknoepfe_angelegt": False}
 
+# Technischer Merker: die Bibliothek wurde in Schnell-Knöpfe umgewandelt (einmalig), Migration 0016
+STARTWERTE_KNOEPFE_BIBLIOTHEK = {"aufgaben.knoepfe_aus_bibliothek": False}
+
 # Anerkennung durch Eltern (Lob-Punkte ohne Aufgabe), Datenmigration 0013
 STARTWERTE_ANERKENNUNG = {
     "aufgaben.anerkennung_max_punkte": 25,
@@ -164,6 +167,13 @@ def einstellungen_definieren():
         Typ.BOOL,
         "Start-Schnell-Knöpfe angelegt",
         beschreibung="Technischer Merker: Restmüll, Biomüll und Altglas gibt es nur einmal.",
+        intern=True,
+    )
+    definieren(
+        "aufgaben.knoepfe_aus_bibliothek",
+        Typ.BOOL,
+        "Bibliothek in Schnell-Knöpfe umgewandelt",
+        beschreibung="Technischer Merker: Aus den Vorlagen werden Knöpfe, nur einmal.",
         intern=True,
     )
     definieren(
