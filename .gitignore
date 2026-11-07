@@ -50,3 +50,9 @@ Thumbs.db
 # Lokale Claude-Code-Einstellungen
 .claude/settings.local.json
 .deploy-zustand
+
+# Lokale Übergaben, Pakete und Testartefakte
+HANDOFF-lernassistent-2026-11-03.md
+*.whl
+backup/
+.hypothesis/
