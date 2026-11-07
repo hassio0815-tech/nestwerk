@@ -930,11 +930,6 @@ msgstr "My progress"
 msgid "Serie & Ziele"
 msgstr "Streak & goals"
 
-#: templates/oberflaeche/kind_heim.html:47
-#: templates/oberflaeche/kind_heim.html:48
-msgid "Lernen"
-msgstr "Learning"
-
 #: templates/oberflaeche/kind_heim.html:52
 #, python-format
 msgid "zuletzt vor %(wann)s"
