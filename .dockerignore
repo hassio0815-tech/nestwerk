@@ -7,3 +7,10 @@ staticfiles
 .pytest_cache
 .ruff_cache
 docs
+
+backup/
+.env.*
+!.env.example
+*.whl
+.hypothesis/
+docs/reviews/
