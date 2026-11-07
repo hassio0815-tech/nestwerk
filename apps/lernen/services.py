@@ -129,10 +129,19 @@ class Rueckmeldung:
     rechnung: bool = (
         False  # Lösung einer erzeugten Mathe-Aufgabe (andere Anzeige als "So heißt es")
     )
+    rechenweg: tuple = ()  # Mathe: die Rechenschritte mit Zwischenergebnissen (mit der Lösung)
 
 
 def _jetzt(jetzt):
     return jetzt or zeit.jetzt()
+
+
+def _rechenweg(aufgabe):
+    """Die Rechenschritte der Aufgabe für die Lösungsanzeige (nur bei erzeugten Mathe-Aufgaben)."""
+    if not aufgabe.generiert:
+        return ()
+    mathe = mathe_hilfe.aufgabe_aus_frage(aufgabe.frage)
+    return tuple(mathe_hilfe.rechenweg(mathe)) if mathe is not None else ()
 
 
 def _kind_pruefen(kind):
@@ -533,6 +542,7 @@ def antworten(sitzung, eingabe, *, jetzt=None):
         texte.ton("richtig" if ergebnis == Ergebnis.RICHTIG else "noch_nicht", stufe),
         loesung="" if ergebnis == Ergebnis.RICHTIG else aufgabe.loesung,
         rechnung=aufgabe.generiert,
+        rechenweg=() if ergebnis == Ergebnis.RICHTIG else _rechenweg(aufgabe),
         hinweis="" if ergebnis == Ergebnis.RICHTIG else pruefung_.hinweis,
         pause_vorschlag=pause,
         stufe_gesenkt=senkt,
@@ -554,6 +564,7 @@ def loesung_zeigen(sitzung, *, jetzt=None):
         texte.ton("loesung", stufe),
         loesung=aufgabe.loesung,
         rechnung=aufgabe.generiert,
+        rechenweg=_rechenweg(aufgabe),
         pause_vorschlag=pause,
         stufe_gesenkt=senkt,
         ziel_erreicht=erreicht,

@@ -169,6 +169,7 @@ def _zustand(request, sitzung_, *, rueckmeldung=None, hinweis="", fehler="", erk
         "erklaerung": erklaerung,
         "einschaetzungen": Selbsteinschaetzung.choices,
         "nummer": min(sitzung_.versuche + 1, sitzung_.ziel_fragen),
+        "fortschritt": range(sitzung_.ziel_fragen),
         "ton_frust": wort("frust"),
         "ton_ziel": wort("ziel_geschafft"),
     }

@@ -10,11 +10,13 @@
 
 {% if zustand == "frage" and aufgabe %}
   <section class="karte lernen-frage" data-lernen-zustand="frage"><div class="karte__inhalt stapel">
-    <p class="kachel__text">{% blocktranslate with nr=nummer von=s.ziel_fragen %}Frage {{ nr }} von {{ von }}{% endblocktranslate %}
-      · {% blocktranslate with plan=s.get_strategie_display %}Dein Plan: {{ plan }}{% endblocktranslate %}</p>
+    <div class="lernen-fortschritt" role="img" aria-label="{% blocktranslate with nr=nummer von=s.ziel_fragen %}Frage {{ nr }} von {{ von }}{% endblocktranslate %}">
+      {% for i in fortschritt %}<span class="lernen-fortschritt__punkt{% if i < nummer|add:'-1' %} lernen-fortschritt__punkt--fertig{% elif i == nummer|add:'-1' %} lernen-fortschritt__punkt--jetzt{% endif %}"></span>{% endfor %}
+    </div>
+    <p class="kachel__text lernen-plan">{% blocktranslate with plan=s.get_strategie_display %}Dein Plan: {{ plan }}{% endblocktranslate %}</p>
     {% if rueckmeldung %}<p class="lernen-rueck lernen-rueck--fast" role="status">{{ rueckmeldung.text }}</p>{% endif %}
     {% if aufgabe.frage.typ == "vokabel" %}<p class="kachel__text">{% if aufgabe.richtung == "en_de" %}{% translate "Auf Deutsch:" %}{% else %}{% translate "In der Fremdsprache:" %}{% endif %}</p>{% endif %}
-    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text|rechnung }}</p>
+    <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text|schulrechnung }}</p>
     {% if hinweis %}<p class="lernen-hinweis" data-lernen-hinweis>{% translate "Tipp:" %} <span>{{ hinweis }}</span></p>{% endif %}
     {% for st in hilfe_stufen %}
       <section class="lernen-hilfe" data-lernen-hilfe-stufe="{{ st.stufe }}">
@@ -54,8 +56,18 @@
 {% elif zustand == "frage" and rueckmeldung %}
   <section class="karte lernen-rueckmeldung" data-lernen-zustand="rueckmeldung"><div class="karte__inhalt stapel">
     <p class="lernen-rueck lernen-rueck--{{ rueckmeldung.ergebnis }}" role="status">{{ rueckmeldung.text }}</p>
-    {% if rueckmeldung.hinweis %}<p class="lernen-hinweis" data-lernen-fehlerhinweis>{{ rueckmeldung.hinweis|rechnung }}</p>{% endif %}
-    {% if rueckmeldung.loesung %}<p>{% if rueckmeldung.rechnung %}{% blocktranslate with loesung=rueckmeldung.loesung %}Die Lösung ist: {{ loesung }}{% endblocktranslate %}{% else %}{% blocktranslate with loesung=rueckmeldung.loesung %}So heißt es: {{ loesung }}{% endblocktranslate %}{% endif %}</p>{% endif %}
+    {% if rueckmeldung.hinweis %}<p class="lernen-hinweis" data-lernen-fehlerhinweis>{{ rueckmeldung.hinweis|schulrechnung }}</p>{% endif %}
+    {% if rueckmeldung.loesung %}<p>{% if rueckmeldung.rechnung %}{% blocktranslate with loesung=rueckmeldung.loesung|schulrechnung %}Die Lösung ist: {{ loesung }}{% endblocktranslate %}{% else %}{% blocktranslate with loesung=rueckmeldung.loesung %}So heißt es: {{ loesung }}{% endblocktranslate %}{% endif %}</p>{% endif %}
+    {% if rueckmeldung.rechenweg %}
+      <section class="lernen-rechenweg stapel" data-lernen-rechenweg>
+        <h2 class="lernen-hilfe__titel">{% translate "So kommst du zum Ergebnis" %}</h2>
+        <ol class="lernen-rechenweg__liste">
+          {% for zeile in rueckmeldung.rechenweg %}
+            <li class="lernen-rechenweg__schritt"><span class="lernen-rechenweg__nr">{% blocktranslate with nr=forloop.counter %}Schritt {{ nr }}{% endblocktranslate %}</span>{{ zeile|schulrechnung }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+    {% endif %}
     {% if rueckmeldung.ziel_erreicht %}<p class="lernen-rueck lernen-rueck--richtig">{% include "komponenten/icon.html" with name="pokal" %} {{ ton_ziel }}</p>{% endif %}
     {% if rueckmeldung.pause_vorschlag %}<p class="lernen-pause" data-lernen-pause>{{ ton_frust }}</p>{% endif %}
     <div class="reihe">

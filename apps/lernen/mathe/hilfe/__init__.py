@@ -260,3 +260,16 @@ def karte_anzeige(aufgabe, sprachstufe=2):
     if not leckt(ohne.merksatz, aufgabe):
         return ohne, False
     return KartenText(text.schluessel, text.titel, "", ""), True
+
+
+def rechenweg(aufgabe):
+    """Der vollständige Rechenweg der ECHTEN Aufgabe mit allen Zwischenergebnissen, Zeile für Zeile
+    (aus denselben Schritten wie die Stufe 5, nur nicht verdeckt). Erst zeigen, wenn das Kind die
+    Lösung ohnehin sieht. Leer, wenn es zur Rechenart keine Schritte gibt."""
+    hilfe, ersatz = hilfe_fuer(aufgabe)
+    if ersatz:
+        return []
+    try:
+        return [schritt.zeile(offen=False) for schritt in hilfe.schritte]
+    except Exception:  # noqa: BLE001  der Rechenweg darf das Üben nie stoppen
+        return []
