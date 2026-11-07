@@ -540,7 +540,7 @@ def test_aufraeumen_vergisst_sehr_alte_staende_und_loescht_dann_die_zeile(kind_a
     Lernstand.objects.filter(frage=a.frage).update(faellig_am=zeit.heute() - timedelta(days=200))
     assert mathe_aufgaben.aufraeumen(zeit.jetzt()) == 1
     assert not Frage.objects.filter(pk=a.frage.pk).exists()
-    assert not Versuch.objects.filter(sitzung=s).exists()  # Versuche gehen mit
+    assert Versuch.objects.get(sitzung=s).frage is None  # der Versuch bleibt als Historie
     s.refresh_from_db()
     assert s.versuche == 1  # die Zähler der Sitzung bleiben
 

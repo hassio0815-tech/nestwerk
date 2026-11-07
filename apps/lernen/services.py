@@ -26,6 +26,7 @@ from apps.spielregeln import services as spielregeln
 from . import (
     events,
     frust,
+    historie,
     mathe_aufgaben,
     mathe_ki,
     plan_selectors,
@@ -425,6 +426,7 @@ def hilfe_kontext(sitzung, aufgabe):
 def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehlertyp=""):
     """Eine beantwortete Frage verbuchen: Versuch, Lernstand, Zähler, Frust, Zeit."""
     dauer_ms = max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000))
+    felder = historie.versuch_felder(sitzung.kind, aufgabe.frage, aufgabe.richtung)
     Versuch.objects.create(
         sitzung=sitzung,
         frage=aufgabe.frage,
@@ -434,10 +436,18 @@ def _abschliessen(sitzung, aufgabe, ergebnis, eingabe, hilfestufe, jetzt, fehler
         eingabe=eingabe[:300],
         dauer_ms=dauer_ms,
         fehlertyp=fehlertyp,
+        **felder,
     )
     richtig = ergebnis == Ergebnis.RICHTIG
     wiederholung.stand_buchen(
-        sitzung.kind, aufgabe.frage, aufgabe.richtung, richtig, zeit.heute(jetzt), jetzt
+        sitzung.kind,
+        aufgabe.frage,
+        aufgabe.richtung,
+        richtig,
+        zeit.heute(jetzt),
+        jetzt,
+        hilfestufe=hilfestufe,
+        karte=felder["karte"],
     )
     sitzung.versuche += 1
     sitzung.richtig += 1 if richtig else 0
@@ -493,6 +503,7 @@ def _noch_einmal(sitzung, aufgabe, eingabe, pruefung_, jetzt):
         eingabe=eingabe[:300],
         dauer_ms=max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000)),
         fehlertyp=pruefung_.fehlertyp,
+        **historie.versuch_felder(sitzung.kind, aufgabe.frage, aufgabe.richtung),
     )
     _zeit_buchen(sitzung, jetzt)
     sitzung.save()
@@ -518,6 +529,7 @@ def antworten(sitzung, eingabe, *, jetzt=None):
             eingabe=eingabe[:300],
             dauer_ms=max(0, int((jetzt - (sitzung.aktuell_seit or jetzt)).total_seconds() * 1000)),
             fehlertyp=pruefung_.fehlertyp,
+            **historie.versuch_felder(sitzung.kind, aufgabe.frage, aufgabe.richtung),
         )
         _zeit_buchen(sitzung, jetzt)
         sitzung.save()

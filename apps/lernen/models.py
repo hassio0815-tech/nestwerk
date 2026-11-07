@@ -267,6 +267,30 @@ class Leistungsstufe(models.Model):
         return f"{self.kind_id}/{self.fach_id}: {self.stufe}"
 
 
+class Karte(models.Model):
+    """Stabile Einheit der Wiederholung (Etappe 11, W-3): ein Kind, ein Fach und ein Schlüssel.
+    Mathe: Rechenart und Aufgabentyp (die erzeugte Zeile wechselt, die Karte bleibt); Vokabeln
+    und Fragen: die Frage mit Richtung. Überlebt das Aufräumen erzeugter Aufgaben, damit die
+    Historie der Versuche über Monate lesbar bleibt."""
+
+    kind = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="lernkarten"
+    )
+    fach = models.ForeignKey(Fach, null=True, blank=True, on_delete=models.SET_NULL)
+    schluessel = models.CharField(max_length=160)
+    erstellt = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["kind", "fach", "schluessel"], name="lernen_karte_je_kind_fach_schluessel"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.kind_id}/{self.schluessel}"
+
+
 class Lernstand(models.Model):
     """Abstandswiederholung: Stand eines Kindes bei einer Frage in einer Richtung.
     ``box`` zeigt auf den Abstand in der Einstellung ``lernen.box_abstaende_tage``."""
@@ -281,6 +305,9 @@ class Lernstand(models.Model):
     versuche = models.PositiveIntegerField(default=0)
     richtige = models.PositiveIntegerField(default=0)
     zuletzt = models.DateTimeField(null=True, blank=True)
+    karte = models.ForeignKey(
+        Karte, null=True, blank=True, on_delete=models.SET_NULL, related_name="staende"
+    )
 
     class Meta:
         constraints = [
@@ -298,7 +325,18 @@ class Versuch(models.Model):
     """Eine Antwort in einer Lernsitzung. Speichert nur Eingabe, Ergebnis, Hilfe und Dauer."""
 
     sitzung = models.ForeignKey(Lernsitzung, on_delete=models.CASCADE, related_name="antworten")
-    frage = models.ForeignKey(Frage, on_delete=models.CASCADE, related_name="+")
+    # Etappe 11: die Frage darf verschwinden (Aufräumen erzeugter Aufgaben), der Versuch bleibt
+    frage = models.ForeignKey(
+        Frage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    karte = models.ForeignKey(
+        Karte, null=True, blank=True, on_delete=models.SET_NULL, related_name="versuche"
+    )
+    thema = models.ForeignKey(
+        Thema, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    abstand_tage = models.PositiveIntegerField(null=True, blank=True)  # seit dem Versuch davor
+    geplant_am = models.DateField(null=True, blank=True)  # Termin laut Lernstand vor der Antwort
     richtung = models.CharField(max_length=5, choices=Richtung.choices)
     ergebnis = models.CharField(max_length=12, choices=Ergebnis.choices)
     hilfestufe = models.PositiveSmallIntegerField(default=0)
@@ -313,6 +351,11 @@ class Versuch(models.Model):
 
     def __str__(self):
         return f"Versuch {self.sitzung_id}/{self.frage_id}: {self.ergebnis}"
+
+    def save(self, *args, **kwargs):
+        if self.thema_id is None and self.frage_id is not None:
+            self.thema_id = self.frage.thema_id  # das Thema überlebt die Frage
+        super().save(*args, **kwargs)
 
 
 class Lerntag(models.Model):

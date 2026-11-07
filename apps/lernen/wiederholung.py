@@ -85,16 +85,26 @@ def faellig_nach(box, heute):
     return heute + timedelta(days=abstaende()[min(box, len(abstaende()) - 1)])
 
 
-def stand_buchen(kind, frage, richtung, richtig, heute, jetzt):
-    """Schreibt das Ergebnis einer Antwort in den Lernstand (legt ihn bei Bedarf an)."""
+# Ab dieser Hilfestufe rückt eine richtige Antwort die Karte nicht vor (W-1): Wer das Gerüst
+# oder die Lösung gebraucht hat, kann es noch nicht. Gilt nur für neue Antworten.
+HILFE_OHNE_FORTSCHRITT_AB = 3
+
+
+def stand_buchen(kind, frage, richtung, richtig, heute, jetzt, *, hilfestufe=0, karte=None):
+    """Schreibt das Ergebnis einer Antwort in den Lernstand (legt ihn bei Bedarf an).
+    Richtig mit viel Hilfe bleibt in der Box und kommt nach deren Abstand wieder."""
     stand, _neu = Lernstand.objects.get_or_create(
         kind=kind, frage=frage, richtung=richtung, defaults={"faellig_am": heute}
     )
-    stand.box = naechste_box(stand.box, richtig)
+    mit_hilfe = richtig and hilfestufe >= HILFE_OHNE_FORTSCHRITT_AB
+    if not mit_hilfe:
+        stand.box = naechste_box(stand.box, richtig)
     stand.faellig_am = faellig_nach(stand.box, heute)
     stand.versuche += 1
-    stand.richtige += 1 if richtig else 0
+    stand.richtige += 1 if richtig and not mit_hilfe else 0
     stand.zuletzt = jetzt
+    if karte is not None:
+        stand.karte = karte
     stand.save()
     return stand
 
