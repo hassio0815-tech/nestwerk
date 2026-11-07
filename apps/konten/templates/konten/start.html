@@ -1,5 +1,5 @@
 {% extends "basis/huelle.html" %}
-{% load i18n %}
+{% load i18n sprache %}
 {% comment %}Begrüßung + Profilwahl vor der Anmeldung: Splash (einmal je Sitzung), dann Kind- und Eltern-Kacheln.{% endcomment %}
 {% block titel %}{% translate "Wer bist du?" %}{% endblock %}
 {% block buehne %}
@@ -17,6 +17,29 @@
       <h1 class="nw-begruessung" data-gruss-wechsel{% for code, text in gruesse %} data-gruss-{{ code }}="{{ text }}!"{% endfor %}>{{ gruss }}!</h1>
       <p class="nw-leise">{% translate "Wer ist heute dabei?" %}</p>
     </div>
+    {% if infozeile %}
+      <section class="nw-infozeile" aria-labelledby="infozeile-titel" data-infozeile>
+        <h2 id="infozeile-titel" class="nw-infozeile__titel">{% translate "Offene Aufgaben" %}</h2>
+        {% if infozeile.aufgaben %}
+          <ul class="nw-infozeile__liste">
+            {% for i in infozeile.aufgaben %}
+              <li class="nw-infozeile__eintrag{% if i.heute %} ist-heute{% endif %}">
+                {% if i.aufgabe.emoji %}<span aria-hidden="true">{{ i.aufgabe.emoji }}</span>{% endif %}
+                <strong>{{ i.titel_snapshot|uebersetzt }}</strong>
+                {% if i.heute %}<span class="nw-infozeile__marke">{% translate "heute" %}</span>{% endif %}
+                {% if i.aufgabe.zugewiesen_an %}<span class="nw-leise">· {{ i.aufgabe.zugewiesen_an.rufname }}</span>{% endif %}
+                <span class="nw-leise">· {{ i.punkte_snapshot }}&nbsp;XP</span>
+              </li>
+            {% endfor %}
+            {% if infozeile.weitere %}
+              <li class="nw-infozeile__eintrag nw-leise">{% blocktranslate count n=infozeile.weitere %}+{{ n }} weitere{% plural %}+{{ n }} weitere{% endblocktranslate %}</li>
+            {% endif %}
+          </ul>
+        {% else %}
+          <p class="nw-leise">{% translate "Gerade ist alles erledigt." %}</p>
+        {% endif %}
+      </section>
+    {% endif %}
     <section class="nw-profil-gruppe" aria-labelledby="kinder-titel">
       <h2 id="kinder-titel">{% translate "Kinder" %}</h2>
       <div class="nw-profile">

@@ -53,8 +53,9 @@ def _minuten_text(bis):
 
 
 @require_GET
-def start(request):
-    """Tablet-/Familien-Startseite: Avatar-Kacheln der Kinder (nur Lesen, ohne Anmeldung)."""
+def start(request, extra=None):
+    """Tablet-/Familien-Startseite: Avatar-Kacheln der Kinder (nur Lesen, ohne Anmeldung).
+    ``extra``: Kontext höherer Schichten (z. B. ``infozeile`` aus ``oberflaeche``)."""
     if request.user.is_authenticated:
         return redirect(_heim(request.user))
     jetzt = zeit.jetzt()
@@ -77,6 +78,7 @@ def start(request):
             "eltern": selectors.aktive_eltern(),
             "gruss": begruessung.gruss(),
             "gruesse": begruessung.gruesse(),
+            **(extra or {}),
         },
     )
 

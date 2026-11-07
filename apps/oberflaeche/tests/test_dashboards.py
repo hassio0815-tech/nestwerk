@@ -52,6 +52,32 @@ def test_weiterleitung_je_rolle_und_geraet(client, mama, anna, tablet):
     assert eltern.get("/")["Location"] == "/eltern/"
 
 
+def test_anmeldeseite_zeigt_infozeile_mit_offenen_aufgaben(client, mama, anna):
+    from datetime import timedelta
+
+    from apps.kern import zeit
+
+    offen = instanz(mama, anna, InstanzStatus.OFFEN, titel="Fenster putzen")
+    heute = instanz(mama, anna, InstanzStatus.OFFEN, titel="Tisch decken")
+    heute.faellig_am = zeit.heute()
+    heute.save()
+    spaeter = instanz(mama, anna, InstanzStatus.OFFEN, titel="Keller fegen")
+    spaeter.faellig_am = zeit.heute() + timedelta(days=2)
+    spaeter.save()
+    instanz(mama, anna, InstanzStatus.RESERVIERT, titel="Müll raus")
+    html = client.get("/").content.decode()
+    assert "data-infozeile" in html
+    assert "Fenster putzen" in html and "Tisch decken" in html
+    assert html.index("Tisch decken") < html.index("Fenster putzen")  # heute Fällige zuerst
+    assert "Keller fegen" not in html and "Müll raus" not in html
+    assert offen.pk  # nur Anlage
+
+
+def test_anmeldeseite_infozeile_ohne_aufgaben(client, mama):
+    html = client.get("/").content.decode()
+    assert "data-infozeile" in html and "Gerade ist alles erledigt." in html
+
+
 # --- Rollen- und Gerätetrennung --------------------------------------------------------------
 
 

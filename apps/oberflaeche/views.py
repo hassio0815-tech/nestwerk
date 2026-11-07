@@ -48,7 +48,12 @@ def startseite(request):
         )
     if ist_kiosk(request):
         return redirect("oberflaeche:tablet")
-    return konten_views.start(request)
+    try:
+        infozeile = selectors.start_infozeile()
+    except einstellungen.EinstellungFehlt:  # z. B. vor der Einrichtung: Anmeldung geht vor
+        logger.warning("Infozeile der Startseite ohne Zeitzone nicht verfügbar")
+        infozeile = None
+    return konten_views.start(request, extra={"infozeile": infozeile})
 
 
 # Dungeon (über den Avatar erreichbar): Figur, Mods, Shop, Ränge, Ruhmeshalle, Abzeichen.

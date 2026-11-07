@@ -420,6 +420,51 @@
 .nw-begruessung[data-gruss-wechsel] { transition: opacity 0.4s ease; }
 .nw-begruessung.ist-ausgeblendet { opacity: 0; }
 
+/* Infozeile der Anmeldeseite: offene/heute fällige Aufgaben, volle Bühnenbreite */
+.nw-infozeile {
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--teal-400) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--teal-400) 30%, transparent);
+  text-align: left;
+}
+.nw-infozeile__titel { font-size: 1rem; margin: 0; white-space: nowrap; }
+.nw-infozeile__liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nw-infozeile__eintrag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--hintergrund);
+  font-size: 0.95rem;
+}
+.nw-infozeile__eintrag.ist-heute { box-shadow: inset 0 0 0 2px var(--teal-400); }
+.nw-infozeile__marke {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-leise);
+}
+@media (max-width: 40rem) {
+  .nw-infozeile { flex-direction: column; align-items: stretch; }
+  .nw-infozeile__eintrag { width: 100%; }
+}
+
 /* Sprachwahl: DE/EN oben rechts auf der Bühne; Segment-Knöpfe auch in den Einstellungen */
 .nw-sprache-wahl { position: absolute; top: 0; right: 0; z-index: 1; }
 .nw-segment button {
