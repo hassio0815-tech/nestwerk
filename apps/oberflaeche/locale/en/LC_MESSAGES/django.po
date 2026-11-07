@@ -276,8 +276,8 @@ msgid "Schnell-Knöpfe"
 msgstr "Quick buttons"
 
 #: registry.py:261
-msgid "Erledigt – kurz prüfen"
-msgstr "Done – quick check"
+msgid "Heute erledigt"
+msgstr "Done today"
 
 #: registry.py:270 templates/oberflaeche/kacheln/eltern_ranking.html:3
 msgid "Familien-Ranking"

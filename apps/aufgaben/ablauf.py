@@ -895,7 +895,7 @@ def nachbessern_pruefen(*, jetzt=None) -> dict:
     return zaehler
 
 
-# --- Vertrauen prüfen (Eltern-Dashboard "Erledigt – kurz prüfen") ------------------------------
+# --- Vertrauen prüfen und Tagesübersicht (Eltern-Dashboard "Heute erledigt") ------------------------------
 
 
 def zu_pruefen():
@@ -910,6 +910,42 @@ def zu_pruefen():
         .select_related("kind", "aufgabe")
         .order_by("bestaetigt_am", "pk")
     )
+
+
+KACHEL_ERLEDIGT_MAX = 8
+
+
+def heute_erledigt(jetzt=None):
+    """Alle heute (Familienzeitzone) bestätigten Erledigungen, jede Freigabeart, neueste zuerst."""
+    von, bis = zeit.tag_intervall(zeit.heute(jetzt))
+    return (
+        AufgabenInstanz.objects.filter(
+            status=S.BESTAETIGT, bestaetigt_am__gte=von, bestaetigt_am__lt=bis
+        )
+        .select_related("kind", "aufgabe")
+        .order_by("-bestaetigt_am", "-pk")
+    )
+
+
+def heute_erledigt_kachel(jetzt=None, limit=KACHEL_ERLEDIGT_MAX):
+    """Kontext der Eltern-Kachel "Heute erledigt": die ersten ``limit`` Zeilen, Gesamtzahl,
+    Rest (ohne die immer sichtbaren ungeprüften Zeilen) und Anzahl der noch nicht durchgesehenen Vertrauens-Erledigungen. ``zu_pruefen`` je Zeile
+    gilt wie in :func:`zu_pruefen` (Vertrauen, niemand bestätigt, nicht geprüft)."""
+    alle = list(heute_erledigt(jetzt))
+    for i in alle:
+        i.zu_pruefen = (
+            i.freigabeart_snapshot == Freigabeart.VERTRAUEN
+            and i.bestaetigt_von_id is None
+            and i.geprueft_am is None
+        )
+    # Ungeprüfte Vertrauens-Zeilen bleiben immer sichtbar, auch über dem Limit hinaus.
+    gezeigt = alle[:limit] + [i for i in alle[limit:] if i.zu_pruefen]
+    return {
+        "liste": gezeigt,
+        "gesamt": len(alle),
+        "weitere": len(alle) - len(gezeigt),
+        "offen": sum(1 for i in alle if i.zu_pruefen),
+    }
 
 
 @transaction.atomic

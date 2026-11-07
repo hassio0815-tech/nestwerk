@@ -1397,8 +1397,8 @@ msgid "Foto zur Meldung"
 msgstr "Photo for the report"
 
 #: templates/aufgaben/_pruefen.html:5
-msgid "Erledigt – kurz prüfen"
-msgstr "Done – quick check"
+msgid "Heute erledigt"
+msgstr "Done today"
 
 #: templates/aufgaben/_pruefen.html:16
 msgid "Grund (für Nachbessern und Ablehnen nötig)"
@@ -1421,8 +1421,17 @@ msgid "Ablehnen? Die Punkte werden abgezogen."
 msgstr "Decline? The points will be taken off."
 
 #: templates/aufgaben/_pruefen.html:26
-msgid "Alles geprüft. Nichts offen."
-msgstr "All checked. Nothing open."
+msgid "Heute noch nichts erledigt."
+msgstr "Nothing done yet today."
+
+#: templates/aufgaben/_pruefen.html
+msgid "kurz prüfen"
+msgstr "quick check"
+
+#: templates/aufgaben/_pruefen.html
+#, python-format
+msgid "+%(n)s weitere"
+msgstr "+%(n)s more"
 
 #: templates/aufgaben/_pruefen.html:30
 msgid "Alle passen"
