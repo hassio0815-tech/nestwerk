@@ -18,7 +18,7 @@
       <ul class="stapel">
         {% for m in wartend %}
           <li class="reihe">
-            <label><input type="checkbox" name="material" value="{{ m.pk }}"> {{ m.kind.anzeigename }}: {{ m.anzeigename }}</label>
+            <label><input type="checkbox" name="material" value="{{ m.pk }}"{% if vorwahl and vorwahl == m.kind_id|stringformat:"s" %} checked{% endif %}> {{ m.kind.anzeigename }}: {{ m.anzeigename }}</label>
             <span>{{ m.get_status_display }}</span>
             {% url "lernen:eltern_material_detail" m.pk as d_url %}
             {% include "komponenten/button.html" with href=d_url variante="geist" klein=True icon="pfeil-rechts" text=_("Ansehen") %}

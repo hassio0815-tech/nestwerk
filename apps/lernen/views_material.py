@@ -153,7 +153,7 @@ def datei(request, pk):
 # --- Eltern ----------------------------------------------------------------------------------
 
 
-def _eltern_liste_kontext(*, fehler=""):
+def _eltern_liste_kontext(*, fehler="", vorwahl=""):
     kinder = list(konten.aktive_kinder())
     zeilen = []
     for kind in kinder:
@@ -170,13 +170,18 @@ def _eltern_liste_kontext(*, fehler=""):
     return {
         "zeilen": zeilen,
         "wartend": material_selectors.warten_auf_eltern().filter(kind__in=kinder),
+        "vorwahl": vorwahl,  # Kind aus dem Push-Link: seine wartenden Einträge sind angehakt
         "fehler": fehler,
     }
 
 
 @nur_eltern
 def eltern_liste(request):
-    return render(request, "lernen/eltern_material.html", _eltern_liste_kontext())
+    return render(
+        request,
+        "lernen/eltern_material.html",
+        _eltern_liste_kontext(vorwahl=request.GET.get("kind", "")),
+    )
 
 
 def _detail_kontext(material, *, fehler=""):

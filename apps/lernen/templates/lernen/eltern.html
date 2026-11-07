@@ -25,6 +25,13 @@
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Einstellungen" %}</h2>
+    <p>{% translate "Tagesziel, Punkte, Ferien, Tutor, neue Vokabeln, Rechenarten und die Meldungen an euch auf einer Seite." %}</p>
+    {% url "lernen:eltern_einstellungen" as einstellungen_seite_url %}
+    {% include "komponenten/button.html" with href=einstellungen_seite_url variante="geist" klein=True icon="einstellungen" text=_("Lern-Einstellungen") %}
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Lernmappe" %}</h2>
     <p>{% translate "Material der Kinder ansehen, Fragen freigeben, Speicher prüfen." %}</p>
     {% url "lernen:eltern_material" as material_url %}

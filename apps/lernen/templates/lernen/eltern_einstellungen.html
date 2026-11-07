@@ -1,0 +1,62 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static %}
+{% block titel %}{% translate "Lern-Einstellungen" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
+{% block kopf_rechts %}{{ block.super }}
+  {% url "lernen:eltern" as eltern_url %}
+  {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="schule" text=_("Lernen") %}
+{% endblock %}
+{% block seite %}
+  <h1>{% translate "Lern-Einstellungen" %}</h1>
+  <p>{% translate "Was ihr hier ändert, gilt für die ganze Familie. Alles wird zusammen gespeichert." %}</p>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+
+  <form method="post" class="stapel">{% csrf_token %}
+    {% for titel, felder in gruppen %}
+      <section class="karte"><div class="karte__inhalt stapel">
+        <h2>{% translate titel %}</h2>
+        {% for f in felder %}
+          {% if f.typ == "bool" %}
+            <div class="feld">
+              <label class="reihe"><input type="checkbox" name="{{ f.name }}" id="le-{{ f.name }}"{% if f.wert %} checked{% endif %}> {{ f.label }}</label>
+              {% if f.hilfe %}<p class="feld__hinweis">{{ f.hilfe }}</p>{% endif %}
+            </div>
+          {% elif f.name == "digest_wochentag" %}
+            <div class="feld">
+              <label class="feld__label" for="le-{{ f.name }}">{{ f.label }}</label>
+              <select class="feld__eingabe" id="le-{{ f.name }}" name="{{ f.name }}">
+                {% for nr, name in wochentage %}<option value="{{ nr }}"{% if nr == f.wert %} selected{% endif %}>{{ name }}</option>{% endfor %}
+              </select>
+              {% if f.hilfe %}<p class="feld__hinweis">{{ f.hilfe }}</p>{% endif %}
+            </div>
+          {% elif f.typ == "uhrzeit" %}
+            <div class="feld">
+              <label class="feld__label" for="le-{{ f.name }}">{{ f.label }}</label>
+              <input class="feld__eingabe" id="le-{{ f.name }}" type="time" name="{{ f.name }}" value="{{ f.wert }}" required>
+              {% if f.hilfe %}<p class="feld__hinweis">{{ f.hilfe }}</p>{% endif %}
+            </div>
+          {% else %}
+            <div class="feld">
+              <label class="feld__label" for="le-{{ f.name }}">{{ f.label }}{% if f.einheit %} ({{ f.einheit }}){% endif %}</label>
+              <input class="feld__eingabe" id="le-{{ f.name }}" type="number" name="{{ f.name }}" value="{{ f.wert }}"{% if f.minimum is not None %} min="{{ f.minimum }}"{% endif %}{% if f.maximum is not None %} max="{{ f.maximum }}"{% endif %} required>
+              {% if f.hilfe %}<p class="feld__hinweis">{{ f.hilfe }}</p>{% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div></section>
+    {% endfor %}
+
+    <section class="karte"><div class="karte__inhalt stapel">
+      <h2>{% translate "Rechenarten" %}</h2>
+      <p>{% translate "Abgehakte Rechenarten kommen beim Üben vor. Ohne Haken wird die Rechenart nicht mehr gestellt." %}</p>
+      <input type="hidden" name="rechenarten_form" value="1">
+      <div class="stapel">
+        {% for schluessel, name, an in rechenarten %}
+          <label class="reihe"><input type="checkbox" name="rechenarten_an" value="{{ schluessel }}"{% if an %} checked{% endif %}> {% translate name %}</label>
+        {% endfor %}
+      </div>
+    </div></section>
+
+    {% include "komponenten/button.html" with typ="submit" icon="haken" text=_("Speichern") %}
+  </form>
+{% endblock %}

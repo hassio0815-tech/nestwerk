@@ -32,10 +32,15 @@ def _eltern(request):
     """Je Kind eine Zeile: Minuten heute, Ziel, Serie. Keine Vergleiche zwischen Kindern."""
     from apps.konten import selectors as konten
 
-    from . import selectors
+    from . import material_selectors, selectors
 
     heute = zeit.heute()
-    return {"zeilen": [(k, selectors.tagesbild(k, heute)) for k in konten.aktive_kinder()]}
+    kinder = list(konten.aktive_kinder())
+    return {
+        "zeilen": [(k, selectors.tagesbild(k, heute)) for k in kinder],
+        # Badge (E-2): genau die Zahl der Einträge, die ``warten_auf_eltern()`` liefert
+        "warten": material_selectors.warten_auf_eltern().filter(kind__in=kinder).count(),
+    }
 
 
 def _woche(request):

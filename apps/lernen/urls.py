@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import (
     views,
+    views_einstellungen,
     views_ki,
     views_kinder,
     views_material,
@@ -154,6 +155,11 @@ urlpatterns = [
         "eltern/lernen/kinder/schuljahr/bestaetigen/",
         views_kinder.eltern_schuljahr_bestaetigen,
         name="eltern_schuljahr_bestaetigen",
+    ),
+    path(
+        "eltern/lernen/einstellungen/",
+        views_einstellungen.eltern_einstellungen,
+        name="eltern_einstellungen",
     ),
     path("eltern/lernen/woche/", views_woche.eltern_woche, name="eltern_woche"),
     path(

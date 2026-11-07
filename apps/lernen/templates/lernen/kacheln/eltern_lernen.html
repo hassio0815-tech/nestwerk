@@ -4,6 +4,10 @@
   {% for kind, bild in k.zeilen %}
     <p class="kachel__text">{% blocktranslate with name=kind.anzeigename minuten=bild.minuten ziel=bild.ziel_minuten wochen=bild.serie.wochen %}{{ name }}: heute {{ minuten }} von {{ ziel }} Minuten, Serie {{ wochen }} Wochen{% endblocktranslate %}</p>
   {% endfor %}
+  {% if k.warten %}
+    {% url "lernen:eltern_material" as material_url %}
+    <p class="kachel__text" data-warten="{{ k.warten }}"><a href="{{ material_url }}">{% blocktranslate count n=k.warten %}{{ n }} Material wartet auf euch.{% plural %}{{ n }} Materialien warten auf euch.{% endblocktranslate %}</a></p>
+  {% endif %}
   {% url "lernen:eltern" as eltern_url %}
   {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="schule" text=_("Lernen ansehen") %}
 </div></article>
