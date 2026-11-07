@@ -10,11 +10,12 @@ from django.db.models import Q, Sum
 
 from apps.kern.einstellungen import wert
 
-from . import mathe_aufgaben, plan, selectors, tagesziel
+from . import fsrs_adapter, mathe_aufgaben, plan, selectors, tagesziel
 from .models import (
     Frage,
     Freigabe,
     Lernsitzung,
+    Lernstand,
     Lernziel,
     Material,
     MaterialStatus,
@@ -128,6 +129,27 @@ def portion_fragen(portion_):
 # --- Planen: Eingabe für den reinen Planer --------------------------------------------------------
 
 
+def wiederholungs_abstaende():
+    """Abstände der Wiederholungen im Plan: mit FSRS die Abstände einer durchweg richtig
+    beantworteten Karte (so viele wie Boxen), sonst die der Boxen."""
+    boxen = tuple(wert("lernen.box_abstaende_tage"))
+    if fsrs_adapter.algorithmus() == fsrs_adapter.ALGORITHMUS_FSRS:
+        return tuple(fsrs_adapter.nominale_abstaende(len(boxen)))
+    return boxen
+
+
+def echte_faelligkeit(kind, frage_ids):
+    """Frühester Termin laut Lernstand für eine Portion, oder ``None``, wenn nicht jede Frage
+    schon einen Stand hat (dann gilt der geplante Termin)."""
+    ids = set(frage_ids)
+    staende = list(
+        Lernstand.objects.filter(kind=kind, frage_id__in=ids).values_list("frage_id", "faellig_am")
+    )
+    if not ids or {f for f, _d in staende} != ids:
+        return None
+    return min(d for _f, d in staende)
+
+
 def parameter(kind, heute):
     ziel = Lernziel.objects.filter(kind=kind).first()
     return plan.Parameter(
@@ -137,7 +159,7 @@ def parameter(kind, heute):
         wdh_prozent=wert("lernen.pruefung_wiederholung_prozent"),
         leicht_minuten=wert("lernen.pruefung_leicht_minuten"),
         puffer_rhythmus=wert("lernen.pruefung_puffer_rhythmus"),
-        abstaende=tuple(wert("lernen.box_abstaende_tage")),
+        abstaende=wiederholungs_abstaende(),
         wochentage=frozenset(wert("lernen.pruefung_wochentage")),
         max_laenge=wert("lernen.pruefung_max_planlaenge"),
         vorlauf=wert("lernen.pruefung_vorlauf_tage"),
@@ -177,9 +199,11 @@ def eingabe(pruefung_, heute, *, nachholen=False):
             and x.stoff_id
             and set(x.fragen) <= erledigt[str(x.stoff_id)]
         ):
-            wdh_offen.append(
-                plan.WdhOffen(str(x.stoff_id), tuple(x.fragen), x.minuten, max(x.datum, heute))
-            )
+            frueh_ab = max(x.datum, heute)
+            echt = echte_faelligkeit(kind, x.fragen)
+            if echt is not None:  # Planer nutzt die echte Fälligkeit, nie nach dem letzten Lerntag
+                frueh_ab = max(heute, min(echt, pruefung_.termin - timedelta(days=1)))
+            wdh_offen.append(plan.WdhOffen(str(x.stoff_id), tuple(x.fragen), x.minuten, frueh_ab))
     puffer_fest = None
     if nachholen:
         puffer_fest = frozenset(

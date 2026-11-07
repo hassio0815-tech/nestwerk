@@ -11,13 +11,14 @@ Zeile und behält seine Box. Die Auswahl der Schwierigkeit steht rein in ``mathe
 """
 
 import hashlib
-from collections import defaultdict
-from datetime import timedelta
+from collections import Counter, defaultdict
+from datetime import time, timedelta
 
 from apps.kern import zeit
 from apps.kern.einstellungen import wert
 
 from . import mathe_ki, selectors
+from .mathe import fehler as mathe_fehler
 from .mathe import registry, schwierigkeit, textaufgaben
 from .models import (
     Ergebnis,
@@ -42,6 +43,10 @@ GEMISCHT_VORJAHR = 0.15  # Gewicht von Rechenarten früherer Stufen in "alles ge
 SCHWAECHE_FAKTOR = 2.5  # Gewicht einer Rechenart, bei der das Kind unter dem Zielbereich liegt
 GLEICHES_THEMA_FAKTOR = 0.2  # Themenmischung statt Blöcken
 GLEICHER_GENERATOR_FAKTOR = 0.05
+FEHLERART_TAGE = 14  # so weit zurück zählen erkannte Rechenfehler (W-6)
+FEHLERART_FAKTOR = 2.0  # Gewicht einer Rechenart mit häufigem Rechenfehler
+# Formfehler der Antwortprüfung sagen nichts über das Rechnen: sie steuern die Auswahl nicht
+FORMFEHLER = frozenset({"unlesbar", "einheit", "variable"})
 
 
 # --- Anlegen --------------------------------------------------------------------------------------
@@ -178,7 +183,38 @@ def _ziehen(generator_key, stufe, zufall, kontext, gesehen, typ=None):
     return aufgabe
 
 
-def _gewichte(gens, *, band, gemischt, verlauf, letzter_gen, letztes_thema, params):
+def fehler_rechenarten(kind, fach, heute):
+    """Rechenarten, bei denen das Kind in den letzten Tagen oft denselben Rechenfehler machte
+    (mindestens ``lernen.mathe_fehlerart_min`` erkannte Fehler; Formfehler zählen nicht)."""
+    seit = zeit.lokal_zu_utc(heute - timedelta(days=FEHLERART_TAGE), time())
+    zeilen = (
+        Versuch.objects.filter(
+            sitzung__kind=kind,
+            frage__generiert=True,
+            frage__thema__fach=fach,
+            erstellt__gte=seit,
+        )
+        .exclude(fehlertyp="")
+        .values_list("frage__generator", "fehlertyp")
+    )
+    zaehler = Counter(
+        g for g, typ in zeilen if typ in mathe_fehler.HINWEISE and typ not in FORMFEHLER and g
+    )
+    mindest = wert("lernen.mathe_fehlerart_min")
+    return {g for g, n in zaehler.items() if n >= mindest}
+
+
+def _gewichte(
+    gens,
+    *,
+    band,
+    gemischt,
+    verlauf,
+    letzter_gen,
+    letztes_thema,
+    params,
+    fehler=frozenset(),
+):
     gewichte = []
     for g in gens:
         w = 1.0
@@ -186,6 +222,8 @@ def _gewichte(gens, *, band, gemischt, verlauf, letzter_gen, letztes_thema, para
             w *= GEMISCHT_VORJAHR
         if _schwach(verlauf.get(g.schluessel, []), params):
             w *= SCHWAECHE_FAKTOR
+        if g.schluessel in fehler:
+            w *= FEHLERART_FAKTOR
         if g.thema == letztes_thema:
             w *= GLEICHES_THEMA_FAKTOR
         if g.schluessel == letzter_gen:
@@ -283,6 +321,23 @@ def _wiederholen(stand, sitzung, kontext, gesehen, zufall):
     return neu
 
 
+def _interleaving(gens, sitzung, band, quote):
+    """Mischung statt Blöcke (W-5): Von den Aufgaben einer Sitzung stammen mindestens ``quote``
+    Prozent aus Rechenarten früherer Stufen. Gibt die Rechenarten zurück, aus denen die nächste
+    Aufgabe kommt (nur ältere oder nur aktuelle). Gibt es nur eine Sorte, bleibt alles."""
+    aeltere = [g for g in gens if g.klassenstufe < band]
+    aktuelle = [g for g in gens if g.klassenstufe >= band]
+    if not aeltere or not aktuelle:
+        return gens
+    bisher = list(
+        sitzung.antworten.filter(frage__generiert=True).values_list("frage__generator", flat=True)
+    )
+    alle = registry.alle()
+    n_alt = sum(1 for g in bisher if g in alle and alle[g].klassenstufe < band)
+    soll = (quote * (len(bisher) + 1)) // 100  # so viele ältere Aufgaben nach dieser Aufgabe
+    return aeltere if n_alt < soll else aktuelle
+
+
 def _neue_aufgabe(
     sitzung, aktiv, kontext, verlauf, params, gesehen, letzter_gen, letztes_thema, zufall, cache
 ):
@@ -303,6 +358,10 @@ def _neue_aufgabe(
     if not gens:
         return None
     band = registry.band(selectors.klassenstufe(kind, fach))
+    quote = wert("lernen.interleaving_prozent")
+    if gemischt and quote:
+        gens = _interleaving(gens, sitzung, band, quote)
+        gemischt = False  # die Quote ersetzt das feste Gewicht der älteren Rechenarten
     gewichte = _gewichte(
         gens,
         band=band,
@@ -311,6 +370,7 @@ def _neue_aufgabe(
         letzter_gen=letzter_gen,
         letztes_thema=letztes_thema,
         params=params,
+        fehler=fehler_rechenarten(kind, fach, zeit.heute()),
     )
     gen = zufall.choices(gens, weights=gewichte)[0]
     stufe = stufe_fuer(kind, fach, sitzung, gen.schluessel, verlauf)
