@@ -32,7 +32,7 @@ Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppi
 
 ### Hinzugefügt
 - **FSRS-Planung:** Jede Übungsfrage hat jetzt Stabilität und Schwierigkeit (Bibliothek `fsrs`, gepinnt, MIT, Standardparameter, kein Training). Antworten werden bewertet als Again (noch nicht), Hard (richtig mit Hilfe ab Stufe 3), Good, Easy (richtig ohne Hilfe und schneller als der Median des Kindes). Ziel-Behaltensquote 90 %, größter Abstand 60 Tage, kein Zufall, eine falsche Antwort kommt morgen wieder. Die Leitner-Boxen bleiben als Fallback-Einstellung (`lernen.wiederholung_algorithmus`) und greifen automatisch, wenn die Bibliothek fehlt. Bestehende Stände starten aus ihrer Box.
-- **Neu-Limit für Vokabeln:** 3 / 5 / 7 neue Wörter pro Tag (bis Klasse 5 / Klasse 6-7 / ab Klasse 8, Klasse unbekannt: 3), je Kind einstellbar.
+- **Neu-Limit für Vokabeln:** 3 / 5 / 7 neue Wörter pro Tag (bis Klasse 5 / Klasse 6-7 / ab Klasse 8, Klasse unbekannt: 3), für die ganze Familie einstellbar (ein Feld je Kind ist vorbereitet, die Seite dafür folgt).
 - **Mischung (Interleaving):** Bei „alles gemischt“ stammen mindestens 30 % der Mathe-Aufgaben einer Runde aus früheren Rechenarten (Einstellung).
 - **Fehlerart steuert die Auswahl:** Rechenarten mit mindestens drei erkannten Rechenfehlern in 14 Tagen kommen öfter dran (Formfehler zählen nicht).
 
