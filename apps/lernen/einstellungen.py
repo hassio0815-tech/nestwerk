@@ -936,7 +936,7 @@ def _definieren_wiederholung():
             bezeichnung,
             beschreibung=_(
                 "Mehr neue Vokabeln stellt das Üben pro Tag nicht. Ist die Klasse unbekannt, "
-                "gilt der niedrigste Wert. Pro Kind lässt sich das überschreiben."
+                "gilt der niedrigste Wert."
             ),
             minimum=1,
             maximum=50,

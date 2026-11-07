@@ -573,3 +573,18 @@ def test_meldungen_kommen_bei_allen_eltern_an(kind_a, mama, papa):
         for z in Zustellung.objects.exclude(status="unterdrueckt_praeferenz")
         if z.kanal_id == "email"
     }
+
+
+def test_wochenbild_und_einstellungen_halten_ton_und_versprechen(eltern_client, kind_a):
+    from django.utils import timezone
+
+    from apps.lernen.models import Lernsitzung
+
+    Lernsitzung.objects.create(
+        kind=kind_a, beginn=timezone.now(), rueckschau_schwer="x", rueckschau_fertig=True
+    )
+    woche = eltern_client.get(reverse("lernen:eltern_woche")).content.decode()
+    assert "dass ihr das sehen könnt" in woche
+    seite = eltern_client.get(reverse("lernen:eltern_einstellungen")).content.decode()
+    # Es gibt (noch) keine Oberfläche je Kind: die Beschreibung darf es nicht versprechen
+    assert "Pro Kind lässt sich das überschreiben" not in seite

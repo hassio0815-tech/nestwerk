@@ -60,7 +60,7 @@
 
       {% if b.rueckschauen %}
         <h3>{% translate "Rückschau des Kindes (die letzten drei)" %}</h3>
-        <p class="kachel__text">{% translate "Das Kind weiß, dass Sie das sehen können. Es sind seine eigenen Worte, keine Bewertung." %}</p>
+        <p class="kachel__text">{% translate "Das Kind weiß, dass ihr das sehen könnt. Es sind seine eigenen Worte, keine Bewertung." %}</p>
         <ul data-lernen-rueckschauen>{% for r in b.rueckschauen %}<li>{{ r.datum|date:"SHORT_DATE_FORMAT" }}{% if r.fach %}, {{ r.fach|uebersetzt }}{% endif %}{% if r.geholfen %}: {% blocktranslate with text=r.geholfen %}Geholfen hat: {{ text }}{% endblocktranslate %}{% endif %}{% if r.schwer %} {% blocktranslate with text=r.schwer %}Schwer war: {{ text }}{% endblocktranslate %}{% endif %}</li>{% endfor %}</ul>
       {% endif %}
 
