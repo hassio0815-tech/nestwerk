@@ -333,3 +333,41 @@ def test_dungeon_anzeige_schalter_blendet_menue_und_launcher_aus(eltern_client):
 def test_kind_alte_spielwelt_adresse_leitet_um(kind_client):
     antwort = kind_client.get("/kind/spielwelt/")
     assert antwort.status_code == 301 and antwort["Location"] == "/kind/dungeon/"
+
+
+def test_anmeldeseite_wochenvorschau_nur_wiederkehrende(client, mama, anna):
+    from apps.kern import zeit
+
+    heute = zeit.heute()
+    wiederkehrend = Aufgabe.objects.create(
+        titel="Zähne putzen",
+        beschreibung="Zwei Minuten lang",
+        punkte=7,
+        erstellt_von=mama,
+        wiederholungsart="intervall",
+        intervall_tage=1,
+        start_datum=heute,
+        zugewiesen_an=anna,
+    )
+    Aufgabe.objects.create(
+        titel="Einmal-Job",
+        punkte=5,
+        erstellt_von=mama,
+        wiederholungsart="einmalig",
+        start_datum=heute,
+    )
+    Aufgabe.objects.create(
+        titel="Knopf-Job", punkte=5, erstellt_von=mama, wiederholungsart="bei_bedarf"
+    )
+    html = client.get("/").content.decode()
+    assert "data-wochenvorschau" in html
+    assert html.count("data-woche-tag") == 7
+    assert "Zähne putzen" in html and "Einmal-Job" not in html and "Knopf-Job" not in html
+    assert "<dialog" in html and "Übernehmen" in html  # Popup des Tages vorhanden
+    assert "7&nbsp;XP" in html and wiederkehrend.zugewiesen_an.rufname in html
+    assert html.index("data-infozeile") < html.index("data-wochenvorschau")
+
+
+def test_anmeldeseite_wochenvorschau_leer(client, mama):
+    html = client.get("/").content.decode()
+    assert "data-wochenvorschau" in html and html.count("data-woche-tag") == 7

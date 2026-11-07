@@ -7,11 +7,12 @@ from django.db.models import Count, Prefetch, Q
 from apps.kern import einstellungen, zeit
 from apps.punkte import selectors as punkte_selectors
 
-from . import schluessel
+from . import faelligkeit, instanzen, schluessel, wiederholung
 from .models import (
     INTERESSE_LAUFEND,
     LAUFENDE_STATUS,
     MELDUNG_LAUFEND,
+    Aufgabe,
     AufgabenInstanz,
     InstanzStatus,
     Interesse,
@@ -227,6 +228,47 @@ def start_offene(*, jetzt=None):
         instanz.heute = instanz.faellig_am is not None
         ergebnis.append(instanz)
     return sorted(ergebnis, key=lambda i: not i.heute)
+
+
+START_WOCHE_TAGE = 7
+
+
+def start_woche(*, heute=None, tage=START_WOCHE_TAGE):
+    """Wochenvorschau der Anmeldeseite: ``tage`` Tage ab ``heute`` mit den wiederkehrenden Aufgaben.
+
+    Gerechnet aus den Wiederholungsplänen (``faelligkeit.termine``), nicht aus Instanzen: auch
+    künftige Tage sind gefüllt. Nur aktive wöchentliche/Intervall-Aufgaben; einmalige und
+    Schnell-Knöpfe (bei Bedarf) fehlen. Jede Aufgabe trägt ``rhythmus`` (Kurztext des Plans).
+    Rückgabe: ``[{"datum", "heute", "aufgaben"}]``.
+    """
+    heute = heute or zeit.heute()
+    letzter = heute + timedelta(days=tage - 1)
+    tz = zeit.zeitzone()
+    nach_tag = {heute + timedelta(days=i): [] for i in range(tage)}
+    aufgaben = Aufgabe.objects.filter(
+        status=Status.AKTIV,
+        wiederholungsart__in=(wiederholung.WOECHENTLICH, wiederholung.INTERVALL),
+    ).select_related("zugewiesen_an")
+    for aufgabe in aufgaben:
+        plan = aufgabe.plan
+        termine = faelligkeit.termine(
+            plan, heute, letzter, start=instanzen._start_ersatz(aufgabe, tz)
+        )
+        if not termine:
+            continue
+        aufgabe.rhythmus = plan.beschreiben()
+        for tag in termine:
+            nach_tag[tag].append(aufgabe)
+    return [{"datum": t, "heute": t == heute, "aufgaben": a} for t, a in nach_tag.items()]
+
+
+def start_woche_aufgabe(aufgabe_id, datum, *, heute=None):
+    """Die Aufgabe, falls sie laut Wochenvorschau am ``datum`` ansteht, sonst ``None``.
+    Prüft damit zugleich Datumsfenster und Aktivität (Anmeldeseite, ungeprüfte Eingabe)."""
+    for tag in start_woche(heute=heute):
+        if tag["datum"] == datum:
+            return next((a for a in tag["aufgaben"] if a.pk == aufgabe_id), None)
+    return None
 
 
 def offene_entscheidungen_anzahl() -> int:

@@ -1,5 +1,5 @@
 {% extends "basis/huelle.html" %}
-{% load i18n sprache %}
+{% load i18n sprache static %}
 {% comment %}Begrüßung + Profilwahl vor der Anmeldung: Splash (einmal je Sitzung), dann Kind- und Eltern-Kacheln.{% endcomment %}
 {% block titel %}{% translate "Wer bist du?" %}{% endblock %}
 {% block buehne %}
@@ -39,6 +39,51 @@
           <p class="nw-leise">{% translate "Gerade ist alles erledigt." %}</p>
         {% endif %}
       </section>
+    {% endif %}
+    {% if uebernehmen %}
+      <section class="nw-uebernehmen" role="status" data-uebernehmen-banner>
+        <p>{% blocktranslate with titel=uebernehmen.aufgabe.titel|uebersetzt datum=uebernehmen.datum|date:"l, j. F" %}Wer übernimmt „{{ titel }}“ ({{ datum }})? Tippe unten auf dein Bild.{% endblocktranslate %}</p>
+        <form method="post" action="{% url 'oberflaeche:uebernehmen_abbrechen' %}">{% csrf_token %}
+          <button type="submit" class="nw-woche__zu nw-woche__zu--leise">{% translate "Abbrechen" %}</button>
+        </form>
+      </section>
+    {% endif %}
+    {% if woche %}
+      <section class="nw-woche" aria-labelledby="woche-titel" data-wochenvorschau>
+        <h2 id="woche-titel" class="nw-woche__titel">{% translate "Diese Woche" %}</h2>
+        <ol class="nw-woche__leiste">
+          {% for t in woche.tage %}
+            <li class="nw-woche__tag{% if t.heute %} ist-heute{% endif %}">
+              {% translate "j.n." context "Kurzdatum" as kurzdatum %}
+              <button type="button" class="nw-woche__knopf" data-woche-tag="{{ t.datum|date:'Y-m-d' }}"{% if t.heute %} aria-current="date"{% endif %}{% if t.aufgaben %} aria-haspopup="dialog" aria-controls="woche-tag-{{ t.datum|date:'Y-m-d' }}" aria-label="{{ t.datum|date:'l' }}, {{ t.datum|date:kurzdatum }}: {% blocktranslate count n=t.anzahl %}{{ n }} feste Aufgabe{% plural %}{{ n }} feste Aufgaben{% endblocktranslate %}"{% else %} disabled aria-label="{{ t.datum|date:'l' }}, {{ t.datum|date:kurzdatum }}: {% translate 'Keine festen Aufgaben' %}"{% endif %}>
+                <span class="nw-woche__wt" aria-hidden="true">{{ t.datum|date:"D" }}</span>
+                <span class="nw-woche__dat" aria-hidden="true">{{ t.datum|date:kurzdatum }}</span>
+                <span class="nw-woche__punkt" aria-hidden="true"{% if t.aufgaben %} data-woche-punkt{% endif %}></span>
+              </button>
+            </li>
+          {% endfor %}
+        </ol>
+        {% for t in woche.mit_aufgaben %}
+          <dialog class="nw-woche__dialog" id="woche-tag-{{ t.datum|date:'Y-m-d' }}" aria-labelledby="woche-tag-{{ t.datum|date:'Y-m-d' }}-titel">
+            <h3 id="woche-tag-{{ t.datum|date:'Y-m-d' }}-titel">{{ t.datum|date:"l, j. F" }}{% if t.heute %} <span class="nw-infozeile__marke">{% translate "heute" %}</span>{% endif %}</h3>
+            <ul class="nw-woche__aufgaben">
+              {% for a in t.aufgaben %}
+                <li class="nw-woche__aufgabe">
+                  <strong>{% if a.emoji %}<span aria-hidden="true">{{ a.emoji }}</span> {% endif %}{{ a.titel|uebersetzt }}</strong>
+                  <span class="nw-leise">{% if a.zugewiesen_an %}{{ a.zugewiesen_an.rufname }}{% else %}{% translate "Alle Kinder" %}{% endif %} · {{ a.punkte }}&nbsp;XP · {{ a.rhythmus }}</span>
+                  <form method="post" action="{% url 'oberflaeche:uebernehmen_vormerken' %}">{% csrf_token %}
+                    <input type="hidden" name="aufgabe" value="{{ a.pk }}">
+                    <input type="hidden" name="datum" value="{{ t.datum|date:'Y-m-d' }}">
+                    <button type="submit" class="nw-woche__zu">{% translate "Übernehmen" context "Aufgabe" %}</button>
+                  </form>
+                </li>
+              {% endfor %}
+            </ul>
+            <form method="dialog"><button type="submit" class="nw-woche__zu nw-woche__zu--leise">{% translate "Schließen" %}</button></form>
+          </dialog>
+        {% endfor %}
+      </section>
+      <script src="{% static 'js/wochenvorschau.js' %}" defer></script>
     {% endif %}
     <section class="nw-profil-gruppe" aria-labelledby="kinder-titel">
       <h2 id="kinder-titel">{% translate "Kinder" %}</h2>

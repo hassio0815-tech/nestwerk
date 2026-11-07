@@ -1950,3 +1950,22 @@ msgstr "Task not found"
 #: zustand.py:82 zustand.py:89
 msgid "Die Aufgabe wurde inzwischen geändert."
 msgstr "The task was changed in the meantime."
+
+#: uebernahme.py
+msgid "Diese Aufgabe kann noch nicht übernommen werden. Schau später noch einmal vorbei!"
+msgstr "This task can't be taken yet. Check back later!"
+
+#: uebernahme.py
+#, python-format
+msgid "„%(titel)s“ hast du schon!"
+msgstr "You already have “%(titel)s”!"
+
+#: uebernahme.py
+#, python-format
+msgid "„%(titel)s“ wollen mehrere Kinder. Mama oder Papa entscheiden."
+msgstr "Several children want “%(titel)s”. Mum or Dad will decide."
+
+#: uebernahme.py
+#, python-format
+msgid "„%(titel)s“ gehört jetzt dir!"
+msgstr "“%(titel)s” is yours now!"
