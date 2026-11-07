@@ -46,7 +46,7 @@ def _kind_akzent(request):
 def _eltern_pruefen(request):
     from apps.aufgaben import services as aufgaben
 
-    return {"liste": list(aufgaben.zu_pruefen())}
+    return aufgaben.heute_erledigt_kachel()
 
 
 def _eltern_entscheidungen(request):
@@ -258,7 +258,7 @@ def kacheln_registrieren():
         Kachel(
             "oberflaeche.eltern_pruefen",
             "oberflaeche",
-            _("Erledigt – kurz prüfen"),
+            _("Heute erledigt"),
             "aufgaben/kacheln/eltern_pruefen.html",
             {ELTERN},
             _eltern_pruefen,

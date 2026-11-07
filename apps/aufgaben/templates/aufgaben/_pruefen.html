@@ -1,16 +1,17 @@
-{% comment %}Dashboard-Karte "Erledigt – kurz prüfen": Vertrauens-Aufgaben, die noch niemand durchgesehen hat.{% endcomment %}{% load i18n sprache %}
+{% comment %}Dashboard-Karte "Heute erledigt": alle heute bestätigten Aufgaben. Vertrauens-Erledigungen, die noch niemand durchgesehen hat, tragen "kurz prüfen" samt Knöpfen.{% endcomment %}{% load i18n sprache %}
 <article class="karte" id="pruefen" hx-target="#pruefen" hx-swap="outerHTML"><div class="karte__inhalt stapel">
   <div class="zeile">
-    <h2>{% translate "Erledigt – kurz prüfen" %}</h2>
-    {% if k.liste %}<span class="chip">{{ k.liste|length }}</span>{% endif %}
+    <h2>{% translate "Heute erledigt" %}</h2>
+    {% if k.gesamt %}<span class="chip">{{ k.gesamt }}</span>{% endif %}
   </div>
   {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art|default:"erfolg" text=hinweis %}{% endif %}
   {% for i in k.liste %}
-    <div class="stapel pruef-eintrag" id="pruef-{{ i.pk }}">
+    <div class="stapel pruef-eintrag" id="erledigt-{{ i.pk }}">
       <div class="zeile">
-        <span class="reihe"><strong>{{ i.titel_snapshot|uebersetzt }}</strong><span class="kachel__text">{{ i.kind.anzeigename }} · {{ i.bestaetigt_am|date:"D H:i" }}</span></span>
+        <span class="reihe"><strong>{{ i.titel_snapshot|uebersetzt }}</strong><span class="kachel__text">{{ i.kind.anzeigename }} · {{ i.bestaetigt_am|date:"H:i" }}</span>{% if i.zu_pruefen %}<span class="chip">{% translate "kurz prüfen" %}</span>{% endif %}</span>
         {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
       </div>
+      {% if i.zu_pruefen %}
       <form method="post" class="stapel" hx-disabled-elt="find button">{% csrf_token %}
         <label class="feld"><span class="feld__label">{% translate "Grund (für Nachbessern und Ablehnen nötig)" %}</span>
           <input class="feld__eingabe" type="text" name="begruendung" maxlength="200"></label>
@@ -20,11 +21,15 @@
           <button type="submit" class="knopf knopf--sanft knopf--klein" formaction="{% url 'aufgaben:pruefen_ablehnen' i.pk %}" hx-post="{% url 'aufgaben:pruefen_ablehnen' i.pk %}" hx-confirm="{% translate "Ablehnen? Die Punkte werden abgezogen." %}">{% include "komponenten/icon.html" with name="x" %}<span>{% translate "Ablehnen" %}</span></button>
         </div>
       </form>
+      {% endif %}
     </div>
   {% empty %}
-    <p class="kachel__text">{% translate "Alles geprüft. Nichts offen." %}</p>
+    <p class="kachel__text">{% translate "Heute noch nichts erledigt." %}</p>
   {% endfor %}
-  {% if k.liste|length > 1 %}
+  {% if k.weitere %}
+    <p class="kachel__text">{% blocktranslate with n=k.weitere %}+{{ n }} weitere{% endblocktranslate %}</p>
+  {% endif %}
+  {% if k.offen > 1 %}
     <form method="post" action="{% url 'aufgaben:pruefen_alle' %}" hx-post="{% url 'aufgaben:pruefen_alle' %}">{% csrf_token %}
       <button type="submit" class="knopf knopf--geist knopf--klein">{% include "komponenten/icon.html" with name="check" %}<span>{% translate "Alle passen" %}</span></button>
     </form>

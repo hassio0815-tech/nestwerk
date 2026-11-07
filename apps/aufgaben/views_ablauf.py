@@ -221,13 +221,13 @@ def eltern_korrigieren(request, pk):
     return _eltern_aktion(request, pk, aktion, _("Korrigiert, Punkte zurückgebucht."))
 
 
-# --- Vertrauen prüfen (Dashboard-Karte "Erledigt – kurz prüfen") ----------------------------------
+# --- Vertrauen prüfen (Dashboard-Karte "Heute erledigt") -----------------------------------
 
 
 def _pruefen_antwort(request, hinweis="", art="erfolg"):
     if not _htmx(request):
         return redirect("oberflaeche:eltern_heim")
-    kontext = {"k": {"liste": list(services.zu_pruefen())}, "hinweis": hinweis, "hinweis_art": art}
+    kontext = {"k": services.heute_erledigt_kachel(), "hinweis": hinweis, "hinweis_art": art}
     return render(request, "aufgaben/_pruefen.html", kontext)
 
 
