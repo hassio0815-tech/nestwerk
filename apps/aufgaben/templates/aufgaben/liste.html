@@ -7,8 +7,6 @@
     <div class="reihe">
       {% url "aufgaben:neu" as neu_url %}
       <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neue Aufgabe" %}</span></a>
-      {% url "aufgaben:vorlagen" as vorlagen_url %}
-      {% include "komponenten/button.html" with href=vorlagen_url variante="sekundaer" text=_("Aus Vorlage") %}
     </div>
   </div>
   <div id="formular"></div>

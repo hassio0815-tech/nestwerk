@@ -33,6 +33,13 @@ class SchnellknopfWer(models.TextChoices):
     ELTERN = "eltern", gettext_lazy("Nur Eltern")
 
 
+class SchnellknopfModus(models.TextChoices):
+    """Standard-Modus beim Drücken durch Eltern (im Auswahlfenster vorbelegt)."""
+
+    EINER = "einer", gettext_lazy("Einer für alle")
+    JEDES = "jedes", gettext_lazy("Jedes Kind")
+
+
 class Status(models.TextChoices):
     AKTIV = "aktiv", gettext_lazy("Aktiv")
     PAUSIERT = "pausiert", gettext_lazy("Pausiert")
@@ -165,6 +172,9 @@ class Aufgabe(models.Model):
     schnellknopf_wer = models.CharField(
         max_length=10, choices=SchnellknopfWer.choices, default=SchnellknopfWer.ALLE
     )
+    schnellknopf_modus = models.CharField(
+        max_length=10, choices=SchnellknopfModus.choices, default=SchnellknopfModus.EINER
+    )
 
     erstellt_von = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+"
@@ -267,7 +277,8 @@ class AufgabenInstanz(models.Model):
       Idempotenz-Schlüssel ``unique(aufgabe, plan_datum)``.
     - ``faellig_am``: wirksames Datum (Wochenplan/AP14 darf es verschieben).
     - Zeitgebunden = ``fenster_ende`` gesetzt. Ungebunden: höchstens eine laufende Instanz je
-      Aufgabe (Teil-Unique, K9 "kein Stapel").
+      Aufgabe ohne Kind und höchstens eine je Aufgabe und Kind (Teil-Uniques; "kein Stapel" K9
+      sichern ``instanzen`` und ``schnellknopf`` zusätzlich in der Logik).
     - Statusübergänge nur per bedingtem Update in den Services.
     """
 
@@ -345,9 +356,23 @@ class AufgabenInstanz(models.Model):
             models.UniqueConstraint(
                 fields=["aufgabe"],
                 condition=Q(
-                    fenster_ende__isnull=True, status__in=LAUFENDE_STATUS, nachbessern_anzahl=0
+                    fenster_ende__isnull=True,
+                    status__in=LAUFENDE_STATUS,
+                    nachbessern_anzahl=0,
+                    kind__isnull=True,
                 ),
                 name="aufgaben_instanz_ungebunden_ein_laufend",
+            ),
+            # Schnell-Knopf "Jedes Kind": je Kind eine eigene laufende Instanz
+            models.UniqueConstraint(
+                fields=["aufgabe", "kind"],
+                condition=Q(
+                    fenster_ende__isnull=True,
+                    status__in=LAUFENDE_STATUS,
+                    nachbessern_anzahl=0,
+                    kind__isnull=False,
+                ),
+                name="aufgaben_instanz_je_kind_ein_laufend",
             ),
             models.CheckConstraint(
                 condition=Q(fenster_ende__isnull=True)

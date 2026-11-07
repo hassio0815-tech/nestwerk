@@ -1,5 +1,5 @@
 {% comment %}Kinder-Aufgaben: eigene (mit Status/Aktionen) und freie (große Kacheln). HTMX ersetzt den ganzen Bereich.{% endcomment %}{% load i18n sprache %}
-<div id="kind-aufgaben" class="stapel" hx-target="#kind-aufgaben" hx-swap="outerHTML">
+<div id="kind-aufgaben" class="stapel" hx-target="#kind-aufgaben" hx-swap="outerHTML"{% if bereich_oob %} hx-swap-oob="outerHTML"{% endif %}>
   {% include "aufgaben/_hinweis.html" %}
 
   <section class="stapel" aria-labelledby="meine-titel">
@@ -71,3 +71,4 @@
     </div>
   </section>
 </div>
+{% if kachel_oob and k.knoepfe %}{% include "aufgaben/kacheln/schnellknoepfe_kind.html" with oob=True hinweis="" %}{% endif %}

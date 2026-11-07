@@ -690,8 +690,8 @@ msgid "Belohnungs-Katalog"
 msgstr "Reward catalogue"
 
 #: views.py:282
-msgid "Aufgaben-Bibliothek"
-msgstr "Task library"
+msgid "Schnell-Knöpfe (Startwerte)"
+msgstr "Quick buttons (starter set)"
 
 #: views.py:346
 msgid "Das Setup-Token stimmt nicht."

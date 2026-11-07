@@ -4,6 +4,21 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Bibliothek wird zu Schnell-Knöpfen (07.11.2026)
+
+### Geändert
+- Die Aufgaben-Bibliothek (Vorlagen-Oberfläche) entfällt; jeder Eintrag ist jetzt ein Schnell-Knopf. Die alte Adresse `/eltern/bibliothek/` leitet auf die neue Seite „Schnell-Knöpfe“ um. Das Modell „Vorlage“ bleibt als Historie
+- Eltern tippen einen Knopf an und wählen im Auswahlfenster: „Einer für alle“ (alle Kinder werden benachrichtigt), „Jedes Kind“ (eigene reservierte Aufgabe je Kind, Kinder mit laufender Aufgabe werden übersprungen) oder „Bestimmtes Kind“; „Los“ bestätigt
+- Neues Feld „Standard beim Drücken“ je Knopf (vorbelegt im Fenster). Kinder- und Tablet-Knöpfe bleiben wie bisher
+- Startwerte: aus jeder aktiven Vorlage entsteht ein Knopf (Datenmigration plus stündlicher Job). Neu: „Zimmer saugen“ (15 P), „Waschmaschine ausräumen“ (10 P); „Zimmer gründlich“ heißt „Zimmer gründlich reinigen und aufräumen“ (50 P)
+- Kinder-Seite: Knopf-Kachel und Aufgabenliste aktualisieren sich gemeinsam, der Hinweis erscheint nur einmal
+
+### Behoben
+- Ungültige Kind-Angabe beim Knopfdruck ergibt einen Hinweis statt Fehler 500; Kinder können keinen fremd zugewiesenen Knopf mehr melden
+- „Aufgabe je Kind aufteilen“: laufende und erledigte Instanzen folgen ihrem Kind; nur aktive Aufgaben; Befehl mit `--dry-run`, sammelt Fehler je ID
+- Doppel-Schutz beim Anlegen (gleicher Titel, Wiederholung und Zuweisung) mit Häkchen „trotzdem anlegen“; „Für jedes Kind“ ohne aktive Kinder zeigt einen Hinweis
+- Hygiene: `.gitignore` und `.dockerignore` (Backups, Wheels, `.env.*`, Übergaben)
+
 ## Anerkennung, Meine Einstellungen und Moods (02.11.2026)
 
 ### Hinzugefügt

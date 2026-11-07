@@ -270,7 +270,7 @@ def _s6(request, post):
 
 
 def _listen():
-    """Katalog und Bibliothek nur zur Ansicht (über die Selectors der Fach-Module)."""
+    """Katalog und Schnell-Knöpfe (Startwerte) nur zur Ansicht (über Selectors)."""
     from apps.aufgaben import selectors as aufgaben
     from apps.belohnung import selectors as belohnung
 
@@ -282,7 +282,7 @@ def _listen():
             ],
         },
         {
-            "titel": _("Aufgaben-Bibliothek"),
+            "titel": _("Schnell-Knöpfe (Startwerte)"),
             "zeilen": [(uebersetzt(v.titel), v.punkte) for v in aufgaben.vorlagen()],
         },
     ]

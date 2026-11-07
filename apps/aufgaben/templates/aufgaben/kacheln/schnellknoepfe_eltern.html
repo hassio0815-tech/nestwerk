@@ -1,24 +1,49 @@
-{% load i18n sprache %}{% comment %}Eltern-Kachel Schnell-Knöpfe: Knopf antippen, dann "Nur melden" oder ein Kind wählen.{% endcomment %}
+{% load i18n sprache static %}{% comment %}Eltern-Kachel Schnell-Knöpfe: Knopf antippen, im Auswahlfenster den Modus wählen (einer für alle / jedes Kind / bestimmtes Kind), "Los" bestätigt.{% endcomment %}
 <article class="karte" id="schnellknoepfe" hx-target="#schnellknoepfe" hx-swap="outerHTML"><div class="karte__inhalt stapel">
   <h2>{% translate "Schnell-Knöpfe" %}</h2>
   {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art|default:"erfolg" text=hinweis %}{% endif %}
   {% for a in k.knoepfe %}
     <div class="zeile schnellknopf">
-      {% include "aufgaben/_schnellknopf_zeile.html" %}
-      {% if a.laeuft %}{% include "aufgaben/_schnellknopf_status.html" %}
-      {% else %}
-        <details class="schnellknopf__wahl">
-          <summary class="knopf knopf--primaer knopf--klein">{% translate "Drücken" %}</summary>
-          <form method="post" action="{% url 'aufgaben:schnellknopf_eltern' a.pk %}" hx-post="{% url 'aufgaben:schnellknopf_eltern' a.pk %}" class="reihe" hx-disabled-elt="find button">{% csrf_token %}
-            <button type="submit" name="modus" value="melden" class="knopf knopf--sekundaer knopf--klein">{% translate "Nur melden" %}</button>
-            {% for kind in k.kinder %}{% if not a.zugewiesen_an_id or a.zugewiesen_an_id == kind.pk %}
-              <button type="submit" name="kind_id" value="{{ kind.pk }}" class="knopf knopf--primaer knopf--klein">{% blocktranslate with name=kind.anzeigename %}{{ name }} macht's{% endblocktranslate %}</button>
-            {% endif %}{% endfor %}
+      <div class="stapel">
+        {% include "aufgaben/_schnellknopf_zeile.html" %}
+        {% if a.laeuft %}{% include "aufgaben/_schnellknopf_status.html" %}
+        {% elif a.laufend_anzahl %}<span class="kachel__text">{% blocktranslate with laufend=a.laufend_anzahl gesamt=a.kinder_anzahl %}{{ laufend }} von {{ gesamt }} laufen{% endblocktranslate %}</span>{% endif %}
+      </div>
+      <div class="reihe schnellknopf__aktionen">
+        {% url "aufgaben:bearbeiten" a.pk as bearbeiten_url %}
+        <a class="knopf knopf--geist knopf--klein" href="{{ bearbeiten_url }}" aria-label="{% blocktranslate with titel=a.titel|uebersetzt %}{{ titel }} bearbeiten{% endblocktranslate %}">{% include "komponenten/icon.html" with name="stift" %}</a>
+        {% if not a.laeuft %}
+          <button type="button" class="knopf knopf--primaer knopf--klein" data-knopf-dialog="knopf-dialog-{{ a.pk }}" aria-haspopup="dialog">{% translate "Drücken" %}</button>
+        {% endif %}
+      </div>
+      {% if not a.laeuft %}
+        <dialog id="knopf-dialog-{{ a.pk }}" class="knopf-dialog" aria-labelledby="knopf-dialog-titel-{{ a.pk }}">
+          <form method="post" action="{% url 'aufgaben:schnellknopf_eltern' a.pk %}" hx-post="{% url 'aufgaben:schnellknopf_eltern' a.pk %}" class="stapel" hx-disabled-elt="find button[type=submit]">{% csrf_token %}
+            <h3 id="knopf-dialog-titel-{{ a.pk }}"><span aria-hidden="true">{{ a.emoji|default:"🔘" }}</span> {{ a.titel|uebersetzt }}</h3>
+            <fieldset class="knopf-dialog__modi stapel">
+              <legend class="knopf-dialog__legende">{% translate "Wer macht's?" %}</legend>
+              <label class="knopf-dialog__modus"><input type="radio" name="modus" value="melden"{% if a.schnellknopf_modus != "jedes" %} checked{% endif %}><span><strong>{% translate "Einer für alle" %}</strong><small>{% translate "Alle Kinder wissen Bescheid, wer zuerst übernimmt, macht's." %}</small></span></label>
+              <label class="knopf-dialog__modus"><input type="radio" name="modus" value="jedes"{% if a.schnellknopf_modus == "jedes" %} checked{% endif %}><span><strong>{% translate "Jedes Kind" %}</strong><small>{% translate "Jedes Kind bekommt seine eigene Aufgabe." %}</small></span></label>
+              <label class="knopf-dialog__modus"><input type="radio" name="modus" value="ich_machs"><span><strong>{% translate "Bestimmtes Kind" %}</strong><small>{% translate "Die Aufgabe wird für ein Kind reserviert." %}</small></span></label>
+              <select name="kind_id" class="feld__eingabe knopf-dialog__kind" aria-label="{% translate "Kind wählen" %}" data-knopf-kind>
+                <option value="">{% translate "Kind wählen …" %}</option>
+                {% for kind in k.kinder %}{% if not a.zugewiesen_an_id or a.zugewiesen_an_id == kind.pk %}
+                  <option value="{{ kind.pk }}">{{ kind.anzeigename }}</option>
+                {% endif %}{% endfor %}
+              </select>
+            </fieldset>
+            <div class="reihe knopf-dialog__aktionen">
+              <button type="submit" class="knopf knopf--primaer knopf--gross">{% translate "Los" %}</button>
+              <button type="button" class="knopf knopf--geist" data-knopf-schliessen>{% translate "Abbrechen" %}</button>
+            </div>
           </form>
-        </details>
+        </dialog>
       {% endif %}
     </div>
   {% empty %}
     <p class="kachel__text">{% translate "Noch keine Schnell-Knöpfe." %}</p>
   {% endfor %}
+  {% url "aufgaben:neu" as neu_url %}
+  <div class="reihe"><a class="knopf knopf--sekundaer knopf--klein" href="{{ neu_url }}?art=bei_bedarf">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neuer Schnell-Knopf" %}</span></a></div>
 </div></article>
+<script src="{% static 'js/schnellknopf.js' %}" defer></script>

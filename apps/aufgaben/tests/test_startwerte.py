@@ -17,7 +17,7 @@ ENTSCHEIDUNG_15 = [
     ("Wäsche aufhängen", 15, "eltern"),
     ("Wäsche zusammenlegen & einräumen", 20, "eltern"),
     ("Flur saugen", 15, "eltern"),
-    ("Zimmer gründlich", 30, "nachweis"),
+    ("Zimmer gründlich reinigen und aufräumen", 50, "nachweis"),
     ("Bad putzen", 40, "nachweis"),
     ("Rasen mähen", 45, "nachweis"),
     ("Auto aussaugen", 30, "nachweis"),
@@ -25,6 +25,8 @@ ENTSCHEIDUNG_15 = [
 ]
 # Schnell-Knöpfe (bei Bedarf), später ergänzt; "Altglas" aus Entscheidung 15 wurde dazu umgewandelt
 SCHNELLKNOEPFE = [("Restmüll", 5, "eltern"), ("Biomüll", 5, "eltern"), ("Altglas", 5, "eltern")]
+# Migration 0016 (Bibliothek -> Schnell-Knöpfe): zwei neue Vorlagen
+NEUE_VORLAGEN = [("Zimmer saugen", 15, "eltern"), ("Waschmaschine ausräumen", 10, "eltern")]
 ENTSCHEIDUNG_16 = ["Haushalt", "Küche", "Wäsche", "Garten", "Schule", "Sonstiges"]
 
 pytestmark = pytest.mark.django_db
@@ -39,8 +41,8 @@ def test_kategorien_exakt():
 
 def test_vorlagen_exakt():
     vorhanden = {(v.titel, v.punkte, v.freigabeart) for v in Vorlage.objects.all()}
-    assert vorhanden == set(ENTSCHEIDUNG_15) | set(SCHNELLKNOEPFE)
-    assert Vorlage.objects.count() == 19
+    assert vorhanden == set(ENTSCHEIDUNG_15) | set(SCHNELLKNOEPFE) | set(NEUE_VORLAGEN)
+    assert Vorlage.objects.count() == 21
     assert all(v.kategorie_id and v.aktiv for v in Vorlage.objects.all())
 
 

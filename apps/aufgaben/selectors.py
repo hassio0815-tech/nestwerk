@@ -19,6 +19,7 @@ from .models import (
     InteresseStatus,
     Meldung,
     MeldungStatus,
+    SchnellknopfModus,
     Status,
     Vorlage,
 )
@@ -74,6 +75,11 @@ def kind_offene(kind, *, jetzt=None):
         .filter(_sichtbar_fuer_kind(kind))
         .filter(Q(fenster_ende__isnull=True) | Q(fenster_ende__gt=jetzt))
         .filter(Q(faellig_am__isnull=True) | Q(faellig_am__lte=bis))
+        .exclude(  # "Jedes Kind": die Instanz gehört dem Kind, dem sie zugeteilt wurde
+            aufgabe__wiederholungsart=wiederholung.BEI_BEDARF,
+            aufgabe__schnellknopf_modus=SchnellknopfModus.JEDES,
+            status__in=(InstanzStatus.RESERVIERT, InstanzStatus.KONFLIKT),
+        )
         .exclude(
             pk__in=Interesse.objects.filter(kind=kind, status__in=INTERESSE_LAUFEND).values(
                 "instanz"

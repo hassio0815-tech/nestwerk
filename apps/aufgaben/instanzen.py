@@ -310,6 +310,30 @@ def reservierungsablauf_hook_registrieren(funktion: Callable) -> Callable:
     return funktion
 
 
+def frei_werden_ziel(instanz, jetzt: datetime) -> dict:
+    """Felder für eine reservierte Instanz, die ihr Kind verliert (zurück, gelöst, abgelaufen).
+
+    Normal wird sie wieder ``offen`` (ohne Kind). Gibt es schon eine andere laufende Instanz ohne
+    Kind (Teil-Unique "eine ungebundene je Aufgabe", z. B. bei Schnell-Knöpfen "Jedes Kind", wo
+    mehrere Kinder gleichzeitig abgeben), endet sie stattdessen als ``nicht_uebernommen``.
+    """
+    if instanz.fenster_ende is None and instanz.nachbessern_anzahl == 0:
+        besetzt = (
+            AufgabenInstanz.objects.filter(
+                aufgabe_id=instanz.aufgabe_id,
+                fenster_ende__isnull=True,
+                status__in=LAUFENDE_STATUS,
+                nachbessern_anzahl=0,
+                kind__isnull=True,
+            )
+            .exclude(pk=instanz.pk)
+            .exists()
+        )
+        if besetzt:
+            return {"status": InstanzStatus.NICHT_UEBERNOMMEN, "abgeschlossen_am": jetzt}
+    return {"status": InstanzStatus.OFFEN, "kind": None}
+
+
 def reservierung_frist(instanz, ab: datetime) -> datetime:
     """Ende einer Reservierung (E22): zeitgebunden = Fensterende, sonst ``ab`` + 48 h (Einst.).
 
@@ -341,7 +365,7 @@ def reservierungen_pruefen(*, jetzt: datetime | None = None) -> dict:
         if fenster_vorbei:
             ziel = {"status": InstanzStatus.NICHT_UEBERNOMMEN, "abgeschlossen_am": jetzt}
         else:
-            ziel = {"status": InstanzStatus.OFFEN, "kind": None}
+            ziel = frei_werden_ziel(AufgabenInstanz.objects.get(pk=pk), jetzt)
         zustand.pruefen(InstanzStatus.RESERVIERT, ziel["status"])
         with transaction.atomic():
             if not abgelaufen.filter(pk=pk, kind_id=kind_id, reserviert_bis=bis).update(

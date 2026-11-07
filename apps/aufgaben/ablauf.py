@@ -43,7 +43,7 @@ from apps.punkte import services as punkte
 from apps.spielregeln import selectors as spielregeln
 
 from . import events, schluessel
-from .instanzen import reservierung_frist
+from .instanzen import frei_werden_ziel, reservierung_frist
 from .models import (
     INTERESSE_LAUFEND,
     MELDUNG_LAUFEND,
@@ -54,6 +54,7 @@ from .models import (
     InteresseStatus,
     Meldung,
     MeldungStatus,
+    SchnellknopfModus,
     Status,
 )
 from .zustand import AblaufFehler, UngueltigerUebergang, uebergang
@@ -180,6 +181,12 @@ def _sichtbar_fuer(instanz, kind, jetzt) -> None:
         raise AblaufFehler(_("Die Zeit für diese Aufgabe ist vorbei."))
 
 
+def persoenliche_instanz(instanz) -> bool:
+    """Schnell-Knopf "Jedes Kind": die Instanz gehört dem Kind, dem sie zugeteilt wurde."""
+    aufgabe = instanz.aufgabe
+    return aufgabe.schnellknopf and aufgabe.schnellknopf_modus == SchnellknopfModus.JEDES
+
+
 def _interessen(instanz, *status):
     return Interesse.objects.filter(instanz=instanz, status__in=status or INTERESSE_LAUFEND)
 
@@ -300,8 +307,10 @@ def interesse_zeigen(instanz, kind, *, jetzt=None) -> AufgabenInstanz:
         _protokoll("aufgabe.interesse", instanz, akteur=kind, ergebnis="reserviert")
         return instanz
 
-    if instanz.status in (S.RESERVIERT, S.KONFLIKT) and einstellungen.wert(
-        "aufgaben.mitbewerben_erlaubt"
+    if (
+        instanz.status in (S.RESERVIERT, S.KONFLIKT)
+        and einstellungen.wert("aufgaben.mitbewerben_erlaubt")
+        and not persoenliche_instanz(instanz)
     ):
         if instanz.status == S.RESERVIERT:
             uebergang(
@@ -342,13 +351,14 @@ def zurueckgeben(instanz, kind, *, jetzt=None) -> AufgabenInstanz:
         raise NichtErlaubt(_("Diese Aufgabe hast du nicht gewählt."))
 
     if instanz.status == S.RESERVIERT:
+        ziel = frei_werden_ziel(instanz, jetzt)
         uebergang(
             instanz,
-            S.OFFEN,
+            ziel.pop("status"),
             bedingung={"kind": kind},
-            kind=None,
             reserviert_bis=None,
             erinnert_am=None,
+            **ziel,
         )
         _interesse_setzen(eigenes, I.ZURUECKGEZOGEN, jetzt=jetzt)
         ereignisse.veroeffentlichen(
@@ -423,7 +433,8 @@ def reservierung_loesen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
     if instanz.status not in (S.RESERVIERT, S.KONFLIKT):
         raise UngueltigerUebergang(_("Diese Aufgabe ist nicht (mehr) reserviert."))
     betroffene = [i.kind for i in _interessen(instanz).select_related("kind")]
-    uebergang(instanz, S.OFFEN, kind=None, reserviert_bis=None, erinnert_am=None)
+    ziel = frei_werden_ziel(instanz, jetzt)
+    uebergang(instanz, ziel.pop("status"), reserviert_bis=None, erinnert_am=None, **ziel)
     _interesse_setzen(_interessen(instanz), I.VERDRAENGT, von=von, jetzt=jetzt)
     for kind in betroffene:
         ereignisse.veroeffentlichen(events.GELOEST, kind=kind, akteur=von, daten=_daten(instanz))

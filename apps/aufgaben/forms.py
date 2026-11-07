@@ -4,10 +4,10 @@ from django.utils.translation import gettext_lazy
 
 from apps.konten import selectors as konten_selectors
 
-from . import wiederholung
-from .models import Aufgabe, Kategorie, SchnellknopfWer, Status, Vorlage
+from . import doppelt, wiederholung
+from .models import Aufgabe, Kategorie, SchnellknopfModus, SchnellknopfWer, Status
 from .symbole import SYMBOLE
-from .wiederholung import Plan, maske_aus_tagen, tage_aus_maske
+from .wiederholung import maske_aus_tagen, tage_aus_maske
 
 
 def _stil(form):
@@ -103,6 +103,11 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         required=False,
     )
 
+    trotzdem_anlegen = forms.BooleanField(
+        label=gettext_lazy("Trotzdem anlegen, auch wenn es diese Aufgabe schon gibt"),
+        required=False,
+    )
+
     class Meta:
         model = Aufgabe
         fields = [
@@ -126,6 +131,7 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
             "limit_zeitraum",
             "emoji",
             "schnellknopf_wer",
+            "schnellknopf_modus",
         ]
         widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3}), "vorlage": forms.HiddenInput}
         labels = {
@@ -140,6 +146,7 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
             ),
             "emoji": gettext_lazy("Symbol (Emoji) auf dem Knopf"),
             "schnellknopf_wer": gettext_lazy("Wer darf drücken?"),
+            "schnellknopf_modus": gettext_lazy("Standard beim Drücken"),
         }
 
     def __init__(self, *args, **kwargs):
@@ -154,10 +161,16 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         self.fields["zugewiesen_an"].empty_label = _("Alle Kinder")
         self.fields["vorlage"].required = False
         self.fields["schnellknopf_wer"].required = False  # nur bei "bei Bedarf" von Belang
+        self.fields["schnellknopf_modus"].required = False
+        self.fields["schnellknopf_modus"].help_text = gettext_lazy(
+            "Im Auswahlfenster der Eltern vorbelegt. „Jedes Kind“: eine eigene Aufgabe je Kind."
+        )
         if self.instance.pk and not self.is_bound:
             self.initial["wochentage"] = [str(t) for t in tage_aus_maske(self.instance.wochentage)]
+        self.doppelt = None  # gleiche Aufgabe, die es schon gibt (setzt ``clean``)
         if self.instance.pk:
             del self.fields["je_kind"]  # nur beim Anlegen
+            del self.fields["trotzdem_anlegen"]
         else:
             reihe = list(self.fields)
             reihe.remove("je_kind")
@@ -175,93 +188,28 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
                 daten[feld] = None
             daten["limit_zeitraum"] = ""
             daten["schnellknopf_wer"] = daten.get("schnellknopf_wer") or SchnellknopfWer.ALLE
+            daten["schnellknopf_modus"] = daten.get("schnellknopf_modus") or SchnellknopfModus.EINER
         else:
             daten["emoji"] = ""
             daten["schnellknopf_wer"] = SchnellknopfWer.ALLE
+            daten["schnellknopf_modus"] = SchnellknopfModus.EINER
         if daten.get("je_kind"):
             daten["zugewiesen_an"] = None  # wird je Kind gesetzt
-        return daten
-
-
-class VorlageForm(PlanFelderMixin, forms.ModelForm):
-    class Meta:
-        model = Vorlage
-        fields = [
-            "titel",
-            "punkte",
-            "beschreibung",
-            "kategorie",
-            "freigabeart",
-            "emoji",
-            "schnellknopf_wer",
-            "je_kind",
-            "aktiv",
-        ]
-        widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3})}
-        labels = {
-            "beschreibung": gettext_lazy("Beschreibung (optional)"),
-            "titel": gettext_lazy("Titel"),
-            "punkte": gettext_lazy("Punkte"),
-            "kategorie": gettext_lazy("Kategorie"),
-            "freigabeart": gettext_lazy("Freigabeart"),
-            "emoji": gettext_lazy("Symbol (Emoji) auf dem Knopf"),
-            "schnellknopf_wer": gettext_lazy("Wer darf drücken?"),
-            "je_kind": gettext_lazy("Für jedes Kind eine eigene Aufgabe"),
-            "aktiv": gettext_lazy("Aktiv"),
-        }
-
-    # Wiederholung ist optional, solange nichts angegeben ist -> einmalig ohne JSON.
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["wiederholungsart"].required = False
-        self.fields["schnellknopf_wer"].required = False
-        self.fields["kategorie"].queryset = Kategorie.objects.filter(aktiv=True)
-        if self.instance.pk and self.instance.kategorie_id:
-            self.fields["kategorie"].queryset |= Kategorie.objects.filter(
-                pk=self.instance.kategorie_id
+            if not konten_selectors.aktive_kinder().exists():
+                self.add_error(
+                    "je_kind",
+                    _("Es gibt keine aktiven Kinder, für die die Aufgabe angelegt werden könnte."),
+                )
+        if not self.errors and not self.instance.pk and not daten.get("trotzdem_anlegen"):
+            self.doppelt = doppelt.finden(
+                daten.get("titel"),
+                daten.get("wiederholungsart"),
+                daten.get("zugewiesen_an"),
+                je_kind=bool(daten.get("je_kind")),
             )
-        self.fields["kategorie"].empty_label = _("(keine)")
-        if self.instance.pk and not self.is_bound:
-            plan = self.instance.plan
-            self.initial.update(
-                wiederholungsart=plan.art,
-                wochentage=[str(t) for t in plan.wochentage_liste],
-                intervall_tage=plan.intervall_tage,
-                fenster_von=plan.fenster_von,
-                fenster_bis=plan.fenster_bis,
-                fenster_tage=plan.fenster_tage,
-                limit_anzahl=plan.limit_anzahl,
-                limit_zeitraum=plan.limit_zeitraum,
-            )
-        _stil(self)
-
-    def clean(self):
-        daten = super().clean()
-        daten["schnellknopf_wer"] = daten.get("schnellknopf_wer") or SchnellknopfWer.ALLE
-        plan = Plan(
-            art=daten.get("wiederholungsart") or wiederholung.EINMALIG,
-            wochentage=daten.get("wochentage"),
-            intervall_tage=daten.get("intervall_tage"),
-            fenster_von=daten.get("fenster_von"),
-            fenster_bis=daten.get("fenster_bis"),
-            fenster_tage=daten.get("fenster_tage"),
-            limit_anzahl=daten.get("limit_anzahl"),
-            limit_zeitraum=daten.get("limit_zeitraum") or "",
-        )
-        if plan.art == wiederholung.BEI_BEDARF:
-            plan = Plan(art=wiederholung.BEI_BEDARF)
-        for feld, meldung in wiederholung.pruefen(plan).items():
-            self.add_error(feld, meldung)
-        if not self.errors:
-            standard = Plan()
-            self.plan = plan
-            self.wiederholung_json = None if plan == standard else plan.als_json()
+            if self.doppelt is not None:
+                self.add_error(None, doppelt.meldung(self.doppelt))
         return daten
-
-    def _post_clean(self):
-        if not self.errors:
-            self.instance.wiederholung = self.wiederholung_json
-        super()._post_clean()
 
 
 class KategorieForm(forms.ModelForm):
