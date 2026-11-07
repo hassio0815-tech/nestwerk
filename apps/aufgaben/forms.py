@@ -95,6 +95,13 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         required=False,
         widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
     )
+    je_kind = forms.BooleanField(
+        label=gettext_lazy("Für jedes Kind eine eigene Aufgabe"),
+        help_text=gettext_lazy(
+            "Legt die Aufgabe für jedes Kind einzeln an (z. B. eigenes Zimmer, eigene Wäsche)."
+        ),
+        required=False,
+    )
 
     class Meta:
         model = Aufgabe
@@ -149,6 +156,13 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         self.fields["schnellknopf_wer"].required = False  # nur bei "bei Bedarf" von Belang
         if self.instance.pk and not self.is_bound:
             self.initial["wochentage"] = [str(t) for t in tage_aus_maske(self.instance.wochentage)]
+        if self.instance.pk:
+            del self.fields["je_kind"]  # nur beim Anlegen
+        else:
+            reihe = list(self.fields)
+            reihe.remove("je_kind")
+            reihe.insert(reihe.index("zugewiesen_an") + 1, "je_kind")
+            self.order_fields(reihe)
         _stil(self)
 
     def clean_titel(self):
@@ -164,6 +178,8 @@ class AufgabeForm(PlanFelderMixin, forms.ModelForm):
         else:
             daten["emoji"] = ""
             daten["schnellknopf_wer"] = SchnellknopfWer.ALLE
+        if daten.get("je_kind"):
+            daten["zugewiesen_an"] = None  # wird je Kind gesetzt
         return daten
 
 
@@ -178,6 +194,7 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
             "freigabeart",
             "emoji",
             "schnellknopf_wer",
+            "je_kind",
             "aktiv",
         ]
         widgets = {"beschreibung": forms.Textarea(attrs={"rows": 3})}
@@ -189,6 +206,7 @@ class VorlageForm(PlanFelderMixin, forms.ModelForm):
             "freigabeart": gettext_lazy("Freigabeart"),
             "emoji": gettext_lazy("Symbol (Emoji) auf dem Knopf"),
             "schnellknopf_wer": gettext_lazy("Wer darf drücken?"),
+            "je_kind": gettext_lazy("Für jedes Kind eine eigene Aufgabe"),
             "aktiv": gettext_lazy("Aktiv"),
         }
 

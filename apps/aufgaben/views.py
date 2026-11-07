@@ -187,6 +187,7 @@ def vorlage_als_aufgabe(request, pk):
         "vorlage": vorlage.pk,
         "emoji": vorlage.emoji,
         "schnellknopf_wer": vorlage.schnellknopf_wer,
+        "je_kind": vorlage.je_kind,
         "wiederholungsart": plan.art,
         "wochentage": [str(t) for t in plan.wochentage_liste],
         "intervall_tage": plan.intervall_tage,
