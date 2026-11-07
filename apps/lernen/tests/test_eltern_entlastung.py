@@ -546,3 +546,30 @@ def test_eltern_seite_verlinkt_einstellungen(eltern_client):
 
 def test_zeit_modul_unveraendert():
     assert zeit.jetzt is not None
+
+
+# --- Zustellung an die Eltern (Router) -----------------------------------------------------------
+
+
+def test_meldungen_kommen_bei_allen_eltern_an(kind_a, mama, papa):
+    from apps.benachrichtigung.models import Benachrichtigung, Zustellung
+    from apps.ereignisse import worker
+
+    material(kind_a)
+    tag(kind_a, HEUTE - timedelta(days=6))
+    eltern_hinweise.hinweise_pruefen(HEUTE)
+    digest.senden(SONNTAG)
+    worker.runde()
+    for eltern in (mama, papa):
+        liste = Benachrichtigung.objects.filter(empfaenger=eltern)
+        assert liste.count() == 3
+        assert all(b.titel and b.text for b in liste)
+        assert any(b.link == f"/eltern/lernen/material/?kind={kind_a.pk}" for b in liste)
+    # Push ist der Standardkanal, Mail nur auf Wunsch des Elternteils
+    kanaele = set(Zustellung.objects.values_list("kanal_id", flat=True))
+    assert "push" in kanaele or not kanaele
+    assert "email" not in {
+        z.kanal_id
+        for z in Zustellung.objects.exclude(status="unterdrueckt_praeferenz")
+        if z.kanal_id == "email"
+    }
