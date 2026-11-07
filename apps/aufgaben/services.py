@@ -13,6 +13,7 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 
 from apps.kern import audit
+from apps.konten import selectors as konten_selectors
 
 from .ablauf import (
     Erledigung,
@@ -118,11 +119,18 @@ def _diff(form):
 
 @transaction.atomic
 def aufgabe_speichern(form, *, von) -> Aufgabe:
-    """Legt eine Aufgabe an oder ändert sie (``form`` ist ein gültiges ``AufgabeForm``)."""
+    """Legt eine Aufgabe an oder ändert sie (``form`` ist ein gültiges ``AufgabeForm``).
+
+    Neu mit ``je_kind``: je aktivem Kind eine eigene, ihm zugewiesene Aufgabe (Rückgabe: die
+    erste)."""
     neu = form.instance.pk is None
     aufgabe = form.save(commit=False)
     if neu:
         aufgabe.erstellt_von = von
+        if form.cleaned_data.get("je_kind"):
+            kinder = list(konten_selectors.aktive_kinder())
+            if kinder:
+                return _je_kind_anlegen(aufgabe, kinder, von=von, details=_diff(form))
     aufgabe.save()
     _instanzen_neu_planen(aufgabe, verschobene_behalten=not neu)
     audit.protokollieren(
@@ -133,6 +141,63 @@ def aufgabe_speichern(form, *, von) -> Aufgabe:
         details={"titel": aufgabe.titel, "punkte": aufgabe.punkte, "geaendert": _diff(form)},
     )
     return aufgabe
+
+
+def _je_kind_anlegen(muster, kinder, *, von, details=None) -> Aufgabe:
+    """Speichert ``muster`` (ungespeichert) einmal je Kind als eigene Aufgabe."""
+    erste = None
+    for kind in kinder:
+        muster.pk = None
+        muster._state.adding = True
+        muster.zugewiesen_an = kind
+        muster.save()
+        _instanzen_neu_planen(muster)
+        audit.protokollieren(
+            "aufgabe.angelegt",
+            akteur=von,
+            objekt=muster,
+            kind=kind,
+            details={
+                "titel": muster.titel,
+                "punkte": muster.punkte,
+                "je_kind": True,
+                "geaendert": details or {},
+            },
+        )
+        erste = erste or Aufgabe.objects.get(pk=muster.pk)
+    return erste
+
+
+@transaction.atomic
+def je_kind_aufteilen(aufgabe, *, von=None) -> list[Aufgabe]:
+    """Bestehende Aufgabe "für alle Kinder" in je eine eigene Aufgabe pro Kind aufteilen.
+
+    Das Original geht an das erste aktive Kind; für die übrigen entstehen Kopien. Freie
+    Instanzen des Originals werden neu geplant (sie sind jetzt nur noch für dieses Kind);
+    Begonnenes (reserviert, gemeldet, Konflikt ...) bleibt unverändert."""
+    if aufgabe.zugewiesen_an_id:
+        raise ValidationError(_("Die Aufgabe ist schon einem Kind zugewiesen."))
+    kinder = list(konten_selectors.aktive_kinder())
+    if not kinder:
+        raise ValidationError(_("Es gibt keine aktiven Kinder."))
+    erstes, *rest = kinder
+    aufgabe.zugewiesen_an = erstes
+    aufgabe.save(update_fields=["zugewiesen_an", "geaendert_am"])
+    _instanzen_neu_planen(aufgabe, verschobene_behalten=True)
+    audit.protokollieren(
+        "aufgabe.geaendert",
+        akteur=von,
+        objekt=aufgabe,
+        kind=erstes,
+        details={"titel": aufgabe.titel, "je_kind_aufgeteilt": True},
+    )
+    ergebnis = [aufgabe]
+    if rest:
+        muster = Aufgabe.objects.get(pk=aufgabe.pk)
+        muster.erstellt_von = von or aufgabe.erstellt_von
+        for kind in rest:
+            ergebnis.append(_je_kind_anlegen(muster, [kind], von=von))
+    return ergebnis
 
 
 @transaction.atomic

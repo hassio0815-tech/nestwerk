@@ -83,6 +83,10 @@ class Vorlage(models.Model):
         max_length=10, choices=SchnellknopfWer.choices, default=SchnellknopfWer.ALLE
     )
     aktiv = models.BooleanField(default=True)
+    je_kind = models.BooleanField(
+        default=False,
+        help_text=gettext_lazy("Beim Anlegen bekommt jedes Kind eine eigene Aufgabe."),
+    )
 
     class Meta:
         ordering = ["kategorie__reihenfolge", "titel"]
