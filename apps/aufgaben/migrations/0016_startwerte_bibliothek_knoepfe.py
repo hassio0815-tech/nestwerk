@@ -1,6 +1,7 @@
 """Bibliothek -> Schnell-Knöpfe (Datenmigration).
 
 - Vorlage "Zimmer gründlich" -> "Zimmer gründlich reinigen und aufräumen", 50 Punkte.
+- Vorlage "Zimmer aufräumen" (falls vorhanden) -> 20 Punkte.
 - Neue Vorlagen "Zimmer saugen" (15 Punkte) und "Waschmaschine ausräumen" (10 Punkte).
 - Bestehende Knöpfe mit "Jedes-Kind"-Titel bekommen den Standard-Modus ``jedes``.
 - Aus jeder aktiven Vorlage ohne gleichnamigen Knopf entsteht ein Knopf (Aufgabe "bei Bedarf").
@@ -47,6 +48,8 @@ def umwandeln(apps, schema_editor):
     Einstellung = apps.get_model("kern", "Einstellung")
 
     Vorlage.objects.filter(titel=ALT).update(titel=NEU, punkte=50)
+    # Nutzer-Entscheidung 2026-11-07: normales Zimmer aufräumen = 20 P (gründlich = 50 P)
+    Vorlage.objects.filter(titel="Zimmer aufräumen").update(punkte=20)
     for titel, punkte, kategorie, emoji in NEUE_VORLAGEN:
         if Vorlage.objects.filter(titel=titel).exists():
             continue
