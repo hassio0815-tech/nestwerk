@@ -28,6 +28,18 @@
       {% endfor %}
     </div>
   </section>
+  <section class="avatar-galerie" data-layout="kind" data-modus="hell" aria-label="{% translate "Eltern-Outfits" %}">
+    <h2>{% translate "Eltern-Outfits" %}</h2>
+    <p class="kachel__text">{% translate "Nur für Eltern wählbar, Kinder sehen sie nicht." %}</p>
+    <div class="avatar-galerie__raster">
+      {% for e in eltern_themen %}
+        <figure class="avatar-galerie__eintrag">
+          {% svg_roh e.svg "gross" e.thema.name|uebersetzt %}
+          <figcaption>{{ e.thema.name|uebersetzt }}</figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  </section>
   <section aria-label="{% translate "Mods je Thema" %}">
     <h2>{% translate "Mods je Thema" %}</h2>
     <p class="kachel__text">{% translate "Je Thema 36 Mods: 6 Slots x Seltenheit 1 bis 6." %}</p>

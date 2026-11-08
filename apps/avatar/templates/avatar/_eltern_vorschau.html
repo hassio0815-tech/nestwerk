@@ -1,0 +1,17 @@
+{% load i18n avatar_tags %}
+<div class="avatar-wahl__haupt">
+  {% svg_roh haupt "riesig" _("Vorschau deines Avatars") %}
+  <p class="avatar-wahl__thema">{% for k in karten %}{% if k.gewaehlt %}{% if k.standard %}{% translate "Schlicht" %}{% else %}{{ k.thema.name|uebersetzt }}{% endif %}{% endif %}{% endfor %}</p>
+</div>
+<fieldset class="avatar-wahl__gruppe">
+  <legend>{% translate "Dein Outfit" %}</legend>
+  <div class="avatar-themen">
+    {% for k in karten %}
+      <label class="avatar-thema{% if k.gewaehlt %} avatar-thema--gewaehlt{% endif %}">
+        <input type="radio" name="outfit" value="{{ k.thema.schluessel }}"{% if k.gewaehlt %} checked{% endif %}>
+        {% svg_roh k.svg "mittel" "" %}
+        <span class="avatar-thema__name">{% if k.standard %}{% translate "Schlicht" %}{% else %}{{ k.thema.name|uebersetzt }}{% endif %}</span>
+      </label>
+    {% endfor %}
+  </div>
+</fieldset>

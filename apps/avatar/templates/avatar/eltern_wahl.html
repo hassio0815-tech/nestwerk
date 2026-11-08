@@ -1,0 +1,24 @@
+{% extends "basis/einstellungen.html" %}
+{% load i18n static avatar_tags %}
+{% comment %}Eltern wählen ihren Avatar: Haut, Haar, Frisur (wie bei den Kindern) und ein Eltern-Outfit.
+  Die Vorschau lädt per HTMX nach; ohne JavaScript prüft das Absenden alles auf dem Server.{% endcomment %}
+{% block titel %}{% translate "Mein Avatar" %}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:einstellungen" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Mein Avatar") zurueck_url=zurueck_url zurueck_text=_("Einstellungen") %}{% endblock %}
+{% block seite %}
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
+  {% if gespeichert %}<p class="feld__hinweis" role="status">{% translate "Gespeichert." %}</p>{% endif %}
+  <p class="feld__hinweis">{% translate "So sehen dich die Familie und du selbst. Du kannst jederzeit wechseln, es kostet nichts." %}</p>
+  <form method="post" class="avatar-wahl" hx-get="{% url 'avatar:eltern_wahl' %}" hx-trigger="change" hx-target="#avatar-vorschau" hx-swap="innerHTML">
+    {% csrf_token %}
+    <div class="avatar-wahl__figur">
+      {% include "avatar/_figur_wahl.html" %}
+    </div>
+    <div id="avatar-vorschau" class="avatar-wahl__vorschau">
+      {% include "avatar/_eltern_vorschau.html" %}
+    </div>
+    <div class="avatar-wahl__senden">
+      {% include "komponenten/button.html" with typ="submit" gross=True icon="check" text=_("Speichern") %}
+    </div>
+  </form>
+{% endblock %}

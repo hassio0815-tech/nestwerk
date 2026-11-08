@@ -8,6 +8,7 @@ urlpatterns = [
     re_path(r"^avatar/(?P<hash>[0-9a-f]{64})\.svg$", views.svg, name="svg"),
     path("avatar/galerie/", views.galerie, name="galerie"),
     path("kind/avatar/", views.kind_wahl, name="kind_wahl"),
+    path("eltern/avatar/", views.eltern_wahl, name="eltern_wahl"),
     path("kind/avatar/name/", views.name_setzen, name="name"),
     path(
         "eltern/avatar/<uuid:kind_id>/name-zuruecksetzen/",

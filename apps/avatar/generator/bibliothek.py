@@ -4,6 +4,7 @@
 * ``figur.json``: Grundfigur (Blöcke), Hautfarben, Haarfarben, Frisuren, Gesicht.
 * ``schablonen/<slot>.json``: Formen je Slot (Ebenen-Schablonen, Farbtokens ``a``/``b``/``c``).
 * ``themen.json``: 10 Themen plus Eltern-Figur (Palette, Grundausstattung, Formen-Vorlieben).
+* ``eltern_themen.json``: 10 Eltern-Outfits (``nur_eltern``, Schlüssel ``eltern_*``).
 
 Neue Themen oder Formen sind reine Daten. ``VERSION`` (Hash über alle Dateien) fließt in den
 Render-Hash ein, damit der Cache nach jeder Änderung der Bibliothek ungültig wird.
@@ -18,6 +19,7 @@ DATEN = Path(__file__).resolve().parent.parent / "daten"
 MUSTER = ("keins", "kante", "streifen", "punkte", "karo", "glanz")
 STANDARD_FIGUR = {"haut": "haut2", "haar": "haar3", "frisur": "kurz"}
 ELTERN_THEMA = "eltern"
+ELTERN_OUTFIT_PRAEFIX = "eltern_"
 ELTERN_HAUT = ("haut1", "haut2", "haut3", "haut4", "haut5", "haut6")
 ELTERN_HAAR = ("haar1", "haar2", "haar3", "haar4", "haar5", "haar6")
 
@@ -31,6 +33,7 @@ def _alles():
     slots = _lesen(DATEN / "slots.json")
     figur = _lesen(DATEN / "figur.json")
     themen = {t["schluessel"]: t for t in _lesen(DATEN / "themen.json")["themen"]}
+    themen.update({t["schluessel"]: t for t in _lesen(DATEN / "eltern_themen.json")["themen"]})
     schablonen = {}
     for slot in slots["slots"]:
         daten = _lesen(DATEN / "schablonen" / f"{slot['schluessel']}.json")
@@ -85,6 +88,15 @@ def kind_themen():
     return [
         t for t in sorted(themen().values(), key=lambda t: t["reihenfolge"]) if not t["nur_eltern"]
     ]
+
+
+def eltern_outfits():
+    """Die wählbaren Eltern-Outfits in Reihenfolge; zuerst die schlichte Eltern-Figur."""
+    plus = sorted(
+        (t for t in themen().values() if t["schluessel"].startswith(ELTERN_OUTFIT_PRAEFIX)),
+        key=lambda t: t["reihenfolge"],
+    )
+    return [thema(ELTERN_THEMA), *plus]
 
 
 def formen(slot):

@@ -9,7 +9,7 @@ AP26 (Logik in ``mods``): ``ausbaustufe(kind)`` (``.aktuell``, ``.je_seltenheit`
 from django.utils.translation import gettext
 
 from .generator import bibliothek
-from .models import Avatar, ModDefinition, Thema
+from .models import Avatar, ElternAvatar, ModDefinition, Thema
 from .mods import (  # noqa: F401 (öffentliche Mod-API, AP26)
     ausbaustufe,
     bauauftraege,
@@ -78,3 +78,15 @@ def benannte_avatare():
     return list(
         Avatar.objects.exclude(name="").select_related("benutzer").order_by("benutzer__reihenfolge")
     )
+
+
+def eltern_aktuelle_wahl(benutzer):
+    """Aktuelle Eltern-Figur als Formularwerte ``{outfit, haut, haar, frisur}`` (eigene Wahl,
+    sonst die automatische Figur)."""
+    from . import services
+
+    wahl = ElternAvatar.objects.filter(pk=benutzer.pk).first()
+    if wahl is not None:
+        return {"outfit": wahl.outfit, **wahl.figur}
+    z = services.eltern_standard_zustand(benutzer)
+    return {"outfit": z["thema"], **z["figur"]}

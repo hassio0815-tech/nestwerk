@@ -132,8 +132,8 @@ def test_dateien_sind_gueltig_und_eindeutig():
 @pytest.mark.django_db
 def test_bibliothek_ist_nach_migrate_in_der_datenbank():
     assert Slot.objects.count() == 6
-    assert Thema.objects.count() == 11
-    assert Thema.objects.filter(nur_eltern=True).count() == 1
+    assert Thema.objects.count() == 21
+    assert Thema.objects.filter(nur_eltern=True).count() == 11
     assert ModDefinition.objects.filter(thema__schluessel="ritter", seltenheit=1).count() == 6
     assert ModDefinition.objects.count() == 360
     ritter = Thema.objects.get(schluessel="ritter")

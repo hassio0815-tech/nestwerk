@@ -1156,3 +1156,11 @@ msgstr "Moods for children"
 #: templates/oberflaeche/eltern_moods.html
 msgid "Ausgeblendete Moods können die Eltern nicht mehr wählen."
 msgstr "Parents can no longer choose hidden moods."
+
+#: eltern_avatar
+msgid "Hautton, Haare, Frisur und eines von zehn Outfits für deine Figur."
+msgstr "Skin tone, hair, hairstyle and one of ten outfits for your character."
+
+#: eltern_avatar
+msgid "Avatar aussuchen"
+msgstr "Choose avatar"

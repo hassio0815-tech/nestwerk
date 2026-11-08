@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseNotModified
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
@@ -85,6 +86,59 @@ def kind_wahl(request):
     return render(request, "avatar/wahl.html", kontext)
 
 
+def _eltern_kontext(request, quelle):
+    figur = _auswahl(quelle)
+    outfits = bibliothek.eltern_outfits()
+    gewaehlt = quelle.get("outfit", "")
+    if gewaehlt not in {t["schluessel"] for t in outfits}:
+        gewaehlt = bibliothek.ELTERN_THEMA
+    karten = [
+        {
+            "thema": t,
+            "svg": services.vorschau_svg(t["schluessel"], figur),
+            "gewaehlt": t["schluessel"] == gewaehlt,
+            "standard": t["schluessel"] == bibliothek.ELTERN_THEMA,
+        }
+        for t in outfits
+    ]
+    return {
+        "figur": figur,
+        "karten": karten,
+        "gewaehlt": gewaehlt,
+        "haupt": services.vorschau_svg(gewaehlt, figur),
+    }
+
+
+@nur_eltern
+@require_http_methods(["GET", "POST"])
+def eltern_wahl(request):
+    """Eltern wählen Haut, Haare, Frisur und Outfit ihres Avatars (Eltern-Einstellungen)."""
+    fehler = ""
+    if request.method == "POST":
+        try:
+            services.eltern_avatar_waehlen(
+                request.user, request.POST.get("outfit", ""), _auswahl(request.POST)
+            )
+        except services.AvatarFehler as exc:
+            fehler = str(exc)
+        else:
+            return redirect(f"{reverse('avatar:eltern_wahl')}?ok=1")
+        quelle = request.POST
+    elif request.GET.get("haut") or request.GET.get("outfit"):
+        quelle = request.GET  # Live-Vorschau (HTMX)
+    else:
+        quelle = selectors.eltern_aktuelle_wahl(request.user)
+    kontext = {
+        "optionen": selectors.figur_optionen(),
+        "fehler": fehler,
+        "gespeichert": request.GET.get("ok") == "1",
+    }
+    kontext.update(_eltern_kontext(request, quelle))
+    if request.headers.get("HX-Request") == "true":
+        return render(request, "avatar/_eltern_vorschau.html", kontext)
+    return render(request, "avatar/eltern_wahl.html", kontext)
+
+
 @require_GET
 def galerie(request):
     """Grundfiguren aller Themen (dunkel und hell); mit ``?thema=`` die 36 Mods dieses Themas als
@@ -99,9 +153,16 @@ def galerie(request):
         }
         for i in range(len(bibliothek.themen()))
     ]
+    alle = list(bibliothek.themen().values())
     themen = [
         {"thema": t, "svg": services.vorschau_svg(t["schluessel"], figuren[i])}
-        for i, t in enumerate(bibliothek.themen().values())
+        for i, t in enumerate(alle)
+        if not t["nur_eltern"]
+    ]
+    eltern_themen = [
+        {"thema": t, "svg": services.vorschau_svg(t["schluessel"], figuren[i])}
+        for i, t in enumerate(alle)
+        if t["nur_eltern"]
     ]
     mod_themen = bibliothek.kind_themen()
     gewaehlt = request.GET.get("thema", "")
@@ -126,6 +187,7 @@ def galerie(request):
         ]
     kontext = {
         "themen": themen,
+        "eltern_themen": eltern_themen,
         "mod_themen": mod_themen,
         "gewaehlt": gewaehlt,
         "gewaehlt_name": gewaehlt_name,

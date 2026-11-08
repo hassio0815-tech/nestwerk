@@ -3934,3 +3934,115 @@ msgstr "%(rang)s: please enter the build time in days, e.g. 3 or 1.5."
 #, python-format
 msgid "%(rang)s: Bauzeit darf nicht negativ sein."
 msgstr "%(rang)s: build time cannot be negative."
+
+#: eltern_avatar
+msgid "IT-Admin"
+msgstr "IT admin"
+
+#: eltern_avatar
+msgid "Hoodie, Headset und der Laptop immer griffbereit."
+msgstr "Hoodie, headset and the laptop always at hand."
+
+#: eltern_avatar
+msgid "Maker"
+msgstr "Maker"
+
+#: eltern_avatar
+msgid "Schutzbrille, Lötkolben und ein kleiner 3D-Drucker für die nächste Idee."
+msgstr "Safety goggles, soldering iron and a little 3D printer for the next idea."
+
+#: eltern_avatar
+msgid "Küchenchef"
+msgstr "Head chef"
+
+#: eltern_avatar
+msgid "Kochmütze auf, Kochlöffel in der Hand: heute gibt es etwas Feines."
+msgstr "Chef's hat on, ladle in hand: something delicious is coming."
+
+#: eltern_avatar
+msgid "Gärtner"
+msgstr "Gardener"
+
+#: eltern_avatar
+msgid "Strohhut, Latzhose und die Gießkanne für die Blumen."
+msgstr "Straw hat, dungarees and the watering can for the flowers."
+
+#: eltern_avatar
+msgid "Sportler"
+msgstr "Athlete"
+
+#: eltern_avatar
+msgid "Stirnband, Trikot und Laufschuhe: ab auf die Runde!"
+msgstr "Headband, jersey and running shoes: off for a run!"
+
+#: eltern_avatar
+msgid "Rockstar"
+msgstr "Rock star"
+
+#: eltern_avatar
+msgid "Lederjacke, Sonnenbrille und die Gitarre ganz laut."
+msgstr "Leather jacket, sunglasses and the guitar turned up loud."
+
+#: eltern_avatar
+msgid "Superheld"
+msgstr "Superhero"
+
+#: eltern_avatar
+msgid "Umhang, Maske und Alltags-Superkräfte."
+msgstr "Cape, mask and everyday superpowers."
+
+#: eltern_avatar
+msgid "Detektiv"
+msgstr "Detective"
+
+#: eltern_avatar
+msgid "Trenchcoat, Hut und Lupe: dir entgeht kein Hinweis."
+msgstr "Trench coat, hat and magnifying glass: no clue escapes you."
+
+#: eltern_avatar
+msgid "Zauberer"
+msgstr "Wizard"
+
+#: eltern_avatar
+msgid "Spitzhut, Zauberstab und ein bisschen Funkeln."
+msgstr "Pointed hat, wand and a bit of sparkle."
+
+#: eltern_avatar
+msgid "Chill-Modus"
+msgstr "Chill mode"
+
+#: eltern_avatar
+msgid "Bademantel an, Kaffee in der Hand: jetzt ist Pause."
+msgstr "Bathrobe on, coffee in hand: break time."
+
+#: eltern_avatar
+msgid "Schlicht"
+msgstr "Plain"
+
+#: eltern_avatar
+msgid "Dein Outfit"
+msgstr "Your outfit"
+
+#: eltern_avatar
+msgid "Mein Avatar"
+msgstr "My avatar"
+
+#: eltern_avatar
+msgid "So sehen dich die Familie und du selbst. Du kannst jederzeit wechseln, es kostet nichts."
+msgstr "This is how your family and you see you. You can change it any time, it costs nothing."
+
+#: eltern_avatar
+msgid "Eltern-Outfits"
+msgstr "Parent outfits"
+
+#: eltern_avatar
+msgid "Nur für Eltern wählbar, Kinder sehen sie nicht."
+msgstr "Only parents can choose these, children do not see them."
+
+#: eltern_avatar
+msgid "Nur Eltern wählen hier ihren Avatar"
+msgstr "Only parents choose their avatar here"
+
+#: eltern_avatar
+msgid "Bitte wähle ein Outfit"
+msgstr "Please choose an outfit"

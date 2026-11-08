@@ -26,7 +26,7 @@ from apps.spielregeln.services import (  # noqa: F401 (Mod-Standards, AP26)
 )
 
 from .generator import bibliothek, renderer
-from .models import Avatar, ModDefinition, RenderCache, Thema
+from .models import Avatar, ElternAvatar, ModDefinition, RenderCache, Thema
 from .mods import (  # noqa: F401 (öffentliche Mod-API, AP26)
     ModFehler,
     thema_wechseln,
@@ -154,9 +154,25 @@ def hash_aktualisieren(avatar):
     return hash_, svg
 
 
+def eltern_hash_aktualisieren(wahl):
+    """Render-Hash der Eltern-Wahl neu berechnen, Bild rendern/ablegen und speichern."""
+    try:
+        hash_, svg = zustand_rendern(_wahl_zustand(wahl))
+    except renderer.RenderFehler:
+        # Bibliothek kennt Outfit/Figur nicht mehr: zurück auf die schlichte Eltern-Figur
+        hash_, svg = zustand_rendern({"thema": bibliothek.ELTERN_THEMA})
+    if wahl.render_hash != hash_:
+        wahl.render_hash = hash_
+        ElternAvatar.objects.filter(pk=wahl.pk).update(render_hash=hash_)
+    return hash_, svg
+
+
 def hashes_aktualisieren():
     """Nach Änderungen an Bibliothek/Themen/Mods: alle Avatare neu rendern (wenige Zeilen)."""
     n = 0
+    for wahl in ElternAvatar.objects.all():
+        eltern_hash_aktualisieren(wahl)
+        n += 1
     for avatar in Avatar.objects.select_related("thema"):
         hash_aktualisieren(avatar)
         n += 1
@@ -167,8 +183,21 @@ def hashes_aktualisieren():
 
 
 def eltern_zustand(benutzer):
-    """Eltern-Figur: gleicher Generator, Thema ``eltern``, keine Mods; Haut/Haar/Frisur stabil
-    aus der Benutzer-ID abgeleitet (kein Datenbankeintrag nötig)."""
+    """Eltern-Figur: gleicher Generator, keine Mods. Mit eigener Wahl (``ElternAvatar``) Outfit,
+    Haut, Haar und Frisur daraus; sonst Thema ``eltern`` und Haut/Haar/Frisur stabil aus der
+    Benutzer-ID abgeleitet (kein Datenbankeintrag nötig)."""
+    wahl = ElternAvatar.objects.filter(pk=benutzer.pk).first()
+    if wahl is not None:
+        return _wahl_zustand(wahl)
+    return eltern_standard_zustand(benutzer)
+
+
+def _wahl_zustand(wahl):
+    return {"thema": wahl.outfit, "figur": wahl.figur}
+
+
+def eltern_standard_zustand(benutzer):
+    """Die automatische Figur (ohne eigene Wahl), aus der Benutzer-ID abgeleitet."""
     z = int.from_bytes(hashlib.sha256(str(benutzer.pk).encode()).digest()[:6], "big")
     return {
         "thema": bibliothek.ELTERN_THEMA,
@@ -187,7 +216,14 @@ def svg_fuer(benutzer):
     """``(hash, svg)`` für einen Benutzer: Eltern-Figur, Kind-Avatar oder (Kind ohne Wahl)
     die neutrale Figur."""
     if benutzer.ist_eltern:
-        return zustand_rendern(eltern_zustand(benutzer))
+        wahl = ElternAvatar.objects.filter(pk=benutzer.pk).first()
+        if wahl is None:
+            return zustand_rendern(eltern_standard_zustand(benutzer))
+        if wahl.render_hash:
+            svg = svg_nach_hash(wahl.render_hash)
+            if svg is not None:
+                return wahl.render_hash, svg
+        return eltern_hash_aktualisieren(wahl)
     avatar = Avatar.objects.select_related("thema").filter(pk=benutzer.pk).first()
     if avatar is None:
         return zustand_rendern(NEUTRAL)
@@ -254,6 +290,25 @@ def avatar_waehlen(kind, thema_schluessel, figur):
     return avatar
 
 
+def eltern_outfit_schluessel():
+    return [t["schluessel"] for t in bibliothek.eltern_outfits()]
+
+
+@transaction.atomic
+def eltern_avatar_waehlen(benutzer, outfit, figur):
+    """Elternteil wählt Outfit, Haut, Haar und Frisur (jederzeit änderbar, kostenlos)."""
+    if not benutzer.ist_eltern:
+        raise AvatarFehler(gettext("Nur Eltern wählen hier ihren Avatar"))
+    if outfit not in eltern_outfit_schluessel():
+        raise AvatarFehler(gettext("Bitte wähle ein Outfit"))
+    figur = figur_pruefen(figur)
+    wahl, _ = ElternAvatar.objects.update_or_create(
+        pk=benutzer.pk, defaults={"outfit": outfit, "figur": figur}
+    )
+    eltern_hash_aktualisieren(wahl)
+    return wahl
+
+
 @transaction.atomic
 def figur_aendern(kind, figur):
     """Hautton, Haare und Frisur ändern (kostet nichts, Thema und Mods bleiben)."""
@@ -308,7 +363,14 @@ def cache_aufraeumen(tage=30):
     (für den Job ``aufraeumen``). Gibt die Zahl gelöschter Zeilen zurück."""
     grenze = zeit.jetzt() - timedelta(days=tage)
     verwendet = Avatar.objects.exclude(render_hash="").values_list("render_hash", flat=True)
-    zeilen = RenderCache.objects.filter(zuletzt_genutzt__lt=grenze).exclude(hash__in=verwendet)
+    verwendet_eltern = ElternAvatar.objects.exclude(render_hash="").values_list(
+        "render_hash", flat=True
+    )
+    zeilen = (
+        RenderCache.objects.filter(zuletzt_genutzt__lt=grenze)
+        .exclude(hash__in=verwendet)
+        .exclude(hash__in=verwendet_eltern)
+    )
     anzahl = zeilen.count()
     zeilen.delete()
     _SPEICHER.clear()

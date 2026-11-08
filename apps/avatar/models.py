@@ -44,6 +44,26 @@ class Thema(models.Model):
         }
 
 
+class ElternAvatar(models.Model):
+    """Selbst gewählte Figur eines Elternteils: Haut, Haar, Frisur und Eltern-Outfit.
+
+    Ohne Zeile gilt die aus der Benutzer-ID abgeleitete Figur (``services.eltern_zustand``).
+    Keine Mods, kein Shop, keine Punkte."""
+
+    benutzer = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        primary_key=True,
+        on_delete=models.CASCADE,
+        related_name="eltern_avatar",
+    )
+    outfit = models.SlugField(max_length=40, help_text="Schlüssel eines Eltern-Themas")
+    figur = models.JSONField(default=dict, help_text="haut, haar, frisur")
+    render_hash = models.CharField(max_length=64, blank=True, default="")
+
+    def __str__(self):
+        return f"{self.benutzer_id}: {self.outfit}"
+
+
 class Slot(models.Model):
     schluessel = models.SlugField(max_length=20, unique=True)
     name = models.CharField(max_length=40)
