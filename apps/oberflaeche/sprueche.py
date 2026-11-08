@@ -85,7 +85,7 @@ _SPRUECHE = [
     ),
     (
         "Heute schon was Nützliches getan? Der Stapel Wäsche meldet sich freiwillig.",
-        "Done something useful today? The laundry pile volunteers as tribute.",
+        "Done something useful today? The laundry pile is volunteering.",
     ),
     (
         "Ein Team ohne Aufgabenverteilung ist wie ein Fußballspiel mit fünf Bällen.",
@@ -116,8 +116,8 @@ _SPRUECHE = [
         "Five minutes of tidying is over faster than a commercial break.",
     ),
     (
-        "Ich bin nicht faul, ich spare nur Energie für die nächste Aufgabe.",
-        "I'm not lazy, I'm just saving energy for the next chore.",
+        "Wer klein anfängt, ist schneller fertig, als er denkt.",
+        "Start small and you'll be done sooner than you think.",
     ),
     (
         "Staubsaugen ist Autorennen für Fortgeschrittene.",
@@ -311,8 +311,8 @@ _SPRUECHE = [
         "Shoes onto the shelf: that way they find themselves, no detective needed.",
     ),
     (
-        "Jacke an den Haken: So wird sie zur Garderoben-Königin.",
-        "Jacket on the hook: that's how it becomes queen of the coat rack.",
+        "Jacke an den Haken: So wird sie zum Star der Garderobe.",
+        "Jacket on the hook: that's how it becomes the star of the coat rack.",
     ),
     (
         "Aus Chaos mach Kunst: Dazu gehört auch ein sauberer Schreibtisch.",
@@ -373,8 +373,8 @@ _SPRUECHE = [
         "Kitchen rule number one: the cook doesn't wash up, and the washer doesn't cook.",
     ),
     (
-        "Kartoffeln schälen ist Meditation mit Ergebnis.",
-        "Peeling potatoes is meditation with a result.",
+        "Kartoffeln schälen ist Entspannung mit Ergebnis.",
+        "Peeling potatoes is relaxation with a result.",
     ),
     (
         "Der Kühlschrank leuchtet, wenn er geöffnet wird. Er ist also heimlich eine Lampe.",
@@ -478,8 +478,8 @@ _SPRUECHE = [
         "Don't grumble, just do it - and then strike a little winner's pose.",
     ),
     (
-        "Wer zuhört, wenn Mama oder Papa etwas erklärt, spart sich später die Wiederholung.",
-        "Listen when Mum or Dad explains something and you'll skip the repeat later.",
+        "Wer zuhört, wenn jemand etwas erklärt, spart sich später die Wiederholung.",
+        "Listen when someone explains something and you'll skip the repeat later.",
     ),
     (
         "Kein Streit ums Aufräumen: Ein Wettlauf mit der Küchenuhr löst alles.",
@@ -495,8 +495,8 @@ _SPRUECHE = [
         "What's been lying around for ages finally gets put away. Maybe today?",
     ),
     (
-        "Lachen ist ansteckend. Hier gibt es keine Impfpflicht.",
-        "Laughter is contagious. There is no vaccine here.",
+        "Lachen ist ansteckend. Gib es gern weiter!",
+        "Laughter is contagious. Pass it on!",
     ),
     (
         "Der Teppich hat sich beschwert: zu viele Krümel, zu wenig Staubsauger.",
@@ -582,12 +582,12 @@ _WEISHEITEN = [
         "Go for it! The scariest part is usually just one step.",
     ),
     (
-        "Wer aufgibt, hat schon verloren. Wer weitermacht, hat schon halb gewonnen.",
-        "Give up and you've lost already. Keep going and you're halfway there.",
+        "Wer weitermacht, hat schon halb gewonnen.",
+        "Keep going and you're already halfway there.",
     ),
     ("Heute gelernt, morgen gekonnt.", "Learned today, can do tomorrow."),
     (
-        "Schaue nicht, wie weit es noch ist, sondern wie weit du schon gekommen bist.",
+        "Schau nicht, wie weit es noch ist, sondern wie weit du schon gekommen bist.",
         "Don't look at how far is left, look at how far you've come.",
     ),
     ("Mit Freundlichkeit kommt man überall durch die Tür.", "Kindness opens every door."),
@@ -614,7 +614,7 @@ _WEISHEITEN = [
     ("Wer langsam geht, kommt auch an.", "Slow and steady wins the race."),
     ("In der Ruhe liegt die Kraft.", "In calm there is strength."),
     ("Nach Regen kommt Sonnenschein.", "After rain comes sunshine."),
-    ("Ein Tag ohne Lachen ist ein verlorener Tag.", "A day without laughter is a day wasted."),
+    ("Ein Lachen am Tag macht das Herz leicht.", "A laugh a day keeps the heart light."),
     ("Jede Reise ist leichter mit guter Gesellschaft.", "Every journey is easier in good company."),
     ("Wer teilt, hat mehr vom Leben.", "Those who share get more out of life."),
     (
@@ -637,7 +637,10 @@ _WEISHEITEN = [
         "If you really want something, look for a way, not for an obstacle.",
     ),
     ("Aus kleinen Bausteinen entstehen große Burgen.", "Big castles are built from small blocks."),
-    ("Wer zuerst entschuldigt, ist der Größere.", "Whoever says sorry first is the bigger one."),
+    (
+        "Wer sich zuerst entschuldigt, ist der Größere.",
+        "Whoever says sorry first is the bigger one.",
+    ),
     (
         "Sag danke, auch für Kleinigkeiten. Das macht beide froh.",
         "Say thank you, even for little things. It makes both of you happy.",
@@ -668,7 +671,7 @@ _WEISHEITEN = [
         "A good night's sleep is half the learning.",
         {"t": "abend"},
     ),
-    ("Der Morgen bringt Rat.", "The morning brings advice.", {"t": "morgen"}),
+    ("Der Morgen bringt Rat.", "Sleep on it: the morning brings advice.", {"t": "morgen"}),
     (
         "Wer früh anfängt, hat mehr vom Tag.",
         "Start early and you get more of the day.",
@@ -677,7 +680,7 @@ _WEISHEITEN = [
     ("Der frühe Vogel fängt den Wurm.", "The early bird catches the worm.", {"t": "morgen"}),
     (
         "Nach dem Essen sollst du ruhn oder tausend Schritte tun.",
-        "After dinner, sit a while or walk a mile.",
+        "After a meal, sit a while or walk a mile.",
         {"t": "mittag"},
     ),
     (
@@ -731,8 +734,8 @@ _WEISHEITEN = [
         {"w": (0,)},
     ),
     (
-        "Freitag ist da: Auf das Wochenende habt ihr euch eure Pause verdient.",
-        "It's Friday: you've earned your break for the weekend.",
+        "Es ist Freitag: Ihr habt euch das Wochenende verdient.",
+        "It's Friday: you've earned your weekend.",
         {"w": (4,)},
     ),
     (
@@ -875,8 +878,8 @@ _FAKTEN = [
         "Did you know? Sharks were around before there were trees.",
     ),
     (
-        "Wusstest du? Libellen flogen schon, als es noch keine Dinosaurier gab.",
-        "Did you know? Dragonflies were flying before the dinosaurs existed.",
+        "Wusstest du? Die Vorfahren der Libellen flogen schon vor den Dinosauriern.",
+        "Did you know? The ancestors of dragonflies flew before the dinosaurs.",
     ),
     (
         "Wusstest du? Papageien können Wörter nachsprechen.",
@@ -910,8 +913,8 @@ _FAKTEN = [
         {"j": "winter"},
     ),
     (
-        "Wusstest du? Honig kann Jahrtausende halten, ohne zu verderben.",
-        "Did you know? Honey can last for thousands of years without spoiling.",
+        "Wusstest du? Honig verdirbt fast nie, wenn man ihn gut verschließt.",
+        "Did you know? Honey almost never spoils if you keep it sealed.",
     ),
     # Weltall
     (
@@ -996,16 +999,16 @@ _FAKTEN = [
         "Did you know? A comet's tail always points away from the Sun.",
     ),
     (
-        "Wusstest du? Astronauten werden im Weltall ein paar Zentimeter größer.",
-        "Did you know? Astronauts grow a few centimetres taller in space.",
+        "Wusstest du? Astronauten werden im Weltall vorübergehend ein paar Zentimeter größer.",
+        "Did you know? Astronauts grow a few centimetres taller in space, but only for a while.",
     ),
     (
         "Wusstest du? Die Raumstation ISS umkreist die Erde mehrmals am Tag.",
         "Did you know? The ISS space station circles the Earth several times a day.",
     ),
     (
-        "Wusstest du? Ebbe und Flut entstehen durch die Anziehung des Mondes.",
-        "Did you know? Tides are caused by the Moon's pull.",
+        "Wusstest du? Ebbe und Flut entstehen vor allem durch die Anziehung des Mondes.",
+        "Did you know? Tides are mainly caused by the Moon's pull.",
     ),
     (
         "Wusstest du? Die Erde braucht ein Jahr, um einmal um die Sonne zu laufen.",
@@ -1033,8 +1036,8 @@ _FAKTEN = [
         "Did you know? Skin is the largest organ of the human body.",
     ),
     (
-        "Wusstest du? Kein Fingerabdruck gleicht dem anderen.",
-        "Did you know? No two fingerprints are the same.",
+        "Wusstest du? Sogar eineiige Zwillinge haben verschiedene Fingerabdrücke.",
+        "Did you know? Even identical twins have different fingerprints.",
     ),
     (
         "Wusstest du? Der Zahnschmelz ist das härteste Material in deinem Körper.",
@@ -1050,8 +1053,8 @@ _FAKTEN = [
         "Did you know? The smallest bones in your body are inside your ear.",
     ),
     (
-        "Wusstest du? Im Schlaf räumt dein Gehirn auf und sortiert, was du gelernt hast.",
-        "Did you know? While you sleep, your brain tidies up and sorts what you've learned.",
+        "Wusstest du? Im Schlaf hilft dein Gehirn dir, Gelerntes zu behalten.",
+        "Did you know? While you sleep, your brain helps you remember what you've learned.",
         {"t": "abend"},
     ),
     (
@@ -1088,8 +1091,8 @@ _FAKTEN = [
         "Did you know? Lightning is hotter than the surface of the Sun.",
     ),
     (
-        "Wusstest du? Schneeflocken haben meistens sechs Arme.",
-        "Did you know? Snowflakes usually have six arms.",
+        "Wusstest du? Schneekristalle haben immer eine sechseckige Grundform.",
+        "Did you know? Snow crystals always have a six-sided basic shape.",
         {"j": "winter"},
     ),
     (
@@ -1161,16 +1164,16 @@ _FAKTEN = [
         "Did you know? The pyramids of Giza are more than 4,000 years old.",
     ),
     (
-        "Wusstest du? Die Dinosaurier sind vor etwa 66 Millionen Jahren ausgestorben.",
-        "Did you know? The dinosaurs died out about 66 million years ago.",
+        "Wusstest du? Die großen Dinosaurier starben vor etwa 66 Millionen Jahren aus.",
+        "Did you know? The big dinosaurs died out about 66 million years ago.",
     ),
     (
-        "Wusstest du? Kolumbus erreichte Amerika im Jahr 1492.",
-        "Did you know? Columbus reached America in 1492.",
+        "Wusstest du? Ein Tag auf dem Mars ist nur etwas länger als ein Tag auf der Erde.",
+        "Did you know? A day on Mars is only slightly longer than a day on Earth.",
     ),
     (
-        "Wusstest du? Johannes Gutenberg erfand den Buchdruck mit beweglichen Buchstaben.",
-        "Did you know? Johannes Gutenberg invented printing with movable letters.",
+        "Wusstest du? Gutenberg erfand in Europa den Buchdruck mit beweglichen Metallbuchstaben.",
+        "Did you know? Gutenberg invented printing with movable metal type in Europe.",
     ),
     (
         "Wusstest du? Die Chinesische Mauer ist mehrere tausend Kilometer lang.",
@@ -1189,8 +1192,8 @@ _FAKTEN = [
         "Did you know? The ancient Romans built roads, some of which can still be seen today.",
     ),
     (
-        "Wusstest du? Die Berliner Mauer fiel im Jahr 1989.",
-        "Did you know? The Berlin Wall came down in 1989.",
+        "Wusstest du? Regenwürmer lockern den Boden und helfen Pflanzen beim Wachsen.",
+        "Did you know? Earthworms loosen the soil and help plants grow.",
     ),
     (
         "Wusstest du? Die Ägypter schrieben mit Hieroglyphen, kleinen Bildzeichen.",
@@ -1205,8 +1208,8 @@ _FAKTEN = [
         "Did you know? Mammoths were still around when pyramids already stood in Egypt.",
     ),
     (
-        "Wusstest du? In Burgen wohnten Ritter, die Mauern und Türme sollten vor Feinden schützen.",
-        "Did you know? Knights lived in castles, with walls and towers to keep enemies out.",
+        "Wusstest du? Auf Burgen lebten Ritter. Dicke Mauern und Türme boten Schutz.",
+        "Did you know? Knights lived in castles. Thick walls and towers gave protection.",
     ),
     # Technik
     (
@@ -1231,8 +1234,8 @@ _FAKTEN = [
         "Did you know? Solar cells turn sunlight into electricity.",
     ),
     (
-        "Wusstest du? Das Wort Roboter kommt aus dem Tschechischen und bedeutet Arbeit.",
-        "Did you know? The word robot comes from Czech and means forced labour.",
+        "Wusstest du? Das Wort Roboter kommt aus dem Tschechischen und bedeutet schwere Arbeit.",
+        "Did you know? The word robot comes from Czech and means hard work.",
     ),
     (
         "Wusstest du? Eine Kompassnadel zeigt dank des Erdmagnetfelds nach Norden.",
