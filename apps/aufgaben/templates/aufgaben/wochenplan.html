@@ -2,6 +2,8 @@
 {% load i18n %}
 {% load static %}
 {% block titel %}{% translate "Wochenplan" %}{% endblock %}
+{% comment %}Eigener Menüpunkt links: nur der Wochenplan, ohne Aufgaben-Unternavigation.{% endcomment %}
+{% block subnav %}{% endblock %}
 {% block seite %}
   {% include "aufgaben/_wochenplan.html" %}
   <script src="{% static 'vendor/Sortable.min.js' %}" defer></script>

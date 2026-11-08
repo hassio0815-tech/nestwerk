@@ -1,28 +1,34 @@
-{% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
-{% comment %}Kinder- und Elternverwaltung nach der Einrichtung.{% endcomment %}
+{% extends "oberflaeche/eltern_basis.html" %}{% load i18n avatar_tags %}
+{% comment %}Familie: eine Box je Mitglied (Avatar oben, darunter die Einstellungen), dann "Kind anlegen" und Familien-Passwort.{% endcomment %}
 {% block titel %}{% translate "Familie" %}{% endblock %}
 {% block seite %}
   <h1>{% translate "Familie" %}</h1>
   {% if ok %}<p class="feld__hinweis" role="status">{{ ok }}</p>{% endif %}
 
-  <section class="karte"><div class="karte__inhalt stapel">
-    <h2>{% translate "Kinder" %}</h2>
+  <h2>{% translate "Kinder" %}</h2>
+  <div class="familie-raster">
     {% for z in kinder %}
       {% with fkey="kind_"|add:z.benutzer.pk|stringformat:"s" %}
-      <article class="stapel familie-zeile" id="{{ fkey }}">
-        <div class="reihe"><strong>{{ z.benutzer.anzeigename }}</strong>{% if z.gesperrt %}{% include "komponenten/chip.html" with text=_("PIN gesperrt") stufe="epic" %}{% endif %}</div>
+      <article class="karte familie-box" id="{{ fkey }}"><div class="karte__inhalt stapel">
+        <header class="familie-box__kopf">
+          {% avatar_bild z.benutzer "mittel" %}
+          <div class="stapel familie-box__name">
+            <strong>{{ z.benutzer.anzeigename }}</strong>
+            {% if z.gesperrt %}{% include "komponenten/chip.html" with text=_("PIN gesperrt") stufe="epic" %}{% endif %}
+          </div>
+        </header>
         {% for key, text in fehler.items %}{% if key == fkey %}<p class="feld__hinweis feld__hinweis--fehler">{{ text }}</p>{% endif %}{% endfor %}
-        <form method="post" action="{% url 'oberflaeche:familie_kind_umbenennen' z.benutzer.pk %}" class="reihe">{% csrf_token %}
-          <label class="sr-only" for="n-{{ z.benutzer.pk }}">{% translate "Name" %}</label>
+        <form method="post" action="{% url 'oberflaeche:familie_kind_umbenennen' z.benutzer.pk %}" class="familie-box__form">{% csrf_token %}
+          <label class="feld__label" for="n-{{ z.benutzer.pk }}">{% translate "Name" %}</label>
           <input class="feld__eingabe" id="n-{{ z.benutzer.pk }}" name="anzeigename" value="{{ z.benutzer.anzeigename }}" maxlength="60" required>
           {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text=_("Umbenennen") %}
         </form>
-        <form method="post" action="{% url 'oberflaeche:familie_kind_pin' z.benutzer.pk %}" class="reihe">{% csrf_token %}
-          <label class="sr-only" for="p-{{ z.benutzer.pk }}">{% translate "Neue PIN" %}</label>
-          <input class="feld__eingabe" id="p-{{ z.benutzer.pk }}" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" placeholder="{% translate "Neue PIN" %}" autocomplete="off" required>
+        <form method="post" action="{% url 'oberflaeche:familie_kind_pin' z.benutzer.pk %}" class="familie-box__form">{% csrf_token %}
+          <label class="feld__label" for="p-{{ z.benutzer.pk }}">{% translate "Neue PIN" %}</label>
+          <input class="feld__eingabe" id="p-{{ z.benutzer.pk }}" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" placeholder="{% translate "4 Ziffern" %}" autocomplete="off" required>
           {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="schloss" text=_("PIN zurücksetzen") %}
         </form>
-        <div class="reihe">
+        <div class="reihe familie-box__fuss">
           {% if z.gesperrt %}
             <form method="post" action="{% url 'oberflaeche:familie_kind_entsperren' z.benutzer.pk %}">{% csrf_token %}
               {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True text=_("Sperre aufheben") %}
@@ -30,49 +36,59 @@
           {% endif %}
           <details>
             <summary class="knopf knopf--geist knopf--klein familie__deaktivieren">{% translate "Deaktivieren" %}</summary>
-            <form method="post" action="{% url 'oberflaeche:familie_kind_deaktivieren' z.benutzer.pk %}" class="reihe">{% csrf_token %}
-              <span>{% blocktranslate with name=z.benutzer.anzeigename %}{{ name }} kann sich dann nicht mehr anmelden. Die Punkte bleiben erhalten.{% endblocktranslate %}</span>
+            <form method="post" action="{% url 'oberflaeche:familie_kind_deaktivieren' z.benutzer.pk %}" class="stapel">{% csrf_token %}
+              <span class="feld__hinweis">{% blocktranslate with name=z.benutzer.anzeigename %}{{ name }} kann sich dann nicht mehr anmelden. Die Punkte bleiben erhalten.{% endblocktranslate %}</span>
               {% include "komponenten/button.html" with typ="submit" variante="gefahr" klein=True text=_("Ja, deaktivieren") %}
             </form>
           </details>
         </div>
-      </article>
+      </div></article>
       {% endwith %}
     {% empty %}
       <p>{% translate "Noch keine Kinder." %}</p>
     {% endfor %}
-    <h3>{% translate "Kind anlegen" %}</h3>
-    {% if fehler.kind_neu %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler.kind_neu }}</p>{% endif %}
-    <form method="post" action="{% url 'oberflaeche:familie_kind_neu' %}" class="familie-neu">{% csrf_token %}
-      <label class="sr-only" for="kn-name">{% translate "Name" %}</label>
-      <input class="feld__eingabe" id="kn-name" name="anzeigename" placeholder="{% translate "Name" %}" maxlength="60" required>
-      <label class="sr-only" for="kn-pin">{% translate "PIN" %}</label>
-      <input class="feld__eingabe" id="kn-pin" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" placeholder="{% translate "PIN (4 Ziffern)" %}" autocomplete="off" required>
-      {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Anlegen") %}
-    </form>
-  </div></section>
 
-  <section class="karte"><div class="karte__inhalt stapel">
-    <h2>{% translate "Eltern" %}</h2>
+    <article class="karte familie-box familie-box--neu"><div class="karte__inhalt stapel">
+      <h3>{% translate "Kind anlegen" %}</h3>
+      {% if fehler.kind_neu %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler.kind_neu }}</p>{% endif %}
+      <form method="post" action="{% url 'oberflaeche:familie_kind_neu' %}" class="familie-box__form">{% csrf_token %}
+        <label class="feld__label" for="kn-name">{% translate "Name" %}</label>
+        <input class="feld__eingabe" id="kn-name" name="anzeigename" placeholder="{% translate "Name" %}" maxlength="60" required>
+        <label class="feld__label" for="kn-pin">{% translate "PIN" %}</label>
+        <input class="feld__eingabe" id="kn-pin" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" placeholder="{% translate "PIN (4 Ziffern)" %}" autocomplete="off" required>
+        {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Anlegen") %}
+      </form>
+    </div></article>
+  </div>
+
+  <h2>{% translate "Eltern" %}</h2>
+  <div class="familie-raster">
     {% for e in eltern %}
       {% with fkey="eltern_"|add:e.benutzer.pk|stringformat:"s" %}
-      <form method="post" action="{% url 'oberflaeche:familie_eltern' e.benutzer.pk %}" class="stapel familie-zeile">{% csrf_token %}
-        {% for key, text in fehler.items %}{% if key == fkey %}<p class="feld__hinweis feld__hinweis--fehler">{{ text }}</p>{% endif %}{% endfor %}
-        <div class="reihe familie-eltern">
-          <label class="sr-only" for="en-{{ e.benutzer.pk }}">{% translate "Name" %}</label>
+      <article class="karte familie-box" id="{{ fkey }}"><div class="karte__inhalt stapel">
+        <header class="familie-box__kopf">
+          {% avatar_bild e.benutzer "mittel" %}
+          <div class="stapel familie-box__name">
+            <strong>{{ e.benutzer.anzeigename }}</strong>
+            {% if e.benutzer.wappen_info %}<span class="wappen-zeile">{{ e.benutzer.wappen_info.emoji }} {{ e.benutzer.wappen_info.titel }}</span>{% endif %}
+          </div>
+        </header>
+        <form method="post" action="{% url 'oberflaeche:familie_eltern' e.benutzer.pk %}" class="familie-box__form">{% csrf_token %}
+          {% for key, text in fehler.items %}{% if key == fkey %}<p class="feld__hinweis feld__hinweis--fehler">{{ text }}</p>{% endif %}{% endfor %}
+          <label class="feld__label" for="en-{{ e.benutzer.pk }}">{% translate "Name" %}</label>
           <input class="feld__eingabe" id="en-{{ e.benutzer.pk }}" name="anzeigename" value="{{ e.benutzer.anzeigename }}" maxlength="60" required>
-          <label class="sr-only" for="er-{{ e.benutzer.pk }}">{% translate "Rolle" %}</label>
+          <label class="feld__label" for="er-{{ e.benutzer.pk }}">{% translate "Rolle" %}</label>
           <select class="feld__eingabe" id="er-{{ e.benutzer.pk }}" name="rolle_label">
             {% for wert, label in labels %}<option value="{{ wert }}"{% if wert == e.profil.rolle_label %} selected{% endif %}>{{ label }}</option>{% endfor %}
           </select>
-          <label class="sr-only" for="em-{{ e.benutzer.pk }}">{% translate "E-Mail" %}</label>
+          <label class="feld__label" for="em-{{ e.benutzer.pk }}">{% translate "E-Mail" %}</label>
           <input class="feld__eingabe" id="em-{{ e.benutzer.pk }}" name="email" type="email" value="{{ e.profil.email }}" placeholder="{% translate "E-Mail" %}">
           {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
-        </div>
-      </form>
+        </form>
+      </div></article>
       {% endwith %}
     {% endfor %}
-  </div></section>
+  </div>
 
   <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Familien-Passwort" %}</h2>
@@ -84,11 +100,5 @@
       <input class="feld__eingabe" id="pw2" name="passwort2" type="password" autocomplete="new-password" placeholder="{% translate "Wiederholen" %}" required>
       {% include "komponenten/button.html" with typ="submit" variante="sekundaer" icon="schloss" text=_("Passwort ändern") %}
     </form>
-  </div></section>
-
-  <section class="karte"><div class="karte__inhalt reihe">
-    <h2>{% translate "Geräte" %}</h2>
-    {% url "konten:geraete" as geraete_url %}
-    {% include "komponenten/button.html" with href=geraete_url variante="sekundaer" icon="einstellungen" text=_("Geräte verwalten") %}
   </div></section>
 {% endblock %}

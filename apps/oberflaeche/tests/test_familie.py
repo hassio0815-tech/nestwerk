@@ -15,10 +15,12 @@ def url(name, *args):
     return reverse(f"oberflaeche:{name}", args=args)
 
 
-def test_seite_zeigt_kinder_eltern_und_geraete_link(eltern_client, anna):
+def test_seite_zeigt_boxen_mit_avatar_ohne_geraete(eltern_client, anna):
     html = eltern_client.get(url("familie")).content.decode()
     assert "Anna" in html and "Mama" in html
-    assert reverse("konten:geraete") in html
+    assert html.count('class="karte familie-box"') == 2  # Anna + Mama
+    assert "avatar-bild" in html
+    assert "Geräte verwalten" not in html  # Geräte stehen hinter dem Zahnrad
 
 
 def test_kind_anlegen_mit_pin(eltern_client, mama):

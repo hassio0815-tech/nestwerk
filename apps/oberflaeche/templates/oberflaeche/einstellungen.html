@@ -14,6 +14,22 @@
       {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}
     </form>
   </div></section>
+  <h2 id="betrieb">{% translate "Geräte und Betrieb" %}</h2>
+  <div class="dashboard dashboard--eltern einstellungen-betrieb">
+    <section class="dashboard__kachel" data-kachel="konten.geraete" aria-label="{% translate "Geräte" %}">
+      <article class="karte"><div class="karte__inhalt stapel">
+        <h2>{% translate "Geräte" %}</h2>
+        <p class="feld__hinweis">{% translate "Tablets und Kinder-Geräte registrieren, sperren oder entfernen." %}</p>
+        {% url "konten:geraete" as geraete_url %}
+        {% include "komponenten/button.html" with href=geraete_url variante="sekundaer" klein=True icon="schloss" text=_("Geräte verwalten") %}
+      </div></article>
+    </section>
+    {% for eintrag in betrieb %}
+      <section class="dashboard__kachel" data-kachel="{{ eintrag.kachel.schluessel }}" aria-label="{{ eintrag.kachel.titel }}">
+        {% include eintrag.kachel.template with k=eintrag.k %}
+      </section>
+    {% endfor %}
+  </div>
   <p class="feld__hinweis">{% translate "Abschnitt antippen, um ihn auf- oder zuzuklappen." %}</p>
   <div class="einstellungen-raster">
   {% for g in gruppen %}

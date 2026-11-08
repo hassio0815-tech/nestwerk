@@ -186,19 +186,43 @@ def test_eltern_dashboard_zaehler_kinder_und_system(eltern_client, mama, anna):
     html = eltern_client.get("/eltern/").content.decode()
     assert 'data-zaehler="2"' in html  # eine Meldung + ein Konflikt
     assert "Anna" in html and "7 XP" not in html  # XP-Details im Dungeon-Bereich
-    for schluessel in ("entscheidungen", "kinder", "ereignisse", "system", "schnellzugriff"):
+    for schluessel in ("entscheidungen", "kinder", "schnellzugriff"):
         assert f'data-kachel="oberflaeche.eltern_{schluessel}"' in html
-    assert "Datensicherung" in html and "noch nie gelaufen" in html
+    # Betrieb steht in den Einstellungen (Zahnrad), nicht auf der Übersicht
+    for schluessel in ("oberflaeche.eltern_ereignisse", "oberflaeche.eltern_system"):
+        assert f'data-kachel="{schluessel}"' not in html
+    assert 'data-kachel="spielregeln.eltern_pausen"' not in html
+    einstellungen = eltern_client.get("/eltern/einstellungen/").content.decode()
+    for schluessel in (
+        "oberflaeche.eltern_ereignisse",
+        "oberflaeche.eltern_system",
+        "spielregeln.eltern_pausen",
+        "konten.geraete",
+    ):
+        assert f'data-kachel="{schluessel}"' in einstellungen
+    assert "Datensicherung" in einstellungen and "noch nie gelaufen" in einstellungen
+
+
+def test_eltern_menue_und_zahnrad(eltern_client):
+    html = eltern_client.get("/eltern/").content.decode()
+    nav = html.split('class="nw-schale__nav"', 1)[1].split("</nav>", 1)[0]
+    for ziel in ("/eltern/", "/eltern/wochenplan/", "/eltern/familie/"):
+        assert f'href="{ziel}"' in nav
+    assert reverse("benachrichtigung:liste") in nav
+    assert reverse("konten:geraete") not in nav
+    assert f'href="{reverse("oberflaeche:einstellungen")}"' not in nav
+    kopf = html.split('class="nw-schale', 1)[0]
+    assert f'href="{reverse("oberflaeche:einstellungen")}" aria-label="Einstellungen"' in kopf
 
 
 def test_systemstatus_zeigt_letzten_joblauf(eltern_client):
     from apps.kern.models import JobLauf
 
     JobLauf.objects.create(name="db_sichern", status="ok")
-    html = eltern_client.get("/eltern/").content.decode()
+    html = eltern_client.get("/eltern/einstellungen/").content.decode()
     assert "noch nie gelaufen" in html  # backup_pruefen fehlt noch
     JobLauf.objects.create(name="backup_pruefen", status="fehler")
-    assert "Fehler" in eltern_client.get("/eltern/").content.decode()
+    assert "Fehler" in eltern_client.get("/eltern/einstellungen/").content.decode()
 
 
 # --- Kachel-Registry -------------------------------------------------------------------------

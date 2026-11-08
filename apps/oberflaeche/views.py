@@ -309,6 +309,7 @@ def eltern_heim(request):
                 e
                 for e in kacheln.fuer(ELTERN, request)
                 if e["kachel"].schluessel not in ELTERN_DUNGEON
+                and e["kachel"].schluessel not in kacheln.ELTERN_EINSTELLUNGEN
             ],
             "gesperrte_kinder": konten_selectors.gesperrte_kinder(),
         },

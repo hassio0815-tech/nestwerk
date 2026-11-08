@@ -22,7 +22,11 @@ from .models import AbzeichenDefinition, Pause, Rang, Vergleich, Wiederholbar
 from .raenge_start import RAENGE
 from .registry import hat_bereiche
 
-ZIELE = {"heim": "konten:eltern_heim", "pausen": "spielregeln:pausen"}
+ZIELE = {
+    "heim": "konten:eltern_heim",
+    "pausen": "spielregeln:pausen",
+    "einstellungen": "oberflaeche:einstellungen",
+}
 
 
 def _zurueck(request):

@@ -80,12 +80,14 @@ def test_kind_darf_pausen_nicht(kind_client, anna):
 
 def test_eltern_schalter_an_aus(eltern_client, anna, mama, uhr):
     uhr.stellen(lok(2026, 10, 21, 9))
-    html = eltern_client.get("/eltern/").content.decode()
+    html = eltern_client.get("/eltern/einstellungen/").content.decode()
     assert 'data-kachel="spielregeln.eltern_pausen"' in html and "Pause an" in html
+    assert 'name="zurueck" value="einstellungen"' in html
     antwort = eltern_client.post(
-        "/eltern/pausen/schalter/", {"ziel": str(anna.pk), "aktion": "an", "zurueck": "heim"}
+        "/eltern/pausen/schalter/",
+        {"ziel": str(anna.pk), "aktion": "an", "zurueck": "einstellungen"},
     )
-    assert antwort.status_code == 302 and antwort.url == "/eltern/"
+    assert antwort.status_code == 302 and antwort.url == "/eltern/einstellungen/"
     pause = Pause.objects.get()
     assert (pause.kind, pause.von, pause.bis, pause.erstellt_von) == (
         anna,

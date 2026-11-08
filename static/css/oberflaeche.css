@@ -215,11 +215,6 @@
   font-size: inherit;
 }
 
-.familie-zeile {
-  padding-bottom: var(--abstand);
-  border-bottom: 1px solid var(--rahmen);
-}
-
 .feld__label input[type="checkbox"] {
   width: 1.5rem;
   height: 1.5rem;
@@ -320,22 +315,25 @@
   }
 }
 
-/* Familie: Feld und Knopf in einer Zeile, Eltern-Zeile ab 48rem einreihig, "Deaktivieren" als Gefahr-Geist-Knopf */
-.familie-zeile > form.reihe { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; }
-.familie-zeile > form.reihe > .knopf { justify-self: start; }
-@media (min-width: 40rem) {
-  .familie-zeile > form.reihe { grid-template-columns: minmax(0, 1fr) auto; }
-}
-.familie-zeile .feld__eingabe { min-width: 0; }
-.familie-eltern > .feld__eingabe { flex: 1 1 12rem; }
+/* Familie: eine Box je Mitglied im Raster (Avatar oben), Felder untereinander */
+.familie-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: var(--abstand); margin-block-end: var(--abstand-gross, 2rem); }
+.familie-box { margin: 0; }
+.familie-box__kopf { display: flex; align-items: center; gap: var(--abstand); }
+.familie-box__kopf .avatar-bild { flex: none; }
+.familie-box__name { gap: var(--abstand-klein); min-width: 0; }
+.familie-box__name strong { font-size: 1.15rem; overflow-wrap: anywhere; }
+.familie-box__form { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--abstand-klein); }
+.familie-box__form .feld__eingabe { min-width: 0; }
+.familie-box__form > .knopf { justify-self: start; }
+.familie-box__form .feld__label { margin-block-end: -0.25rem; }
+.familie-box__fuss { margin-block-start: auto; }
+.familie-box--neu { border-style: dashed; }
 .familie-neu { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--abstand-klein); align-items: center; }
 .familie-neu .feld__eingabe { min-width: 0; }
 @media (min-width: 48rem) {
-  .familie-neu { grid-template-columns: repeat(2, minmax(0, 1fr)) auto; }
   .familie-neu--passwort { grid-template-columns: repeat(2, minmax(0, 1fr)) auto; }
-  .familie-eltern { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; align-items: center; }
 }
-.familie-zeile .familie__deaktivieren { color: var(--gefahr); border-color: var(--gefahr); cursor: pointer; width: fit-content; list-style: none; }
+.familie__deaktivieren { color: var(--gefahr); border-color: var(--gefahr); cursor: pointer; width: fit-content; list-style: none; }
 .familie__deaktivieren::-webkit-details-marker { display: none; }
 details[open] > .familie__deaktivieren { margin-block-end: var(--abstand-klein); }
 
@@ -347,4 +345,10 @@ details[open] > .familie__deaktivieren { margin-block-end: var(--abstand-klein);
 }
 @media (min-width: 64rem) {
   .nw-schale__inhalt .wappen-galerie { grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); }
+}
+
+/* Trennlinie zwischen Listenzeilen (Moods) */
+.familie-zeile {
+  padding-bottom: var(--abstand);
+  border-bottom: 1px solid var(--rahmen);
 }

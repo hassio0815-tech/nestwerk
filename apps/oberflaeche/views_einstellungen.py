@@ -5,9 +5,24 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_POST
 
+from apps.kern.registry import ELTERN
 from apps.konten.zugriff import nur_eltern
 
 from . import einstellungen_editor as editor
+from . import kacheln
+
+
+def _betrieb(request):
+    """Pausen, Ereignisse, Systemstatus: Kacheln, die in den Einstellungen stehen."""
+    eintraege = [
+        e
+        for e in kacheln.fuer(ELTERN, request)
+        if e["kachel"].schluessel in kacheln.ELTERN_EINSTELLUNGEN
+    ]
+    for e in eintraege:
+        if isinstance(e["k"], dict):
+            e["k"] = {**e["k"], "zurueck": "einstellungen"}
+    return eintraege
 
 
 def _gruppen(*, modul=None, eingaben=None, fehler=None, geaendert=()):
@@ -34,7 +49,11 @@ def uebersicht(request):
     return render(
         request,
         "oberflaeche/einstellungen.html",
-        {"gruppen": _gruppen(), "gespeichert": request.GET.get("ok", "")},
+        {
+            "gruppen": _gruppen(),
+            "gespeichert": request.GET.get("ok", ""),
+            "betrieb": _betrieb(request),
+        },
     )
 
 
@@ -49,7 +68,11 @@ def speichern(request, modul):
         return render(
             request,
             "oberflaeche/einstellungen.html",
-            {"gruppen": _gruppen(modul=modul, eingaben=eingaben, fehler=fehler), "offen": modul},
+            {
+                "gruppen": _gruppen(modul=modul, eingaben=eingaben, fehler=fehler),
+                "offen": modul,
+                "betrieb": _betrieb(request),
+            },
             status=422,
         )
     return redirect(f"{reverse('oberflaeche:einstellungen')}?ok={modul}#modul-{modul}")

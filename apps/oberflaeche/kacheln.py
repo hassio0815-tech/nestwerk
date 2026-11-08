@@ -9,6 +9,13 @@ from apps.kern.registry import kacheln
 
 logger = logging.getLogger(__name__)
 
+# Betriebs-Kacheln der Eltern: stehen in den Einstellungen (Zahnrad), nicht auf der Übersicht.
+ELTERN_EINSTELLUNGEN = (
+    "spielregeln.eltern_pausen",
+    "oberflaeche.eltern_ereignisse",
+    "oberflaeche.eltern_system",
+)
+
 
 def fuer(zielgruppe, request):
     """Liste ``{"kachel": Kachel, "k": kontext}`` der sichtbaren Kacheln, in Reihenfolge."""
