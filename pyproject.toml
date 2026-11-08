@@ -46,8 +46,12 @@ extend-exclude = ["migrations", "branding"]
 select = ["E", "F", "W", "I", "B", "UP", "DJ"]
 
 [tool.ruff.lint.per-file-ignores]
-# pytest-Fixtures werden als Testparameter genutzt (kein echtes Neu-Definieren)
-"apps/**/tests/*" = ["F811"]
+# pytest fixtures are redefined as arguments (F811); long test data lines are fine
+"**/tests/**" = ["F811", "E501"]
+"apps/aufgaben/ablauf.py" = ["E501"]
+"apps/konten/models.py" = ["E501"]
+"apps/konten/services.py" = ["E501"]
+"apps/oberflaeche/templatetags/akzent_tags.py" = ["E501"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "nestwerk.settings.test"
