@@ -95,11 +95,14 @@ Older screenshots from development phases 1 to 3 (still under the old name) are 
 | [docs/en/USER-GUIDE.md](docs/en/USER-GUIDE.md) | For parents and kids: tasks, points, ranks, badges, avatar, learning and more |
 | [docs/en/RUNBOOK.md](docs/en/RUNBOOK.md) | Operations: update, rollback, backup restore, secrets, troubleshooting |
 | [docs/SPEC.md](docs/SPEC.md) (German) | Product specification and decisions |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (German) | Architecture, layers, events, rule engine |
+| [docs/en/ARCHITECTURE.md](docs/en/ARCHITECTURE.md) | Architecture overview (English summary; full document is German: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)) |
 | [docs/DATA_MODEL.md](docs/DATA_MODEL.md) (German) | Data model and settings |
 | [docs/en/EXTENDING-MODULES.md](docs/en/EXTENDING-MODULES.md) | Creating a new module, using `lernen` (learning) as the example |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Contributing, tests, checks, layer rules |
 | [CHANGELOG.md](CHANGELOG.md) | Changes by project phase |
+| [SECURITY.md](SECURITY.md) | Supported versions and how to report a vulnerability privately |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Code of conduct |
+| [docs/README.md](docs/README.md) | Index of all documentation |
 | [LICENSE](LICENSE) | Full text of GNU AGPL-3.0 |
 
 ## License: AGPL-3.0
@@ -120,11 +123,11 @@ Nestwerk was formerly called *FamKo*. Existing installations continue to run unc
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
-python manage.py migrate        # legt data/db/nestwerk.sqlite3 an
+python manage.py migrate        # creates data/db/nestwerk.sqlite3
 python manage.py runserver      # http://127.0.0.1:8000/gesundheit/
-pytest                          # Tests
+pytest                          # tests
 ruff check . && ruff format --check .
-lint-imports                    # Schichtenregeln
+lint-imports                    # layer rules
 ```
 
 Configuration via environment variables with the prefix `NESTWERK_` (template: `.env.example`).

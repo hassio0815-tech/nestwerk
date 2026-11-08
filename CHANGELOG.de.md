@@ -4,6 +4,19 @@
 
 Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppiert. Arbeitspaket-Nummern (AP) stehen in `docs/ARCHITECTURE.md`, Abschnitt 12.
 
+## Release-Vorbereitung (08.11.2026)
+
+### Neu
+- Sicherheitsrichtlinie, Verhaltenskodex, Issue- und Pull-Request-Vorlagen, CI-Workflow und Dependabot-Konfiguration (Englisch und Deutsch)
+- Landingpage: lokalisierte Meta-Tags, Noscript-Fallback, mobile Navigation, Dunkelmodus, Canonical-Links, `robots.txt`, `sitemap.xml` und eine 404-Seite
+- Englische Architekturübersicht (`docs/en/ARCHITECTURE.md`) und ein Dokumentationsindex (`docs/README.md`)
+
+### Geändert
+- Interne Reviews, Pläne, Phasen-Screenshots und Designentwürfe aus dem öffentlichen Repository verschoben
+- Landingpage: Das Lernmodul wird als teilweise fertig und laufend weiterentwickelt beschrieben
+- Ruff-Ausnahmen je Datei für Fixtures und lange Zeilen; Tests mit `ruff format` formatiert
+- Private Hosts, Adressen und Namen in der Dokumentation durch `xxx` ersetzt
+
 ## Punkte und Rückschau, Etappe 14 (08.11.2026)
 
 ### Hinzugefügt
@@ -72,6 +85,17 @@ Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppi
 ### Hinweise
 - Die KI-Adapter sind gegen einen Fake-Transport getestet. Das Modul ist **nicht** mit einer echten KI (Ollama, Anthropic, OpenAI) und nicht im Browser getestet.
 - Uploads begrenzt die vorhandene Middleware `UploadGrenze` aus `aufgaben` (bei Standardwerten rund 46 MB je Anfrage).
+## Eltern-Navigation und Kachel „Heute erledigt“ (08.11.2026)
+
+### Geändert
+- Neue Eltern-Navigation: Kopfleiste mit Start, Zahnrad (Einstellungen) und Abmelden; Menü links mit Übersicht, Wochenplan, Familie, Benachrichtigungen und Dungeon
+- Pausen, Ereignisse, Systemstatus und Geräte sind in die Einstellungen gewandert; der Schnellzugriff hat keine doppelten Ziele mehr
+- Familie: eine Box je Mitglied mit Avatar, die doppelte Geräte-Box entfällt
+- Startwert-Knopf „Zimmer aufräumen“ gibt 20 Punkte; die gründliche Variante bleibt bei 50
+
+### Behoben
+- Die Kachel „Heute erledigt“ zeigt alle heutigen Erledigungen
+
 ## Bibliothek wird zu Schnell-Knöpfen (07.11.2026)
 
 ### Geändert
@@ -107,6 +131,14 @@ Die Einträge sind aus der Git-Historie abgeleitet und nach Projektphasen gruppi
 - Kacheln für Eltern, Kinder und das Flur-Tablet (dort ohne PIN, nur auf dem registrierten Kiosk-Gerät)
 - Aufgabenformular: Wiederholung „Bei Bedarf“, Emoji und „Wer darf drücken?“
 - Bibliotheksvorlagen Restmüll, Biomüll und Altglas (5 Punkte)
+
+## Zweisprachiges Release: Deutsch und Englisch (27.10.2026)
+
+### Hinzugefügt
+- Oberfläche auf Deutsch und Englisch, mit Sprachwahl auf der Startseite
+- Sprache je Benutzer; Familiensprache für Benachrichtigungen
+- Push- und E-Mail-Benachrichtigungen kommen in der Sprache des Empfängers
+- Englische Dokumentation in `docs/en/`
 
 ## Umbenennung zu Nestwerk (25.10.2026)
 

@@ -98,6 +98,9 @@ Alle Screenshots zeigen **Demo-Daten** (Mama, Papa, Kind A/B/C).
 | [docs/MODULE-ERWEITERN.md](docs/MODULE-ERWEITERN.md) | Ein neues Modul anlegen, am Beispiel „lernen“ |
 | [CONTRIBUTING.de.md](CONTRIBUTING.de.md) | Mitwirken, Tests, Prüfungen, Schichtenregeln |
 | [CHANGELOG.de.md](CHANGELOG.de.md) | Änderungen nach Projektphasen |
+| [SECURITY.de.md](SECURITY.de.md) | Unterstützte Versionen und privater Meldeweg für Schwachstellen |
+| [CODE_OF_CONDUCT.de.md](CODE_OF_CONDUCT.de.md) | Verhaltenskodex |
+| [docs/README.md](docs/README.md) | Verzeichnis der gesamten Dokumentation |
 | [LICENSE](LICENSE) | Volltext der GNU AGPL-3.0 |
 
 ## Lizenz: AGPL-3.0

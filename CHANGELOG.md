@@ -4,6 +4,19 @@
 
 Entries are derived from the Git history and grouped by project phase. Work package numbers (AP) are listed in `docs/ARCHITECTURE.md` (German), section 12.
 
+## Release preparation (08.11.2026)
+
+### Added
+- Security policy, code of conduct, issue and pull request templates, CI workflow and Dependabot configuration (English and German)
+- Landing page: localized meta tags, noscript fallback, mobile navigation, dark mode, canonical links, `robots.txt`, `sitemap.xml` and a 404 page
+- English architecture overview (`docs/en/ARCHITECTURE.md`) and a documentation index (`docs/README.md`)
+
+### Changed
+- Internal reviews, plans, phase screenshots and design drafts moved out of the public repository
+- Landing page: the learning module is described as partly finished and continuously developed
+- Ruff per-file ignores for fixtures and long lines; tests formatted with `ruff format`
+- Private hosts, addresses and names in the documentation replaced by `xxx`
+
 ## Points and reflection, stage 14 (08.11.2026)
 
 ### Added
@@ -72,6 +85,17 @@ Entries are derived from the Git history and grouped by project phase. Work pack
 ### Notes
 - The AI adapters are tested against a fake transport. The module has **not** been tested against a real AI (Ollama, Anthropic, OpenAI) or in a browser.
 - Upload requests are limited by the existing `UploadGrenze` middleware from `aufgaben` (about 46 MB per request with default values).
+## Parent navigation and "Done today" tile (08.11.2026)
+
+### Changed
+- New parent navigation: the header has Home, a gear icon (Settings) and Log out; the side menu has Overview, Weekly plan, Family, Notifications and Dungeon
+- Pauses, events, system status and devices moved into Settings; quick access no longer lists duplicate targets
+- Family page: one box per member with avatar; the duplicate devices box is gone
+- Quick-button starter value "Tidy the room" is worth 20 points; the thorough variant stays at 50
+
+### Fixed
+- The "Done today" tile now shows all of today's completions
+
 ## Library becomes quick buttons (07.11.2026)
 
 ### Changed
