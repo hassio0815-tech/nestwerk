@@ -5,6 +5,8 @@
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/aufgaben.css' %}"><link rel="stylesheet" href="{% static 'css/nachweis.css' %}"><script src="{% static 'js/nachweis.js' %}" defer></script>{% endblock %}
 {% block inhalt %}
   {% url "konten:kind_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Aufgaben") zurueck_url=zurueck_url zurueck_text=_("Start") %}
-  {% if k.knoepfe %}{% include "aufgaben/kacheln/schnellknoepfe_kind.html" %}{% endif %}
-  {% include "aufgaben/_kind_bereich.html" %}
+  <div class="kind-seite">
+    {% include "aufgaben/_kind_bereich.html" %}
+    {% if k.knoepfe %}{% include "aufgaben/kacheln/schnellknoepfe_kind.html" %}{% endif %}
+  </div>
 {% endblock %}

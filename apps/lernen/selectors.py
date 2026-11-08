@@ -315,3 +315,22 @@ def pausen(kind=None):
     """Pausen für die Eltern-Seite: die eines Kindes und die für alle."""
     qs = Lernpause.objects.all()
     return qs.filter(Q(kind=kind) | Q(kind__isnull=True)) if kind is not None else qs
+
+
+def zuletzt_geuebt(kind):
+    """Fach und Thema der letzten Übungseinheit des Kindes (``{"fach", "thema"}``), sonst ``None``.
+    Nur Einheiten mit Fach oder Thema zählen; sonst gäbe es nichts anzuzeigen."""
+    sitzung = (
+        Lernsitzung.objects.filter(kind=kind)
+        .filter(Q(fach__isnull=False) | Q(thema__isnull=False))
+        .select_related("fach", "thema__fach")
+        .order_by("-beginn", "-pk")
+        .first()
+    )
+    if sitzung is None:
+        return None
+    fach = sitzung.fach or (sitzung.thema.fach if sitzung.thema else None)
+    return {
+        "fach": fach.name if fach else "",
+        "thema": sitzung.thema.name if sitzung.thema else "",
+    }

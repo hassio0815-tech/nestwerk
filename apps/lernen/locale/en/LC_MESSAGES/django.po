@@ -6409,3 +6409,7 @@ msgstr "You have been practising for longer. A short break helps you remember."
 #: apps/lernen/templates/lernen/sitzung.html
 msgid "Lernrunde"
 msgstr "Learning round"
+
+#: templates/lernen/kacheln/kind_lernen.html
+msgid "Zuletzt geübt:"
+msgstr "Last practised:"

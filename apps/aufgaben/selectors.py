@@ -100,6 +100,12 @@ def kind_offene(kind, *, jetzt=None):
     return ergebnis
 
 
+def kind_unzugeordnete(kind, *, jetzt=None):
+    """Offene Aufgaben, die noch keinem Kind gehören (Status offen): Leiste "Offene Aufgaben"
+    auf der Kinder-Aufgabenseite. Reservierte und umstrittene bleiben draußen."""
+    return [i for i in kind_offene(kind, jetzt=jetzt) if i.status == InstanzStatus.OFFEN]
+
+
 def kind_eigene(kind, *, jetzt=None):
     """Eigene Aufgaben: laufend (reserviert, Konflikt mit eigenem Interesse, gemeldet,
     Rückfrage) und kürzlich abgeschlossene (bestätigt inkl. Bonus, abgelehnt, korrigiert) sowie

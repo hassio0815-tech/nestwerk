@@ -2067,3 +2067,7 @@ msgstr "Task not found"
 #: zustand.py:82 zustand.py:89
 msgid "Die Aufgabe wurde inzwischen geändert."
 msgstr "The task was changed in the meantime."
+
+#: templates/aufgaben/_kind_bereich.html
+msgid "Noch nichts gewählt. Such dir oben eine Aufgabe aus."
+msgstr "Nothing chosen yet. Pick a task above."

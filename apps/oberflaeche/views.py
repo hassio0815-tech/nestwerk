@@ -9,7 +9,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
-from django.urls import NoReverseMatch, reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
@@ -152,8 +151,6 @@ def kind_heim(request):
             "mood": konten_selectors.mood_text(kind),
             "guthaben": _oder(lambda: selectors.kind_konto(kind)["guthaben"], 0),
             "balken": selectors.kind_balken(kind),
-            "faecher": selectors.kind_lernen(kind),
-            "lernen_url": _url_oder_none("lernen:start"),
             **_oder(
                 lambda: selectors.kind_offene_auszug(kind, anzahl=START_AUFGABEN),
                 {"aufgaben": [], "gesamt": 0},
@@ -172,13 +169,6 @@ def _oder(funktion, ersatz):
     except Exception:
         logger.exception("Startseiten-Block konnte nicht berechnet werden")
         return ersatz
-
-
-def _url_oder_none(name):
-    try:
-        return reverse(name)
-    except NoReverseMatch:
-        return None
 
 
 @nur_kind

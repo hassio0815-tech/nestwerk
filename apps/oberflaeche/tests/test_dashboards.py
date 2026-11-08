@@ -109,13 +109,14 @@ def test_kind_darf_familie_nicht_per_post_aendern(kind_client, anna):
 # --- Kinder-Dashboard ------------------------------------------------------------------------
 
 
-def test_kind_startseite_hat_vier_bloecke_mit_buttons(kind_client, anna, mama):
+def test_kind_startseite_hat_drei_bloecke_mit_buttons(kind_client, anna, mama):
     instanz(mama, anna, InstanzStatus.OFFEN, titel="Fenster putzen")
     instanz(mama, anna, InstanzStatus.RESERVIERT, titel="Müll raus")
     html = kind_client.get("/kind/").content.decode()
     assert "Hallo Anna" in html
-    for block in ("avatar", "balken", "lernen", "aufgaben"):
+    for block in ("avatar", "balken", "aufgaben"):
         assert f'data-start="{block}"' in html
+    assert 'data-start="lernen"' not in html  # nur noch die Registry-Kachel "Lernen"
     for balken in ("serie", "uebungswoche", "familienziel"):
         assert f'data-balken="{balken}"' in html
     assert "Fenster putzen" in html  # offene Aufgabe
@@ -144,20 +145,12 @@ def test_kind_untermenues_haben_die_ausgelagerten_kacheln(kind_client, anna, mam
     assert 'data-kachel="spielregeln.kind_serie"' in ziele
 
 
-def test_kind_startseite_lernen_nutzt_provider(kind_client):
-    from apps.kern import registry
-
-    with registry.isoliert():
-        registry.provider_registrieren(
-            registry.Provider(
-                "lernen.kind_faecher",
-                "lernen",
-                "Fächer",
-                lambda kind: [{"name": "Mathe", "zuletzt": None}],
-            )
-        )
-        html = kind_client.get("/kind/").content.decode()
-    assert "Mathe" in html and "noch nicht begonnen" in html
+def test_kind_startseite_hat_nur_eine_lernen_kachel(kind_client):
+    html = kind_client.get("/kind/").content.decode()
+    assert 'data-start="lernen"' not in html
+    assert "Bald gibt es hier Fächer" not in html
+    assert "Zum Lernen" not in html
+    assert html.count('data-kachel="lernen"') <= 1
 
 
 def test_kind_bereich_nur_fuer_kinder(eltern_client):

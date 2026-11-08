@@ -138,3 +138,21 @@ def test_eltern_koennen_keine_kind_urls(client, mama, neu):
     angemeldet(client, mama)
     assert client.get(reverse("aufgaben:kind")).status_code == 403
     assert client.post(reverse("aufgaben:kind_waehlen", args=[instanz.pk])).status_code == 403
+
+
+def test_kind_seite_offene_nur_unzugeordnete_zwei_container(client, anna, ben, neu):
+    frei = neu(titel="Freie Aufgabe")
+    reserviert = neu(titel="Schon vergeben")
+    services.interesse_zeigen(reserviert, ben)
+    eigene = neu(titel="Meine eigene")
+    services.interesse_zeigen(eigene, anna)
+    angemeldet(client, anna)
+    html = client.get(reverse("aufgaben:kind")).content.decode()
+    leiste = html[html.index('data-bereich="offene"') : html.index('data-bereich="meine"')]
+    assert "Freie Aufgabe" in leiste
+    assert reverse("aufgaben:kind_waehlen", args=[frei.pk]) in leiste
+    assert "Schon vergeben" not in leiste and "Meine eigene" not in leiste
+    meine = html[html.index('data-bereich="meine"') :]
+    assert "Meine eigene" in meine and "Freie Aufgabe" not in meine
+    assert "Erledigt melden" in meine and "Zurückgeben" in meine
+    assert 'class="kind-seite"' in html and "aufgabe-kachel" not in html

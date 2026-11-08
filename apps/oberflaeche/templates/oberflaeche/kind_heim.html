@@ -39,19 +39,6 @@
       {% include "komponenten/button.html" with href=ziele_url icon="pokal" variante="sekundaer" voll=True text=_("Serie & Ziele") %}
     </div></section>
 
-    <section class="karte" data-start="lernen" aria-label="{% translate "Lernen" %}"><div class="karte__inhalt stapel">
-      <h2>{% translate "Lernen" %}</h2>
-      {% for f in faecher %}
-        <div class="zeile">
-          <strong>{{ f.name|uebersetzt }}</strong>
-          <span class="kachel__text">{% if f.zuletzt %}{% blocktranslate with wann=f.zuletzt|timesince %}zuletzt vor {{ wann }}{% endblocktranslate %}{% else %}{% translate "noch nicht begonnen" %}{% endif %}</span>
-        </div>
-      {% empty %}
-        {% include "komponenten/leer.html" with icon="schule" titel=_("Bald gibt es hier Fächer") text=_("Sobald Lernen freigeschaltet ist, siehst du hier, was du zuletzt geübt hast.") %}
-      {% endfor %}
-      {% if lernen_url %}{% include "komponenten/button.html" with href=lernen_url icon="schule" variante="sekundaer" voll=True text=_("Zum Lernen") %}{% endif %}
-    </div></section>
-
     <section class="karte" data-start="aufgaben" aria-label="{% translate "Aufgaben" %}"><div class="karte__inhalt stapel">
       <h2>{% translate "Aufgaben" %}</h2>
       {% for i in aufgaben %}
