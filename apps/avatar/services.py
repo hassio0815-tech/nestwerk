@@ -169,10 +169,13 @@ def eltern_hash_aktualisieren(wahl):
 
 def hashes_aktualisieren():
     """Nach Änderungen an Bibliothek/Themen/Mods: alle Avatare neu rendern (wenige Zeilen)."""
+    from django.db import connection
+
     n = 0
-    for wahl in ElternAvatar.objects.all():
-        eltern_hash_aktualisieren(wahl)
-        n += 1
+    if ElternAvatar._meta.db_table in connection.introspection.table_names():
+        for wahl in ElternAvatar.objects.all():  # Tabelle fehlt z. B. beim Rückweg der Migration
+            eltern_hash_aktualisieren(wahl)
+            n += 1
     for avatar in Avatar.objects.select_related("thema"):
         hash_aktualisieren(avatar)
         n += 1

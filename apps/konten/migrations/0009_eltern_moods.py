@@ -37,6 +37,16 @@ def mood_zu_wappen(apps, schema_editor):
         b.save(update_fields=["wappen", "mood"])
 
 
+def nichts(apps, schema_editor):
+    pass
+
+
+def eltern_moods_loeschen(apps, schema_editor):
+    """Rückweg: Eigene Eltern-Moods gibt es im alten Schema nicht; sie müssten sonst am alten
+    (zielgruppenlosen) Unique-Constraint scheitern, wenn der Text auch bei Kindern vorkommt."""
+    apps.get_model("konten", "MoodEigen").objects.filter(zielgruppe="eltern").delete()
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ("konten", "0008_kind_einstellungen_moods"),
@@ -57,6 +67,7 @@ class Migration(migrations.Migration):
                 max_length=6,
             ),
         ),
+        migrations.RunPython(nichts, eltern_moods_loeschen),
         migrations.AddConstraint(
             model_name="moodeigen",
             constraint=models.UniqueConstraint(

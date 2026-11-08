@@ -102,8 +102,8 @@ def eltern_aendern(
     with transaction.atomic():
         benutzer.anzeigename = anzeigename
         felder = ["anzeigename"]
-        if mood is not None or not benutzer.mood:
-            benutzer.mood = mood or _freier_eltern_mood(ausser=benutzer)
+        if mood is not None:  # None = unverändert (auch "kein Mood" bleibt so)
+            benutzer.mood = mood
             felder.append("mood")
         if wappen_rolle is not None:
             benutzer.wappen_rolle = wappen_rolle

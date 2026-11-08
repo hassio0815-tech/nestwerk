@@ -150,7 +150,8 @@ def test_eltern_mood_setzen_nur_fuer_eltern(anna):
 def test_login_kachel_und_dashboard_zeigen_mood(client, eltern_client, mama):
     services.eltern_mood_setzen(mama, "hausdrache")
     start = client.__class__().get(reverse("konten:start")).content.decode()
-    assert "🐉" in start and "🐉 Hausdrache" in start
+    assert "🐉" in start and "Hausdrache" in start
+    assert "🐉 Hausdrache" not in start  # Emoji nur im Ring, nicht doppelt im Text
     heim = eltern_client.get(u("eltern_heim")).content.decode()
     assert "🐉 Hausdrache" in heim
 
@@ -303,3 +304,28 @@ def test_heutige_wappen_schluessel_gelten_weiter(db):
         assert b.mood_info.titel == ALTE_WAPPEN[schluessel][1]
     felder = {f.name for f in django_apps.get_model("konten", "Benutzer")._meta.get_fields()}
     assert "mood" in felder and "wappen" not in felder
+
+
+def test_eltern_aendern_laesst_kein_mood_unveraendert(mama):
+    mama.mood = ""
+    mama.save(update_fields=["mood"])
+    services.eltern_aendern(mama, "Mama", rolle_label="mama", email="")
+    mama.refresh_from_db()
+    assert mama.mood == ""
+    services.eltern_mood_setzen(mama, "hausdrache")
+    services.eltern_aendern(mama, "Mama", rolle_label="mama", email="")
+    mama.refresh_from_db()
+    assert mama.mood == "hausdrache"
+
+
+def test_ausgeblendeter_eltern_mood_wird_nicht_angezeigt(mama):
+    services.eltern_mood_setzen(mama, "hausdrache")
+    assert mama.mood_info is not None
+    MoodAusgeblendet.objects.create(schluessel="hausdrache")
+    assert mama.mood_info is None
+
+
+def test_kaputter_eigen_schluessel_wirft_nicht(mama):
+    for kaputt in ("eigen-", "eigen-abc", "eigen-1x", "eigen-\u0663"):
+        mama.mood = kaputt
+        assert mama.mood_info is None

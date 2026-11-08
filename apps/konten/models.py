@@ -139,12 +139,15 @@ class Benutzer(AbstractBaseUser):
         if self.rolle != Rolle.ELTERN or not self.mood:
             return None
         if self.mood.startswith(moods.EIGEN_PRAEFIX):
+            rest = self.mood[len(moods.EIGEN_PRAEFIX) :]
+            if not (rest.isascii() and rest.isdigit()):
+                return None
             eigen = MoodEigen.objects.filter(
-                pk=self.mood[len(moods.EIGEN_PRAEFIX) :] or 0,
-                zielgruppe=moods.ELTERN,
-                aktiv=True,
+                pk=int(rest), zielgruppe=moods.ELTERN, aktiv=True
             ).first()
             return moods.Mood(self.mood, "⭐", eigen.text, "eigen") if eigen else None
+        if MoodAusgeblendet.objects.filter(pk=self.mood).exists():
+            return None
         return moods.info(self.mood, moods.ELTERN)
 
     @property

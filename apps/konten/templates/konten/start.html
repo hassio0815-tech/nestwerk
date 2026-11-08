@@ -102,7 +102,7 @@
         <div class="nw-profile">
           {% url "konten:eltern_login" as login_url %}
           {% for e in eltern %}
-            {% include "komponenten/profil_kachel.html" with name=e.rolle_name href=login_url|add:"?eltern="|add:e.pk.hex rolle=e.mood_info.anzeige|default:_("Eltern") emoji=e.mood_info.emoji %}
+            {% with m=e.mood_info %}{% include "komponenten/profil_kachel.html" with name=e.rolle_name href=login_url|add:"?eltern="|add:e.pk.hex rolle=m.titel|default:_("Eltern") emoji=m.emoji %}{% endwith %}
           {% endfor %}
         </div>
       </section>

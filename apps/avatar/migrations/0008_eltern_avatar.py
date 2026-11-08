@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('avatar', '0007_avatar_name'),
-        ('konten', '0009_eltern_moods'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
