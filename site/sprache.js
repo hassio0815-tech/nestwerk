@@ -46,7 +46,7 @@
     f10_h: "Deutsch & Englisch",
     f10_p: "Jedes Familienmitglied wählt seine Sprache, auch Benachrichtigungen kommen in dieser Sprache.",
     f11_h: "Modular erweiterbar",
-    f11_p: "Ein Lernmodul ist in Arbeit, Forschen ist als Nächstes geplant. Neue Bausteine fügen sich in das gleiche System ein.",
+    f11_p: "Das Lernmodul ist teilweise fertig und wird laufend weiterentwickelt; Forschen ist als Nächstes geplant. Neue Bausteine fügen sich in das gleiche System ein.",
     galerie_text: "Kinder-Ansichten sind dunkel und verspielt, die Eltern-Ansicht ist hell und ruhig. Ein Klick öffnet das Bild groß.",
     b1: "Kinder-Dashboard",
     b1_alt: "Das Dashboard eines Kindes mit Avatar, Punkten und offenen Aufgaben im dunklen Design.",
