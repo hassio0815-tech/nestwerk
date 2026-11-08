@@ -1,0 +1,12 @@
+{% load i18n %}{% comment %}Mood-Auswahlliste (Kinder und Eltern). Parameter: gruppen ([{name, moods: [(schluessel, text)]}]), mood_aktuell, feld_id, label.{% endcomment %}
+<div class="feld">
+  <label class="feld__label" for="{{ feld_id }}">{{ label }}</label>
+  <select class="feld__eingabe" id="{{ feld_id }}" name="mood">
+    <option value=""{% if not mood_aktuell %} selected{% endif %}>{% translate "Kein Mood" %}</option>
+    {% for g in gruppen %}
+      <optgroup label="{{ g.name }}">
+        {% for schluessel, text in g.moods %}<option value="{{ schluessel }}"{% if schluessel == mood_aktuell %} selected{% endif %}>{{ text }}</option>{% endfor %}
+      </optgroup>
+    {% endfor %}
+  </select>
+</div>

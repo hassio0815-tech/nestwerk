@@ -1,5 +1,5 @@
 {% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
-{% comment %}Moods (Eltern): Vorschläge der Kinder, eigene Moods, Katalog ausblenden.{% endcomment %}
+{% comment %}Moods (Eltern): Vorschläge der Kinder; je Zielgruppe (Kinder, Eltern) eigene Moods und Katalog ausblenden.{% endcomment %}
 {% block titel %}{% translate "Moods" %}{% endblock %}
 {% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Moods") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
@@ -23,9 +23,11 @@
     {% endfor %}
   </div></section>
 
-  <section class="karte"><div class="karte__inhalt stapel">
-    <h2>{% translate "Eigene Moods der Familie" %}</h2>
-    {% for e in eigene %}
+  {% for b in bereiche %}
+  <section class="karte" data-zielgruppe="{{ b.zielgruppe }}"><div class="karte__inhalt stapel">
+    <h2>{% if b.zielgruppe == "eltern" %}{% translate "Moods für Eltern" %}{% else %}{% translate "Moods für Kinder" %}{% endif %}</h2>
+    <h3>{% translate "Eigene Moods der Familie" %}</h3>
+    {% for e in b.eigene %}
       <form method="post" action="{% url 'oberflaeche:eltern_mood_entfernen' e.pk %}" class="reihe">{% csrf_token %}
         <span>⭐ {{ e.text }}</span>
         {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="x" text=_("Entfernen") %}
@@ -34,16 +36,14 @@
       <p>{% translate "Noch keine eigenen Moods." %}</p>
     {% endfor %}
     <form method="post" action="{% url 'oberflaeche:eltern_mood_neu' %}" class="reihe">{% csrf_token %}
-      <label class="sr-only" for="mn-text">{% translate "Neuer Mood" %}</label>
-      <input class="feld__eingabe" id="mn-text" name="text" value="{{ vorgabe }}" maxlength="{{ text_max }}" placeholder="{% translate "Neuer Mood" %}" autocomplete="off" required>
+      <input type="hidden" name="zielgruppe" value="{{ b.zielgruppe }}">
+      <label class="sr-only" for="mn-text-{{ b.zielgruppe }}">{% translate "Neuer Mood" %}</label>
+      <input class="feld__eingabe" id="mn-text-{{ b.zielgruppe }}" name="text" value="{% if b.zielgruppe == vorgabe_zielgruppe %}{{ vorgabe }}{% endif %}" maxlength="{{ text_max }}" placeholder="{% translate "Neuer Mood" %}" autocomplete="off" required>
       {% include "komponenten/button.html" with typ="submit" icon="plus" text=_("Ergänzen") %}
     </form>
-  </div></section>
-
-  <section class="karte"><div class="karte__inhalt stapel">
-    <h2>{% translate "Katalog" %}</h2>
-    <p class="feld__hinweis">{% translate "Ausgeblendete Moods können die Kinder nicht mehr wählen." %}</p>
-    {% for g in gruppen %}
+    <h3>{% translate "Katalog" %}</h3>
+    <p class="feld__hinweis">{% if b.zielgruppe == "eltern" %}{% translate "Ausgeblendete Moods können die Eltern nicht mehr wählen." %}{% else %}{% translate "Ausgeblendete Moods können die Kinder nicht mehr wählen." %}{% endif %}</p>
+    {% for g in b.gruppen %}
       <details>
         <summary>{{ g.name }}</summary>
         <ul class="liste-schlicht">
@@ -64,4 +64,5 @@
       </details>
     {% endfor %}
   </div></section>
+  {% endfor %}
 {% endblock %}

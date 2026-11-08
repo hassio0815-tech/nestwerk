@@ -334,8 +334,8 @@ msgid "Die Eltern legen die Kinder in der Einrichtung an."
 msgstr "The parents add the kids during setup."
 
 #: templates/oberflaeche/_wappen_karte.html:2
-msgid "Mein Wappen und meine Rolle"
-msgstr "My crest and role"
+msgid "Mein Mood und meine Rolle"
+msgstr "My mood and role"
 
 #: templates/oberflaeche/_wappen_karte.html:3
 msgid ""
@@ -1144,3 +1144,15 @@ msgid ""
 msgstr ""
 "One saying per line. They alternate on the home page with the built-in "
 "sayings, wise words and facts (the same in every language)."
+
+#: templates/oberflaeche/eltern_moods.html
+msgid "Moods für Eltern"
+msgstr "Moods for parents"
+
+#: templates/oberflaeche/eltern_moods.html
+msgid "Moods für Kinder"
+msgstr "Moods for children"
+
+#: templates/oberflaeche/eltern_moods.html
+msgid "Ausgeblendete Moods können die Eltern nicht mehr wählen."
+msgstr "Parents can no longer choose hidden moods."

@@ -10,13 +10,15 @@ from urllib.parse import urlsplit
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.utils.text import format_lazy
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from apps.benachrichtigung.models import SmtpSicherheit
 from apps.konten.models import ElternLabel, WappenRolle
-from apps.konten.wappen import CHOICES as WAPPEN_CHOICES
+from apps.konten.moods import KATALOG_ELTERN
 
+MOOD_CHOICES = [(m.schluessel, format_lazy("{} {}", m.emoji, m.titel)) for m in KATALOG_ELTERN]
 PASSWORT_MINDESTLAENGE = 10
 HAEUFIGE_PASSWOERTER = {
     "passwort123",
@@ -88,8 +90,8 @@ class ElternForm(forms.Form):
     eltern1_name = forms.CharField(label=gettext_lazy("Name"), max_length=40, strip=True)
     eltern1_rolle = forms.ChoiceField(label=gettext_lazy("Rolle"), choices=ElternLabel.choices)
     eltern1_email = forms.EmailField(label=gettext_lazy("E-Mail"))
-    eltern1_wappen = forms.ChoiceField(
-        label=gettext_lazy("Wappen"), choices=WAPPEN_CHOICES, required=False
+    eltern1_mood = forms.ChoiceField(
+        label=gettext_lazy("Mood"), choices=MOOD_CHOICES, required=False
     )
     eltern1_wappen_rolle = forms.ChoiceField(
         label=gettext_lazy("Rolle"), choices=WappenRolle.choices, required=False
@@ -100,8 +102,8 @@ class ElternForm(forms.Form):
     eltern2_name = forms.CharField(label=gettext_lazy("Name"), max_length=40, strip=True)
     eltern2_rolle = forms.ChoiceField(label=gettext_lazy("Rolle"), choices=ElternLabel.choices)
     eltern2_email = forms.EmailField(label=gettext_lazy("E-Mail"))
-    eltern2_wappen = forms.ChoiceField(
-        label=gettext_lazy("Wappen"), choices=WAPPEN_CHOICES, required=False
+    eltern2_mood = forms.ChoiceField(
+        label=gettext_lazy("Mood"), choices=MOOD_CHOICES, required=False
     )
     eltern2_wappen_rolle = forms.ChoiceField(
         label=gettext_lazy("Rolle"), choices=WappenRolle.choices, required=False
@@ -128,9 +130,9 @@ class ElternForm(forms.Form):
             name = daten.get(feld)
             if name and name.lower() in self.kinder_namen:
                 self.add_error(feld, _("Dieser Name ist schon für ein Kind vergeben."))
-        w1, w2 = daten.get("eltern1_wappen"), daten.get("eltern2_wappen")
+        w1, w2 = daten.get("eltern1_mood"), daten.get("eltern2_mood")
         if w1 and w1 == w2:
-            self.add_error("eltern2_wappen", _("Bitte zwei verschiedene Wappen wählen."))
+            self.add_error("eltern2_mood", _("Bitte zwei verschiedene Moods wählen."))
         r1, r2 = daten.get("eltern1_rolle"), daten.get("eltern2_rolle")
         if r1 and r1 == r2 and r1 != ElternLabel.ANDERE:
             self.add_error("eltern2_rolle", _("Mama und Papa können nur je einmal vorkommen."))

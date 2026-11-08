@@ -1,0 +1,10 @@
+{% load i18n %}{% load mood_tags %}{% mood_rollen as mood_rollen %}{% comment %}Rolle der Eltern: Mama/Mum/Papa/Dad oder frei. Parameter: rolle_name/rolle_wert, eigen_name/eigen_wert.{% endcomment %}
+<div class="mood-rolle">
+    <label class="feld__label">{% translate "Rolle" %}
+      <select class="feld__eingabe" name="{{ rolle_name }}">
+        <option value="">{% translate "– keine –" %}</option>
+        {% for k, t in mood_rollen %}<option value="{{ k }}"{% if rolle_wert == k %} selected{% endif %}>{{ t }}</option>{% endfor %}
+      </select></label>
+    <label class="feld__label">{% translate "Oder eigene Rolle (z. B. Mami)" %}
+      <input class="feld__eingabe" type="text" name="{{ eigen_name }}" value="{{ eigen_wert|default:'' }}" maxlength="15"></label>
+  </div>

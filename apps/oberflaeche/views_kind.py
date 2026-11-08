@@ -6,7 +6,6 @@ Der Code wird nur mit dem alten Code geändert; Fehlversuche zählen wie bei der
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_GET, require_POST
 
@@ -31,12 +30,8 @@ def _meldung(exc):
 
 def _seite(request, *, fehler=None, vorgaben=None, status=200):
     kind = request.user
-    auswahl = konten_selectors.mood_auswahl()
-    gruppen = []
-    for schluessel, name in moods.GRUPPEN + (("eigen", _("Eigene der Familie")),):
-        eintraege = [(s, t) for s, t, g in auswahl if g == schluessel]
-        if eintraege:
-            gruppen.append({"name": name, "moods": eintraege})
+    auswahl = konten_selectors.mood_auswahl(moods.KIND)
+    gruppen = konten_selectors.mood_gruppen(moods.KIND)
     kontext = {
         "gruppen": gruppen,
         "mood_aktuell": kind.mood if kind.mood in {s for s, _t, _g in auswahl} else "",

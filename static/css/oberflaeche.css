@@ -344,7 +344,7 @@ details[open] > .familie__deaktivieren { margin-block-end: var(--abstand-klein);
   .einstellungen-raster > .karte:has(details[open]) { grid-column: 1 / -1; }
 }
 @media (min-width: 64rem) {
-  .nw-schale__inhalt .wappen-galerie { grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); }
+  .nw-schale__inhalt .mood-galerie { grid-template-columns: repeat(auto-fill, minmax(min(11.5rem, 100%), 1fr)); }
 }
 
 /* Trennlinie zwischen Listenzeilen (Moods) */

@@ -1,7 +1,9 @@
-"""Mood-Katalog für Kinder (fester Katalog, reine Daten). Das Kind wählt einen Mood in seinen
-Einstellungen; er erscheint als kleine Zeile unter dem Namen. Eltern können Katalog-Moods
-ausblenden und eigene ergänzen (``services.mood_*``); zugelassene Vorschläge gelten für alle."""
+"""Mood-Kataloge (feste Kataloge, reine Daten), getrennt nach Zielgruppe: ``kind`` und ``eltern``.
+Jeder wählt seinen Mood in den Einstellungen; er erscheint als kleine Zeile unter dem Namen.
+Eltern können Katalog-Moods ausblenden und eigene ergänzen (``services.mood_*``), je Zielgruppe
+getrennt; zugelassene Kinder-Vorschläge gelten für alle Kinder."""
 
+import random
 from dataclasses import dataclass
 
 from django.utils.translation import gettext_lazy as _
@@ -10,6 +12,11 @@ from django.utils.translation import gettext_lazy as _
 EIGEN_PRAEFIX = "eigen-"
 TEXT_MAX = 40
 
+# Zielgruppen (Werte von ``MoodEigen.zielgruppe``)
+KIND = "kind"
+ELTERN = "eltern"
+ZIELGRUPPEN = (KIND, ELTERN)
+
 
 @dataclass(frozen=True)
 class Mood:
@@ -17,6 +24,16 @@ class Mood:
     emoji: str
     text: str
     gruppe: str
+    spruch: str = ""
+
+    @property
+    def titel(self):
+        return self.text
+
+    @property
+    def anzeige(self):
+        """``"🦥 Faultier-Modus"``."""
+        return f"{self.emoji} {self.text}"
 
 
 G_TREND = "trend"
@@ -25,6 +42,7 @@ G_MUEDE = "muede"
 G_GUT = "gut"
 G_GRUMMELIG = "grummelig"
 G_RUHIG = "ruhig"
+G_ELTERN = "eltern"
 
 GRUPPEN = (
     (G_TREND, _("Meme und Trends")),
@@ -95,9 +113,46 @@ KATALOG = (
 )
 NACH_SCHLUESSEL = {m.schluessel: m for m in KATALOG}
 
+# Eltern-Katalog: die früheren Wappen (Schlüssel unverändert, damit die Wahl bestehen bleibt)
+# plus „Geek“. Eine Gruppe, mit Spruch.
+GRUPPEN_ELTERN = ((G_ELTERN, _("Moods für Eltern")),)
+KATALOG_ELTERN = (
+    Mood("hausdrache", "🐉", _("Hausdrache"), G_ELTERN, _("Bewacht den Kühlschrank")),
+    Mood("rudelchef", "🦁", _("Rudelchef"), G_ELTERN, _("Hat das letzte Wort … meistens")),
+    Mood(
+        "kuechenchef", "🍳", _("Küchenchef"), G_ELTERN, _("Heute gibt's, was auf den Tisch kommt")
+    ),
+    Mood("familientaxi", "🚕", _("Familien-Taxi"), G_ELTERN, _("24/7 im Einsatz")),
+    Mood("bank", "🏦", _("Bank of Mama/Papa"), G_ELTERN, _("Kein Dispo!")),
+    Mood("grillmeister", "🔥", _("Grillmeister"), G_ELTERN, _("Fasst die Zange nicht ab")),
+    Mood("nachteule", "🦉", _("Nachteule"), G_ELTERN, _("Sieht alles, auch nach 22 Uhr")),
+    Mood("sockenfinder", "🧦", _("Sockenfinder"), G_ELTERN, _("Kennt jeden verlorenen Socken")),
+    Mood("burgherr", "🛡️", _("Burgherr/Burgfrau"), G_ELTERN, _("Hüter des Nests")),
+    Mood("geek", "🤓", _("Geek"), G_ELTERN, _("Hat für alles ein Kabel")),
+)
+NACH_SCHLUESSEL_ELTERN = {m.schluessel: m for m in KATALOG_ELTERN}
 
-def info(schluessel):
-    return NACH_SCHLUESSEL.get(schluessel)
+
+def katalog(zielgruppe=KIND):
+    return KATALOG_ELTERN if zielgruppe == ELTERN else KATALOG
+
+
+def gruppen(zielgruppe=KIND):
+    return GRUPPEN_ELTERN if zielgruppe == ELTERN else GRUPPEN
+
+
+def nach_schluessel(zielgruppe=KIND):
+    return NACH_SCHLUESSEL_ELTERN if zielgruppe == ELTERN else NACH_SCHLUESSEL
+
+
+def info(schluessel, zielgruppe=KIND):
+    return nach_schluessel(zielgruppe).get(schluessel)
+
+
+def zufaellig_eltern(belegt=()):
+    """Zufälliger Eltern-Mood, möglichst einer, den andere Eltern nicht schon haben."""
+    frei = [m for m in KATALOG_ELTERN if m.schluessel not in set(belegt)]
+    return random.choice(frei or KATALOG_ELTERN).schluessel
 
 
 def anzeige(mood):

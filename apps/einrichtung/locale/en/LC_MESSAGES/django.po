@@ -81,8 +81,8 @@ msgid "E-Mail"
 msgstr "Email"
 
 #: forms.py:92 forms.py:104
-msgid "Wappen"
-msgstr "Crest"
+msgid "Mood"
+msgstr "Mood"
 
 #: forms.py:98 forms.py:110
 msgid "Eigene Rolle"
@@ -105,8 +105,8 @@ msgid "Dieser Name ist schon für ein Kind vergeben."
 msgstr "This name is already used by a child."
 
 #: forms.py:133
-msgid "Bitte zwei verschiedene Wappen wählen."
-msgstr "Please choose two different crests."
+msgid "Bitte zwei verschiedene Moods wählen."
+msgstr "Please choose two different moods."
 
 #: forms.py:136
 msgid "Mama und Papa können nur je einmal vorkommen."

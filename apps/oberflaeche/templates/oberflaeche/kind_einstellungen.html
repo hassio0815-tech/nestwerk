@@ -32,17 +32,7 @@
     <h2>{% translate "Mein Mood" %}</h2>
     {% if fehler.mood %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler.mood }}</p>{% endif %}
     <form method="post" action="{% url 'oberflaeche:kind_mood' %}" class="stapel">{% csrf_token %}
-      <div class="feld">
-        <label class="feld__label" for="ke-mood">{% translate "Wie bist du heute drauf?" %}</label>
-        <select class="feld__eingabe" id="ke-mood" name="mood">
-          <option value=""{% if not mood_aktuell %} selected{% endif %}>{% translate "Kein Mood" %}</option>
-          {% for g in gruppen %}
-            <optgroup label="{{ g.name }}">
-              {% for schluessel, text in g.moods %}<option value="{{ schluessel }}"{% if schluessel == mood_aktuell %} selected{% endif %}>{{ text }}</option>{% endfor %}
-            </optgroup>
-          {% endfor %}
-        </select>
-      </div>
+      {% include "komponenten/mood_auswahl.html" with feld_id="ke-mood" label=_("Wie bist du heute drauf?") %}
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Mood speichern") %}
     </form>
     <h3>{% translate "Neuen Mood vorschlagen" %}</h3>

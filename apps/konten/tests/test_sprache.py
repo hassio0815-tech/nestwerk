@@ -7,7 +7,7 @@ from django.conf import settings
 from django.urls import reverse
 
 from apps.kern.models import AuditEintrag
-from apps.konten import services, wappen
+from apps.konten import moods, services
 
 from .conftest import angemeldet
 
@@ -144,12 +144,12 @@ def test_einstellungs_baustein_zeigt_drei_optionen(anna, rf):
     assert 'value="en" lang="en" class="ist-aktiv"' in html
 
 
-def test_wappen_sind_uebersetzt(mama):
+def test_eltern_moods_sind_uebersetzt(mama):
     from django.utils import translation
 
-    w = wappen.info("hausdrache")
+    w = moods.info("hausdrache", moods.ELTERN)
     assert str(w.titel) == "Hausdrache"
     with translation.override("en"):
         assert str(w.titel) == "House Dragon"
         assert str(w.spruch) == "Guards the fridge"
-        assert "Bank of Mum and Dad" in {str(x.titel) for x in wappen.KATALOG}
+        assert "Bank of Mum and Dad" in {str(x.titel) for x in moods.KATALOG_ELTERN}

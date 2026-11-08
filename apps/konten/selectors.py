@@ -1,5 +1,7 @@
 """Lesende Abfragen von konten (für Anmeldeseiten und andere Apps)."""
 
+from django.utils.translation import gettext_lazy as _
+
 from apps.kern import zeit
 
 from . import moods, sperre
@@ -59,27 +61,50 @@ def moods_ausgeblendet():
     return set(MoodAusgeblendet.objects.values_list("schluessel", flat=True))
 
 
-def moods_eigene(nur_aktive=True):
+def moods_eigene(nur_aktive=True, zielgruppe=moods.KIND):
+    """Eigene Moods einer Zielgruppe (``zielgruppe=None``: alle)."""
     qs = MoodEigen.objects.all()
+    if zielgruppe is not None:
+        qs = qs.filter(zielgruppe=zielgruppe)
     return qs.filter(aktiv=True) if nur_aktive else qs
 
 
-def mood_auswahl():
-    """Moods, die ein Kind wählen kann: ``[(schluessel, "🦥 Text", gruppe)]``. Katalog ohne
-    ausgeblendete, danach die eigenen der Familie (Gruppe ``eigen``)."""
+def mood_auswahl(zielgruppe=moods.KIND):
+    """Moods, die gewählt werden können: ``[(schluessel, "🦥 Text", gruppe)]``. Katalog der
+    Zielgruppe ohne ausgeblendete, danach die eigenen der Familie (Gruppe ``eigen``)."""
     aus = moods_ausgeblendet()
     liste = [
-        (m.schluessel, moods.anzeige(m), m.gruppe) for m in moods.KATALOG if m.schluessel not in aus
+        (m.schluessel, m.anzeige, m.gruppe)
+        for m in moods.katalog(zielgruppe)
+        if m.schluessel not in aus
     ]
-    liste += [(e.schluessel, f"⭐ {e.text}", "eigen") for e in moods_eigene()]
+    liste += [(e.schluessel, f"⭐ {e.text}", "eigen") for e in moods_eigene(zielgruppe=zielgruppe)]
     return liste
+
+
+def mood_gruppen(zielgruppe=moods.KIND):
+    """Auswahl gruppiert: ``[{"name": ..., "moods": [(schluessel, text)]}]`` (Auswahlliste)."""
+    auswahl = mood_auswahl(zielgruppe)
+    eigen_name = _("Eigene der Familie")
+    gruppen = []
+    for schluessel, name in moods.gruppen(zielgruppe) + (("eigen", eigen_name),):
+        eintraege = [(s, t) for s, t, g in auswahl if g == schluessel]
+        if eintraege:
+            gruppen.append({"name": name, "moods": eintraege})
+    return gruppen
 
 
 def mood_texte(benutzer):
     """``{benutzer.pk: "🦥 Faultier-Modus"}`` für Benutzer mit einem gültigen Mood (eine
-    Abfrage je Quelle, nicht je Benutzer). Ausgeblendete oder entfernte Moods fehlen."""
-    gueltig = {schluessel: text for schluessel, text, _gruppe in mood_auswahl()}
-    return {b.pk: gueltig[b.mood] for b in benutzer if b.mood in gueltig}
+    Abfrage je Quelle, nicht je Benutzer). Ausgeblendete oder entfernte Moods fehlen; Kinder und
+    Eltern werden gegen ihren jeweiligen Katalog geprüft."""
+    benutzer = list(benutzer)
+    gueltig = {}
+    for zielgruppe in {b.zielgruppe for b in benutzer}:
+        gueltig[zielgruppe] = {s: text for s, text, _gruppe in mood_auswahl(zielgruppe)}
+    return {
+        b.pk: gueltig[b.zielgruppe][b.mood] for b in benutzer if b.mood in gueltig[b.zielgruppe]
+    }
 
 
 def mood_text(benutzer):

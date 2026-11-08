@@ -14,7 +14,7 @@ from apps.aufgaben import schnellknopf
 from apps.benachrichtigung import selectors as mail_selectors
 from apps.benachrichtigung import services as mail_services
 from apps.kern import audit, einstellungen
-from apps.konten import akzent, wappen
+from apps.konten import akzent, moods
 from apps.konten import selectors as konten_selectors
 from apps.konten import services as konten_services
 
@@ -80,14 +80,14 @@ def eltern_speichern(daten):
                 name = daten[f"eltern{i}_name"]
                 rolle = daten[f"eltern{i}_rolle"]
                 email = daten[f"eltern{i}_email"]
-                wappen_wahl = daten.get(f"eltern{i}_wappen") or ""
+                mood_wahl = daten.get(f"eltern{i}_mood") or ""
                 if i <= len(vorhanden):
                     konten_services.eltern_aendern(
                         vorhanden[i - 1],
                         name,
                         rolle_label=rolle,
                         email=email,
-                        wappen=wappen_wahl or None,
+                        mood=mood_wahl or None,
                         wappen_rolle=daten.get(f"eltern{i}_wappen_rolle") or "",
                         wappen_rolle_eigen=daten.get(f"eltern{i}_wappen_rolle_eigen") or "",
                     )
@@ -97,7 +97,7 @@ def eltern_speichern(daten):
                         rolle_label=rolle,
                         email=email,
                         reihenfolge=i,
-                        wappen=wappen_wahl,
+                        mood=mood_wahl,
                         wappen_rolle=daten.get(f"eltern{i}_wappen_rolle") or "",
                         wappen_rolle_eigen=daten.get(f"eltern{i}_wappen_rolle_eigen") or "",
                     )
@@ -115,16 +115,16 @@ def eltern_werte():
         werte[f"eltern{i}_name"] = benutzer.anzeigename
         werte[f"eltern{i}_rolle"] = benutzer.elternprofil.rolle_label
         werte[f"eltern{i}_email"] = benutzer.elternprofil.email
-        werte[f"eltern{i}_wappen"] = benutzer.wappen
+        werte[f"eltern{i}_mood"] = benutzer.mood
         werte[f"eltern{i}_wappen_rolle"] = benutzer.wappen_rolle
         werte[f"eltern{i}_wappen_rolle_eigen"] = benutzer.wappen_rolle_eigen
     werte.setdefault("eltern1_rolle", "mama")
     werte.setdefault("eltern2_rolle", "papa")
     # Vorbelegung: zufällig, die beiden Eltern möglichst verschieden
     for i in (1, 2):
-        if not werte.get(f"eltern{i}_wappen"):
-            belegt = [v for k, v in werte.items() if k.endswith("_wappen") and v]
-            werte[f"eltern{i}_wappen"] = wappen.zufaellig(belegt)
+        if not werte.get(f"eltern{i}_mood"):
+            belegt = [v for k, v in werte.items() if k.endswith("_mood") and v]
+            werte[f"eltern{i}_mood"] = moods.zufaellig_eltern(belegt)
     return werte
 
 

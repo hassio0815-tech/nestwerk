@@ -448,7 +448,7 @@ def annehmen(anspruch, *, von, heute: date | None = None) -> SondertagAnspruch:
             daten={
                 "anspruch": anspruch.pk,
                 "wunsch": anspruch.wunsch[:200],
-                "begleitung": von.name_mit_wappen,
+                "begleitung": von.name_mit_mood,
             },
             schluessel=f"{events.ANGENOMMEN}:{anspruch.pk}",
         )

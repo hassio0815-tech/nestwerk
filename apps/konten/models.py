@@ -14,7 +14,7 @@ from django.db.models.functions import Lower
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .wappen import CHOICES as WAPPEN_CHOICES
+from . import moods
 
 HEX_FARBE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
@@ -72,10 +72,10 @@ class Benutzer(AbstractBaseUser):
     mood = models.CharField(
         max_length=20,
         blank=True,
-        help_text="Kind: gewählter Mood (Katalog-Schlüssel oder eigen-<id>); leer = kein Mood.",
-    )
-    wappen = models.CharField(
-        max_length=20, blank=True, choices=WAPPEN_CHOICES, help_text="Eltern: humorvolles Wappen."
+        help_text=(
+            "Gewählter Mood (Katalog-Schlüssel der eigenen Zielgruppe oder eigen-<id>); "
+            "leer = kein Mood."
+        ),
     )
     wappen_rolle = models.CharField(max_length=5, blank=True, choices=WappenRolle.choices)
     wappen_rolle_eigen = models.CharField(
@@ -128,11 +128,24 @@ class Benutzer(AbstractBaseUser):
         ).hexdigest()
 
     @property
-    def wappen_info(self):
-        """Wappen (emoji, titel, spruch) oder ``None`` (Kinder, leer)."""
-        from .wappen import info
+    def zielgruppe(self):
+        """Zielgruppe des Mood-Katalogs: ``kind`` oder ``eltern``."""
+        return moods.ELTERN if self.rolle == Rolle.ELTERN else moods.KIND
 
-        return info(self.wappen) if self.rolle == Rolle.ELTERN else None
+    @property
+    def mood_info(self):
+        """Mood von Eltern (``emoji``, ``titel``, ``spruch``) oder ``None`` (Kinder, leer).
+        Eigene Eltern-Moods (``eigen-<id>``) erscheinen mit ⭐ und ohne Spruch."""
+        if self.rolle != Rolle.ELTERN or not self.mood:
+            return None
+        if self.mood.startswith(moods.EIGEN_PRAEFIX):
+            eigen = MoodEigen.objects.filter(
+                pk=self.mood[len(moods.EIGEN_PRAEFIX) :] or 0,
+                zielgruppe=moods.ELTERN,
+                aktiv=True,
+            ).first()
+            return moods.Mood(self.mood, "⭐", eigen.text, "eigen") if eigen else None
+        return moods.info(self.mood, moods.ELTERN)
 
     @property
     def rolle_anzeige(self):
@@ -140,15 +153,15 @@ class Benutzer(AbstractBaseUser):
         return self.wappen_rolle_eigen or self.get_wappen_rolle_display() or ""
 
     @property
-    def wappen_name(self):
-        """Großer Wappen-Name: Rolle, ohne Rolle der Anzeigename."""
+    def rolle_name(self):
+        """Großer Name: Rolle, ohne Rolle der Anzeigename."""
         return self.rolle_anzeige or self.anzeigename
 
     @property
-    def name_mit_wappen(self):
+    def name_mit_mood(self):
         """Für Kinder-Texte: ``Mama (🐉 Hausdrache)``; ohne Rolle der Name."""
-        w = self.wappen_info
-        return f"{self.wappen_name} ({w.emoji} {w.titel})" if w else self.wappen_name
+        m = self.mood_info
+        return f"{self.rolle_name} ({m.anzeige})" if m else self.rolle_name
 
     @property
     def rufname(self):
@@ -297,8 +310,15 @@ class AnmeldeVersuch(models.Model):
 
 class MoodEigen(models.Model):
     """Eigener Mood der Familie: von Eltern ergänzt oder aus einem Vorschlag zugelassen.
-    Gilt für alle Kinder; ``aktiv=False`` = entfernt (bleibt für alte Auswahl erhalten)."""
+    Gilt für alle der ``zielgruppe`` (Kinder bzw. Eltern); ``aktiv=False`` = entfernt (bleibt für
+    alte Auswahl erhalten)."""
 
+    zielgruppe = models.CharField(
+        max_length=6,
+        choices=[(moods.KIND, "Kinder"), (moods.ELTERN, "Eltern")],
+        default=moods.KIND,
+        db_index=True,
+    )
     text = models.CharField(max_length=40)
     aktiv = models.BooleanField(default=True)
     erstellt_am = models.DateTimeField(default=timezone.now)
@@ -307,7 +327,11 @@ class MoodEigen(models.Model):
         verbose_name = "Eigener Mood"
         verbose_name_plural = "Eigene Moods"
         ordering = ["text"]
-        constraints = [models.UniqueConstraint(Lower("text"), name="konten_moodeigen_text_ci_uniq")]
+        constraints = [
+            models.UniqueConstraint(
+                "zielgruppe", Lower("text"), name="konten_moodeigen_zg_text_ci_uniq"
+            )
+        ]
 
     def __str__(self):
         return self.text
@@ -318,7 +342,8 @@ class MoodEigen(models.Model):
 
 
 class MoodAusgeblendet(models.Model):
-    """Katalog-Mood, den Eltern aus der Auswahl genommen haben."""
+    """Katalog-Mood (Kinder oder Eltern), den Eltern aus der Auswahl genommen haben. Die Schlüssel
+    der beiden Kataloge sind überschneidungsfrei (Test), daher genügt der Schlüssel."""
 
     schluessel = models.CharField(max_length=30, primary_key=True)
 

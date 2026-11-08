@@ -279,22 +279,22 @@ def dungeon_anzeige_setzen(request):
 
 @nur_eltern
 @require_POST
-def wappen_setzen(request):
-    """Eigenes Wappen wählen (HTMX: Karte neu rendern, sonst zurück zu den Einstellungen)."""
+def mood_setzen(request):
+    """Eigenen Mood und eigene Rolle wählen (HTMX: Karte neu rendern, sonst zurück)."""
     kontext = {}
     try:
         post = request.POST
-        konten_services.wappen_setzen(
+        konten_services.eltern_mood_setzen(
             request.user,
-            post.get("wappen"),
+            post.get("mood"),
             post.get("wappen_rolle"),
             post.get("wappen_rolle_eigen"),
         )
-        kontext["wappen_gespeichert"] = True
+        kontext["mood_gespeichert"] = True
     except ValidationError as exc:
-        kontext["wappen_fehler"] = " ".join(exc.messages)
+        kontext["mood_fehler"] = " ".join(exc.messages)
     if request.headers.get("HX-Request"):
-        return render(request, "oberflaeche/_wappen_karte.html", kontext)
+        return render(request, "oberflaeche/_mood_karte.html", kontext)
     return redirect("oberflaeche:einstellungen")
 
 

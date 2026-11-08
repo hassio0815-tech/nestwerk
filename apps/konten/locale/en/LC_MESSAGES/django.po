@@ -371,10 +371,6 @@ msgstr "In the flow"
 msgid "Die PIN besteht aus genau 4 Ziffern."
 msgstr "The PIN must be exactly 4 digits."
 
-#: services.py:120
-msgid "Unbekanntes Wappen."
-msgstr "Unknown crest."
-
 #: services.py:139
 msgid "Unbekannte Sprache."
 msgstr "Unknown language."
@@ -760,3 +756,15 @@ msgstr[1] "%(n)s fixed tasks"
 #, python-format
 msgid "Wer übernimmt „%(titel)s“ (%(datum)s)? Tippe unten auf dein Bild."
 msgstr "Who takes “%(titel)s” (%(datum)s)? Tap your picture below."
+
+#: moods.py
+msgid "Moods für Eltern"
+msgstr "Moods for parents"
+
+#: moods.py
+msgid "Geek"
+msgstr "Geek"
+
+#: moods.py
+msgid "Hat für alles ein Kabel"
+msgstr "Has a cable for everything"

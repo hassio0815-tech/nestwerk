@@ -4,7 +4,7 @@
   {% if f.art == "einloesbar" %}<span class="st-sterne" aria-hidden="true">{% for i in "1234567890ab" %}<i></i>{% endfor %}</span>{% endif %}
   <h2 class="reihe">{% include "komponenten/icon.html" with name="geschenk" %} {% translate "Sondertag" %}</h2>
   {% if f.bestaetigt %}
-    <p class="st-bestaetigt" data-sondertag-bestaetigt>{% include "komponenten/icon.html" with name="check" %} {% translate "Dein Wunsch ist angenommen!" %}{% if f.bestaetigt.begleitung %} {% blocktranslate with name=f.bestaetigt.begleitung.name_mit_wappen %}{{ name }} plant den Tag mit dir.{% endblocktranslate %}{% endif %}</p>
+    <p class="st-bestaetigt" data-sondertag-bestaetigt>{% include "komponenten/icon.html" with name="check" %} {% translate "Dein Wunsch ist angenommen!" %}{% if f.bestaetigt.begleitung %} {% blocktranslate with name=f.bestaetigt.begleitung.name_mit_mood %}{{ name }} plant den Tag mit dir.{% endblocktranslate %}{% endif %}</p>
   {% endif %}
   <p class="st-status">{{ f.text }}</p>
   {% if f.art == "unterwegs" and f.mods_ziel %}

@@ -1,0 +1,12 @@
+{% load i18n %}{% load mood_tags %}{% eltern_mood_auswahl request.user as ema %}<section class="karte" id="mood-karte"><div class="karte__inhalt stapel">
+  <h2>{% translate "Mein Mood und meine Rolle" %}</h2>
+  <p class="feld__hinweis">{% translate "Erscheint bei der Anmeldung, im Eltern-Bereich und in Nachrichten an die Kinder." %}</p>
+  <form method="post" action="{% url 'oberflaeche:mood' %}" hx-post="{% url 'oberflaeche:mood' %}" hx-trigger="change" hx-target="#mood-karte" hx-swap="outerHTML" class="stapel">{% csrf_token %}
+    {% include "komponenten/mood_auswahl.html" with feld_id="em-mood" label=_("Wie bist du heute drauf?") gruppen=ema.gruppen mood_aktuell=ema.aktuell %}
+    {% if ema.spruch %}<p class="feld__hinweis" data-spruch>{{ ema.spruch }}</p>{% endif %}
+    {% include "komponenten/eltern_rolle_felder.html" with rolle_name="wappen_rolle" rolle_wert=request.user.wappen_rolle eigen_name="wappen_rolle_eigen" eigen_wert=request.user.wappen_rolle_eigen %}
+    <noscript>{% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Speichern") %}</noscript>
+  </form>
+  {% if mood_gespeichert %}<p class="feld__hinweis" role="status">{% translate "Gespeichert." %}</p>{% endif %}
+  {% if mood_fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ mood_fehler }}</p>{% endif %}
+</div></section>

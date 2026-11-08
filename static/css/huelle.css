@@ -708,27 +708,28 @@
 .nw-profil__bild { display: grid; place-items: center; width: 100%; height: 100%; overflow: hidden; border-radius: 50%; background: var(--flaeche-hoch); }
 .nw-profil__bild > * { max-width: 100%; max-height: 100%; }
 
-/* Wappen-Galerie (Eltern) und Wappen-Anzeige */
-.wappen-wahl { border: 0; padding: 0; margin: 0; min-width: 0; }
-.wappen-galerie { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.5rem; }
-.wappen-karte { display: block; cursor: pointer; }
-.wappen-karte input { position: absolute; opacity: 0; pointer-events: none; }
-.wappen-karte__innen {
+/* Mood-Galerie (Eltern, Einrichtung) und Mood-Anzeige */
+.mood-wahl { border: 0; padding: 0; margin: 0; min-width: 0; }
+.mood-galerie { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr)); gap: 0.5rem; }
+.mood-galerie > * { min-width: 0; }
+.mood-karte { display: block; position: relative; min-width: 0; cursor: pointer; }
+.mood-karte input { position: absolute; opacity: 0; pointer-events: none; }
+.mood-karte__innen {
   display: flex; flex-direction: column; align-items: center; gap: 0.25rem; height: 100%;
   padding: 0.75rem 0.5rem; text-align: center;
   background: var(--flaeche); border: 2px solid var(--rahmen); border-radius: 0.75rem;
 }
-.wappen-karte:hover .wappen-karte__innen { transform: translateY(-2px); }
-.wappen-karte input:checked + .wappen-karte__innen { border-color: var(--akzent); box-shadow: 0 0 0 2px var(--akzent); }
-.wappen-karte input:focus-visible + .wappen-karte__innen { outline: 3px solid var(--akzent); outline-offset: 2px; }
-.wappen-karte__emoji { font-size: 2.5rem; line-height: 1; }
-.wappen-karte__titel { font-weight: 700; }
-.wappen-karte__spruch { font-size: 0.875rem; color: var(--text-leise); }
-.nw-profil__wappen { font-size: 1.8rem; line-height: 1; }
-.wappen-zeile { font-size: 1rem; color: var(--text-leise); font-weight: 400; }
-.wappen-wahl > legend { padding: 0; margin-bottom: 0.5rem; }
-.wappen-rolle { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
-.wappen-rolle-gross { font-size: 1.15em; font-weight: 800; }
+.mood-karte:hover .mood-karte__innen { transform: translateY(-2px); }
+.mood-karte input:checked + .mood-karte__innen { border-color: var(--akzent); box-shadow: 0 0 0 2px var(--akzent); }
+.mood-karte input:focus-visible + .mood-karte__innen { outline: 3px solid var(--akzent); outline-offset: 2px; }
+.mood-karte__emoji { font-size: 2.5rem; line-height: 1; }
+.mood-karte__titel { font-weight: 700; overflow-wrap: anywhere; }
+.mood-karte__spruch { font-size: 0.875rem; color: var(--text-leise); overflow-wrap: anywhere; }
+.nw-profil__emoji { font-size: 1.8rem; line-height: 1; }
+.mood-zeile { font-size: 1rem; color: var(--text-leise); font-weight: 400; }
+.mood-wahl > legend { padding: 0; margin-bottom: 0.5rem; }
+.mood-rolle { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
+.mood-rolle-gross { font-size: 1.15em; font-weight: 800; }
 
 /* Wochenvorschau (Anmeldeseite): schmale Kalenderleiste, 7 Tage ab heute. Tage mit festen
    Aufgaben tragen einen Punkt und öffnen ein Popup; die Leiste bleibt auch bei 390 px eine Zeile. */

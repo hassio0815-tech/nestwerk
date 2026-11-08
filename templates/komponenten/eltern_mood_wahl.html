@@ -1,0 +1,19 @@
+{% load i18n %}{% load mood_tags %}{% mood_rollen as mood_rollen %}{% comment %}Mood-Galerie für Eltern (optional): Karten mit Radio. Parameter: name (Feldname), gewaehlt (Schlüssel), fehler, rolle_name/rolle_wert, eigen_name/eigen_wert (Rolle: Mama/Mum/Papa/Dad oder frei).{% endcomment %}
+<fieldset class="mood-wahl">
+  {% if rolle_name %}{% include "komponenten/eltern_rolle_felder.html" %}{% endif %}
+  <legend class="feld__label">{% translate "Mood (optional)" %}</legend>
+  <div class="mood-galerie">
+    {% eltern_mood_katalog as katalog %}
+    {% for w in katalog %}
+      <label class="mood-karte">
+        <input type="radio" name="{{ name }}" value="{{ w.schluessel }}"{% if gewaehlt == w.schluessel %} checked{% endif %}>
+        <span class="mood-karte__innen">
+          <span class="mood-karte__emoji" aria-hidden="true">{{ w.emoji }}</span>
+          <span class="mood-karte__titel">{{ w.text }}</span>
+          <span class="mood-karte__spruch">{{ w.spruch }}</span>
+        </span>
+      </label>
+    {% endfor %}
+  </div>
+  {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ fehler }}</p>{% endif %}
+</fieldset>

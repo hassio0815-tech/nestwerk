@@ -171,8 +171,8 @@ msgid "Oder eigene Rolle (z. B. Mami)"
 msgstr "Or your own role (e.g. Mummy)"
 
 #: templates/komponenten/wappen_wahl.html:13
-msgid "Wappen (optional)"
-msgstr "Crest (optional)"
+msgid "Mood (optional)"
+msgstr "Mood (optional)"
 
 #: templates/komponenten/kopfleiste.html
 msgid "Hauptmenü"

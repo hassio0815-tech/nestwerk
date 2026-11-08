@@ -1,5 +1,6 @@
 """Moods verwalten (Eltern): Vorschläge der Kinder entscheiden, Katalog-Moods ausblenden,
-eigene Moods ergänzen. Zugelassene und eigene Moods gelten für alle Kinder."""
+eigene Moods ergänzen - getrennt für Kinder und Eltern. Zugelassene und eigene Kinder-Moods
+gelten für alle Kinder, eigene Eltern-Moods für alle Eltern."""
 
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
@@ -27,19 +28,29 @@ def _meldung(exc):
     return " ".join(exc.messages)
 
 
-def _seite(request, *, fehler="", vorgabe="", status=200):
+def _seite(request, *, fehler="", vorgabe="", zielgruppe=moods.KIND, status=200):
     aus = konten_selectors.moods_ausgeblendet()
-    gruppen = [
-        {"name": name, "moods": [m for m in moods.KATALOG if m.gruppe == schluessel]}
-        for schluessel, name in moods.GRUPPEN
-    ]
+
+    def bereich(zielgruppe):
+        return {
+            "zielgruppe": zielgruppe,
+            "eigene": list(konten_selectors.moods_eigene(zielgruppe=zielgruppe)),
+            "gruppen": [
+                {
+                    "name": name,
+                    "moods": [m for m in moods.katalog(zielgruppe) if m.gruppe == schluessel],
+                }
+                for schluessel, name in moods.gruppen(zielgruppe)
+            ],
+        }
+
     kontext = {
         "vorschlaege": list(konten_selectors.mood_vorschlaege()),
-        "eigene": list(konten_selectors.moods_eigene()),
-        "gruppen": gruppen,
+        "bereiche": [bereich(moods.KIND), bereich(moods.ELTERN)],
         "ausgeblendet": aus,
         "fehler": fehler,
         "vorgabe": vorgabe,
+        "vorgabe_zielgruppe": zielgruppe,
         "ok": MELDUNGEN.get(request.GET.get("ok", ""), ""),
         "text_max": moods.TEXT_MAX,
     }
@@ -80,11 +91,18 @@ def ablehnen(request, pk):
 @nur_eltern
 @require_POST
 def neu(request):
+    zielgruppe = request.POST.get("zielgruppe", moods.KIND)
     try:
-        konten_services.mood_eigen_anlegen(request.POST.get("text", ""), von=request.user)
+        konten_services.mood_eigen_anlegen(
+            request.POST.get("text", ""), zielgruppe=zielgruppe, von=request.user
+        )
     except ValidationError as exc:
         return _seite(
-            request, fehler=_meldung(exc), vorgabe=request.POST.get("text", ""), status=422
+            request,
+            fehler=_meldung(exc),
+            vorgabe=request.POST.get("text", ""),
+            zielgruppe=zielgruppe,
+            status=422,
         )
     return _fertig("neu")
 
@@ -92,7 +110,7 @@ def neu(request):
 @nur_eltern
 @require_POST
 def entfernen(request, pk):
-    eigen = get_object_or_404(konten_selectors.moods_eigene(), pk=pk)
+    eigen = get_object_or_404(konten_selectors.moods_eigene(zielgruppe=None), pk=pk)
     konten_services.mood_eigen_entfernen(eigen, von=request.user)
     return _fertig("entfernt")
 

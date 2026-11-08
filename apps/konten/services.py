@@ -16,7 +16,6 @@ from django.utils.translation import gettext as _
 from apps.kern import audit, zeit
 
 from . import moods, selectors, sperre
-from . import wappen as wappen_katalog
 from .backends import PIN_MUSTER
 from .models import (
     AnmeldeVersuch,
@@ -44,11 +43,16 @@ def _pin_pruefen(pin):
         raise ValidationError(_("Die PIN besteht aus genau 4 Ziffern."))
 
 
-def _freies_wappen(ausser=None):
-    belegt = Benutzer.objects.filter(rolle=Rolle.ELTERN, aktiv=True).exclude(wappen="")
+def _freier_eltern_mood(ausser=None):
+    belegt = Benutzer.objects.filter(rolle=Rolle.ELTERN, aktiv=True).exclude(mood="")
     if ausser is not None:
         belegt = belegt.exclude(pk=ausser.pk)
-    return wappen_katalog.zufaellig(belegt.values_list("wappen", flat=True))
+    return moods.zufaellig_eltern(belegt.values_list("mood", flat=True))
+
+
+def _eltern_mood_pruefen(schluessel):
+    if schluessel not in {s for s, _text, _g in selectors.mood_auswahl(moods.ELTERN)}:
+        raise ValidationError(_("Diesen Mood gibt es nicht."))
 
 
 def eltern_anlegen(
@@ -57,18 +61,20 @@ def eltern_anlegen(
     rolle_label="andere",
     email="",
     reihenfolge=0,
-    wappen="",
+    mood="",
     wappen_rolle="",
     wappen_rolle_eigen="",
 ):
-    """Ohne ``wappen`` wird zufällig eines vergeben (möglichst anders als bei den anderen
+    """Ohne ``mood`` wird zufällig einer vergeben (möglichst anders als bei den anderen
     Eltern)."""
+    if mood:
+        _eltern_mood_pruefen(mood)
     with transaction.atomic():
         benutzer = Benutzer(
             anzeigename=anzeigename,
             rolle=Rolle.ELTERN,
             reihenfolge=reihenfolge,
-            wappen=wappen or _freies_wappen(),
+            mood=mood or _freier_eltern_mood(),
             wappen_rolle=wappen_rolle,
             wappen_rolle_eigen=wappen_rolle_eigen.strip(),
         )
@@ -86,17 +92,19 @@ def eltern_aendern(
     *,
     rolle_label,
     email,
-    wappen=None,
+    mood=None,
     wappen_rolle=None,
     wappen_rolle_eigen=None,
 ):
-    """Ändert Name, Rolle (Mama/Papa/andere), E-Mail und optional das Wappen eines Elternteils."""
+    """Ändert Name, Rolle (Mama/Papa/andere), E-Mail und optional den Mood eines Elternteils."""
+    if mood:
+        _eltern_mood_pruefen(mood)
     with transaction.atomic():
         benutzer.anzeigename = anzeigename
         felder = ["anzeigename"]
-        if wappen is not None or not benutzer.wappen:
-            benutzer.wappen = wappen or _freies_wappen(ausser=benutzer)
-            felder.append("wappen")
+        if mood is not None or not benutzer.mood:
+            benutzer.mood = mood or _freier_eltern_mood(ausser=benutzer)
+            felder.append("mood")
         if wappen_rolle is not None:
             benutzer.wappen_rolle = wappen_rolle
             felder.append("wappen_rolle")
@@ -113,14 +121,17 @@ def eltern_aendern(
         audit.protokollieren("konten.eltern_geaendert", objekt=benutzer)
 
 
-def wappen_setzen(benutzer, schluessel=None, rolle=None, eigen=None):
-    """Eltern wählen Wappen und/oder Rolle (``None`` = unverändert; Katalog-Prüfung)."""
+def eltern_mood_setzen(benutzer, schluessel=None, rolle=None, eigen=None):
+    """Eltern wählen Mood und/oder Rolle (``None`` = unverändert; Prüfung gegen die Auswahl der
+    Eltern, nie gegen die Kinder-Moods)."""
+    if benutzer.rolle != Rolle.ELTERN:
+        raise PermissionDenied("Nur Eltern wählen einen Eltern-Mood")
     felder = []
     if schluessel is not None:
-        if schluessel not in wappen_katalog.NACH_SCHLUESSEL:
-            raise ValidationError(_("Unbekanntes Wappen."))
-        benutzer.wappen = schluessel
-        felder.append("wappen")
+        if schluessel:
+            _eltern_mood_pruefen(schluessel)
+        benutzer.mood = schluessel
+        felder.append("mood")
     if rolle is not None:
         benutzer.wappen_rolle = rolle
         felder.append("wappen_rolle")
@@ -130,7 +141,7 @@ def wappen_setzen(benutzer, schluessel=None, rolle=None, eigen=None):
     benutzer.full_clean(exclude=["password", "anzeigename"])
     benutzer.save(update_fields=felder)
     audit.protokollieren(
-        "konten.wappen_gesetzt", objekt=benutzer, details={"wappen": benutzer.wappen}
+        "konten.eltern_mood_gesetzt", objekt=benutzer, details={"mood": benutzer.mood}
     )
 
 
@@ -348,8 +359,13 @@ def _eltern(von):
 
 
 def mood_setzen(kind, schluessel):
-    """Das Kind wählt seinen Mood (``""`` = kein Mood). Nur Moods aus der aktuellen Auswahl."""
-    if schluessel and schluessel not in {s for s, _text, _gruppe in selectors.mood_auswahl()}:
+    """Das Kind wählt seinen Mood (``""`` = kein Mood). Nur Moods aus der aktuellen Auswahl der
+    Kinder; Eltern-Moods sind nie wählbar."""
+    if kind.rolle != Rolle.KIND:
+        raise PermissionDenied("Nur Kinder wählen einen Kinder-Mood")
+    if schluessel and schluessel not in {
+        s for s, _text, _gruppe in selectors.mood_auswahl(moods.KIND)
+    }:
         raise ValidationError(_("Diesen Mood gibt es nicht."))
     kind.mood = schluessel
     kind.save(update_fields=["mood"])
@@ -358,20 +374,24 @@ def mood_setzen(kind, schluessel):
     )
 
 
-def _mood_text_neu(text):
-    """Geprüfter Text für einen neuen Mood; ``ValidationError``, wenn es ihn schon gibt."""
+def _mood_text_neu(text, zielgruppe=moods.KIND):
+    """Geprüfter Text für einen neuen Mood der Zielgruppe; ``ValidationError``, wenn es ihn
+    schon gibt."""
     text = _kurztext(text, moods.TEXT_MAX, _("Mood"))
     if not text:
         raise ValidationError(_("Bitte einen Text eingeben."))
-    vorhandene = {m.text.lower() for m in map(_uebersetzt, moods.KATALOG)}
-    vorhandene |= {t.lower() for t in MoodEigen.objects.values_list("text", flat=True)}
+    vorhandene = {m.text.lower() for m in map(_uebersetzt, moods.katalog(zielgruppe))}
+    vorhandene |= {
+        t.lower()
+        for t in MoodEigen.objects.filter(zielgruppe=zielgruppe).values_list("text", flat=True)
+    }
     if text.lower() in vorhandene:
         raise ValidationError(_("Diesen Mood gibt es schon."))
     return text
 
 
 def _uebersetzt(mood):
-    return moods.Mood(mood.schluessel, mood.emoji, str(mood.text), mood.gruppe)
+    return moods.Mood(mood.schluessel, mood.emoji, str(mood.text), mood.gruppe, str(mood.spruch))
 
 
 def mood_vorschlagen(kind, text):
@@ -407,9 +427,11 @@ def mood_vorschlag_entscheiden(vorschlag, zulassen, *, von=audit.AKTUELL):
         if vorschlag.status != VorschlagStatus.OFFEN:
             raise ValidationError(_("Dieser Vorschlag ist schon entschieden."))
         if zulassen:
-            eigen = MoodEigen.objects.filter(text__iexact=vorschlag.text).first()
+            eigen = MoodEigen.objects.filter(
+                zielgruppe=moods.KIND, text__iexact=vorschlag.text
+            ).first()
             if eigen is None:
-                MoodEigen.objects.create(text=vorschlag.text)
+                MoodEigen.objects.create(zielgruppe=moods.KIND, text=vorschlag.text)
             elif not eigen.aktiv:
                 eigen.aktiv = True
                 eigen.save(update_fields=["aktiv"])
@@ -427,19 +449,24 @@ def mood_vorschlag_entscheiden(vorschlag, zulassen, *, von=audit.AKTUELL):
     return vorschlag
 
 
-def mood_eigen_anlegen(text, *, von=audit.AKTUELL):
+def mood_eigen_anlegen(text, *, zielgruppe=moods.KIND, von=audit.AKTUELL):
     akteur = _eltern(von)
-    text = _mood_text_neu(text)
+    if zielgruppe not in moods.ZIELGRUPPEN:
+        raise ValidationError(_("Diesen Mood gibt es nicht."))
+    text = _mood_text_neu(text, zielgruppe)
     with transaction.atomic():
-        eigen = MoodEigen.objects.create(text=text)
+        eigen = MoodEigen.objects.create(zielgruppe=zielgruppe, text=text)
         audit.protokollieren(
-            "konten.mood_angelegt", akteur=akteur, objekt=eigen, details={"text": text}
+            "konten.mood_angelegt",
+            akteur=akteur,
+            objekt=eigen,
+            details={"text": text, "zielgruppe": zielgruppe},
         )
     return eigen
 
 
 def mood_eigen_entfernen(eigen, *, von=audit.AKTUELL):
-    """Nimmt einen eigenen Mood aus der Auswahl (Kinder, die ihn haben, zeigen ihn nicht mehr)."""
+    """Nimmt einen eigenen Mood aus der Auswahl (wer ihn hat, zeigt ihn nicht mehr)."""
     akteur = _eltern(von)
     with transaction.atomic():
         eigen.aktiv = False
@@ -452,7 +479,7 @@ def mood_eigen_entfernen(eigen, *, von=audit.AKTUELL):
 def mood_katalog_ausblenden(schluessel, ausblenden, *, von=audit.AKTUELL):
     """Blendet einen Katalog-Mood aus (``ausblenden=True``) oder wieder ein."""
     akteur = _eltern(von)
-    if schluessel not in moods.NACH_SCHLUESSEL:
+    if schluessel not in moods.NACH_SCHLUESSEL and schluessel not in moods.NACH_SCHLUESSEL_ELTERN:
         raise ValidationError(_("Diesen Mood gibt es nicht."))
     with transaction.atomic():
         if ausblenden:
