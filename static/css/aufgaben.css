@@ -41,10 +41,6 @@
 .aufgaben-raster > form { display: flex; }
 #offen-titel { margin-top: var(--abstand-gross); }
 .aufgabe-kachel .kachel__text { margin-top: auto; }
-/* Schnell-Knöpfe (Kind): Titel links, Knopf rechts, ohne unschönen Umbruch */
-.zeile.schnellknopf { flex-wrap: nowrap; }
-.zeile.schnellknopf > :first-child { flex: 1 1 10rem; min-width: 0; flex-wrap: wrap; }
-.zeile.schnellknopf > :not(:first-child) { flex: 0 0 auto; }
 .aufgabe-kachel { flex: 1 1 auto; align-items: flex-start; text-align: left; width: 100%; min-height: 9rem; cursor: pointer; font: inherit; color: inherit; }
 .aufgabe-kachel:disabled { opacity: .5; cursor: not-allowed; }
 .aufgabe-kachel--vergeben { opacity: .75; border-style: dashed; }
@@ -91,3 +87,53 @@
   .nw-schale__inhalt .aufgaben-nav::-webkit-scrollbar { display: none; }
   .nw-schale__inhalt .aufgaben-nav > .knopf { flex: none; }
 }
+
+/* Schnell-Knöpfe: ein Raster für Kind, Eltern und Tablet (aufgaben/kacheln/_schnellknopf_raster.html).
+   Kleine Kacheln, die ganze Kachel ist der Knopf; Status als Badge, Stift/ⓧ klein in den Ecken. */
+.sk-raster {
+  display: grid;
+  gap: var(--abstand-klein, 0.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(7.25rem, 1fr));
+}
+.sk-raster--gross { grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: var(--abstand); }
+.sk-kachel { position: relative; display: flex; min-width: 0; }
+.sk-knopf {
+  display: flex; flex: 1 1 auto; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 0.2rem; min-width: 0; min-height: 6.5rem; padding: 0.5rem 0.4rem;
+  font: inherit; color: inherit; text-align: center; text-decoration: none; cursor: pointer;
+  background: var(--flaeche); border: var(--rahmen-breite, 1px) solid var(--rahmen); border-radius: var(--radius);
+}
+.sk-kachel--eltern .sk-knopf { padding-top: 1.1rem; }
+.sk-knopf:hover { border-color: var(--akzent); }
+.sk-knopf:focus-visible, .sk-ecke:focus-visible { outline: 3px solid var(--akzent); outline-offset: 2px; }
+.sk-raster--gross .sk-knopf { min-height: 8rem; }
+.sk__emoji { font-size: 1.9rem; line-height: 1.1; }
+.sk-raster--gross .sk__emoji { font-size: 2.5rem; }
+.sk__titel {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  overflow-wrap: anywhere; font-size: 0.95rem; font-weight: 700; line-height: 1.2;
+}
+.sk__punkte { display: inline-flex; align-items: center; gap: 0.2rem; margin-top: auto; font-size: 0.875rem; color: var(--text-leise); }
+.sk__punkte .icon { width: 0.85rem; height: 0.85rem; }
+.sk__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.sk__badge {
+  max-width: 100%; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.875rem; font-weight: 700;
+  line-height: 1.4; color: var(--text); background: var(--flaeche-hoch); border: 1px solid var(--selten-uncommon);
+}
+.sk__badge--teil { border-color: var(--rahmen); }
+.sk__wer { font-size: 0.875rem; color: var(--text-leise); overflow-wrap: anywhere; }
+.sk-kachel--laeuft .sk-knopf { cursor: default; opacity: 0.8; border-style: dashed; }
+.sk-kachel--laeuft .sk-knopf:hover { border-color: var(--rahmen); }
+.sk-ecke {
+  position: absolute; top: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 2.75rem; height: 2.75rem; padding: 0; font: inherit; color: var(--text-leise);
+  background: transparent; border: 0; border-radius: 50%; cursor: pointer;
+}
+.sk-ecke--rechts { right: 0; }
+.sk-ecke--links { left: 0; }
+.sk-ecke .icon { width: 1rem; height: 1rem; }
+.sk-ecke:hover { color: var(--text); }
+.sk-ecke--links:hover { color: var(--gefahr); }
+.sk-kachel--neu { text-decoration: none; }
+.sk-kachel--neu .sk-knopf { justify-content: center; border-style: dashed; color: var(--text-leise); background: transparent; }
+.sk-kachel--neu .sk__titel { font-weight: 600; }

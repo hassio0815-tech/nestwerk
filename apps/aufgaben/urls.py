@@ -104,6 +104,11 @@ urlpatterns += [
 urlpatterns += [
     path("eltern/schnellknoepfe/", views_schnellknopf.schnellknoepfe_seite, name="schnellknoepfe"),
     path(
+        "eltern/schnellknopf/<int:pk>/loeschen/",
+        views_schnellknopf.schnellknopf_loeschen,
+        name="schnellknopf_loeschen",
+    ),
+    path(
         "eltern/schnellknopf/<int:pk>/",
         views_schnellknopf.eltern_druecken,
         name="schnellknopf_eltern",
