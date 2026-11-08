@@ -1124,3 +1124,15 @@ msgstr "Mood removed."
 #: views_moods.py:22
 msgid "Auswahl gespeichert."
 msgstr "Selection saved."
+
+#: einstellungen.py:30
+msgid "Eigene Sprüche für die Startseite"
+msgstr "Your own sayings for the home page"
+
+#: einstellungen.py:32
+msgid ""
+"Ein Spruch pro Zeile. Sie wechseln auf der Startseite mit den eingebauten "
+"Sprüchen, Weisheiten und Fakten ab (in jeder Sprache gleich)."
+msgstr ""
+"One saying per line. They alternate on the home page with the built-in "
+"sayings, wise words and facts (the same in every language)."

@@ -32,9 +32,13 @@ def test_startseite_mit_englischem_cookie(anna, client):
     assert "<html" in html and 'lang="en"' in html
 
 
-def test_gruss_wechselt_zwischen_den_sprachen(anna, client):
+def test_startseite_hat_wechseltext_in_der_aktiven_sprache(anna, client):
     html = client.get(reverse("konten:start")).content.decode()
-    assert "data-gruss-de=" in html and "data-gruss-en=" in html
+    assert "data-wechseltext" in html and 'id="wechseltexte-daten"' in html
+    assert "Wusstest du?" in html or "Guten" in html
+    client.cookies[COOKIE] = "en"
+    html = client.get(reverse("konten:start")).content.decode()
+    assert "Wusstest du?" not in html
 
 
 def test_setlang_setzt_das_cookie(anna, client):
@@ -42,7 +46,7 @@ def test_setlang_setzt_das_cookie(anna, client):
     assert antwort.status_code == 302
     assert antwort.cookies[COOKIE].value == "en"
     html = client.get(reverse("konten:start")).content.decode()
-    assert "Good" in html and "Guten" not in html.split("data-gruss-wechsel")[0]
+    assert "Good" in html and "Guten" not in html.split("nw-begruessung")[0]
 
 
 def test_unbekannte_sprache_setzt_kein_cookie(anna, client):

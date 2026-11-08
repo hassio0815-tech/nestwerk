@@ -77,7 +77,6 @@ def start(request, extra=None):
             "kinder": kinder,
             "eltern": selectors.aktive_eltern(),
             "gruss": begruessung.gruss(),
-            "gruesse": begruessung.gruesse(),
             **(extra or {}),
         },
     )

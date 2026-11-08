@@ -30,43 +30,55 @@
     }
   });
 
-  /* Startbildschirm: Begrüßung wechselt alle paar Sekunden die Sprache (data-gruss-<code>).
-     Nur der Text wechselt, die Seitensprache bleibt; Screenreader lesen den ersten Gruß. */
-  var GRUSS_TAKT = 4000;
+  /* Startbildschirm: Wechseltext (data-wechseltext = id eines json_script mit der Textliste).
+     Der erste Text steht schon im Markup (Tageszeit-Gruß); alle 6 s blendet der nächste ein.
+     Mit prefers-reduced-motion wechselt der Text ohne Überblendung. Kein aria-live: ein
+     Screenreader soll nicht alle 6 s unterbrochen werden, er liest den ersten Gruß. */
+  var WECHSEL_TAKT = 6000;
+  var WECHSEL_BLENDE = 400;
+  var LANG_AB = 28; // Zeichen: längere Texte werden kleiner gesetzt
 
-  function grussWechsel(h1) {
+  function wechselText(h1) {
+    var quelle = document.getElementById(h1.getAttribute("data-wechseltext"));
     var texte = [];
-    Array.prototype.forEach.call(h1.attributes, function (a) {
-      if (a.name.indexOf("data-gruss-") === 0 && a.name !== "data-gruss-wechsel") {
-        texte.push({ code: a.name.slice(11), text: a.value });
-      }
-    });
-    if (texte.length < 2) {
+    try {
+      texte = JSON.parse(quelle ? quelle.textContent : "[]");
+    } catch (e) {
+      texte = [];
+    }
+    if (!Array.isArray(texte) || texte.length < 2) {
       return;
     }
     var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var i = 0;
+
+    function setzen(text) {
+      h1.textContent = text;
+      h1.classList.toggle("ist-lang", text.length > LANG_AB);
+    }
+
     window.setInterval(function () {
+      if (document.hidden) {
+        return;
+      }
       i = (i + 1) % texte.length;
-      var naechster = texte[i];
+      var naechster = String(texte[i]);
       if (ruhig) {
-        h1.textContent = naechster.text;
-        h1.setAttribute("lang", naechster.code);
+        setzen(naechster);
         return;
       }
       h1.classList.add("ist-ausgeblendet");
       window.setTimeout(function () {
-        h1.textContent = naechster.text;
-        h1.setAttribute("lang", naechster.code);
+        setzen(naechster);
         h1.classList.remove("ist-ausgeblendet");
-      }, 400);
-    }, GRUSS_TAKT);
+      }, WECHSEL_BLENDE);
+    }, WECHSEL_TAKT);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-gruss-wechsel]").forEach(function (h1) {
+    document.querySelectorAll("[data-wechseltext]").forEach(function (h1) {
       h1.setAttribute("aria-live", "off");
-      grussWechsel(h1);
+      wechselText(h1);
     });
 
     var aktuell = aktuellerModus();

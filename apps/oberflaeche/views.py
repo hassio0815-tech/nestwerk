@@ -23,7 +23,7 @@ from apps.konten.geraet import ist_kiosk
 from apps.konten.models import Rolle
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
-from . import kacheln, module, ranking, selectors, uebernehmen
+from . import kacheln, module, ranking, selectors, uebernehmen, wechseltext
 
 logger = logging.getLogger(__name__)
 
@@ -58,9 +58,19 @@ def startseite(request):
     except einstellungen.EinstellungFehlt:
         logger.warning("Wochenvorschau der Startseite ohne Zeitzone nicht verfügbar")
         woche = None
+    try:
+        texte = wechseltext.wechseltexte()
+    except Exception:  # der Wechseltext ist Beiwerk: nie die Anmeldeauswahl kippen
+        logger.exception("Wechseltext der Startseite konnte nicht gebaut werden")
+        texte = []
     return konten_views.start(
         request,
-        extra={"infozeile": infozeile, "woche": woche, "uebernehmen": _absicht(request)},
+        extra={
+            "infozeile": infozeile,
+            "woche": woche,
+            "uebernehmen": _absicht(request),
+            "wechseltexte": texte,
+        },
     )
 
 

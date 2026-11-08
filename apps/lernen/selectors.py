@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from datetime import timedelta
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.utils.translation import gettext
 
 from apps.kern import zeit
@@ -272,6 +272,12 @@ def tagesbild(kind, heute):
         vorschlag_minuten=ziel.vorschlag_minuten if ziel else None,
         pause=wert("lernen.ferien_schalter") or tagesziel.ist_pausentag(kind, heute),
     )
+
+
+def lernminuten_heute(heute):
+    """Gelernte Minuten aller Kinder an diesem Tag (anonym, für die Startseite)."""
+    summe = Lerntag.objects.filter(datum=heute).aggregate(s=Sum("sekunden"))["s"] or 0
+    return summe // 60
 
 
 def tage_geuebt(kind):
