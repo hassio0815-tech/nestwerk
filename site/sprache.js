@@ -5,6 +5,10 @@
   "use strict";
 
   var DE = {
+    meta_desc: "Nestwerk: das selbst gehostete Familien-Dashboard für Aufgaben, Belohnungen und Lernen. Werbefrei, mit Avataren, Punkten und Familienzielen. Auf Deutsch und Englisch.",
+    og_titel: "Nestwerk – das Familien-Dashboard für Aufgaben, Belohnungen und Lernen",
+    og_desc: "Aufgaben, Belohnungen und Lernen für die ganze Familie. Selbst gehostet und werbefrei.",
+    og_locale: "de_DE",
     titel: "Nestwerk – das Familien-Dashboard für Aufgaben, Belohnungen und Lernen",
     sprung: "Zum Inhalt",
     nav: "Hauptnavigation",
@@ -42,7 +46,7 @@
     f10_h: "Deutsch & Englisch",
     f10_p: "Jedes Familienmitglied wählt seine Sprache, auch Benachrichtigungen kommen in dieser Sprache.",
     f11_h: "Modular erweiterbar",
-    f11_p: "Lernen und Forschen sind als nächste Module geplant. Neue Bausteine fügen sich in das gleiche System ein.",
+    f11_p: "Ein Lernmodul ist in Arbeit, Forschen ist als Nächstes geplant. Neue Bausteine fügen sich in das gleiche System ein.",
     galerie_text: "Kinder-Ansichten sind dunkel und verspielt, die Eltern-Ansicht ist hell und ruhig. Ein Klick öffnet das Bild groß.",
     b1: "Kinder-Dashboard",
     b1_alt: "Das Dashboard eines Kindes mit Avatar, Punkten und offenen Aufgaben im dunklen Design.",
@@ -83,6 +87,7 @@
     alle("data-i18n-alt", function (el, k) { EN[k] = el.getAttribute("alt"); });
     alle("data-i18n-aria", function (el, k) { EN[k] = el.getAttribute("aria-label"); });
     alle("data-i18n-href", function (el, k) { EN[k] = el.getAttribute("href"); });
+    alle("data-i18n-content", function (el, k) { EN[k] = el.getAttribute("content"); });
   }
 
   function setzen(sprache) {
@@ -94,6 +99,7 @@
     alle("data-i18n-alt", function (el, k) { el.setAttribute("alt", text(k)); });
     alle("data-i18n-aria", function (el, k) { el.setAttribute("aria-label", text(k)); });
     alle("data-i18n-href", function (el, k) { el.setAttribute("href", text(k)); });
+    alle("data-i18n-content", function (el, k) { el.setAttribute("content", text(k)); });
     alle("data-bild", function (el, datei) {
       var pfad = (sprache === "de" ? "bilder/" : "bilder/en/") + datei;
       el.setAttribute(el.tagName === "IMG" ? "src" : "href", pfad);

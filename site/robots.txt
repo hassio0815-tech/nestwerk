@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hassio0815-tech.github.io/nestwerk/sitemap.xml
