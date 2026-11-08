@@ -11,7 +11,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 
 from . import registry
-from .models import Art, Buchung
+from .models import Art, Ausblendung, Buchung
 
 
 @dataclass(frozen=True)
@@ -88,6 +88,13 @@ def buchungen(kind):
     ``services.ausblenden``)."""
     return Buchung.objects.filter(kind=kind, ausblendung__isnull=True).order_by(
         "-gebucht_am", "-id"
+    )
+
+
+def ausgeblendete_buchungen(ids) -> set:
+    """Welche der Buchungs-IDs stehen in ``Ausblendung`` (gelöschter Vorgang)?"""
+    return set(
+        Ausblendung.objects.filter(buchung_id__in=list(ids)).values_list("buchung_id", flat=True)
     )
 
 

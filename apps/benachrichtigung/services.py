@@ -238,6 +238,26 @@ def popups_als_gesehen(popups):
     )
 
 
+def popups_als_gesehen_wo(kind, daten_werte: dict) -> int:
+    """Setzt die ungesehenen Pop-ups des Kindes auf gesehen, deren Ereignisdaten zu einem Schlüssel
+    einen der Werte enthalten (``{"instanz_id": [5], "buchung": [7, 8]}``). Für Fachmodule, deren
+    Sache gelöscht wurde: die Pop-ups sollen nicht ewig als offen herumliegen."""
+    from django.db.models import Q
+
+    from .models import Popup
+
+    bedingung = Q()
+    for schluessel, werte in daten_werte.items():
+        werte = list(werte)
+        if werte:
+            bedingung |= Q(**{f"benachrichtigung__ereignis__daten__{schluessel}__in": werte})
+    if not bedingung:
+        return 0
+    return Popup.objects.filter(bedingung, empfaenger=kind, gesehen_am__isnull=True).update(
+        gesehen_am=zeit.jetzt()
+    )
+
+
 def aufraeumen(jetzt=None):
     """Löscht gelesene Benachrichtigungen (samt Zustellungen/Pop-ups) nach der Aufbewahrungszeit."""
     return aufbewahrung(jetzt)["benachrichtigungen"]

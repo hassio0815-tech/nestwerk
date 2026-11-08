@@ -37,6 +37,7 @@
     <form method="post" class="stapel" data-loeschen-formular>
       {% csrf_token %}
       <input type="hidden" name="woche" value="{{ woche.montag|date:'Y-m-d' }}">
+      <input type="hidden" name="art" value="">
       <h3 id="loeschen-titel">{% translate "Wirklich löschen?" %}</h3>
       <p data-loeschen-name></p>
       <p data-fuer="vorgang vorgang-serie" hidden>{% translate "Die Punkte werden abgezogen und der Eintrag verschwindet überall." %}</p>

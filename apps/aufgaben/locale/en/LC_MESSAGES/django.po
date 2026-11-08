@@ -609,6 +609,10 @@ msgstr "Quick button pressed"
 msgid "Aufgabe erledigt (Aktivität)"
 msgstr "Task done (activity)"
 
+#: events.py:191
+msgid "Aufgabe gelöscht (Vorgang)"
+msgstr "Task deleted (record)"
+
 #: forms.py:29
 msgid "Wiederholung"
 msgstr "Repeat"
@@ -2252,3 +2256,7 @@ msgstr ""
 #: templates/aufgaben/vorgang_loeschen.html
 msgid "Vorgang löschen"
 msgstr "Delete entry"
+
+#: wochenplan.py
+msgid "Die Karte hat sich geändert, bitte neu laden."
+msgstr "The card has changed, please reload."

@@ -179,29 +179,39 @@ def auslassen(instanz_pk, *, von, jetzt=None) -> AufgabenInstanz:
 
 
 def _vorgang_loeschen(inst, modus, *, von, jetzt=None) -> AufgabenInstanz:
-    """Karte mit Vorgang (bestätigt, gemeldet ...): alles löschen. ``serie`` beendet zusätzlich
-    die Aufgabe (nur bei Serien; eine einmalige Aufgabe endet mit ihrer einzigen Karte)."""
+    """Karte mit Vorgang (bestätigt, gemeldet ...): alles löschen. Einmalige Aufgaben beendet
+    ``ablauf.vorgang_loeschen`` selbst; ``serie`` beendet zusätzlich eine Serie."""
     from . import ablauf, services
 
     try:
         ablauf.vorgang_loeschen(inst, von=von, jetzt=jetzt)
     except ablauf.AblaufFehler as exc:
         raise ValueError(str(exc)) from exc
-    aufgabe = inst.aufgabe
-    einmalig = aufgabe.wiederholungsart == wiederholung.EINMALIG
-    if (modus == "serie" and ist_serie(aufgabe)) or einmalig:
-        if aufgabe.status != Status.BEENDET:
-            services.aufgabe_status_setzen(aufgabe, Status.BEENDET, von=von)
-    inst = AufgabenInstanz.alle.select_related("aufgabe").get(pk=inst.pk)
-    return inst
+    aufgabe = AufgabenInstanz.alle.select_related("aufgabe").get(pk=inst.pk).aufgabe
+    if modus == "serie" and ist_serie(aufgabe) and aufgabe.status != Status.BEENDET:
+        services.aufgabe_status_setzen(aufgabe, Status.BEENDET, von=von)
+    return AufgabenInstanz.alle.select_related("aufgabe").get(pk=inst.pk)
+
+
+def loeschart(instanz) -> str:
+    """Welcher Löschweg gilt für die Karte gerade (Dialog-Variante): ``einzeln`` | ``serie``
+    (Karte auslassen) | ``vorgang`` | ``vorgang-serie`` (ganzer Vorgang)."""
+    vorgang = vorgang_loeschbar(instanz)
+    serie = ist_serie(instanz.aufgabe)
+    return (
+        ("vorgang" if vorgang else "")
+        + ("-" if vorgang and serie else "")
+        + ("serie" if serie else "")
+    ) or "einzeln"
 
 
 @transaction.atomic
-def loeschen(instanz_pk, modus, *, von, jetzt=None) -> AufgabenInstanz:
+def loeschen(instanz_pk, modus, *, von, jetzt=None, art=None) -> AufgabenInstanz:
     """Löschen aus dem Wochenplan. ``tag``: nur diese Karte. ``serie``: Aufgabe beenden (endgültig,
     Punkte bleiben), freie Instanzen entfallen. Einmalige Aufgaben enden mit ihrer einzigen Karte;
     Schnell-Knöpfe bleiben (nur die Karte geht). Karten mit Vorgang (``vorgang_loeschbar``)
-    löschen den ganzen Vorgang samt Punkten (``ablauf.vorgang_loeschen``)."""
+    löschen den ganzen Vorgang samt Punkten (``ablauf.vorgang_loeschen``). ``art``: der Weg, den der
+    Dialog angezeigt hat (``loeschart``); passt er nicht mehr zur Karte, ``ValueError``."""
     from . import services
 
     if modus not in MODI_LOESCHEN:
@@ -210,6 +220,8 @@ def loeschen(instanz_pk, modus, *, von, jetzt=None) -> AufgabenInstanz:
         vorhanden = AufgabenInstanz.objects.select_related("aufgabe").get(pk=instanz_pk)
     except AufgabenInstanz.DoesNotExist as exc:
         raise ValueError(_("Aufgabe nicht gefunden")) from exc
+    if art is not None and art != loeschart(vorhanden):
+        raise ValueError(_("Die Karte hat sich geändert, bitte neu laden."))
     if vorgang_loeschbar(vorhanden):
         return _vorgang_loeschen(vorhanden, modus, von=von, jetzt=jetzt)
     inst = auslassen(instanz_pk, von=von, jetzt=jetzt)

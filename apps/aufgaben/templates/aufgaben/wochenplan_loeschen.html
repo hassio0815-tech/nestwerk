@@ -8,6 +8,7 @@
   <form method="post" action="{% url 'aufgaben:wochenplan_loeschen' instanz.pk %}" class="karte"><div class="karte__inhalt stapel">
     {% csrf_token %}
     <input type="hidden" name="woche" value="{{ woche_montag|date:'Y-m-d' }}">
+    <input type="hidden" name="art" value="{{ art }}">
     <h2>{% translate "Wirklich löschen?" %}</h2>
     <p><strong>{{ instanz.titel_snapshot|uebersetzt }}</strong></p>
     {% if vorgang %}<p>{% translate "Die Punkte werden abgezogen und der Eintrag verschwindet überall." %}</p>{% endif %}

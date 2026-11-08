@@ -58,6 +58,7 @@
       var art = (vorgang ? "vorgang" : "") + (vorgang && serie ? "-" : "") + (serie ? "serie" : "");
       art = art || "einzeln";
       form.setAttribute("action", oeffner.getAttribute("data-loeschen"));
+      form.querySelector("[name=art]").value = art; /* Server prüft, ob der Weg noch gilt */
       dlg.querySelector("[data-loeschen-name]").textContent = oeffner.getAttribute("data-titel") || "";
       dlg.querySelectorAll("[data-fuer]").forEach(function (el) {
         el.hidden = el.getAttribute("data-fuer").split(" ").indexOf(art) < 0;
@@ -83,6 +84,7 @@
       values: {
         modus: knopf && knopf.value ? knopf.value : "tag",
         woche: form.querySelector("[name=woche]").value,
+        art: form.querySelector("[name=art]").value,
       },
     });
   });

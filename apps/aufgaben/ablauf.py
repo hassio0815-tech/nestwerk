@@ -36,13 +36,14 @@ from django.db.models import Q
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
+from apps.benachrichtigung import services as benachrichtigung
 from apps.ereignisse import services as ereignisse
 from apps.kern import audit, einstellungen, zeit
 from apps.punkte import selectors as punkte_selectors
 from apps.punkte import services as punkte
 from apps.spielregeln import selectors as spielregeln
 
-from . import events, schluessel
+from . import events, schluessel, wiederholung
 from .instanzen import frei_werden_ziel, reservierung_frist
 from .models import (
     INTERESSE_LAUFEND,
@@ -127,7 +128,10 @@ def nachweis_loescher_registrieren(funktion):
 
 def _laden(instanz) -> AufgabenInstanz:
     """Frischer Stand innerhalb der Transaktion (Schreibsperre ist ab BEGIN gehalten)."""
-    return AufgabenInstanz.objects.select_related("aufgabe", "kind").get(pk=instanz.pk)
+    try:
+        return AufgabenInstanz.objects.select_related("aufgabe", "kind").get(pk=instanz.pk)
+    except AufgabenInstanz.DoesNotExist as exc:  # zwischenzeitlich gelöscht (Race)
+        raise UngueltigerUebergang(_("Diese Aufgabe gibt es nicht mehr.")) from exc
 
 
 def _daten(instanz, **extra) -> dict:
@@ -933,6 +937,25 @@ def vorgang_loeschen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
     if instanz.kind_id:
         for hook in _storno_hooks:
             hook(instanz, instanz.kind, von)
+        # Pop-ups des Kindes zu diesem Vorgang (auch Serienbonus) gelten als gesehen
+        benachrichtigung.popups_als_gesehen_wo(
+            instanz.kind, {"instanz_id": [instanz.pk], "buchung": sichtbar}
+        )
+    # Interner Fakt (keine Empfänger): Neuaufbau der Aktivität überspringt gelöschte Vorgänge
+    ereignisse.veroeffentlichen(
+        events.GELOESCHT,
+        kind=instanz.kind,
+        akteur=von,
+        daten=_daten(instanz),
+        schluessel=f"{events.GELOESCHT}:{instanz.pk}",
+    )
+    # Einmalige Aufgabe: Löschen = weg, die Aufgabe endet mit ihrer einzigen Karte
+    # (Schnell-Knöpfe und Serien bleiben; Serien beendet nur "Ganze Serie")
+    aufgabe = instanz.aufgabe
+    if aufgabe.wiederholungsart == wiederholung.EINMALIG and aufgabe.status != Status.BEENDET:
+        from . import services
+
+        services.aufgabe_status_setzen(aufgabe, Status.BEENDET, von=von)
     _protokoll(
         "aufgabe.geloescht",
         instanz,

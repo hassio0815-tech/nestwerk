@@ -14,6 +14,7 @@ from django.utils.translation import gettext_noop
 
 from apps.benachrichtigung import aktionen
 from apps.benachrichtigung.aktionen import Aktion, AktionFehler, Zustand
+from apps.punkte import selectors as punkte_selectors
 
 from . import events, services
 from .models import AufgabenInstanz, InstanzStatus, Interesse, InteresseStatus
@@ -105,16 +106,27 @@ def _ausfuehren(eintrag, aktion, benutzer) -> str:
 
 def _geloeschte(eintraege) -> set:
     """Einträge zu einem gelöschten Vorgang: verschwinden aus Liste, Zählern und Pop-ups."""
-    ids = {e.ereignis.daten.get("instanz_id") for e in eintraege if e.ereignis.daten}
+    daten = {e.pk: e.ereignis.daten or {} for e in eintraege}
+    ids = {d.get("instanz_id") for d in daten.values()}
     ids = {i for i in ids if isinstance(i, int)}
-    if not ids:
-        return set()
-    weg = set(
-        AufgabenInstanz.alle.filter(pk__in=ids, geloescht_am__isnull=False).values_list(
-            "pk", flat=True
+    weg = (
+        set(
+            AufgabenInstanz.alle.filter(pk__in=ids, geloescht_am__isnull=False).values_list(
+                "pk", flat=True
+            )
         )
+        if ids
+        else set()
     )
-    return {e.pk for e in eintraege if (e.ereignis.daten or {}).get("instanz_id") in weg}
+    # Serienbonus-Pop-up u. Ä.: verweist nur auf die Buchung, nicht auf die Instanz
+    buchungen = {d.get("buchung") for d in daten.values()}
+    buchungen = {b for b in buchungen if isinstance(b, int)}
+    weg_buchungen = punkte_selectors.ausgeblendete_buchungen(buchungen) if buchungen else set()
+    return {
+        pk
+        for pk, d in daten.items()
+        if d.get("instanz_id") in weg or d.get("buchung") in weg_buchungen
+    }
 
 
 def registrieren():

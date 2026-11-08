@@ -79,12 +79,15 @@ def instanz_loeschen(request, pk):
             "instanz": inst,
             "serie": wochenplan.ist_serie(inst.aufgabe),
             "vorgang": wochenplan.vorgang_loeschbar(inst),
+            "art": wochenplan.loeschart(inst),
             "woche_montag": woche.montag,
         }
         return render(request, "aufgaben/wochenplan_loeschen.html", kontext)
     modus = daten.get("modus", "tag")
     try:
-        inst = wochenplan.loeschen(pk, modus, von=aktueller_elternteil(request))
+        inst = wochenplan.loeschen(
+            pk, modus, von=aktueller_elternteil(request), art=daten.get("art") or None
+        )
     except ValueError as exc:
         return _antwort(request, woche, fehler=str(exc), status=409)
     meldung = (

@@ -34,6 +34,7 @@ NACHBESSERN = "aufgabe.nachbessern"  # Eltern geben eine Vertrauens-Aufgabe zur�
 # Fakt für Phase 2 (spielregeln: Aktivität, K1). Daten: kind, instanz_id, bezugsdatum
 # (= Meldedatum, lokal), gemeldet_am, bestaetigt_am, punkte. Storno: ``aufgabe.korrigiert``.
 ERLEDIGT = "aufgabe.erledigt"
+GELOESCHT = "aufgabe.geloescht"  # intern: Vorgang gelöscht (Aktivität-Neuaufbau überspringt ihn)
 
 ANERKENNUNG = "anerkennung.erhalten"  # Eltern schenken Punkte ohne Aufgabe (an das Kind)
 
@@ -200,6 +201,7 @@ def typen_deklarieren():
         **kind,
     )
     typ(ERLEDIGT, gettext_noop("Aufgabe erledigt (Aktivität)"), "intern", kanaele=())
+    typ(GELOESCHT, gettext_noop("Aufgabe gelöscht (Vorgang)"), "intern", kanaele=())
 
 
 def texte_registrieren():

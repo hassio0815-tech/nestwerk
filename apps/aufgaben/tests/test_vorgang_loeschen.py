@@ -19,7 +19,8 @@ from apps.aufgaben.models import (
     Status,
 )
 from apps.benachrichtigung import selectors as benachrichtigung_selectors
-from apps.benachrichtigung.models import Benachrichtigung
+from apps.benachrichtigung.models import Benachrichtigung, Popup
+from apps.ereignisse import services as ereignisse
 from apps.ereignisse.models import Ereignis
 from apps.familienziel import selectors as familienziel
 from apps.kern import einstellungen, zeit
@@ -212,7 +213,7 @@ def test_keine_nachricht_ans_kind(anlegen, anna, mama):
     neu = Ereignis.objects.filter(pk__gt=letzte)
     typen = set(neu.values_list("typ_id", flat=True))
     assert events.KORRIGIERT not in typen and events.GELOEST not in typen
-    assert typen <= {"punkte.gebucht"}, typen
+    assert typen <= {"punkte.gebucht", events.GELOESCHT}, typen  # GELOESCHT: intern, ohne Empfänger
 
 
 def test_reservierte_karte_ohne_kind_nachricht(anlegen, anna, mama):
@@ -225,7 +226,9 @@ def test_reservierte_karte_ohne_kind_nachricht(anlegen, anna, mama):
     instanz.refresh_from_db()
     assert instanz.status == S.STORNIERT and instanz.geloescht_am is not None
     assert instanz.geloescht_von == mama
-    assert not Ereignis.objects.filter(pk__gt=letzte).exists()
+    assert set(Ereignis.objects.filter(pk__gt=letzte).values_list("typ_id", flat=True)) <= {
+        events.GELOESCHT
+    }
     assert not Interesse.objects.filter(instanz=instanz, status=InteresseStatus.AKTIV).exists()
     assert not Buchung.objects.exists()
 
@@ -514,6 +517,160 @@ def test_wochenplan_bestaetigungsseite_ohne_js_fuer_vorgang(anlegen, anna, mama)
     assert "Die Punkte werden abgezogen und der Eintrag verschwindet überall." in (
         antwort.content.decode()
     )
+
+
+# --- Review-Nachbesserungen -------------------------------------------------------------------
+
+
+def _popup(kind, typ, daten):
+    ereignis = ereignisse.veroeffentlichen(typ, kind=kind, daten=daten)
+    karte = Benachrichtigung.objects.create(
+        empfaenger=kind, ereignis=ereignis, titel="T", text="X", link=""
+    )
+    return Popup.objects.create(empfaenger=kind, benachrichtigung=karte, art=typ, titel="T")
+
+
+def test_serienbonus_popup_ohne_instanz_id_verschwindet_nach_loeschen(anlegen, anna, mama):
+    instanz = bestaetigt(anlegen, anna, mama, bonus=0)
+    bonus = punkte.buchen(
+        anna,
+        Art.SERIENBONUS,
+        2,
+        schluessel=f"aufgabe:{instanz.pk}:serienbonus:0",
+        quelle_modul="aufgaben",
+        referenz=instanz,
+        von=mama,
+    )
+    popup = _popup(anna, "serienbonus.gebucht", {"buchung": bonus.pk, "punkte": 2})
+    fremd = _popup(anna, "serienbonus.gebucht", {"buchung": 999999, "punkte": 1})
+    assert popup in benachrichtigung_selectors.ungesehene_popups(anna)
+    services.vorgang_loeschen(instanz, von=mama)
+    offen = benachrichtigung_selectors.ungesehene_popups(anna)
+    assert popup not in offen and fremd in offen
+    popup.refresh_from_db()
+    assert popup.gesehen_am is not None  # auch als gesehen markiert (Punkt 4)
+
+
+def test_popups_des_kindes_zum_vorgang_gelten_als_gesehen(anlegen, anna, mama):
+    instanz = bestaetigt(anlegen, anna, mama, bonus=0)
+    anderer = bestaetigt(anlegen, anna, mama, bonus=0)
+    meins = _popup(anna, events.NACHBESSERN, {"instanz_id": instanz.pk})
+    anderes = _popup(anna, events.NACHBESSERN, {"instanz_id": anderer.pk})
+    services.vorgang_loeschen(instanz, von=mama)
+    meins.refresh_from_db()
+    anderes.refresh_from_db()
+    assert meins.gesehen_am is not None and anderes.gesehen_am is None
+
+
+def test_einmalige_aufgabe_wird_auf_beiden_wegen_beendet(anlegen, anna, mama):
+    ueber_meldungen = bestaetigt(anlegen, anna, mama)
+    services.vorgang_loeschen(ueber_meldungen, von=mama)
+    assert Aufgabe.objects.get(pk=ueber_meldungen.aufgabe_id).status == Status.BEENDET
+    ueber_wochenplan = bestaetigt(anlegen, anna, mama)
+    wochenplan.loeschen(ueber_wochenplan.pk, "tag", von=mama)
+    assert Aufgabe.objects.get(pk=ueber_wochenplan.aufgabe_id).status == Status.BEENDET
+
+
+def test_schnellknopf_aufgabe_wird_beim_loeschen_nicht_beendet(anlegen, anna, mama):
+    instanz = bestaetigt(anlegen, anna, mama, bonus=0)
+    Aufgabe.objects.filter(pk=instanz.aufgabe_id).update(wiederholungsart=wiederholung.BEI_BEDARF)
+    services.vorgang_loeschen(instanz, von=mama)
+    assert Aufgabe.objects.get(pk=instanz.aufgabe_id).status == Status.AKTIV
+
+
+def test_serie_wird_beim_einzelnen_loeschen_nicht_beendet(anlegen, anna, mama):
+    instanz = bestaetigt(anlegen, anna, mama, bonus=0)
+    Aufgabe.objects.filter(pk=instanz.aufgabe_id).update(
+        wiederholungsart=wiederholung.WOECHENTLICH,
+        wochentage=wiederholung.maske_aus_tagen(range(7)),
+    )
+    services.vorgang_loeschen(instanz, von=mama)
+    assert Aufgabe.objects.get(pk=instanz.aufgabe_id).status == Status.AKTIV
+
+
+def test_ablauf_race_geloeschte_instanz_wird_zum_ablauffehler(anlegen, anna, mama):
+    from apps.aufgaben.zustand import AblaufFehler, UngueltigerUebergang
+
+    instanz = gemeldet(anlegen, anna)
+    services.vorgang_loeschen(instanz, von=mama)  # zwischenzeitlich gelöscht (Zeile bleibt)
+    with pytest.raises(UngueltigerUebergang) as fehler:
+        services.bestaetigen(instanz, von=mama)
+    assert isinstance(fehler.value, AblaufFehler)
+    with pytest.raises(AblaufFehler):
+        services.ablehnen(instanz, von=mama)
+
+
+def test_wochenplan_veralteter_dialog_gibt_409_und_aendert_nichts(anlegen, anna, mama):
+    instanz = anlegen()  # offen: Weg "einzeln" (Karte auslassen)
+    eltern = eltern_client_neu(mama)
+    url = reverse("aufgaben:wochenplan_loeschen", args=[instanz.pk])
+    antwort = eltern.post(url, {"modus": "tag", "art": "vorgang"}, **HTMX)
+    assert antwort.status_code == 409
+    assert "Die Karte hat sich geändert, bitte neu laden." in antwort.content.decode()
+    assert AufgabenInstanz.objects.filter(pk=instanz.pk).exists()
+    assert AufgabenInstanz.alle.get(pk=instanz.pk).ausgelassen_am is None
+    # passender Weg klappt; ohne art (alte Clients) auch
+    assert eltern.post(url, {"modus": "tag", "art": "einzeln"}, **HTMX).status_code == 200
+
+
+def test_wochenplan_dialog_schickt_art_mit_und_fallback_seite_traegt_sie(anlegen, anna, mama):
+    instanz = bestaetigt(anlegen, anna, mama)
+    eltern = eltern_client_neu(mama)
+    seite = eltern.get(reverse("aufgaben:wochenplan_loeschen", args=[instanz.pk])).content.decode()
+    assert 'name="art" value="vorgang"' in seite
+    assert 'name="art"' in woche_html(eltern)
+    assert (
+        'art: form.querySelector("[name=art]")'
+        in (WURZEL / "static" / "js" / "wochenplan.js").read_text()
+    )
+    # Fallback-POST mit passender Art löscht
+    url = reverse("aufgaben:wochenplan_loeschen", args=[instanz.pk])
+    assert eltern.post(url, {"modus": "tag", "art": "vorgang"}).status_code in (200, 302)
+    assert AufgabenInstanz.alle.get(pk=instanz.pk).geloescht_am is not None
+
+
+def test_aktivitaet_neuaufbau_ueberspringt_geloeschte_vorgaenge(anlegen, anna, mama):
+    from apps.spielregeln import services as spielregeln
+    from apps.spielregeln.models import Aktivitaet
+
+    behalten = bestaetigt(anlegen, anna, mama, bonus=0)
+    weg = bestaetigt(anlegen, anna, mama, bonus=0)
+    services.vorgang_loeschen(weg, von=mama)
+    assert Ereignis.objects.filter(typ_id=events.GELOESCHT, daten__instanz_id=weg.pk).exists()
+    Aktivitaet.objects.filter(modul="aufgaben").delete()
+    spielregeln.aktivitaeten_nachtragen()
+    refs = set(Aktivitaet.objects.filter(modul="aufgaben").values_list("referenz", flat=True))
+    assert refs == {str(behalten.pk)}
+
+
+def test_je_kind_aufteilen_nimmt_geloeschte_instanzen_mit(mama, anna):
+    from apps.konten import services as konten
+
+    konten.kind_anlegen("Ben", PIN, akzentfarben=["#4fa0ff"])
+    aufgabe = Aufgabe.objects.create(
+        titel=TITEL,
+        punkte=5,
+        erstellt_von=mama,
+        start_datum=date(2026, 10, 1),
+        wiederholungsart=wiederholung.WOECHENTLICH,
+        wochentage=wiederholung.maske_aus_tagen(range(7)),
+        freigabeart="eltern",
+    )
+    letztes = [k for k in services.konten_selectors.aktive_kinder()][-1]
+    instanz = AufgabenInstanz.objects.create(
+        aufgabe=aufgabe,
+        plan_datum=date(2026, 11, 2),
+        faellig_am=date(2026, 11, 2),
+        titel_snapshot=TITEL,
+        punkte_snapshot=5,
+        freigabeart_snapshot="eltern",
+        status=S.BESTAETIGT,
+        kind=letztes,
+    )
+    services.vorgang_loeschen(instanz, von=mama)
+    services.je_kind_aufteilen(aufgabe, von=mama)
+    kopie = AufgabenInstanz.alle.get(pk=instanz.pk).aufgabe
+    assert kopie.pk != aufgabe.pk and kopie.zugewiesen_an_id == letztes.pk
 
 
 # --- Layout (CSS / Template) --------------------------------------------------------------------

@@ -706,9 +706,17 @@ def aktivitaeten_nachtragen() -> dict:
     angelegt = storniert = 0
     r = auswertung.regeln()
     with transaction.atomic():
+        # Gelöschte Vorgänge ("als hätte es sie nie gegeben") zählen beim Neuaufbau nicht
+        geloescht = {
+            str(e.daten.get("instanz_id"))
+            for e in ereignis_selectors.ereignisse_vom_typ("aufgabe.geloescht")
+            if e.daten.get("instanz_id") is not None
+        }
         for e in ereignis_selectors.ereignisse_vom_typ("aufgabe.erledigt"):
             instanz = e.daten.get("instanz_id")
             if instanz is None or e.kind_id is None or not e.daten.get("bezugsdatum"):
+                continue
+            if str(instanz) in geloescht:
                 continue
             meldedatum = date.fromisoformat(e.daten["bezugsdatum"])
             erfasst = e.daten.get("bestaetigt_am")
@@ -723,7 +731,7 @@ def aktivitaeten_nachtragen() -> dict:
                 },
             )
             angelegt += neu
-        for typ in ("aufgabe.korrigiert", "aufgabe.nachbessern"):
+        for typ in ("aufgabe.korrigiert", "aufgabe.nachbessern", "aufgabe.geloescht"):
             for e in ereignis_selectors.ereignisse_vom_typ(typ):
                 instanz = e.daten.get("instanz_id")
                 if instanz is not None:

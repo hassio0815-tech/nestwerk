@@ -244,7 +244,8 @@ def je_kind_aufteilen(aufgabe, *, von=None) -> list[Aufgabe]:
         muster.erstellt_von = von or aufgabe.erstellt_von
 
         def instanzen_mitnehmen(kopie, kind):
-            AufgabenInstanz.objects.filter(aufgabe_id=original_pk, kind=kind).update(aufgabe=kopie)
+            # alle: auch gelöschte Vorgänge wandern mit (sonst bliebe die Zeile an der Vorlage)
+            AufgabenInstanz.alle.filter(aufgabe_id=original_pk, kind=kind).update(aufgabe=kopie)
 
         for kind in rest:
             ergebnis.append(
