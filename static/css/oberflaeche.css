@@ -17,12 +17,13 @@
 }
 
 /* Eltern-Übersicht: Raster über die volle Breite, Karten füllen die Zeilenhöhe (keine Lücken),
-   dense füllt Löcher; die Schnell-Knöpfe spannen zwei Spalten. 1 / 2 / 3 / 4 Spalten. */
+   dense füllt Löcher; die Schnell-Knöpfe gehen über die volle Breite (kompaktes Raster),
+   damit die kleinen Kacheln eine gleich hohe Reihe bilden. 1 / 2 / 3 / 4 Spalten. */
 .dashboard--eltern { grid-template-columns: minmax(0, 1fr); grid-auto-flow: dense; }
 .dashboard--eltern > .dashboard__kachel { min-width: 0; scroll-margin-top: 1rem; }
 @media (min-width: 48rem) {
   .dashboard--eltern { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dashboard--eltern > [data-kachel="oberflaeche.eltern_schnellknoepfe"] { grid-column: span 2; }
+  .dashboard--eltern > [data-kachel="oberflaeche.eltern_schnellknoepfe"] { grid-column: 1 / -1; }
 }
 @media (min-width: 80rem) {
   .dashboard--eltern { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -60,10 +61,6 @@
 .zahl__label { font-size: .875rem; color: var(--text-leise); overflow-wrap: anywhere; }
 .dashboard--eltern .zeile--spalte .reihe { gap: .25rem 1rem; }
 /* Schnell-Knöpfe (Eltern): Titel links, "Drücken" rechts; geöffnete Auswahl nimmt die volle Breite */
-.dashboard--eltern .zeile.schnellknopf { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
-.dashboard--eltern .zeile.schnellknopf > :first-child { min-width: 0; }
-.dashboard--eltern .schnellknopf__wahl { justify-self: end; }
-.dashboard--eltern .schnellknopf__wahl[open] { grid-column: 1 / -1; justify-self: stretch; }
 /* Kinder-Startseite: zwei Blöcke je Reihe, auf dem Handy untereinander. */
 .start {
   display: grid;

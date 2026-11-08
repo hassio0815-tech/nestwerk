@@ -306,6 +306,7 @@ def eltern_heim(request):
         for e in kacheln.fuer(ELTERN, request)
         if e["kachel"].schluessel not in ELTERN_DUNGEON
         and e["kachel"].schluessel not in kacheln.ELTERN_EINSTELLUNGEN
+        and e["kachel"].schluessel not in kacheln.ELTERN_NICHT_UEBERSICHT
     ]
     return render(
         request,

@@ -433,3 +433,9 @@ def test_eltern_uebersicht_zahlen_zaehlen_richtig(eltern_client, mama, anna, mon
     assert _zahl(html, "ungelesen") == "7"
     assert _zahl(html, "erledigt") == "0"
     assert _zahl(html, "familienziel").endswith("%")
+
+
+def test_uebersicht_ohne_benachrichtigungs_kachel(eltern_client):
+    html = eltern_client.get("/eltern/").content.decode()
+    assert 'data-kachel="benachrichtigung.liste"' not in html
+    assert 'data-kachel="oberflaeche.eltern_kinder"' in html

@@ -163,3 +163,6 @@
 .knopf-dialog [hidden] { display: none !important; }
 .meldung-mehr > summary { cursor: pointer; font-size: .875rem; color: var(--text-leise); }
 .meldung-mehr[open] > summary { margin-bottom: .5rem; }
+/* Langer Titel: umbrechen statt das Löschen-Kreuz aus der Karte zu schieben */
+.wochenplan__karte > .reihe:first-child > strong { flex: 1 1 0; min-width: 0; overflow-wrap: anywhere; }
+.wochenplan__karte > .reihe:first-child > .wochenplan__x { flex: none; }

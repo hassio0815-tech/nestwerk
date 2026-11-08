@@ -16,6 +16,9 @@ ELTERN_EINSTELLUNGEN = (
     "oberflaeche.eltern_system",
 )
 
+# Nicht auf der Übersicht: Benachrichtigungen haben den Reiter links und die Zahl "Ungelesen".
+ELTERN_NICHT_UEBERSICHT = ("benachrichtigung.liste",)
+
 
 def fuer(zielgruppe, request):
     """Liste ``{"kachel": Kachel, "k": kontext}`` der sichtbaren Kacheln, in Reihenfolge."""
