@@ -20,6 +20,11 @@ wochenplan_urls = [
         views_wochenplan.instanz_verschieben,
         name="wochenplan_verschieben",
     ),
+    path(
+        "eltern/wochenplan/<int:pk>/loeschen/",
+        views_wochenplan.instanz_loeschen,
+        name="wochenplan_loeschen",
+    ),
 ]
 
 urlpatterns = [
@@ -75,6 +80,16 @@ urlpatterns += [
         name="bestaetigen",
     ),
     path("eltern/meldungen/<int:pk>/ablehnen/", views_ablauf.eltern_ablehnen, name="ablehnen"),
+    path(
+        "eltern/meldungen/<int:pk>/abschliessen/",
+        views_ablauf.eltern_abschliessen,
+        name="abschliessen",
+    ),
+    path(
+        "eltern/meldungen/alle-abschliessen/",
+        views_ablauf.eltern_alle_abschliessen,
+        name="alle_abschliessen",
+    ),
     path(
         "eltern/meldungen/<int:pk>/rueckfrage/", views_ablauf.eltern_rueckfrage, name="rueckfrage"
     ),

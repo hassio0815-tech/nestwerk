@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-07 12:16+0000\n"
+"POT-Creation-Date: 2026-11-08 04:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,12 +126,12 @@ msgid "Diese Meldung ist schon entschieden."
 msgstr "This report has already been decided."
 
 #: ablauf.py:692 ablauf.py:751 ablauf.py:763 ablauf.py:817
-#: templates/aufgaben/_entscheidungen.html:83
+#: templates/aufgaben/_entscheidungen.html:94
 msgid "Begründung"
 msgstr "Reason"
 
-#: ablauf.py:711 models.py:255 models.py:458
-#: templates/aufgaben/_entscheidungen.html:52
+#: ablauf.py:711 models.py:255 models.py:470
+#: templates/aufgaben/_entscheidungen.html:51
 #: templates/aufgaben/_kind_bereich.html:19
 msgid "Rückfrage"
 msgstr "Question"
@@ -165,9 +165,13 @@ msgstr "Bonus points are only given for approved tasks."
 msgid "Bitte kurz begründen, warum korrigiert wird."
 msgstr "Please say briefly why it is being corrected."
 
-#: ablauf.py:928
+#: ablauf.py:965
 msgid "Diese Aufgabe ist schon geprüft oder wurde geändert."
 msgstr "This task has already been checked or was changed."
+
+#: ablauf.py:1011
+msgid "Nur bestätigte Aufgaben lassen sich abschließen."
+msgstr "Only confirmed tasks can be closed."
 
 #: anerkennung.py:72
 msgid "Anerkennung vergeben nur Eltern."
@@ -202,13 +206,59 @@ msgid ""
 msgstr ""
 "This week only %(rest)s more recognition points are possible for %(name)s."
 
+#: benachrichtigung_aktionen.py:22 templates/aufgaben/_entscheidungen.html:45
+msgid "Bestätigen"
+msgstr "Approve"
+
+#: benachrichtigung_aktionen.py:23 templates/aufgaben/_entscheidungen.html:46
+#: templates/aufgaben/_pruefen.html:22
+msgid "Ablehnen"
+msgstr "Decline"
+
+#: benachrichtigung_aktionen.py:24
+msgid "Erlauben"
+msgstr "Allow"
+
+#: benachrichtigung_aktionen.py:85
+#
+msgid "Diese Aufgabe gibt es nicht mehr."
+msgstr "This task no longer exists."
+
+#: benachrichtigung_aktionen.py:90 views_ablauf.py:184
+msgid "Bestätigt, Punkte gebucht."
+msgstr "Approved, points booked."
+
+#: benachrichtigung_aktionen.py:92 views_ablauf.py:193
+msgid "Abgelehnt."
+msgstr "Declined."
+
+#: benachrichtigung_aktionen.py:96
+#
+msgid "Abgelehnt, die Aufgabe ist wieder frei."
+msgstr "Declined, the task is free again."
+
+#: benachrichtigung_aktionen.py:97
+msgid "Erlaubt."
+msgstr "Allowed."
+
+#: benachrichtigung_aktionen.py:100 views_ablauf.py:159
+msgid "Zugeteilt."
+msgstr "Assigned."
+
+#: benachrichtigung_aktionen.py:103
+#
+msgid "Das ist nicht mehr möglich."
+msgstr "This is not possible any more."
+
 #: doppelt.py:40
 #, python-format
 msgid ""
 "Die Aufgabe „%(titel)s“ gibt es schon (gleiche Wiederholung und gleiche "
 "Zuweisung). Soll sie trotzdem noch einmal angelegt werden? Dann setze unten "
 "das Häkchen."
-msgstr "The task “%(titel)s” already exists (same repeat and same assignment). Create it again anyway? Then tick the box below."
+msgstr ""
+"The task “%(titel)s” already exists (same repeat and same assignment). "
+"Create it again anyway? Then tick the box below."
 
 #: einstellungen.py:49
 msgid "Vorlauf für Aufgaben mit Zeitfenster"
@@ -603,7 +653,7 @@ msgstr "per"
 msgid "(kein Limit)"
 msgstr "(no limit)"
 
-#: forms.py:89 templates/aufgaben/kind.html:8
+#: forms.py:89 templates/aufgaben/kind.html:7
 msgid "Start"
 msgstr "Start"
 
@@ -674,9 +724,11 @@ msgstr "All kids"
 msgid ""
 "Im Auswahlfenster der Eltern vorbelegt. „Jedes Kind“: eine eigene Aufgabe je "
 "Kind."
-msgstr "Preselected in the parents' choice window. “Each child”: one task of their own per child."
+msgstr ""
+"Preselected in the parents' choice window. “Each child”: one task of their "
+"own per child."
 
-#: forms.py:201 services.py:151
+#: forms.py:201 services.py:159
 msgid ""
 "Es gibt keine aktiven Kinder, für die die Aufgabe angelegt werden könnte."
 msgstr "There are no active children to create the task for."
@@ -709,7 +761,7 @@ msgstr "All categories"
 msgid "Alle (ohne beendete)"
 msgstr "All (except finished)"
 
-#: instanzen.py:220
+#: instanzen.py:220 wochenplan.py:151
 msgid "Instanz wurde zwischenzeitlich geändert"
 msgstr "The task was changed in the meantime"
 
@@ -721,7 +773,7 @@ msgstr "The photos are too big. Please use a smaller photo."
 #: migrations/0002_startwerte.py:19 migrations/0002_startwerte.py:20
 #: migrations/0002_startwerte.py:21 migrations/0002_startwerte.py:29
 #: migrations/0002_startwerte.py:30 migrations/0002_startwerte.py:31
-#: migrations/0016_startwerte_bibliothek_knoepfe.py:36
+#: migrations/0016_startwerte_bibliothek_knoepfe.py:37
 msgid "Haushalt"
 msgstr "Household"
 
@@ -733,7 +785,7 @@ msgstr "Kitchen"
 
 #: migrations/0002_startwerte.py:10 migrations/0002_startwerte.py:26
 #: migrations/0002_startwerte.py:27 migrations/0002_startwerte.py:28
-#: migrations/0016_startwerte_bibliothek_knoepfe.py:37 symbole.py:8
+#: migrations/0016_startwerte_bibliothek_knoepfe.py:38 symbole.py:8
 msgid "Wäsche"
 msgstr "Laundry"
 
@@ -828,15 +880,15 @@ msgstr "General waste"
 msgid "Biomüll"
 msgstr "Organic waste"
 
-#: migrations/0016_startwerte_bibliothek_knoepfe.py:23
+#: migrations/0016_startwerte_bibliothek_knoepfe.py:24
 msgid "Zimmer gründlich reinigen und aufräumen"
 msgstr "Clean and tidy the room thoroughly"
 
-#: migrations/0016_startwerte_bibliothek_knoepfe.py:36
+#: migrations/0016_startwerte_bibliothek_knoepfe.py:37
 msgid "Zimmer saugen"
 msgstr "Vacuum the room"
 
-#: migrations/0016_startwerte_bibliothek_knoepfe.py:37
+#: migrations/0016_startwerte_bibliothek_knoepfe.py:38
 msgid "Waschmaschine ausräumen"
 msgstr "Empty the washing machine"
 
@@ -882,7 +934,8 @@ msgid "Feste Kennung, z. B. 'schule' (Brücke zum Lernmodul)."
 msgstr "Fixed key, e.g. 'schule' (link to the learning module)."
 
 #: models.py:62 templates/aufgaben/basis.html:12
-#: templates/aufgaben/kategorien.html:3 templates/aufgaben/kategorien.html:6
+#: templates/aufgaben/formular.html:4 templates/aufgaben/kategorien.html:3
+#: templates/aufgaben/kategorien.html:4
 msgid "Kategorien"
 msgstr "Categories"
 
@@ -921,8 +974,9 @@ msgid "Aufgabe"
 msgstr "Task"
 
 #: models.py:188 templates/aufgaben/basis.html:6
-#: templates/aufgaben/basis.html:9 templates/aufgaben/kind.html:4
-#: templates/aufgaben/liste.html:3 templates/aufgaben/liste.html:6
+#: templates/aufgaben/basis.html:9 templates/aufgaben/formular.html:4
+#: templates/aufgaben/kind.html:4 templates/aufgaben/kind.html:7
+#: templates/aufgaben/liste.html:3 templates/aufgaben/liste.html:4
 msgid "Aufgaben"
 msgstr "Tasks"
 
@@ -942,19 +996,19 @@ msgstr "Open"
 msgid "Mehrere Interessenten"
 msgstr "Several interested"
 
-#: models.py:253 templates/aufgaben/_entscheidungen.html:60
+#: models.py:253 templates/aufgaben/_entscheidungen.html:59
 msgid "Reserviert"
 msgstr "Reserved"
 
-#: models.py:254 templates/aufgaben/_entscheidungen.html:26
+#: models.py:254 templates/aufgaben/_entscheidungen.html:25
 msgid "Gemeldet"
 msgstr "Reported"
 
-#: models.py:256 models.py:459
+#: models.py:256 models.py:471
 msgid "Bestätigt"
 msgstr "Approved"
 
-#: models.py:257 models.py:460
+#: models.py:257 models.py:472
 msgid "Abgelehnt"
 msgstr "Declined"
 
@@ -970,55 +1024,55 @@ msgstr "Cancelled"
 msgid "Zum Nachbessern"
 msgstr "To fix"
 
-#: models.py:348
+#: models.py:360
 msgid "Aufgaben-Instanz"
 msgstr "Task instance"
 
-#: models.py:349
+#: models.py:361
 msgid "Aufgaben-Instanzen"
 msgstr "Task instances"
 
-#: models.py:391 templates/aufgaben/_kind_bereich.html:66
+#: models.py:403 templates/aufgaben/_kind_bereich.html:66
 msgid "ohne Termin"
 msgstr "no date"
 
-#: models.py:404
+#: models.py:416
 msgid "Wartet auf Entscheidung"
 msgstr "Waiting for a decision"
 
-#: models.py:405
+#: models.py:417
 msgid "Zugeteilt"
 msgstr "Assigned"
 
-#: models.py:406
+#: models.py:418
 msgid "Vergeben/gelöst"
 msgstr "Given away/released"
 
-#: models.py:407
+#: models.py:419
 msgid "Zurückgegeben"
 msgstr "Given back"
 
-#: models.py:408
+#: models.py:420
 msgid "Abgelaufen"
 msgstr "Expired"
 
-#: models.py:441
+#: models.py:453
 msgid "Interesse"
 msgstr "Interest"
 
-#: models.py:442
+#: models.py:454
 msgid "Interessen"
 msgstr "Interests"
 
-#: models.py:457
+#: models.py:469
 msgid "Wartet auf Bestätigung"
 msgstr "Waiting for approval"
 
-#: models.py:493
+#: models.py:505
 msgid "Meldung"
 msgstr "Report"
 
-#: models.py:494 templates/aufgaben/basis.html:8
+#: models.py:506 templates/aufgaben/basis.html:8
 #: templates/aufgaben/entscheidungen.html:4
 msgid "Meldungen"
 msgstr "Reports"
@@ -1069,23 +1123,23 @@ msgstr "already running"
 msgid "Bitte ein Kind wählen."
 msgstr "Please choose a child."
 
-#: services.py:214
+#: services.py:222
 msgid "Nur aktive Aufgaben können aufgeteilt werden."
 msgstr "Only active tasks can be split up."
 
-#: services.py:216
+#: services.py:224
 msgid "Die Aufgabe ist schon einem Kind zugewiesen."
 msgstr "This task is already assigned to a child."
 
-#: services.py:219
+#: services.py:227
 msgid "Es gibt keine aktiven Kinder."
 msgstr "There are no active children."
 
-#: services.py:251
+#: services.py:259
 msgid "Unbekannter Status."
 msgstr "Unknown status."
 
-#: services.py:253
+#: services.py:261
 msgid "Eine beendete Aufgabe kann nicht fortgesetzt werden."
 msgstr "A finished task can't be resumed."
 
@@ -1113,100 +1167,87 @@ msgstr "Calendar"
 msgid "Münze"
 msgstr "Coin"
 
-#: templates/aufgaben/_entscheidungen.html:5
-msgid "Meldungen und Entscheidungen"
-msgstr "Reports and decisions"
-
-#: templates/aufgaben/_entscheidungen.html:7
+#: templates/aufgaben/_entscheidungen.html:6
 msgid "Konflikte"
 msgstr "Conflicts"
 
-#: templates/aufgaben/_entscheidungen.html:10
+#: templates/aufgaben/_entscheidungen.html:9
 msgid "Mehrere Kinder wollen diese Aufgabe."
 msgstr "Several kids want this task."
 
-#: templates/aufgaben/_entscheidungen.html:19
+#: templates/aufgaben/_entscheidungen.html:18
 msgid "Keinem (wieder frei)"
 msgstr "Nobody (free again)"
 
-#: templates/aufgaben/_entscheidungen.html:23
+#: templates/aufgaben/_entscheidungen.html:22
 msgid "Keine Konflikte."
 msgstr "No conflicts."
 
-#: templates/aufgaben/_entscheidungen.html:31
-#: templates/aufgaben/_entscheidungen.html:63
-#: templates/aufgaben/_entscheidungen.html:76
+#: templates/aufgaben/_entscheidungen.html:30
+#: templates/aufgaben/_entscheidungen.html:62
+#: templates/aufgaben/_entscheidungen.html:82
 msgctxt "Datum mit Wochentag und Uhrzeit"
 msgid "D d.m. H:i"
 msgstr "D m/d, H:i"
 
-#: templates/aufgaben/_entscheidungen.html:31
+#: templates/aufgaben/_entscheidungen.html:30
 msgid "gemeldet"
 msgstr "reported"
 
-#: templates/aufgaben/_entscheidungen.html:36
+#: templates/aufgaben/_entscheidungen.html:35
 #, python-format
 msgid "Rückfrage: %(frage)s – wartet auf Antwort."
 msgstr "Question: %(frage)s – waiting for an answer."
 
-#: templates/aufgaben/_entscheidungen.html:37
+#: templates/aufgaben/_entscheidungen.html:36
 #, python-format
 msgid "Antwort: „%(antwort)s“"
 msgstr "Answer: “%(antwort)s”"
 
-#: templates/aufgaben/_entscheidungen.html:40
-#: templates/aufgaben/_entscheidungen.html:82
-#: templates/aufgaben/_entscheidungen.html:84
+#: templates/aufgaben/_entscheidungen.html:39
+#: templates/aufgaben/_entscheidungen.html:93
+#: templates/aufgaben/_entscheidungen.html:95
 msgid "Sonderpunkte"
 msgstr "Bonus points"
 
-#: templates/aufgaben/_entscheidungen.html:40
+#: templates/aufgaben/_entscheidungen.html:39
 #, python-format
 msgid "(max. %(deckel)s)"
 msgstr "(max. %(deckel)s)"
 
-#: templates/aufgaben/_entscheidungen.html:42
+#: templates/aufgaben/_entscheidungen.html:41
 msgid "Begründung (für Sonderpunkte/Ablehnung)"
 msgstr "Reason (for bonus points/declining)"
 
 #: templates/aufgaben/_entscheidungen.html:46
-msgid "Bestätigen"
-msgstr "Approve"
-
-#: templates/aufgaben/_entscheidungen.html:47
 msgid "Ablehnen? Es gibt keine Punkte."
 msgstr "Decline? There will be no points."
 
-#: templates/aufgaben/_entscheidungen.html:47
-#: templates/aufgaben/_pruefen.html:21
-msgid "Ablehnen"
-msgstr "Decline"
-
-#: templates/aufgaben/_entscheidungen.html:53
+#: templates/aufgaben/_entscheidungen.html:52
 msgid "Nachfragen"
 msgstr "Ask"
 
-#: templates/aufgaben/_entscheidungen.html:57
+#: templates/aufgaben/_entscheidungen.html:56
 msgid "Keine offenen Meldungen."
 msgstr "No open reports."
 
-#: templates/aufgaben/_entscheidungen.html:63
+#: templates/aufgaben/_entscheidungen.html:62
 #: templates/aufgaben/_kind_bereich.html:15
 #: templates/aufgaben/_kind_bereich.html:17
 #: templates/aufgaben/_kind_bereich.html:66
-#: templates/aufgaben/_wochenplan_karte.html:10
+#: templates/aufgaben/_wochenplan_karte.html:14
 msgid "bis"
 msgstr "until"
 
-#: templates/aufgaben/_entscheidungen.html:64
+#: templates/aufgaben/_entscheidungen.html:63
 msgid "Reservierung lösen? Die Aufgabe wird wieder frei."
 msgstr "Release the reservation? The task becomes free again."
 
-#: templates/aufgaben/_entscheidungen.html:65
+#: templates/aufgaben/_entscheidungen.html:64
 msgid "Lösen"
 msgstr "Release"
 
-#: templates/aufgaben/_entscheidungen.html:68
+#: templates/aufgaben/_entscheidungen.html:67
 msgid "Nichts reserviert."
 msgstr "Nothing reserved."
 
@@ -1214,45 +1255,62 @@ msgstr "Nothing reserved."
 msgid "Zuletzt bestätigt"
 msgstr "Recently approved"
 
-#: templates/aufgaben/_entscheidungen.html:76
+#: templates/aufgaben/_entscheidungen.html:73
+msgid "Alle bestätigten Aufgaben abschließen? Die Punkte bleiben."
+msgstr "Close all confirmed tasks? The points stay."
+
+#: templates/aufgaben/_entscheidungen.html:74
+#
+msgid "Alle abschließen"
+msgstr "Close all"
+
+#: templates/aufgaben/_entscheidungen.html:82
 #, python-format
 msgid "bestätigt von %(name)s"
 msgstr "approved by %(name)s"
 
-#: templates/aufgaben/_entscheidungen.html:76
+#: templates/aufgaben/_entscheidungen.html:82
 msgid "Vertrauen (automatisch)"
 msgstr "Trust (automatic)"
 
-#: templates/aufgaben/_entscheidungen.html:76
+#: templates/aufgaben/_entscheidungen.html:82
 #, python-format
 msgid "+%(punkte)s Bonus (%(grund)s)"
 msgstr "+%(punkte)s bonus (%(grund)s)"
 
-#: templates/aufgaben/_entscheidungen.html:82
+#: templates/aufgaben/_entscheidungen.html:85
+msgid "Abschließen"
+msgstr "Close"
+
+#: templates/aufgaben/_entscheidungen.html:89
+msgid "Mehr …"
+msgstr "More …"
+
+#: templates/aufgaben/_entscheidungen.html:93
 msgid "Bonus"
 msgstr "Bonus"
 
-#: templates/aufgaben/_entscheidungen.html:87
+#: templates/aufgaben/_entscheidungen.html:98
 msgid "Alle Punkte dieser Aufgabe zurückbuchen?"
 msgstr "Take back all points for this task?"
 
-#: templates/aufgaben/_entscheidungen.html:88
+#: templates/aufgaben/_entscheidungen.html:99
 msgid "Grund der Korrektur"
 msgstr "Reason for the correction"
 
-#: templates/aufgaben/_entscheidungen.html:89
+#: templates/aufgaben/_entscheidungen.html:100
 msgid "Korrigieren"
 msgstr "Correct"
 
-#: templates/aufgaben/_entscheidungen.html:93
+#: templates/aufgaben/_entscheidungen.html:105
 msgid "In den letzten 7 Tagen nichts bestätigt."
 msgstr "Nothing approved in the last 7 days."
 
-#: templates/aufgaben/_formular.html:11
+#: templates/aufgaben/_formular.html:10
 msgid "Wann und wie oft?"
 msgstr "When and how often?"
 
-#: templates/aufgaben/_formular.html:16
+#: templates/aufgaben/_formular.html:15
 msgid ""
 "Schnell-Knopf: Die Aufgabe schläft, bis jemand den Knopf drückt. Dann "
 "entsteht genau eine offene Aufgabe."
@@ -1260,19 +1318,13 @@ msgstr ""
 "Quick button: the task sleeps until someone presses the button. Then exactly "
 "one open task appears."
 
-#: templates/aufgaben/_formular.html:32
+#: templates/aufgaben/_formular.html:31
 msgid "Limit gilt je Kind und Aufgabe."
 msgstr "The limit applies per child and task."
 
-#: templates/aufgaben/_formular.html:42
+#: templates/aufgaben/_formular.html:41
 msgid "Speichern"
 msgstr "Save"
-
-#: templates/aufgaben/_formular.html:43
-#: templates/aufgaben/_tablet_schnellknopf.html:23
-#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:38
-msgid "Abbrechen"
-msgstr "Cancel"
 
 #: templates/aufgaben/_kind_bereich.html:7
 msgid "Meine Aufgaben"
@@ -1400,40 +1452,40 @@ msgstr "Photo for the report"
 msgid "Heute erledigt"
 msgstr "Done today"
 
-#: templates/aufgaben/_pruefen.html:16
-msgid "Grund (für Nachbessern und Ablehnen nötig)"
-msgstr "Reason (needed to send back or decline)"
-
-#: templates/aufgaben/_pruefen.html:19
-msgid "Passt"
-msgstr "Looks good"
-
-#: templates/aufgaben/_pruefen.html:20
-msgid "Zurück ans Kind? Die Punkte werden abgezogen."
-msgstr "Send back to the child? The points will be taken off."
-
-#: templates/aufgaben/_pruefen.html:20
-msgid "Nachbessern"
-msgstr "Fix it"
-
-#: templates/aufgaben/_pruefen.html:21
-msgid "Ablehnen? Die Punkte werden abgezogen."
-msgstr "Decline? The points will be taken off."
-
-#: templates/aufgaben/_pruefen.html:26
-msgid "Heute noch nichts erledigt."
-msgstr "Nothing done yet today."
-
-#: templates/aufgaben/_pruefen.html
+#: templates/aufgaben/_pruefen.html:12
 msgid "kurz prüfen"
 msgstr "quick check"
 
-#: templates/aufgaben/_pruefen.html
+#: templates/aufgaben/_pruefen.html:17
+msgid "Grund (für Nachbessern und Ablehnen nötig)"
+msgstr "Reason (needed to send back or decline)"
+
+#: templates/aufgaben/_pruefen.html:20
+msgid "Passt"
+msgstr "Looks good"
+
+#: templates/aufgaben/_pruefen.html:21
+msgid "Zurück ans Kind? Die Punkte werden abgezogen."
+msgstr "Send back to the child? The points will be taken off."
+
+#: templates/aufgaben/_pruefen.html:21
+msgid "Nachbessern"
+msgstr "Fix it"
+
+#: templates/aufgaben/_pruefen.html:22
+msgid "Ablehnen? Die Punkte werden abgezogen."
+msgstr "Decline? The points will be taken off."
+
+#: templates/aufgaben/_pruefen.html:28
+msgid "Heute noch nichts erledigt."
+msgstr "Nothing done yet today."
+
+#: templates/aufgaben/_pruefen.html:31
 #, python-format
 msgid "+%(n)s weitere"
 msgstr "+%(n)s more"
 
-#: templates/aufgaben/_pruefen.html:30
+#: templates/aufgaben/_pruefen.html:35
 msgid "Alle passen"
 msgstr "All look good"
 
@@ -1460,10 +1512,12 @@ msgstr "Just report it"
 msgid "Oder ich mach's:"
 msgstr "Or I'll do it:"
 
-#: templates/aufgaben/_wochenplan.html:3 templates/aufgaben/basis.html:10
-#: templates/aufgaben/wochenplan.html:4
-msgid "Wochenplan"
-msgstr "Weekly plan"
+#: templates/aufgaben/_tablet_schnellknopf.html:23
+#: templates/aufgaben/_wochenplan.html:47
+#: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:38
+#: templates/aufgaben/wochenplan_loeschen.html:22
+msgid "Abbrechen"
+msgstr "Cancel"
 
 #: templates/aufgaben/_wochenplan.html:3
 msgctxt "Datum ohne Jahr"
@@ -1523,15 +1577,48 @@ msgstr "New task on %(datum)s"
 msgid "Ohne Termin"
 msgstr "No date"
 
-#: templates/aufgaben/_wochenplan_karte.html:16
+#: templates/aufgaben/_wochenplan.html:40
+#: templates/aufgaben/wochenplan_loeschen.html:12
+msgid "Wirklich löschen?"
+msgstr "Really delete?"
+
+#: templates/aufgaben/_wochenplan.html:42
+#: templates/aufgaben/wochenplan_loeschen.html:14
+msgid ""
+"Diese Aufgabe wiederholt sich. „Ganze Serie“ beendet sie endgültig, bereits "
+"gebuchte Punkte bleiben."
+msgstr "This task repeats. “Whole series” ends it for good; points already booked stay."
+
+#: templates/aufgaben/_wochenplan.html:44
+#: templates/aufgaben/wochenplan_loeschen.html:20
+msgid "Ja, löschen"
+msgstr "Yes, delete"
+
+#: templates/aufgaben/_wochenplan.html:45
+#: templates/aufgaben/wochenplan_loeschen.html:17
+#
+msgid "Nur diesen Tag"
+msgstr "Just this day"
+
+#: templates/aufgaben/_wochenplan.html:46
+#: templates/aufgaben/wochenplan_loeschen.html:18
+msgid "Ganze Serie"
+msgstr "Whole series"
+
+#: templates/aufgaben/_wochenplan_karte.html:7
+#
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/aufgaben/_wochenplan_karte.html:20
 msgid "Verschieben nach"
 msgstr "Move to"
 
-#: templates/aufgaben/_wochenplan_karte.html:17
+#: templates/aufgaben/_wochenplan_karte.html:21
 msgid "Verschieben"
 msgstr "Move"
 
-#: templates/aufgaben/_wochenplan_karte.html:20
+#: templates/aufgaben/_wochenplan_karte.html:24
 msgid "Nicht verschiebbar"
 msgstr "Can't be moved"
 
@@ -1566,10 +1653,18 @@ msgstr "Finish this task? This can't be undone. Points already given stay."
 msgid "Beenden"
 msgstr "Finish"
 
-#: templates/aufgaben/anerkennung.html:5 templates/aufgaben/anerkennung.html:7
+#: templates/aufgaben/anerkennung.html:5 templates/aufgaben/anerkennung.html:6
 #: templates/aufgaben/basis.html:13
 msgid "Anerkennung"
 msgstr "Recognition"
+
+#: templates/aufgaben/anerkennung.html:6
+#: templates/aufgaben/entscheidungen.html:6
+#: templates/aufgaben/kategorien.html:4 templates/aufgaben/liste.html:4
+#: templates/aufgaben/schnellknoepfe.html:4
+#: templates/aufgaben/wochenplan.html:8
+msgid "Übersicht"
+msgstr "Overview"
 
 #: templates/aufgaben/anerkennung.html:8
 #, python-format
@@ -1606,14 +1701,24 @@ msgstr "The child will read the note. Say briefly what it is for."
 msgid "Anerkennung schenken"
 msgstr "Give recognition"
 
+#: templates/aufgaben/basis.html:10 templates/aufgaben/wochenplan.html:4
+#: templates/aufgaben/wochenplan.html:8
+#: templates/aufgaben/wochenplan_loeschen.html:7
+msgid "Wochenplan"
+msgstr "Weekly plan"
+
 #: templates/aufgaben/basis.html:11
 #: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:4
 #: templates/aufgaben/kacheln/schnellknoepfe_kind.html:4
 #: templates/aufgaben/kacheln/schnellknoepfe_tablet.html:4
 #: templates/aufgaben/schnellknoepfe.html:3
-#: templates/aufgaben/schnellknoepfe.html:5
+#: templates/aufgaben/schnellknoepfe.html:4
 msgid "Schnell-Knöpfe"
 msgstr "Quick buttons"
+
+#: templates/aufgaben/entscheidungen.html:6
+msgid "Meldungen und Entscheidungen"
+msgstr "Reports and decisions"
 
 #: templates/aufgaben/kacheln/schnellknoepfe_eltern.html:11
 #, python-format
@@ -1698,22 +1803,20 @@ msgid ""
 "ein, mit dem Kreuz löschst du einen Knopf."
 msgstr "Buttons for tasks that come up as needed. Tap a button and choose who does the task. Set everything else with the pencil icon; the cross deletes a button."
 
-#: templates/aufgaben/kacheln/_schnellknopf_raster.html:30
-msgid "Wirklich löschen?"
-msgstr "Really delete?"
-
 #: templates/aufgaben/kacheln/_schnellknopf_raster.html:32
 msgid "Der Knopf verschwindet. Bisherige Aufgaben und Punkte bleiben erhalten."
 msgstr "The button disappears. Past tasks and points are kept."
-
-#: templates/aufgaben/kacheln/_schnellknopf_raster.html:34
-msgid "Löschen"
-msgstr "Delete"
 
 #: templates/aufgaben/kacheln/_schnellknopf_raster.html:26
 #, python-format
 msgid "%(titel)s löschen"
 msgstr "Delete %(titel)s"
+
+#: templates/aufgaben/wochenplan_loeschen.html:3
+#: templates/aufgaben/wochenplan_loeschen.html:7
+#
+msgid "Aufgabe löschen"
+msgstr "Delete task"
 
 #: uebernahme.py:35
 msgid ""
@@ -1772,48 +1875,51 @@ msgstr "Answer sent!"
 msgid "Sonderpunkte: bitte eine ganze Zahl."
 msgstr "Bonus points: please enter a whole number."
 
-#: views_ablauf.py:159
-msgid "Zugeteilt."
-msgstr "Assigned."
-
 #: views_ablauf.py:169
 msgid "Reservierung gelöst, die Aufgabe ist wieder frei."
 msgstr "Reservation released, the task is free again."
-
-#: views_ablauf.py:184
-msgid "Bestätigt, Punkte gebucht."
-msgstr "Approved, points booked."
-
-#: views_ablauf.py:193
-msgid "Abgelehnt."
-msgstr "Declined."
 
 #: views_ablauf.py:202
 msgid "Rückfrage gesendet."
 msgstr "Question sent."
 
 #: views_ablauf.py:212
+#
+msgid "Abgeschlossen."
+msgstr "Closed."
+
+#: views_ablauf.py:220
+#, python-format
+msgid "%(n)s abgeschlossen."
+msgstr "%(n)s closed."
+
+#: views_ablauf.py:226
+#
+msgid "Diese Aufgabe ist abgeschlossen."
+msgstr "This task is closed."
+
+#: views_ablauf.py:237
 msgid "Sonderpunkte vergeben."
 msgstr "Bonus points given."
 
-#: views_ablauf.py:221
+#: views_ablauf.py:247
 msgid "Korrigiert, Punkte zurückgebucht."
 msgstr "Corrected, points taken back."
 
-#: views_ablauf.py:248
+#: views_ablauf.py:274
 msgid "Passt, danke."
 msgstr "Looks good, thanks."
 
-#: views_ablauf.py:256
+#: views_ablauf.py:282
 #, python-format
 msgid "%(n)s als „passt“ markiert."
 msgstr "%(n)s marked as “looks good”."
 
-#: views_ablauf.py:266
+#: views_ablauf.py:292
 msgid "Zurück ans Kind: Punkte abgezogen, es soll nachbessern."
 msgstr "Sent back to the child: points taken off, they should fix it."
 
-#: views_ablauf.py:277
+#: views_ablauf.py:303
 msgid "Abgelehnt, Punkte zurückgebucht."
 msgstr "Declined, points taken back."
 
@@ -1859,14 +1965,29 @@ msgstr "The tablet view is only available on the home network."
 msgid "Dieses Gerät ist nicht als Flur-Tablet eingerichtet."
 msgstr "This device is not set up as the hallway tablet."
 
-#: views_wochenplan.py:38
+#: views_wochenplan.py:39
 msgid "Bitte ein gültiges Datum wählen."
 msgstr "Please choose a valid date."
 
-#: views_wochenplan.py:50
+#: views_wochenplan.py:51
 #, python-format
 msgid "„%(titel)s“ verschoben."
 msgstr "“%(titel)s” moved."
+
+#: views_wochenplan.py:68 wochenplan.py:135
+#
+msgid "Diese Aufgabe kann nicht mehr gelöscht werden."
+msgstr "This task can no longer be deleted."
+
+#: views_wochenplan.py:83
+#, python-format
+msgid "„%(titel)s“ gelöscht, die ganze Serie ist beendet."
+msgstr "“%(titel)s” deleted, the whole series has ended."
+
+#: views_wochenplan.py:85
+#, python-format
+msgid "„%(titel)s“ gelöscht."
+msgstr "“%(titel)s” deleted."
 
 #: wiederholung.py:31 wiederholung.py:164
 msgid "Einmalig"
@@ -2073,13 +2194,18 @@ msgstr "The limit must be at least 1."
 msgid "Unbekannter Zeitraum."
 msgstr "Unknown period."
 
-#: wochenplan.py:63 wochenplan.py:65
+#: wochenplan.py:89 wochenplan.py:91
 msgid "Ungültige Reihenfolge"
 msgstr "Invalid order"
 
-#: wochenplan.py:79
+#: wochenplan.py:105 wochenplan.py:133
 msgid "Aufgabe nicht gefunden"
 msgstr "Task not found"
+
+#: wochenplan.py:170
+#
+msgid "Unbekannte Auswahl."
+msgstr "Unknown choice."
 
 #: zustand.py:82 zustand.py:89
 msgid "Die Aufgabe wurde inzwischen geändert."

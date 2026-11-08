@@ -2,14 +2,15 @@
 
 from datetime import date
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods, require_POST
 
 from apps.kern.sprache import uebersetzt
 from apps.konten.zugriff import aktueller_elternteil, nur_eltern
 
 from . import wochenplan
+from .models import AufgabenInstanz
 
 
 def _htmx(request):
@@ -49,3 +50,38 @@ def instanz_verschieben(request, pk):
         woche,
         meldung=_("„%(titel)s“ verschoben.") % {"titel": uebersetzt(inst.titel_snapshot)},
     )
+
+
+@nur_eltern
+@require_http_methods(["GET", "POST"])
+def instanz_loeschen(request, pk):
+    """Löschen per ⓧ. POST: ``modus`` = ``tag`` (nur diese Karte) oder ``serie`` (ganze Aufgabe).
+    GET: Bestätigungsseite für den Fall ohne JavaScript (mit JS öffnet das ⓧ ein Popup)."""
+    daten = request.POST if request.method == "POST" else request.GET
+    woche = wochenplan.woche_aus_datum(daten.get("woche"))
+    if request.method == "GET":
+        inst = get_object_or_404(AufgabenInstanz.objects.select_related("aufgabe"), pk=pk)
+        if not wochenplan.loeschbar(inst):
+            return _antwort(
+                request,
+                woche,
+                fehler=_("Diese Aufgabe kann nicht mehr gelöscht werden."),
+                status=409,
+            )
+        kontext = {
+            "instanz": inst,
+            "serie": wochenplan.ist_serie(inst.aufgabe),
+            "woche_montag": woche.montag,
+        }
+        return render(request, "aufgaben/wochenplan_loeschen.html", kontext)
+    modus = daten.get("modus", "tag")
+    try:
+        inst = wochenplan.loeschen(pk, modus, von=aktueller_elternteil(request))
+    except ValueError as exc:
+        return _antwort(request, woche, fehler=str(exc), status=409)
+    meldung = (
+        _("„%(titel)s“ gelöscht, die ganze Serie ist beendet.")
+        if modus == "serie" and wochenplan.ist_serie(inst.aufgabe)
+        else _("„%(titel)s“ gelöscht.")
+    ) % {"titel": uebersetzt(inst.titel_snapshot)}
+    return _antwort(request, woche, meldung=meldung)

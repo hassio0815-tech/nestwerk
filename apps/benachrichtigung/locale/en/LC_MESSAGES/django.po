@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nestwerk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 04:59+0000\n"
+"POT-Creation-Date: 2026-11-08 04:05+0000\n"
 "PO-Revision-Date: 2026-10-26 00:00+0000\n"
 "Last-Translator: Nestwerk\n"
 "Language-Team: English\n"
@@ -14,9 +14,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: aktionen.py:82
+msgid "Das ist nicht mehr möglich."
+msgstr "This is not possible any more."
+
 #: kachel.py:22 models.py:141 templates/benachrichtigung/_kachel.html:2
+#: templates/benachrichtigung/einstellungen.html:4
 #: templates/benachrichtigung/liste.html:3
-#: templates/benachrichtigung/liste.html:12
+#: templates/benachrichtigung/liste.html:4
 #: templates/benachrichtigung/push_geraet.html:6
 msgid "Benachrichtigungen"
 msgstr "Notifications"
@@ -69,7 +74,7 @@ msgstr "Earlier than 'from' = past midnight"
 msgid "Bitmaske Mo=1 … So=64"
 msgstr "Bitmask Mon=1 … Sun=64"
 
-#: models.py:97 templates/benachrichtigung/_einstellungen.html:31
+#: models.py:97 templates/benachrichtigung/_einstellungen.html:30
 msgid "Ruhezeit"
 msgstr "Quiet hours"
 
@@ -97,7 +102,7 @@ msgstr "Push subscription"
 msgid "Push-Abos"
 msgstr "Push subscriptions"
 
-#: models.py:184
+#: models.py:184 templates/benachrichtigung/_reiter_zaehler.html:1
 msgid "offen"
 msgstr "pending"
 
@@ -125,7 +130,8 @@ msgstr "given up"
 msgid "Kanal nicht eingerichtet"
 msgstr "channel not set up"
 
-#: models.py:208 templates/benachrichtigung/_liste.html:17
+#: models.py:208 templates/benachrichtigung/_liste.html:37
+#: templates/benachrichtigung/_liste.html:38
 msgid "Zustellung"
 msgstr "Delivery"
 
@@ -300,116 +306,109 @@ msgstr "Sending did not work (%(grund)s)."
 msgid "Testnachricht an %(empfaenger)s gesendet."
 msgstr "Test message sent to %(empfaenger)s."
 
-#: templates/benachrichtigung/_einstellungen.html:2
-#: templates/benachrichtigung/einstellungen.html:3
-#: templates/benachrichtigung/email.html:7
-#: templates/benachrichtigung/email.txt:9
-msgid "Benachrichtigungen einstellen"
-msgstr "Notification settings"
-
-#: templates/benachrichtigung/_einstellungen.html:5
+#: templates/benachrichtigung/_einstellungen.html:4
 msgid "Für wen"
 msgstr "For whom"
 
-#: templates/benachrichtigung/_einstellungen.html:7
+#: templates/benachrichtigung/_einstellungen.html:6
 msgid "Für mich"
 msgstr "For me"
 
-#: templates/benachrichtigung/_einstellungen.html:15
+#: templates/benachrichtigung/_einstellungen.html:14
 msgid "Profil"
 msgstr "Profile"
 
-#: templates/benachrichtigung/_einstellungen.html:17
+#: templates/benachrichtigung/_einstellungen.html:16
 msgid "E-Mails kommen nur, wenn du etwas entscheiden musst."
 msgstr "You only get emails when you need to decide something."
 
-#: templates/benachrichtigung/_einstellungen.html:17
+#: templates/benachrichtigung/_einstellungen.html:16
 msgid "Du bekommst zu jedem eingestellten Ereignis eine E-Mail."
 msgstr "You get an email for every event you have turned on."
 
-#: templates/benachrichtigung/_einstellungen.html:20
+#: templates/benachrichtigung/_einstellungen.html:19
 msgid "Wieder alle E-Mails"
 msgstr "All emails again"
 
-#: templates/benachrichtigung/_einstellungen.html:22
+#: templates/benachrichtigung/_einstellungen.html:21
 msgid "Mail nur bei Entscheidungen"
 msgstr "Email only for decisions"
 
-#: templates/benachrichtigung/_einstellungen.html:25
+#: templates/benachrichtigung/_einstellungen.html:24
 msgid "Der E-Mail-Postausgang ist noch nicht eingerichtet."
 msgstr "Outgoing email is not set up yet."
 
-#: templates/benachrichtigung/_einstellungen.html:32
+#: templates/benachrichtigung/_einstellungen.html:31
 msgid ""
 "In dieser Zeit bleibt Push stumm. Die Meldung steht trotzdem in der Liste."
 msgstr ""
 "During this time, push stays silent. The message still shows up in the list."
 
-#: templates/benachrichtigung/_einstellungen.html:35
+#: templates/benachrichtigung/_einstellungen.html:34
 msgctxt "Uhrzeit"
 msgid "Von"
 msgstr "From"
 
-#: templates/benachrichtigung/_einstellungen.html:37
+#: templates/benachrichtigung/_einstellungen.html:36
 msgctxt "Uhrzeit"
 msgid "Bis"
 msgstr "To"
 
-#: templates/benachrichtigung/_einstellungen.html:40
+#: templates/benachrichtigung/_einstellungen.html:39
 msgid "Wochentage"
 msgstr "Days of the week"
 
-#: templates/benachrichtigung/_einstellungen.html:43
+#: templates/benachrichtigung/_einstellungen.html:42
 msgid "E-Mail ebenfalls pausieren"
 msgstr "Pause email as well"
 
-#: templates/benachrichtigung/_einstellungen.html:45
+#: templates/benachrichtigung/_einstellungen.html:44
 msgid "Speichern"
 msgstr "Save"
 
-#: templates/benachrichtigung/_einstellungen.html:47
+#: templates/benachrichtigung/_einstellungen.html:46
 msgid "Entfernen"
 msgstr "Remove"
 
-#: templates/benachrichtigung/_einstellungen.html:55
+#: templates/benachrichtigung/_einstellungen.html:54
 msgid "Was du bekommst"
 msgstr "What you get"
 
-#: templates/benachrichtigung/_einstellungen.html:55
+#: templates/benachrichtigung/_einstellungen.html:54
 #, python-format
 msgid "Was %(name)s bekommt"
 msgstr "What %(name)s gets"
 
-#: templates/benachrichtigung/_einstellungen.html:56
+#: templates/benachrichtigung/_einstellungen.html:55
 msgid "Kinder erhalten Push und Pop-ups. Die Eltern stellen das hier ein."
 msgstr "Kids get push and pop-ups. Parents set this up here."
 
-#: templates/benachrichtigung/_einstellungen.html:59
+#: templates/benachrichtigung/_einstellungen.html:58
 msgid "Ereignis"
 msgstr "Event"
 
-#: templates/benachrichtigung/_einstellungen.html:66
+#: templates/benachrichtigung/_einstellungen.html:65
 msgid "nur Entscheidungen"
 msgstr "decisions only"
 
-#: templates/benachrichtigung/_einstellungen.html:68
+#: templates/benachrichtigung/_einstellungen.html:67
 #, python-format
 msgid "%(typ)s per %(kanal)s"
 msgstr "%(typ)s by %(kanal)s"
 
-#: templates/benachrichtigung/_einstellungen.html:71
+#: templates/benachrichtigung/_einstellungen.html:70
 msgid "An"
 msgstr "On"
 
-#: templates/benachrichtigung/_einstellungen.html:71
+#: templates/benachrichtigung/_einstellungen.html:70
 msgid "Aus"
 msgstr "Off"
 
-#: templates/benachrichtigung/_einstellungen.html:81
+#: templates/benachrichtigung/_einstellungen.html:80
 msgid "Keine Ereignisse"
 msgstr "No events"
 
-#: templates/benachrichtigung/_einstellungen.html:81
+#: templates/benachrichtigung/_einstellungen.html:80
 msgid "Sobald Module Ereignisse melden, erscheinen sie hier."
 msgstr "As soon as modules report events, they show up here."
 
@@ -434,29 +433,33 @@ msgstr "All read"
 msgid "Alle gelesen"
 msgstr "Mark all as read"
 
-#: templates/benachrichtigung/_liste.html:13
+#: templates/benachrichtigung/_liste.html:14
 msgid "neu"
 msgstr "new"
 
-#: templates/benachrichtigung/_liste.html:14
+#: templates/benachrichtigung/_liste.html:15
+msgid "Erledigt"
+msgstr "Done"
+
+#: templates/benachrichtigung/_liste.html:16
 msgid "d.m. H:i"
 msgstr "M j, H:i"
 
-#: templates/benachrichtigung/_liste.html:25
+#: templates/benachrichtigung/_liste.html:27
 #: templates/benachrichtigung/email.html:6
 #: templates/benachrichtigung/email.txt:6
 msgid "Öffnen"
 msgstr "Open"
 
-#: templates/benachrichtigung/_liste.html:29
+#: templates/benachrichtigung/_liste.html:31
 msgid "Gelesen"
 msgstr "Mark as read"
 
-#: templates/benachrichtigung/_liste.html:35
+#: templates/benachrichtigung/_liste.html:47
 msgid "Noch nichts passiert"
 msgstr "Nothing has happened yet"
 
-#: templates/benachrichtigung/_liste.html:35
+#: templates/benachrichtigung/_liste.html:47
 msgid "Neue Ereignisse erscheinen hier."
 msgstr "New events show up here."
 
@@ -549,10 +552,12 @@ msgstr ""
 msgid "%(ungelesen)s neu"
 msgstr "%(ungelesen)s new"
 
-#: templates/benachrichtigung/einstellungen.html:6
-#: templates/benachrichtigung/liste.html:8
-msgid "Zurück"
-msgstr "Back"
+#: templates/benachrichtigung/einstellungen.html:3
+#: templates/benachrichtigung/einstellungen.html:4
+#: templates/benachrichtigung/email.html:7
+#: templates/benachrichtigung/email.txt:9
+msgid "Benachrichtigungen einstellen"
+msgstr "Notification settings"
 
 #: templates/benachrichtigung/email.html:3
 #: templates/benachrichtigung/email.txt:1
@@ -560,7 +565,11 @@ msgstr "Back"
 msgid "Hallo %(name)s,"
 msgstr "Hi %(name)s,"
 
-#: templates/benachrichtigung/liste.html:6
+#: templates/benachrichtigung/liste.html:4
+msgid "Übersicht"
+msgstr "Overview"
+
+#: templates/benachrichtigung/liste.html:8
 msgid "Einstellungen"
 msgstr "Settings"
 
@@ -880,11 +889,11 @@ msgstr "Big goal: {grossziel}!"
 msgid "Ihr habt mehrere Wochenziele in Folge geschafft!"
 msgstr "You reached several weekly goals in a row!"
 
-#: views.py:166
+#: views.py:206
 msgid "Bitte Uhrzeiten wie 21:00 eingeben."
 msgstr "Please enter times like 21:00."
 
-#: views.py:168
+#: views.py:208
 msgid "Bitte mindestens einen Wochentag wählen."
 msgstr "Please choose at least one day."
 

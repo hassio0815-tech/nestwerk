@@ -22,6 +22,7 @@ from .ablauf import (
     LimitErreicht,
     NichtErlaubt,
     ablehnen,
+    alle_meldungen_abschliessen,
     alle_passen,
     bestaetigen,
     erledigt_melden,
@@ -32,6 +33,7 @@ from .ablauf import (
     kind_darf_sehen,
     korrigieren,
     limit_stand,
+    meldung_abschliessen,
     nachbessern_pruefen,
     nachweis_loescher_registrieren,
     nachweis_speicher_registrieren,
@@ -60,6 +62,8 @@ from .uebernahme import uebernehmen as aus_woche_uebernehmen
 from .zustand import AblaufFehler, UngueltigerUebergang
 
 __all__ = [
+    "alle_meldungen_abschliessen",
+    "meldung_abschliessen",
     "nachbessern_pruefen",
     "alle_passen",
     "passt",

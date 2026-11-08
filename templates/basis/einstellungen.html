@@ -1,4 +1,4 @@
-{% extends "basis/eltern.html" %}{% load i18n %}
+{% extends "basis/eltern.html" %}{% load i18n benachrichtigung_tags %}
 {% load static %}
 {% comment %}
   Gemeinsames Einstellungs-/Eltern-Layout: Seitenleiste (Desktop), scrollende Tabs (mobil).
@@ -14,7 +14,7 @@
           <a class="nw-tab" href="{{ u1 }}"{% if request.path == u1 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="home" %}<span>{% translate "Übersicht" %}</span></a>
           <a class="nw-tab" href="{{ u2 }}"{% if request.path == u2 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="kalender" %}<span>{% translate "Wochenplan" %}</span></a>
           <a class="nw-tab" href="{{ u3 }}"{% if request.path == u3 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="person" %}<span>{% translate "Familie" %}</span></a>
-          <a class="nw-tab" href="{{ u4 }}"{% if request.path == u4 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="glocke" %}<span>{% translate "Benachrichtigungen" %}</span></a>
+          <a class="nw-tab" href="{{ u4 }}"{% if request.path == u4 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="glocke" %}<span>{% translate "Benachrichtigungen" %}</span>{% reiter_zaehler %}</a>
           {% if request.user.dungeon_anzeigen %}{% url "oberflaeche:eltern_dungeon" as u5 %}<a class="nw-tab" href="{{ u5 }}"{% if request.path == u5 %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="pokal" %}<span>{% translate "Dungeon" %}</span></a>{% endif %}
         {% endblock %}
       </div>

@@ -134,8 +134,10 @@ def kind_eigene(kind, *, jetzt=None):
         kind=kind,
         status__in=(InstanzStatus.BESTAETIGT, InstanzStatus.ABGELEHNT, InstanzStatus.STORNIERT),
         abgeschlossen_am__gte=seit,
+        ausgelassen_am__isnull=True,
     )
     vergeben = AufgabenInstanz.objects.filter(
+        ausgelassen_am__isnull=True,
         interessen__kind=kind,
         interessen__status=InteresseStatus.VERDRAENGT,
         interessen__geaendert_am__gte=seit,
@@ -215,9 +217,11 @@ def eltern_entscheidungen(*, jetzt=None) -> dict:
             basis.filter(status=InstanzStatus.RESERVIERT).order_by("reserviert_bis")
         ),
         "bestaetigt": list(
-            basis.filter(status=InstanzStatus.BESTAETIGT, abgeschlossen_am__gte=seit).order_by(
-                "-abgeschlossen_am"
-            )
+            basis.filter(
+                status=InstanzStatus.BESTAETIGT,
+                abgeschlossen_am__gte=seit,
+                meldung_abgeschlossen_am__isnull=True,
+            ).order_by("-abgeschlossen_am")
         ),
     }
 

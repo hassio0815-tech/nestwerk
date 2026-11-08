@@ -66,27 +66,40 @@
     {% empty %}<p class="zeile__plan">{% translate "Nichts reserviert." %}</p>{% endfor %}
   </section>
 
-  <section class="stapel"><h2>{% translate "Zuletzt bestätigt" %}</h2>
+  <section class="stapel">
+    <div class="zeile"><h2>{% translate "Zuletzt bestätigt" %}</h2>
+      {% if bestaetigt|length > 1 %}
+        <form method="post" action="{% url 'aufgaben:alle_abschliessen' %}" hx-post="{% url 'aufgaben:alle_abschliessen' %}" hx-confirm="{% translate "Alle bestätigten Aufgaben abschließen? Die Punkte bleiben." %}">{% csrf_token %}
+          {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="check" text=_("Alle abschließen") %}
+        </form>
+      {% endif %}
+    </div>
     {% for i in bestaetigt %}
       <article class="karte" id="instanz-{{ i.pk }}"><div class="karte__inhalt stapel">
         <div class="zeile">
           <div class="zeile__text stapel"><strong>{{ i.titel_snapshot|uebersetzt }}</strong>
             <span class="zeile__plan">{% translate "D d.m. H:i" context "Datum mit Wochentag und Uhrzeit" as dtfmt %}{{ i.kind.anzeigename }} · {% if i.bestaetigt_von %}{% blocktranslate with name=i.bestaetigt_von.anzeigename %}bestätigt von {{ name }}{% endblocktranslate %}{% else %}{% translate "Vertrauen (automatisch)" %}{% endif %} · {{ i.bestaetigt_am|date:dtfmt }}{% if i.sonderpunkte %} · {% blocktranslate with punkte=i.sonderpunkte grund=i.sonderpunkte_begruendung %}+{{ punkte }} Bonus ({{ grund }}){% endblocktranslate %}{% endif %}</span></div>
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
-        </div>
-        <div class="reihe">
-          {% if not i.sonderpunkte and i.deckel != 0 %}
-            <form method="post" action="{% url 'aufgaben:sonderpunkte' i.pk %}" hx-post="{% url 'aufgaben:sonderpunkte' i.pk %}" class="reihe">{% csrf_token %}
-              <input class="feld__eingabe" type="number" name="sonderpunkte" min="1"{% if i.deckel is not None %} max="{{ i.deckel }}"{% endif %} placeholder="{% translate "Bonus" %}" aria-label="{% translate "Sonderpunkte" %}" required>
-              <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="{% translate "Begründung" %}" aria-label="{% translate "Begründung" %}" required>
-              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="stern" text=_("Sonderpunkte") %}
-            </form>
-          {% endif %}
-          <form method="post" action="{% url 'aufgaben:korrigieren' i.pk %}" hx-post="{% url 'aufgaben:korrigieren' i.pk %}" class="reihe" hx-confirm="{% translate "Alle Punkte dieser Aufgabe zurückbuchen?" %}">{% csrf_token %}
-            <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="{% translate "Grund der Korrektur" %}" aria-label="{% translate "Grund der Korrektur" %}" required>
-            {% include "komponenten/button.html" with typ="submit" variante="sanft" klein=True icon="x" text=_("Korrigieren") %}
+          <form method="post" action="{% url 'aufgaben:abschliessen' i.pk %}" hx-post="{% url 'aufgaben:abschliessen' i.pk %}">{% csrf_token %}
+            {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Abschließen") %}
           </form>
         </div>
+        <details class="meldung-mehr">
+          <summary>{% translate "Mehr …" %}</summary>
+          <div class="stapel">
+            {% if not i.sonderpunkte and i.deckel != 0 %}
+              <form method="post" action="{% url 'aufgaben:sonderpunkte' i.pk %}" hx-post="{% url 'aufgaben:sonderpunkte' i.pk %}" class="reihe">{% csrf_token %}
+                <input class="feld__eingabe" type="number" name="sonderpunkte" min="1"{% if i.deckel is not None %} max="{{ i.deckel }}"{% endif %} placeholder="{% translate "Bonus" %}" aria-label="{% translate "Sonderpunkte" %}" required>
+                <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="{% translate "Begründung" %}" aria-label="{% translate "Begründung" %}" required>
+                {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="stern" text=_("Sonderpunkte") %}
+              </form>
+            {% endif %}
+            <form method="post" action="{% url 'aufgaben:korrigieren' i.pk %}" hx-post="{% url 'aufgaben:korrigieren' i.pk %}" class="reihe" hx-confirm="{% translate "Alle Punkte dieser Aufgabe zurückbuchen?" %}">{% csrf_token %}
+              <input class="feld__eingabe" type="text" name="begruendung" maxlength="200" placeholder="{% translate "Grund der Korrektur" %}" aria-label="{% translate "Grund der Korrektur" %}" required>
+              {% include "komponenten/button.html" with typ="submit" variante="sanft" klein=True icon="x" text=_("Korrigieren") %}
+            </form>
+          </div>
+        </details>
       </div></article>
     {% empty %}<p class="zeile__plan">{% translate "In den letzten 7 Tagen nichts bestätigt." %}</p>{% endfor %}
   </section>

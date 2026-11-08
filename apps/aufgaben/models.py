@@ -340,6 +340,18 @@ class AufgabenInstanz(models.Model):
     )
     nachbessern_bis = models.DateTimeField(null=True, blank=True)
     nachbessern_grund = models.CharField(max_length=200, blank=True, default="")
+    meldung_abgeschlossen_am = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='Eltern haben die bestätigte Aufgabe in "Zuletzt bestätigt" abgeschlossen '
+        "(nur Ansicht: Punkte und Buchungen bleiben).",
+    )
+    ausgelassen_am = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Von den Eltern im Wochenplan gelöscht (Status storniert, ohne Punkte). Die "
+        "Zeile bleibt, damit der Generator den Plan-Tag nicht neu erzeugt.",
+    )
     sortierung = models.IntegerField(default=0)
     erzeugt_am = models.DateTimeField(default=timezone.now)
 

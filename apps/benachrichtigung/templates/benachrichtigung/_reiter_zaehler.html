@@ -1,0 +1,1 @@
+{% load i18n %}<span class="nw-tab__zahl" id="reiter-benachrichtigungen" data-offen="{{ offen }}" hx-get="{% url 'benachrichtigung:reiter_zaehler' %}" data-nur-sichtbar hx-trigger="every 30s, nestwerk-aktualisiert from:body" hx-swap="outerHTML"{% if not offen %} hidden{% endif %}>{% if offen %}{{ offen }}<span class="sr-only"> {% translate "offen" %}</span>{% endif %}</span>
