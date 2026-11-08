@@ -161,7 +161,7 @@ def _kind_kachel(request, hinweis, art):
         "hinweis": hinweis,
         "hinweis_art": art,
         "bereich_oob": True,
-        "offene": selectors.kind_offene(kind),
+        "offene": selectors.kind_unzugeordnete(kind),
         "eigene": selectors.kind_eigene(kind),
     }
     return render(request, "aufgaben/kacheln/schnellknoepfe_kind_antwort.html", kontext)

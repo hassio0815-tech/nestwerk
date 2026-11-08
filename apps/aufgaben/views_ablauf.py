@@ -24,7 +24,7 @@ def _htmx(request):
 def _kind_seite(request, *, hinweis="", art="erfolg"):
     kind = aktuelles_kind(request)
     kontext = {
-        "offene": selectors.kind_offene(kind),
+        "offene": selectors.kind_unzugeordnete(kind),
         "eigene": selectors.kind_eigene(kind),
         "hinweis": hinweis,
         "hinweis_art": art,

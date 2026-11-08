@@ -397,3 +397,22 @@ def test_thema_waehlen(kind_client, kind_a, fach):
 def test_kleinkram_aus_etappe_1(kind_a, fach):
     assert "G" in str(services.leistungsstufe_setzen(kind_a, fach, "G", 5))
     assert services.speicher_limit_bytes() == 500 * 1024 * 1024
+
+
+def test_kind_kachel_zuletzt_geuebt(kind_client, kind_a, fach):
+    from apps.lernen import selectors
+    from apps.lernen.models import Thema
+
+    html = kind_client.get("/kind/").content.decode()
+    assert "Zuletzt geübt" not in html  # noch nichts geübt: Zeile entfällt
+    assert selectors.zuletzt_geuebt(kind_a) is None
+    thema = Thema.objects.get(fach=fach, name="Tiere")
+    Lernsitzung.objects.create(
+        kind=kind_a, fach=fach, thema=thema, beginn=zeit.jetzt() - timedelta(days=2)
+    )
+    neu = Lernsitzung.objects.create(kind=kind_a, fach=fach, beginn=zeit.jetzt())
+    assert selectors.zuletzt_geuebt(kind_a) == {"fach": "Testsprache", "thema": ""}
+    neu.delete()
+    html = kind_client.get("/kind/").content.decode()
+    assert "Zuletzt geübt:" in html and "Testsprache · Tiere" in html
+    assert html.count('data-kachel="lernen"') == 1

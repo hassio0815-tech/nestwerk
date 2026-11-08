@@ -37,17 +37,10 @@
 }
 .aufgaben-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
 /* Kinderablauf (AP12) */
-.raster.aufgaben-raster { grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); grid-auto-rows: 1fr; }
-.aufgaben-raster > form { display: flex; }
-#offen-titel { margin-top: var(--abstand-gross); }
-.aufgabe-kachel .kachel__text { margin-top: auto; }
 /* Schnell-Knöpfe (Kind): Titel links, Knopf rechts, ohne unschönen Umbruch */
 .zeile.schnellknopf { flex-wrap: nowrap; }
 .zeile.schnellknopf > :first-child { flex: 1 1 10rem; min-width: 0; flex-wrap: wrap; }
 .zeile.schnellknopf > :not(:first-child) { flex: 0 0 auto; }
-.aufgabe-kachel { flex: 1 1 auto; align-items: flex-start; text-align: left; width: 100%; min-height: 9rem; cursor: pointer; font: inherit; color: inherit; }
-.aufgabe-kachel:disabled { opacity: .5; cursor: not-allowed; }
-.aufgabe-kachel--vergeben { opacity: .75; border-style: dashed; }
 .aufgabe-karte__frist, .aufgabe-karte__bonus { display: inline-flex; gap: .25rem; align-items: center; font-size: .9rem; }
 .aufgabe-karte__frage { font-style: italic; }
 /* Wochenplan (AP14) */
@@ -91,3 +84,30 @@
   .nw-schale__inhalt .aufgaben-nav::-webkit-scrollbar { display: none; }
   .nw-schale__inhalt .aufgaben-nav > .knopf { flex: none; }
 }
+/* Kinder-Aufgabenseite: Chipleiste, zwei Spalten (Meine Aufgaben | Schnell-Knöpfe) */
+.kind-seite { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--abstand); align-items: start; }
+.kind-seite > .kind-aufgaben { display: contents; }
+.kind-seite > .kind-aufgaben > section[data-bereich="offene"] { grid-column: 1 / -1; }
+@media (min-width: 48rem) {
+  .kind-seite { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+}
+.chipleiste { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.chipleiste form { margin: 0; }
+.aufgabe-chip { display: inline-flex; align-items: center; gap: .4rem; max-width: 100%; min-height: var(--tap-min, 2.75rem); padding: .25rem .75rem; border: 1px solid var(--rand, #ccc); border-radius: 999px; background: var(--flaeche); color: inherit; font: inherit; cursor: pointer; }
+.aufgabe-chip:hover:not(:disabled) { background: var(--flaeche-hoch); }
+.aufgabe-chip:disabled { opacity: .5; cursor: not-allowed; }
+.aufgabe-chip__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 14rem; }
+.aufgabe-chip__frist { font-size: .875rem; opacity: .8; white-space: nowrap; }
+.kind-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.kind-zeile { display: flex; flex-direction: column; gap: .35rem; padding: .5rem 0; border-top: 1px solid var(--rand, #ccc); }
+.kind-zeile:first-child { border-top: 0; padding-top: 0; }
+.kind-zeile__kopf { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .75rem; }
+.kind-zeile__name { flex: 1 1 9rem; min-width: 0; }
+.kind-zeile__status { display: inline-flex; flex-wrap: wrap; gap: .25rem .5rem; align-items: center; }
+.kind-zeile__meta { margin: 0; }
+.kind-zeile__aktionen { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .5rem; }
+.kind-zeile__aktionen form { margin: 0; }
+.kind-zeile__melden { min-width: 0; }
+.kind-zeile__melden[open] { flex: 1 1 100%; }
+.kind-zeile__melden > summary { display: inline-flex; gap: .25rem; align-items: center; cursor: pointer; list-style: none; }
+.kind-zeile__melden[open] > summary { margin-bottom: .5rem; }

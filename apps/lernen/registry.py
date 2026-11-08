@@ -25,7 +25,10 @@ def _kind(request):
     benutzer = request.user
     if getattr(benutzer, "rolle", None) != "kind":
         return {}
-    return {"bild": selectors.tagesbild(benutzer, zeit.heute())}
+    return {
+        "bild": selectors.tagesbild(benutzer, zeit.heute()),
+        "zuletzt": selectors.zuletzt_geuebt(benutzer),
+    }
 
 
 def _eltern(request):
