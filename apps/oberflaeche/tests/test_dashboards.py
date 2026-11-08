@@ -184,9 +184,9 @@ def test_eltern_dashboard_zaehler_kinder_und_system(eltern_client, mama, anna):
     instanz(mama, anna, InstanzStatus.KONFLIKT, titel="Auto waschen")
     gutschrift(anna, 7, mama)
     html = eltern_client.get("/eltern/").content.decode()
-    assert 'data-zaehler="2"' in html  # eine Meldung + ein Konflikt
+    assert _zahl(html, "offen") == "2"  # eine Meldung + ein Konflikt
     assert "Anna" in html and "7 XP" not in html  # XP-Details im Dungeon-Bereich
-    for schluessel in ("entscheidungen", "kinder", "schnellzugriff"):
+    for schluessel in ("kinder", "schnellzugriff"):
         assert f'data-kachel="oberflaeche.eltern_{schluessel}"' in html
     # Betrieb steht in den Einstellungen (Zahnrad), nicht auf der Übersicht
     for schluessel in ("oberflaeche.eltern_ereignisse", "oberflaeche.eltern_system"):
@@ -338,10 +338,11 @@ def test_eltern_dashboard_ohne_spielkacheln_dungeon_mit(eltern_client):
     heim = eltern_client.get("/eltern/").content.decode()
     for schluessel in ("spielregeln.eltern_raenge", "avatar.eltern_mods", "sondertag.eltern"):
         assert f'data-kachel="{schluessel}"' not in heim
-    assert 'data-kachel="oberflaeche.eltern_entscheidungen"' in heim
+    assert 'data-kachel="oberflaeche.eltern_kinder"' in heim
+    assert 'data-kachel="oberflaeche.eltern_entscheidungen"' not in heim  # steht in den Zahlen
     dungeon = eltern_client.get("/eltern/dungeon/").content.decode()
     assert 'data-kachel="spielregeln.eltern_raenge"' in dungeon
-    assert 'data-kachel="oberflaeche.eltern_entscheidungen"' not in dungeon
+    assert 'data-kachel="oberflaeche.eltern_kinder"' not in dungeon
 
 
 def test_dungeon_anzeige_schalter_blendet_menue_und_launcher_aus(eltern_client):
@@ -396,3 +397,46 @@ def test_anmeldeseite_wochenvorschau_nur_wiederkehrende(client, mama, anna):
 def test_anmeldeseite_wochenvorschau_leer(client, mama):
     html = client.get("/").content.decode()
     assert "data-wochenvorschau" in html and html.count("data-woche-tag") == 7
+
+
+def test_eltern_uebersicht_zahlen_kacheln(eltern_client, mama):
+    from apps.benachrichtigung.models import Benachrichtigung
+
+    html = eltern_client.get("/eltern/").content.decode()
+    for name in ("offen", "erledigt", "ungelesen", "familienziel"):
+        assert f'data-zahl="{name}"' in html
+    for ziel in (
+        reverse("aufgaben:entscheidungen"),
+        reverse("benachrichtigung:liste"),
+        reverse("familienziel:eltern"),
+    ):
+        assert f'class="zahl" href="{ziel}"' in html
+    assert "Offene Entscheidungen" not in html
+    assert 'data-kachel="oberflaeche.eltern_ereignisse"' not in html
+    assert _zahl(html, "offen") == "0" and _zahl(html, "ungelesen") == "0"
+    assert Benachrichtigung  # Modell vorhanden; Zähler siehe Test unten
+
+
+def _zahl(html, name):
+    import re
+
+    treffer = re.search(rf'data-zahl="{name}"><strong class="zahl__wert">([^<]*)<', html)
+    return treffer.group(1).strip() if treffer else None
+
+
+def test_eltern_uebersicht_zahlen_zaehlen_richtig(eltern_client, mama, anna, monkeypatch):
+    from apps.oberflaeche import selectors
+
+    monkeypatch.setattr(
+        selectors,
+        "eltern_entscheidungen",
+        lambda: {"meldungen": 2, "konflikte": 1, "antraege": 0, "moods": 1, "gesamt": 4},
+    )
+    from apps.benachrichtigung import selectors as benachrichtigung
+
+    monkeypatch.setattr(benachrichtigung, "ungelesen", lambda benutzer: 7)
+    html = eltern_client.get("/eltern/").content.decode()
+    assert _zahl(html, "offen") == "4"
+    assert _zahl(html, "ungelesen") == "7"
+    assert _zahl(html, "erledigt") == "0"
+    assert _zahl(html, "familienziel").endswith("%")

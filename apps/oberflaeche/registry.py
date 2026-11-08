@@ -49,10 +49,6 @@ def _eltern_pruefen(request):
     return aufgaben.heute_erledigt_kachel()
 
 
-def _eltern_entscheidungen(request):
-    return selectors.eltern_entscheidungen()
-
-
 def _eltern_kinder(request):
     return {"zeilen": selectors.kinder_uebersicht()}
 
@@ -161,15 +157,6 @@ def kacheln_registrieren():
             {KIND},
             _kind_akzent,
             reihenfolge=90,
-        ),
-        Kachel(
-            "oberflaeche.eltern_entscheidungen",
-            "oberflaeche",
-            _("Entscheidungen"),
-            T + "eltern_entscheidungen.html",
-            {ELTERN},
-            _eltern_entscheidungen,
-            reihenfolge=10,
         ),
         Kachel(
             "oberflaeche.eltern_kinder",

@@ -274,6 +274,26 @@ def tagesbild(kind, heute):
     )
 
 
+def heute_geuebt(kind, von, bis):
+    """``(Fachname, Themenname oder "")`` der Sitzungen von ``kind`` im Zeitraum ``[von, bis)``
+    (Reihenfolge der Sitzungen, ohne Doppelte); Sitzungen ohne Fach zählen nicht. Die Namen sind
+    Rohtexte, die Anzeige übersetzt sie."""
+    sitzungen = (
+        Lernsitzung.objects.filter(kind=kind, beginn__gte=von, beginn__lt=bis)
+        .select_related("fach", "thema")
+        .order_by("beginn")
+    )
+    gesehen, ergebnis = set(), []
+    for s in sitzungen:
+        if s.fach is None:
+            continue
+        eintrag = (s.fach.name, s.thema.name if s.thema else "")
+        if eintrag not in gesehen:
+            gesehen.add(eintrag)
+            ergebnis.append(eintrag)
+    return ergebnis
+
+
 def tage_geuebt(kind):
     """Metrik "Tage geübt": Tage ab dem Mindesttag (Beteiligung, nicht Menge)."""
     return Lerntag.objects.filter(kind=kind, mindesttag=True).count()

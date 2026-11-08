@@ -1124,3 +1124,11 @@ msgstr "Mood removed."
 #: views_moods.py:22
 msgid "Auswahl gespeichert."
 msgstr "Selection saved."
+
+#: templates/oberflaeche/eltern_heim.html
+msgid "Offen"
+msgstr "Open"
+
+#: templates/oberflaeche/eltern_heim.html
+msgid "Ungelesen"
+msgstr "Unread"

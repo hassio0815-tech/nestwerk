@@ -301,19 +301,44 @@ def wappen_setzen(request):
 @nur_eltern
 @require_GET
 def eltern_heim(request):
+    eintraege = [
+        e
+        for e in kacheln.fuer(ELTERN, request)
+        if e["kachel"].schluessel not in ELTERN_DUNGEON
+        and e["kachel"].schluessel not in kacheln.ELTERN_EINSTELLUNGEN
+    ]
     return render(
         request,
         "oberflaeche/eltern_heim.html",
         {
-            "kacheln": [
-                e
-                for e in kacheln.fuer(ELTERN, request)
-                if e["kachel"].schluessel not in ELTERN_DUNGEON
-                and e["kachel"].schluessel not in kacheln.ELTERN_EINSTELLUNGEN
-            ],
+            "kacheln": eintraege,
+            "zahlen": _eltern_zahlen(request, eintraege),
             "gesperrte_kinder": konten_selectors.gesperrte_kinder(),
         },
     )
+
+
+def _eltern_zahlen(request, eintraege):
+    """Kennzahlen für die Zahlen-Kacheln oben auf /eltern/: offene Entscheidungen, heute
+    Erledigtes (aus der Kachel, keine zweite Abfrage), ungelesene Benachrichtigungen und der
+    Fortschritt des Familienziels (``None`` = nicht verfügbar, die Kachel entfällt)."""
+    from apps.benachrichtigung import selectors as benachrichtigung
+    from apps.familienziel import selectors as familienziel
+
+    erledigt = next(
+        (e["k"] for e in eintraege if e["kachel"].schluessel == "oberflaeche.eltern_pruefen"),
+        None,
+    )
+    try:
+        prozent = familienziel.ansicht().stand.prozent
+    except Exception:  # Zahlen-Kachel entfällt, die Übersicht bleibt nutzbar
+        prozent = None
+    return {
+        "offen": selectors.eltern_entscheidungen()["gesamt"],
+        "erledigt": erledigt["gesamt"] if erledigt else 0,
+        "ungelesen": benachrichtigung.ungelesen(request.user),
+        "ziel_prozent": prozent,
+    }
 
 
 # --- Tablet ----------------------------------------------------------------------------------

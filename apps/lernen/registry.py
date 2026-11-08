@@ -29,15 +29,18 @@ def _kind(request):
 
 
 def _eltern(request):
-    """Je Kind eine Zeile: Minuten heute, Ziel, Serie. Keine Vergleiche zwischen Kindern."""
+    """Je Kind eine Zeile: Fach/Thema heute, Minuten heute, Ziel, Serie. Kein Vergleich."""
     from apps.konten import selectors as konten
 
     from . import material_selectors, selectors
 
     heute = zeit.heute()
     kinder = list(konten.aktive_kinder())
+    von, bis = zeit.tag_intervall(heute)
     return {
-        "zeilen": [(k, selectors.tagesbild(k, heute)) for k in kinder],
+        "zeilen": [
+            (k, selectors.tagesbild(k, heute), selectors.heute_geuebt(k, von, bis)) for k in kinder
+        ],
         # Badge (E-2): genau die Zahl der Einträge, die ``warten_auf_eltern()`` liefert
         "warten": material_selectors.warten_auf_eltern().filter(kind__in=kinder).count(),
     }
@@ -98,7 +101,7 @@ def kacheln_registrieren():
             "lernen/kacheln/eltern_lernen.html",
             {ELTERN},
             _eltern,
-            reihenfolge=24,
+            reihenfolge=21,
         )
     )
 

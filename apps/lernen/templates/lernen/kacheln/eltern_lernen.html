@@ -1,13 +1,11 @@
 {% load i18n sprache %}
 <article class="karte" data-kachel="lernen"><div class="karte__inhalt stapel">
   <h2 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Lernen" %}</h2>
-  {% for kind, bild in k.zeilen %}
-    <p class="kachel__text">{% blocktranslate with name=kind.anzeigename minuten=bild.minuten ziel=bild.ziel_minuten wochen=bild.serie.wochen %}{{ name }}: heute {{ minuten }} von {{ ziel }} Minuten, Serie {{ wochen }} Wochen{% endblocktranslate %}</p>
+  {% for kind, bild, themen in k.zeilen %}
+    <p class="kachel__text" data-lernen-kind="{{ kind.pk }}"><strong>{{ kind.anzeigename }}</strong>: {% if themen %}{% for fach, thema in themen %}{{ fach|uebersetzt }}{% if thema %} · {{ thema|uebersetzt }}{% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}{% else %}{% translate "noch nichts" %}{% endif %} · {% blocktranslate with minuten=bild.minuten ziel=bild.ziel_minuten wochen=bild.serie.wochen %}{{ minuten }}/{{ ziel }} Min., Serie {{ wochen }} Wochen{% endblocktranslate %}</p>
   {% endfor %}
   {% if k.warten %}
     {% url "lernen:eltern_material" as material_url %}
     <p class="kachel__text" data-warten="{{ k.warten }}"><a href="{{ material_url }}">{% blocktranslate count n=k.warten %}{{ n }} Material wartet auf euch.{% plural %}{{ n }} Materialien warten auf euch.{% endblocktranslate %}</a></p>
   {% endif %}
-  {% url "lernen:eltern" as eltern_url %}
-  {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="schule" text=_("Lernen ansehen") %}
 </div></article>

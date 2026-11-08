@@ -309,7 +309,18 @@ def test_kachel_fuer_eltern_ohne_vergleich(eltern_client, kind_a, kind_b, fach):
     html = eltern_client.get(reverse("konten:eltern_heim")).content.decode()
     assert 'data-kachel="lernen"' in html
     assert "Testkind A" in html and "Testkind B" in html
-    assert reverse("lernen:eltern") in html
+    assert "Lernen ansehen" not in html and "View learning" not in html
+    assert html.count("data-lernen-kind=") == 2  # je Kind genau eine Zeile
+    assert "noch nichts" in html  # heute noch nichts geübt
+
+
+def test_kachel_fuer_eltern_zeigt_fach_von_heute(eltern_client, kind_a, kind_b, fach):
+    Lernsitzung.objects.create(kind=kind_a, fach=fach, beginn=zeit.jetzt())
+    html = eltern_client.get(reverse("konten:eltern_heim")).content.decode()
+    zeile_a = next(z for z in html.split("<p ") if f'data-lernen-kind="{kind_a.pk}"' in z)
+    zeile_b = next(z for z in html.split("<p ") if f'data-lernen-kind="{kind_b.pk}"' in z)
+    assert fach.name in zeile_a and "noch nichts" not in zeile_a
+    assert "noch nichts" in zeile_b
 
 
 def test_kachel_kontext_fuer_eltern_ist_leer(mama, rf):

@@ -1010,14 +1010,16 @@ msgstr "No rest days entered."
 
 #: templates/lernen/kacheln/eltern_lernen.html:5
 #, python-format
-msgid ""
-"%(name)s: heute %(minuten)s von %(ziel)s Minuten, Serie %(wochen)s Wochen"
-msgstr ""
-"%(name)s: today %(minuten)s of %(ziel)s minutes, streak %(wochen)s weeks"
+msgid "%(minuten)s/%(ziel)s Min., Serie %(wochen)s Wochen"
+msgstr "%(minuten)s/%(ziel)s min, streak %(wochen)s weeks"
 
 #: templates/lernen/kacheln/eltern_lernen.html:8
 msgid "Lernen ansehen"
 msgstr "View learning"
+
+#: templates/lernen/kacheln/eltern_lernen.html
+msgid "noch nichts"
+msgstr "nothing yet"
 
 #: templates/lernen/kacheln/kind_lernen.html:6
 msgid "Heute ist ein Schontag. Üben darfst du trotzdem."
