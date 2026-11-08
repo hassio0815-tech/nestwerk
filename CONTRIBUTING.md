@@ -63,7 +63,7 @@ The tool in `tools/oberflaeche/` creates screenshots with demo data (Python Play
 
 ```bash
 .venv/bin/playwright install chromium   # browser cache only
-.venv/bin/python tools/oberflaeche/screenshots.py --ziel docs/screenshots/phaseN
+.venv/bin/python tools/oberflaeche/screenshots.py --ziel docs/screenshots/<ordner>
 ```
 
 The demo data is fictional. Look at the PNGs before committing. The heuristics do not replace a visual check. Details: `tools/oberflaeche/README.md`.

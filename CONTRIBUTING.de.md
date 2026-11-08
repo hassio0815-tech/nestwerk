@@ -58,7 +58,7 @@ Das Werkzeug `tools/oberflaeche/` erzeugt Screenshots mit Demo-Daten (Python-Pla
 
 ```bash
 .venv/bin/playwright install chromium   # nur Browser-Cache
-.venv/bin/python tools/oberflaeche/screenshots.py --ziel docs/screenshots/phaseN
+.venv/bin/python tools/oberflaeche/screenshots.py --ziel docs/screenshots/<ordner>
 ```
 
 Die Demo-Daten sind fiktiv. Vor dem Commit die PNGs ansehen. Die Heuristiken ersetzen die Sichtprüfung nicht. Details: `tools/oberflaeche/README.md`.

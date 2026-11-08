@@ -166,7 +166,7 @@ Until now the project was called **FamKo**; it is now called **Nestwerk** (subti
 ### Changed
 - Hall of fame only appears once all build orders in the current theme are finished (AP36)
 - `deploy/install.sh` points to `docs/INSTALLATION.md` at the end (AP36)
-- Final review phase 3: `docs/reviews/REVIEW_PHASE3.md` (AP36)
+- Final review phase 3 (AP36)
 
 ### Still open
 - God-mode mod sets and further mods, AP34

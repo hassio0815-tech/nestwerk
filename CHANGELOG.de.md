@@ -166,7 +166,7 @@ Das Projekt hieß bis hierhin **FamKo** und heißt jetzt **Nestwerk** (Untertite
 ### Geändert
 - Ruhmeshalle erst, wenn alle Bauaufträge im aktuellen Thema fertig sind (AP36)
 - `deploy/install.sh` verweist zum Schluss auf `docs/INSTALLATION.md` (AP36)
-- Abschluss-Review Phase 3: `docs/reviews/REVIEW_PHASE3.md` (AP36)
+- Abschluss-Review Phase 3 (AP36)
 
 ### Noch offen
 - God-Mode-Mod-Sets und weitere Mods, AP34

@@ -837,10 +837,10 @@ Ergebnis des Lern-Interviews (03.11.2026). Entscheidungen heißen **L1–L42** (
 
 ### 21.14 Entscheidungen der Nachtsession 07.11.2026 (L19 ff.)
 
-Entscheidungen des Nutzers vom 07.11.2026 für Lern-Etappen 11 bis 14. Die Nummern E-1 bis E-16 stammen aus dem Ausbau-Plan, die Kurzfassung steht hinter jeder Entscheidung. Was davon noch nicht gebaut ist, steht im Nachtbericht `docs/reviews/NACHT-2026-11-07.md`.
+Entscheidungen des Nutzers vom 07.11.2026 für Lern-Etappen 11 bis 14. Die Nummern E-1 bis E-16 stammen aus dem Ausbau-Plan, die Kurzfassung steht hinter jeder Entscheidung. Was davon noch nicht gebaut ist, steht im Changelog und in den offenen Punkten des Projekts.
 
 - **[E]** **Grundregel (L19):** Im Zweifel werden Punkte, Mengen und Grenzen **niedriger** angesetzt, damit kein Frust entsteht.
-- **[E]** **Punkte (L20):** Lernen zählt als XP **und** Kaufpunkte. Tagesziel 5, Selbsttest 3, Fehlerüberarbeitung 3, Rückschau 1 (je einmal am Tag), Planwoche 3, Prüfung vorbereitet 10. **Tageslimit 8.** Der Bonus 10 wird deshalb vom Limit gedeckelt. Details in `docs/plans/PUNKTE-LERNEN-2026-11-07.md`.
+- **[E]** **Punkte (L20):** Lernen zählt als XP **und** Kaufpunkte. Tagesziel 5, Selbsttest 3, Fehlerüberarbeitung 3, Rückschau 1 (je einmal am Tag), Planwoche 3, Prüfung vorbereitet 10. **Tageslimit 8.** Der Bonus 10 wird deshalb vom Limit gedeckelt.
 - **[E]** **Wiederholung (L21, E-1):** Planung mit der Bibliothek `fsrs` (gepinnt, MIT), Leitner bleibt als Fallback-Einstellung.
 - **[E]** **Neue Vokabeln (L22, E-2):** pro Tag in Klasse 3 / 6 / 8 jeweils 3 / 5 / 7, je Kind überschreibbar (Feld je Leistungsstufe; die Oberfläche je Kind steht aus, die Einstellungsseite gilt familienweit).
 - **[E]** **Audio (L23, E-3):** später (Etappe 18).

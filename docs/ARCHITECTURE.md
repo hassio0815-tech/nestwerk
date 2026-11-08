@@ -658,7 +658,7 @@ Nestwerk/
 | 28 | Abzeichen-Grafiken + rechtlicher Grafik-Check | 24 | haiku (+opus Review) | Ein Symbol je Abzeichen; keine fremden Marken |
 | 29 | `familienziel`: Woche, Live-Fortschritt, Bedingung, Erfolg, Abstimmung, Großziel, Tablet-Leiste | 20, 17 | sonnet (+opus Review) | Erfolg genau einmal; Gleichstand -> Eltern |
 | 30 | Familien-Ranking: Showcase, Held der Woche, Rohpunkte, Modus-Schalter, Tablet | 22, 24, 20 | sonnet | Modus im Eltern-Dashboard wirkt auf Tablet |
-| 31 | Review Phase 2 + Szenario-Tests 52 Wochen (erledigt 24.10.2026, docs/reviews/REVIEW_PHASE2.md) | 20–30 | opus | Sondertage ≤ 2/App-Jahr im Szenario |
+| 31 | Review Phase 2 + Szenario-Tests 52 Wochen (erledigt 24.10.2026) | 20–30 | opus | Sondertage ≤ 2/App-Jahr im Szenario |
 
 ### Phase 3: Feinschliff
 

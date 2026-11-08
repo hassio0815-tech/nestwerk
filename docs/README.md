@@ -22,8 +22,6 @@ The guides for installing, using and operating Nestwerk are available in English
 - [SPEC.md](SPEC.md): product specification and decisions
 - [ARCHITECTURE.md](ARCHITECTURE.md): full architecture, layers, dependency rules, events, rule engine (English summary: [en/ARCHITECTURE.md](en/ARCHITECTURE.md))
 - [DATA_MODEL.md](DATA_MODEL.md): data model per app, settings and starting values
-- [reviews/REVIEW_PHASE2.md](reviews/REVIEW_PHASE2.md): review of phase 2 (game layer)
-- [reviews/REVIEW_PHASE3.md](reviews/REVIEW_PHASE3.md): review of phase 3 (polish)
 - [research/web-push.md](research/web-push.md): web push for iOS, Android and kiosk tablets
 
 ### Related files in the repository root
@@ -49,8 +47,6 @@ Die Anleitungen zu Installation, Benutzung und Betrieb gibt es auf Deutsch (hier
 - [SPEC.md](SPEC.md): Produktspezifikation und Entscheidungen
 - [ARCHITECTURE.md](ARCHITECTURE.md): Architektur, Schichten, Abhängigkeitsregeln, Ereignisse, Regel-Engine (englische Kurzfassung: [en/ARCHITECTURE.md](en/ARCHITECTURE.md))
 - [DATA_MODEL.md](DATA_MODEL.md): Datenmodell je App, Einstellungen und Startwerte
-- [reviews/REVIEW_PHASE2.md](reviews/REVIEW_PHASE2.md): Review Phase 2 (Spielebene)
-- [reviews/REVIEW_PHASE3.md](reviews/REVIEW_PHASE3.md): Review Phase 3 (Feinschliff)
 - [research/web-push.md](research/web-push.md): Web-Push für iOS, Android und Kiosk-Tablets
 
 ### Verwandte Dateien im Hauptverzeichnis

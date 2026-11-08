@@ -9,7 +9,7 @@ Wiederverwendbares Werkzeug (Python-Playwright, kein MCP) für alle Agents ab Ph
 
 ## Lauf
 
-    .venv/bin/python tools/oberflaeche/screenshots.py [--ziel docs/screenshots/phaseN] [--sichtbar]
+    .venv/bin/python tools/oberflaeche/screenshots.py [--ziel docs/screenshots/<ordner>] [--sichtbar]
 
 Das Skript
 1. legt eine Demo-DB unter `/tmp/nestwerk-demo` an (Entwicklungs-Settings, `migrate`, `runserver` auf `127.0.0.1:8765`),

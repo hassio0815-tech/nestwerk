@@ -1,6 +1,6 @@
 # Nestwerk – Logo
 
-Eigene Neuzeichnung nach Nutzer-Vorlage (`branding/referenz/`), keine Pixel-Übernahme. Quelle der Dateien: `build.py` (`.venv/bin/python branding/nestwerk/build.py`).
+Eigene Neuzeichnung nach Nutzer-Vorlage (Vorlage nicht im Repository), keine Pixel-Übernahme. Quelle der Dateien: `build.py` (`.venv/bin/python branding/nestwerk/build.py`).
 
 ## Farben – "Industrial Teal"
 - Verlauf oben `#3AAFC6` → unten `#0E6A80`, Hauptton `#1B8DA6`
