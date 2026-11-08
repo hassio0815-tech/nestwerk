@@ -56,3 +56,7 @@ HANDOFF-*.md
 *.whl
 /backup/
 .hypothesis/
+
+# local archive, never published
+archive/
+/nestwerk-archiv/
