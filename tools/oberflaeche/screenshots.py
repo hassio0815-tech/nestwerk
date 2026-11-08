@@ -309,12 +309,25 @@ def einrichtung(page, aufn):
     page.fill("[name=go_live_datum]", date.today().isoformat())
     weiter(page)
 
-    s.neu("einrichtung-7")
-    weiter(page)
-
-    s.neu("einrichtung-8")
-    aufn.foto(page, "einrichtung-8-abschluss")
-    weiter(page)
+    # Weitere Schritte (Anzahl wächst mit den Modulen, z. B. Lernen): Standard übernehmen,
+    # bis der Abschluss-Schritt kommt (dessen Hauptknopf beendet die Einrichtung).
+    for nr in range(7, 30):
+        # Nach dem Abschluss tauscht HTMX nur den Inhalt (URL bleibt): "Zur Anmeldung" = fertig
+        if "/einrichtung/schritt/" not in page.url or page.get_by_text("Zur Anmeldung").count():
+            break
+        s.neu(f"einrichtung-{nr}")
+        letzter = page.locator("#assistent").get_by_text("Abschluss", exact=False).count() > 0
+        if letzter:
+            aufn.foto(page, "einrichtung-abschluss")
+        spaeter = page.get_by_role("button", name="Später in den Einstellungen")
+        if spaeter.count():  # optionale Modul-Schritte (Lernen) überspringen
+            spaeter.first.click()
+            page.wait_for_load_state("networkidle")
+            page.wait_for_timeout(300)
+        elif page.get_by_role("button", name="Weiter").count():
+            weiter(page, "Weiter")
+        else:
+            weiter(page)
     page.wait_for_timeout(500)
     aufn.foto(page, "einrichtung-9-fertig")
 
@@ -360,7 +373,15 @@ def kind_login(page, aufn, name, pin, fotos=True):
     page.goto(BASIS + "/", wait_until="networkidle")
     if fotos:
         aufn.foto(page, "tablet-startseite")
-    page.get_by_text(name, exact=False).first.click()
+    # nur die Profil-Kacheln: Namen können auch in (versteckten) Tages-Popups stehen
+    ziel = page.locator(".nw-profil-gruppe").get_by_text(name, exact=False).first
+    try:
+        ziel.click(timeout=15000)
+    except Exception:
+        Path(os.environ.get("NESTWERK_DEBUG_HTML", "/tmp/nestwerk-login-fehler.html")).write_text(
+            page.url + "\n" + page.content()
+        )
+        raise
     page.wait_for_load_state("networkidle")
     aufn.s.neu("pin-eingabe")
     if fotos:

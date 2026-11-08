@@ -362,10 +362,21 @@ def wechseltexte(jetzt=None, *, anzahl=ANZAHL, zufall=None, lang=None):
     # ein bis zwei weitere Grüße der Tageszeit, wenn Platz ist
     fest.extend(zufall.sample(gruesse_, min(2, len(gruesse_))))
 
-    mix = []
-    for text in infos + eigene + fest:
+    # Infos und eigene Sprüche haben Vorrang; gekürzt wird nur der feste Vorrat,
+    # sonst könnte das Abschneiden auf ``anzahl`` gerade die eigenen Sprüche treffen.
+    vorrang = []
+    for text in infos + eigene:
         if text not in gesehen:
             gesehen.add(text)
-            mix.append(text)
+            vorrang.append(text)
+    zufall.shuffle(fest)
+    rest_fest = []
+    for text in fest:
+        if len(vorrang) + len(rest_fest) >= anzahl - 1:
+            break
+        if text not in gesehen:
+            gesehen.add(text)
+            rest_fest.append(text)
+    mix = vorrang[: anzahl - 1] + rest_fest
     zufall.shuffle(mix)
-    return [erster, *mix][:anzahl]
+    return [erster, *mix]
