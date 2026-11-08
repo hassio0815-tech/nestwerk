@@ -225,14 +225,20 @@ def eltern_entscheidungen(*, jetzt=None) -> dict:
 def start_offene(*, jetzt=None):
     """Infozeile der Anmeldeseite: offene (nicht vergebene) Instanzen aktiver Aufgaben, deren
     Fenster nicht vorbei ist und die heute (oder früher) fällig sind oder kein Datum haben.
+    Nur frei übernehmbare: weder die Instanz noch die Aufgabe ist einem Kind zugeordnet.
     Jede Instanz trägt ``heute`` (Fälligkeit heute/überfällig). Heute Fällige zuerst."""
     jetzt = jetzt or zeit.jetzt()
     heute = zeit.heute(jetzt)
     qs = (
-        AufgabenInstanz.objects.filter(status=InstanzStatus.OFFEN, aufgabe__status=Status.AKTIV)
+        AufgabenInstanz.objects.filter(
+            status=InstanzStatus.OFFEN,
+            aufgabe__status=Status.AKTIV,
+            kind__isnull=True,
+            aufgabe__zugewiesen_an__isnull=True,
+        )
         .filter(Q(fenster_ende__isnull=True) | Q(fenster_ende__gt=jetzt))
         .filter(Q(faellig_am__isnull=True) | Q(faellig_am__lte=heute))
-        .select_related("aufgabe", "aufgabe__zugewiesen_an")
+        .select_related("aufgabe")
         .order_by("faellig_am", "fenster_ende", "sortierung", "id")
     )
     ergebnis = []

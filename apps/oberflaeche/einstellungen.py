@@ -13,8 +13,22 @@ STARTWERTE = {
 RANKING_STARTWERTE = {"oberflaeche.ranking_modus": "schaufenster"}  # AP30
 RANKING_MODI = ("schaufenster", "held", "rohpunkte")
 
+EIGENE_SPRUECHE_STARTWERTE = {"oberflaeche.eigene_sprueche": []}  # Wechseltext der Startseite
+EIGENER_SPRUCH_MAX = 120
+
 
 def einstellungen_definieren():
+    definieren(
+        "oberflaeche.eigene_sprueche",
+        Typ.LISTE,
+        _("Eigene Sprüche für die Startseite"),
+        beschreibung=_(
+            "Ein Spruch pro Zeile. Sie wechseln auf der Startseite mit den eingebauten "
+            "Sprüchen, Weisheiten und Fakten ab (in jeder Sprache gleich)."
+        ),
+        element_typ=Typ.TEXT,
+        max_laenge=EIGENER_SPRUCH_MAX,
+    )
     definieren(
         "oberflaeche.ranking_modus",
         Typ.TEXT,

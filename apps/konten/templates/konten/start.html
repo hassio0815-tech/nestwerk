@@ -14,7 +14,8 @@
     {% include "komponenten/logo_kachel.html" %}
     <div class="stapel">
       <span class="nw-balken nw-mitte"></span>
-      <h1 class="nw-begruessung" data-gruss-wechsel{% for code, text in gruesse %} data-gruss-{{ code }}="{{ text }}!"{% endfor %}>{{ gruss }}!</h1>
+      <h1 class="nw-begruessung"{% if wechseltexte %} data-wechseltext="wechseltexte-daten"{% endif %}>{{ gruss }}!</h1>
+      {% if wechseltexte %}{{ wechseltexte|json_script:"wechseltexte-daten" }}{% endif %}
       <p class="nw-leise">{% translate "Wer ist heute dabei?" %}</p>
     </div>
     {% if infozeile %}
@@ -27,7 +28,6 @@
                 {% if i.aufgabe.emoji %}<span aria-hidden="true">{{ i.aufgabe.emoji }}</span>{% endif %}
                 <strong>{{ i.titel_snapshot|uebersetzt }}</strong>
                 {% if i.heute %}<span class="nw-infozeile__marke">{% translate "heute" %}</span>{% endif %}
-                {% if i.aufgabe.zugewiesen_an %}<span class="nw-leise">· {{ i.aufgabe.zugewiesen_an.rufname }}</span>{% endif %}
                 <span class="nw-leise">· {{ i.punkte_snapshot }}&nbsp;XP</span>
               </li>
             {% endfor %}

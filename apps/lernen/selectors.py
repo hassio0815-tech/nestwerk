@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from datetime import timedelta
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.utils.translation import gettext
 
 from apps.kern import zeit
@@ -292,6 +292,11 @@ def heute_geuebt(kind, von, bis):
             gesehen.add(eintrag)
             ergebnis.append(eintrag)
     return ergebnis
+
+def lernminuten_heute(heute):
+    """Gelernte Minuten aller Kinder an diesem Tag (anonym, für die Startseite)."""
+    summe = Lerntag.objects.filter(datum=heute).aggregate(s=Sum("sekunden"))["s"] or 0
+    return summe // 60
 
 
 def tage_geuebt(kind):
