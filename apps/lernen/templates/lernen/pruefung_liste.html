@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Prüfungen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "lernen:start" as start_url %}
-  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text=_("Lernen") %}
-{% endblock %}
 {% block inhalt %}
-  <h1 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Prüfungen" %}</h1>
+  {% url "lernen:start" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Prüfungen") zurueck_url=zurueck_url zurueck_text=_("Lernen") icon="schule" %}
   <p>{% translate "Sag mir, wann die Prüfung ist und was dran kommt. Ich mache dir einen Plan mit kleinen Schritten." %}</p>
 
   {% for p, fortschritt in zeilen %}

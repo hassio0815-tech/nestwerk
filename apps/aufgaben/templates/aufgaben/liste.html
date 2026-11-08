@@ -1,9 +1,9 @@
 {% extends "aufgaben/basis.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Aufgaben" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Aufgaben") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
   <div class="zeile">
-    <h1>{% translate "Aufgaben" %}</h1>
     <div class="reihe">
       {% url "aufgaben:neu" as neu_url %}
       <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neue Aufgabe" %}</span></a>

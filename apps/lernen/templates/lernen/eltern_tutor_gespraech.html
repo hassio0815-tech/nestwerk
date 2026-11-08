@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Tutor-Gespräch" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern_tutor" as tutor_url %}
-  {% include "komponenten/button.html" with href=tutor_url variante="geist" klein=True icon="pfeil-links" text=_("Tutor") %}
-{% endblock %}
+{% block seitenkopf %}{% blocktranslate asvar seitentitel with name=g.kind.anzeigename %}Gespräch von {{ name }}{% endblocktranslate %}{% url "lernen:eltern_tutor" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=seitentitel zurueck_url=zurueck_url zurueck_text=_("Tutor") %}{% endblock %}
 {% block seite %}
-  <h1>{% blocktranslate with name=g.kind.anzeigename %}Gespräch von {{ name }}{% endblocktranslate %}</h1>
   <p>{{ g.beginn|date:"SHORT_DATETIME_FORMAT" }}{% if g.material %} · {{ g.material.anzeigename }}{% elif g.thema %} · {{ g.thema.name }}{% endif %} · {% blocktranslate with stufe=g.hilfestufe %}höchste Hilfestufe {{ stufe }}{% endblocktranslate %}</p>
   <section class="karte"><div class="karte__inhalt stapel">
     <ol class="tutor-verlauf">

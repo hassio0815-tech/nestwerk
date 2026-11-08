@@ -4,7 +4,7 @@
 {% block titel %}{% translate "Avatar-Galerie" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
 {% block inhalt %}
-  <h1>{% translate "Avatar-Galerie" %}</h1>
+  {% url "oberflaeche:dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Avatar-Galerie") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}
   <p class="kachel__text">{% translate "Grundfiguren aller Themen, je mit anderem Hautton, Haar und Frisur. Nur im Entwicklungsmodus." %}</p>
   <section class="avatar-galerie" data-layout="kind" data-modus="dunkel" aria-label="{% translate "Dunkler Hintergrund" %}">
     <h2>{% translate "Dunkler Hintergrund" %}</h2>

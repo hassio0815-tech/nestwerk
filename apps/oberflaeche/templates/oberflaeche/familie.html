@@ -1,8 +1,8 @@
 {% extends "oberflaeche/eltern_basis.html" %}{% load i18n avatar_tags %}
 {% comment %}Familie: eine Box je Mitglied (Avatar oben, darunter die Einstellungen), dann "Kind anlegen" und Familien-Passwort.{% endcomment %}
 {% block titel %}{% translate "Familie" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Familie") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Familie" %}</h1>
   {% if ok %}<p class="feld__hinweis" role="status">{{ ok }}</p>{% endif %}
 
   <h2>{% translate "Kinder" %}</h2>

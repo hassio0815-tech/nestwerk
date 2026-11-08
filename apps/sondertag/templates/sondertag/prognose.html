@@ -1,9 +1,9 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n static sprache %}
 {% block titel %}{% translate "Prognose & Kalibrierung" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Prognose & Kalibrierung") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}{% endblock %}
 {% block seite %}
   <link rel="stylesheet" href="{% static 'css/sondertag.css' %}">
-  <h1>{% translate "Prognose & Kalibrierung" %}</h1>
   <p>{% blocktranslate with ziel=zeilen.0.e.ziel|default:2 %}Gerechnet aus dem Durchschnitt der letzten Wochen. Das Ziel sind {{ ziel }} Sondertage je App-Jahr. Es ist eine Schätzung, kein Versprechen.{% endblocktranslate %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

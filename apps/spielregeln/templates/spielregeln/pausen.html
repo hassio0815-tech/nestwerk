@@ -1,8 +1,8 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Pausen" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Pausen") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Pausen" %}</h1>
   <p>{% translate "Pausierte Tage und Wochen sind neutral: Die Serie bricht nicht. Aufgaben in der Pause zählen normal." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

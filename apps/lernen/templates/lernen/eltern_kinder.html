@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Kinder und Leistungsstufen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern" as lernen_url %}
-  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Kinder und Leistungsstufen") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Kinder und Leistungsstufen" %}</h1>
   <p>{% translate "Hier ändert ihr Klassenstufe, Schulform, Leistungsstufe je Fach und die Freigabe von Fragen aus Uploads, auch nach der Einrichtung. Jedes Kind wird einzeln gespeichert." %}</p>
   <section class="karte"><div class="karte__inhalt stapel">
     <h2>{% translate "Neues Schuljahr" %}</h2>

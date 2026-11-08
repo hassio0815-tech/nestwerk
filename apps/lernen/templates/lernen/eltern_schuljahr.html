@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Neues Schuljahr" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern_kinder" as kinder_url %}
-  {% include "komponenten/button.html" with href=kinder_url variante="geist" klein=True icon="home" text=_("Kinder und Leistungsstufen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern_kinder" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Neues Schuljahr") zurueck_url=zurueck_url zurueck_text=_("Kinder und Leistungsstufen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Neues Schuljahr" %}</h1>
   <section class="karte"><div class="karte__inhalt stapel">
     <p>{% blocktranslate %}Alle eingetragenen Klassenstufen werden um 1 angehoben, höchstens bis {{ klasse_max }}. Es wird nichts gelöscht: Lernstand, Material, Verlauf und Leistungsstufen bleiben, wie sie sind. Danach könnt ihr jedes Kind noch einzeln anpassen.{% endblocktranslate %}</p>
     <p>{% blocktranslate %}Kinder mit Klassenstufe: {{ mit_klasse }}. Davon werden angehoben: {{ anhebbar }}. Schon bei der Obergrenze: {{ oben }}.{% endblocktranslate %}</p>

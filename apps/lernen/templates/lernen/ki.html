@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "KI-Anbindung" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern" as lernen_url %}
-  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("KI-Anbindung") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "KI-Anbindung" %}</h1>
   <p>{% translate "Standardmäßig ist die KI aus. Nestwerk nutzt keine externen Dienste, bis ihr einen Anbieter einrichtet und einschaltet. Ihr könnt einen eigenen Server, Cloud-Anbieter oder eine Mischung wählen." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

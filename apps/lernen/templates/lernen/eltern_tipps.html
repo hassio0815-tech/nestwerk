@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Rechen-Tipps" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern" as lernen_url %}
-  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Rechen-Tipps") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Rechen-Tipps" %}</h1>
   <p>{% translate "So erklärt Nestwerk den Kindern die Rechenarten. Ihr könnt hier nachlesen, damit ihr beim Üben mithelfen könnt. Die Karten enthalten Regeln und feste Beispiele, nie die Lösung einer echten Aufgabe." %}</p>
   <p class="reihe" data-lernen-tipps-stufen>
     {% for wert, name in stufen %}

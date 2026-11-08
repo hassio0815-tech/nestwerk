@@ -5,15 +5,6 @@
   Seiten erweitern dieses Template (oder oberflaeche/eltern_basis.html) und füllen {% block seite %}.
   Menüpunkte stehen in {% block menue %}, eine Unternavigation in {% block subnav %}.
 {% endcomment %}
-{% block kopf_rechts %}
-  {% url "oberflaeche:module" as module_url %}
-  {% include "komponenten/button.html" with href=module_url variante="geist" klein=True icon="home" text=_("Start") %}
-  {% url "oberflaeche:einstellungen" as einstellungen_url %}
-  <a class="knopf knopf--geist knopf--klein" href="{{ einstellungen_url }}" aria-label="{% translate "Einstellungen" %}" title="{% translate "Einstellungen" %}"{% if request.path == einstellungen_url %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="zahnrad" %}</a>
-  <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
-  </form>
-{% endblock %}
 {% block inhalt %}
   <div class="nw-schale">
     <nav class="nw-schale__nav" aria-label="{% translate "Eltern-Bereich" %}">
@@ -29,6 +20,7 @@
       </div>
     </nav>
     <div class="nw-schale__inhalt">
+      {% block seitenkopf %}{% endblock %}
       {% block subnav %}{% endblock %}
       {% block seite %}{% endblock %}
     </div>

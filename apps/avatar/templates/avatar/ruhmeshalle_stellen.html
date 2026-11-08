@@ -2,12 +2,8 @@
 {% load i18n static avatar_tags %}
 {% block titel %}{% translate "In die Ruhmeshalle stellen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}"><link rel="stylesheet" href="{% static 'css/ruhmeshalle.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "avatar:halle_kind" as zurueck_url %}
-  {% include "komponenten/button.html" with href=zurueck_url variante="geist" klein=True icon="pfeil-links" text=_("Ruhmeshalle") %}
-{% endblock %}
 {% block inhalt %}
-  <h1>{% translate "In die Ruhmeshalle stellen" %}</h1>
+  {% url "avatar:halle_kind" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("In die Ruhmeshalle stellen") zurueck_url=zurueck_url zurueck_text=_("Ruhmeshalle") %}
   {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
   <section class="karte halle-dialog" role="dialog" aria-labelledby="halle-titel" data-selten="{{ stand.rang_selten }}"><div class="karte__inhalt stapel">
     <h2 id="halle-titel">{% translate "Deinen Helden verewigen?" %}</h2>

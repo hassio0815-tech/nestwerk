@@ -2,12 +2,8 @@
 {% load i18n static sprache %}
 {% block titel %}{% translate "Neue Prüfung" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "lernen:pruefungen" as liste_url %}
-  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text=_("Prüfungen") %}
-{% endblock %}
 {% block inhalt %}
-  <h1>{% translate "Neue Prüfung" %}</h1>
+  {% url "lernen:pruefungen" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Neue Prüfung") zurueck_url=zurueck_url zurueck_text=_("Prüfungen") %}
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
   <section class="karte"><div class="karte__inhalt stapel">
     <form method="post" action="{% url 'lernen:pruefung_anlegen' %}" class="stapel lernen-form">{% csrf_token %}

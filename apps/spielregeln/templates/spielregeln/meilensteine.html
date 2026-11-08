@@ -1,8 +1,8 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n sprache %}
 {% block titel %}{% translate "Meilensteine" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Meilensteine") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Meilensteine" %}</h1>
   <p>{% translate "Ein Meilenstein ist erreicht, wenn alle Bedingungen gelten. Er löst eine Belohnung aus, zum Beispiel einen Sondertag. Erreichte Meilensteine bleiben, auch wenn ihr Bedingungen später verschärft oder den Meilenstein ausschaltet." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

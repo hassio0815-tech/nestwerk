@@ -2,12 +2,8 @@
 {% load i18n static sprache %}
 {% block titel %}{% translate "Wochenbild" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern" as lernen_url %}
-  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Wochenbild") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Wochenbild" %}</h1>
   <p>{% blocktranslate with datum=montag|date:"SHORT_DATE_FORMAT" %}Woche ab {{ datum }}. Das Bild zeigt, was das Lernen gerade braucht. Es gibt keine Noten und keinen Vergleich zwischen den Kindern.{% endblocktranslate %}</p>
   {% url "lernen:eltern_woche" as woche_url %}
   {% if vorwoche %}

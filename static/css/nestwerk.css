@@ -233,6 +233,57 @@ p {
   }
 }
 
+/* Kopfleiste (Start, Lernen, Zahnrad, Abmelden): ein Block, bricht nie um. */
+.kopfleiste {
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--abstand-klein);
+}
+
+.kopfleiste form {
+  margin: 0;
+}
+
+.kopfleiste .knopf[aria-current="page"] {
+  background: var(--flaeche-sanft, var(--rahmen));
+}
+
+@media (max-width: 34rem) {
+  .kopfleiste {
+    gap: 0.15rem;
+  }
+}
+
+/* Seitenkopf jeder Unterseite: Zurück-Link („← Übergeordnete Seite“), darunter die h1. */
+.seitenkopf {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  margin-bottom: var(--abstand-klein);
+}
+
+.seitenkopf__zurueck {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: var(--tap-min);
+  color: var(--text-leise, var(--text));
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.seitenkopf__zurueck:hover,
+.seitenkopf__zurueck:focus-visible {
+  text-decoration: underline;
+}
+
+.seitenkopf__titel {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .kopf__logo {
   width: 32px;
   height: 32px;

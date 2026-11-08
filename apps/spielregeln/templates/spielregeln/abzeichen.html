@@ -1,12 +1,8 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n sprache %}
 {% block titel %}{% translate "Abzeichen" %}{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "spielregeln:meilensteine" as ms_url %}
-  {% include "komponenten/button.html" with href=ms_url variante="geist" klein=True icon="pokal" text=_("Meilensteine") %}
-{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Abzeichen") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Abzeichen" %}</h1>
   <p>{% translate "Abzeichen geben keine Punkte. Ein verdientes Abzeichen bleibt, auch wenn ihr die Schwelle später erhöht oder es ausschaltet." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

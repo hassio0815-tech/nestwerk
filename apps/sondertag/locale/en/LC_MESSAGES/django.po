@@ -985,3 +985,7 @@ msgstr ""
 #: views.py:168
 msgid "Bitte ein Kind wählen."
 msgstr "Please choose a child."
+
+#: apps/sondertag/templates/sondertag/wunsch.html
+msgid "Dein Sondertag"
+msgstr "Your special day"

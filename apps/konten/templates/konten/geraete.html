@@ -1,13 +1,9 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Geräte" %}{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="pfeil-links" text=_("Zurück") %}
-{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:einstellungen" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Geräte") zurueck_url=zurueck_url zurueck_text=_("Einstellungen") %}{% endblock %}
 {% block seite %}
   <div class="stapel">
-    <h1>{% translate "Geräte" %}</h1>
     {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
     <section class="nw-karte"><div class="karte__inhalt stapel">
       <h2>{% translate "Dieses Gerät registrieren" %}</h2>

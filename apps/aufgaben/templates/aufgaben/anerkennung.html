@@ -2,8 +2,8 @@
 {% load i18n %}
 {% comment %}Anerkennung: Eltern schenken einem Kind Punkte ohne Aufgabe (Kind, Punkte, Bemerkung).{% endcomment %}
 {% block titel %}{% translate "Anerkennung" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Anerkennung") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Anerkennung" %}</h1>
   <p class="feld__hinweis">{% blocktranslate with max=je_vergabe woche=je_woche %}Schenke Punkte für etwas Besonderes, auch ohne Aufgabe. Je Vergabe 1 bis {{ max }} Punkte, je Kind höchstens {{ woche }} Punkte pro Woche (Montag bis Sonntag).{% endblocktranslate %}</p>
   {% if hinweis %}{% include "komponenten/toast.html" with art=hinweis_art text=hinweis icon=hinweis_art|yesno:"warnung,check" %}{% endif %}
   <section class="karte"><div class="karte__inhalt stapel">

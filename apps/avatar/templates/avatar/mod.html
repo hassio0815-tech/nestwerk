@@ -2,16 +2,12 @@
 {% load i18n static avatar_tags %}
 {% block titel %}{{ mod.name|uebersetzt }}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "avatar:shop" as shop_url %}
-  {% include "komponenten/button.html" with href=shop_url variante="geist" klein=True icon="pfeil-links" text=_("Shop") %}
-{% endblock %}
 {% block inhalt %}
   {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
   <section class="karte mod-detail" data-selten="{{ karte.konditionen.rang_selten }}"><div class="karte__inhalt mod-detail__inhalt">
     <div class="mod-detail__bild">{% svg_roh svg "riesig" _("Vorschau: dein Avatar mit dem Mod") %}</div>
     <div class="stapel">
-      <h1 class="mod-detail__titel">{{ mod.name|uebersetzt }}</h1>
+      {% url "avatar:shop" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=mod.name|uebersetzt zurueck_url=zurueck_url zurueck_text=_("Mod-Shop") %}
       <p class="reihe"><span class="chip" data-selten="{{ karte.konditionen.rang_selten }}">{{ karte.konditionen.rang_name }}</span><span class="kachel__text">{{ mod.slot.name|uebersetzt }}</span></p>
       {% if mod.beschreibung %}<p>{{ mod.beschreibung|uebersetzt }}</p>{% endif %}
       <dl class="mod-werte">

@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Meine Mappe" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "lernen:start" as lernen_url %}
-  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="schule" text=_("Lernen") %}
-{% endblock %}
 {% block inhalt %}
-  <h1 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Meine Mappe" %}</h1>
+  {% url "lernen:start" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Meine Mappe") zurueck_url=zurueck_url zurueck_text=_("Lernen") icon="schule" %}
   {% if neu %}<p class="lernen-rueck" role="status">{% blocktranslate count n=neu %}Super, {{ n }} Datei ist angekommen.{% plural %}Super, {{ n }} Dateien sind angekommen.{% endblocktranslate %}</p>{% endif %}
   {% if fehler %}<div role="alert">{% for f in fehler %}<p class="feld__hinweis feld__hinweis--fehler">{{ f }}</p>{% endfor %}</div>{% endif %}
 

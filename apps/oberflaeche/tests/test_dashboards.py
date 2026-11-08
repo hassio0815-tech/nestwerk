@@ -212,7 +212,8 @@ def test_eltern_menue_und_zahnrad(eltern_client):
     assert reverse("konten:geraete") not in nav
     assert f'href="{reverse("oberflaeche:einstellungen")}"' not in nav
     kopf = html.split('class="nw-schale', 1)[0]
-    assert f'href="{reverse("oberflaeche:einstellungen")}" aria-label="Einstellungen"' in kopf
+    url = reverse("oberflaeche:einstellungen")
+    assert f'href="{url}" data-kopf="einstellungen" aria-label="Einstellungen"' in kopf
 
 
 def test_systemstatus_zeigt_letzten_joblauf(eltern_client):

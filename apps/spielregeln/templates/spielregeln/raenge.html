@@ -1,12 +1,8 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Ränge" %}{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "sondertag:prognose" as prognose_url %}
-  {% if prognose_url %}{% include "komponenten/button.html" with href=prognose_url variante="geist" klein=True icon="stern" text=_("Prognose") %}{% endif %}
-{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Ränge") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Ränge" %}</h1>
   <p>{% blocktranslate %}Aufstieg braucht beides: genug XP <strong>und</strong> genug aktive Wochen. Ein erreichter Rang bleibt, auch wenn ihr Schwellen später erhöht.{% endblocktranslate %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

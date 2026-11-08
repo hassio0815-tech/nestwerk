@@ -1,6 +1,6 @@
 {% load i18n %}<section id="wochenplan" class="wochenplan" data-wochenplan>
   <div class="zeile">
-    <h1>{% translate "Wochenplan" %} <small>{% translate "d.m." context "Datum ohne Jahr" as dkurz %}{% translate "d.m.Y" context "Datum" as dvoll %}{{ woche.montag|date:dkurz }} – {{ woche.sonntag|date:dvoll }} ({% blocktranslate with kw=woche.woche %}KW {{ kw }}{% endblocktranslate %})</small></h1>
+    <h2 class="wochenplan__woche"><small>{% translate "d.m." context "Datum ohne Jahr" as dkurz %}{% translate "d.m.Y" context "Datum" as dvoll %}{{ woche.montag|date:dkurz }} – {{ woche.sonntag|date:dvoll }} ({% blocktranslate with kw=woche.woche %}KW {{ kw }}{% endblocktranslate %})</small></h2>
     <nav class="reihe" aria-label="{% translate "Woche wählen" %}">
       {% url "aufgaben:wochenplan" as wp_url %}
       <a class="knopf knopf--sekundaer knopf--klein" href="{{ wp_url }}?datum={{ vorherige|date:'Y-m-d' }}" hx-get="{{ wp_url }}?datum={{ vorherige|date:'Y-m-d' }}" hx-target="#wochenplan" hx-swap="outerHTML" hx-push-url="true">{% include "komponenten/icon.html" with name="pfeil-links" %}<span>{% translate "Vorherige" %}</span></a>

@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Rechen-Tipps" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "lernen:start" as start_url %}
-  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text=_("Lernen") %}
-{% endblock %}
 {% block inhalt %}
-  <h1 class="reihe">{% include "komponenten/icon.html" with name="info" %} {% translate "Rechen-Tipps" %}</h1>
+  {% url "lernen:start" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Rechen-Tipps") zurueck_url=zurueck_url zurueck_text=_("Lernen") icon="info" %}
   <p>{% translate "Hier steht kurz, wie jede Rechenart funktioniert. Tippe auf eine Karte, dann klappt sie auf." %}</p>
   {% include "lernen/_karten.html" %}
 {% endblock %}

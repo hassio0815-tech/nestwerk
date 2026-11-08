@@ -2,11 +2,6 @@
 {% load i18n %}
 {% comment %}Platzhalter, bis das Kinder-Dashboard (oberflaeche) ihn ersetzt.{% endcomment %}
 {% block titel %}{% translate "Hallo" %}{% endblock %}
-{% block kopf_rechts %}
-  <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
-  </form>
-{% endblock %}
 {% block inhalt %}
   <h1>{% blocktranslate with name=request.user.rufname %}Hallo {{ name }}!{% endblocktranslate %}</h1>
   {% url "aufgaben:kind" as aufgaben_url %}

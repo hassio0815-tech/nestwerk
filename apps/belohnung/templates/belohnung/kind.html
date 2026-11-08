@@ -3,10 +3,7 @@
 {% load static %}
 {% block titel %}{% translate "Belohnungen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/belohnung.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "konten:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
-{% endblock %}
 {% block inhalt %}
+  {% url "konten:kind_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Belohnungen") zurueck_url=zurueck_url zurueck_text=_("Start") %}
   <div id="belohnungen" class="stapel">{% include "belohnung/_kind_inhalt.html" %}</div>
 {% endblock %}

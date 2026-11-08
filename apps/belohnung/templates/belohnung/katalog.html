@@ -1,9 +1,9 @@
 {% extends "belohnung/basis.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Belohnungskatalog" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Katalog") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
   <div class="zeile">
-    <h1>{% translate "Katalog" %}</h1>
     {% url "belohnung:neu" as neu_url %}
     <a class="knopf knopf--primaer" href="{{ neu_url }}" hx-get="{{ neu_url }}" hx-target="#formular" hx-swap="innerHTML">{% include "komponenten/icon.html" with name="plus" %}<span>{% translate "Neue Belohnung" %}</span></a>
   </div>

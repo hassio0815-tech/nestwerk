@@ -2,12 +2,8 @@
 {% load i18n static sprache %}
 {% block titel %}{% translate "Lernen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "konten:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
-{% endblock %}
 {% block inhalt %}
-  <h1 class="reihe">{% include "komponenten/icon.html" with name="schule" %} {% translate "Lernen" %}</h1>
+  {% url "konten:kind_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Lernen") zurueck_url=zurueck_url zurueck_text=_("Start") icon="schule" %}
   {% if hinweis %}{% include "komponenten/toast.html" with art="info" text=hinweis icon="info" %}{% endif %}
 
   <section class="karte"><div class="karte__inhalt stapel" data-lernen-tag>

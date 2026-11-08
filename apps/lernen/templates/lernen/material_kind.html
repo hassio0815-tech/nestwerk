@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{{ m.anzeigename }}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "lernen:material" as mappe_url %}
-  {% include "komponenten/button.html" with href=mappe_url variante="geist" klein=True icon="schule" text=_("Meine Mappe") %}
-{% endblock %}
 {% block inhalt %}
-  <h1>{{ m.anzeigename }}</h1>
+  {% url "lernen:material" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=m.anzeigename zurueck_url=zurueck_url zurueck_text=_("Meine Mappe") %}
   <section class="karte"><div class="karte__inhalt stapel">
     <p data-phase="{{ phase }}">
       {% if phase == "wartet" %}{% translate "Dein Material wartet darauf, gelesen zu werden." %}

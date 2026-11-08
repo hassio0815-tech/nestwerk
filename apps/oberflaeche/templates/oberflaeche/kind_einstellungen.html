@@ -3,12 +3,8 @@
 {% comment %}Meine Einstellungen (Kind): Name, Spitzname, Code, Mood, Mood vorschlagen.{% endcomment %}
 {% block titel %}{% translate "Meine Einstellungen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "oberflaeche:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="pfeil-links" text=_("Zurück") %}
-{% endblock %}
 {% block inhalt %}
-  <h1>{% translate "Meine Einstellungen" %}</h1>
+  {% url "konten:kind_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Meine Einstellungen") zurueck_url=zurueck_url zurueck_text=_("Start") %}
   {% if ok %}{% include "komponenten/toast.html" with art="erfolg" text=ok icon="check" %}{% endif %}
 
   <section class="karte"><div class="karte__inhalt stapel">
@@ -25,6 +21,11 @@
       </div>
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
     </form>
+  </div></section>
+
+  <section class="karte"><div class="karte__inhalt stapel">
+    <h2>{% translate "Meine Farbe wählen" %}</h2>
+    <div class="reihe">{% include "komponenten/akzent_wahl.html" %}</div>
   </div></section>
 
   <section class="karte"><div class="karte__inhalt stapel">

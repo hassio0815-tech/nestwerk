@@ -4,6 +4,7 @@
 {% block titel %}{% translate "Wochenplan" %}{% endblock %}
 {% comment %}Eigener Menüpunkt links: nur der Wochenplan, ohne Aufgaben-Unternavigation.{% endcomment %}
 {% block subnav %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Wochenplan") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
   {% include "aufgaben/_wochenplan.html" %}
   <script src="{% static 'vendor/Sortable.min.js' %}" defer></script>

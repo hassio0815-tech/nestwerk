@@ -1,8 +1,8 @@
 {% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
 {% comment %}Moods (Eltern): Vorschläge der Kinder, eigene Moods, Katalog ausblenden.{% endcomment %}
 {% block titel %}{% translate "Moods" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Moods") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Moods" %}</h1>
   {% if ok %}<p class="feld__hinweis" role="status">{{ ok }}</p>{% endif %}
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

@@ -1,4 +1,5 @@
 {% extends "belohnung/basis.html" %}
 {% load i18n %}
 {% block titel %}{{ titel }}{% endblock %}
+{% block seitenkopf %}{% include "komponenten/seitenkopf.html" with titel=titel zurueck_url=zurueck zurueck_text=_("Katalog") %}{% endblock %}
 {% block seite %}<div id="formular">{% include "belohnung/_formular.html" %}</div>{% endblock %}

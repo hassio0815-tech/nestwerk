@@ -173,3 +173,7 @@ msgstr "Or your own role (e.g. Mummy)"
 #: templates/komponenten/wappen_wahl.html:13
 msgid "Wappen (optional)"
 msgstr "Crest (optional)"
+
+#: templates/komponenten/kopfleiste.html
+msgid "Hauptmenü"
+msgstr "Main menu"

@@ -85,7 +85,7 @@
 
 {% elif zustand == "rueckschau" %}
   <section class="karte" data-lernen-zustand="rueckschau"><div class="karte__inhalt stapel">
-    <h1>{% translate "Kurze Rückschau" %}</h1>
+    <h2>{% translate "Kurze Rückschau" %}</h2>
     <p>{{ ton_ende }}</p>
     {% if kalibrierung %}<p data-lernen-kalibrierung>{{ kalibrierung }}</p>{% endif %}
     {% url "lernen:rueckschau" s.pk as rueckschau_url %}
@@ -101,16 +101,15 @@
 
 {% else %}
   <section class="karte" data-lernen-zustand="fertig"><div class="karte__inhalt stapel">
-    <h1 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h1>
+    <h2 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h2>
     <p>{{ ton_ende }}</p>
     <p>{% blocktranslate count anzahl=s.versuche with minuten=minuten %}Du hast {{ minuten }} Minuten geübt und {{ anzahl }} Frage angeschaut.{% plural %}Du hast {{ minuten }} Minuten geübt und {{ anzahl }} Fragen angeschaut.{% endblocktranslate %}</p>
     {% if kalibrierung %}<p data-lernen-kalibrierung>{{ kalibrierung }}</p>{% endif %}
     {% if ton_vergleich %}<p data-lernen-vergleich>{{ ton_vergleich }}</p>{% endif %}
     {% include "lernen/_tagesbild.html" %}
     <div class="reihe">
-      {% url "lernen:start" as start_url %}{% url "konten:kind_heim" as heim_url %}
+      {% url "lernen:start" as start_url %}
       {% include "komponenten/button.html" with href=start_url icon="funke" text=_("Noch eine Runde") %}
-      {% include "komponenten/button.html" with href=heim_url variante="geist" icon="home" text=_("Zurück zum Start") %}
     </div>
   </div></section>
 {% endif %}

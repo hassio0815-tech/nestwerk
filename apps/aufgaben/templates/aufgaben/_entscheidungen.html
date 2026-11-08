@@ -1,7 +1,6 @@
 {% comment %}Eltern: offene Entscheidungen (Konflikte, Meldungen), Reservierungen, kürzlich bestätigte (Sonderpunkte, Korrektur). HTMX ersetzt den Bereich.{% endcomment %}{% load i18n sprache %}
 <div id="entscheidungen" class="stapel" hx-target="#entscheidungen" hx-swap="outerHTML">
   {% include "aufgaben/_hinweis.html" %}
-  <h1>{% translate "Meldungen und Entscheidungen" %}</h1>
 
   <section class="stapel"><h2>{% translate "Konflikte" %}</h2>
     {% for i in konflikte %}

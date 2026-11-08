@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Prüfungen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern" as lernen_url %}
-  {% include "komponenten/button.html" with href=lernen_url variante="geist" klein=True icon="home" text=_("Lernen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Prüfungen") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Prüfungen" %}</h1>
   <p>{% translate "Ihr seht, wofür die Kinder üben und wie weit der Plan ist. In den Plan eingreift ihr nicht; ihr könnt den Termin ändern oder eine Prüfung löschen." %}</p>
   {% for kind, zeilen in kinder %}
     <section class="karte"><div class="karte__inhalt stapel" data-pruefung-kind="{{ kind.pk }}">

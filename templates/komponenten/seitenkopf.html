@@ -1,0 +1,8 @@
+{% comment %}
+  Seitenkopf jeder Unterseite: oben genau ein Link „← <übergeordnete Seite>“, darunter die <h1>.
+  Parameter: titel (Pflicht), zurueck_url und zurueck_text (beide zusammen, ohne Pfeil), icon (optional).
+  Startseiten (Eltern-Übersicht, Kind-Start, Launcher, Tablet, Login, Einrichtung) nutzen ihn nicht.
+{% endcomment %}<div class="seitenkopf">
+  {% if zurueck_url %}<a class="seitenkopf__zurueck" href="{{ zurueck_url }}"><span aria-hidden="true">←</span> {{ zurueck_text }}</a>{% endif %}
+  <h1 class="seitenkopf__titel">{% if icon %}{% include "komponenten/icon.html" with name=icon %} {% endif %}{{ titel }}</h1>
+</div>

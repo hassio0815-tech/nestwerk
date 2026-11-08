@@ -2,13 +2,9 @@
 {% load i18n static avatar_tags %}
 {% block titel %}{% translate "Mod-Shop" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "konten:kind_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="home" text=_("Start") %}
-{% endblock %}
 {% block inhalt %}
   <div class="zeile mod-kopf">
-    <h1>{% translate "Mod-Shop" %}</h1>
+    {% url "oberflaeche:dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Mod-Shop") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}
     {% if slot_filter %}<p class="reihe" data-slot-filter="{{ slot_filter.schluessel }}"><span class="chip">{% blocktranslate with slot=slot_filter.name|uebersetzt %}Nur Slot: {{ slot }}{% endblocktranslate %}</span>{% url "avatar:shop" as alle_url %}<a class="knopf knopf--geist knopf--klein" href="{{ alle_url }}">{% translate "Alle Slots zeigen" %}</a></p>{% endif %}
     <div class="stapel mod-kopf__guthaben"><span>{% translate "Verfügbar" %}</span>{% include "komponenten/punkte.html" with wert=verfuegbar %}</div>
   </div>

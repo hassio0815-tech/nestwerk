@@ -5,8 +5,7 @@
   <div class="kopf__zeile">
     <a class="kopf__marke" href="/"><img class="kopf__logo" src="{% static 'img/icon-klein.svg' %}" alt="" width="32" height="32"><span>{{ app_name|default:"Nestwerk" }}</span></a>
     <div class="reihe">
-      {% block kopf_rechts %}{% endblock %}
-      {% if request.user.is_authenticated and request.user.rolle == "kind" %}{% include "komponenten/akzent_wahl.html" %}{% url 'oberflaeche:kind_einstellungen' as einstellungen_url %}{% if einstellungen_url %}<a class="knopf knopf--geist knopf--klein" href="{{ einstellungen_url }}" aria-label="{% translate "Meine Einstellungen" %}" title="{% translate "Meine Einstellungen" %}">{% include "komponenten/icon.html" with name="einstellungen" %}</a>{% endif %}{% endif %}
+      {% if request.user.is_authenticated and request.user.rolle == "kind" %}{% include "komponenten/kopfleiste.html" with rolle="kind" %}{% endif %}
       {% include "komponenten/umschalter.html" %}
     </div>
   </div>

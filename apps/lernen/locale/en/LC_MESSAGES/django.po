@@ -6403,3 +6403,7 @@ msgstr "You have been practising for a while. A short break does you good. Would
 
 msgid "Du übst schon länger. Eine kurze Pause hilft beim Merken."
 msgstr "You have been practising for longer. A short break helps you remember."
+
+#: apps/lernen/templates/lernen/sitzung.html
+msgid "Lernrunde"
+msgstr "Learning round"

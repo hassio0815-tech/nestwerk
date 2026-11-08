@@ -3,11 +3,6 @@
 {% comment %}Kinder-Startseite: Avatar, Mini-Übersicht, Lernen und Aufgaben. Jeder Block hat einen Button in sein Untermenü; alles Weitere liegt dort.{% endcomment %}
 {% block titel %}{% translate "Hallo" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  <form method="post" action="{% url 'konten:abmelden' %}">{% csrf_token %}
-    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
-  </form>
-{% endblock %}
 {% block inhalt %}
   {% include "aufgaben/_hinweis.html" %}
   <h1>{% blocktranslate with name=request.user.rufname %}Hallo {{ name }}!{% endblocktranslate %}</h1>

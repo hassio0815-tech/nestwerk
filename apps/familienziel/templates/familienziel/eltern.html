@@ -3,8 +3,8 @@
 {% load static %}
 {% block titel %}{% translate "Familienziel" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/familienziel.css' %}">{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Familienziel") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Familienziel" %}</h1>
   <p>{% translate "Gezählt werden die verdienten XP aller Kinder von Montag bis Sonntag. Jedes nicht pausierte Kind braucht mindestens eine bestätigte Aufgabe." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

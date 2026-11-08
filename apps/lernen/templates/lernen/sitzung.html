@@ -2,10 +2,7 @@
 {% load i18n static %}
 {% block titel %}{% translate "Lernen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}
-  {% url "lernen:start" as start_url %}
-  {% include "komponenten/button.html" with href=start_url variante="geist" klein=True icon="pfeil-links" text=_("Lernen") %}
-{% endblock %}
 {% block inhalt %}
+  {% url "lernen:start" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Lernrunde") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}
   <div id="lern-bereich" class="stapel" aria-live="polite">{% include "lernen/_zustand.html" %}</div>
 {% endblock %}

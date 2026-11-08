@@ -1,8 +1,8 @@
 {% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
 {% comment %}Dungeon-Bereich der Eltern: alles zum Spiel der Kinder (Ränge, Mods, Abzeichen, Ruhmeshalle, Sondertage, Ranking, XP). Alltag steht im Dashboard.{% endcomment %}
 {% block titel %}{% translate "Dungeon" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Dungeon") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Dungeon" %}</h1>
   <p class="kachel__text">{% translate "Hier steht alles zum Spiel der Kinder. Der Alltag läuft über die Übersicht." %}</p>
   <nav class="aufgaben-nav" aria-label="{% translate "Dungeon" %}">
     {% url "spielregeln:raenge" as u1 %}{% url "spielregeln:abzeichen" as u2 %}{% url "spielregeln:meilensteine" as u3 %}{% url "avatar:eltern" as u4 %}{% url "avatar:halle_eltern" as u5 %}{% url "sondertag:eltern" as u6 %}{% url "sondertag:prognose" as u7 %}

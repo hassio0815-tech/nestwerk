@@ -1,7 +1,7 @@
 {% load i18n lernen_text %}{% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 {% if aufgabe %}
   <section class="karte lernen-frage" data-probe-zustand="frage"><div class="karte__inhalt stapel">
-    <h1>{% translate "Probe-Prüfung" %}</h1>
+    <h2>{% translate "Probe-Prüfung" %}</h2>
     <p class="kachel__text">{% translate "Du hast so viel Zeit, wie du brauchst. Eine Rückmeldung gibt es am Ende." %}</p>
     <p class="lernen-frage__text" data-lernen-frage>{{ aufgabe.text|rechnung }}</p>
     {% url "lernen:probe_antwort" probe.pk as antwort_url %}
@@ -13,7 +13,7 @@
   </div></section>
 {% else %}
   <section class="karte" data-probe-zustand="ergebnis"><div class="karte__inhalt stapel">
-    <h1 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h1>
+    <h2 class="reihe">{% include "komponenten/icon.html" with name="stern" %} {% translate "Geschafft!" %}</h2>
     <p>{{ ton_hinweis }}</p>
     <ul class="stapel" data-probe-ergebnis>
       {% for e, text in ergebnisse %}

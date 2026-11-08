@@ -1,15 +1,11 @@
 {% extends "basis/einstellungen.html" %}
 {% load i18n %}
 {% block titel %}{% translate "Benachrichtigungen" %}{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "benachrichtigung:einstellungen" as einstellungen_url %}
-  {% include "komponenten/button.html" with href=einstellungen_url variante="geist" klein=True icon="einstellungen" text=_("Einstellungen") %}
-  {% url "konten:eltern_heim" as heim_url %}
-  {% include "komponenten/button.html" with href=heim_url variante="geist" klein=True icon="pfeil-links" text=_("Zurück") %}
-{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Benachrichtigungen") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
   <div class="stapel">
-    <h1>{% translate "Benachrichtigungen" %}</h1>
+    {% url "benachrichtigung:einstellungen" as einstellungen_url %}
+    <div class="reihe">{% include "komponenten/button.html" with href=einstellungen_url variante="geist" klein=True icon="einstellungen" text=_("Einstellungen") %}</div>
     {% include "benachrichtigung/_liste.html" %}
   </div>
 {% endblock %}

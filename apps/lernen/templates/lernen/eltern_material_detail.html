@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{{ m.anzeigename }}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern_material" as liste_url %}
-  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="home" text=_("Lernmappe") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern_material" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=m.anzeigename zurueck_url=zurueck_url zurueck_text=_("Lernmappe") %}{% endblock %}
 {% block seite %}
-  <h1>{{ m.anzeigename }}</h1>
   <p>{{ m.kind.anzeigename }} · {{ m.get_status_display }}{% if fehlertext %} · {{ fehlertext }}{% endif %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

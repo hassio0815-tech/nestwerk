@@ -1,0 +1,16 @@
+{% load i18n %}{% comment %}
+  Einheitliche Kopfleiste (rechts im Kopf): Start · Lernen · Zahnrad · Abmelden.
+  Parameter: rolle = "eltern" oder "kind". Lernen erscheint nur, wenn das Lernmodul Adressen hat.
+  Auf dem Handy zeigen die Knöpfe nur Symbole (Text bleibt für Vorleser, siehe nestwerk.css).
+{% endcomment %}{% if rolle == "kind" %}
+  {% url "konten:kind_heim" as start_url %}{% url "lernen:start" as lernen_url %}{% url "oberflaeche:kind_einstellungen" as einstellungen_url %}{% translate "Meine Einstellungen" as einstellungen_text %}
+{% else %}
+  {% url "oberflaeche:module" as start_url %}{% url "lernen:eltern" as lernen_url %}{% url "oberflaeche:einstellungen" as einstellungen_url %}{% translate "Einstellungen" as einstellungen_text %}
+{% endif %}<nav class="kopfleiste reihe" aria-label="{% translate "Hauptmenü" %}">
+  {% if start_url %}<a class="knopf knopf--geist knopf--klein" href="{{ start_url }}" data-kopf="start"{% if request.path == start_url %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="home" %}<span>{% translate "Start" %}</span></a>{% endif %}
+  {% if lernen_url %}<a class="knopf knopf--geist knopf--klein" href="{{ lernen_url }}" data-kopf="lernen"{% if request.path == lernen_url %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="schule" %}<span>{% translate "Lernen" %}</span></a>{% endif %}
+  {% if einstellungen_url %}<a class="knopf knopf--geist knopf--klein" href="{{ einstellungen_url }}" data-kopf="einstellungen" aria-label="{{ einstellungen_text }}" title="{{ einstellungen_text }}"{% if request.path == einstellungen_url %} aria-current="page"{% endif %}>{% include "komponenten/icon.html" with name="zahnrad" %}</a>{% endif %}
+  <form method="post" action="{% url 'konten:abmelden' %}" data-kopf="abmelden">{% csrf_token %}
+    {% include "komponenten/button.html" with typ="submit" variante="geist" klein=True icon="x" text=_("Abmelden") %}
+  </form>
+</nav>

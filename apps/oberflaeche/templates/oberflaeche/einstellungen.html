@@ -1,8 +1,8 @@
 {% extends "oberflaeche/eltern_basis.html" %}{% load i18n %}
 {% comment %}Generischer Einstellungen-Editor: ein Formular je Modul, Felder aus den Definitionen.{% endcomment %}
 {% block titel %}{% translate "Einstellungen" %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Einstellungen") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Einstellungen" %}</h1>
   {% include "komponenten/darstellung.html" %}
   {% include "konten/_sprache_einstellung.html" %}
   {% include "oberflaeche/_wappen_karte.html" %}

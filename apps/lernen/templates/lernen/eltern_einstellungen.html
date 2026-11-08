@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{% translate "Lern-Einstellungen" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern" as eltern_url %}
-  {% include "komponenten/button.html" with href=eltern_url variante="geist" klein=True icon="schule" text=_("Lernen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Lern-Einstellungen") zurueck_url=zurueck_url zurueck_text=_("Lernen") %}{% endblock %}
 {% block seite %}
-  <h1>{% translate "Lern-Einstellungen" %}</h1>
   <p>{% translate "Was ihr hier ändert, gilt für die ganze Familie. Alles wird zusammen gespeichert." %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
 

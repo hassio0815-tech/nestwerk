@@ -2,12 +2,8 @@
 {% load i18n static %}
 {% block titel %}{{ p.titel }}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'lernen/lernen.css' %}">{% endblock %}
-{% block kopf_rechts %}{{ block.super }}
-  {% url "lernen:eltern_pruefungen" as liste_url %}
-  {% include "komponenten/button.html" with href=liste_url variante="geist" klein=True icon="pfeil-links" text=_("Prüfungen") %}
-{% endblock %}
+{% block seitenkopf %}{% url "lernen:eltern_pruefungen" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=p.titel zurueck_url=zurueck_url zurueck_text=_("Prüfungen") %}{% endblock %}
 {% block seite %}
-  <h1>{{ p.titel }}</h1>
   <p>{{ p.kind.anzeigename }} · {{ p.fach.name }} · {{ p.termin|date:"DATE_FORMAT" }} · {{ p.get_status_display }}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}
   {% if check %}
