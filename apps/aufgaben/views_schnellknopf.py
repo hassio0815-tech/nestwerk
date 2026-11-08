@@ -10,8 +10,9 @@ eltern``) gibt es am Tablet nie. Fachliche Fehler erscheinen als Hinweis, nie al
 
 from uuid import UUID
 
+from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseForbidden
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST
 
@@ -22,8 +23,8 @@ from apps.konten import selectors as konten_selectors
 from apps.konten.geraet import ist_kiosk
 from apps.konten.zugriff import aktueller_elternteil, aktuelles_kind, nur_eltern, nur_kind
 
-from . import schnellknopf, selectors
-from .models import Aufgabe
+from . import schnellknopf, selectors, services
+from .models import Aufgabe, Status
 from .zustand import AblaufFehler
 
 MELDEN = schnellknopf.MELDEN
@@ -127,6 +128,7 @@ def _eltern_kontext(request, hinweis="", art="erfolg"):
 def eltern_druecken(request, pk):
     hinweis, art = _druecken_aus_formular(request, _knopf(pk), von=aktueller_elternteil(request))
     kontext = _eltern_kontext(request, hinweis, art)
+    kontext["verwaltung"] = request.POST.get("verwaltung") == "1"  # Einstellungsseite behält ⓧ
     return render(request, "aufgaben/kacheln/schnellknoepfe_eltern.html", kontext)
 
 
@@ -135,6 +137,23 @@ def eltern_druecken(request, pk):
 def schnellknoepfe_seite(request):
     """Verwaltung der Schnell-Knöpfe (löst die frühere Bibliothek ab): Kachel plus Bearbeiten."""
     return render(request, "aufgaben/schnellknoepfe.html", _eltern_kontext(request))
+
+
+@nur_eltern
+@require_POST
+def schnellknopf_loeschen(request, pk):
+    """Knopf "löschen" = beenden (Soft-Delete).
+
+    Hart löschen geht nicht und wäre falsch: ``AufgabenInstanz.aufgabe`` ist PROTECT, erledigte
+    Instanzen, Buchungen und das Audit-Log hängen daran. ``Status.BEENDET`` blendet den Knopf
+    überall aus (``schnellknopf.knoepfe`` zeigt nur aktive, die Aufgabenliste filtert Beendete),
+    verwirft noch freie Instanzen und lässt Begonnenes samt Punkten unberührt."""
+    aufgabe = _knopf(pk)
+    try:
+        services.aufgabe_status_setzen(aufgabe, Status.BEENDET, von=aktueller_elternteil(request))
+    except ValidationError:
+        pass
+    return redirect("aufgaben:schnellknoepfe")
 
 
 @nur_kind

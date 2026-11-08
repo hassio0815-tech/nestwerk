@@ -1,0 +1,10 @@
+{% load i18n sprache %}{% comment %}Inhalt einer Schnell-Knopf-Kachel: Emoji, Name (1-2 Zeilen), Punkte klein, Status-Badge.{% endcomment %}
+<span class="sk__emoji" aria-hidden="true">{{ a.emoji|default:"🔘" }}</span>
+<span class="sk__titel">{{ a.titel|uebersetzt }}</span>
+<span class="sk__punkte">{% include "komponenten/icon.html" with name="muenze" %}<span>{{ a.punkte }}</span><span class="sk__sr">{% translate "Punkte" %}</span></span>
+{% if a.laeuft %}
+  <span class="sk__badge">{% translate "läuft schon" %}</span>
+  <span class="sk__wer">{% if a.laeuft.kind %}{% blocktranslate with name=a.laeuft.kind.anzeigename %}{{ name }} macht's{% endblocktranslate %}{% else %}{% translate "noch offen" %}{% endif %}</span>
+{% elif a.laufend_anzahl %}
+  <span class="sk__badge sk__badge--teil">{% blocktranslate with laufend=a.laufend_anzahl gesamt=a.kinder_anzahl %}{{ laufend }} von {{ gesamt }} laufen{% endblocktranslate %}</span>
+{% endif %}

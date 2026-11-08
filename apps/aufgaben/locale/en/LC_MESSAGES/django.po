@@ -1693,10 +1693,27 @@ msgstr "Filter"
 
 #: templates/aufgaben/schnellknoepfe.html:6
 msgid ""
-"Knöpfe für Aufgaben, die bei Bedarf anfallen. Tippe auf „Drücken“ und wähle, "
-"wer sie macht. Den Standard und alles andere stellst du über das Stift-"
-"Symbol ein."
-msgstr "Buttons for tasks that come up as needed. Tap “Press” and choose who does it. Set the default and everything else with the pencil icon."
+"Knöpfe für Aufgaben, die bei Bedarf anfallen. Tippe auf einen Knopf und "
+"wähle, wer die Aufgabe macht. Alles andere stellst du über das Stift-Symbol "
+"ein, mit dem Kreuz löschst du einen Knopf."
+msgstr "Buttons for tasks that come up as needed. Tap a button and choose who does the task. Set everything else with the pencil icon; the cross deletes a button."
+
+#: templates/aufgaben/kacheln/_schnellknopf_raster.html:30
+msgid "Wirklich löschen?"
+msgstr "Really delete?"
+
+#: templates/aufgaben/kacheln/_schnellknopf_raster.html:32
+msgid "Der Knopf verschwindet. Bisherige Aufgaben und Punkte bleiben erhalten."
+msgstr "The button disappears. Past tasks and points are kept."
+
+#: templates/aufgaben/kacheln/_schnellknopf_raster.html:34
+msgid "Löschen"
+msgstr "Delete"
+
+#: templates/aufgaben/kacheln/_schnellknopf_raster.html:26
+#, python-format
+msgid "%(titel)s löschen"
+msgstr "Delete %(titel)s"
 
 #: uebernahme.py:35
 msgid ""
