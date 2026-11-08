@@ -103,7 +103,22 @@ def _ausfuehren(eintrag, aktion, benutzer) -> str:
     raise AktionFehler(_("Das ist nicht mehr möglich."))
 
 
+def _geloeschte(eintraege) -> set:
+    """Einträge zu einem gelöschten Vorgang: verschwinden aus Liste, Zählern und Pop-ups."""
+    ids = {e.ereignis.daten.get("instanz_id") for e in eintraege if e.ereignis.daten}
+    ids = {i for i in ids if isinstance(i, int)}
+    if not ids:
+        return set()
+    weg = set(
+        AufgabenInstanz.alle.filter(pk__in=ids, geloescht_am__isnull=False).values_list(
+            "pk", flat=True
+        )
+    )
+    return {e.pk for e in eintraege if (e.ereignis.daten or {}).get("instanz_id") in weg}
+
+
 def registrieren():
+    aktionen.ausblender_registrieren(_geloeschte)
     aktionen.registrieren(events.GEMELDET, zustaende=_melden_zustaende, ausfuehren=_ausfuehren)
     aktionen.registrieren(events.ANTWORT, zustaende=_melden_zustaende, ausfuehren=_ausfuehren)
     aktionen.registrieren(events.INTERESSE, zustaende=_interesse_zustaende, ausfuehren=_ausfuehren)

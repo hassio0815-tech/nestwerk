@@ -7,7 +7,7 @@ vollen Seite. Fachliche Fehler (``AblaufFehler``) erscheinen als Hinweis, nie al
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from apps.konten.zugriff import aktueller_elternteil, aktuelles_kind, nur_eltern, nur_kind
 
@@ -218,6 +218,31 @@ def eltern_abschliessen(request, pk):
 def eltern_alle_abschliessen(request):
     zahl = services.alle_meldungen_abschliessen(von=aktueller_elternteil(request))
     return _eltern_seite(request, hinweis=_("%(n)s abgeschlossen.") % {"n": zahl})
+
+
+@nur_eltern
+@require_GET
+def eltern_vorgang_loeschen_frage(request, pk):
+    """Ohne JavaScript: Bestätigungsseite für „Löschen“ (mit JS öffnet der Knopf ein Fenster)."""
+    instanz = get_object_or_404(AufgabenInstanz, pk=pk)  # Gelöschte gibt es hier nicht mehr (404)
+    return render(request, "aufgaben/vorgang_loeschen.html", {"instanz": instanz})
+
+
+@nur_eltern
+@require_POST
+def eltern_vorgang_loeschen(request, pk):
+    """Ganzen Vorgang löschen (Punkte per Gegenbuchung weg, überall ausgeblendet). HTMX bekommt
+    den neu gerenderten Bereich, ein Formular ohne JavaScript einen Redirect (POST/Redirect/GET).
+    Wiederholen ist harmlos (``alle``: eine schon gelöschte Instanz ändert nichts)."""
+    von = aktueller_elternteil(request)
+    instanz = get_object_or_404(AufgabenInstanz.alle, pk=pk)
+    try:
+        services.vorgang_loeschen(instanz, von=von)
+    except services.AblaufFehler as fehler:
+        return _eltern_seite(request, hinweis=str(fehler), art="fehler")
+    if not _htmx(request):
+        return redirect("aufgaben:entscheidungen")
+    return _eltern_seite(request, hinweis=_("Gelöscht."))
 
 
 def _offen_fuer_korrektur(instanz):

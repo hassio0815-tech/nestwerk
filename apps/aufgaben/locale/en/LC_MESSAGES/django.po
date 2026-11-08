@@ -2227,3 +2227,28 @@ msgstr "“{aufgabe}” is cancelled."
 #: events.py
 msgid "Reservierte Aufgabe entfällt"
 msgstr "Reserved task cancelled"
+
+#: views_ablauf.py templates/aufgaben/vorgang_loeschen.html
+msgid "Gelöscht."
+msgstr "Deleted."
+
+#: templates/aufgaben/_entscheidungen.html templates/aufgaben/_wochenplan.html
+#: templates/aufgaben/wochenplan_loeschen.html templates/aufgaben/vorgang_loeschen.html
+msgid "Die Punkte werden abgezogen und der Eintrag verschwindet überall."
+msgstr "The points will be taken back and the entry disappears everywhere."
+
+#: templates/aufgaben/_wochenplan.html templates/aufgaben/wochenplan_loeschen.html
+msgid "Ganze Serie beenden"
+msgstr "End the whole series"
+
+#: templates/aufgaben/_wochenplan.html templates/aufgaben/wochenplan_loeschen.html
+msgid ""
+"Diese Aufgabe wiederholt sich. „Ganze Serie beenden“ löscht auch diese Karte "
+"und beendet die Aufgabe endgültig."
+msgstr ""
+"This task repeats. “End the whole series” also deletes this card and ends "
+"the task for good."
+
+#: templates/aufgaben/vorgang_loeschen.html
+msgid "Vorgang löschen"
+msgstr "Delete entry"

@@ -2,9 +2,9 @@
   <div class="reihe">
     {% if i.aufgabe.kategorie %}{% include "komponenten/icon.html" with name=i.aufgabe.kategorie.symbol %}{% endif %}
     <strong>{{ i.titel_snapshot|uebersetzt }}</strong>
-    {% if i.loeschbar %}
+    {% if i.loeschbar or i.vorgang %}
       {% url "aufgaben:wochenplan_loeschen" i.pk as loeschen_url %}
-      <a class="knopf knopf--geist knopf--klein wochenplan__x" href="{{ loeschen_url }}?woche={{ woche.montag|date:'Y-m-d' }}" data-loeschen="{{ loeschen_url }}" data-titel="{{ i.titel_snapshot|uebersetzt }}"{% if i.serie %} data-serie="1"{% endif %} aria-haspopup="dialog" aria-label="{% translate "Löschen" %}">{% include "komponenten/icon.html" with name="x-kreis" %}</a>
+      <a class="knopf knopf--geist knopf--klein wochenplan__x" href="{{ loeschen_url }}?woche={{ woche.montag|date:'Y-m-d' }}" data-loeschen="{{ loeschen_url }}" data-titel="{{ i.titel_snapshot|uebersetzt }}"{% if i.serie %} data-serie="1"{% endif %}{% if i.vorgang %} data-vorgang="1"{% endif %} aria-haspopup="dialog" aria-label="{% translate "Löschen" %}">{% include "komponenten/icon.html" with name="x-kreis" %}</a>
     {% endif %}
   </div>
   <div class="reihe">

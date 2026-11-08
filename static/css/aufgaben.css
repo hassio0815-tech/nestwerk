@@ -157,12 +157,13 @@
 .sk-kachel--neu { text-decoration: none; }
 .sk-kachel--neu .sk-knopf { justify-content: center; border-style: dashed; color: var(--text-leise); background: transparent; }
 .sk-kachel--neu .sk__titel { font-weight: 600; }
-/* Löschen-Kreuz an der Wochenplan-Karte + Popup */
-.wochenplan__karte > .reihe:first-child { justify-content: space-between; flex-wrap: nowrap; }
-.wochenplan__x { margin-inline-start: auto; padding: .125rem; min-height: 0; color: var(--text-leise); }
+/* Löschen-Kreuz an der Wochenplan-Karte + Popup: das Kreuz sitzt absolut in der oberen rechten
+   Ecke und nimmt dem Titel keine Breite weg (Platz bleibt per padding-inline-end frei). */
+.wochenplan__karte { position: relative; }
+.wochenplan__karte > .reihe:first-child { flex-wrap: nowrap; justify-content: flex-start; padding-inline-end: 1.75rem; }
+.wochenplan__x { position: absolute; top: .25rem; inset-inline-end: .25rem; margin: 0; padding: .125rem; min-height: 0; color: var(--text-leise); }
 .knopf-dialog [hidden] { display: none !important; }
 .meldung-mehr > summary { cursor: pointer; font-size: .875rem; color: var(--text-leise); }
 .meldung-mehr[open] > summary { margin-bottom: .5rem; }
-/* Langer Titel: umbrechen statt das Löschen-Kreuz aus der Karte zu schieben */
-.wochenplan__karte > .reihe:first-child > strong { flex: 1 1 0; min-width: 0; overflow-wrap: anywhere; }
-.wochenplan__karte > .reihe:first-child > .wochenplan__x { flex: none; }
+/* Titel bricht nur an Wortgrenzen um (lange Wörter erst im Notfall, mit Trennung per lang-Attribut) */
+.wochenplan__karte > .reihe:first-child > strong { flex: 0 1 auto; min-width: 0; overflow-wrap: break-word; hyphens: auto; }

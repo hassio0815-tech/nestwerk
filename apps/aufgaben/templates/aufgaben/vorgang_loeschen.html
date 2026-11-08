@@ -1,0 +1,18 @@
+{% extends "aufgaben/basis.html" %}
+{% load i18n sprache %}
+{% block titel %}{% translate "Vorgang löschen" %}{% endblock %}
+{% comment %}Ohne JavaScript: Bestätigungsseite statt Fenster (gleiche POST-Adresse, danach Redirect).{% endcomment %}
+{% block subnav %}{% endblock %}
+{% block seitenkopf %}{% url "aufgaben:entscheidungen" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Vorgang löschen") zurueck_url=zurueck_url zurueck_text=_("Meldungen") %}{% endblock %}
+{% block seite %}
+  <form method="post" action="{% url 'aufgaben:vorgang_loeschen' instanz.pk %}" class="karte"><div class="karte__inhalt stapel">
+    {% csrf_token %}
+    <h2>{% translate "Wirklich löschen?" %}</h2>
+    <p><strong>{{ instanz.titel_snapshot|uebersetzt }}</strong></p>
+    <p>{% translate "Die Punkte werden abgezogen und der Eintrag verschwindet überall." %}</p>
+    <div class="reihe">
+      <button type="submit" class="knopf knopf--gefahr">{% include "komponenten/icon.html" with name="x-kreis" %}<span>{% translate "Löschen" %}</span></button>
+      <a class="knopf knopf--geist" href="{% url 'aufgaben:entscheidungen' %}">{% translate "Abbrechen" %}</a>
+    </div>
+  </div></form>
+{% endblock %}

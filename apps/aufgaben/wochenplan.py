@@ -25,8 +25,11 @@ def verschiebbar(instanz) -> bool:
     return instanz.status in instanzen.VERSCHIEBBAR
 
 
-# Löschen im Wochenplan: nur Karten ohne gebuchte oder offene Punkte. Gemeldet, bestätigt,
-# abgelehnt, storniert und "zum Nachbessern" tragen Entscheidungen/Buchungen und bleiben.
+# Löschen im Wochenplan, zwei Wege (ⓧ an jeder Karte):
+# - ``LOESCHBAR`` (offen, Konflikt, reserviert, nicht übernommen): Karte auslassen, es gibt keine
+#   Punkte ("Nur diesen Tag" / "Ganze Serie").
+# - alle anderen Karten (gemeldet, Rückfrage, bestätigt, nachzubessern, abgelehnt, storniert):
+#   ganzer Vorgang (``ablauf.vorgang_loeschen``: Punkte per Gegenbuchung auf netto 0, überall weg).
 LOESCHBAR = (
     InstanzStatus.OFFEN,
     InstanzStatus.KONFLIKT,
@@ -38,6 +41,16 @@ MODI_LOESCHEN = ("tag", "serie")
 
 def loeschbar(instanz) -> bool:
     return instanz.status in LOESCHBAR and instanz.ausgelassen_am is None
+
+
+def vorgang_loeschbar(instanz) -> bool:
+    """ⓧ löscht den ganzen Vorgang (Punkte weg, verschwindet überall): jede sichtbare Karte, die
+    nicht über ``loeschbar`` nur ausgelassen wird."""
+    return instanz.status not in LOESCHBAR and instanz.ausgelassen_am is None
+
+
+def loeschen_moeglich(instanz) -> bool:
+    return loeschbar(instanz) or vorgang_loeschbar(instanz)
 
 
 def ist_serie(aufgabe) -> bool:
@@ -58,6 +71,7 @@ def woche_daten(woche: zeit.IsoWoche, *, heute=None) -> dict:
     ):
         inst.beweglich = verschiebbar(inst)
         inst.loeschbar = loeschbar(inst)
+        inst.vorgang = vorgang_loeschbar(inst)
         inst.serie = ist_serie(inst.aufgabe)
         nach_tag[inst.faellig_am].append(inst)
     ohne_termin = AufgabenInstanz.objects.filter(
@@ -67,6 +81,7 @@ def woche_daten(woche: zeit.IsoWoche, *, heute=None) -> dict:
     for inst in ohne_termin:
         inst.beweglich = True
         inst.loeschbar = loeschbar(inst)
+        inst.vorgang = vorgang_loeschbar(inst)
         inst.serie = ist_serie(inst.aufgabe)
     tage = [{"datum": t, "heute": t == heute, "instanzen": nach_tag[t]} for t in woche.tage()]
     return {
@@ -163,15 +178,40 @@ def auslassen(instanz_pk, *, von, jetzt=None) -> AufgabenInstanz:
     return inst
 
 
+def _vorgang_loeschen(inst, modus, *, von, jetzt=None) -> AufgabenInstanz:
+    """Karte mit Vorgang (bestätigt, gemeldet ...): alles löschen. ``serie`` beendet zusätzlich
+    die Aufgabe (nur bei Serien; eine einmalige Aufgabe endet mit ihrer einzigen Karte)."""
+    from . import ablauf, services
+
+    try:
+        ablauf.vorgang_loeschen(inst, von=von, jetzt=jetzt)
+    except ablauf.AblaufFehler as exc:
+        raise ValueError(str(exc)) from exc
+    aufgabe = inst.aufgabe
+    einmalig = aufgabe.wiederholungsart == wiederholung.EINMALIG
+    if (modus == "serie" and ist_serie(aufgabe)) or einmalig:
+        if aufgabe.status != Status.BEENDET:
+            services.aufgabe_status_setzen(aufgabe, Status.BEENDET, von=von)
+    inst = AufgabenInstanz.alle.select_related("aufgabe").get(pk=inst.pk)
+    return inst
+
+
 @transaction.atomic
 def loeschen(instanz_pk, modus, *, von, jetzt=None) -> AufgabenInstanz:
     """Löschen aus dem Wochenplan. ``tag``: nur diese Karte. ``serie``: Aufgabe beenden (endgültig,
     Punkte bleiben), freie Instanzen entfallen. Einmalige Aufgaben enden mit ihrer einzigen Karte;
-    Schnell-Knöpfe bleiben (nur die Karte geht)."""
+    Schnell-Knöpfe bleiben (nur die Karte geht). Karten mit Vorgang (``vorgang_loeschbar``)
+    löschen den ganzen Vorgang samt Punkten (``ablauf.vorgang_loeschen``)."""
     from . import services
 
     if modus not in MODI_LOESCHEN:
         raise ValueError(_("Unbekannte Auswahl."))
+    try:
+        vorhanden = AufgabenInstanz.objects.select_related("aufgabe").get(pk=instanz_pk)
+    except AufgabenInstanz.DoesNotExist as exc:
+        raise ValueError(_("Aufgabe nicht gefunden")) from exc
+    if vorgang_loeschbar(vorhanden):
+        return _vorgang_loeschen(vorhanden, modus, von=von, jetzt=jetzt)
     inst = auslassen(instanz_pk, von=von, jetzt=jetzt)
     aufgabe = inst.aufgabe
     einmalig = aufgabe.wiederholungsart == wiederholung.EINMALIG

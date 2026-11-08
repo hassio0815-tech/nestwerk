@@ -14,8 +14,11 @@
     var oeffner = ziel.closest("[data-knopf-dialog]");
     if (oeffner) {
       var dialog = document.getElementById(oeffner.getAttribute("data-knopf-dialog") || "");
-      if (dialog && !dialog.open) {
-        dialog.showModal();
+      if (dialog) {
+        ereignis.preventDefault(); // Link ohne JavaScript = Bestätigungsseite
+        if (!dialog.open) {
+          dialog.showModal();
+        }
       }
       return;
     }

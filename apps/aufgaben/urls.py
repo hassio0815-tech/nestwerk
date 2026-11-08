@@ -109,6 +109,16 @@ urlpatterns += [
         "eltern/pruefen/<int:pk>/ablehnen/", views_ablauf.pruefen_ablehnen, name="pruefen_ablehnen"
     ),
     path(
+        "eltern/meldungen/<int:pk>/loeschen/",
+        views_ablauf.eltern_vorgang_loeschen_frage,
+        name="vorgang_loeschen_frage",
+    ),
+    path(
+        "eltern/meldungen/<int:pk>/vorgang-loeschen/",
+        views_ablauf.eltern_vorgang_loeschen,
+        name="vorgang_loeschen",
+    ),
+    path(
         "eltern/meldungen/<int:pk>/korrigieren/",
         views_ablauf.eltern_korrigieren,
         name="korrigieren",

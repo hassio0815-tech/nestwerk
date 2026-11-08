@@ -68,7 +68,7 @@ def instanz_loeschen(request, pk):
     woche = wochenplan.woche_aus_datum(daten.get("woche"))
     if request.method == "GET":
         inst = get_object_or_404(AufgabenInstanz.objects.select_related("aufgabe"), pk=pk)
-        if not wochenplan.loeschbar(inst):
+        if not wochenplan.loeschen_moeglich(inst):
             return _antwort(
                 request,
                 woche,
@@ -78,6 +78,7 @@ def instanz_loeschen(request, pk):
         kontext = {
             "instanz": inst,
             "serie": wochenplan.ist_serie(inst.aufgabe),
+            "vorgang": wochenplan.vorgang_loeschbar(inst),
             "woche_montag": woche.montag,
         }
         return render(request, "aufgaben/wochenplan_loeschen.html", kontext)

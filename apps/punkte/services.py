@@ -22,7 +22,7 @@ from apps.ereignisse import services as ereignisse
 from apps.kern import audit, zeit
 
 from .events import GEBUCHT
-from .models import Art, Buchung
+from .models import Art, Ausblendung, Buchung
 from .selectors import guthaben, verfuegbar
 
 __all__ = [
@@ -33,6 +33,7 @@ __all__ = [
     "PunkteFehler",
     "UngueltigeBuchung",
     "WIRKUNG",
+    "ausblenden",
     "buchen",
     "gegenbuchen",
     "schreibsperre",
@@ -183,6 +184,23 @@ def gegenbuchen(original, *, begruendung="", von=audit.AKTUELL, bezugsdatum=None
             erstellt_von=_benutzer(akteur),
         )
         return _speichern(buchung, akteur, "punkte.storniert")
+
+
+def ausblenden(buchungen) -> int:
+    """Blendet Buchungen im Verlauf der Kinder aus (gelöschter Vorgang). Idempotent; die Summen
+    ändern sich nicht (der Aufrufer sorgt mit ``gegenbuchen`` für netto 0). Gibt die Zahl der
+    neu ausgeblendeten Buchungen zurück."""
+    ids = [b.pk if isinstance(b, Buchung) else b for b in buchungen]
+    neu = 0
+    with transaction.atomic():
+        schon = set(
+            Ausblendung.objects.filter(buchung_id__in=ids).values_list("buchung_id", flat=True)
+        )
+        for pk in ids:
+            if pk not in schon:
+                Ausblendung.objects.create(buchung_id=pk)
+                neu += 1
+    return neu
 
 
 # --- intern ----------------------------------------------------------------------------------

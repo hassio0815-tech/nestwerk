@@ -10,9 +10,14 @@
     <input type="hidden" name="woche" value="{{ woche_montag|date:'Y-m-d' }}">
     <h2>{% translate "Wirklich löschen?" %}</h2>
     <p><strong>{{ instanz.titel_snapshot|uebersetzt }}</strong></p>
-    {% if serie %}<p class="zeile__plan">{% translate "Diese Aufgabe wiederholt sich. „Ganze Serie“ beendet sie endgültig, bereits gebuchte Punkte bleiben." %}</p>{% endif %}
+    {% if vorgang %}<p>{% translate "Die Punkte werden abgezogen und der Eintrag verschwindet überall." %}</p>{% endif %}
+    {% if serie and vorgang %}<p class="zeile__plan">{% translate "Diese Aufgabe wiederholt sich. „Ganze Serie beenden“ löscht auch diese Karte und beendet die Aufgabe endgültig." %}</p>
+    {% elif serie %}<p class="zeile__plan">{% translate "Diese Aufgabe wiederholt sich. „Ganze Serie“ beendet sie endgültig, bereits gebuchte Punkte bleiben." %}</p>{% endif %}
     <div class="reihe">
-      {% if serie %}
+      {% if serie and vorgang %}
+        <button type="submit" name="modus" value="tag" class="knopf knopf--gefahr">{% translate "Löschen" %}</button>
+        <button type="submit" name="modus" value="serie" class="knopf knopf--sekundaer">{% translate "Ganze Serie beenden" %}</button>
+      {% elif serie %}
         <button type="submit" name="modus" value="tag" class="knopf knopf--sekundaer">{% translate "Nur diesen Tag" %}</button>
         <button type="submit" name="modus" value="serie" class="knopf knopf--primaer">{% translate "Ganze Serie" %}</button>
       {% else %}

@@ -80,10 +80,25 @@
           <div class="zeile__text stapel"><strong>{{ i.titel_snapshot|uebersetzt }}</strong>
             <span class="zeile__plan">{% translate "D d.m. H:i" context "Datum mit Wochentag und Uhrzeit" as dtfmt %}{{ i.kind.anzeigename }} · {% if i.bestaetigt_von %}{% blocktranslate with name=i.bestaetigt_von.anzeigename %}bestätigt von {{ name }}{% endblocktranslate %}{% else %}{% translate "Vertrauen (automatisch)" %}{% endif %} · {{ i.bestaetigt_am|date:dtfmt }}{% if i.sonderpunkte %} · {% blocktranslate with punkte=i.sonderpunkte grund=i.sonderpunkte_begruendung %}+{{ punkte }} Bonus ({{ grund }}){% endblocktranslate %}{% endif %}</span></div>
           {% include "komponenten/punkte.html" with wert=i.punkte_snapshot %}
-          <form method="post" action="{% url 'aufgaben:abschliessen' i.pk %}" hx-post="{% url 'aufgaben:abschliessen' i.pk %}">{% csrf_token %}
-            {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Abschließen") %}
-          </form>
+          <div class="reihe">
+            <form method="post" action="{% url 'aufgaben:abschliessen' i.pk %}" hx-post="{% url 'aufgaben:abschliessen' i.pk %}">{% csrf_token %}
+              {% include "komponenten/button.html" with typ="submit" variante="sekundaer" klein=True icon="check" text=_("Abschließen") %}
+            </form>
+            {% comment %}Ohne JavaScript führt der Link auf die Bestätigungsseite; mit JS öffnet er das Fenster.{% endcomment %}
+            <a class="knopf knopf--gefahr knopf--klein" href="{% url 'aufgaben:vorgang_loeschen_frage' i.pk %}" data-knopf-dialog="vorgang-dialog-{{ i.pk }}" aria-haspopup="dialog">{% include "komponenten/icon.html" with name="x-kreis" %}<span>{% translate "Löschen" %}</span></a>
+          </div>
         </div>
+        <dialog id="vorgang-dialog-{{ i.pk }}" class="knopf-dialog" aria-labelledby="vorgang-dialog-titel-{{ i.pk }}">
+          <form method="post" action="{% url 'aufgaben:vorgang_loeschen' i.pk %}" hx-post="{% url 'aufgaben:vorgang_loeschen' i.pk %}" class="stapel" hx-disabled-elt="find button[type=submit]">{% csrf_token %}
+            <h3 id="vorgang-dialog-titel-{{ i.pk }}">{% translate "Wirklich löschen?" %}</h3>
+            <p><strong>{{ i.titel_snapshot|uebersetzt }}</strong></p>
+            <p>{% translate "Die Punkte werden abgezogen und der Eintrag verschwindet überall." %}</p>
+            <div class="reihe knopf-dialog__aktionen">
+              <button type="submit" class="knopf knopf--gefahr">{% include "komponenten/icon.html" with name="x-kreis" %}<span>{% translate "Löschen" %}</span></button>
+              <button type="button" class="knopf knopf--geist" data-knopf-schliessen>{% translate "Abbrechen" %}</button>
+            </div>
+          </form>
+        </dialog>
         <details class="meldung-mehr">
           <summary>{% translate "Mehr …" %}</summary>
           <div class="stapel">

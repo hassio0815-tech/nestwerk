@@ -21,7 +21,7 @@ LISTE_STANDARD_LIMIT = 50
 
 def liste(benutzer, limit=LISTE_STANDARD_LIMIT):
     """Neueste Benachrichtigungen mit allen Zustellungen (auch unterdrückte)."""
-    return list(
+    return aktionen.sichtbar(
         Benachrichtigung.objects.filter(empfaenger=benutzer)
         .select_related("ereignis")
         .prefetch_related("zustellungen__kanal")[:limit]
@@ -43,14 +43,17 @@ def liste_mit_zustand(benutzer, limit=LISTE_STANDARD_LIMIT):
 
 def offene_anzahl(benutzer, limit=LISTE_STANDARD_LIMIT):
     """Noch nicht erledigte Einträge der Liste (Zahl am Reiter "Benachrichtigungen")."""
-    eintraege = list(
+    eintraege = aktionen.sichtbar(
         Benachrichtigung.objects.filter(empfaenger=benutzer).select_related("ereignis")[:limit]
     )
     return sum(1 for z in aktionen.zustaende(eintraege).values() if z.offen)
 
 
 def ungelesen(benutzer):
-    return Benachrichtigung.objects.filter(empfaenger=benutzer, gelesen_am__isnull=True).count()
+    qs = Benachrichtigung.objects.filter(empfaenger=benutzer, gelesen_am__isnull=True)
+    if not aktionen._AUSBLENDER:
+        return qs.count()
+    return len(aktionen.sichtbar(qs.select_related("ereignis")))
 
 
 def smtp_konto():
@@ -71,7 +74,13 @@ def mail_nur_entscheidungen(benutzer):
 
 
 def ungesehene_popups(kind):
-    return list(Popup.objects.filter(empfaenger=kind, gesehen_am__isnull=True).order_by("id"))
+    popups = list(
+        Popup.objects.filter(empfaenger=kind, gesehen_am__isnull=True)
+        .select_related("benachrichtigung__ereignis")
+        .order_by("id")
+    )
+    weg = aktionen.ausgeblendet(p.benachrichtigung for p in popups)
+    return [p for p in popups if p.benachrichtigung_id not in weg] if weg else popups
 
 
 def kanaele_fuer(rolle):

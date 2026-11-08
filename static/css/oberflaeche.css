@@ -23,7 +23,8 @@
 .dashboard--eltern > .dashboard__kachel { min-width: 0; scroll-margin-top: 1rem; }
 @media (min-width: 48rem) {
   .dashboard--eltern { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dashboard--eltern > [data-kachel="oberflaeche.eltern_schnellknoepfe"] { grid-column: 1 / -1; }
+  .dashboard--eltern > [data-kachel="oberflaeche.eltern_schnellknoepfe"],
+  .dashboard--eltern > [data-kachel="oberflaeche.eltern_schnellzugriff"] { grid-column: 1 / -1; }
 }
 @media (min-width: 80rem) {
   .dashboard--eltern { grid-template-columns: repeat(3, minmax(0, 1fr)); }

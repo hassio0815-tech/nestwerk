@@ -53,11 +53,15 @@
       e.preventDefault();
       var form = dlg.querySelector("[data-loeschen-formular]");
       var serie = oeffner.hasAttribute("data-serie");
+      var vorgang = oeffner.hasAttribute("data-vorgang");
+      /* Welche Texte/Knöpfe gelten: einzeln | serie | vorgang | vorgang-serie */
+      var art = (vorgang ? "vorgang" : "") + (vorgang && serie ? "-" : "") + (serie ? "serie" : "");
+      art = art || "einzeln";
       form.setAttribute("action", oeffner.getAttribute("data-loeschen"));
       dlg.querySelector("[data-loeschen-name]").textContent = oeffner.getAttribute("data-titel") || "";
-      dlg.querySelector("[data-loeschen-serie]").hidden = !serie;
-      dlg.querySelectorAll("button[data-loeschen-serie]").forEach(function (b) { b.hidden = !serie; });
-      dlg.querySelector("button[data-loeschen-einzeln]").hidden = serie;
+      dlg.querySelectorAll("[data-fuer]").forEach(function (el) {
+        el.hidden = el.getAttribute("data-fuer").split(" ").indexOf(art) < 0;
+      });
       if (!dlg.open) { dlg.showModal(); }
       return;
     }

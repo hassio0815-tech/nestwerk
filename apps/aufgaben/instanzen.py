@@ -63,7 +63,8 @@ def _anlegen(aufgabe, plan_datum, fenster_start, fenster_ende) -> AufgabenInstan
 
 def _zeitgebunden_erzeugen(aufgabe, *, jetzt, heute, horizont, tz) -> int:
     plan = aufgabe.plan
-    bestehende = aufgabe.instanzen.all()
+    # ``alle``: auch gelöschte Vorgänge zählen (kein Neuerzeugen, ``unique(aufgabe, plan_datum)``)
+    bestehende = AufgabenInstanz.alle.filter(aufgabe=aufgabe)
     if plan.art == wiederholung.EINMALIG and bestehende.exists():
         return 0
     # Mehrtägige Fenster können vor heute begonnen haben und noch laufen
@@ -86,7 +87,8 @@ def _zeitgebunden_erzeugen(aufgabe, *, jetzt, heute, horizont, tz) -> int:
 def _ungebunden_erzeugen(aufgabe, *, heute, tz) -> int:
     """K9: höchstens eine laufende Instanz; die nächste erst zum nächsten Termin danach."""
     plan = aufgabe.plan
-    bestehende = aufgabe.instanzen.all()
+    # ``alle``: auch gelöschte Vorgänge zählen (kein Neuerzeugen, ``unique(aufgabe, plan_datum)``)
+    bestehende = AufgabenInstanz.alle.filter(aufgabe=aufgabe)
     if bestehende.filter(status__in=LAUFENDE_STATUS, fenster_ende__isnull=True).exists():
         return 0
     if plan.art == wiederholung.EINMALIG:

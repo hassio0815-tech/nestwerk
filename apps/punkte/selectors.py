@@ -84,8 +84,11 @@ def xp_je_tag(kind, von, bis):
 
 
 def buchungen(kind):
-    """Buchungen eines Kindes, neueste zuerst."""
-    return Buchung.objects.filter(kind=kind).order_by("-gebucht_am", "-id")
+    """Buchungen eines Kindes für den Verlauf, neueste zuerst (ohne ausgeblendete, siehe
+    ``services.ausblenden``)."""
+    return Buchung.objects.filter(kind=kind, ausblendung__isnull=True).order_by(
+        "-gebucht_am", "-id"
+    )
 
 
 def buchung_zu_schluessel(schluessel):

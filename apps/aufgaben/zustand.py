@@ -24,6 +24,9 @@ Alle erlaubten Übergänge stehen zentral in ``UEBERGAENGE``. Jeder Statuswechse
     bestaetigt -> storniert          Korrektur (Gegenbuchung, K2)
     offen | nicht_uebernommen -> storniert   Eltern lassen die Karte im Wochenplan aus
                                      (``ausgelassen_am`` gesetzt, keine Punkte)
+    reserviert | konflikt | gemeldet | rueckfrage -> storniert   Eltern löschen den ganzen Vorgang
+                                     (``geloescht_am`` gesetzt, Punkte per Gegenbuchung auf 0;
+                                     ``abgelehnt``/``storniert`` bleiben stehen, nur geloescht_am)
 
 Endzustände: ``abgelehnt``, ``storniert``.
 """
@@ -38,10 +41,12 @@ S = InstanzStatus
 
 UEBERGAENGE: dict[str, frozenset[str]] = {
     S.OFFEN: frozenset({S.RESERVIERT, S.NICHT_UEBERNOMMEN, S.STORNIERT}),
-    S.RESERVIERT: frozenset({S.KONFLIKT, S.OFFEN, S.NICHT_UEBERNOMMEN, S.GEMELDET, S.BESTAETIGT}),
-    S.KONFLIKT: frozenset({S.RESERVIERT, S.OFFEN, S.NICHT_UEBERNOMMEN}),
-    S.GEMELDET: frozenset({S.BESTAETIGT, S.ABGELEHNT, S.RUECKFRAGE}),
-    S.RUECKFRAGE: frozenset({S.GEMELDET, S.BESTAETIGT, S.ABGELEHNT}),
+    S.RESERVIERT: frozenset(
+        {S.KONFLIKT, S.OFFEN, S.NICHT_UEBERNOMMEN, S.GEMELDET, S.BESTAETIGT, S.STORNIERT}
+    ),
+    S.KONFLIKT: frozenset({S.RESERVIERT, S.OFFEN, S.NICHT_UEBERNOMMEN, S.STORNIERT}),
+    S.GEMELDET: frozenset({S.BESTAETIGT, S.ABGELEHNT, S.RUECKFRAGE, S.STORNIERT}),
+    S.RUECKFRAGE: frozenset({S.GEMELDET, S.BESTAETIGT, S.ABGELEHNT, S.STORNIERT}),
     S.BESTAETIGT: frozenset({S.STORNIERT, S.NACHBESSERN}),
     S.NACHBESSERN: frozenset({S.GEMELDET, S.STORNIERT}),
     S.ABGELEHNT: frozenset(),

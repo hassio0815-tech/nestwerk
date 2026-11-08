@@ -93,3 +93,20 @@ class Buchung(NurEinfuegenModell):
             f"{self.bezugsdatum} {self.get_art_display()} "
             f"G{self.guthaben_delta:+d} XP{self.xp_delta:+d}"
         )
+
+
+class Ausblendung(models.Model):
+    """Buchung, die im Verlauf der Kinder nicht erscheint (gelöschter Vorgang, DATA_MODEL 3).
+
+    ``Buchung`` ist insert-only; die Sichtbarkeit steht deshalb in dieser eigenen Tabelle. Die
+    Summen (Guthaben, XP) bleiben unberührt: Original und Gegenbuchung heben sich auf."""
+
+    buchung = models.OneToOneField(Buchung, on_delete=models.PROTECT, related_name="ausblendung")
+    erstellt_am = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = gettext_lazy("Ausgeblendete Buchung")
+        verbose_name_plural = gettext_lazy("Ausgeblendete Buchungen")
+
+    def __str__(self):
+        return f"Buchung {self.buchung_id} ausgeblendet"

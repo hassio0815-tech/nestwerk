@@ -873,6 +873,76 @@ def korrigieren(instanz, *, von, begruendung, jetzt=None, nachbessern=False):
     return instanz
 
 
+# --- Vorgang löschen ("als hätte es ihn nie gegeben") -------------------------------------------
+
+
+@transaction.atomic
+def vorgang_loeschen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
+    """Löscht den ganzen Vorgang einer Instanz: keine Punkte, kein Eintrag, nichts mehr sichtbar.
+
+    - Punkte: Das Ledger ist insert-only. Alle Buchungen zur Instanz (Basis, Serienbonus,
+      Sonderpunkte, auch frühere Nachbesser-Runden) bekommen eine Gegenbuchung mit dem
+      Bezugsdatum des Originals (Familienziel/Wochen-XP gehen in der richtigen Woche zurück);
+      Original und Gegenbuchung werden im Verlauf der Kinder ausgeblendet (``punkte.ausblenden``).
+    - Folgewerte (Aktivität, Serie, Rang, Abzeichen-Zähler): Storno-Hooks wie bei ``korrigieren``.
+      Es gibt **keine** Nachricht und kein Pop-up für das Kind (anders als ``korrigieren``,
+      ``reservierung_loesen``, ``ablehnen``); Interessen werden still beendet, eine laufende
+      Meldung samt Nachweis geschlossen/gelöscht. Die Hooks selbst melden nichts zu diesem
+      Vorgang (``aktivitaet.stornieren`` rechnet nur die Stände neu).
+    - Instanz: ``geloescht_am``/``geloescht_von`` gesetzt, Status ``storniert`` über den
+      Zustandsautomaten (``abgelehnt`` und ``storniert`` bleiben stehen). Die Zeile bleibt, damit
+      der Generator den Plan-Tag nicht neu erzeugt; ``AufgabenInstanz.objects`` blendet sie aus.
+    - Idempotent (zweiter Aufruf ändert nichts) und race-sicher (Transaktion + Zeilensperre).
+    """
+    _ist_eltern(von)
+    jetzt = jetzt or zeit.jetzt()
+    instanz = AufgabenInstanz.alle.select_for_update().get(pk=instanz.pk)
+    if instanz.geloescht_am is not None:
+        return instanz
+    alter_status = instanz.status
+    felder = {"geloescht_am": jetzt, "geloescht_von": von, "reserviert_bis": None}
+    if instanz.abgeschlossen_am is None:
+        felder["abgeschlossen_am"] = jetzt
+
+    # Still beenden: Meldung samt Nachweis, Interessen (ohne Ereignis, ohne Nachricht)
+    if Meldung.objects.filter(instanz=instanz, status__in=MELDUNG_LAUFEND).exists():
+        _meldung_abschliessen(instanz, MeldungStatus.ABGELEHNT, von=von, jetzt=jetzt)
+    _interesse_setzen(_interessen(instanz), I.VERDRAENGT, von=von, jetzt=jetzt)
+
+    if instanz.status in (S.ABGELEHNT, S.STORNIERT):  # Endzustände bleiben stehen
+        AufgabenInstanz.objects.filter(pk=instanz.pk).update(**felder)
+        for name, wert in felder.items():
+            setattr(instanz, name, wert)
+    else:
+        uebergang(instanz, S.STORNIERT, **felder)
+
+    # Punkte auf netto 0 (alle Buchungen zur Instanz, auch Sonderpunkte/Bonus/frühere Runden)
+    buchungen = list(punkte_selectors.buchungen_zu(instanz._meta.label_lower, instanz.pk))
+    schon_storniert = {b.storno_von_id for b in buchungen if b.storno_von_id}
+    sichtbar = [b.pk for b in buchungen]
+    abgezogen = 0
+    for buchung in buchungen:
+        if buchung.art == punkte.Art.STORNO:
+            continue
+        storno = punkte.gegenbuchen(buchung, von=von, bezugsdatum=buchung.bezugsdatum)
+        if buchung.pk not in schon_storniert:
+            abgezogen -= storno.guthaben_delta
+            sichtbar.append(storno.pk)
+    punkte.ausblenden(sichtbar)
+
+    if instanz.kind_id:
+        for hook in _storno_hooks:
+            hook(instanz, instanz.kind, von)
+    _protokoll(
+        "aufgabe.geloescht",
+        instanz,
+        akteur=von,
+        punkte=abgezogen,
+        status_vorher=alter_status,
+    )
+    return instanz
+
+
 @transaction.atomic
 def nachbessern_pruefen(*, jetzt=None) -> dict:
     """Frist abgelaufen: ``nachbessern`` -> ``storniert`` (keine Punkte), Eltern werden informiert.

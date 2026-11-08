@@ -389,15 +389,21 @@ def woche_seite(client, tag=date(2026, 10, 20)):
     return client.get(reverse("aufgaben:wochenplan"), {"datum": tag.isoformat()}).content.decode()
 
 
-def test_kreuz_nur_an_loeschbaren_karten(eltern_client, anlegen, anna, mama):
+def test_kreuz_an_allen_karten_vorgang_nur_bei_punktekarten(eltern_client, anlegen, anna, mama):
     frei = anlegen()
     fertig = bestaetigt(anlegen, anna, mama)
     offene_meldung = gemeldet(anlegen, anna)
     seite = woche_seite(eltern_client)
     assert f'data-loeschen="{loeschen_url(frei)}"' in seite
     assert 'aria-label="Löschen"' in seite
-    assert f'data-loeschen="{loeschen_url(fertig)}"' not in seite
-    assert f'data-loeschen="{loeschen_url(offene_meldung)}"' not in seite
+    # bestätigt/gemeldet: auch ein ⓧ, aber es löscht den ganzen Vorgang (data-vorgang)
+    for karte in (fertig, offene_meldung):
+        marke = f'data-loeschen="{loeschen_url(karte)}" data-titel="{karte.titel_snapshot}"'
+        assert f'{marke} data-vorgang="1"' in seite
+    assert (
+        f'data-loeschen="{loeschen_url(frei)}" data-titel="{frei.titel_snapshot}" data-vorgang'
+        not in seite
+    )
     assert 'id="loeschen-dialog"' in seite
 
 
@@ -465,24 +471,24 @@ def test_serie_popup_bietet_beide_wege(eltern_client, mama):
     assert "Nur diesen Tag" in seite and "Ganze Serie" in seite
 
 
-def test_bestaetigte_nicht_loeschbar_serverseitig(eltern_client, anlegen, anna, mama):
+def test_bestaetigte_karte_loeschen_loescht_den_vorgang(eltern_client, anlegen, anna, mama):
     fertig = bestaetigt(anlegen, anna, mama)
-    vorher = punkte_stand()
-    for modus in ("tag", "serie"):
-        antwort = eltern_client.post(loeschen_url(fertig), {"modus": modus}, **HTMX)
-        assert antwort.status_code == 409
+    assert punkte_stand()
+    antwort = eltern_client.post(loeschen_url(fertig), {"modus": "tag"}, **HTMX)
+    assert antwort.status_code == 200
     fertig.refresh_from_db()
-    assert fertig.status == S.BESTAETIGT and fertig.ausgelassen_am is None
-    assert fertig.aufgabe.status == Status.AKTIV
-    assert punkte_stand() == vorher
+    assert fertig.geloescht_am is not None and fertig.status == S.STORNIERT
+    assert fertig.ausgelassen_am is None
+    assert sum(g for _pk, g in punkte_stand()) == 0
+    assert f'data-id="{fertig.pk}"' not in woche_seite(eltern_client)
 
 
-@pytest.mark.parametrize("status", [S.GEMELDET, S.ABGELEHNT, S.STORNIERT, S.NACHBESSERN])
-def test_weitere_status_nicht_loeschbar(eltern_client, anlegen, status):
+@pytest.mark.parametrize("status", [S.ABGELEHNT, S.STORNIERT])
+def test_endzustaende_werden_ebenfalls_geloescht(eltern_client, anlegen, status):
     instanz = anlegen(status=status)
-    assert eltern_client.post(loeschen_url(instanz), {"modus": "tag"}).status_code == 409
+    assert eltern_client.post(loeschen_url(instanz), {"modus": "tag"}).status_code == 302
     instanz.refresh_from_db()
-    assert instanz.status == status and instanz.ausgelassen_am is None
+    assert instanz.status == status and instanz.geloescht_am is not None
 
 
 def test_reservierte_karte_loesen_und_ausblenden(eltern_client, anlegen, anna):

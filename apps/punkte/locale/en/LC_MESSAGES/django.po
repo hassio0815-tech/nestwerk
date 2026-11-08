@@ -74,3 +74,11 @@ msgstr "Available %(stand)s, needed %(punkte)s"
 #, python-format
 msgid "Guthaben %(stand)s, benötigt %(punkte)s"
 msgstr "Balance %(stand)s, needed %(punkte)s"
+
+#: models.py
+msgid "Ausgeblendete Buchung"
+msgstr "Hidden booking"
+
+#: models.py
+msgid "Ausgeblendete Buchungen"
+msgstr "Hidden bookings"

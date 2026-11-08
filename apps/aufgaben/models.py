@@ -270,6 +270,19 @@ LAUFENDE_STATUS = (
 )
 
 
+class AktuelleInstanzen(models.Manager):
+    """Standard-Manager: ohne gelöschte Vorgänge (``geloescht_am`` gesetzt).
+
+    Ein gelöschter Vorgang soll überall verschwinden (Listen, Kind-Seiten, Wochenplan, Zähler).
+    Weil jede Abfrage über ``AufgabenInstanz.objects`` und die Rückbeziehungen
+    (``aufgabe.instanzen``) diesen Filter erbt, kann keine Stelle ihn vergessen. Wer die Zeile
+    bewusst braucht (Generator: ``unique(aufgabe, plan_datum)``, Idempotenz des Löschens), nutzt
+    ``AufgabenInstanz.alle``."""
+
+    def get_queryset(self):
+        return super().get_queryset().filter(geloescht_am__isnull=True)
+
+
 class AufgabenInstanz(models.Model):
     """Konkretes Vorkommen einer Aufgabe (DATA_MODEL 7.4).
 
@@ -352,10 +365,29 @@ class AufgabenInstanz(models.Model):
         help_text="Von den Eltern im Wochenplan gelöscht (Status storniert, ohne Punkte). Die "
         "Zeile bleibt, damit der Generator den Plan-Tag nicht neu erzeugt.",
     )
+    geloescht_am = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='Vorgang von den Eltern gelöscht ("als hätte es ihn nie gegeben"): Punkte per '
+        "Gegenbuchung auf netto 0, Status storniert. Die Zeile bleibt nur technisch (Generator, "
+        "Audit) und ist über den Standard-Manager unsichtbar.",
+    )
+    geloescht_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
     sortierung = models.IntegerField(default=0)
     erzeugt_am = models.DateTimeField(default=timezone.now)
 
+    alle = models.Manager()  # unabhängig vom Standard-Manager: auch gelöschte Vorgänge
+    objects = AktuelleInstanzen()
+
     class Meta:
+        default_manager_name = "objects"
+        base_manager_name = "alle"
         ordering = ["faellig_am", "sortierung", "id"]
         verbose_name = gettext_lazy("Aufgaben-Instanz")
         verbose_name_plural = gettext_lazy("Aufgaben-Instanzen")

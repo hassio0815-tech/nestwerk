@@ -9,6 +9,10 @@ Start für einen Ereignistyp an (``registrieren``) und liefert
   aus und gibt einen Hinweistext zurück. Fachliche Fehler: ``AktionFehler``.
 
 Typen ohne Anbieter haben nur "Öffnen"; offen heißt dort "noch nicht gelesen".
+
+Ausblender: Ein Fachmodul kann außerdem Einträge ganz ausblenden, deren Sache gelöscht wurde
+(``ausblender_registrieren``; z. B. aufgaben: gelöschter Vorgang). Sie verschwinden aus der Liste,
+den Zählern und den Pop-ups, ohne dass ``benachrichtigung`` das Fachmodul kennt.
 """
 
 from __future__ import annotations
@@ -44,6 +48,31 @@ class Anbieter:
 
 
 _ANBIETER: dict[str, Anbieter] = {}
+_AUSBLENDER: list[Callable[[list], set]] = []
+
+
+def ausblender_registrieren(funktion: Callable[[list], set]) -> None:
+    """``funktion(eintraege) -> {benachrichtigung_pk, ...}``: diese Einträge zeigt niemand mehr."""
+    if funktion not in _AUSBLENDER:
+        _AUSBLENDER.append(funktion)
+
+
+def ausgeblendet(eintraege) -> set:
+    """PKs der Einträge (``Benachrichtigung`` mit ``ereignis``), die kein Modul mehr zeigen will."""
+    eintraege = list(eintraege)
+    if not eintraege or not _AUSBLENDER:
+        return set()
+    weg: set = set()
+    for funktion in _AUSBLENDER:
+        weg |= set(funktion(eintraege))
+    return weg
+
+
+def sichtbar(eintraege) -> list:
+    """``eintraege`` ohne die ausgeblendeten (Reihenfolge bleibt)."""
+    eintraege = list(eintraege)
+    weg = ausgeblendet(eintraege)
+    return [e for e in eintraege if e.pk not in weg] if weg else eintraege
 
 
 def registrieren(typ_slug: str, *, zustaende: Callable, ausfuehren: Callable) -> None:
