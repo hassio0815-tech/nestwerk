@@ -1,0 +1,24 @@
+{% extends "aufgaben/basis.html" %}
+{% load i18n sprache %}
+{% block titel %}{% translate "Aufgabe löschen" %}{% endblock %}
+{% comment %}Ohne JavaScript: Bestätigungsseite statt Popup (gleiche POST-Adresse).{% endcomment %}
+{% block subnav %}{% endblock %}
+{% block seitenkopf %}{% url "aufgaben:wochenplan" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Aufgabe löschen") zurueck_url=zurueck_url zurueck_text=_("Wochenplan") %}{% endblock %}
+{% block seite %}
+  <form method="post" action="{% url 'aufgaben:wochenplan_loeschen' instanz.pk %}" class="karte"><div class="karte__inhalt stapel">
+    {% csrf_token %}
+    <input type="hidden" name="woche" value="{{ woche_montag|date:'Y-m-d' }}">
+    <h2>{% translate "Wirklich löschen?" %}</h2>
+    <p><strong>{{ instanz.titel_snapshot|uebersetzt }}</strong></p>
+    {% if serie %}<p class="zeile__plan">{% translate "Diese Aufgabe wiederholt sich. „Ganze Serie“ beendet sie endgültig, bereits gebuchte Punkte bleiben." %}</p>{% endif %}
+    <div class="reihe">
+      {% if serie %}
+        <button type="submit" name="modus" value="tag" class="knopf knopf--sekundaer">{% translate "Nur diesen Tag" %}</button>
+        <button type="submit" name="modus" value="serie" class="knopf knopf--primaer">{% translate "Ganze Serie" %}</button>
+      {% else %}
+        <button type="submit" name="modus" value="tag" class="knopf knopf--primaer">{% translate "Ja, löschen" %}</button>
+      {% endif %}
+      <a class="knopf knopf--geist" href="{% url 'aufgaben:wochenplan' %}?datum={{ woche_montag|date:'Y-m-d' }}">{% translate "Abbrechen" %}</a>
+    </div>
+  </div></form>
+{% endblock %}

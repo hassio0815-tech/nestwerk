@@ -993,3 +993,42 @@ def kind_darf_sehen(instanz, kind) -> bool:
 
 def offene_interessen_q(kind) -> Q:
     return Q(interessen__kind=kind, interessen__status__in=INTERESSE_LAUFEND)
+
+
+# --- Meldungen: bestätigte Aufgabe abschließen (nur Ansicht) ---------------------------------
+
+
+@transaction.atomic
+def meldung_abschliessen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
+    """Nimmt eine bestätigte Aufgabe aus "Zuletzt bestätigt" (Eltern, Meldungen-Seite).
+
+    Reine Ansicht: Status, Punkte und Buchungen bleiben unverändert. Danach sind Sonderpunkte
+    und Korrigieren auf der Meldungen-Seite nicht mehr möglich. Ein zweiter Aufruf ändert nichts.
+    """
+    _ist_eltern(von)
+    instanz = _laden(instanz)
+    if instanz.status != S.BESTAETIGT:
+        raise UngueltigerUebergang(_("Nur bestätigte Aufgaben lassen sich abschließen."))
+    if instanz.meldung_abgeschlossen_am is None:
+        jetzt = jetzt or zeit.jetzt()
+        AufgabenInstanz.objects.filter(
+            pk=instanz.pk, status=S.BESTAETIGT, meldung_abgeschlossen_am__isnull=True
+        ).update(meldung_abgeschlossen_am=jetzt)
+        instanz.meldung_abgeschlossen_am = jetzt
+        _protokoll("aufgabe.meldung_abgeschlossen", instanz, akteur=von, kind=instanz.kind)
+    return instanz
+
+
+@transaction.atomic
+def alle_meldungen_abschliessen(*, von, jetzt=None) -> int:
+    """ "Alle abschließen": wie ``meldung_abschliessen`` für alle sichtbaren bestätigten."""
+    _ist_eltern(von)
+    jetzt = jetzt or zeit.jetzt()
+    offene = AufgabenInstanz.objects.filter(
+        status=S.BESTAETIGT, meldung_abgeschlossen_am__isnull=True
+    )
+    zahl = 0
+    for instanz in offene:
+        meldung_abschliessen(instanz, von=von, jetzt=jetzt)
+        zahl += 1
+    return zahl

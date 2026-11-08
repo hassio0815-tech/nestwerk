@@ -8,6 +8,12 @@ urlpatterns = [
     path("eltern/benachrichtigungen/", views.liste, name="liste"),
     path("eltern/benachrichtigungen/teil/", views.liste_teil, name="liste_teil"),
     path("eltern/benachrichtigungen/zaehler/", views.zaehler, name="zaehler"),
+    path("eltern/benachrichtigungen/reiter/", views.reiter_zaehler, name="reiter_zaehler"),
+    path(
+        "eltern/benachrichtigungen/<int:pk>/aktion/<slug:aktion_slug>/",
+        views.aktion,
+        name="aktion",
+    ),
     path("eltern/benachrichtigungen/alle-gelesen/", views.alle_gelesen, name="alle_gelesen"),
     path("eltern/benachrichtigungen/<int:pk>/gelesen/", views.gelesen, name="gelesen"),
     path("eltern/benachrichtigungen/<int:pk>/oeffnen/", views.oeffnen, name="oeffnen"),

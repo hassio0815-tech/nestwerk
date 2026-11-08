@@ -33,6 +33,21 @@
       </div>
     </section>
   {% endif %}
+  <dialog id="loeschen-dialog" class="knopf-dialog" aria-labelledby="loeschen-titel">
+    <form method="post" class="stapel" data-loeschen-formular>
+      {% csrf_token %}
+      <input type="hidden" name="woche" value="{{ woche.montag|date:'Y-m-d' }}">
+      <h3 id="loeschen-titel">{% translate "Wirklich löschen?" %}</h3>
+      <p data-loeschen-name></p>
+      <p class="zeile__plan" data-loeschen-serie hidden>{% translate "Diese Aufgabe wiederholt sich. „Ganze Serie“ beendet sie endgültig, bereits gebuchte Punkte bleiben." %}</p>
+      <div class="reihe knopf-dialog__aktionen">
+        <button type="submit" name="modus" value="tag" class="knopf knopf--primaer" data-loeschen-einzeln>{% translate "Ja, löschen" %}</button>
+        <button type="submit" name="modus" value="tag" class="knopf knopf--sekundaer" data-loeschen-serie hidden>{% translate "Nur diesen Tag" %}</button>
+        <button type="submit" name="modus" value="serie" class="knopf knopf--primaer" data-loeschen-serie hidden>{% translate "Ganze Serie" %}</button>
+        <button type="button" class="knopf knopf--geist" data-loeschen-zu>{% translate "Abbrechen" %}</button>
+      </div>
+    </form>
+  </dialog>
   <form id="wochenplan-ziehen" hidden method="post" data-wochenplan-formular>
     {% csrf_token %}
     <input type="hidden" name="woche" value="{{ woche.montag|date:'Y-m-d' }}">

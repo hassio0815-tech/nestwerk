@@ -7,29 +7,41 @@
       </button>
     {% endif %}
   </div>
+  {% include "benachrichtigung/_hinweis.html" %}
   {% for b in eintraege %}
-    <section class="karte benachrichtigung{% if not b.gelesen_am %} benachrichtigung--neu{% endif %}"><div class="karte__inhalt stapel">
+    <section class="karte benachrichtigung{% if not b.gelesen_am %} benachrichtigung--neu{% endif %}{% if not b.offen %} benachrichtigung--erledigt{% endif %}"{% if not b.offen %} data-erledigt="1"{% endif %}><div class="karte__inhalt stapel">
       <div class="reihe">
-        <h2>{% if not b.gelesen_am %}<span class="chip" data-selten="rare">{% translate "neu" %}</span> {% endif %}{{ b.titel }}</h2>
+        <h2>{% if b.offen and not b.gelesen_am %}<span class="chip" data-selten="rare">{% translate "neu" %}</span> {% endif %}{{ b.titel }}</h2>
+        {% if b.erledigt %}<span class="chip">{% include "komponenten/icon.html" with name="check" %} {% translate "Erledigt" %}</span>{% endif %}
         <time datetime="{{ b.erstellt_am|date:'c' }}">{% translate "d.m. H:i" as datumsformat %}{{ b.erstellt_am|date:datumsformat }}</time>
       </div>
       {% if b.text %}<p>{{ b.text }}</p>{% endif %}
-      <ul class="reihe" aria-label="{% translate "Zustellung" %}">
-        {% for z in b.zustellungen.all %}
-          <li>{% include "komponenten/chip.html" with text=z.kanal.anzeigename|add:": "|add:z.get_status_display %}</li>
-        {% endfor %}
-      </ul>
       <div class="reihe">
+        {% for a in b.aktionen %}
+          <form method="post" action="{% url 'benachrichtigung:aktion' b.pk a.slug %}" hx-post="{% url 'benachrichtigung:aktion' b.pk a.slug %}" hx-target="#benachrichtigungen" hx-swap="outerHTML">{% csrf_token %}
+            {% translate a.text as aktion_text %}{% include "komponenten/button.html" with typ="submit" variante=a.variante klein=True icon=a.icon text=aktion_text %}
+          </form>
+        {% endfor %}
         {% if b.link %}
           {% url "benachrichtigung:oeffnen" b.pk as oeffnen_url %}
-          {% include "komponenten/button.html" with href=oeffnen_url variante="sekundaer" klein=True icon="pfeil-rechts" text=_("Öffnen") %}
+          {% include "komponenten/button.html" with href=oeffnen_url variante="geist" klein=True icon="pfeil-rechts" text=_("Öffnen") %}
         {% endif %}
-        {% if not b.gelesen_am %}
+        {% if not b.gelesen_am and not b.aktionen %}
           <button type="button" class="knopf knopf--geist knopf--klein" hx-post="{% url 'benachrichtigung:gelesen' b.pk %}" hx-target="#benachrichtigungen" hx-swap="outerHTML">
             {% include "komponenten/icon.html" with name="check" %}<span>{% translate "Gelesen" %}</span>
           </button>
         {% endif %}
       </div>
+      {% if b.zustellungen.all %}
+        <details class="benachrichtigung__zustellung">
+          <summary>{% translate "Zustellung" %}</summary>
+          <ul class="reihe" aria-label="{% translate "Zustellung" %}">
+            {% for z in b.zustellungen.all %}
+              <li>{% include "komponenten/chip.html" with text=z.kanal.anzeigename|add:": "|add:z.get_status_display %}</li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endif %}
     </div></section>
   {% empty %}
     {% include "komponenten/leer.html" with icon="glocke" titel=_("Noch nichts passiert") text=_("Neue Ereignisse erscheinen hier.") %}

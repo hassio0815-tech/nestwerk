@@ -5,7 +5,7 @@ from apps.ereignisse import selectors as ereignis_selectors
 from apps.ereignisse.models import Zielgruppe
 from apps.konten.models import Rolle
 
-from . import registry
+from . import aktionen, registry
 from .models import (
     Benachrichtigung,
     BenachrichtigungsProfil,
@@ -26,6 +26,27 @@ def liste(benutzer, limit=LISTE_STANDARD_LIMIT):
         .select_related("ereignis")
         .prefetch_related("zustellungen__kanal")[:limit]
     )
+
+
+def liste_mit_zustand(benutzer, limit=LISTE_STANDARD_LIMIT):
+    """Wie ``liste``, aber je Eintrag mit ``offen`` und ``aktionen`` (Fachmodule, siehe
+    ``aktionen``). Offene zuerst, Erledigte danach (je Gruppe neueste zuerst)."""
+    eintraege = liste(benutzer, limit)
+    zustaende = aktionen.zustaende(eintraege)
+    for eintrag in eintraege:
+        zustand = zustaende[eintrag.pk]
+        eintrag.offen = zustand.offen
+        eintrag.aktionen = zustand.aktionen if zustand.offen else ()
+        eintrag.erledigt = not zustand.offen and aktionen.mit_anbieter(eintrag.ereignis.typ_id)
+    return sorted(eintraege, key=lambda e: not e.offen)
+
+
+def offene_anzahl(benutzer, limit=LISTE_STANDARD_LIMIT):
+    """Noch nicht erledigte Einträge der Liste (Zahl am Reiter "Benachrichtigungen")."""
+    eintraege = list(
+        Benachrichtigung.objects.filter(empfaenger=benutzer).select_related("ereignis")[:limit]
+    )
+    return sum(1 for z in aktionen.zustaende(eintraege).values() if z.offen)
 
 
 def ungelesen(benutzer):

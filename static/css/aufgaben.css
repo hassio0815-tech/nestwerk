@@ -91,3 +91,9 @@
   .nw-schale__inhalt .aufgaben-nav::-webkit-scrollbar { display: none; }
   .nw-schale__inhalt .aufgaben-nav > .knopf { flex: none; }
 }
+/* Löschen-Kreuz an der Wochenplan-Karte + Popup */
+.wochenplan__karte > .reihe:first-child { justify-content: space-between; flex-wrap: nowrap; }
+.wochenplan__x { margin-inline-start: auto; padding: .125rem; min-height: 0; color: var(--text-leise); }
+.knopf-dialog [hidden] { display: none !important; }
+.meldung-mehr > summary { cursor: pointer; font-size: .875rem; color: var(--text-leise); }
+.meldung-mehr[open] > summary { margin-bottom: .5rem; }

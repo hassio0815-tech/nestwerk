@@ -15,7 +15,7 @@ from django.views.decorators.http import require_GET, require_POST
 from apps.konten import selectors as konten_selectors
 from apps.konten.zugriff import nur_eltern, nur_kind, passiv
 
-from . import registry, ruhezeit, selectors, services, texte
+from . import aktionen, registry, ruhezeit, selectors, services, texte
 from .models import Benachrichtigung
 from .views_push import push_kontext
 
@@ -25,10 +25,12 @@ logger = logging.getLogger("nestwerk.benachrichtigung")
 # --- Liste -----------------------------------------------------------------------------------
 
 
-def _liste_kontext(request):
+def _liste_kontext(request, *, hinweis="", art="erfolg"):
     return {
-        "eintraege": selectors.liste(request.user),
+        "eintraege": selectors.liste_mit_zustand(request.user),
         "ungelesen": selectors.ungelesen(request.user),
+        "hinweis": hinweis,
+        "hinweis_art": art,
     }
 
 
@@ -66,6 +68,44 @@ def gelesen(request, pk):
 def alle_gelesen(request):
     services.alle_als_gelesen(request.user)
     return render(request, "benachrichtigung/_liste.html", _liste_kontext(request))
+
+
+@passiv
+@nur_eltern
+@require_GET
+def reiter_zaehler(request):
+    """Zahl offener (noch nicht erledigter) Einträge am Reiter "Benachrichtigungen"."""
+    return render(
+        request,
+        "benachrichtigung/_reiter_zaehler.html",
+        {"offen": selectors.offene_anzahl(request.user)},
+    )
+
+
+@nur_eltern
+@require_POST
+def aktion(request, pk, aktion_slug):
+    """Aktion der Karte (Bestätigen, Erlauben, Ablehnen ...). Wirkt über die Services des
+    Fachmoduls; danach gilt der Eintrag als gelesen. HTMX bekommt die Liste, sonst Redirect."""
+    eintrag = get_object_or_404(
+        Benachrichtigung.objects.select_related("ereignis"), pk=pk, empfaenger=request.user
+    )
+    try:
+        hinweis = aktionen.ausfuehren(eintrag, aktion_slug, request.user)
+        services.als_gelesen(request.user, eintrag.pk)
+        art = "erfolg"
+    except aktionen.AktionFehler as fehler:
+        hinweis, art = str(fehler), "fehler"
+    if request.headers.get("HX-Request") == "true":
+        return render(
+            request,
+            "benachrichtigung/_liste.html",
+            _liste_kontext(request, hinweis=hinweis, art=art),
+        )
+    if art == "fehler":
+        kontext = _liste_kontext(request, hinweis=hinweis, art=art)
+        return render(request, "benachrichtigung/liste.html", kontext, status=409)
+    return HttpResponseRedirect("/eltern/benachrichtigungen/")
 
 
 @nur_eltern

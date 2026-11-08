@@ -204,8 +204,33 @@ def eltern_rueckfrage(request, pk):
 
 @nur_eltern
 @require_POST
+def eltern_abschliessen(request, pk):
+    return _eltern_aktion(
+        request,
+        pk,
+        lambda instanz, von, daten: services.meldung_abschliessen(instanz, von=von),
+        _("Abgeschlossen."),
+    )
+
+
+@nur_eltern
+@require_POST
+def eltern_alle_abschliessen(request):
+    zahl = services.alle_meldungen_abschliessen(von=aktueller_elternteil(request))
+    return _eltern_seite(request, hinweis=_("%(n)s abgeschlossen.") % {"n": zahl})
+
+
+def _offen_fuer_korrektur(instanz):
+    """Abgeschlossene Meldungen lassen sich hier nicht mehr bonussen oder korrigieren."""
+    if instanz.meldung_abgeschlossen_am is not None:
+        raise services.AblaufFehler(_("Diese Aufgabe ist abgeschlossen."))
+
+
+@nur_eltern
+@require_POST
 def eltern_sonderpunkte(request, pk):
     def aktion(instanz, von, daten):
+        _offen_fuer_korrektur(instanz)
         punkte = _zahl(daten.get("sonderpunkte"))
         services.sonderpunkte_vergeben(instanz, punkte, daten.get("begruendung", ""), von=von)
 
@@ -216,6 +241,7 @@ def eltern_sonderpunkte(request, pk):
 @require_POST
 def eltern_korrigieren(request, pk):
     def aktion(instanz, von, daten):
+        _offen_fuer_korrektur(instanz)
         services.korrigieren(instanz, von=von, begruendung=daten.get("begruendung", ""))
 
     return _eltern_aktion(request, pk, aktion, _("Korrigiert, Punkte zurückgebucht."))
