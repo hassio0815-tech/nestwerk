@@ -42,6 +42,15 @@
   align-items: center;
   min-height: 2.75rem;
 }
+.lernen-auswahl {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 48rem) {
+  .lernen-auswahl {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 @media (prefers-reduced-motion: no-preference) {
   .lernen-rueck {
     transition: background 0.2s ease;
