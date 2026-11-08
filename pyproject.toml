@@ -23,7 +23,7 @@ dependencies = [
 dev = [
     "pytest==9.1.1",
     "pytest-django==4.14.0",
-    "ruff==0.17.2",
+    "ruff==0.17.3",
     "import-linter==2.15",
     "hypothesis==6.170.8",
     "playwright==1.64.1",
