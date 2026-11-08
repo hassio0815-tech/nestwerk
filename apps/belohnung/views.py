@@ -172,7 +172,8 @@ def _formular(request, form, *, titel, aktion):
         "aktion": aktion,
         "zurueck": reverse("belohnung:katalog"),
     }
-    vorlage = "belohnung/_formular.html" if _htmx(request) else "belohnung/formular.html"
+    kontext["inline"] = _htmx(request)  # Teilseite im Katalog: Überschrift + „Abbrechen“
+    vorlage = "belohnung/_formular.html" if kontext["inline"] else "belohnung/formular.html"
     return render(request, vorlage, kontext)
 
 

@@ -30,7 +30,7 @@ def kind_konto(kind):
 
 
 def kind_offene_auszug(kind, anzahl=AUSZUG_OFFENE):
-    offene = aufgaben.kind_offene(kind)
+    offene = aufgaben.kind_unzugeordnete(kind)  # wie die Kinder-Aufgabenseite
     return {"aufgaben": offene[:anzahl], "gesamt": len(offene)}
 
 
@@ -98,29 +98,12 @@ def kind_balken(kind):
     return zeilen
 
 
-LERNEN_PROVIDER = "lernen.kind_faecher"
-
-
-def kind_lernen(kind):
-    """Fächer und letzte Aktivität für die Kinder-Startseite. Das Lern-Modul registriert dazu
-    einen Provider ``lernen.kind_faecher(kind)`` (``kern.registry.Provider``), der eine Liste
-    ``{"name", "zuletzt": datetime | None}`` liefert. Ohne Provider: leere Liste."""
-    from apps.kern import registry
-
-    if not registry.provider_vorhanden(LERNEN_PROVIDER):
-        return []
-    try:
-        return list(registry.fortschritt(LERNEN_PROVIDER, kind))
-    except Exception:
-        return []
-
-
 def kind_laufende(kind):
     return [i for i in aufgaben.kind_eigene(kind) if i.anzeige_status in LAUFENDE_ANZEIGE]
 
 
 def offene_anzahl(kind):
-    return len(aufgaben.kind_offene(kind))
+    return len(aufgaben.kind_unzugeordnete(kind))
 
 
 START_INFOZEILE_MAX = 8
@@ -148,7 +131,9 @@ def uebernehmen_absicht(aufgabe_id, datum):
 
 
 def eltern_entscheidungen():
-    """Zähler offener Entscheidungen: Meldungen, Konflikte, Einlöseanträge, Mood-Vorschläge."""
+    """Zähler offener Entscheidungen: Meldungen, Konflikte, Einlöseanträge, Mood-Vorschläge.
+    ``gesamt`` (Zahl „Offen“ auf /eltern/) = Meldungen + Konflikte; Anträge und Mood-Vorschläge
+    haben eigene Zähler im Schnellzugriff."""
     daten = aufgaben.eltern_entscheidungen()
     zaehler = {
         "meldungen": len(daten["meldungen"]),
@@ -156,7 +141,7 @@ def eltern_entscheidungen():
         "antraege": belohnung.offene_antraege().count(),
         "moods": konten.mood_vorschlaege_offen_anzahl(),
     }
-    zaehler["gesamt"] = sum(zaehler.values())
+    zaehler["gesamt"] = zaehler["meldungen"] + zaehler["konflikte"]
     return zaehler
 
 

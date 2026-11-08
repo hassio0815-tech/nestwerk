@@ -173,3 +173,22 @@ def test_limit_einstellen(eltern_client, anna):
 def test_nicht_angemeldet_wird_umgeleitet(client):
     assert client.get(reverse("belohnung:kind")).status_code == 302
     assert client.get(reverse("belohnung:antraege")).status_code == 302
+
+
+def test_eltern_uebersicht_antraege_als_badge_und_link_offen_zaehlt_sie_nicht(
+    eltern_client, kind_client, anna, suesses
+):
+    gutschrift(anna, 50)
+    services.antrag_stellen(anna, suesses)
+    html = eltern_client.get("/eltern/").content.decode()
+    assert 'data-zahl="offen"><strong class="zahl__wert">0<' in html  # nur Meldungen/Konflikte
+    assert f'href="{reverse("belohnung:antraege")}"' in html  # Belohnungen -> Anträge
+    assert 'data-zaehler="1"' in html
+
+
+def test_formular_inline_mit_ueberschrift_und_abbrechen(eltern_client):
+    url = reverse("belohnung:neu")
+    inline = eltern_client.get(url, **HX).content.decode()
+    assert "<h2>Neue Belohnung</h2>" in inline and "data-formular-schliessen" in inline
+    voll = eltern_client.get(url).content.decode()
+    assert "<h2>Neue Belohnung</h2>" not in voll and "data-formular-schliessen" not in voll

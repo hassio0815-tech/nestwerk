@@ -70,7 +70,7 @@
               {% for a in t.aufgaben %}
                 <li class="nw-woche__aufgabe">
                   <strong>{% if a.emoji %}<span aria-hidden="true">{{ a.emoji }}</span> {% endif %}{{ a.titel|uebersetzt }}</strong>
-                  <span class="nw-leise">{% if a.zugewiesen_an %}{{ a.zugewiesen_an.rufname }}{% else %}{% translate "Alle Kinder" %}{% endif %} · {{ a.punkte }}&nbsp;XP · {{ a.rhythmus }}</span>
+                  <span class="nw-leise">{{ a.punkte }}&nbsp;XP · {{ a.rhythmus }}</span>
                   <form method="post" action="{% url 'oberflaeche:uebernehmen_vormerken' %}">{% csrf_token %}
                     <input type="hidden" name="aufgabe" value="{{ a.pk }}">
                     <input type="hidden" name="datum" value="{{ t.datum|date:'Y-m-d' }}">

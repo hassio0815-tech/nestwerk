@@ -248,9 +248,12 @@ def _info_offen(jetzt_lokal, lang):
 def _info_morgen(jetzt_lokal, lang):
     tage = aufgaben.start_woche(heute=jetzt_lokal.date())
     morgen = next((t for t in tage if t["datum"] > jetzt_lokal.date()), None)
-    if morgen is None or not morgen["aufgaben"]:
+    if morgen is None:
         return []
-    titel = [sprache.uebersetzt(a.titel) for a in morgen["aufgaben"]]
+    # Die Anmeldeseite nennt nur freie Aufgaben; zugeteilte würden ein Kind verraten.
+    titel = [sprache.uebersetzt(a.titel) for a in morgen["aufgaben"] if a.zugewiesen_an_id is None]
+    if not titel:
+        return []
     n = len(titel)
     if n == 1:
         return _wahl(_MORGEN_EINE, lang, titel=titel[0])

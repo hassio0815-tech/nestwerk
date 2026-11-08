@@ -181,8 +181,8 @@ def test_ziehen_aendert_datum_und_reihenfolge(eltern_client, neue_instanz):
 def test_formular_fallback_gleiches_ergebnis(eltern_client, neue_instanz):
     a = neue_instanz(date(2026, 10, 20))
     antwort = eltern_client.post(verschieben_url(a), {"datum": "2026-10-23"})
-    assert antwort.status_code == 200
-    assert "<html" in antwort.content.decode()
+    assert antwort.status_code == 302  # POST/Redirect/GET
+    assert antwort["Location"].endswith("/eltern/wochenplan/?datum=2026-11-02")
     a.refresh_from_db()
     assert a.faellig_am == date(2026, 10, 23)
 

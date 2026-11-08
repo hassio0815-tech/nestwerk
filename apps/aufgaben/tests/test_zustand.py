@@ -26,6 +26,8 @@ ERWARTET = {
     (S.RUECKFRAGE, S.BESTAETIGT),
     (S.RUECKFRAGE, S.ABGELEHNT),
     (S.BESTAETIGT, S.STORNIERT),
+    (S.OFFEN, S.STORNIERT),
+    (S.NICHT_UEBERNOMMEN, S.STORNIERT),
     (S.BESTAETIGT, S.NACHBESSERN),
     (S.NACHBESSERN, S.GEMELDET),
     (S.NACHBESSERN, S.STORNIERT),
@@ -37,7 +39,7 @@ def test_tabelle_entspricht_dem_diagramm():
     tabelle = {(v, n) for v, ziele in zustand.UEBERGAENGE.items() for n in ziele}
     assert tabelle == ERWARTET
     assert set(zustand.UEBERGAENGE) == set(S.values)
-    assert zustand.ENDZUSTAENDE == {S.ABGELEHNT, S.NICHT_UEBERNOMMEN, S.STORNIERT}
+    assert zustand.ENDZUSTAENDE == {S.ABGELEHNT, S.STORNIERT}
 
 
 @pytest.fixture

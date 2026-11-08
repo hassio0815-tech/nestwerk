@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 
 from apps.kern import audit, zeit
 
-from . import instanzen, wiederholung
+from . import instanzen, wiederholung, zustand
 from .models import AufgabenInstanz, InstanzStatus, Status
 
 MAX_REIHENFOLGE = 100
@@ -119,7 +119,8 @@ def verschieben(instanz_pk, datum: date, *, von, reihenfolge=()):
 def auslassen(instanz_pk, *, von, jetzt=None) -> AufgabenInstanz:
     """Nimmt genau diese Karte aus dem Wochenplan ("Nur diesen Tag").
 
-    Die Zeile wird nicht gelöscht, sondern auf ``storniert`` mit ``ausgelassen_am`` gesetzt:
+    Die Zeile wird nicht gelöscht, sondern über den Zustandsautomaten auf ``storniert`` mit
+    ``ausgelassen_am`` gesetzt (Kind-Ansichten zeigen sie nicht als „Punkte korrigiert“):
     ``unique(aufgabe, plan_datum)`` und ``abgeschlossen_am`` (ungebunden: nächster Termin erst
     danach) verhindern, dass der Generator die Instanz neu erzeugt. Reservierte/Konflikt-Karten
     werden zuerst gelöst (Kinder bekommen die übliche Nachricht). Punkte bleiben unberührt.
@@ -135,20 +136,23 @@ def auslassen(instanz_pk, *, von, jetzt=None) -> AufgabenInstanz:
         raise ValueError(_("Diese Aufgabe kann nicht mehr gelöscht werden."))
     if inst.status in (InstanzStatus.RESERVIERT, InstanzStatus.KONFLIKT):
         try:
-            ablauf.reservierung_loesen(inst, von=von)
+            ablauf.reservierung_loesen(inst, von=von, entfaellt=True)
         except ablauf.AblaufFehler as exc:
             raise ValueError(str(exc)) from exc
         inst.refresh_from_db()
-    felder = {"status": InstanzStatus.STORNIERT, "ausgelassen_am": jetzt}
+    felder = {"ausgelassen_am": jetzt}
     if inst.abgeschlossen_am is None:
         felder["abgeschlossen_am"] = jetzt
-    treffer = AufgabenInstanz.objects.filter(
-        pk=inst.pk,
-        status__in=(InstanzStatus.OFFEN, InstanzStatus.NICHT_UEBERNOMMEN),
-        ausgelassen_am__isnull=True,
-    ).update(**felder)
-    if not treffer:
-        raise ValueError(_("Instanz wurde zwischenzeitlich geändert"))
+    try:
+        zustand.uebergang(
+            inst,
+            InstanzStatus.STORNIERT,
+            von=(InstanzStatus.OFFEN, InstanzStatus.NICHT_UEBERNOMMEN),
+            bedingung={"ausgelassen_am__isnull": True},
+            **felder,
+        )
+    except zustand.UngueltigerUebergang as exc:
+        raise ValueError(_("Instanz wurde zwischenzeitlich geändert")) from exc
     inst.refresh_from_db()
     audit.protokollieren(
         "aufgabe.instanz_ausgelassen",

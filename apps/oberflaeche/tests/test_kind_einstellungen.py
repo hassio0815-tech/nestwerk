@@ -174,7 +174,9 @@ def test_eltern_sehen_vorschlaege_und_zaehler(eltern, anna):
     assert "Waffel-Laune" in html and "von Anna" in html
     dashboard = eltern.get(u("eltern_heim")).content.decode()
     assert u("eltern_moods") in dashboard  # Schnellzugriff mit Zähler
-    assert 'data-zahl="offen"><strong class="zahl__wert">1<' in dashboard  # offene Entscheidung
+    assert 'data-zaehler="1"' in dashboard  # Zähler am Schnellzugriff „Moods“
+    # „Offen“ zählt nur Meldungen und Konflikte, keine Mood-Vorschläge
+    assert 'data-zahl="offen"><strong class="zahl__wert">0<' in dashboard
 
 
 def test_eltern_lassen_zu_und_alle_koennen_waehlen(eltern, anna, ben):

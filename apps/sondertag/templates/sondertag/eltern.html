@@ -2,7 +2,7 @@
 {% load i18n static sprache %}
 {% block titel %}{% translate "Sondertage" %}{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/sondertag.css' %}">{% endblock %}
-{% block seitenkopf %}{% url "oberflaeche:eltern_heim" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Sondertage") zurueck_url=zurueck_url zurueck_text=_("Übersicht") %}{% endblock %}
+{% block seitenkopf %}{% url "oberflaeche:eltern_dungeon" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=_("Sondertage") zurueck_url=zurueck_url zurueck_text=_("Dungeon") %}{% endblock %}
 {% block seite %}
   <p>{% blocktranslate with max=regeln.max_pro_jahr start=regeln.go_live|date:"SHORT_DATE_FORMAT" abstand=regeln.abstand %}Höchstens {{ max }} Sondertage je Kind und App-Jahr (ab {{ start }}), mindestens {{ abstand }} Tage Abstand. Bezug ist das Datum der Annahme. Den Termin macht ihr außerhalb der App aus.{% endblocktranslate %}</p>
   {% if fehler %}<p class="feld__hinweis feld__hinweis--fehler" role="alert">{{ fehler }}</p>{% endif %}

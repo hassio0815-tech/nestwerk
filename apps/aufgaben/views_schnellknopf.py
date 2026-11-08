@@ -151,8 +151,9 @@ def schnellknopf_loeschen(request, pk):
     aufgabe = _knopf(pk)
     try:
         services.aufgabe_status_setzen(aufgabe, Status.BEENDET, von=aktueller_elternteil(request))
-    except ValidationError:
-        pass
+    except ValidationError as fehler:  # z. B. schon beendet: Eltern sehen den Grund als Toast
+        kontext = _eltern_kontext(request, " ".join(fehler.messages), "fehler")
+        return render(request, "aufgaben/schnellknoepfe.html", kontext)
     return redirect("aufgaben:schnellknoepfe")
 
 

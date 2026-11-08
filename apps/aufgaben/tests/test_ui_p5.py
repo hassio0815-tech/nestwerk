@@ -19,6 +19,7 @@ from apps.aufgaben.models import (
 from apps.benachrichtigung import selectors as benachrichtigung_selectors
 from apps.benachrichtigung.models import Benachrichtigung
 from apps.ereignisse.models import Ereignis
+from apps.kern import zeit
 from apps.kern.models import Einstellung
 from apps.konten import services as konten
 from apps.konten.tests.conftest import eltern_anmelden
@@ -228,6 +229,7 @@ def test_ablehnen_aus_karte_ohne_punkte(eltern_client, anlegen, anna, mama):
     eintrag = benachricht(events.GEMELDET, mama)
     antwort = eltern_client.post(aktion_url(eintrag, "ablehnen"), **HTMX)
     assert antwort.status_code == 200
+    assert antwort["HX-Trigger"] == "nestwerk-aktualisiert"  # Reiter-Zähler sofort neu laden
     instanz.refresh_from_db()
     assert instanz.status == S.ABGELEHNT
     assert not Buchung.objects.exists()
@@ -486,10 +488,44 @@ def test_weitere_status_nicht_loeschbar(eltern_client, anlegen, status):
 def test_reservierte_karte_loesen_und_ausblenden(eltern_client, anlegen, anna):
     instanz = anlegen()
     services.interesse_zeigen(instanz, anna)
-    assert eltern_client.post(loeschen_url(instanz), {"modus": "tag"}).status_code == 200
+    assert eltern_client.post(loeschen_url(instanz), {"modus": "tag"}).status_code == 302
     instanz.refresh_from_db()
     assert instanz.status == S.STORNIERT and instanz.ausgelassen_am is not None
-    assert Ereignis.objects.filter(typ_id=events.GELOEST, kind=anna).exists()
+    # das Kind erfährt „entfällt“, nicht „ist wieder frei“
+    assert Ereignis.objects.filter(typ_id=events.ENTFAELLT, kind=anna).exists()
+    assert not Ereignis.objects.filter(typ_id=events.GELOEST, kind=anna).exists()
+
+
+def test_ausgelassene_karte_geht_ueber_den_zustandsautomaten(anlegen, mama):
+    instanz = anlegen()
+    wochenplan.auslassen(instanz.pk, von=mama)
+    instanz.refresh_from_db()
+    assert instanz.status == S.STORNIERT and instanz.ausgelassen_am is not None
+    with pytest.raises(ValueError):  # zweites Auslassen: nicht mehr löschbar
+        wochenplan.auslassen(instanz.pk, von=mama)
+    nicht_uebernommen = anlegen(status=S.NICHT_UEBERNOMMEN)
+    wochenplan.auslassen(nicht_uebernommen.pk, von=mama)
+    nicht_uebernommen.refresh_from_db()
+    assert nicht_uebernommen.status == S.STORNIERT and nicht_uebernommen.ausgelassen_am
+
+
+def test_ausgelassene_nicht_in_kind_ansichten(anlegen, anna, mama):
+    instanz = anlegen(kind=anna)
+    wochenplan.auslassen(instanz.pk, von=mama)
+    assert instanz not in selectors.kind_eigene(anna)
+
+
+def test_alle_abschliessen_nur_zuletzt_bestaetigte(anlegen, anna, mama):
+    frisch = bestaetigt(anlegen, anna, mama)
+    alt = bestaetigt(anlegen, anna, mama)
+    AufgabenInstanz.objects.filter(pk=alt.pk).update(
+        abgeschlossen_am=zeit.jetzt() - timedelta(days=selectors.ABGESCHLOSSEN_ZEIGEN_TAGE + 1)
+    )
+    assert services.alle_meldungen_abschliessen(von=mama) == 1
+    frisch.refresh_from_db()
+    alt.refresh_from_db()
+    assert frisch.meldung_abgeschlossen_am is not None
+    assert alt.meldung_abgeschlossen_am is None
 
 
 def test_ausgelassene_nicht_beim_kind_sichtbar(anlegen, anna):
@@ -507,7 +543,8 @@ def test_loeschen_ohne_js_bestaetigungsseite(eltern_client, anlegen):
     assert "Wirklich löschen?" in html and "csrfmiddlewaretoken" in html
     assert AufgabenInstanz.objects.get().status == S.OFFEN  # GET löscht nie
     erledigt = eltern_client.post(loeschen_url(instanz), {"modus": "tag", "woche": "2026-10-19"})
-    assert erledigt.status_code == 200
+    assert erledigt.status_code == 302  # POST/Redirect/GET zurück auf die Woche
+    assert erledigt["Location"].endswith("?datum=2026-10-19")
     assert AufgabenInstanz.objects.get().status == S.STORNIERT
 
 
@@ -532,3 +569,52 @@ def test_unbekannter_modus(eltern_client, anlegen):
     instanz = anlegen()
     assert eltern_client.post(loeschen_url(instanz), {"modus": "alles"}).status_code == 409
     assert AufgabenInstanz.objects.get().status == S.OFFEN
+
+
+# --- Formulare inline, Schnell-Knopf-Zurück, Fehler-Toast -------------------------------------
+
+
+def test_formular_inline_hat_ueberschrift_und_abbrechen_vollseite_nicht(eltern_client):
+    url = reverse("aufgaben:neu")
+    inline = eltern_client.get(url, **HTMX).content.decode()
+    assert "<h2>Neue Aufgabe</h2>" in inline and "data-formular-schliessen" in inline
+    voll = eltern_client.get(url).content.decode()
+    assert "<h2>Neue Aufgabe</h2>" not in voll and "data-formular-schliessen" not in voll
+
+
+def test_schnellknopf_formular_zurueck_zu_schnellknoepfen(eltern_client, mama):
+    ziel = reverse("aufgaben:schnellknoepfe")
+    neu = eltern_client.get(reverse("aufgaben:neu"), {"art": "bei_bedarf"}).content.decode()
+    assert f'href="{ziel}"' in neu and "Schnell-Knöpfe" in neu
+    knopf = Aufgabe.objects.create(
+        titel="Knopf",
+        punkte=5,
+        erstellt_von=mama,
+        start_datum=date(2026, 10, 1),
+        wiederholungsart=wiederholung.BEI_BEDARF,
+        freigabeart="eltern",
+    )
+    seite = eltern_client.get(reverse("aufgaben:bearbeiten", args=[knopf.pk])).content.decode()
+    assert f'href="{ziel}"' in seite
+    normal = eltern_client.get(reverse("aufgaben:neu")).content.decode()
+    assert f'seitenkopf__zurueck" href="{ziel}"' not in normal
+
+
+def test_schnellknopf_loeschen_fehler_wird_angezeigt(eltern_client, mama, monkeypatch):
+    from django.core.exceptions import ValidationError
+
+    knopf = Aufgabe.objects.create(
+        titel="Knopf",
+        punkte=5,
+        erstellt_von=mama,
+        start_datum=date(2026, 10, 1),
+        wiederholungsart=wiederholung.BEI_BEDARF,
+        freigabeart="eltern",
+    )
+
+    def kaputt(*args, **kwargs):
+        raise ValidationError("Das geht gerade nicht.")
+
+    monkeypatch.setattr(services, "aufgabe_status_setzen", kaputt)
+    antwort = eltern_client.post(reverse("aufgaben:schnellknopf_loeschen", args=[knopf.pk]))
+    assert antwort.status_code == 200 and "Das geht gerade nicht." in antwort.content.decode()

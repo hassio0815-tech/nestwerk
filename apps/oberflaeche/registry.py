@@ -63,9 +63,13 @@ def _eltern_ereignisse(request):
 
 
 def _eltern_schnellzugriff(request):
+    from apps.belohnung import selectors as belohnung
     from apps.konten import selectors as konten
 
-    return {"mood_offen": konten.mood_vorschlaege_offen_anzahl()}
+    return {
+        "mood_offen": konten.mood_vorschlaege_offen_anzahl(),
+        "antraege_offen": belohnung.offene_antraege().count(),
+    }
 
 
 def _eltern_system(request):

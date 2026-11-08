@@ -2214,3 +2214,16 @@ msgstr "The task was changed in the meantime."
 #: templates/aufgaben/_kind_bereich.html
 msgid "Noch nichts gewählt. Such dir oben eine Aufgabe aus."
 msgstr "Nothing chosen yet. Pick a task above."
+
+#: events.py
+msgid "Aufgabe entfällt"
+msgstr "Task cancelled"
+
+#: events.py
+#, python-brace-format
+msgid "„{aufgabe}“ entfällt."
+msgstr "“{aufgabe}” is cancelled."
+
+#: events.py
+msgid "Reservierte Aufgabe entfällt"
+msgstr "Reserved task cancelled"

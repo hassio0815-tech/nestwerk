@@ -2,7 +2,8 @@
 
 from datetime import date
 
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
@@ -22,6 +23,14 @@ def _antwort(request, woche, *, meldung="", fehler="", status=200):
     kontext.update(meldung=meldung, fehler=fehler)
     vorlage = "aufgaben/_wochenplan.html" if _htmx(request) else "aufgaben/wochenplan.html"
     return render(request, vorlage, kontext, status=status)
+
+
+def _erfolg(request, woche, meldung):
+    """Erfolg: HTMX bekommt den Wochenplan samt Meldung, ein Formular ohne JavaScript einen
+    Redirect auf die Woche (POST/Redirect/GET: Neuladen schickt nichts ein zweites Mal)."""
+    if _htmx(request):
+        return _antwort(request, woche, meldung=meldung)
+    return redirect(f"{reverse('aufgaben:wochenplan')}?datum={woche.montag.isoformat()}")
 
 
 @nur_eltern
@@ -45,10 +54,8 @@ def instanz_verschieben(request, pk):
     except ValueError as exc:
         return _antwort(request, woche, fehler=str(exc), status=409)
     # Gezielte Woche = Woche des neuen Tages, falls aus dem Formular verschoben wurde
-    return _antwort(
-        request,
-        woche,
-        meldung=_("„%(titel)s“ verschoben.") % {"titel": uebersetzt(inst.titel_snapshot)},
+    return _erfolg(
+        request, woche, _("„%(titel)s“ verschoben.") % {"titel": uebersetzt(inst.titel_snapshot)}
     )
 
 
@@ -84,4 +91,4 @@ def instanz_loeschen(request, pk):
         if modus == "serie" and wochenplan.ist_serie(inst.aufgabe)
         else _("„%(titel)s“ gelöscht.")
     ) % {"titel": uebersetzt(inst.titel_snapshot)}
-    return _antwort(request, woche, meldung=meldung)
+    return _erfolg(request, woche, meldung)

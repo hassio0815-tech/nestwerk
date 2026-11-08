@@ -425,8 +425,11 @@ def zuteilen(instanz, kind, *, von, jetzt=None) -> AufgabenInstanz:
 
 
 @transaction.atomic
-def reservierung_loesen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
-    """Eltern lösen eine Reservierung oder einen Konflikt: die Aufgabe ist wieder frei."""
+def reservierung_loesen(instanz, *, von, jetzt=None, entfaellt=False) -> AufgabenInstanz:
+    """Eltern lösen eine Reservierung oder einen Konflikt: die Aufgabe ist wieder frei.
+
+    ``entfaellt``: die Karte wird gleich danach aus dem Wochenplan genommen; die Kinder
+    bekommen „entfällt“ statt „ist wieder frei“."""
     jetzt = jetzt or zeit.jetzt()
     _ist_eltern(von)
     instanz = _laden(instanz)
@@ -437,7 +440,12 @@ def reservierung_loesen(instanz, *, von, jetzt=None) -> AufgabenInstanz:
     uebergang(instanz, ziel.pop("status"), reserviert_bis=None, erinnert_am=None, **ziel)
     _interesse_setzen(_interessen(instanz), I.VERDRAENGT, von=von, jetzt=jetzt)
     for kind in betroffene:
-        ereignisse.veroeffentlichen(events.GELOEST, kind=kind, akteur=von, daten=_daten(instanz))
+        ereignisse.veroeffentlichen(
+            events.ENTFAELLT if entfaellt else events.GELOEST,
+            kind=kind,
+            akteur=von,
+            daten=_daten(instanz),
+        )
     _protokoll(
         "aufgabe.reservierung_geloest",
         instanz,
@@ -1024,8 +1032,14 @@ def alle_meldungen_abschliessen(*, von, jetzt=None) -> int:
     """ "Alle abschließen": wie ``meldung_abschliessen`` für alle sichtbaren bestätigten."""
     _ist_eltern(von)
     jetzt = jetzt or zeit.jetzt()
+    from .selectors import ABGESCHLOSSEN_ZEIGEN_TAGE
+
+    # Nur, was in „Zuletzt bestätigt“ steht (gleicher Zeitfilter wie eltern_entscheidungen).
+    seit = jetzt - timedelta(days=ABGESCHLOSSEN_ZEIGEN_TAGE)
     offene = AufgabenInstanz.objects.filter(
-        status=S.BESTAETIGT, meldung_abgeschlossen_am__isnull=True
+        status=S.BESTAETIGT,
+        meldung_abgeschlossen_am__isnull=True,
+        abgeschlossen_am__gte=seit,
     )
     zahl = 0
     for instanz in offene:

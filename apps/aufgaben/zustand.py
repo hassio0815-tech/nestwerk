@@ -22,8 +22,10 @@ Alle erlaubten Übergänge stehen zentral in ``UEBERGAENGE``. Jeder Statuswechse
     rueckfrage -> gemeldet           Kind antwortet
     rueckfrage -> bestaetigt | abgelehnt                Eltern entscheiden ohne Antwort
     bestaetigt -> storniert          Korrektur (Gegenbuchung, K2)
+    offen | nicht_uebernommen -> storniert   Eltern lassen die Karte im Wochenplan aus
+                                     (``ausgelassen_am`` gesetzt, keine Punkte)
 
-Endzustände: ``abgelehnt``, ``nicht_uebernommen``, ``storniert``.
+Endzustände: ``abgelehnt``, ``storniert``.
 """
 
 from __future__ import annotations
@@ -35,7 +37,7 @@ from .models import AufgabenInstanz, InstanzStatus
 S = InstanzStatus
 
 UEBERGAENGE: dict[str, frozenset[str]] = {
-    S.OFFEN: frozenset({S.RESERVIERT, S.NICHT_UEBERNOMMEN}),
+    S.OFFEN: frozenset({S.RESERVIERT, S.NICHT_UEBERNOMMEN, S.STORNIERT}),
     S.RESERVIERT: frozenset({S.KONFLIKT, S.OFFEN, S.NICHT_UEBERNOMMEN, S.GEMELDET, S.BESTAETIGT}),
     S.KONFLIKT: frozenset({S.RESERVIERT, S.OFFEN, S.NICHT_UEBERNOMMEN}),
     S.GEMELDET: frozenset({S.BESTAETIGT, S.ABGELEHNT, S.RUECKFRAGE}),
@@ -43,7 +45,7 @@ UEBERGAENGE: dict[str, frozenset[str]] = {
     S.BESTAETIGT: frozenset({S.STORNIERT, S.NACHBESSERN}),
     S.NACHBESSERN: frozenset({S.GEMELDET, S.STORNIERT}),
     S.ABGELEHNT: frozenset(),
-    S.NICHT_UEBERNOMMEN: frozenset(),
+    S.NICHT_UEBERNOMMEN: frozenset({S.STORNIERT}),
     S.STORNIERT: frozenset(),
 }
 

@@ -19,6 +19,7 @@ KONFLIKT = "aufgabe.konflikt"  # mehrere Interessenten -> Eltern teilen zu
 ZUGETEILT = "aufgabe.zugeteilt"  # Kind bekommt die Aufgabe (Eltern-Zuteilung)
 VERGEBEN = "aufgabe.vergeben"  # Konflikt: an ein anderes Kind vergeben
 GELOEST = "aufgabe.reservierung_geloest"  # Eltern lösen die Reservierung
+ENTFAELLT = "aufgabe.entfaellt"  # Eltern nehmen eine reservierte Karte aus dem Wochenplan
 ZURUECKGEGEBEN = "aufgabe.zurueckgegeben"  # Kind gibt zurück
 GEMELDET = "aufgabe.gemeldet"  # Kind meldet erledigt (Eltern entscheiden)
 ANTWORT = "aufgabe.antwort"  # Kind beantwortet Rückfrage
@@ -61,6 +62,10 @@ TEXTE = {
     GELOEST: (
         gettext_noop("Reservierung aufgehoben"),
         gettext_noop("„{aufgabe}“ ist wieder frei."),
+    ),
+    ENTFAELLT: (
+        gettext_noop("Aufgabe entfällt"),
+        gettext_noop("„{aufgabe}“ entfällt."),
     ),
     ZURUECKGEGEBEN: (
         gettext_noop("{kind} hat eine Aufgabe zurückgegeben"),
@@ -135,6 +140,13 @@ def typen_deklarieren():
     typ(
         GELOEST,
         gettext_noop("Reservierung von Eltern aufgehoben"),
+        "kind",
+        kanaele=("push",),
+        **kind,
+    )
+    typ(
+        ENTFAELLT,
+        gettext_noop("Reservierte Aufgabe entfällt"),
         "kind",
         kanaele=("push",),
         **kind,

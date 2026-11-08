@@ -181,6 +181,17 @@
       }
     }
 
+    /* Inline geladenes Formular (Liste/Katalog): „Abbrechen“ leert den Platz wieder. */
+    var formularZu = ziel.closest("[data-formular-schliessen]");
+    if (formularZu) {
+      var platz = formularZu.closest("#formular");
+      if (platz) {
+        ereignis.preventDefault();
+        platz.innerHTML = "";
+        return;
+      }
+    }
+
     var schliessen = ziel.closest("[data-schliessen]");
     if (schliessen) {
       schliessenMeldung(schliessen.closest("[data-schliessbar]"));

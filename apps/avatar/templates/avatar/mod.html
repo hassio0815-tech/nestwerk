@@ -4,10 +4,10 @@
 {% block css %}<link rel="stylesheet" href="{% static 'css/oberflaeche.css' %}"><link rel="stylesheet" href="{% static 'css/mods.css' %}">{% endblock %}
 {% block inhalt %}
   {% if fehler %}{% include "komponenten/toast.html" with art="fehler" text=fehler icon="warnung" %}{% endif %}
+  {% url "avatar:shop" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=mod.name|uebersetzt zurueck_url=zurueck_url zurueck_text=_("Mod-Shop") %}
   <section class="karte mod-detail" data-selten="{{ karte.konditionen.rang_selten }}"><div class="karte__inhalt mod-detail__inhalt">
     <div class="mod-detail__bild">{% svg_roh svg "riesig" _("Vorschau: dein Avatar mit dem Mod") %}</div>
     <div class="stapel">
-      {% url "avatar:shop" as zurueck_url %}{% include "komponenten/seitenkopf.html" with titel=mod.name|uebersetzt zurueck_url=zurueck_url zurueck_text=_("Mod-Shop") %}
       <p class="reihe"><span class="chip" data-selten="{{ karte.konditionen.rang_selten }}">{{ karte.konditionen.rang_name }}</span><span class="kachel__text">{{ mod.slot.name|uebersetzt }}</span></p>
       {% if mod.beschreibung %}<p>{{ mod.beschreibung|uebersetzt }}</p>{% endif %}
       <dl class="mod-werte">

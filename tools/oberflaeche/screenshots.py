@@ -373,7 +373,7 @@ def kind_login(page, aufn, name, pin, fotos=True):
     page.goto(BASIS + "/", wait_until="networkidle")
     if fotos:
         aufn.foto(page, "tablet-startseite")
-    # nur die Profil-Kacheln: Namen können auch in (versteckten) Tages-Popups stehen
+    # nur die Profil-Kacheln (Tages-Popups sind versteckt und zeigen keine Namen mehr)
     ziel = page.locator(".nw-profil-gruppe").get_by_text(name, exact=False).first
     try:
         ziel.click(timeout=15000)

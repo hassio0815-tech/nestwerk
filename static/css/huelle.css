@@ -772,7 +772,6 @@
 .nw-uebernehmen p { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 
 /* Schnell-Knöpfe (Eltern): Auswahlfenster mit drei Modi */
-.schnellknopf__aktionen { justify-content: flex-end; flex-wrap: nowrap; }
 .knopf-dialog {
   width: min(30rem, calc(100vw - 2rem));
   max-height: calc(100dvh - 2rem);

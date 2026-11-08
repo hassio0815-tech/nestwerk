@@ -1,5 +1,5 @@
 {% extends "aufgaben/basis.html" %}
 {% block titel %}{{ titel }}{% endblock %}
 {% load i18n %}
-{% block seitenkopf %}{% url "aufgaben:kategorien" as kategorien_url %}{% if zurueck == kategorien_url %}{% include "komponenten/seitenkopf.html" with titel=titel zurueck_url=zurueck zurueck_text=_("Kategorien") %}{% else %}{% include "komponenten/seitenkopf.html" with titel=titel zurueck_url=zurueck zurueck_text=_("Aufgaben") %}{% endif %}{% endblock %}
+{% block seitenkopf %}{% url "aufgaben:kategorien" as kategorien_url %}{% url "aufgaben:schnellknoepfe" as knoepfe_url %}{% if zurueck == kategorien_url %}{% include "komponenten/seitenkopf.html" with titel=titel zurueck_url=zurueck zurueck_text=_("Kategorien") %}{% elif zurueck == knoepfe_url %}{% include "komponenten/seitenkopf.html" with titel=titel zurueck_url=zurueck zurueck_text=_("Schnell-Knöpfe") %}{% else %}{% include "komponenten/seitenkopf.html" with titel=titel zurueck_url=zurueck zurueck_text=_("Aufgaben") %}{% endif %}{% endblock %}
 {% block seite %}<div id="formular">{% include "aufgaben/_formular.html" %}</div>{% endblock %}

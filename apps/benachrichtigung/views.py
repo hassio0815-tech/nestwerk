@@ -97,11 +97,13 @@ def aktion(request, pk, aktion_slug):
     except aktionen.AktionFehler as fehler:
         hinweis, art = str(fehler), "fehler"
     if request.headers.get("HX-Request") == "true":
-        return render(
+        antwort = render(
             request,
             "benachrichtigung/_liste.html",
             _liste_kontext(request, hinweis=hinweis, art=art),
         )
+        antwort["HX-Trigger"] = "nestwerk-aktualisiert"  # Reiter-Zähler sofort neu laden
+        return antwort
     if art == "fehler":
         kontext = _liste_kontext(request, hinweis=hinweis, art=art)
         return render(request, "benachrichtigung/liste.html", kontext, status=409)

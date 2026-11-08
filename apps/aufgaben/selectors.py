@@ -59,7 +59,7 @@ def kind_offene(kind, *, jetzt=None):
     nicht vorbei, Termin höchstens ``aufgaben.kind_vorschau_tage`` voraus.
 
     Mit ``aufgaben.mitbewerben_erlaubt`` auch von anderen Kindern reservierte (noch nicht
-    gemeldete) Instanzen und Konflikte (``vergeben_an_andere = True``, ohne Namen). Jede Instanz
+    gemeldete) Instanzen und Konflikte (ohne Namen). Jede Instanz
     trägt ``limit_erreicht`` (K10).
     """
     from . import ablauf
@@ -91,7 +91,6 @@ def kind_offene(kind, *, jetzt=None):
     ergebnis = []
     limits = {}
     for instanz in qs:
-        instanz.vergeben_an_andere = instanz.status != InstanzStatus.OFFEN
         if instanz.aufgabe_id not in limits:
             stand = ablauf.limit_stand(instanz.aufgabe, kind, jetzt=jetzt)
             limits[instanz.aufgabe_id] = stand is not None and stand[0] >= stand[1]

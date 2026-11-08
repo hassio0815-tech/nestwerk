@@ -2,10 +2,10 @@
   <h2>{% translate "Schnellzugriff" %}</h2>
   <div class="reihe">
     {% comment %}Nur Ziele, die nicht schon im Menü links oder hinter dem Zahnrad stehen.{% endcomment %}
-    {% url "aufgaben:entscheidungen" as u1 %}{% url "belohnung:katalog" as u3 %}{% url "aufgaben:liste" as u8 %}{% url "aufgaben:anerkennung" as u10 %}{% url "oberflaeche:eltern_moods" as u11 %}
+    {% url "aufgaben:entscheidungen" as u1 %}{% if k.antraege_offen %}{% url "belohnung:antraege" as u3 %}{% else %}{% url "belohnung:katalog" as u3 %}{% endif %}{% url "aufgaben:liste" as u8 %}{% url "aufgaben:anerkennung" as u10 %}{% url "oberflaeche:eltern_moods" as u11 %}
     {% include "komponenten/button.html" with href=u8 variante="sekundaer" klein=True icon="liste" text=_("Aufgaben") %}
     {% include "komponenten/button.html" with href=u1 variante="sekundaer" klein=True icon="check" text=_("Meldungen") %}
-    {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="geschenk" text=_("Belohnungen") %}
+    {% include "komponenten/button.html" with href=u3 variante="sekundaer" klein=True icon="geschenk" text=_("Belohnungen") %}{% if k.antraege_offen %} <span class="chip" data-zaehler="{{ k.antraege_offen }}">{{ k.antraege_offen }}</span>{% endif %}
     {% include "komponenten/button.html" with href=u10 variante="sekundaer" klein=True icon="funke" text=_("Anerkennung") %}
     {% include "komponenten/button.html" with href=u11 variante="sekundaer" klein=True icon="person" text=_("Moods") %}{% if k.mood_offen %} <span class="chip" data-zaehler="{{ k.mood_offen }}">{{ k.mood_offen }}</span>{% endif %}
   </div>

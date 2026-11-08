@@ -1,5 +1,6 @@
 """Wochenvorschau als Kalenderleiste; Aufgabe vormerken, anmelden, übernehmen."""
 
+import re
 from datetime import time, timedelta
 
 import pytest
@@ -65,21 +66,28 @@ def test_tage_ohne_aufgaben_sind_nicht_klickbar(client, mama):
     assert html.count("disabled") == 7 and "aria-controls" not in html
 
 
-def test_popup_zeigt_aufgabe_kind_xp_rhythmus_und_alle_kinder(client, mama, anna):
+def _popups(html):
+    return "".join(re.findall(r"<dialog.*?</dialog>", html, flags=re.S))
+
+
+def test_popup_zeigt_aufgabe_xp_rhythmus_aber_keine_kindernamen(client, mama, anna):
     taeglich(mama, titel="Zimmer aufräumen", zugewiesen_an=anna)
     taeglich(mama, titel="Tisch decken")
     html = client.get("/").content.decode()
     assert html.count("<dialog") == 7  # ein Popup je Tag mit Aufgaben
     assert "Zimmer aufräumen" in html and "Tisch decken" in html
-    assert "Anna" in html and "Alle Kinder" in html and "7&nbsp;XP" in html
+    popups = _popups(html)
+    assert "Anna" not in popups and "Alle Kinder" not in popups  # keine Namen auf der Startseite
+    assert "7&nbsp;XP" in popups
     assert 'name="aufgabe"' in html and 'name="datum"' in html and "csrfmiddlewaretoken" in html
 
 
-def test_je_kind_aufgaben_zeigen_den_kindernamen(client, mama, anna, ben):
+def test_je_kind_aufgaben_zeigen_keine_kindernamen_im_popup(client, mama, anna, ben):
     taeglich(mama, titel="Wäsche", zugewiesen_an=anna)
     taeglich(mama, titel="Wäsche", zugewiesen_an=ben)
     html = client.get("/").content.decode()
-    assert html.count("Wäsche") >= 14 and "Anna" in html and "Ben" in html
+    popups = _popups(html)
+    assert popups.count("Wäsche") >= 14 and "Anna" not in popups and "Ben" not in popups
 
 
 def test_anmeldekacheln_bleiben_neben_der_leiste(client, mama, anna):

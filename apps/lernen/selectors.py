@@ -293,6 +293,7 @@ def heute_geuebt(kind, von, bis):
             ergebnis.append(eintrag)
     return ergebnis
 
+
 def lernminuten_heute(heute):
     """Gelernte Minuten aller Kinder an diesem Tag (anonym, für die Startseite)."""
     summe = Lerntag.objects.filter(datum=heute).aggregate(s=Sum("sekunden"))["s"] or 0

@@ -1,4 +1,5 @@
 {% load i18n %}<section class="karte" id="formular-karte"><div class="karte__inhalt stapel">
+  {% if inline %}<h2>{{ titel }}</h2>{% endif %}
   <form method="post" action="{{ aktion }}" class="stapel formular-raster" hx-post="{{ aktion }}" hx-target="#formular" hx-swap="innerHTML">
     {% csrf_token %}
     {% for e in form.non_field_errors %}<p class="feld__hinweis feld__hinweis--fehler">{{ e }}</p>{% endfor %}
@@ -39,6 +40,7 @@
     {% endfor %}
     <div class="reihe">
       {% include "komponenten/button.html" with typ="submit" icon="check" text=_("Speichern") %}
+      {% if inline %}<a class="knopf knopf--sekundaer" href="{{ zurueck }}" data-formular-schliessen><span>{% translate "Abbrechen" %}</span></a>{% endif %}
     </div>
   </form>
 </div></section>

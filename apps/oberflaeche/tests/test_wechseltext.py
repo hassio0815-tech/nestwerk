@@ -156,7 +156,12 @@ def tagesdaten(db, mama, anna, ben):
         punkte_snapshot=10, freigabeart_snapshot="eltern",
     )  # fmt: skip
     Aufgabe.objects.create(
-        titel="Restmüll rausstellen", punkte=10, erstellt_von=mama, zugewiesen_an=ben,
+        titel="Restmüll rausstellen", punkte=10, erstellt_von=mama,
+        wiederholungsart=wiederholung.WOECHENTLICH, wochentage=127,
+        start_datum=zeit.heute(jetzt) - timedelta(days=30),
+    )  # fmt: skip
+    Aufgabe.objects.create(  # einem Kind zugeteilt: darf die Startseite nicht verraten
+        titel="Zimmer saugen", punkte=10, erstellt_von=mama, zugewiesen_an=ben,
         wiederholungsart=wiederholung.WOECHENTLICH, wochentage=127,
         start_datum=zeit.heute(jetzt) - timedelta(days=30),
     )  # fmt: skip
@@ -170,6 +175,7 @@ def test_infos_enthalten_zahlen_aber_keine_namen(tagesdaten, mama, anna, ben):
     for name in ("Anna", "Ben", "Mama", mama.anzeigename, anna.anzeigename, ben.anzeigename):
         assert name not in gesamt
     assert any("Restmüll rausstellen" in t for t in infos["morgen"])
+    assert not any("Zimmer saugen" in t for t in infos["morgen"])  # zugeteilt = nicht frei
     assert all("Tage" in t or "Tag" in t or "Wochenende" in t for t in infos["wochenende"])
 
 

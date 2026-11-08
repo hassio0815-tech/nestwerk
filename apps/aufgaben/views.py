@@ -32,8 +32,9 @@ def _weiter(request, url_name):
 
 def _formular(request, form, *, titel, aktion, zurueck):
     """Formular als Teilseite (HTMX) oder als volle Seite."""
-    kontext = {"form": form, "titel": titel, "aktion": aktion, "zurueck": zurueck}
-    vorlage = "aufgaben/_formular.html" if _htmx(request) else "aufgaben/formular.html"
+    inline = _htmx(request)  # Teilseite in Liste/Katalog: eigene Überschrift + „Abbrechen“
+    kontext = {"form": form, "titel": titel, "aktion": aktion, "zurueck": zurueck, "inline": inline}
+    vorlage = "aufgaben/_formular.html" if inline else "aufgaben/formular.html"
     return render(request, vorlage, kontext)
 
 
@@ -85,12 +86,13 @@ def aufgabe_neu(request):
             form.add_error(None, fehler)
         else:
             return _weiter(request, "aufgaben:liste")
+    knopf = form["wiederholungsart"].value() == wiederholung.BEI_BEDARF
     return _formular(
         request,
         form,
         titel=_("Neue Aufgabe"),
         aktion=reverse("aufgaben:neu"),
-        zurueck=reverse("aufgaben:liste"),
+        zurueck=reverse("aufgaben:schnellknoepfe" if knopf else "aufgaben:liste"),
     )
 
 
@@ -107,7 +109,11 @@ def aufgabe_bearbeiten(request, pk):
         form,
         titel=_("Aufgabe bearbeiten"),
         aktion=reverse("aufgaben:bearbeiten", args=[pk]),
-        zurueck=reverse("aufgaben:liste"),
+        zurueck=reverse(
+            "aufgaben:schnellknoepfe"
+            if aufgabe.wiederholungsart == wiederholung.BEI_BEDARF
+            else "aufgaben:liste"
+        ),
     )
 
 
