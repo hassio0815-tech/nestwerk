@@ -250,7 +250,8 @@ def test_einschaetzung_gilt_nur_fuer_die_naechste_sitzung_und_nur_dieses_kind(
 
 
 def _checked(html, name):
-    m = re.search(rf'name="{name}" value="([a-z_]+)" checked', html)
+    select = re.search(rf'<select[^>]*name="{name}".*?</select>', html, re.S)
+    m = re.search(r'value="([a-z_]+)" selected', select.group(0)) if select else None
     return m.group(1) if m else None
 
 

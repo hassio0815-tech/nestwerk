@@ -56,18 +56,32 @@
           {% endfor %}
         </select>
       </div>
-      <fieldset class="lernen-wahl"><legend>{% translate "Was nimmst du dir vor?" %}</legend>
-        {% for wert, text in vorhaben %}<label><input type="radio" name="vorhaben" value="{{ wert }}"{% if wert == vorbelegt.vorhaben %} checked{% endif %}> {{ text }}</label>{% endfor %}
-      </fieldset>
-      <fieldset class="lernen-wahl"><legend>{% translate "Wie gehst du vor?" %}</legend>
-        {% for wert, text in strategien %}<label><input type="radio" name="strategie" value="{{ wert }}"{% if wert == vorbelegt.strategie %} checked{% endif %}> {{ text }}</label>{% endfor %}
-      </fieldset>
-      <fieldset class="lernen-wahl"><legend>{% translate "Wie viel weißt du schon?" %}</legend>
-        {% for wert, text in erwartungen %}<label><input type="radio" name="erwartung" value="{{ wert }}"{% if wert == vorbelegt.erwartung %} checked{% endif %}> {{ text }}</label>{% endfor %}
-      </fieldset>
-      <fieldset class="lernen-wahl"><legend>{% translate "Wie anstrengend soll es sein?" %}</legend>
-        {% for wert, text in intensitaeten %}<label><input type="radio" name="intensitaet" value="{{ wert }}"{% if wert == vorbelegt.intensitaet %} checked{% endif %}> {{ text }}</label>{% endfor %}
-      </fieldset>
+      <div class="lernen-auswahl">
+        <div class="feld">
+          <label class="feld__label" for="l-vorhaben">{% translate "Was nimmst du dir vor?" %}</label>
+          <select class="feld__eingabe" id="l-vorhaben" name="vorhaben">
+            {% for wert, text in vorhaben %}<option value="{{ wert }}"{% if wert == vorbelegt.vorhaben %} selected{% endif %}>{{ text }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="feld">
+          <label class="feld__label" for="l-strategie">{% translate "Wie gehst du vor?" %}</label>
+          <select class="feld__eingabe" id="l-strategie" name="strategie">
+            {% for wert, text in strategien %}<option value="{{ wert }}"{% if wert == vorbelegt.strategie %} selected{% endif %}>{{ text }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="feld">
+          <label class="feld__label" for="l-erwartung">{% translate "Wie viel weißt du schon?" %}</label>
+          <select class="feld__eingabe" id="l-erwartung" name="erwartung">
+            {% for wert, text in erwartungen %}<option value="{{ wert }}"{% if wert == vorbelegt.erwartung %} selected{% endif %}>{{ text }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="feld">
+          <label class="feld__label" for="l-intensitaet">{% translate "Wie anstrengend soll es sein?" %}</label>
+          <select class="feld__eingabe" id="l-intensitaet" name="intensitaet">
+            {% for wert, text in intensitaeten %}<option value="{{ wert }}"{% if wert == vorbelegt.intensitaet %} selected{% endif %}>{{ text }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
       {% include "komponenten/button.html" with typ="submit" icon="funke" text=_("Los geht's") gross=True %}
     </form>
     {% endif %}

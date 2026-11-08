@@ -474,7 +474,7 @@ def test_beispiel_strategie_klappt_die_mathe_karte_auf(kind_client, kind_a, math
 def test_startseite_bietet_alle_strategien(kind_client, fach):
     html = kind_client.get(reverse("lernen:start")).content.decode()
     for wert in Strategie.values:
-        assert f'name="strategie" value="{wert}"' in html
+        assert f'<option value="{wert}"' in html
 
 
 # --- Migration 0026 ----------------------------------------------------------------------------

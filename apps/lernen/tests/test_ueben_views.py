@@ -73,6 +73,18 @@ def test_startseite(kind_client, fach):
     assert "data-lernen-vorschlag" not in html
 
 
+def test_startseite_formular_nur_dropdowns(kind_client, fach):
+    html = kind_client.get(reverse("lernen:start")).content.decode()
+    form = html.split('action="' + reverse("lernen:los") + '"')[1].split("</form>")[0]
+    assert form.count("<select") == 5
+    assert 'type="radio"' not in form
+    for name in ("was", "vorhaben", "strategie", "erwartung", "intensitaet"):
+        assert f'name="{name}"' in form
+    for i in ("l-was", "l-vorhaben", "l-strategie", "l-erwartung", "l-intensitaet"):
+        assert f'<label class="feld__label" for="{i}"' in form
+    assert form.count(" selected") >= 4
+
+
 def test_startseite_ohne_fragen(kind_client, db):
     from apps.kern import einstellungen
     from apps.lernen.mathe.registry import schluessel_alle
