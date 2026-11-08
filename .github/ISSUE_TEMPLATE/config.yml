@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability / Sicherheitslücke melden
+    url: https://github.com/hassio0815-tech/nestwerk/security/advisories/new
+    about: Please report privately, never in a public issue. / Bitte privat melden, nie in einem öffentlichen Issue.

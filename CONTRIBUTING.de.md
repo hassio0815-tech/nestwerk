@@ -69,6 +69,12 @@ Die Demo-Daten sind fiktiv. Vor dem Commit die PNGs ansehen. Die Heuristiken ers
 - Ein Commit ist ein abgeschlossener Schritt mit Tests.
 - Pull Requests beschreiben, **warum** die Änderung nötig ist, und nennen die betroffenen Schichten.
 
+## Sicherheit und Umgang
+
+- Melde Schwachstellen privat und nie in einem öffentlichen Issue: siehe [SECURITY.de.md](SECURITY.de.md).
+- Sei freundlich und respektvoll: siehe den [Verhaltenskodex](CODE_OF_CONDUCT.de.md).
+- Issue- und Pull-Request-Vorlagen sind zweisprachig; die CI führt die drei Prüfungen oben bei jedem Push und Pull Request aus.
+
 ## Datenschutz
 
 - Keine echten Namen, E-Mail-Adressen, IP-Adressen oder Domains in Code, Tests, Screenshots oder Doku. Verwende Platzhalter wie `nestwerk.example.org`, `<VM-IP>` oder `Mama`/`Papa` mit Demo-Daten.

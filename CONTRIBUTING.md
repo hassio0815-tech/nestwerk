@@ -74,6 +74,12 @@ The demo data is fictional. Look at the PNGs before committing. The heuristics d
 - A commit is one completed step, with tests.
 - Pull requests explain **why** the change is needed and name the affected layers.
 
+## Security and conduct
+
+- Report vulnerabilities privately, never in a public issue: see [SECURITY.md](SECURITY.md).
+- Be kind and respectful: see the [Code of Conduct](CODE_OF_CONDUCT.md).
+- Issue and pull request templates are bilingual; CI runs the three checks above on every push and pull request.
+
 ## Privacy
 
 - No real names, email addresses, IP addresses or domains in code, tests, screenshots or docs. Use placeholders such as `nestwerk.example.org`, `<VM-IP>` or `Mama`/`Papa` with demo data.
